@@ -1,0 +1,236 @@
+<template>
+        <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
+        <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P.E.C.I.A.L App" stack glossy color="purple" @click="goToSpecialAppPage"/>
+    <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents" push color="primary" @click="goToPhotosOfAgentsPage" />
+    <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
+    <q-btn class="q-mb-sm zoomIn" icon="phone" label="Send a message to Vincent" push color="primary" @click="linkToVismyfriendTelegram" />
+    <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />
+     <!-- а где лучше всего идеи записывать? буду здесь пока! -->
+     
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter()
+
+
+
+const goVismyCoderPage = () => { 
+        router.push("/vismycoder") 
+}
+const goToSpecialAppPage = () => { 
+        router.push("/special-app") 
+}
+
+const linkToVismyfriendTelegram = () => { 
+     
+        window.open('https://t.me/vismyfriend?text=Hello Vincent', '_blank'); // Открыть ccылку в новой вкладке }
+        
+}
+const test = () => { 
+        alert("you clicked! It worked!")
+        
+}
+
+const goToPhotosOfAgentsPage = () => { 
+        router.push("/photos-of-agents") 
+}
+
+// Функция для получения правильного окончания
+const getOrdinalSuffix = (date) => {
+    if (date > 3 && date < 21) return 'th'; // Исключения для 11-13
+    switch (date % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+}
+}
+onMounted(()=>{
+        const currentDate = new Date()
+        const monthName = currentDate.toLocaleString('default', { month: 'long' });
+        const dayName = currentDate.toLocaleString('default', { weekday: 'long' }); // Получаем название дня недели
+        const currentDay = new Date().getDay()
+       
+        const suffix = getOrdinalSuffix(currentDay);
+        document.getElementById('intro-message').innerHTML = `Hello , special agent <br> today  is  ${dayName}  <br> the ${currentDate.getDate()}<strong><u>${suffix}</strong></u> of ${monthName}`;
+        // Получаем окончание для текущего числа
+        
+
+
+})
+
+</script>
+
+<style lang="scss" scoped>
+
+
+.backgroundImg {
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    object-fit: cover;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+    
+}
+
+.bubble {
+        text-align: center;
+        user-select: none;
+        font-family: "Permanent Marker";
+        font-size: 17px;
+        display: inline-block;
+        position: relative;
+        padding: 30px 40px;
+        border-radius: 10px;
+        border: 3px solid black;
+        background: white;
+        clear: both;
+        
+         &:before {
+           content: '';
+           position: absolute;
+           bottom: -50px;
+           height: 50px;
+           width: 90px;
+           
+         }
+        
+        &.left {
+          float: left;
+          margin: 10px 10px 60px 10px;
+          &:before {
+            border-radius: 0 0 100%;     
+            box-shadow: 
+              -2px -2px 0 0 #000 inset,
+              -23px 0 0 0 #fff inset,
+              -25px -2px 0 0 #000 inset;
+            left: 0;
+          }
+             
+        }
+        &.right {
+                float: right;
+                margin: 10px 10px 60px 10px;
+                &:before {
+                  border-radius: 0 0 0 100%;     
+                  box-shadow: 
+                    2px -2px 0 0 #000 inset,
+                    23px 0 0 0 #fff inset,
+                    25px -2px 0 0 #000 inset;
+                  right: 0;
+                }   
+              }
+              
+              &.think {
+                &:before {
+                  height: 3px;
+                  width: 3px;
+                  bottom: -20px;
+                  border-radius: 100%;
+                  background: #fff;
+                }
+                &.left:before {
+                  left: 50px;
+                  box-shadow: 
+                    0 0 0 7px white,
+                    0 0 0 10px black,
+                    -20px 15px 0 5px white,
+                    -20px 15px 0 8px black,
+                    -40px 20px 0 2px white,
+                    -40px 20px 0 5px black;
+                }
+                &.right:before {
+                  right: 50px;
+                  box-shadow: 
+                    0 0 0 7px white,
+                    0 0 0 10px black,
+                    20px 15px 0 5px white,
+                    20px 15px 0 8px black,
+                    40px 20px 0 2px white,
+                    40px 20px 0 5px black;
+                }
+              }
+              &.yell { 
+                &:before {
+                  height: 0px;
+                  width: 0px;
+                  bottom: -8px; 
+                  border-radius: 0;
+                  background: #fff;
+                }
+                &:after {
+                  content: '';
+                  position: absolute;
+                  bottom: -41px;
+                  height: 20px;
+                  width: 59px;
+                }
+                &.left {
+                  &:before {
+                    transform: skew(-45deg);
+                    left: 50px;
+                    box-shadow: 
+                      //0 0 0 7px white,
+                      0 -3px 0 5px white,
+                      0 0 0 5px white,
+                      0 8px 0 5px white,
+                      8px 8px 0 5px white,
+                      16px 8px 0 5px white,
+                      24px 8px 0 5px white, 
+            
+                      0 0 0 8px black,
+                      0 8px 0 8px black,
+                      8px 8px 0 8px black,
+                      16px 8px 0 8px black,
+                      24px 8px 0 8px black;
+                  }
+                  &:after {
+                    border-radius: 0 0 60%;     
+                    transform: skew(-45deg);
+                    box-shadow: 
+                      -3px -2px 0 0 #000 inset,
+                      -14px 0 0 0 #fff inset,
+                      -17px -2px 0 0 #000 inset;
+                    left: 0;
+                  }
+                }
+                &.right {
+                  &:before {
+                    transform: skew(45deg);
+                    right: 50px;
+                    box-shadow: 
+                      0 -3px 0 5px white,
+                      0 0 0 5px white,
+                      0 8px 0 5px white,
+                      -8px 8px 0 5px white,
+                      -16px 8px 0 5px white,
+                      -24px 8px 0 5px white, 
+                      0 0 0 8px black,
+                      0 8px 0 8px black,
+                      -8px 8px 0 8px black,
+                      -16px 8px 0 8px black,
+                      -24px 8px 0 8px black;
+                  }
+                  &:after {
+                  border-radius: 0 0 0 60%;     
+                    transform: skew(45deg);
+                    box-shadow: 
+                      3px -2px 0 0 #000 inset,
+                      14px 0 0 0 #fff inset,
+                      17px -2px 0 0 #000 inset;
+                    right: 0;
+                  }
+                }
+              }
+
+}
+</style>
+<!-- 001 научиться комменты писать парой строк выше и стили для отдельных элементов добавлять -->

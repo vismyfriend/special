@@ -1,106 +1,97 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <img class="backgroundImg" :src="currentBackgroundDay?.img" alt="">
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
+  <div class="main-wrapper">
+    <div class="wrapper"> 
       <router-view />
-    </q-page-container>
-  </q-layout>
+      
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { ref, onMounted } from 'vue';
 
-defineOptions({
-  name: 'MainLayout'
+const currentBackgroundDay = ref()
+const backgrounds = ref([
+        {
+        day: 0, 
+        img: "/src/assets/images/background.jpg",
+        
+        },
+        {
+        day: 1, 
+        img: "/src/assets/images/background.jpg",
+        
+        },
+        {
+        day: 2, 
+        img: "/src/assets/images/background1.jpg",
+        
+        },
+        {
+        day: 3, 
+        img: "/src/assets/images/background2.jpg",
+        
+        },
+        {
+        day: 4, 
+        img: "/src/assets/images/background3.jpg",
+        
+        },
+        {
+        day: 5, 
+        img: "/src/assets/images/background4.jpg",
+        
+        },
+        {
+        day: 6, 
+        img: "/src/assets/images/background3.jpg",
+        
+        },
+        {
+        day: 7, 
+        img: "/src/assets/images/background3.jpg",
+        
+        },
+       
+])
+
+onMounted(()=>{
+       
+  const currentDay = new Date().getDay()
+  currentBackgroundDay.value = backgrounds.value.find(el => el.day === currentDay)  
+       
 })
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
 </script>
+
+
+<style lang="scss" scoped>
+@import url(https://fonts.googleapis.com/css?family=Permanent+Marker);
+.main-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  height: 100%;
+
+  .wrapper {
+    width: 310px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.backgroundImg {
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  object-fit: cover;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+  
+}
+</style>
