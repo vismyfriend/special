@@ -1,4 +1,7 @@
 const routes = [
+  
+  
+
   {
     path: '/',
     component: () => import('src/layouts/MainLayout.vue'),
@@ -20,8 +23,24 @@ const routes = [
                 component: () => import('src/components/GameStories.vue')
               },
               {
+                path: 'print-all-words',
+                component: () => import('src/components/PrintArray.vue')
+              },
+              {
+                path: 'see-all-words',
+                component: () => import('src/components/SeeArrayWords.vue')
+              },
+              {
                 path: 'find-pairs',
-                component: () => import('src/components/GameFindPairs.vue')
+                component: () => import('src/components/GameFindPairsHard.vue')
+              },
+              {
+                path: 'find-pairs-hardcore',
+                component: () => import('src/components/GameFindPairsHardcore.vue')
+              },
+              {
+                path: 'find-one-pair',
+                component: () => import('src/components/GameFindPairsEasy.vue')
               },
               {
                 path: 'bender',
@@ -51,6 +70,18 @@ const routes = [
                 path: 'hw-links',
                 component: () => import('src/components/GameHomeworkLinks.vue')
               },
+              {
+                path: 'spelling',
+                component: () => import('src/components/GameSpelling.vue')
+              },
+              {
+                path: 'spell-eight',
+                component: () => import('src/components/GameSpellEight.vue')
+              },
+              {
+                path: 'word-order',
+                component: () => import('src/components/GameWordOrder.vue')
+              },
             ]
           },
         ]
@@ -71,6 +102,12 @@ const routes = [
       },
     ]
   },
+
+  {
+    path: '/vismyfriend',
+    component: () => import('src/pages/Vismyfriend.vue')
+  },
+
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')

@@ -1,7 +1,7 @@
 // чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R   
 // ^\s*$\n
-const homeworkLinksData = {
-   
+const questionsData = {
+
     devModeNumbers: [
         { id: 1, eng: "one", ru: "один" },
         { id: 2, eng: "two", ru: "два" },
@@ -36,23 +36,5 @@ const homeworkLinksData = {
         { id: 31, eng: "million", ru: "миллион" },
         { id: 32, eng: "billion", ru: "миллиард" },
     ],
-    digits1: [
-        {
-            id: 1,
-            eng: "111",
-            ru: "один"
-        },
-        {
-            id: 2,
-            eng: "the second ",
-            ru: "второй"
-        },
-        {
-            id: 3,
-            eng: "the third ",
-            ru: "третий"
-        },
-        
-    ],
 }
-export default homeworkLinksData
+export default questionsData

@@ -72,8 +72,7 @@ onMounted(()=>{
 .main-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
-  height: 100%;
+  
 
   .wrapper {
     width: 310px;

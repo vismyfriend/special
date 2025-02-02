@@ -2,51 +2,39 @@
 // ^\s*$\n
 const scrambledData = {
 
-    devmode0: [
-        {
-            id: 1,
-            eng: "Teachers",
-            ru: "учителя",
-            hint: " / тичерз /"
-        },
-        {
-            id: 2,
-            eng: "Students",
-            ru: "учащиеся",
-            hint: " / стьюдэнтся /"
-        },
-        {
-            id: 7,
-            eng: "Robbers",
-            ru: "грабители",
-            hint: " / роббэрз /"
-        },
-
-        {
-            id: 11,
-            eng: "Sportsmen",
-            ru: "спортсмены",
-            hint: " / спОртсмен /"
-        },
-        {
-            id: 12,
-            eng: "Runners",
-            ru: "бегуны",
-            hint: " / раннэрз /"
-        },
-        {
-            id: 13,
-            eng: "Jumpers",
-            ru: "прыгуны",
-            hint: " / джАмпэрз /"
-        },
-
-        {
-            id: 15,
-            eng: "Managers",
-            ru: "менеджеры",
-            hint: " / мЭнэджэрз /"
-        },
+    devModeNumbers: [
+        { id: 1, eng: "one", ru: "один" },
+        { id: 2, eng: "two", ru: "два" },
+        { id: 3, eng: "three", ru: "три" },
+        { id: 4, eng: "four", ru: "четыре" },
+        { id: 5, eng: "five", ru: "пять" },
+        { id: 6, eng: "six", ru: "шесть" },
+        { id: 7, eng: "seven", ru: "семь" },
+        { id: 8, eng: "eight", ru: "восемь" },
+        { id: 9, eng: "nine", ru: "девять" },
+        { id: 10, eng: "ten", ru: "десять" },
+        { id: 11, eng: "eleven", ru: "одиннадцать" },
+        { id: 12, eng: "twelve", ru: "двенадцать" },
+        { id: 13, eng: "thirteen", ru: "тринадцать" },
+        { id: 14, eng: "fourteen", ru: "четырнадцать" },
+        { id: 15, eng: "fifteen", ru: "пятнадцать" },
+        { id: 16, eng: "sixteen", ru: "шестнадцать" },
+        { id: 17, eng: "seventeen", ru: "семнадцать" },
+        { id: 18, eng: "eighteen", ru: "восемнадцать" },
+        { id: 19, eng: "nineteen", ru: "девятнадцать" },
+        { id: 20, eng: "twenty", ru: "двадцать" },
+        { id: 21, eng: "first", ru: "первый" },
+        { id: 22, eng: "zero", ru: "ноль" },
+        { id: 23, eng: "third", ru: "третий" },
+        { id: 24, eng: "thirty", ru: "тридцать" },
+        { id: 25, eng: "forty", ru: "сорок" },
+        { id: 26, eng: "fifty", ru: "пятьдесят" },
+        { id: 27, eng: "eighty", ru: "восемьдесят" },
+        { id: 28, eng: "ninety", ru: "девяносто" },
+        { id: 29, eng: "hundred", ru: "сто" },
+        { id: 30, eng: "thousand", ru: "тысяча" },
+        { id: 31, eng: "million", ru: "миллион" },
+        { id: 32, eng: "billion", ru: "миллиард" },
     ],
 }
 export default scrambledData

@@ -2,7 +2,7 @@
 // ^\s*$\n
 const storiesData = {
 
-    devmode0: [
+    devModeNumbers: [
         {
             text: "Vincent and I ___ going to beer together. We are ___ meet behind the garages. We always ___ alcohol together. This exercise is very easy, ___ the last question must be very hard! Or not? =)",
             options: [
@@ -23,5 +23,6 @@ const storiesData = {
             correctAnswers: ['does not', 'doesn`t drink', 'Do']
         },
     ],
+    
 }
 export default storiesData

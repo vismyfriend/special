@@ -1,5 +1,9 @@
 <template>
     <div>
+        <h2>
+
+            тут когда-то появится игра
+        </h2>
     </div>
 
 </template>
@@ -8,7 +12,6 @@
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-
 
 
 </script>

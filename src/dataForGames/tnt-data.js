@@ -2,7 +2,7 @@
 // ^\s*$\n
 const tntData = {
 
-    devmode0: [
+    devModeNumbers: [
         {
             id: 1,
             eng: "I",
@@ -75,6 +75,117 @@ const tntData = {
             ru: "мой",
             hint: " / май /"
         },
+    ],
+    halloween01: [
+        {
+            id: 1,
+            eng: "Costumes",
+            ru: "костюмы",
+            hint: "/ кОстьюмз /"
+        },
+        {
+            id: 2,
+            eng: "Candy",
+            ru: "конфета",
+            hint: "/ кЭнди /"
+        },
+        {
+            id: 3,
+            eng: "Pumpkins",
+            ru: "тыквы",
+            hint: "/ пАмпкинз /"
+        },
+        {
+            id: 4,
+            eng: "Ghosts",
+            ru: "призраки",
+            hint: "/ гОуст /"
+        },
+        {
+            id: 5,
+            eng: "Spooky",
+            ru: "жуткий",
+            hint: "/ спУки /"
+        },
+        {
+            id: 6,
+            eng: "Witches",
+            ru: "ведьмы",
+            hint: "/ вИчез /"
+        },
+        {
+            id: 7,
+            eng: "Skeletons",
+            ru: "скелеты",
+            hint: "/ скЕлетонз /"
+        },
+        {
+            id: 8,
+            eng: "Spiders",
+            ru: "пауки",
+            hint: "/ спАйдэрз /"
+        },
+        {
+            id: 9,
+            eng: "Web",
+            ru: "паутина",
+            hint: "/ уЭб /"
+        },
+        {
+            id: 10,
+            eng: "Bats",
+            ru: "летучие мыши",
+            hint: "/ бЭтс /"
+        },
+        {
+            id: 11,
+            eng: "Adults",
+            ru: "взрослые",
+            hint: "/ эдАлтс /"
+        },
+        {
+            id: 12,
+            eng: "Fear",
+            ru: "страх",
+            hint: "/ фИэ /"
+        },
+        {
+            id: 13,
+            eng: "Darkness",
+            ru: "темнота",
+            hint: "/ дАркнэс /"
+        },
+        {
+            id: 14,
+            eng: "Fun",
+            ru: "веселье",
+            hint: "/ фАн /"
+        },
+        {
+            id: 15,
+            eng: "Zombies",
+            ru: "зомби",
+            hint: "/ зОмбиз /"
+        },
+        {
+            id: 16,
+            eng: "Decorations",
+            ru: "декорации",
+            hint: "/ декорЭйшэнз /"
+        },
+        {
+            id: 17,
+            eng: "Horror",
+            ru: "ужас",
+            hint: "/ хОрор /"
+        },
+        {
+            id: 18,
+            eng: "Children",
+            ru: "дети",
+            hint: "/ чИлдрэн /"
+        },
+
     ],
 }
 export default tntData

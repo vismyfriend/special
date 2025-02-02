@@ -1,24 +1,33 @@
 <template>
-  <div> 
-    <p class="bubble left think" id="intro-message">Choose<br> a game</p>
-    <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
-    <!-- ask здесь нужно вместо кнопки выйти из приложения поставить кнопку назад - как один элемент из Layout чтобы конкретно на этой странице не отображался -->
-    <!-- ask и еще здеь дублируются кнопки почему то -->
-    <q-btn push color="brown-5" @click="backToPreviousPage">📷 back to other missions 🔎 </q-btn>
-      <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id"> 
-         <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)">{{ currentGame.name }} 
-           <q-btn icon="star" class="glossy" round color="deep-orange"  />
+  <div class="relative"> 
+    <div id="phoneFrame">
+      <img class="backgroundImg" src="/src/assets/images/backgroundBlur.jpg" alt="blur">
+      <p class="bubble left think" id="intro-message">Choose<br> a game</p>
+      <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
+      
+      <div class="inside-phone-frame">
+        <q-btn push color="brown-5" @click="backToPreviousPage">📷 back to other missions 🔎 </q-btn>
+        
+        <div class="games-container">
+          <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id"> 
+            <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)">
+              {{ currentGame.name }} 
+            </div>
+            <q-btn icon="star" class="glossy" round color="deep-orange" />
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
+
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
-import deckOfCardsData from "../dataForGames/deck-of-cards-data"
-import findPairsData from '../dataForGames/find-pairs-data';
+import questionsData from "../dataForGames/questions-data";
+import shortWordsData from '../dataForGames/short-words-data';
 import tntData from 'src/dataForGames/tnt-data';
 import trickyQuizData from 'src/dataForGames/tricky-quiz-data';
 import helpBenderData from 'src/dataForGames/help-bender-data';
@@ -26,72 +35,124 @@ import storiesData from 'src/dataForGames/stories-data';
 import scrambledData from 'src/dataForGames/scrambled-data';
 import homeworkLinksData from 'src/dataForGames/homework-links-data';
 import hwData from 'src/dataForGames/hw-data';
+import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
 
 const router = useRouter()
 const route = useRoute()
 
 const AllGames = ref([
+  
   {
-    id: 0,
-    name: "Find pairs",
-    path: "find-pairs",
-    gameData: findPairsData,
+    id: 80,
+    name: "Print all words",
+    path: "print-all-words",
+    gameData: shortWordsData,
     active: true, 
   },
   {
-    id: 1,
+    id: 90,
+    name: "See all words",
+    path: "see-all-words",
+    gameData: shortWordsData,
+    active: true, 
+  },
+  {
+    id: 100,
+    name: "Find pairs EASY",
+    path: "find-one-pair",
+    gameData: shortWordsData,
+    active: true, 
+  },
+  {
+    id: 101,
+    name: "Find pairs HARD",
+    path: "find-pairs",
+    gameData: shortWordsData,
+    active: true, 
+  },
+  {
+    id: 201,
+    name: "Find pairs HARDCORE",
+    path: "find-pairs-hardcore",
+    gameData: shortWordsData,
+    active: true, 
+  },
+  {
+    id: 102,
+    name: "Spelling",
+    path: "spelling",
+    gameData: shortWordsData,
+    active: true, 
+  },
+  {
+    id: 103,
+    name: "Spell Eight",
+    path: "spell-eight",
+    gameData: shortWordsData,
+    active: true, 
+  },
+   {
+    id: 104,
+    name: "A deck of cards",
+    path: "deck-of-cards",
+    gameData: questionsData,
+    active: false
+  },
+  {
+    id: 105,
     name: "TNT",
     path: "tnt",
     gameData: tntData,
     active: true
   },
+ 
   {
-    id: 2,
-    name: "A deck of cards",
-    path: "deck-of-cards",
-    gameData: deckOfCardsData,
-    active: false
-  },
-  {
-    id: 3,
+    id: 106,
     name: "Tricky quiz",
     path: "tricky-quiz",
     gameData: trickyQuizData,
     active: true
   },
   {
-    id: 4,
+    id: 107,
     name: "Help Bender",
     path: "bender",
     gameData: helpBenderData,
     active: true
   },
   {
-    id: 5,
+    id: 108,
     name: "Истории",
     path: "stories",
     gameData: storiesData,
     active: true
   },
   {
-    id: 6,
+    id: 109,
     name: "Распутай слово",
     path: "scrambled",
     gameData: scrambledData,
     active: true
   },
   {
-    id: 7,
+    id: 110,
     name: "Разные домашки",
     path: "hw-links",
     gameData: homeworkLinksData,
     active: true
   },
   {
-    id: 8,
+    id: 111,
     name: "Ссылка на домаху",
     path: "hw",
     gameData: hwData,
+    active: true
+  },
+  {
+    id: 112,
+    name: "Word Order New",
+    path: "word-order",
+    gameData: wordOrderNewGameData,
     active: true
   },
  
@@ -126,6 +187,74 @@ onMounted(()=>{
 </script>
 
 <style lang="scss" scoped>
+.inside-phone-frame{
+  padding: 1px 15px;
+}
+
+.backgroundImg {
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  object-fit: cover;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+
+}
+#phoneFrame {
+  position: relative; // Устанавливает элемент относительно его нормального положения
+  height: 655px; // Высота элемента
+  width: 310px; // Ширина элемента
+  background:
+    linear-gradient( // Фоновый градиент
+      to top, // Направление градиента
+      #fff -250%, // Белый цвет
+      #000000 150% // Черный цвет
+    );
+  margin: 5px auto; // Отступы сверху и снизу, центрирование по горизонтали
+  border-radius: 2em; // Скругление углов
+  border: solid 5px #6a6a6a; // Рамка вокруг элемента
+  box-shadow: // Тени для элемента
+    inset 0 0 2px 7px #000, // Внутренняя тень
+    inset 0 0 3px 7px #000, // Внутренняя тень
+    0 150px 200px -80px #000; // Внешняя тень
+  overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
+
+// Стилизация полосы прокрутки
+&::-webkit-scrollbar {
+  width: 8px; // Ширина полосы прокрутки
+}
+
+&::-webkit-scrollbar-track {
+  background: transparent; // Цвет фона полосы прокрутки
+}
+
+&::-webkit-scrollbar-thumb {
+  background: gray; // Цвет ползунка
+  border-radius: 10px; // Скругление углов ползунка
+}
+
+&::-webkit-scrollbar-thumb:hover {
+  background: darkgray; // Цвет ползунка при наведении
+}
+
+  &::before {
+    // Псевдоэлемент перед элементом
+    text-align: center; // Выравнивание текста по центру
+    word-spacing: 6em; // Промежуток между словами
+    color: #fff; // Цвет текста
+    font-family: helvetica; // Шрифт
+    font-size: .7em; // Размер шрифта
+    display: block; // Отображение как блочный элемент
+    height: 240px; // Высота псевдоэлемента
+    width: 240px; // Ширина псевдоэлемента
+    position: absolute; // Абсолютное позиционирование
+    margin: 30px; // Отступы
+  }
+}
+
 
 .closeThisPage {
  display: block;
@@ -135,13 +264,27 @@ onMounted(()=>{
 
 }
 
+.games-container {
+  display: flex; /* Используем flexbox для расположения элементов в строку */
+  flex-wrap: wrap; /* Позволяем элементам переноситься на новую строку */
+  justify-content: space-between; /* Распределяем пространство между элементами */
+}
+
 .v-cards-choose {
   display: flex;
   flex-wrap: wrap; /* Позволяет карточкам переходить на новую строку */
   user-select: none;
+  height: 35px;
+
+  display: flex; /* Используем flex для карточек */
+  align-items: center; /* Центрируем элементы по вертикали */
+  margin-bottom: 10px; /* Отступ между строками */
 }
 
 .v-card-choose {
+  display: flex;
+  flex-wrap: wrap; /* Позволяет карточкам переходить на новую строку */
+  user-select: none;
   background-color: #f9f9f9; /* Цвет фона карточки */
   border: 1px solid #ddd; /* Цвет границы */
   border-radius: 20px; /* Закругление углов */
@@ -151,6 +294,9 @@ onMounted(()=>{
   transition: transform 0.2s, box-shadow 0.2s; /* Плавный переход при наведении */
   margin: 1.5px;
   user-select: none;
+
+  flex: 1; /* Занимаем доступное пространство */
+  margin-right: 10px; /* Отступ между карточкой и кнопкой */
 
 }
 
@@ -165,12 +311,12 @@ onMounted(()=>{
   font-size: 17px;
   display: inline-block;
   position: absolute;
-  padding: 30px 40px;
+
   border-radius: 10px;
   border: 3px solid black;
   background: white;
   clear: both;
-  padding: 30px;
+  padding: 15px;
   
    &:before {
      content: '';
@@ -183,7 +329,8 @@ onMounted(()=>{
   
   &.left {
     float: left;
-    margin: -23px 11px 62px 176px;
+    margin: 20px 1px 62px 180px;
+
     &:before {
       border-radius: 0 0 100%;     
       box-shadow: 
