@@ -9,8 +9,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "deploy": "push-dir --dir=docs --branch=gh-pages --cleanup"  
-  },
+    "deploy": "push-dir --dir=docs --remote=gh-pages --branch=main"
+    },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "pinia": "^2.0.11",
