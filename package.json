@@ -10,7 +10,7 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "deploy": "push-dir --dir=dist/spa --remote=gh-pages --branch=gh-pages"
-    },
+  },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "pinia": "^2.0.11",
