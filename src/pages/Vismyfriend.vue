@@ -5,13 +5,13 @@
       <q-btn class="q-mb-sm zoomIn" icon="mail" label="Пройти тест" push color="primary" @click="test" />
     </div>
     <div>
-      <DraggableWindow 
-        v-for="(window, index) in windows" 
-        :key="index" 
-        :title="window.title" 
-        :position="window.position" 
+      <DraggableWindow
+        v-for="(window, index) in windows"
+        :key="index"
+        :title="window.title"
+        :position="window.position"
         :isActive="activeWindow === window.title"
-        @updatePosition="updatePosition(index, $event)" 
+        @updatePosition="updatePosition(index, $event)"
         @setActiveWindow="setActiveWindow"
       />
     </div>
@@ -42,6 +42,7 @@ const setActiveWindow = (title) => {
 <style lang="scss" scoped>
 .background {
   background-image: url('../assets/images/backgroundisland.jpg');
+
   background-size: cover;
   background-position: center;
   width: 100%;

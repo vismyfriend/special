@@ -1,17 +1,17 @@
 <template>
-  <div class="relative"> 
+  <div class="relative">
     <div id="phoneFrame">
-      <img class="backgroundImg" src="/src/assets/images/backgroundBlur.jpg" alt="blur">
+      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">
       <p class="bubble left think" id="intro-message">Choose<br> a game</p>
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
-      
+
       <div class="inside-phone-frame">
         <q-btn push color="brown-5" @click="backToPreviousPage">📷 back to other missions 🔎 </q-btn>
-        
+
         <div class="games-container">
-          <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id"> 
+          <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id">
             <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)">
-              {{ currentGame.name }} 
+              {{ currentGame.name }}
             </div>
             <q-btn icon="star" class="glossy" round color="deep-orange" />
           </div>
@@ -41,55 +41,55 @@ const router = useRouter()
 const route = useRoute()
 
 const AllGames = ref([
-  
+
   {
     id: 80,
     name: "Print all words",
     path: "print-all-words",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 90,
     name: "See all words",
     path: "see-all-words",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 100,
     name: "Find pairs EASY",
     path: "find-one-pair",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 101,
     name: "Find pairs HARD",
     path: "find-pairs",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 201,
     name: "Find pairs HARDCORE",
     path: "find-pairs-hardcore",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 102,
     name: "Spelling",
     path: "spelling",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
   {
     id: 103,
     name: "Spell Eight",
     path: "spell-eight",
     gameData: shortWordsData,
-    active: true, 
+    active: true,
   },
    {
     id: 104,
@@ -105,7 +105,7 @@ const AllGames = ref([
     gameData: tntData,
     active: true
   },
- 
+
   {
     id: 106,
     name: "Tricky quiz",
@@ -155,7 +155,7 @@ const AllGames = ref([
     gameData: wordOrderNewGameData,
     active: true
   },
- 
+
 
 
 ])
@@ -171,18 +171,18 @@ const backToPreviousPage = () => {
 
 const compareNames = () => {
   AllGames.value.forEach(el => {
-    const gameExists = el.gameData?.hasOwnProperty(route.params.missionName)  
+    const gameExists = el.gameData?.hasOwnProperty(route.params.missionName)
     el.active = gameExists
   })
 
- 
+
 
 }
 
 onMounted(()=>{
     compareNames()
-   
-    
+
+
 })
 </script>
 
@@ -317,43 +317,43 @@ onMounted(()=>{
   background: white;
   clear: both;
   padding: 15px;
-  
+
    &:before {
      content: '';
      position: absolute;
      bottom: -50px;
      height: 50px;
      width: 90px;
-     
+
    }
-  
+
   &.left {
     float: left;
     margin: 20px 1px 62px 180px;
 
     &:before {
-      border-radius: 0 0 100%;     
-      box-shadow: 
+      border-radius: 0 0 100%;
+      box-shadow:
         -2px -2px 0 0 #000 inset,
         -23px 0 0 0 #fff inset,
         -25px -2px 0 0 #000 inset;
       left: 0;
     }
-       
+
   }
   &.right {
           float: right;
           margin: 10px 10px 60px 10px;
           &:before {
-            border-radius: 0 0 0 100%;     
-            box-shadow: 
+            border-radius: 0 0 0 100%;
+            box-shadow:
               2px -2px 0 0 #000 inset,
               23px 0 0 0 #fff inset,
               25px -2px 0 0 #000 inset;
             right: 0;
-          }   
+          }
         }
-        
+
         &.think {
           &:before {
             height: 3px;
@@ -364,7 +364,7 @@ onMounted(()=>{
           }
           &.left:before {
             left: 50px;
-            box-shadow: 
+            box-shadow:
               0 0 0 7px white,
               0 0 0 10px black,
               -20px 15px 0 5px white,
@@ -374,7 +374,7 @@ onMounted(()=>{
           }
           &.right:before {
             right: 50px;
-            box-shadow: 
+            box-shadow:
               0 0 0 7px white,
               0 0 0 10px black,
               20px 15px 0 5px white,
@@ -383,11 +383,11 @@ onMounted(()=>{
               40px 20px 0 5px black;
           }
         }
-        &.yell { 
+        &.yell {
           &:before {
             height: 0px;
             width: 0px;
-            bottom: -8px; 
+            bottom: -8px;
             border-radius: 0;
             background: #fff;
           }
@@ -402,15 +402,15 @@ onMounted(()=>{
             &:before {
               transform: skew(-45deg);
               left: 50px;
-              box-shadow: 
+              box-shadow:
                 //0 0 0 7px white,
                 0 -3px 0 5px white,
                 0 0 0 5px white,
                 0 8px 0 5px white,
                 8px 8px 0 5px white,
                 16px 8px 0 5px white,
-                24px 8px 0 5px white, 
-      
+                24px 8px 0 5px white,
+
                 0 0 0 8px black,
                 0 8px 0 8px black,
                 8px 8px 0 8px black,
@@ -418,9 +418,9 @@ onMounted(()=>{
                 24px 8px 0 8px black;
             }
             &:after {
-              border-radius: 0 0 60%;     
+              border-radius: 0 0 60%;
               transform: skew(-45deg);
-              box-shadow: 
+              box-shadow:
                 -3px -2px 0 0 #000 inset,
                 -14px 0 0 0 #fff inset,
                 -17px -2px 0 0 #000 inset;
@@ -431,13 +431,13 @@ onMounted(()=>{
             &:before {
               transform: skew(45deg);
               right: 50px;
-              box-shadow: 
+              box-shadow:
                 0 -3px 0 5px white,
                 0 0 0 5px white,
                 0 8px 0 5px white,
                 -8px 8px 0 5px white,
                 -16px 8px 0 5px white,
-                -24px 8px 0 5px white, 
+                -24px 8px 0 5px white,
                 0 0 0 8px black,
                 0 8px 0 8px black,
                 -8px 8px 0 8px black,
@@ -445,9 +445,9 @@ onMounted(()=>{
                 -24px 8px 0 8px black;
             }
             &:after {
-            border-radius: 0 0 0 60%;     
+            border-radius: 0 0 0 60%;
               transform: skew(45deg);
-              box-shadow: 
+              box-shadow:
                 3px -2px 0 0 #000 inset,
                 14px 0 0 0 #fff inset,
                 17px -2px 0 0 #000 inset;
