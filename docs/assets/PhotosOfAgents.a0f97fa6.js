@@ -1,0 +1,1 @@
+import{u as a,b as l,c as r,d as e}from"./index.fb96ec93.js";var c="/special/assets/special logo hat square.143e9936.png";const i={__name:"PhotosOfAgents",setup(n){const o=a(),t=()=>{o.push("/")};return(p,s)=>(l(),r("div",null,[e("button",{class:"closeThisPage",onClick:t},"close Special App \u274C"),s[0]||(s[0]=e("img",{src:c,alt:"logo"},null,-1))]))}};export{i as default};
