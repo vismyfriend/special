@@ -23,6 +23,7 @@ const backgrounds = ref([
   { day: 5, img: new URL("../assets/images/background4.jpg", import.meta.url).href },
   { day: 6, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
   { day: 7, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
+
 ]);
 
 onMounted(()=>{
