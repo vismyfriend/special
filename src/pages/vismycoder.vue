@@ -1,8 +1,8 @@
 <template>
     <div class="mouse-container" @mousemove="handleMouseMove">
-        <button class="closeThisPage" @click="backToIntroPage">back to intro page ❌</button> 
+        <button class="closeThisPage" @click="backToIntroPage">back to intro page ❌</button>
         <q-btn class="q-mb-sm zoomIn" icon="print" label="тут вИнсентик тренируется кодить, здесь всё интересно, но ничего непонятно =)" push color="green" @click="goToAnewPage" />
-        <button class="image-button ios-shake" id="youTube-logo"></button>   
+        <button class="image-button ios-shake" id="youTube-logo"></button>
 
         <!-- Элементы для радиокнопок -->
         <div class="chooser">
@@ -31,8 +31,8 @@ const backToIntroPage = () => {
     router.push("/");
 }
 
-const goToAnewPage = () => { 
-    router.push("/a-new-page"); 
+const goToAnewPage = () => {
+    router.push("/a-new-page");
 }
 
 // Логика для анимации следов мыши
@@ -89,7 +89,7 @@ const handleMouseMove = (e) => {
 <style lang="scss" scoped>
 
 .mouse-container {
-    
+
 }
 .chooser {
     display: flex;
@@ -182,7 +182,7 @@ const handleMouseMove = (e) => {
         border-radius: 20px; /* Закругляет края кнопки */
         transition: transform 0.3s; /* Добавляет эффект при наведении */
     }
-    
+
     .image-button:hover {
         transform: scale(1.05); /* Увеличивает кнопку при наведении */
     }
@@ -193,5 +193,5 @@ const handleMouseMove = (e) => {
         transform: scale(1.05); /* Увеличивает кнопку при наведении */
 
     }
-	
+
 </style>

@@ -8,10 +8,13 @@
       <div class="inside-phone-frame">
 
         <div class="registration-container">
-          <input v-model="userName" type="text" placeholder="Enter your name" class="name-input">
-          <q-btn color="green-5" @click="submitName">OK</q-btn>
-          <q-btn color="blue-5" @click="continueAsGuest">Я анонимно хочу!</q-btn>
-          <q-btn push color="brown-5" @click="backToPreviousPage">📷 назад </q-btn>
+          <div class="input-container">
+            <input v-model="userName" type="text" placeholder="My name" class="name-input">
+            <q-btn color="green-5" @click="submitName" class="ok-btn">OK</q-btn>
+          </div>
+          <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад </q-btn>
+
+          <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>
 
         </div>
       </div>
@@ -19,26 +22,24 @@
   </div>
 </template>
 
-
 <script setup>
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
-import {ref} from "vue";
-import {api} from "src/api";
-import {useQuasar} from "quasar";
+import { ref } from "vue";
+import { api } from "src/api";
+import { useQuasar } from "quasar";
 
 
-const router = useRouter()
-const route = useRoute()
-const $q = useQuasar()
-const userName = ref()
-
+const router = useRouter();
+const route = useRoute();
+const $q = useQuasar();
+const userName = ref();
 
 
 const backToPreviousPage = () => {
   // router.push(-1)
   router.push("/")
-}
+};
 
 const setNotify = (message, color = 'black') => {
   $q.notify({
@@ -46,43 +47,37 @@ const setNotify = (message, color = 'black') => {
     position: 'top',
     message: message,
     textColor: 'white',
-  })
-}
-
-const submitName = async () => {
-    const res = await api.auth.post(userName.value)
-  setNotify(res.data.token)
-
-localStorage.setItem('token', res.data.token);
-localStorage.setItem('agentName', userName.value);
-
-
-  await router.push("/special-app/")
-
-
-
+  });
 };
 
+const submitName = async () => {
+  const res = await api.auth.post(userName.value);
+
+  // Используем правильный синтаксис для шаблонных строк
+  setNotify(`nice to meet you, ${userName.value}`);
+
+  localStorage.setItem('token', res.data.token);
+  localStorage.setItem('agentName', userName.value);
+
+  await router.push("/special-app/");
+};
 
 const continueAsGuest = async () => {
-  const res2 = await api.scores.post("tnt",134, 2, 11)
-  const res3 = await api.scores.get()
-  console.log(res3)
+  const res2 = await api.scores.post("tnt", 134, 2, 11);
+  const res3 = await api.scores.get();
+  console.log(res3);
   // router.push("/special-app")
 
   // настроить режим анонимных пользователей
   // при отправлении рекрда мы берем имя игры из раута, время в секундах, ошибки/читы, эйджент нэйм из локал
   // (сториджа)
 
-
-$q.notify({message:res2})
+  $q.notify({ message: res2 });
 };
-
-
 </script>
 
 <style lang="scss" scoped>
-.inside-phone-frame{
+.inside-phone-frame {
   padding: 1px 15px;
 }
 
@@ -96,86 +91,60 @@ $q.notify({message:res2})
   z-index: -1;
   right: 0;
   bottom: 0;
-
 }
+
 #phoneFrame {
-  position: relative; // Устанавливает элемент относительно его нормального положения
-  height: 655px; // Высота элемента
-  width: 310px; // Ширина элемента
+  position: relative;
+  height: 655px;
+  width: 310px;
   background:
-    linear-gradient( // Фоновый градиент
-        to top, // Направление градиента
-        #fff -250%, // Белый цвет
-        #000000 150% // Черный цвет
+    linear-gradient(
+        to top,
+        #fff -250%,
+        #000000 150%
     );
-  margin: 5px auto; // Отступы сверху и снизу, центрирование по горизонтали
-  border-radius: 2em; // Скругление углов
-  border: solid 5px #6a6a6a; // Рамка вокруг элемента
-  box-shadow: // Тени для элемента
-    inset 0 0 2px 7px #000, // Внутренняя тень
-    inset 0 0 3px 7px #000, // Внутренняя тень
-    0 150px 200px -80px #000; // Внешняя тень
-  overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
-
-  // Стилизация полосы прокрутки
-  &::-webkit-scrollbar {
-    width: 8px; // Ширина полосы прокрутки
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent; // Цвет фона полосы прокрутки
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: gray; // Цвет ползунка
-    border-radius: 10px; // Скругление углов ползунка
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: darkgray; // Цвет ползунка при наведении
-  }
-
-  &::before {
-    // Псевдоэлемент перед элементом
-    text-align: center; // Выравнивание текста по центру
-    word-spacing: 6em; // Промежуток между словами
-    color: #fff; // Цвет текста
-    font-family: helvetica; // Шрифт
-    font-size: .7em; // Размер шрифта
-    display: block; // Отображение как блочный элемент
-    height: 240px; // Высота псевдоэлемента
-    width: 240px; // Ширина псевдоэлемента
-    position: absolute; // Абсолютное позиционирование
-    margin: 30px; // Отступы
-  }
-}
-
-
-.closeThisPage {
-  display: block;
-  margin: 0 auto;
-  border-radius: 30px;
-  background-color: transparent;
-
+  margin: 5px auto;
+  border-radius: 2em;
+  border: solid 5px #6a6a6a;
+  box-shadow:
+    inset 0 0 2px 7px #000,
+    inset 0 0 3px 7px #000,
+    0 150px 200px -80px #000;
+  overflow: auto;
 }
 
 .registration-container {
-  display: flex; /* Используем flexbox для расположения элементов в строку */
-  justify-content: space-between; /* Распределяем пространство между элементами */
+  display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 10px;
   margin-top: 20px;
 }
 
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  gap: 10px;
+  align-items: center;
+}
 
 .name-input {
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #6a6a6a;
-  width: 80%;
-  font-size: 16px;
+  width: 165px;
+  font-size: 22px;
+
+}
+
+.ok-btn {
+  margin-left: 7px;
+}
+
+.guest-btn, .back-btn {
+  margin-top: 10px;
+  width: 100%;
 }
 
 .bubble {
@@ -331,7 +300,5 @@ $q.notify({message:res2})
   }
 
 }
-
-
 
 </style>

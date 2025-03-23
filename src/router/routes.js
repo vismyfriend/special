@@ -103,6 +103,9 @@ const routes = [
       {
         path: '/photos-of-agents',
         component: () => import('src/pages/PhotosOfAgents.vue')
+      }, {
+        path: '/my-games',
+        component: () => import('src/pages/myGames.vue')
       },
     ]
   },

@@ -13,7 +13,7 @@
 
         <div class="row" v-if="currentGameData.length > 0">
             <div class="col index-col">
-                <div class="wordCard" v-for="(word, index) in displayedGameData" 
+                <div class="wordCard" v-for="(word, index) in displayedGameData"
                 :key="word.id"
                 @click="toggleWord(index)"
                 :class="{ 'toggled': toggledWords[index], 'highlight': lastToggledIndex === index }">
@@ -22,18 +22,18 @@
                 </div>
             </div>
             <div class="col eng-col">
-                <div class="wordCard" 
-                     v-for="(word, index) in displayedGameData" 
-                     :key="word.id" 
+                <div class="wordCard"
+                     v-for="(word, index) in displayedGameData"
+                     :key="word.id"
                      @click="toggleWord(index)"
                      :class="{ 'toggled': toggledWords[index], 'highlight': lastToggledIndex === index }">
                     <span><strong>{{ word.eng }}</strong> <span class="hint-text ">{{ word.hint }}</span></span>
                 </div>
             </div>
             <div class="col ru-col">
-                <div class="wordCard" 
-                     v-for="(word, index) in displayedGameData" 
-                     :key="word.id" 
+                <div class="wordCard"
+                     v-for="(word, index) in displayedGameData"
+                     :key="word.id"
                      @click="toggleWord(index)"
                      :class="{ 'toggled': toggledWords[index], 'highlight': lastToggledIndex === index }">
                     <span>{{ word.ru }}</span>
@@ -87,8 +87,10 @@ const printData = () => {
     const sliderSwitcherContainer = document.querySelector('.sliderSwitcher-container');
     const rowContainer = document.querySelector('.row'); // Если у вас есть контейнер с классом row
     const excelPatternContainer = document.querySelector('.excel-pattern');
+    const body = document.body; // Получаем body для изменения фона
 
-    
+  const originalBackground = body.style.backgroundImage;
+
 // Скрываем все контейнеры, кроме excel-pattern
 sliderSwitcherContainer.style.display = 'none'; // Предполагается, что элемент существует
 rowContainer.style.display = 'none'; // Предполагается, что элемент существует
@@ -107,17 +109,17 @@ setTimeout(() => {
 
 
     // Печатаем содержимое
- 
+
 
 
 };
 
 const toggleWord = (index) => {
     // Устанавливаем индекс последнего нажатого слова при каждом нажатии
-    lastToggledIndex.value = index; 
+    lastToggledIndex.value = index;
 
     // Переключаем состояние нажатия
-    toggledWords.value[index] = !toggledWords.value[index]; 
+    toggledWords.value[index] = !toggledWords.value[index];
 };
 
 onMounted(() => {
@@ -151,7 +153,7 @@ input[type="checkbox"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Легкая тень для объема */
     border-radius: 34px; /* Закругление краев */
     background: linear-gradient(180deg, #f0f0f0, #d9d9d9); /* Градиент для фона */
-    
+
 }
 
 .slider {
@@ -161,12 +163,12 @@ input[type="checkbox"] {
     left: 0;
     right: 0;
     bottom: 0;
-    
+
     background-color: #ccc; /* Цвет фона переключателя */
     transition: background-color .4s, box-shadow .4s; /* Плавный переход */
     border-radius: 34px; /* Закругление краев */
     box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5); /* Внутренняя тень для эффекта глубины */
-    
+
 }
 .slider-text {
     font-size: 14px;
@@ -182,7 +184,7 @@ input[type="checkbox"] {
     text-align: center;
     height: 26px; /* Высота ползунка */
     width: 26px; /* Ширина ползунка */
-    left: 140px; /* Отступ слева НАЧАЛЬНОЕ ПОЛОЖЕНИЕ ПОЛЗУНКА*/ 
+    left: 140px; /* Отступ слева НАЧАЛЬНОЕ ПОЛОЖЕНИЕ ПОЛЗУНКА*/
     bottom: 4px; /* Отступ снизу */
     background-color: white; /* Цвет ползунка */
     transition: transform .4s; /* Плавный переход */
