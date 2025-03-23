@@ -1,7 +1,8 @@
 <template>
   <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
   <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P.E.C.I.A.L App" stack glossy color="purple"
-    @click="goToSpecialAppPage" />
+    @click="goToRegistrationPage" />
+
   <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents" push color="primary"
     @click="goToPhotosOfAgentsPage" />
   <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
@@ -24,7 +25,9 @@ const goVismyCoderPage = () => {
 const goToSpecialAppPage = () => {
   router.push("/special-app")
 }
-
+const goToRegistrationPage = () => {
+  router.push("/registration")
+}
 const linkToVismyfriendTelegram = () => {
 
   window.open('https://t.me/vismyfriend?text=Hello Vincent', '_blank'); // Открыть ccылку в новой вкладке }

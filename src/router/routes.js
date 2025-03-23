@@ -1,6 +1,6 @@
 const routes = [
-  
-  
+
+
 
   {
     path: '/',
@@ -91,6 +91,10 @@ const routes = [
       {
         path: '/a-new-page',
         component: () => import('src/pages/visAnewPage.vue')
+      },
+      {
+        path: '/registration',
+        component: () => import('src/pages/Registration.vue')
       },
       {
         path: '/vismycoder',
