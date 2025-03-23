@@ -12,59 +12,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const currentBackgroundDay = ref()
+const currentBackgroundDay = ref(null);
+
 const backgrounds = ref([
-        {
-        day: 0,
-        img: "../assets/images/background.jpg",
-
-
-  },
-        {
-        day: 1,
-        img: "../assets/images/background.jpg",
-
-        },
-        {
-        day: 2,
-        img: "../assets/images/background1.jpg",
-          // img: "/src/assets/images/background1.jpg",
-
-        },
-        {
-        day: 3,
-        img: "../assets/images/background2.jpg",
-
-        },
-        {
-        day: 4,
-        img: "../assets/images/background3.jpg",
-
-        },
-        {
-        day: 5,
-        img: "../assets/images/background4.jpg",
-
-        },
-        {
-        day: 6,
-        img: "../assets/images/background3.jpg",
-
-        },
-        {
-        day: 7,
-        img: "../assets/images/background3.jpg",
-
-        },
-
-])
+  { day: 0, img: new URL("../assets/images/background.jpg", import.meta.url).href },
+  { day: 1, img: new URL("../assets/images/background.jpg", import.meta.url).href },
+  { day: 2, img: new URL("../assets/images/background1.jpg", import.meta.url).href },
+  { day: 3, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
+  { day: 4, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
+  { day: 5, img: new URL("../assets/images/background4.jpg", import.meta.url).href },
+  { day: 6, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
+  { day: 7, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
+]);
 
 onMounted(()=>{
-
   const currentDay = new Date().getDay()
-  currentBackgroundDay.value = backgrounds.value.find(el => el.day === currentDay)
 
-})
+  currentBackgroundDay.value = backgrounds.value.find(el => el.day === currentDay);
+});
+
 
 </script>
 
