@@ -3,7 +3,7 @@
   <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P.E.C.I.A.L App" stack glossy color="purple"
     @click="goToRegistrationPage" />
 
-  <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents" push color="primary"
+  <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"
     @click="goToPhotosOfAgentsPage" />
   <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
   <q-btn class="q-mb-sm zoomIn" icon="phone" label="Send a message to Vincent" push color="primary"

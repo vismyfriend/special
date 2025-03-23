@@ -48,7 +48,11 @@ const audio = ref(null);
 // Функция для регулировки громкости
 const adjustVolume = () => {
   if (audio.value) {
-    audio.value.volume = volume.value;  // Устанавливаем громкость в зависимости от ползунка
+    // Применяем громкость с небольшой задержкой для корректности
+    setTimeout(() => {
+      audio.value.volume = volume.value;  // Устанавливаем громкость в зависимости от ползунка
+    }, 100); // Задержка в 100 мс для обновления громкости на мобильных устройствах
+
     if (volume.value > 0 && !isMusicPlaying.value) {
       audio.value.play(); // Играем, если музыка не играет
       isMusicPlaying.value = true; // Включаем музыку
@@ -59,12 +63,17 @@ const adjustVolume = () => {
   }
 };
 
+
 // Функция для начальной установки громкости на 45% и запуска музыки
 const startMusicAtLevel = (level) => {
   isUserInteracted.value = true; // Устанавливаем флаг, что пользователь взаимодействовал
   volume.value = level; // Устанавливаем громкость
+  if (audio.value) {
+    audio.value.volume = volume.value; // Устанавливаем громкость сразу при старте
+  }
   adjustVolume(); // Запускаем музыку и настраиваем громкость
 };
+
 
 const backgrounds = ref([
   { day: 0, img: new URL("../assets/images/background.jpg", import.meta.url).href },
