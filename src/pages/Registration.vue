@@ -9,12 +9,9 @@
 
         <div class="registration-container">
           <div class="input-container">
-            <input v-model="userName" type="text" placeholder="My name" class="name-input">
+            <input v-model="userName" type="text" :placeholder="placeholderText" class="name-input">
             <q-btn color="green-5" @click="submitName" class="ok-btn">OK</q-btn>
           </div>
-          <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад </q-btn>
-
-          <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>
 
           <div class="virtual-keyboard">
             <div class="keyboard-row">
@@ -38,6 +35,10 @@
               <button class="kboardbutton" @click="clearInput">Clear</button>
             </div>
           </div>
+          <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад </q-btn>
+
+          <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>
+
 
 
         </div>
@@ -54,7 +55,7 @@ import { api } from "src/api";
 import { useQuasar } from "quasar";
 import { onMounted } from "vue";
 
-
+const placeholderText = ref("My name |");
 
 const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -101,7 +102,7 @@ onMounted(() => {
 
   randomQuestion.value = getRandomIntroQuestion();
   const introMessageText = `${randomQuestion.value}`;
-  const speed = 50; // Скорость печати (мс)
+  const speed = 150; // Скорость печати (мс)
 
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
@@ -118,6 +119,12 @@ onMounted(() => {
   }
 
   typeWriter();
+  const togglePlaceholder = () => {
+    placeholderText.value = placeholderText.value === "My name |" ? "My name" : "My name |";
+    setTimeout(togglePlaceholder, 500); // продолжает мигать
+  };
+
+  togglePlaceholder(); // запуск анимации мигания
 });
 
 
@@ -437,5 +444,6 @@ const continueAsGuest = async () => {
 .kboardbutton:hover {
   background-color: #555;
 }
+
 
 </style>

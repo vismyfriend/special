@@ -38,7 +38,7 @@ import hwData from 'src/dataForGames/hw-data';
 import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
 
 const text = "choose \nthe \ntask";
-const speed = 50; // Скорость печати (мс)
+const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
 
 const router = useRouter()

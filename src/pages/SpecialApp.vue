@@ -32,7 +32,7 @@ import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 
 const text = "choose \na \nset of words";
-const speed = 50; // Скорость печати (мс)
+const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
 
 

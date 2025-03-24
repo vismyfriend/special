@@ -1,41 +1,68 @@
 <template>
-    <div class="progress-container">
-        <div class="progress-bar" :style="{ width: progressWidth }"></div>
+  <div class="progress-container">
+    <div class="progress-bar" :style="{ width: progressWidth }"></div>
+  </div>
+  <div class="row" v-if="currentGameData">
+    <div class="col">
+      <div
+        class="flex direction-column wordCard"
+        :class="[engWord.active ? 'active':'', engWord.visible ? '':'invisible']"
+        v-for="engWord in engCards"
+        :key="engWord.id"
+        @click="changeActive(engWord.id, 'left')"
+      >
+        {{ engWord.lang }}
+      </div>
     </div>
-    <div class="row" v-if="currentGameData">
-        <div class="col">
-            <div
-                class="flex direction-column wordCard"
-                :class="[engWord.active ? 'active':'', engWord.visible ? '':'invisible']"
-                v-for="engWord in engCards"
-                :key="engWord.id"
-                @click="changeActive(engWord.id, 'left')"
-            >
-                {{ engWord.lang }}
-            </div>
-        </div>
-        <div class="col">
-            <div
-                class="flex direction-column wordCard"
-                :class="[ruWord.active ? 'active':'', ruWord.visible ? '':'invisible']"
-                v-for="ruWord in ruCards"
-                :key="ruWord.id"
-                @click="changeActive(ruWord.id, 'right')"
-            >
-                {{ ruWord.lang }}
-            </div>
-        </div>
-        <div v-if="gameFinished" class="result">
-          <p>Агент X нашел все пары и занимает 134 место в таблице достижений!</p>
-
-<!--          Тут можно вставить Имя агента кто нашел все пары или сразу вывести таблицу лидеров чтобы меньше кликов было-->
-
-            <p>Время выполнения: </p>
-            <p>{{ elapsedTime.minutes }} минут {{ elapsedTime.seconds }} секунд {{ elapsedTime.milliseconds }} миллисекунд</p>
-<!--              случайно кликнул не туда 999 раз -->
-        </div>
+    <div class="col">
+      <div
+        class="flex direction-column wordCard"
+        :class="[ruWord.active ? 'active':'', ruWord.visible ? '':'invisible']"
+        v-for="ruWord in ruCards"
+        :key="ruWord.id"
+        @click="changeActive(ruWord.id, 'right')"
+      >
+        {{ ruWord.lang }}
+      </div>
     </div>
+    <div v-if="gameFinished" class="result">
+      <p>Поздравляем! Агент X нашел все пары!</p>
+
+      <!-- Здесь выводим результаты времени -->
+      <p>Время выполнения: {{ elapsedTime.minutes }} min {{ elapsedTime.seconds }} sec {{ elapsedTime.milliseconds }} миллисекунд</p>
+
+      <!-- Таблица результатов -->
+      <div class="leaderboard">
+        <h3>Таблица SPECIAL :</h3>
+        <table>
+          <thead>
+          <tr>
+            <th>Место</th>
+            <th>Игрок</th>
+            <th>Время</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Динамически генерируем 7 мест -->
+          <tr v-for="(player, index) in topPlayers.slice(0, 7)" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ player.name }}</td>
+            <td>{{ player.time }}</td>
+          </tr>
+
+          <!-- 8-е место для текущего игрока -->
+          <tr :class="'highlight-row'">
+            <td>8</td>
+            <td>Вы (Агент X)</td>
+            <td>{{ elapsedTime.minutes }} min {{ elapsedTime.seconds }} sec</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
@@ -55,6 +82,19 @@ const ruCards = ref([]);
 const gameFinished = ref(false);
 const startTime = ref(0);
 const endTime = ref(0);
+
+
+// Пример массива с данными игроков, который можно будет потом заменить на реальные данные с бэкенда
+const topPlayers = ref([
+  { name: "Агент A", time: "1 min 30 sec" },
+  { name: "Агент B", time: "2:15:187" },
+  { name: "Агент C", time: "3 мин 5 сек" },
+  { name: "Агент D", time: "3 мин 50 сек" },
+  { name: "Агент E", time: "6 мин 0 сек" },
+  { name: "Агент F", time: "7 мин 20 сек" },
+  { name: "Агент G", time: "10 часов" },
+]);
+
 const elapsedTime = ref({
     minutes: 0,
     seconds: 0,
@@ -64,8 +104,15 @@ const elapsedTime = ref({
 const sliceMin = ref(0);
 const sliceMax = ref(5);
 
-const totalPairs = ref(20); // Общее количество пар для статус бара
 const matchedPairs = ref(0); // Количество найденных пар для запонения статус бара
+
+const totalPairs = ref(20); // Общее количество пар для статус бара
+
+// как тут указать меньше значение? если в массиве всего 4 пары например
+// const totalPairs = computed(() => {
+//   // Просто берем количество пар, которое равно длине массива
+//   return currentGameData.value.length;
+
 const progressWidth = computed(() => {
     return `${(matchedPairs.value / totalPairs.value) * 100}%`;
 });
@@ -203,10 +250,27 @@ onMounted(() => {
     opacity: 0;
     user-select: none;
 }
+
+  /* Стили для финального блока с результатами */
 .result {
-    margin-top: 20px;
-    color: black;
-    background-color: aqua;
+  margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(145deg, #0870b5, #4096d3); /* Градиентный фон */
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Тень для глубины */
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.result p {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.result p:first-of-type {
+  font-weight: bold;
+  font-size: 24px;
 }
 
 .progress-container {
@@ -222,5 +286,48 @@ onMounted(() => {
     background-color: green; /* Цвет заполнения */
     border-radius: 10px; /* Закругление углов */
     transition: width 0.5s ease; /* Плавное заполнение */
+}
+
+
+/* Таблица лидеров */
+.leaderboard {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  color: black;
+
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: black;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #4caf50;
+  color: black;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+  transition: background-color 0.3s ease;
+}
+
+/* Новый стиль для выделения 8-й строки */
+.highlight-row td {
+  border: 5px solid orange; /* Увеличиваем толщину границы */
+  background-color: #fff8e1; /* Легкий желтый фон */
 }
 </style>
