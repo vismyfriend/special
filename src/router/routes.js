@@ -103,9 +103,18 @@ const routes = [
       {
         path: '/photos-of-agents',
         component: () => import('src/pages/PhotosOfAgents.vue')
-      }, {
+      },
+      {
         path: '/my-games',
         component: () => import('src/pages/myGames.vue')
+      },
+      {
+        path: '/workbench1',
+        component: () => import('src/pages/pageWorkbench1.vue')
+      },
+      {
+        path: '/workbench2',
+        component: () => import('src/pages/pageWorkbench2.vue')
       },
     ]
   },

@@ -1,13 +1,13 @@
 <template>
   <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
-  <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P.E.C.I.A.L App" stack glossy color="purple"
+  <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P. E.C.I.A.L App" stack glossy color="purple"
     @click="goToRegistrationPage" />
-
+  <q-btn class="q-mb-sm zoomIn" icon="phone" label="Send a message to Vincent" push color="primary"
+         @click="linkToVismyfriendTelegram" />
   <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"
     @click="goToPhotosOfAgentsPage" />
   <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
-  <q-btn class="q-mb-sm zoomIn" icon="phone" label="Send a message to Vincent" push color="primary"
-    @click="linkToVismyfriendTelegram" />
+
   <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />
   <!-- а где лучше всего идеи записывать? буду здесь пока! -->
 
@@ -67,6 +67,7 @@ const getOrdinalSuffix = (date) => {
 };
 
 
+
 onMounted(() => {
   const currentDate = new Date();
   const monthName = currentDate.toLocaleString('default', { month: 'long' });
@@ -93,7 +94,6 @@ onMounted(() => {
   bottom: 0;
 
 }
-
 .bubble {
   text-align: center;
   user-select: none;

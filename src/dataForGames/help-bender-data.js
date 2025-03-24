@@ -1,7 +1,13 @@
-// чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R   
+// чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R
 // ^\s*$\n
 const helpBenderData = {
+  devModeNumbersfast: [
+    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 29, eng: "hundred", ru: "сто", hint: "/ хандред /" },
+    { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
 
+  ],
     devModeNumbers: [
         { id: 1, eng: "one", ru: "один" },
         { id: 2, eng: "two", ru: "два" },

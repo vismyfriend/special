@@ -2,7 +2,7 @@
   <div class="relative">
     <div id="phoneFrame">
       <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">
-      <p class="bubble left think" id="intro-message">What ' s<br> your <br>name?</p>
+      <p class="bubble left think" id="intro-message">What is<br> your <br>name?</p>
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
 
       <div class="inside-phone-frame">
@@ -16,6 +16,30 @@
 
           <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>
 
+          <div class="virtual-keyboard">
+            <div class="keyboard-row">
+              <button class="kboardbutton" v-for="key in row1" :key="key" @click="addCharacter(key)">
+                {{ key }}
+              </button>
+            </div>
+            <div class="keyboard-row">
+              <button class="kboardbutton" v-for="key in row2" :key="key" @click="addCharacter(key)">
+                {{ key }}
+              </button>
+            </div>
+            <div class="keyboard-row">
+              <button class="kboardbutton" v-for="key in row3" :key="key" @click="addCharacter(key)">
+                {{ key }}
+              </button>
+            </div>
+            <div class="keyboard-row">
+              <button class="kboardbutton" @click="deleteLastCharacter">⌫</button>
+              <button class="kboardbutton" @click="addCharacter(' ')">Space</button>
+              <button class="kboardbutton" @click="clearInput">Clear</button>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
@@ -28,12 +52,79 @@ import { useRouter } from 'vue-router';
 import { ref } from "vue";
 import { api } from "src/api";
 import { useQuasar } from "quasar";
+import { onMounted } from "vue";
+
+
+
+const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+const row3 = ["Z", "X", "C", "V", "B", "N", "M", "?"];
+
+const addCharacter = (char) => {
+  userName.value += char;
+};
+
+
+const deleteLastCharacter = () => {
+  userName.value = userName.value.slice(0, -1);
+};
+
+const clearInput = () => {
+  userName.value = "";
+};
+// Список вопросов
+const introQuestions = [
+  "What is your name?",
+  "Who is it?",
+  "Who are you?",
+  "Do I know you?",
+  "Tell me your name?",
+  "Agent... who?",
+  "I'm Alex, and you are...",
+
+];
+
+// Переменная для хранения случайного вопроса
+const randomQuestion = ref("");
+
+// Функция для выбора случайного вопроса
+function getRandomIntroQuestion() {
+  const randomIndex = Math.floor(Math.random() * introQuestions.length);
+  console.log(introQuestions[randomIndex]);
+  return introQuestions[randomIndex];
+
+}
+
+// Получаем случайный вопрос в момент монтирования компонента
+onMounted(() => {
+
+
+  randomQuestion.value = getRandomIntroQuestion();
+  const introMessageText = `${randomQuestion.value}`;
+  const speed = 50; // Скорость печати (мс)
+
+  const introMessage = document.getElementById("intro-message");
+  if (!introMessage) return;
+
+  introMessage.textContent = "";
+  let i = 0;
+
+  function typeWriter() {
+    if (i < introMessageText.length) {
+      introMessage.textContent += introMessageText[i] === "\n" ? "\n" : introMessageText[i];
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  typeWriter();
+});
 
 
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
-const userName = ref();
+const userName = ref("");
 
 
 const backToPreviousPage = () => {
@@ -51,10 +142,25 @@ const setNotify = (message, color = 'black') => {
 };
 
 const submitName = async () => {
+
+  // Валидация имени пользователя
+  if (!userName.value || userName.value.trim() === "") {
+    setNotify("Please enter a valid name!", 'red');
+    return; // Останавливаем выполнение, если имя пустое
+  }
+
+  setNotify(`Hello , ${userName.value}`);
+
+  setTimeout(() => {
+    setNotify(`Profile, ${userName.value}, is loading...`);
+  }, 2000); // Задержка 2 секунды
+
+  setTimeout(() => {
+    setNotify(`I'm happy to see you`);
+
+  }, 500); // Задержка 0.5 секунды
   const res = await api.auth.post(userName.value);
 
-  // Используем правильный синтаксис для шаблонных строк
-  setNotify(`nice to meet you, ${userName.value}`);
 
   localStorage.setItem('token', res.data.token);
   localStorage.setItem('agentName', userName.value);
@@ -77,6 +183,10 @@ const continueAsGuest = async () => {
 </script>
 
 <style lang="scss" scoped>
+
+
+
+
 .inside-phone-frame {
   padding: 1px 15px;
 }
@@ -117,7 +227,7 @@ const continueAsGuest = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 1px;
   margin-top: 20px;
 }
 
@@ -299,6 +409,33 @@ const continueAsGuest = async () => {
     }
   }
 
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 2px;
+}
+
+.kboardbutton {
+  padding: 7px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #333;
+  color: white;
+  border: none;
+}
+
+.kboardbutton:hover {
+  background-color: #555;
 }
 
 </style>

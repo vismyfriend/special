@@ -4,31 +4,35 @@
     </div>
     <div class="row" v-if="currentGameData">
         <div class="col">
-            <div 
+            <div
                 class="flex direction-column wordCard"
-                :class="[engWord.active ? 'active':'', engWord.visible ? '':'invisible']" 
-                v-for="engWord in engCards" 
-                :key="engWord.id" 
+                :class="[engWord.active ? 'active':'', engWord.visible ? '':'invisible']"
+                v-for="engWord in engCards"
+                :key="engWord.id"
                 @click="changeActive(engWord.id, 'left')"
             >
                 {{ engWord.lang }}
             </div>
         </div>
         <div class="col">
-            <div 
+            <div
                 class="flex direction-column wordCard"
-                :class="[ruWord.active ? 'active':'', ruWord.visible ? '':'invisible']" 
-                v-for="ruWord in ruCards" 
-                :key="ruWord.id" 
+                :class="[ruWord.active ? 'active':'', ruWord.visible ? '':'invisible']"
+                v-for="ruWord in ruCards"
+                :key="ruWord.id"
                 @click="changeActive(ruWord.id, 'right')"
             >
                 {{ ruWord.lang }}
             </div>
         </div>
         <div v-if="gameFinished" class="result">
-            <p>Вы нашли все пары!</p>
+          <p>Агент X нашел все пары и занимает 134 место в таблице достижений!</p>
+
+<!--          Тут можно вставить Имя агента кто нашел все пары или сразу вывести таблицу лидеров чтобы меньше кликов было-->
+
             <p>Время выполнения: </p>
             <p>{{ elapsedTime.minutes }} минут {{ elapsedTime.seconds }} секунд {{ elapsedTime.milliseconds }} миллисекунд</p>
+<!--              случайно кликнул не туда 999 раз -->
         </div>
     </div>
 </template>

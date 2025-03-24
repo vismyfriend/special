@@ -29,6 +29,12 @@
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { onMounted } from "vue";
+
+const text = "choose \na \nset of words";
+const speed = 50; // Скорость печати (мс)
+const introMessage = ref(null); // Добавляем ref для элемента
+
 
 const router = useRouter()
 const $q = useQuasar()
@@ -38,6 +44,12 @@ const AllSetsOfWords = ref([
     missionName: "devModeNumbers",
     description: "протестировать игры",
     id: 0,
+    active: true,
+  },
+  {
+    missionName: "devModeNumbersFast",
+    description: "протестировать быстро",
+    id: 15,
     active: true,
   },
   {
@@ -135,6 +147,25 @@ const goToChosenGame = (route) => {
 }
 
 
+onMounted(() => {
+  const introMessage = document.getElementById("intro-message");
+  if (!introMessage) return;
+
+  introMessage.textContent = "";
+  let i = 0;
+
+  function typeWriter() {
+    if (i < text.length) {
+      introMessage.textContent += text[i] === "\n" ? "\n" : text[i];
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  typeWriter();
+
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -159,7 +190,7 @@ const goToChosenGame = (route) => {
 
 
 /*
-.phoneFrame{  
+.phoneFrame{
   position: absolute;
   height: 100%;
   z-index: -1;
@@ -226,7 +257,7 @@ const goToChosenGame = (route) => {
     inset 0 0 3px 7px #000, // Внутренняя тень
     0 150px 200px -80px #000; // Внешняя тень
   overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
-  
+
  // Стилизация полосы прокрутки
  &::-webkit-scrollbar {
   width: 8px; // Ширина полосы прокрутки

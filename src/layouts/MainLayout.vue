@@ -77,7 +77,7 @@ const startMusicAtLevel = (level) => {
 
 const backgrounds = ref([
   { day: 0, img: new URL("../assets/images/background.jpg", import.meta.url).href },
-  { day: 1, img: new URL("../assets/images/background.jpg", import.meta.url).href },
+  { day: 1, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
   { day: 2, img: new URL("../assets/images/background1.jpg", import.meta.url).href },
   { day: 3, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
   { day: 4, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
