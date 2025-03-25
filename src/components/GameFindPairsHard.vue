@@ -40,6 +40,7 @@
             <th>Место</th>
             <th>Игрок</th>
             <th>Время</th>
+            <th>Промахи</th>
           </tr>
           </thead>
           <tbody>
@@ -48,6 +49,7 @@
             <td>{{ index + 1 }}</td>
             <td>{{ player.name }}</td>
             <td>{{ player.time }}</td>
+            <td>{{ player.mistakes }}</td>
           </tr>
 
           <!-- 8-е место для текущего игрока -->
@@ -55,6 +57,7 @@
             <td>8</td>
             <td>Вы (Агент X)</td>
             <td>{{ elapsedTime.minutes }} min {{ elapsedTime.seconds }} sec</td>
+            <td>0</td>
           </tr>
           </tbody>
         </table>
@@ -68,6 +71,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, computed } from 'vue';
+import { api } from 'src/api'; // Импортируем API
 
 const router = useRouter();
 const route = useRoute();
@@ -85,15 +89,30 @@ const endTime = ref(0);
 
 
 // Пример массива с данными игроков, который можно будет потом заменить на реальные данные с бэкенда
-const topPlayers = ref([
+// const topPlayers = ref([
+//   { name: "Агент A", time: "1 min 30 sec" },
+//   { name: "Агент B", time: "2:15:187" },
+//   { name: "Агент C", time: "3 мин 5 сек" },
+//   { name: "Агент D", time: "3 мин 50 сек" },
+//   { name: "Агент E", time: "6 мин 0 сек" },
+//   { name: "Агент F", time: "7 мин 20 сек" },
+//   { name: "Агент G", time: "10 часов" },
+// ]);
+
+// Массив с резервными данными если с Бэка не поддятулись результаты
+const fallbackPlayers = [
   { name: "Агент A", time: "1 min 30 sec" },
   { name: "Агент B", time: "2:15:187" },
   { name: "Агент C", time: "3 мин 5 сек" },
   { name: "Агент D", time: "3 мин 50 сек" },
-  { name: "Агент E", time: "6 мин 0 сек" },
+  { name: "Агент E", time: "6 мин 0 сек", mistakes: "20" },
   { name: "Агент F", time: "7 мин 20 сек" },
   { name: "Агент G", time: "10 часов" },
-]);
+];
+
+// topPlayers, который будет заполняться либо с бэкенда, либо запасными данными
+const topPlayers = ref(fallbackPlayers);
+
 
 const elapsedTime = ref({
     minutes: 0,
@@ -116,6 +135,24 @@ const totalPairs = ref(20); // Общее количество пар для с�
 const progressWidth = computed(() => {
     return `${(matchedPairs.value / totalPairs.value) * 100}%`;
 });
+
+
+
+// Функция для загрузки таблицы победителей с сервера
+const fetchLeaderboard = async () => {
+  try {
+    const response = await api.scores.get(); // Запрос на получение данных с бэкенда
+    if (Array.isArray(response.data)) {
+      topPlayers.value = response.data; // Обновляем массив игроков с сервера
+    } else {
+      console.warn("Полученные данные не являются массивом! использую запасные данные", response.data);
+      topPlayers.value = fallbackPlayers; // Используем запасные данные, если данные не массив
+    }
+  } catch (error) {
+    console.error("Ошибка при загрузке таблицы победителей, использую запасные данные", error);
+    topPlayers.value = fallbackPlayers; // Используем запасные данные в случае ошибки
+  }
+};
 
 const selectRandomWords = (data, count) => {
     const shuffled = shuffle(data);
@@ -218,6 +255,8 @@ onMounted(() => {
     engCards.value = splitCards("eng");
 
     startTime.value = performance.now(); // Запускаем секундомер
+  fetchLeaderboard(); // Загружаем таблицу
+
 });
 </script>
 
