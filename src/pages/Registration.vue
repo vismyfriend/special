@@ -54,6 +54,7 @@ import { ref } from "vue";
 import { api } from "src/api";
 import { useQuasar } from "quasar";
 import { onMounted } from "vue";
+import {useGameStore} from "stores/example-store";
 
 const placeholderText = ref("My name |");
 
@@ -133,6 +134,8 @@ const route = useRoute();
 const $q = useQuasar();
 const userName = ref("");
 
+const gameStore = useGameStore()
+
 
 const backToPreviousPage = () => {
   // router.push(-1)
@@ -166,26 +169,29 @@ const submitName = async () => {
     setNotify(`I'm happy to see you`);
 
   }, 500); // Задержка 0.5 секунды
+  await router.push("/special-app/");
+
+
   const res = await api.auth.post(userName.value);
-
-
   localStorage.setItem('token', res.data.token);
   localStorage.setItem('agentName', userName.value);
+  gameStore.setAgentName(userName.value);
 
-  await router.push("/special-app/");
 };
 
+
+// настроить режим анонимных пользователей
+
 const continueAsGuest = async () => {
-  const res2 = await api.scores.post("tnt", 134, 2, 11);
-  const res3 = await api.scores.get();
-  console.log(res3);
+  // const res2 = await api.scores.post("tnt", 134, 2, 11);
+  // const res3 = await api.scores.get();
+  // console.log(res3);
   // router.push("/special-app")
 
-  // настроить режим анонимных пользователей
   // при отправлении рекрда мы берем имя игры из раута, время в секундах, ошибки/читы, эйджент нэйм из локал
   // (сториджа)
 
-  $q.notify({ message: res2 });
+  // $q.notify({ message: res2 });
 };
 </script>
 

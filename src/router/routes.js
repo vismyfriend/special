@@ -116,6 +116,20 @@ const routes = [
         path: '/workbench2',
         component: () => import('src/pages/pageWorkbench2.vue')
       },
+      {
+        path: '/workbench3',
+        component: () => import('src/pages/pageWorkbench3.vue')
+      },
+      {
+        path: '/workbench4',
+        component: () => import('src/pages/pageWorkbench4.vue')
+      },
+      {
+        path: '/leader-board',
+        component: () => import('src/pages/LeaderBoard.vue'),
+        // props: {time: 0, mistakes: 0},
+        props: true,
+      },
     ]
   },
 

@@ -25,41 +25,7 @@
         {{ ruWord.lang }}
       </div>
     </div>
-    <div v-if="gameFinished" class="result">
-      <p>Поздравляем! Агент X нашел все пары!</p>
 
-      <!-- Здесь выводим результаты времени -->
-      <p>Время выполнения: {{ elapsedTime.minutes }} min {{ elapsedTime.seconds }} sec {{ elapsedTime.milliseconds }} миллисекунд</p>
-
-      <!-- Таблица результатов -->
-      <div class="leaderboard">
-        <h3>Таблица SPECIAL :</h3>
-        <table>
-          <thead>
-          <tr>
-            <th>Место</th>
-            <th>Игрок</th>
-            <th>Время</th>
-          </tr>
-          </thead>
-          <tbody>
-          <!-- Динамически генерируем 7 мест -->
-          <tr v-for="(player, index) in topPlayers.slice(0, 7)" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ player.name }}</td>
-            <td>{{ player.time }}</td>
-          </tr>
-
-          <!-- 8-е место для текущего игрока -->
-          <tr :class="'highlight-row'">
-            <td>8</td>
-            <td>Вы (Агент X)</td>
-            <td>{{ elapsedTime.minutes }} min {{ elapsedTime.seconds }} sec</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -68,9 +34,11 @@
 import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, computed } from 'vue';
+import {useGameStore} from "stores/example-store";
 
 const router = useRouter();
 const route = useRoute();
+const gameStore = useGameStore()
 
 const shuffle = array => array.sort(() => Math.random() - 0.5);
 
@@ -79,27 +47,12 @@ const currentGameData = ref();
 const engCards = ref([]);
 const ruCards = ref([]);
 
-const gameFinished = ref(false);
-const startTime = ref(0);
-const endTime = ref(0);
+const time = ref(0);
 
 
-// Пример массива с данными игроков, который можно будет потом заменить на реальные данные с бэкенда
-const topPlayers = ref([
-  { name: "Агент A", time: "1 min 30 sec" },
-  { name: "Агент B", time: "2:15:187" },
-  { name: "Агент C", time: "3 мин 5 сек" },
-  { name: "Агент D", time: "3 мин 50 сек" },
-  { name: "Агент E", time: "6 мин 0 сек" },
-  { name: "Агент F", time: "7 мин 20 сек" },
-  { name: "Агент G", time: "10 часов" },
-]);
 
-const elapsedTime = ref({
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0
-});
+
+
 
 const sliceMin = ref(0);
 const sliceMax = ref(5);
@@ -116,6 +69,8 @@ const totalPairs = ref(20); // Общее количество пар для с�
 const progressWidth = computed(() => {
     return `${(matchedPairs.value / totalPairs.value) * 100}%`;
 });
+
+
 
 const selectRandomWords = (data, count) => {
     const shuffled = shuffle(data);
@@ -194,22 +149,15 @@ const deleteCards = (ru, eng) => {
 };
 
 const finishGame = () => {
-    if (!gameFinished.value) {
-        gameFinished.value = true;
-        endTime.value = performance.now();
-        calculateElapsedTime();
-    }
-};
 
-const calculateElapsedTime = () => {
-    const totalTime = endTime.value - startTime.value;
+  gameStore.setLastGameResults(time.value, 20)
+  gameStore.setGameName("FindPairsHard")
+  router.push("/leader-board/");
 
-    elapsedTime.value.minutes = Math.floor(totalTime / 60000);
-    elapsedTime.value.seconds = Math.floor((totalTime % 60000) / 1000);
-    elapsedTime.value.milliseconds = (totalTime % 1000).toFixed(0).replace('.', '');
 };
 
 onMounted(() => {
+
     currentMission.value = route.params.missionName;
     currentGameData.value = shortWordsData[currentMission.value];
     currentGameData.value = selectRandomWords(currentGameData.value, 20); // Выбираем 20 случайных слов
@@ -217,7 +165,11 @@ onMounted(() => {
     ruCards.value = splitCards("ru");
     engCards.value = splitCards("eng");
 
-    startTime.value = performance.now(); // Запускаем секундомер
+    // Запускаем секундомер
+    setInterval(() => {time.value+= 10}, 10)
+
+
+
 });
 </script>
 
@@ -251,27 +203,7 @@ onMounted(() => {
     user-select: none;
 }
 
-  /* Стили для финального блока с результатами */
-.result {
-  margin-top: 30px;
-  padding: 20px;
-  background: linear-gradient(145deg, #0870b5, #4096d3); /* Градиентный фон */
-  color: white;
-  border-radius: 15px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Тень для глубины */
-  text-align: center;
-  font-family: 'Arial', sans-serif;
-}
 
-.result p {
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.result p:first-of-type {
-  font-weight: bold;
-  font-size: 24px;
-}
 
 .progress-container {
     width: 100%;
@@ -289,45 +221,4 @@ onMounted(() => {
 }
 
 
-/* Таблица лидеров */
-.leaderboard {
-  margin-top: 20px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  color: black;
-
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: black;
-}
-
-table th, table td {
-  padding: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-table th {
-  background-color: #4caf50;
-  color: black;
-}
-
-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-table tr:hover {
-  background-color: #ddd;
-  transition: background-color 0.3s ease;
-}
-
-/* Новый стиль для выделения 8-й строки */
-.highlight-row td {
-  border: 5px solid orange; /* Увеличиваем толщину границы */
-  background-color: #fff8e1; /* Легкий желтый фон */
-}
 </style>

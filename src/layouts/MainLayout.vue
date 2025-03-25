@@ -103,7 +103,8 @@ defineExpose({ audio });
   justify-content: center;
 
   .wrapper {
-    width: 310px;
+    min-width: 350px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
   }

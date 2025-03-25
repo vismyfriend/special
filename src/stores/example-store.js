@@ -1,15 +1,21 @@
 import { defineStore } from 'pinia';
 
-export const useCounterStore = defineStore('counter', {
+export const useGameStore = defineStore('game', {
   state: () => ({
-    counter: 0,
+    lastGameResults: null,
+    agentName: null,
+    gameName: null,
+
   }),
-  getters: {
-    doubleCount: (state) => state.counter * 2,
-  },
   actions: {
-    increment() {
-      this.counter++;
+    setLastGameResults(time, mistakes) {
+      this.lastGameResults = { time, mistakes };
     },
-  },
+    setAgentName(agentName) {
+      this.agentName = agentName;
+    },
+    setGameName(gameName) {
+      this.gameName = gameName
+    },
+  }
 });
