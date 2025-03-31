@@ -41,6 +41,7 @@ onMounted(() => {
       cursor3.value.style.left = `${x - 18}px`; // Центрируем третий курсор
       cursor3.value.style.top = `${y - 18}px`; // Для третьего курсора с размером 36px
     }
+
   };
 
   document.addEventListener("mousemove", onMouseMove);
