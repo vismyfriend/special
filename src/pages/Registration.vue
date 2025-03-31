@@ -181,6 +181,8 @@ const submitName = async () => {
 
 
 // настроить режим анонимных пользователей
+// не пушится - удали этот коммент))
+
 
 const continueAsGuest = async () => {
   // const res2 = await api.scores.post("tnt", 134, 2, 11);
