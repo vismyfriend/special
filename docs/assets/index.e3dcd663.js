@@ -1,1 +1,0 @@
-import{D as s}from"./index.4fa58fb4.js";var r={post:t=>s.post("/auth",{username:t})},p={get:()=>s.get("/scores"),post:(t,e,a,o)=>s.post("/scores",{game:t,time:e,mistakes:a,agent:o})};const i={auth:r,scores:p};export{i as a};
