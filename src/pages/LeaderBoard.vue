@@ -9,7 +9,6 @@
 
     <div v-if="topPlayers" class="leaderboard">
 
-      <h3>Таблица SPECIAL :</h3>
       <table>
         <thead>
         <tr>
@@ -158,14 +157,20 @@ onMounted( async () => {
 .leaderboard {
   margin-top: 20px;
   background-color: #f9f9f9;
-  padding: 20px 10px;
+  padding: 20px;
   border-radius: 10px;
   color: black;
-  width: 100%; /* Контейнер таблицы займет всю доступную ширину */
-  max-width: 1000px; /* Максимальная ширина */
-  margin-left: auto; /* Центрируем таблицу */
-  margin-right: auto; /* Центрируем таблицу */
+  width: 100%;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  /* Основные изменения для скролла: */
+  max-height: 400px; /* Фиксированная высота контейнера */
+  //overflow-y: auto; /* Вертикальный скролл */
+  display: flex;
+  flex-direction: column;
 }
+
 
 table {
   width: 100%;
