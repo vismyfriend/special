@@ -75,13 +75,22 @@ onMounted(() => {
   const currentDay = currentDate.getDate(); // используем getDate() для получения числа месяца
 
   const suffix = getOrdinalSuffix(currentDay);
-  document.getElementById('intro-message').innerHTML = `Hello, special agent <br> today is <u>${dayName}</u> <br> the ${currentDay}-<strong><u>${suffix}</u></strong> of ${monthName}`;
+  document.getElementById('intro-message').innerHTML = `
+  Hello, special agent <br>
+  today is <u><span class="purple-text">${dayName}</span></u> <br>
+  the <span class="purple-text">${currentDay}</span>-<strong>
+  <u><span class="purple-text">${suffix}</span></u></strong> of ${monthName}
+`;
 });
 
 
 </script>
 
 <style lang="scss" scoped>
+
+:deep(.purple-text) {
+  color: #af10af;
+}
 .backgroundImg {
   width: 100%;
   height: 100vh;

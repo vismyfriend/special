@@ -43,17 +43,18 @@
           </table>
         </div>
       </div>
-      <div class="buttons-container">
-        <button class="close-btn" @click="goToMain">
-          X
-        </button>
-        <button class="try-again-btn" @click="tryAgain">
-          Try Again
-        </button>
-        <button class="toggle-btn" @click="toggleExpand">
-          {{ isExpanded ? 'Свернуть ▲' : 'Развернуть ▼' }}
-        </button>
+
       </div>
+    <div class="buttons-container">
+      <button class="close-btn" @click="goToMain">
+        X
+      </button>
+      <button class="try-again-btn" @click="tryAgain">
+        Try Again
+      </button>
+      <button class="toggle-btn" @click="toggleExpand">
+        {{ isExpanded ? 'Свернуть ▲' : 'Развернуть ▼' }}
+      </button>
     </div>
   </div>
 </template>
@@ -276,9 +277,10 @@ onMounted( async () => {
 .buttons-container {
   display: flex;
   justify-content: center;
-  gap: 5px;
-  margin-top: 20px;
+  gap: 10px;
+  margin: 20px auto 0;
   width: 100%;
+  max-width: 800px; /* Согласуем ширину с таблицей */
 }
 /* Общие стили для всех кнопок */
 .close-btn,
@@ -304,7 +306,7 @@ onMounted( async () => {
 
   &::after {
     content: '';
-    position: absolute;
+
     top: 0;
     left: 0;
     right: 0;

@@ -77,12 +77,13 @@ const clearInput = () => {
 // Список вопросов
 const introQuestions = [
   "What is your name?",
-  "Who is it?",
+  "And your name is...?",
   "Who are you?",
   "Do I know you?",
   "Tell me your name?",
   "Agent... who?",
   "I'm Alex, and you are...",
+  "Vincent likes you",
 
 ];
 
