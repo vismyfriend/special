@@ -20,6 +20,7 @@
             </thead>
             <tbody>
             <!-- Динамически генерируем 7 мест -->
+
             <tr
               v-for="(player, index) in visiblePlayers"
               :key="index"
