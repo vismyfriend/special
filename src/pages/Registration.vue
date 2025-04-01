@@ -84,7 +84,7 @@ const introQuestions = [
   "Agent... who?",
   "I'm Alex, and you are...",
   "Vincent likes you",
-
+  "English is fun",
 ];
 
 // Переменная для хранения случайного вопроса
