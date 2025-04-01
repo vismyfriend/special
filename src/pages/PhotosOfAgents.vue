@@ -6,6 +6,9 @@
         <button class="goToPageWorkbench2" @click="goToPageWorkbench2">goToPageWorkbench2</button>
         <button class="goToPageWorkbench3" @click="goToPageWorkbench3">goToPageWorkbench3</button>
         <button class="goToPageWorkbench4" @click="goToPageWorkbench4">goToPageWorkbench4</button>
+        <button class="goToPageWorkbench5" @click="goToPageWorkbench5">goToPageWorkbench5</button>
+        <button class="goToPageWorkbench6" @click="goToPageWorkbench6">goToPageWorkbench6</button>
+        <button class="goToPuzzleGameSquares" @click="goToPuzzleGameSquares">goToPuzzleGameSquares</button>
         <img src="../assets/images/special logo hat square.png" alt="logo">
 
     </div>
@@ -35,8 +38,17 @@ const goToPageWorkbench3 = () => {
 const goToPageWorkbench4 = () => {
   router.push("/workbench4")
 }
+const goToPageWorkbench5 = () => {
+  router.push("/workbench5")
+}
+const goToPageWorkbench6 = () => {
+  router.push("/workbench6")
+}
 const itchioGameOne = () => {
   router.push("/my-games")
+}
+const goToPuzzleGameSquares = () => {
+  router.push("/game-puzzle-squares")
 }
 </script>
 

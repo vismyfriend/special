@@ -9,6 +9,8 @@ const shortWordsData = {
     { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
 
   ],
+
+
     devModeNumbers: [
         { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
         { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
@@ -110,6 +112,51 @@ const shortWordsData = {
             ru: "тринадцатый"
         },
     ],
+
+    digits: [
+    { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
+    { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
+    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
+    { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
+    { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
+    { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
+    { id: 7, eng: "seven", ru: "семь", hint: "/ сэвэн /" },
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
+    { id: 10, eng: "zero", ru: "ноль", hint: "/ оу или зироу /" }
+  ],
+
+  alphabetData: [
+    { id: 1, eng: "Aa", ru: "эй", hint: "/ эй /" },
+    { id: 2, eng: "Bb", ru: "би", hint: "/ би /" },
+    { id: 3, eng: "Cc", ru: "си", hint: "/ си /" },
+    { id: 4, eng: "Dd", ru: "ди", hint: "/ ди /" },
+    { id: 5, eng: "Ee", ru: "и", hint: "/ и /" },
+    { id: 6, eng: "Ff", ru: "эф", hint: "/ эф /" },
+    { id: 7, eng: "Gg", ru: "джи", hint: "/ джи /" },
+    { id: 8, eng: "Hh", ru: "эйч", hint: "/ эйч /" },
+    { id: 9, eng: "Ii", ru: "ай", hint: "/ ай /" },
+    { id: 10, eng: "Jj", ru: "джэй", hint: "/ джэй /" },
+    { id: 11, eng: "Kk", ru: "кей", hint: "/ кей /" },
+    { id: 12, eng: "Ll", ru: "эл", hint: "/ эл /" },
+    { id: 13, eng: "Mm", ru: "эм", hint: "/ эм /" },
+    { id: 14, eng: "Nn", ru: "эн", hint: "/ эн /" },
+    { id: 15, eng: "Oo", ru: "оу", hint: "/ оу /" },
+    { id: 16, eng: "Pp", ru: "пи", hint: "/ пи /" },
+    { id: 17, eng: "Qq", ru: "кью", hint: "/ кью /" },
+    { id: 18, eng: "Rr", ru: "ар", hint: "/ ар /" },
+    { id: 19, eng: "Ss", ru: "эс", hint: "/ эс /" },
+    { id: 20, eng: "Tt", ru: "ти", hint: "/ ти /" },
+    { id: 21, eng: "Uu", ru: "ю", hint: "/ ю /" },
+    { id: 22, eng: "Vv", ru: "ви", hint: "/ ви /" },
+    { id: 23, eng: "Ww", ru: "дабл-ю", hint: "/ дабл-ю /" },
+    { id: 24, eng: "Xx", ru: "экс", hint: "/ экс /" },
+    { id: 25, eng: "Yy", ru: "уай", hint: "/ уай /" },
+    { id: 26, eng: "Zz", ru: "зи/зэд", hint: "/ зи или zэд /" }
+  ],
+
+
+
     halloween01: [
         {
             id: 1,
@@ -221,5 +268,6 @@ const shortWordsData = {
         },
 
     ],
+
 }
 export default shortWordsData

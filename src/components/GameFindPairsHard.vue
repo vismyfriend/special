@@ -1,6 +1,8 @@
 <template>
   <div class="progress-container">
     <div class="progress-bar" :style="{ width: progressWidth }"></div>
+    <!-- Добавляем текст с процентами -->
+    <div class="progress-text" v-if="matchedPairs > 0">{{ progressPercentage }}%</div>
   </div>
   <div class="row" v-if="currentGameData">
     <div class="col">
@@ -33,7 +35,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import {useGameStore} from "stores/example-store";
 
 const router = useRouter();
@@ -59,18 +61,30 @@ const sliceMax = ref(5);
 
 const matchedPairs = ref(0); // Количество найденных пар для запонения статус бара
 
-const totalPairs = ref(20); // Общее количество пар для статус бара
-
-// как тут указать меньше значение? если в массиве всего 4 пары например
-// const totalPairs = computed(() => {
-//   // Просто берем количество пар, которое равно длине массива
-//   return currentGameData.value.length;
+const totalPairs = computed(() => {
+  return currentGameData.value?.length || 0; // Получаем количество пар, если массив не пуст
+});
 
 const progressWidth = computed(() => {
     return `${(matchedPairs.value / totalPairs.value) * 100}%`;
 });
+const progressPercentage = ref(0);  // Начальный процент
 
+// Функция для плавного увеличения процентов
+const animateProgress = () => {
+  const targetPercentage = Math.round((matchedPairs.value / totalPairs.value) * 100);
 
+  // Если текущий процент меньше целевого
+  if (progressPercentage.value < targetPercentage) {
+    progressPercentage.value += 1;  // Увеличиваем на 1% за каждый кадр
+    requestAnimationFrame(animateProgress);  // Запрашиваем следующий кадр анимации
+  } else {
+    progressPercentage.value = targetPercentage;  // Когда достигаем целевого, устанавливаем точно
+  }
+};
+
+// Вызываем анимацию каждый раз, когда количество найденных пар изменяется
+watch(matchedPairs, animateProgress);
 
 const selectRandomWords = (data, count) => {
     const shuffled = shuffle(data);
@@ -204,20 +218,30 @@ onMounted(() => {
 }
 
 
-
 .progress-container {
-    width: 100%;
-    height: 20px; /* Высота полоски прогресса */
-    background-color: rgba(0, 0, 0, 0.1); /* Полупрозрачный фон */
-    border-radius: 10px; /* Закругление углов */
-    margin-bottom: 20px; /* Отступ снизу */
+  width: 100%;
+  height: 20px; /* Высота полоски прогресса */
+  background-color: rgba(0, 0, 0, 0.1); /* Полупрозрачный фон */
+  border-radius: 10px; /* Закругление углов */
+  margin-bottom: 20px; /* Отступ снизу */
+  position: relative; /* Для позиционирования текста */
 }
 
 .progress-bar {
-    height: 100%;
-    background-color: green; /* Цвет заполнения */
-    border-radius: 10px; /* Закругление углов */
-    transition: width 0.5s ease; /* Плавное заполнение */
+  height: 100%;
+  background-color: green; /* Цвет заполнения */
+  border-radius: 10px; /* Закругление углов */
+  transition: width 0.5s ease; /* Плавное заполнение */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.6); /* Полупрозрачный белый */
+  font-size: 12px;
+  font-weight: bold;
 }
 
 

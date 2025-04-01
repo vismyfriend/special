@@ -54,26 +54,35 @@ const AllGames = ref([
     active: true,
   },
   {
-    id: 90,
-    name: "See all words",
-    path: "see-all-words",
-    gameData: shortWordsData,
-    active: true,
-  },
-  {
-    id: 100,
+    id: 102,
     name: "Find pairs EASY",
-    path: "find-one-pair",
+    path: "find-pairs-easy",
     gameData: shortWordsData,
     active: true,
   },
   {
     id: 101,
     name: "Find pairs HARD",
-    path: "find-pairs",
+    path: "find-pairs-hard",
     gameData: shortWordsData,
     active: true,
   },
+  {
+    id: 90,
+    name: "эта игра скоро появится",
+    path: "this-game-is-coming-soon",
+    gameData: shortWordsData,
+    active: true,
+  },
+  {
+    id: 100,
+    name: "эта игра скоро будет",
+    path: "this-game-is-coming-soon-2",
+    gameData: shortWordsData,
+    active: true,
+  },
+
+
   {
     id: 201,
     name: "Find pairs HARDCORE",

@@ -61,6 +61,8 @@
     </div>
 </template>
 
+<!--доделать сортировку - если до этой игры игать в другие, то масив перемешивается и порядок для печати сбивается нужно оригинальный порядок восстановить-->
+<!--доделать - удалить задний фон при печати-->
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -121,6 +123,8 @@ const toggleWord = (index) => {
     // Переключаем состояние нажатия
     toggledWords.value[index] = !toggledWords.value[index];
 };
+
+
 
 onMounted(() => {
     currentMission.value = route.params.missionName;

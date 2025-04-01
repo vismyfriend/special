@@ -23,24 +23,28 @@ const routes = [
                 component: () => import('src/components/GameStories.vue')
               },
               {
+                path: 'this-game-is-coming-soon',
+                component: () => import('components/ThisGameIsComingSoon.vue')
+              },
+              {
                 path: 'print-all-words',
-                component: () => import('src/components/PrintArray.vue')
+                component: () => import('src/components/PrintAllWords.vue')
               },
               {
-                path: 'see-all-words',
-                component: () => import('src/components/SeeArrayWords.vue')
-              },
-              {
-                path: 'find-pairs',
+                path: 'find-pairs-hard',
                 component: () => import('src/components/GameFindPairsHard.vue')
+              },
+              {
+                path: 'find-pairs-easy',
+                component: () => import('src/components/GameFindPairsNEW.vue')
               },
               {
                 path: 'find-pairs-hardcore',
                 component: () => import('src/components/GameFindPairsHardcore.vue')
               },
               {
-                path: 'find-one-pair',
-                component: () => import('src/components/GameFindPairsEasy.vue')
+                path: 'this-game-is-coming-soon-2',
+                component: () => import('components/ThisGameIsComingSoon2.vue')
               },
               {
                 path: 'bender',
@@ -123,6 +127,18 @@ const routes = [
       {
         path: '/workbench4',
         component: () => import('src/pages/pageWorkbench4.vue')
+      },
+      {
+        path: '/workbench5',
+        component: () => import('src/pages/pageWorkbench5.vue')
+      },
+      {
+        path: '/workbench6',
+        component: () => import('src/pages/pageWorkbench6.vue')
+      },
+      {
+        path: '/game-puzzle-squares',
+        component: () => import('src/pages/gamePuzzleSquares.vue')
       },
       {
         path: '/leader-board',

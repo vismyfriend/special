@@ -40,11 +40,18 @@ const router = useRouter()
 const $q = useQuasar()
 
 const AllSetsOfWords = ref([
+
   {
-    missionName: "devModeNumbers",
-    description: "протестировать игры",
-    id: 0,
-    active: true,
+    missionName: "digits",
+    description: "цифры",
+    id: 6,
+    active: true
+  },
+  {
+    missionName: "alphabetData",
+    description: "Алфавит ENG",
+    id: 7,
+    active: true
   },
   {
     missionName: "devModeNumbersFast",
@@ -82,18 +89,7 @@ const AllSetsOfWords = ref([
     id: 5,
     active: true
   },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 6,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 7,
-    active: true
-  },
+
   {
     missionName: "missssssion",
     description: "новый набор слов и выражений",

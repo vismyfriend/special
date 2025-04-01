@@ -1,9 +1,19 @@
 <template>
   <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
-  <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open S.P. E.C.I.A.L App" stack glossy color="purple"
+  <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open &nbsp;S.P. E.C.I.A.L &nbsp;App" stack glossy color="purple"
     @click="goToRegistrationPage" />
-  <q-btn class="q-mb-sm zoomIn" icon="phone" label="Send a message to Vincent" push color="primary"
+  <q-btn class="q-mb-sm zoomIn ask-vincent"
+         icon="phone"
+         label="ASK Vincent"
+         push
+         color="primary"
          @click="linkToVismyfriendTelegram" />
+  <q-btn class="q-mb-sm zoomIn"
+         icon="my_location"
+         label="попробовать игры"
+         push
+         color="primary"
+         @click="tryGames" />
   <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"
     @click="goToPhotosOfAgentsPage" />
   <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
@@ -18,7 +28,9 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-
+const tryGames = () => {
+  window.location.href = '#/special-app/devModeNumbersFast';
+};
 const goVismyCoderPage = () => {
   router.push("/vismycoder")
 }
@@ -71,16 +83,30 @@ const getOrdinalSuffix = (date) => {
 onMounted(() => {
   const currentDate = new Date();
   const monthName = currentDate.toLocaleString('default', { month: 'long' });
-  const dayName = currentDate.toLocaleString('default', { weekday: 'long' }); // Получаем название дня недели
-  const currentDay = currentDate.getDate(); // используем getDate() для получения числа месяца
+  const dayName = currentDate.toLocaleString('default', { weekday: 'long' });
+  const currentDay = currentDate.getDate();
 
   const suffix = getOrdinalSuffix(currentDay);
+
+  // Массив приветствий
+  const greetings = [
+    "Hello, friends",
+    "Welcome to SPECIAL",
+    "Hi, buddy",
+    "Hola, amigos ",
+    "Privet, friend",
+    "Today is a SPECIAL day",];
+
+  // Выбираем случайное приветствие
+  const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+
+  // Обновляем сообщение
   document.getElementById('intro-message').innerHTML = `
-  Hello, special agent <br>
-  today is <u><span class="purple-text">${dayName}</span></u> <br>
-  the <span class="purple-text">${currentDay}</span>-<strong>
-  <u><span class="purple-text">${suffix}</span></u></strong> of ${monthName}
-`;
+    ${randomGreeting} <br>
+    today is <u><span class="purple-text">${dayName}</span></u> <br>
+    the <span class="purple-text">${currentDay}</span>-<strong>
+    <u><span class="purple-text">${suffix}</span></u></strong> of ${monthName}
+  `;
 });
 
 
