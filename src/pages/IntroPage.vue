@@ -17,7 +17,11 @@
   <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"
     @click="goToPhotosOfAgentsPage" />
   <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
-
+<!--  <q-btn-->
+<!--    class="custom-btn"-->
+<!--    label="НАЖМИ!"-->
+<!--    @click="test"-->
+<!--  />-->
   <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />
   <!-- а где лучше всего идеи записывать? буду здесь пока! -->
 
@@ -26,6 +30,8 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import {api} from "src/api";
+import backEndTest from "src/api/backEndTest";
 
 const router = useRouter()
 const tryGames = () => {
@@ -79,13 +85,22 @@ const getOrdinalSuffix = (date) => {
 };
 
 
+// Функция для теста Бэкенда при старте приложения - отправляем запрос
+const connectToBackEnd = async () => {
+  try {
+    const backEndTest = await api.backEndTest.get(); // Запрос на получение данных с бэкенда
+  } catch (error) {
+    console.error("Ошибка соединения с бэкЭндиной!", error);
+  }
+};
 
-onMounted(() => {
+onMounted(  () => {
+
+  connectToBackEnd();
   const currentDate = new Date();
-  const monthName = currentDate.toLocaleString('default', { month: 'long' });
-  const dayName = currentDate.toLocaleString('default', { weekday: 'long' });
+  const monthName = currentDate.toLocaleString('en-US', { month: 'long' }); // Явно указываем английский
+  const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' }); // Явно указываем английский
   const currentDay = currentDate.getDate();
-
   const suffix = getOrdinalSuffix(currentDay);
 
   // Массив приветствий
@@ -93,13 +108,14 @@ onMounted(() => {
     "Hello, friends",
     "Welcome to SPECIAL",
     "Hi, buddy",
+    "Хэллоу, фрэнд",
+    "Zdraste, priehali",
     "Hola, amigos ",
     "Privet, friend",
-    "Today is a SPECIAL day",];
-
+    "Today is a SPECIAL day",
+  ];
   // Выбираем случайное приветствие
   const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-
   // Обновляем сообщение
   document.getElementById('intro-message').innerHTML = `
     ${randomGreeting} <br>
@@ -107,7 +123,9 @@ onMounted(() => {
     the <span class="purple-text">${currentDay}</span>-<strong>
     <u><span class="purple-text">${suffix}</span></u></strong> of ${monthName}
   `;
+
 });
+
 
 
 </script>
@@ -129,6 +147,18 @@ onMounted(() => {
   bottom: 0;
 
 }
+
+//.custom-btn {
+//  background-image: url('../assets/images/yellow_card.png');
+//  background-size: cover;
+//  background-position: center;
+//content: "";
+//  //aspect-ratio: 16 / 3; /* Подбери под свою картинку */
+////height: 30px;
+//  color: black;
+//  font-weight: bold;
+//  font-size: 20px;
+//}
 .bubble {
   text-align: center;
   user-select: none;
@@ -137,7 +167,7 @@ onMounted(() => {
   display: inline-block;
   position: relative;
   padding: 30px 40px;
-  border-radius: 10px;
+  border-radius: 45px;
   border: 3px solid black;
   background: white;
   clear: both;

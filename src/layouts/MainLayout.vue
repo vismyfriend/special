@@ -1,6 +1,7 @@
 <template>
-  <img class="backgroundImg" :src="currentBackgroundDay?.img" alt="">
-
+  <div class="parent">
+  <img class="backgroundImg" :class="{'blur' : blurredPage}" :src="currentBackgroundDay?.img" alt="">
+  </div>
   <div class="main-wrapper">
     <div class="wrapper">
       <router-view />
@@ -27,9 +28,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineExpose } from 'vue';
+import {ref, onMounted, defineExpose, computed} from 'vue';
+import {useRoute} from "vue-router";
 
+const route = useRoute()
 const currentBackgroundDay = ref(null);
+const blurredPage = computed( () => route.path !== "/notBlurredBackground")
 
 const isMusicPlaying = ref(false);  // Состояние звука
 const volume = ref(0);  // Изначальный уровень громкости (0 = выключена)
@@ -74,22 +78,24 @@ const startMusicAtLevel = (level) => {
   adjustVolume(); // Запускаем музыку и настраиваем громкость
 };
 
-
+// всего 7 дней недели, поэтому только 7 фонов, но можно будет доделать смену фона по времени суток
 const backgrounds = ref([
-  { day: 0, img: new URL("../assets/images/background.jpg", import.meta.url).href },
+  { day: 0, img: new URL("../assets/images/background1.jpg", import.meta.url).href },
   { day: 1, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
-  { day: 2, img: new URL("../assets/images/background1.jpg", import.meta.url).href },
-  { day: 3, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
-  { day: 4, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
-  { day: 5, img: new URL("../assets/images/background4.jpg", import.meta.url).href },
-  { day: 6, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
-  { day: 7, img: new URL("../assets/images/background3.jpg", import.meta.url).href },
+  { day: 2, img: new URL("../assets/images/background8.jpg", import.meta.url).href },
+  { day: 3, img: new URL("../assets/images/background4.jpg", import.meta.url).href },
+  { day: 4, img: new URL("../assets/images/background5.jpg", import.meta.url).href },
+  { day: 5, img: new URL("../assets/images/background6.jpg", import.meta.url).href },
+  { day: 6, img: new URL("../assets/images/background7.jpg", import.meta.url).href },
 ]);
+
+
 
 // Устанавливаем текущий фон в зависимости от дня недели
 onMounted(() => {
   const currentDay = new Date().getDay();
   currentBackgroundDay.value = backgrounds.value.find(el => el.day === currentDay);
+  console.log(currentDay);
 });
 
 defineExpose({ audio });
@@ -120,6 +126,15 @@ defineExpose({ audio });
   z-index: -1;
   right: 0;
   bottom: 0;
+}
+//.parent {
+//  overflow: hidden;
+//  display: inline-block; /* Для точного обрезания */
+//}
+
+.blur {
+  filter: blur(6px);
+  box-shadow:  0 0 20px 17px black
 }
 
 .music-toggle-btn {
@@ -153,7 +168,7 @@ defineExpose({ audio });
   padding: 5px;
   animation: marquee 10s linear infinite;
   mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+  //-webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
 }
 
 @keyframes marquee {

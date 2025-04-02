@@ -137,6 +137,10 @@ const routes = [
         component: () => import('src/pages/pageWorkbench6.vue')
       },
       {
+        path: '/flipBook',
+        component: () => import('src/pages/flipBook.vue')
+      },
+      {
         path: '/game-puzzle-squares',
         component: () => import('src/pages/gamePuzzleSquares.vue')
       },
@@ -153,11 +157,28 @@ const routes = [
     path: '/vismyfriend',
     component: () => import('src/pages/Vismyfriend.vue')
   },
+  {
+    path: '/noLayoutPage',
+    component: () => import('src/pages/pageWithoutMainLayout.vue')
+  },
+  {
+    path: '/noLayoutPage2',
+    component: () => import('src/pages/pageWithoutMainLayout2.vue')
+  },
+  {
+    path: '/canvas-test',
+    component: () => import('src/pages/canvasTest.vue')
+  },
+  {
+    path: '/NOcanvas-test',
+    component: () => import('pages/noCanvasTest.vue')
+  },
 
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
+
 ]
 
 export default routes

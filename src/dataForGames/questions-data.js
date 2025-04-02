@@ -1,4 +1,4 @@
-// чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R   
+// чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R
 // ^\s*$\n
 const questionsData = {
 
@@ -36,5 +36,12 @@ const questionsData = {
         { id: 31, eng: "million", ru: "миллион" },
         { id: 32, eng: "billion", ru: "миллиард" },
     ],
+  devModeNumbersFast: [
+    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 29, eng: "hundred", ru: "сто", hint: "/ хандред /" },
+    { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+
+  ],
 }
 export default questionsData

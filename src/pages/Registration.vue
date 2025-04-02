@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
-      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">
+<!--      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">-->
       <p class="bubble left think" id="intro-message">What is<br> your <br>name?</p>
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
 

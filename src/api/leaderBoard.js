@@ -1,7 +1,7 @@
 import { httpClient } from "./modules/httpClient";
 
 export default {
-  get: () => httpClient.get('/scores'),
+  get: (gameName) => httpClient.get(`${gameName ? '/scores?game=' + gameName : '/scores' }` ),
   post: (game, time, mistakes, agentName) => httpClient.post('/scores',{
     "game": game,
     "time": time,

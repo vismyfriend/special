@@ -1,6 +1,12 @@
 <template>
     <div class="game-container" v-if="currentGameData.length">
-        <button class="goBackPage" @click="undoLastRemoval">ctrl + z</button> 
+      <button
+        class="goBackPage"
+        @click="undoLastRemoval"
+        :disabled="removedWords.length === 0"
+      >
+        ctrl + z
+      </button>
         <div class="deck-of-cards">
             <div class="wordCard" @click="loadQuestion">
                 <div class="card-content">
@@ -11,11 +17,11 @@
                 </div>
             </div>
             <div class="remaining-cards" ref="remainingCardsContainer">
-                <div 
-                    class="remaining-card" @click="loadQuestion" 
-                    v-for="(card, index) in remainingCards" 
+                <div
+                    class="remaining-card" @click="loadQuestion"
+                    v-for="(card, index) in remainingCards"
                     :key="index"
-                    :style="getCardStyle(index)" 
+                    :style="getCardStyle(index)"
                 >
                     <div class="card-content">
                         <div class="card-text">
@@ -28,6 +34,7 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
@@ -37,66 +44,63 @@ const router = useRouter();
 const route = useRoute();
 
 const currentGameData = ref([]);
-const currentWord = ref({});
+const currentWord = ref(null);
 let shuffledData = [];
-const removedWords = []; // Массив для хранения удаленных элементов
+const removedWords = ref([]); // теперь реактивный!
 
+// Функция перемешивания
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
+// Загрузка нового слова
 const loadQuestion = () => {
-    if (shuffledData.length === 0) {
-        finishGame();
-        return;
-    }
+  if (shuffledData.length === 0) {
+    finishGame();
+    return;
+  }
 
-    // Берем последний элемент из перемешанного массива
-    const lastWord = shuffledData.pop(); // Удаляем последний элемент
-    currentWord.value = lastWord; // Обновляем текущее слово
-    removedWords.push(lastWord); // Добавляем удаленный элемент в массив
-    console.log("Удалено слово:", lastWord); // Для отладки
+  const nextWord = shuffledData.pop();
+  if (currentWord.value) {
+    removedWords.value.push(currentWord.value); // сохраняем предыдущее
+  }
+  currentWord.value = nextWord;
 };
 
+// Отмена последнего действия
 const undoLastRemoval = () => {
-    // Проверяем, есть ли удаленные слова для восстановления
-    if (removedWords.length === 0) {
-        console.log("Нет удаленных элементов для восстановления.");
-        return;
-    }
+  if (removedWords.value.length === 0) return;
 
-    // Восстанавливаем последний удаленный элемент
-    const lastRemovedWord = removedWords.pop();
-    shuffledData.push(lastRemovedWord); // Добавляем его обратно в shuffledData
-    currentWord.value = lastRemovedWord; // Обновляем текущее слово
-    console.log("Восстановлено слово:", lastRemovedWord); // Для отладки
+  const lastRemoved = removedWords.value.pop();
+
+  if (currentWord.value) {
+    shuffledData.push(currentWord.value); // возвращаем текущую обратно
+  }
+
+  currentWord.value = lastRemoved;
 };
 
+// Конец игры
 const finishGame = () => {
-    alert("Игра окончена! Вы просмотрели все слова.");
+  alert("Игра окончена! Вы просмотрели все слова.");
 };
 
-onMounted(() => {
-    const missionName = route.params.missionName;
-    currentGameData.value = questionsData[missionName] || [];
-    
-    // Перемешиваем данные один раз
-    shuffledData = shuffle([...currentGameData.value]);
+// Оставшиеся карточки
+const remainingCards = computed(() => shuffledData);
 
-    loadQuestion();
-    
-});
-
-// Вычисляем оставшиеся карты
-const remainingCards = computed(() => {
-    return shuffledData;
-});
-
-// Метод для получения стилей карты
+// Стиль оставшихся карт
 const getCardStyle = (index) => {
-    return {
-        top: `${index * 1.5}px`, // Смещение по вертикали
-        left: `${index * 1.5}px`, // Смещение по горизонтали
-    };
+  return {
+    top: `${index * 1.5}px`,
+    left: `${index * 1.5}px`,
+  };
 };
+
+// Загрузка игры
+onMounted(() => {
+  const missionName = route.params.missionName;
+  currentGameData.value = questionsData[missionName] || [];
+  shuffledData = shuffle([...currentGameData.value]);
+  loadQuestion();
+});
 </script>
 
 
@@ -184,6 +188,10 @@ const getCardStyle = (index) => {
     justify-content: center;
     align-items: center;
     cursor: default; /* Указатель мыши по умолчанию */
+}
+.goBackPage:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 </style>

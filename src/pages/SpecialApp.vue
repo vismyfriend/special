@@ -9,7 +9,7 @@
        она только для десктопной версии. (если телефон горизонтально разворачивают, то тоже можно убрать рамку) -->
 
       <!-- <img class="phoneFrame" v-if="$q.platform.is.desktop" src="../assets/images/phone frame.png" alt="logo"> -->
-      <img class="backgroundImg" src="/src/assets/images/backgroundBlur.jpg" alt="blur">
+<!--      <img class="backgroundImg" src="/src/assets/images/backgroundBlur.jpg" alt="blur">-->
 
       <div class="q-pa-15">
         <img src="../assets/images/special logo detective girl.png" alt="logo">

@@ -111,8 +111,8 @@ const toggleExpand = () => {
 // Функция для загрузки таблицы победителей с сервера
 const fetchLeaderboard = async () => {
   try {
-    const res = await api.scores.get(); // Запрос на получение данных с бэкенда
-    const response = res.data[gameStore.gameName];
+    const res = await api.scores.get(gameStore.gameName); // Запрос на получение данных с бэкенда
+    const response = res.data;
     console.log(response);
 
     if (Array.isArray(response)) {
