@@ -82,8 +82,8 @@ const getOrdinalSuffix = (date) => {
 
 onMounted(() => {
   const currentDate = new Date();
-  const monthName = currentDate.toLocaleString('default', { month: 'long' });
-  const dayName = currentDate.toLocaleString('default', { weekday: 'long' });
+  const monthName = currentDate.toLocaleString('en-US', { month: 'long' }); // Явно указываем английский
+  const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' }); // Явно указываем английский
   const currentDay = currentDate.getDate();
 
   const suffix = getOrdinalSuffix(currentDay);
