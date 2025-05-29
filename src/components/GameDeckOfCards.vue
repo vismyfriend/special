@@ -120,27 +120,23 @@ let lastTiltTime = 0;
 let canTriggerForward = true;
 let canTriggerBackward = true;
 const TILT_COOLDOWN_MS = 1000; // Задержка между действиями
-
 const handleOrientation = (event) => {
   const { beta } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 125; // Наклон от себя → вперёд
-  const TILT_UP_THRESHOLD = 30;    // Наклон на себя → назад
-  const NEUTRAL_ZONE = 90;         // Пока не вернулись в эту зону, ничего не срабатывает
+  const TILT_DOWN_THRESHOLD = 125;
+  const TILT_UP_THRESHOLD = 30;
+  const NEUTRAL_ZONE = 90;
 
-
-  // Разрешаем срабатывание вперёд только если вернулись в нейтраль
-  if (beta < NEUTRAL_ZONE && !canTriggerForward) {
-    canTriggerForward = true;
-  }
-
-  // Разрешаем срабатывание назад только если вернулись в нейтраль
-  if (beta > NEUTRAL_ZONE && !canTriggerBackward) {
+  // Вернулись в нейтральную зону → можно снова активировать
+  if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
     canTriggerBackward = true;
   }
 
-  // Вперёд (наклон от себя)
+  if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
+    canTriggerForward = true;
+  }
+
   if (
     beta > TILT_DOWN_THRESHOLD &&
     now - lastTiltTime > TILT_COOLDOWN_MS &&
@@ -150,10 +146,7 @@ const handleOrientation = (event) => {
     loadQuestion();
     lastTiltTime = now;
     canTriggerForward = false;
-  }
-
-  // Назад (наклон на себя)
-  else if (
+  } else if (
     beta < TILT_UP_THRESHOLD &&
     now - lastTiltTime > TILT_COOLDOWN_MS &&
     canTriggerBackward
@@ -252,7 +245,7 @@ onMounted(() => {
 }
 
 .card-text {
-    font-size: 25px; /* Размер шрифта */
+    font-size: 20px; /* Размер шрифта */
     color: black; /* Цвет текста */
     text-align: center; /* Центрирование текста */
     padding: 10px;
