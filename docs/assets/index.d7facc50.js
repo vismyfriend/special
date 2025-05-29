@@ -1,1 +1,0 @@
-import{l as s}from"./index.f3ae645f.js";var r={post:t=>s.post("/auth",{username:t})},p={get:t=>s.get(`${t?"/scores?game="+t:"/scores"}`),post:(t,e,a,o)=>s.post("/scores",{game:t,time:e,mistakes:a,agent:o})},c={get:()=>s.get("/test")};const i={auth:r,scores:p,backEndTest:c};export{i as a};

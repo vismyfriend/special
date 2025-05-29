@@ -77,9 +77,11 @@ const loadQuestion = () => {
   }
 
   const nextWord = shuffledData.pop();
-  if (currentWord.value) {
+  // Не добавляем intro-карточку в историю
+  if (currentWord.value && !currentWord.value.isIntro) {
     removedWords.value.push(currentWord.value);
   }
+
   currentWord.value = nextWord;
 };
 
@@ -121,14 +123,14 @@ const handleOrientation = (event) => {
   const { beta } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 45;
+  const TILT_DOWN_THRESHOLD = 135;
   // 	•	Когда пользователь наклоняет телефон от себя (вниз) на угол больше 45° → срабатывает loadQuestion() (вперёд).
 
-  const TILT_UP_THRESHOLD = -45;
+  const TILT_UP_THRESHOLD = 55;
   // 	•	Когда пользователь наклоняет телефон на себя (вверх) больше 30° вверх → срабатывает undoLastRemoval() (назад).
 
-  const NEUTRAL_ZONE = 30;
-  // 	•	NEUTRAL_ZONE = 30° — защита от дрожаний: пока телефон не вернулся в зону ±30°, новая команда не сработает.
+  const NEUTRAL_ZONE = 90;
+  // 	•	NEUTRAL_ZONE = 90° — защита от дрожаний: пока телефон не вернулся в зону ±90°, новая команда не сработает.
 
 
   // Разрешаем следующую прокрутку только если телефон вернулся в нейтральную зону
@@ -187,7 +189,14 @@ onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData = shuffle([...currentGameData.value]);
-  loadQuestion();
+
+  // 👉 Добавим приветственную карточку
+  currentWord.value = {
+    ru: "Наклоните телефон от себя, чтобы начать игру",
+    eng: "Tilt the phone away from you to begin",
+    isIntro: true // специальный флаг
+  };
+
 
   // Инициализируем управление наклоном
   initMotionControls();
