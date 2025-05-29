@@ -38,7 +38,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, onUnmounted } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -46,7 +46,10 @@ const route = useRoute();
 const currentGameData = ref([]);
 const currentWord = ref(null);
 let shuffledData = [];
-const removedWords = ref([]); // теперь реактивный!
+const removedWords = ref([]);
+
+// Добавляем флаг для отслеживания поддержки датчиков
+const isMotionSupported = ref(false);
 
 // Функция перемешивания
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -60,7 +63,7 @@ const loadQuestion = () => {
 
   const nextWord = shuffledData.pop();
   if (currentWord.value) {
-    removedWords.value.push(currentWord.value); // сохраняем предыдущее
+    removedWords.value.push(currentWord.value);
   }
   currentWord.value = nextWord;
 };
@@ -72,7 +75,7 @@ const undoLastRemoval = () => {
   const lastRemoved = removedWords.value.pop();
 
   if (currentWord.value) {
-    shuffledData.push(currentWord.value); // возвращаем текущую обратно
+    shuffledData.push(currentWord.value);
   }
 
   currentWord.value = lastRemoved;
@@ -87,12 +90,68 @@ const finishGame = () => {
 const remainingCards = computed(() => shuffledData);
 
 // Стиль оставшихся карт
-const getCardStyle = (index) => {
-  return {
-    top: `${index * 1.5}px`,
-    left: `${index * 1.5}px`,
-  };
+const getCardStyle = (index) => ({
+  top: `${index * 1.5}px`,
+  left: `${index * 1.5}px`,
+});
+
+// ===== НОВЫЙ КОД: Управление наклоном =====
+const handleOrientation = (event) => {
+  // beta - наклон вперед/назад (в градусах)
+  // gamma - наклон влево/вправо
+  const { beta } = event;
+
+  // Пороговые значения (можно настроить)
+  const TILT_DOWN_THRESHOLD = 45;  // Уменьши для более чувствительного срабатывания
+  const TILT_UP_THRESHOLD = -30;   // Увеличивай по модулю для меньшей чувствительности
+
+
+  // Защита от частых срабатываний
+  let lastTiltTime = 0;
+  const now = Date.now();
+
+  if (beta > TILT_DOWN_THRESHOLD && now - lastTiltTime > 300) {
+    // Виброотдача (если поддерживается)
+    if (navigator.vibrate) navigator.vibrate(30); // 30ms - короткий "клик"
+    loadQuestion();
+    lastTiltTime = now;
+  }
+  else if (beta < TILT_UP_THRESHOLD && now - lastTiltTime > 300) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    undoLastRemoval();
+    lastTiltTime = now;
+  }
 };
+
+// Проверяем поддержку вибрации (опционально)
+const isVibrationSupported = navigator.vibrate ? true : false;
+
+
+// Проверяем поддержку датчиков и подписываемся
+const initMotionControls = () => {
+  if (window.DeviceOrientationEvent) {
+    // iOS 13+ требует разрешения
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            window.addEventListener('deviceorientation', handleOrientation);
+            isMotionSupported.value = true;
+          }
+        })
+        .catch(console.error);
+    } else {
+      // Android и другие браузеры
+      window.addEventListener('deviceorientation', handleOrientation);
+      isMotionSupported.value = true;
+    }
+  }
+};
+
+// Отписываемся при размонтировании
+onUnmounted(() => {
+  window.removeEventListener('deviceorientation', handleOrientation);
+});
 
 // Загрузка игры
 onMounted(() => {
@@ -100,6 +159,9 @@ onMounted(() => {
   currentGameData.value = questionsData[missionName] || [];
   shuffledData = shuffle([...currentGameData.value]);
   loadQuestion();
+
+  // Инициализируем управление наклоном
+  initMotionControls();
 });
 </script>
 
