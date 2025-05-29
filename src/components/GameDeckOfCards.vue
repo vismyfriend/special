@@ -32,7 +32,15 @@
                 </div>
             </div>
         </div>
+      <button
+        v-if="!isMotionSupported && isIOS"
+        @click="initMotionControls"
+        class="enable-tilt-btn"
+      >
+        Разрешить управление наклоном
+      </button>
     </div>
+
 </template>
 
 <script setup>
@@ -42,6 +50,13 @@ import { onMounted, ref, computed, onUnmounted } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
+
+// Добавляем проверку на iOS
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+// Кнопка будет видна только если:
+// - Устройство iOS
+// - Датчики не разрешены (isMotionSupported === false)
 
 const currentGameData = ref([]);
 const currentWord = ref(null);
@@ -256,4 +271,13 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
+.enable-tilt-btn {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
 </style>
