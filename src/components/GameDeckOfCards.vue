@@ -111,30 +111,38 @@ const getCardStyle = (index) => ({
 });
 
 // ===== НОВЫЙ КОД: Управление наклоном =====
+
+// Защита от частых срабатываний
+let lastTiltTime = 0;
+let canTrigger = true; // новый флаг
+const TILT_COOLDOWN_MS = 1000;
+
 const handleOrientation = (event) => {
-  // beta - наклон вперед/назад (в градусах)
-  // gamma - наклон влево/вправо
   const { beta } = event;
-
-  // Пороговые значения (можно настроить)
-  const TILT_DOWN_THRESHOLD = 45;  // Уменьши для более чувствительного срабатывания
-  const TILT_UP_THRESHOLD = -30;   // Увеличивай по модулю для меньшей чувствительности
-
-
-  // Защита от частых срабатываний
-  let lastTiltTime = 0;
   const now = Date.now();
 
-  if (beta > TILT_DOWN_THRESHOLD && now - lastTiltTime > 300) {
-    // Виброотдача (если поддерживается)
-    if (navigator.vibrate) navigator.vibrate(30); // 30ms - короткий "клик"
+  const TILT_DOWN_THRESHOLD = 45;
+  const TILT_UP_THRESHOLD = -30;
+  const NEUTRAL_ZONE = 30;
+
+  // Разрешаем следующую прокрутку только если телефон вернулся в нейтральную зону
+  if (Math.abs(beta) < NEUTRAL_ZONE) {
+    canTrigger = true;
+  }
+
+  if (!canTrigger) return;
+
+  if (beta > TILT_DOWN_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(30);
     loadQuestion();
     lastTiltTime = now;
+    canTrigger = false;
   }
-  else if (beta < TILT_UP_THRESHOLD && now - lastTiltTime > 300) {
+  else if (beta < TILT_UP_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS) {
     if (navigator.vibrate) navigator.vibrate(30);
     undoLastRemoval();
     lastTiltTime = now;
+    canTrigger = false;
   }
 };
 
