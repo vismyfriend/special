@@ -122,8 +122,14 @@ const handleOrientation = (event) => {
   const now = Date.now();
 
   const TILT_DOWN_THRESHOLD = 45;
-  const TILT_UP_THRESHOLD = -30;
+  // 	•	Когда пользователь наклоняет телефон от себя (вниз) на угол больше 45° → срабатывает loadQuestion() (вперёд).
+
+  const TILT_UP_THRESHOLD = -45;
+  // 	•	Когда пользователь наклоняет телефон на себя (вверх) больше 30° вверх → срабатывает undoLastRemoval() (назад).
+
   const NEUTRAL_ZONE = 30;
+  // 	•	NEUTRAL_ZONE = 30° — защита от дрожаний: пока телефон не вернулся в зону ±30°, новая команда не сработает.
+
 
   // Разрешаем следующую прокрутку только если телефон вернулся в нейтральную зону
   if (Math.abs(beta) < NEUTRAL_ZONE) {
