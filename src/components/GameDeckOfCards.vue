@@ -44,6 +44,7 @@
 </template>
 
 <script setup>
+// ===== ИМПОРТЫ И НАСТРОЙКА =====
 import { useRouter, useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
 import { onMounted, ref, computed, onUnmounted } from 'vue';
@@ -51,33 +52,31 @@ import { onMounted, ref, computed, onUnmounted } from 'vue';
 const router = useRouter();
 const route = useRoute();
 
-// Добавляем проверку на iOS
+// Проверка на устройство iOS
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-// Кнопка будет видна только если:
-// - Устройство iOS
-// - Датчики не разрешены (isMotionSupported === false)
 
 const currentGameData = ref([]);
 const currentWord = ref(null);
-let shuffledData = [];
-const removedWords = ref([]);
+let shuffledData = []; // Перемешанные карточки, стек
+const removedWords = ref([]); // Удалённые карточки, для отмены (undo)
 
-// Добавляем флаг для отслеживания поддержки датчиков
-const isMotionSupported = ref(false);
+const isMotionSupported = ref(false); // Показывать кнопку разрешения
 
-// Функция перемешивания
+// ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+
+// Случайная перестановка карточек
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
-// Загрузка нового слова
+// Загрузка следующей карточки
 const loadQuestion = () => {
   if (shuffledData.length === 0) {
     finishGame();
     return;
   }
 
-  const nextWord = shuffledData.pop();
-  // Не добавляем intro-карточку в историю
+  const nextWord = shuffledData.pop(); // Берём из конца массива
+
+  // Текущая карточка отправляется в историю (если не intro)
   if (currentWord.value && !currentWord.value.isIntro) {
     removedWords.value.push(currentWord.value);
   }
@@ -85,17 +84,17 @@ const loadQuestion = () => {
   currentWord.value = nextWord;
 };
 
-// Отмена последнего действия
+// Возврат к предыдущей карточке
 const undoLastRemoval = () => {
   if (removedWords.value.length === 0) return;
 
-  const lastRemoved = removedWords.value.pop();
+  const lastRemoved = removedWords.value.pop(); // Берём из истории
 
   if (currentWord.value) {
-    shuffledData.push(currentWord.value);
+    shuffledData.push(currentWord.value); // Возвращаем текущую карту обратно в очередь
   }
 
-  currentWord.value = lastRemoved;
+  currentWord.value = lastRemoved; // Показываем предыдущую
 };
 
 // Конец игры
@@ -103,65 +102,73 @@ const finishGame = () => {
   alert("Игра окончена! Вы просмотрели все слова.");
 };
 
-// Оставшиеся карточки
+// Считаем, какие карты ещё остались
 const remainingCards = computed(() => shuffledData);
 
-// Стиль оставшихся карт
+// Для позиционирования стопки карт (смещение по индексам)
 const getCardStyle = (index) => ({
   top: `${index * 1.5}px`,
   left: `${index * 1.5}px`,
 });
 
-// ===== НОВЫЙ КОД: Управление наклоном =====
 
-// Защита от частых срабатываний
+// ===== УПРАВЛЕНИЕ НАКЛОНОМ =====
+
+// Таймер защиты от слишком частых наклонов
 let lastTiltTime = 0;
-let canTrigger = true; // новый флаг
-const TILT_COOLDOWN_MS = 1000;
+// Флаг для отслеживания, вернулся ли телефон в нейтральную зону
+let canTriggerForward = true;
+let canTriggerBackward = true;
+const TILT_COOLDOWN_MS = 1000; // Задержка между действиями
 
 const handleOrientation = (event) => {
   const { beta } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 135;
-  // 	•	Когда пользователь наклоняет телефон от себя (вниз) на угол больше 45° → срабатывает loadQuestion() (вперёд).
-
-  const TILT_UP_THRESHOLD = 55;
-  // 	•	Когда пользователь наклоняет телефон на себя (вверх) больше 30° вверх → срабатывает undoLastRemoval() (назад).
-
-  const NEUTRAL_ZONE = 90;
-  // 	•	NEUTRAL_ZONE = 90° — защита от дрожаний: пока телефон не вернулся в зону ±90°, новая команда не сработает.
+  const TILT_DOWN_THRESHOLD = 125; // Наклон от себя → вперёд
+  const TILT_UP_THRESHOLD = 30;    // Наклон на себя → назад
+  const NEUTRAL_ZONE = 90;         // Пока не вернулись в эту зону, ничего не срабатывает
 
 
-  // Разрешаем следующую прокрутку только если телефон вернулся в нейтральную зону
-  if (Math.abs(beta) < NEUTRAL_ZONE) {
-    canTrigger = true;
+  // Разрешаем срабатывание вперёд только если вернулись в нейтраль
+  if (beta < NEUTRAL_ZONE && !canTriggerForward) {
+    canTriggerForward = true;
   }
 
-  if (!canTrigger) return;
+  // Разрешаем срабатывание назад только если вернулись в нейтраль
+  if (beta > NEUTRAL_ZONE && !canTriggerBackward) {
+    canTriggerBackward = true;
+  }
 
-  if (beta > TILT_DOWN_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS) {
+  // Вперёд (наклон от себя)
+  if (
+    beta > TILT_DOWN_THRESHOLD &&
+    now - lastTiltTime > TILT_COOLDOWN_MS &&
+    canTriggerForward
+  ) {
     if (navigator.vibrate) navigator.vibrate(30);
     loadQuestion();
     lastTiltTime = now;
-    canTrigger = false;
+    canTriggerForward = false;
   }
-  else if (beta < TILT_UP_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS) {
+
+  // Назад (наклон на себя)
+  else if (
+    beta < TILT_UP_THRESHOLD &&
+    now - lastTiltTime > TILT_COOLDOWN_MS &&
+    canTriggerBackward
+  ) {
     if (navigator.vibrate) navigator.vibrate(30);
     undoLastRemoval();
     lastTiltTime = now;
-    canTrigger = false;
+    canTriggerBackward = false;
   }
 };
 
-// Проверяем поддержку вибрации (опционально)
-const isVibrationSupported = navigator.vibrate ? true : false;
 
-
-// Проверяем поддержку датчиков и подписываемся
+// Разрешение на использование датчиков (для iOS)
 const initMotionControls = () => {
   if (window.DeviceOrientationEvent) {
-    // iOS 13+ требует разрешения
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
       DeviceOrientationEvent.requestPermission()
         .then(permissionState => {
@@ -172,33 +179,32 @@ const initMotionControls = () => {
         })
         .catch(console.error);
     } else {
-      // Android и другие браузеры
+      // Для Android
       window.addEventListener('deviceorientation', handleOrientation);
       isMotionSupported.value = true;
     }
   }
 };
 
-// Отписываемся при размонтировании
+// Отписка при уходе со страницы
 onUnmounted(() => {
   window.removeEventListener('deviceorientation', handleOrientation);
 });
 
-// Загрузка игры
+// Загрузка данных при запуске
 onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData = shuffle([...currentGameData.value]);
 
-  // 👉 Добавим приветственную карточку
+  // Первая карточка-инструкция
   currentWord.value = {
-    ru: "Наклоните телефон от себя, чтобы начать игру",
-    eng: "Tilt the phone away from you to begin",
-    isIntro: true // специальный флаг
+    ru: "Если вы услышали YES - наклоните телефон вниз",
+    eng: "If you heard YES - tilt your phone down",
+    isIntro: true
   };
 
-
-  // Инициализируем управление наклоном
+  // Активируем управление наклоном
   initMotionControls();
 });
 </script>
@@ -246,7 +252,7 @@ onMounted(() => {
 }
 
 .card-text {
-    font-size: 15px; /* Размер шрифта */
+    font-size: 25px; /* Размер шрифта */
     color: black; /* Цвет текста */
     text-align: center; /* Центрирование текста */
     padding: 10px;
