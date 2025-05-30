@@ -37,10 +37,21 @@ const questionsData = {
         { id: 32, eng: "billion", ru: "миллиард" },
     ],
   devModeNumbersFast: [
-    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
-    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
-    { id: 29, eng: "hundred", ru: "сто", hint: "/ хандред /" },
-    { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+    { id: 1, eng: "one", ru: "один" },
+    { id: 2, eng: "two", ru: "два" },
+    { id: 3, eng: "three", ru: "три" },
+    { id: 4, eng: "four", ru: "четыре" },
+    { id: 5, eng: "five", ru: "пять" },
+    { id: 6, eng: "six", ru: "шесть" },
+    { id: 7, eng: "seven", ru: "семь" },
+    { id: 8, eng: "eight", ru: "восемь" },
+    { id: 9, eng: "nine", ru: "девять" },
+    { id: 10, eng: "ten", ru: "десять" },
+    { id: 11, eng: "eleven", ru: "одиннадцать" },
+    { id: 12, eng: "twelve", ru: "двенадцать" },
+    { id: 13, eng: "thirteen", ru: "тринадцать" },
+    { id: 14, eng: "fourteen", ru: "четырнадцать" },
+
 
   ],
 }

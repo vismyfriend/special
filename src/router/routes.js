@@ -1,19 +1,15 @@
 const routes = [
-
-
-
   {
     path: '/',
-    component: () => import('src/layouts/MainLayout.vue'),
+    component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
       { path: '', component: () => import('src/pages/IntroPage.vue') },
       {
         path: '/special-app',
-        component: () => import('src/layouts/specialLayout.vue'),
+        component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
         children: [
           { path: '', component: () => import('src/pages/SpecialApp.vue') },
           {
-            // : двоеточие обозначает динамичный переход
             path: ':missionName',
             component: () => import('src/layouts/GameLayout.vue'),
             children: [
@@ -95,6 +91,10 @@ const routes = [
       {
         path: '/a-new-page',
         component: () => import('src/pages/visAnewPage.vue')
+      },
+      {
+        path: '/fun-buttons',
+        component: () => import('src/pages/FunButtonsPage.vue'),
       },
       {
         path: '/registration',

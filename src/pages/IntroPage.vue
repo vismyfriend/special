@@ -1,28 +1,54 @@
 <template>
   <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
-  <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="Open &nbsp;S.P. E.C.I.A.L &nbsp;App" stack glossy color="purple"
-    @click="goToRegistrationPage" />
-  <q-btn class="q-mb-sm zoomIn ask-vincent"
-         icon="phone"
-         label="ASK Vincent"
-         push
-         color="primary"
-         @click="linkToVismyfriendTelegram" />
-  <q-btn class="q-mb-sm zoomIn"
-         icon="my_location"
-         label="попробовать игры"
+  <q-btn
+    align="between"
+    class="q-mb-sm zoomIn padding-left-right"
+    color="green"
+    :label="showAltLabels ? 'Where to tap next?' : 'куда тыкать дальше ?'"
+    :icon-right="showAltIcons ? 'south' : 'help'"
+    @click="toggleButtonStates"
+  />
+
+  <q-btn class="q-mb-sm zoomIn padding-left-right"
+         align="between"
+         icon-right="my_location"
+         :label="showAltLabels ? 'сюда , для практики' : 'tap to practice'"
          push
          color="primary"
          @click="tryGames" />
-  <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"
-    @click="goToPhotosOfAgentsPage" />
-  <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />
+
+  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
+         align="between"
+         icon-right="favorite"
+         :label="showAltLabels ? 'сюда , по приколу' : 'tap for fun!'"
+         push
+         color="primary"
+         @click="goToFunPage"
+  />
+  <q-btn class="q-mb-sm zoomIn special-app-button"
+         icon="fingerprint"
+         :label="showAltLabels ? 'вход для СПЭШЛ ЭЙДЖЭНТС' :'For &nbsp; &nbsp;S.P. E.C.I.A.L &nbsp;&nbsp; Agents'"
+         stack glossy color="purple"
+         @click="goToRegistrationPage" />
+
+  <q-btn class="q-mb-sm zoomIn ask-vincent padding-left-right"
+         icon-right="phone"
+         align="between"
+         :label="showAltLabels ? 'спросить вИнсента' : 'Ask Vincent!'"
+         push
+         color="green"
+         @click="linkToVismyfriendTelegram" />
+
+
+<!--  <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"-->
+<!--    @click="goToPhotosOfAgentsPage" />-->
+<!--  <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />-->
 <!--  <q-btn-->
 <!--    class="custom-btn"-->
 <!--    label="НАЖМИ!"-->
 <!--    @click="test"-->
 <!--  />-->
-  <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />
+<!--  <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />-->
   <!-- а где лучше всего идеи записывать? буду здесь пока! -->
 
 </template>
@@ -37,19 +63,43 @@ const router = useRouter()
 const tryGames = () => {
   window.location.href = '#/special-app/devModeNumbersFast';
 };
-const goVismyCoderPage = () => {
-  router.push("/vismycoder")
-}
-const goToSpecialAppPage = () => {
-  router.push("/special-app")
-}
+
+
+// const goVismyCoderPage = () => {
+//   router.push("/vismycoder")
+// }
+// const goToSpecialAppPage = () => {
+//   router.push("/special-app")
+// }
 const goToRegistrationPage = () => {
   router.push("/registration")
 }
+
+const goToFunPage = () => {
+  router.push('/fun-buttons');  // новый маршрут для кнопок «по приколу»
+};
+
 const linkToVismyfriendTelegram = () => {
 
   window.open('https://t.me/vismyfriend?text=Hello Vincent', '_blank'); // Открыть ccылку в новой вкладке }
 
+}
+
+
+import { ref } from 'vue'
+
+const showAltLabels = ref(false)
+const showAltIcons = ref(false)
+
+const toggleLabels = () => {
+  showAltLabels.value = !showAltLabels.value
+}
+const toggleIcons = () => {
+  showAltIcons.value = !showAltIcons.value
+}
+const toggleButtonStates = () => {
+  toggleLabels();
+  toggleIcons();
 }
 const test = () => {
   // alert("you clicked! It worked!")
@@ -319,6 +369,38 @@ onMounted(  () => {
       }
     }
   }
+
+}
+
+.padding-left-right {
+  padding-left: 40px;
+  padding-right: 40px;
+
+}
+.q-btn {
+  display: inline-flex
+;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  outline: 0;
+  border: 0;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 1.715em;
+  text-decoration: none;
+  color: inherit;
+  background: transparent;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-align: center;
+  width: auto;
+  height: 50px;
+
+}
+.special-app-button{
+  height: 70px !important; /* или любое нужное значение */
+//!important нужен, чтобы переопределить встроенный стиль Quasar, если он выставляет height напрямую.
 
 }
 </style>

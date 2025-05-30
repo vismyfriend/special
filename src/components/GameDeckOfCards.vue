@@ -12,11 +12,14 @@
         <button @click="startTimer" class="game-btn">{{ timerLabel }}</button>
       </div>
         <div class="deck-of-cards">
-            <div class="wordCard" @click="loadQuestion">
+          <div class="wordCard" @click="toggleTranslation">
                 <div class="card-content">
                     <div class="card-text">
                         <div class="word">{{ currentWord.ru }}</div>
-                        <div class="translation">{{ currentWord.eng }}</div>
+                      <div class="translation"   :class="{ blurred: !showTranslation && !currentWord.isIntro }"
+                      >
+                        {{ currentWord.eng }}
+                      </div>
                     </div>
                 </div>
             </div>
@@ -43,7 +46,7 @@
               :style="getCardStyle(remainingCards.length - 1)"
               @click="handleCardCoverClick"
             >
-              <img src="../assets/images/special%20logo%20hat%20square.png" alt="Card Back" />
+              <img src="../assets/images/card.png" alt="Card Back" />
             </div>
           </div>
         </div>
@@ -80,6 +83,19 @@ const isMotionSupported = ref(false); // Показывать кнопку ра�
 
 
 // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+const showTranslation = ref(false);
+let translationTimeout = null;
+
+const toggleTranslation = () => {
+  if (translationTimeout) clearTimeout(translationTimeout);
+
+  showTranslation.value = true;
+  translationTimeout = setTimeout(() => {
+    showTranslation.value = false;
+  }, 3000);
+};
+
+
 const isCardCoverTapped = ref(false);
 
 const handleCardCoverClick = () => {
@@ -99,8 +115,15 @@ const timerLabel = computed(() =>
 );
 
 const startTimer = () => {
-  if (timeLeft.value > 0) return; // Уже работает
+  if (timer.value) {
+    // Таймер уже работает → остановим
+    clearInterval(timer.value);
+    timer.value = null;
+    timeLeft.value = 0;
+    return;
+  }
 
+  // Иначе — запускаем новый
   timeLeft.value = 77;
 
   timer.value = setInterval(() => {
@@ -108,8 +131,8 @@ const startTimer = () => {
 
     if (timeLeft.value <= 0) {
       clearInterval(timer.value);
+      timer.value = null;
       timeLeft.value = 0;
-      // Показать уведомление о переходе хода
       alert("⏰ Время вышло!\nПереход хода к следующему игроку.");
     }
   }, 1000);
@@ -159,10 +182,45 @@ const finishGame = () => {
 const remainingCards = computed(() => shuffledData);
 
 // Для позиционирования стопки карт (смещение по индексам)
-const getCardStyle = (index) => ({
-  top: `${index * 1.5}px`,
-  left: `${index * 1.5}px`,
-});
+
+// 1 - вариант простого смещения по диагонали
+
+// const getCardStyle = (index) => ({
+//   top: `${index * 1.5}px`,
+//   left: `${index * 1.5}px`,
+// });
+
+// 2 - вариант спирали небольшой
+
+// const getCardStyle = (index) => {
+//   const offset = 1.5 * index;
+//   const maxOffset = 20;
+//
+//
+//   return {
+//     top: `${Math.min(offset, maxOffset)}px`,
+//     left: `${Math.min(offset, maxOffset)}px`,
+//     transform: `rotate(${Math.min(index * 0.3, 5)}deg)`
+//   };
+// };
+
+// 3 - вариант спираль бесконечная
+const getCardStyle = (index) => {
+  const angleStep = 4; // угол поворота между картами
+  const radius = 10; // радиус спирали
+
+  const angle = index * angleStep;
+  const x = radius * Math.cos((angle * Math.PI) / 180);
+  const y = radius * Math.sin((angle * Math.PI) / 180);
+
+  return {
+    '--x': `${x}px`,
+    '--y': `${y}px`,
+    '--angle': `${angle}deg`,
+    transform: `translate(var(--x), var(--y)) rotate(var(--angle))`,
+    zIndex: index,
+  };
+};
 
 // const resetGame = () => {
 //   shuffledData = shuffle([...currentGameData.value]);
@@ -259,8 +317,8 @@ onMounted(() => {
 
   // Первая карточка-инструкция
   currentWord.value = {
-    ru: "Если вы услышали YES - наклоните телефон вниз",
-    eng: "If you heard YES - tilt your phone down",
+    ru: "Объясни или переведи",
+    eng: "Explain or translate",
     isIntro: true
   };
 
@@ -293,7 +351,7 @@ onMounted(() => {
   border: none;
   border-radius: 5px;
   padding: 8px 12px;
-  cursor: pointer;
+  cursor: none;
   font-weight: bold;
   transition: background-color 0.2s ease;
 }
@@ -310,17 +368,18 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
+  user-select: none;
 }
 
 .wordCard {
     width: 260px; /* Ширина карточки */
     height: 160px; /* Высота карточки */
     background-color: white; /* Цвет фона карточки */
-    border: 1px solid #e90e0e; /* Цвет границы */
+    border: 1px solid rgba(106, 106, 106, 0.73); /* Цвет границы */
     border-radius: 8px; /* Закругление углов */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для эффекта карты */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85); /* Тень для эффекта карты */
     margin: 10px; /* Отступ между картами */
-    cursor: pointer; /* Указатель мыши при наведении */
+    cursor: none; /* Указатель мыши при наведении отключен, чтобы кастомный работал */
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавный переход для анимации */
 }
 
@@ -347,6 +406,7 @@ onMounted(() => {
 
 .word {
     font-weight: bold; /* Выделение русского слова */
+  font-size: 20px;
 }
 .word::after {
     content: ""; /* Псевдоэлемент требует контент */
@@ -359,13 +419,15 @@ onMounted(() => {
 .translation {
     font-style: italic; /* Курсив для перевода */
     color: #555; /* Более светлый цвет для перевода */
+  font-size: 35px;
+
 }
 
 .remaining-cards {
     position: relative; /* Устанавливаем относительное позиционирование для контейнера */
     width: 260px; /* Ширина первой карты */
     height: 160px; /* Высота первой карты */
-    margin-top: 10px; /* Отступ сверху для общего контейнера */
+    margin-top: 75px; /* Отступ сверху для общего контейнера */
 }
 
 .remaining-card {
@@ -373,13 +435,22 @@ onMounted(() => {
     width: 260px; /* Ширина карты, равная первой карте */
     height: 160px; /* Высота карты, равная первой карте */
     background-color: white; /* Цвет фона карточки */
-    border: 1px solid #e90e0e; /* Цвет границы */
+    border: 1px solid rgba(106, 106, 106, 0.73); /* Цвет границы */
     border-radius: 8px; /* Закругление углов */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень для эффекта карты */
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: default; /* Указатель мыши по умолчанию */
+  cursor: default; /* чтобы видно было какую карту тянет */
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translate(var(--x), var(--y)) rotate(var(--angle)) translateY(-5px) translateX(5px);
+    box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.3);
+    z-index: 200; // Поверх всех
+  }
+
 }
 .goBackPage:disabled {
   opacity: 0.5;
@@ -393,14 +464,14 @@ onMounted(() => {
   border: none;
   border-radius: 5px;
   margin-top: 10px;
-  cursor: pointer;
+  cursor: none; /* Указатель мыши при наведении отключен, чтобы кастомный работал */
 }
 
 .card-back-cover {
   position: absolute;
 
   background-color: white; /* Цвет фона карточки */
-  border: 1px solid #e90e0e; /* Цвет границы */
+  border: 1px solid rgba(106, 106, 106, 0.73); /* Цвет границы */
   border-radius: 8px; /* Закругление углов */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень для эффекта карты */
 
@@ -430,6 +501,14 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  object-fit: cover;
+  //object-fit: contain;
+  object-fit: fill;
+}
+
+.translation.blurred {
+  filter: blur(5px);
+  cursor: none; /* Указатель мыши при наведении отключен, чтобы кастомный работал */
+  user-select: none;
+  transition: filter 0.2s ease;
 }
 </style>
