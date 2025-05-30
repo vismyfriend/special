@@ -1,12 +1,16 @@
 <template>
     <div class="game-container" v-if="currentGameData.length">
-      <button
-        class="goBackPage"
-        @click="undoLastRemoval"
-        :disabled="removedWords.length === 0"
-      >
-        ctrl + z
-      </button>
+      <div class="side-buttons">
+<!--        <button @click="resetGame" class="game-btn">Reset</button>-->
+        <button
+          @click="undoLastRemoval"
+          class="game-btn"
+          :disabled="removedWords.length === 0"
+        >
+          Ctrl + Z
+        </button>
+        <button @click="startTimer" class="game-btn">{{ timerLabel }}</button>
+      </div>
         <div class="deck-of-cards">
             <div class="wordCard" @click="loadQuestion">
                 <div class="card-content">
@@ -16,28 +20,39 @@
                     </div>
                 </div>
             </div>
-            <div class="remaining-cards" ref="remainingCardsContainer">
-                <div
-                    class="remaining-card" @click="loadQuestion"
-                    v-for="(card, index) in remainingCards"
-                    :key="index"
-                    :style="getCardStyle(index)"
-                >
-                    <div class="card-content">
-                        <div class="card-text">
-                            <div class="word">{{ card.ru }}</div>
-                            <div class="translation">{{ card.eng }}</div>
-                        </div>
-                    </div>
+          <div class="remaining-cards" ref="remainingCardsContainer">
+            <div
+              class="remaining-card"
+              @click="loadQuestion"
+              v-for="(card, index) in remainingCards"
+              :key="index"
+              :style="getCardStyle(index)"
+            >
+              <div class="card-content">
+                <div class="card-text">
+                  <div class="word">{{ card.ru }}</div>
+                  <div class="translation">{{ card.eng }}</div>
                 </div>
+              </div>
             </div>
+
+            <!-- Обложка сверху последней карты -->
+            <div
+              v-if="remainingCards.length > 0"
+              :class="['card-back-cover', { tapped: isCardCoverTapped }]"
+              :style="getCardStyle(remainingCards.length - 1)"
+              @click="handleCardCoverClick"
+            >
+              <img src="../assets/images/special%20logo%20hat%20square.png" alt="Card Back" />
+            </div>
+          </div>
         </div>
       <button
         v-if="!isMotionSupported && isIOS"
         @click="initMotionControls"
         class="enable-tilt-btn"
       >
-        Разрешить управление наклоном
+        Нажмите сюда -> разрешить наклоны
       </button>
     </div>
 
@@ -62,7 +77,45 @@ const removedWords = ref([]); // Удалённые карточки, для о�
 
 const isMotionSupported = ref(false); // Показывать кнопку разрешения
 
+
+
 // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+const isCardCoverTapped = ref(false);
+
+const handleCardCoverClick = () => {
+  isCardCoverTapped.value = true;
+  loadQuestion();
+
+  setTimeout(() => {
+    isCardCoverTapped.value = false;
+  }, 300); // сбросим класс после завершения анимации
+};
+
+
+const timer = ref(null);
+const timeLeft = ref(0);
+const timerLabel = computed(() =>
+  timeLeft.value > 0 ? `You have ${timeLeft.value} seconds` : 'Timer'
+);
+
+const startTimer = () => {
+  if (timeLeft.value > 0) return; // Уже работает
+
+  timeLeft.value = 77;
+
+  timer.value = setInterval(() => {
+    timeLeft.value -= 1;
+
+    if (timeLeft.value <= 0) {
+      clearInterval(timer.value);
+      timeLeft.value = 0;
+      // Показать уведомление о переходе хода
+      alert("⏰ Время вышло!\nПереход хода к следующему игроку.");
+    }
+  }, 1000);
+};
+
+
 
 // Случайная перестановка карточек
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -111,6 +164,20 @@ const getCardStyle = (index) => ({
   left: `${index * 1.5}px`,
 });
 
+// const resetGame = () => {
+//   shuffledData = shuffle([...currentGameData.value]);
+//   removedWords.value = [];
+//
+//   currentWord.value = {
+//     ru: "Если вы услышали YES - наклоните телефон вниз",
+//     eng: "If you heard YES - tilt your phone down",
+//     isIntro: true,
+//   };
+//
+//   // сбрасываем таймер
+//   clearInterval(timer.value);
+//   timeLeft.value = 0;
+// };
 
 // ===== УПРАВЛЕНИЕ НАКЛОНОМ =====
 
@@ -212,7 +279,33 @@ onMounted(() => {
     margin-top: 30px;
     height: 400px;
 }
+.side-buttons {
+  display: flex;
+  flex-direction: row;
+  left: 20px;
+  top: 50px;
+  gap: 10px;
+}
 
+.game-btn {
+  background-color: #e90e0e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.game-btn:hover {
+  background-color: #c50b0b;
+}
+
+.game-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .deck-of-cards {
     display: flex;
     flex-direction: column;
@@ -301,5 +394,42 @@ onMounted(() => {
   border-radius: 5px;
   margin-top: 10px;
   cursor: pointer;
+}
+
+.card-back-cover {
+  position: absolute;
+
+  background-color: white; /* Цвет фона карточки */
+  border: 1px solid #e90e0e; /* Цвет границы */
+  border-radius: 8px; /* Закругление углов */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Тень для эффекта карты */
+
+
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 160px;
+  z-index: 100; // чтобы всегда быть поверх остальных
+  //pointer-events: none; // чтобы клик проходил сквозь
+  pointer-events: auto; // Нужно включить, чтобы "hover" работал
+
+
+  transition: transform 0.3s ease;
+
+  // Желаемый эффект при наведении
+  &:hover {
+    transform: scale(1.02) translateY(-10px) translateX(10px);
+  }
+}
+
+.card-back-cover.tapped {
+  transform: scale(1.02) translateY(-10px) translateX(10px);
+}
+
+.card-back-cover img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
 }
 </style>

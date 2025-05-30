@@ -1,0 +1,1 @@
+import{j as o,b as t,d as r,e as _}from"./index.aad5ac4e.js";import{_ as s}from"./plugin-vue_export-helper.21dcd24c.js";const n={__name:"pageWorkbench1",setup(c){const e=o(),a=()=>{e.push("/")};return(p,u)=>(t(),r("div",null,[_("button",{class:"goToMainPage",onClick:a},"go to main page \u274C")]))}};var i=s(n,[["__scopeId","data-v-6970a321"]]);export{i as default};
