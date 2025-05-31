@@ -20,51 +20,15 @@
     </Teleport>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import shortWordsData from '../dataForGames/short-words-data';
 
-// Метатег для viewport (добавляется динамически)
-onMounted(() => {
-  const meta = document.createElement('meta');
-  meta.name = 'viewport';
-  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-  document.head.appendChild(meta);
-
-  // Предотвращаем двойной тап на всей странице
-  document.addEventListener('dblclick', preventZoom);
-  document.addEventListener('touchstart', preventZoom, { passive: false });
-});
-
-function preventZoom(e) {
-  if (e.touches && e.touches.length > 1) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-}
-
+// Объявляем переменные
 const counter = ref(0);
 const flyingWords = ref([]);
 const buttonRef = ref(null);
-
-// Собираем все английские слова из разных массивов файла
-const allEnglishWords = [
-  // Из оригинального кликера
-  "Good Job", "Great", "Tap again", "Vismyfriend", "hamster",
-  "apple", "banana", "cherry", "date", "elderberry",
-
-  // Из shortWordsData
-  ...shortWordsData.devModeNumbersFast.map(item => item.eng),
-  ...shortWordsData.devModeNumbers.map(item => item.eng),
-  ...shortWordsData.devmode1.map(item => item.eng),
-  ...shortWordsData.digits.map(item => item.eng),
-  ...shortWordsData.alphabetData.map(item => item.eng),
-  ...shortWordsData.halloween01.map(item => item.eng)
-];
-
-// Удаляем дубликаты (если есть)
-const uniqueEnglishWords = [...new Set(allEnglishWords)];
-
 
 // Настройки анимации
 const animationSettings = {
@@ -72,18 +36,61 @@ const animationSettings = {
   maxDistance: 200,
   minAngle: 10,
   maxAngle: 170,
-  minDuration: 800,  // Уменьшил для более быстрого отклика
+  minDuration: 800,
   maxDuration: 1500,
   fadeStart: 0.7
 };
 
-function handleTap(e) {
-  // Предотвращаем стандартное поведение для touch-событий
-  if (e.type === 'touchstart') {
+// Собираем все английские слова
+const allEnglishWords = [
+  "Good Job", "Great", "Tap again", "Vismyfriend", "hamster",
+  "apple", "banana", "cherry", "date", "elderberry",
+  ...shortWordsData.devModeNumbersFast.map(item => item.eng),
+  ...shortWordsData.devModeNumbers.map(item => item.eng),
+  ...shortWordsData.devmode1.map(item => item.eng),
+  ...shortWordsData.digits.map(item => item.eng),
+  ...shortWordsData.alphabetData.map(item => item.eng),
+  ...shortWordsData.halloween01.map(item => item.eng)
+];
+const uniqueEnglishWords = [...new Set(allEnglishWords)];
+
+// Загрузка и сохранение счётчика
+const loadCounter = () => {
+  const saved = localStorage.getItem('tapCounter');
+  counter.value = saved ? parseInt(saved) : 0;
+};
+
+const saveCounter = () => {
+  localStorage.setItem('tapCounter', counter.value.toString());
+};
+
+// Предотвращение зума
+const preventZoom = (e) => {
+  if (e.touches && e.touches.length > 1) {
     e.preventDefault();
+    e.stopPropagation();
   }
+};
+
+// Инициализация при монтировании
+onMounted(() => {
+  loadCounter();
+
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+  document.head.appendChild(meta);
+
+  document.addEventListener('dblclick', preventZoom);
+  document.addEventListener('touchstart', preventZoom, { passive: false });
+});
+
+// Обработчик клика
+const handleTap = (e) => {
+  if (e.type === 'touchstart') e.preventDefault();
 
   counter.value++;
+  saveCounter();
 
   const text = uniqueEnglishWords[Math.floor(Math.random() * uniqueEnglishWords.length)];
   const duration = animationSettings.minDuration +
@@ -119,19 +126,15 @@ function handleTap(e) {
   };
 
   flyingWords.value.push(word);
+  setTimeout(() => flyingWords.value = flyingWords.value.filter(w => w.id !== word.id), duration);
 
-  setTimeout(() => {
-    flyingWords.value = flyingWords.value.filter(w => w.id !== word.id);
-  }, duration);
-
-  // Добавляем анимацию нажатия кнопки
   button.classList.add('button-tap');
   setTimeout(() => button.classList.remove('button-tap'), 200);
-}
+};
 </script>
 
 <style>
-/* Глобальные стили для предотвращения зума */
+/* Глобальные стили */
 html {
   touch-action: manipulation;
   -webkit-touch-callout: none;
@@ -139,7 +142,6 @@ html {
   user-select: none;
 }
 
-/* Анимация летающих слов */
 .flying-word {
   position: fixed;
   font-size: 24px;
@@ -172,8 +174,6 @@ calc(var(--fadeStart) * 100%) {
 </style>
 
 <style scoped>
-@import url(https://fonts.googleapis.com/css?family=Neucha:regular);
-
 .game-container {
   font-family: 'Neucha', sans-serif;
   display: flex;
@@ -185,7 +185,7 @@ calc(var(--fadeStart) * 100%) {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   width: 300px;
   margin: 100px auto;
-  touch-action: manipulation; /* Дополнительная защита */
+  touch-action: manipulation;
 }
 
 #tap-button {
