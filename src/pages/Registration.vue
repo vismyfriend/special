@@ -170,7 +170,7 @@ const submitName = async () => {
     setNotify(`I'm happy to see you`);
 
   }, 500); // Задержка 0.5 секунды
-  await router.push("/special-app/");
+  await router.push("/see-all-sets-of-words/");
 
 
   const res = await api.auth.post(userName.value);
@@ -189,7 +189,7 @@ const continueAsGuest = async () => {
   // const res2 = await api.scores.post("tnt", 134, 2, 11);
   // const res3 = await api.scores.get();
   // console.log(res3);
-  // router.push("/special-app")
+  // router.push("/see-all-sets-of-words")
 
   // при отправлении рекрда мы берем имя игры из раута, время в секундах, ошибки/читы, эйджент нэйм из локал
   // (сториджа)
@@ -444,7 +444,7 @@ const continueAsGuest = async () => {
   padding: 7px;
   font-size: 18px;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: none;
   background-color: #333;
   color: white;
   border: none;

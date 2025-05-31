@@ -15,7 +15,7 @@
          :label="showAltLabels ? 'сюда , для практики' : 'tap to practice'"
          push
          color="primary"
-         @click="tryGames" />
+         @click="seeAllSetsOfWords" />
 
   <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
          align="between"
@@ -23,9 +23,17 @@
          :label="showAltLabels ? 'сюда , по приколу' : 'tap for fun!'"
          push
          color="primary"
-         @click="goToFunPage"
+         @click="seeAllGames"
   />
-  <q-btn class="q-mb-sm zoomIn special-app-button"
+  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
+         align="between"
+         icon-right="build_circle"
+         :label="showAltLabels ? 'сюда за доп.материалами' : 'tap for extra!'"
+         push
+         color="primary"
+         @click="goToExtraPage"
+  />
+  <q-btn class="q-mb-sm zoomIn see-all-sets-of-words-button"
          icon="fingerprint"
          :label="showAltLabels ? 'вход для СПЭШЛ ЭЙДЖЭНТС' :'For &nbsp; &nbsp;S.P. E.C.I.A.L &nbsp;&nbsp; Agents'"
          stack glossy color="purple"
@@ -60,8 +68,9 @@ import {api} from "src/api";
 import backEndTest from "src/api/backEndTest";
 
 const router = useRouter()
-const tryGames = () => {
-  window.location.href = '#/special-app/devModeNumbersFast';
+const seeAllSetsOfWords = () => {
+  // window.location.href = '#/special-app/devModeNumbersFast';
+  window.location.href = '#/see-all-sets-of-words';
 };
 
 
@@ -75,8 +84,11 @@ const goToRegistrationPage = () => {
   router.push("/registration")
 }
 
-const goToFunPage = () => {
-  router.push('/fun-buttons');  // новый маршрут для кнопок «по приколу»
+const seeAllGames = () => {
+  router.push('/games');  // новый маршрут для кнопок «по приколу»
+};
+const goToExtraPage = () => {
+  router.push('/extra-page');  // новый маршрут для кнопок «доп материалов»
 };
 
 const linkToVismyfriendTelegram = () => {
@@ -396,9 +408,10 @@ onMounted(  () => {
   text-align: center;
   width: auto;
   height: 50px;
+  cursor: none;
 
 }
-.special-app-button{
+.see-all-sets-of-words-button {
   height: 70px !important; /* или любое нужное значение */
 //!important нужен, чтобы переопределить встроенный стиль Quasar, если он выставляет height напрямую.
 

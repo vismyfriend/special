@@ -10,7 +10,7 @@
 
         <div class="games-container">
           <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id">
-            <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)">
+            <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)" role="button">
               {{ currentGame.name }}
             </div>
             <q-btn icon="star" class="glossy" round color="deep-orange" />
@@ -174,12 +174,12 @@ const AllGames = ref([
 ])
 
 const startGame = (path) => {
-  router.push(`/special-app/${route.params.missionName}/${path}`)
+  router.push(`/see-all-sets-of-words/${route.params.missionName}/${path}`)
 }
 
 const backToPreviousPage = () => {
   // router.push(-1)
-  router.push("/special-app/")
+  router.push("/see-all-sets-of-words/")
 }
 
 const compareNames = () => {
@@ -317,7 +317,7 @@ onMounted(() => {
   border-radius: 20px; /* Закругление углов */
   padding: 5px 20px; /* Внутренние отступы */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень */
-  cursor: pointer; /* Указатель мыши при наведении */
+  cursor: none;
   transition: transform 0.2s, box-shadow 0.2s; /* Плавный переход при наведении */
   margin: 1.5px;
   user-select: none;

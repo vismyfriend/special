@@ -2,7 +2,7 @@
     <div>
         <router-view />
         <button class="infoButton" @click="showInstructions"></button>
-        
+
         <div v-if="isInstructionsVisible" class="overlay" @click="hideInstructions">
             <div class="instructions">
                 <h3>what do u wanna do?</h3>
@@ -16,12 +16,12 @@
                     </span>
                 </q-btn>
                 <q-btn class="q-mb-sm zoomIn" icon="search" label="Другой набор слов" push color="primary" @click="backToPreviousPage" />
-                
-                <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="QUIT S.P.E.C.I.A.L App" 
+
+                <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="QUIT S.P.E.C.I.A.L App"
                 stack glossy color="purple" @click="backToIntroPage" />
                 <q-btn push color="brown-5" @click="backToPreviousPage" label="Этот же набор, другое задание"> 🔎</q-btn>
-                
-             
+
+
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@ const router = useRouter();
 const isInstructionsVisible = ref(false);
 const backToPreviousPage = () => {
 
-router.push("/special-app/")
+router.push("/see-all-sets-of-words/")
 }
 
 // на предидущую страницу
@@ -70,7 +70,7 @@ const hideInstructions = () => {
     align-items: center; /* Центрирование иконок по вертикали */
     margin-right: 5px; /* Отступ между звездами и текстом кнопки */
   }
-  
+
   .q-btn {
     display: flex; /* Используйте flex для кнопки */
     align-items: center; /* Центрирование содержимого кнопки по вертикали */
@@ -79,7 +79,7 @@ const hideInstructions = () => {
 .closeThisPage {
     display: block;
     margin: 0 auto;
-   
+
     border-radius: 30px;
     background-color: transparent;
 }

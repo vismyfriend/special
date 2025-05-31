@@ -162,7 +162,7 @@ input[type="checkbox"] {
 
 .slider {
     position: absolute;
-    cursor: pointer;
+    cursor: none;
     top: 0;
     left: 0;
     right: 0;
@@ -249,7 +249,7 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: none;
     user-select: none;
     color: black;
     height: 20px;
@@ -306,7 +306,7 @@ input:checked + .slider:before {
     color: #333; /* Цвет текста на кнопке */
     font-size: 18px; /* Размер шрифта текста на кнопке */
     padding: 8px 16px; /* Внутренние отступы (сверху/снизу и слева/справа) */
-    cursor: pointer; /* Указатель при наведении на кнопку */
+    cursor: none; /* Указатель при наведении на кнопку */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для создания эффекта объема */
     transition: background-color 0.4s, box-shadow 0.4s, transform 0.2s; /* Плавный переход для фона, тени и увеличения */
     margin-left: 10px; /* Отступ слева от кнопки */

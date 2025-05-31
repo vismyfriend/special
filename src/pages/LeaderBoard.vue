@@ -71,7 +71,7 @@ import {useGameStore} from "stores/example-store";
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const goToMain = () => {
-  router.push("/special-app/")
+  router.push("/see-all-sets-of-words/")
 }
 
 const tryAgain = () => {

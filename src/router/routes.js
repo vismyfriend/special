@@ -5,10 +5,10 @@ const routes = [
     children: [
       { path: '', component: () => import('src/pages/IntroPage.vue') },
       {
-        path: '/special-app',
+        path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
         children: [
-          { path: '', component: () => import('src/pages/SpecialApp.vue') },
+          { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
           {
             path: ':missionName',
             component: () => import('src/layouts/GameLayout.vue'),
@@ -93,8 +93,12 @@ const routes = [
         component: () => import('src/pages/visAnewPage.vue')
       },
       {
-        path: '/fun-buttons',
-        component: () => import('src/pages/FunButtonsPage.vue'),
+        path: '/games',
+        component: () => import('pages/SeeAllGames.vue'),
+      },
+      {
+        path: '/extra-page',
+        component: () => import('src/pages/extraPage.vue'),
       },
       {
         path: '/registration',

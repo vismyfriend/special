@@ -9,20 +9,27 @@
         >
           Ctrl + Z
         </button>
-        <button @click="startTimer" class="game-btn">{{ timerLabel }}</button>
+<!--        <button @click="startTimer" class="game-btn">{{ timerLabel }}</button>-->
       </div>
         <div class="deck-of-cards">
-          <div class="wordCard" @click="toggleTranslation">
+          <div class="wordCard" @click="toggleTranslation" >
                 <div class="card-content">
                     <div class="card-text">
                         <div class="word">{{ currentWord.ru }}</div>
-                      <div class="translation"   :class="{ blurred: !showTranslation && !currentWord.isIntro }"
-                      >
-                        {{ currentWord.eng }}
-                      </div>
+                             <div class="translation"
+                                  :class="{ blurred: !showTranslation && !currentWord.isIntro }"
+                               >{{ currentWord.eng }}
+                              </div>
                     </div>
                 </div>
-            </div>
+          </div>
+
+          <div class="timer-block" @click="startTimer" role="button">
+  <span class="timer-text">
+    {{ timeLeft > 0 ? `${timeLeft} seconds` : 'Start' }}
+  </span>
+          </div>
+
           <div class="remaining-cards" ref="remainingCardsContainer">
             <div
               class="remaining-card"
@@ -30,6 +37,8 @@
               v-for="(card, index) in remainingCards"
               :key="index"
               :style="getCardStyle(index)"
+              role="button"
+
             >
               <div class="card-content">
                 <div class="card-text">
@@ -46,7 +55,7 @@
               :style="getCardStyle(remainingCards.length - 1)"
               @click="handleCardCoverClick"
             >
-              <img src="../assets/images/card.png" alt="Card Back" />
+              <img src="../assets/images/card.png" alt="Card Back" role="button"/>
             </div>
           </div>
         </div>
@@ -124,6 +133,8 @@ const startTimer = () => {
   }
 
   // Иначе — запускаем новый
+  loadQuestion();
+
   timeLeft.value = 77;
 
   timer.value = setInterval(() => {
@@ -144,20 +155,29 @@ const startTimer = () => {
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
 // Загрузка следующей карточки
-const loadQuestion = () => {
+const loadQuestion = async () => {
   if (shuffledData.length === 0) {
     finishGame();
     return;
   }
 
-  const nextWord = shuffledData.pop(); // Берём из конца массива
-
-  // Текущая карточка отправляется в историю (если не intro)
   if (currentWord.value && !currentWord.value.isIntro) {
+    // 1. Покажем перевод перед уходом
+    showTranslation.value = true;
+
+    // 2. Подождём 500 мс, чтобы пользователь успел увидеть перевод
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // 3. Добавим карточку в историю
     removedWords.value.push(currentWord.value);
   }
 
+  // 4. Загружаем следующее слово
+  const nextWord = shuffledData.pop();
   currentWord.value = nextWord;
+
+  // 5. Скрываем перевод обратно
+  showTranslation.value = false;
 };
 
 // Возврат к предыдущей карточке
@@ -220,6 +240,14 @@ const getCardStyle = (index) => {
     transform: `translate(var(--x), var(--y)) rotate(var(--angle))`,
     zIndex: index,
   };
+};
+
+const handleKeyDown = (event) => {
+  if (event.key === 'ArrowDown') {
+    loadQuestion();
+  } else if (event.key === 'ArrowUp') {
+    undoLastRemoval();
+  }
 };
 
 // const resetGame = () => {
@@ -304,9 +332,13 @@ const initMotionControls = () => {
   }
 };
 
+
+
 // Отписка при уходе со страницы
 onUnmounted(() => {
   window.removeEventListener('deviceorientation', handleOrientation);
+  window.removeEventListener('keydown', handleKeyDown); // ← добавлено
+
 });
 
 // Загрузка данных при запуске
@@ -317,13 +349,17 @@ onMounted(() => {
 
   // Первая карточка-инструкция
   currentWord.value = {
-    ru: "Объясни или переведи",
-    eng: "Explain or translate",
+    ru: "здесь появится слово",
+    eng: "объясни или переведи его",
     isIntro: true
   };
 
+
+
   // Активируем управление наклоном
   initMotionControls();
+  window.addEventListener('keydown', handleKeyDown); // ← добавлено
+
 });
 </script>
 
@@ -343,6 +379,7 @@ onMounted(() => {
   left: 20px;
   top: 50px;
   gap: 10px;
+  display: none;
 }
 
 .game-btn {
@@ -510,5 +547,31 @@ onMounted(() => {
   cursor: none; /* Указатель мыши при наведении отключен, чтобы кастомный работал */
   user-select: none;
   transition: filter 0.2s ease;
+}
+
+.timer-block {
+  width: 260px;
+  height: 80px;
+  margin: 10px 0;
+  background-color: rgba(0, 0, 0, 0.12); // полупрозрачный фон
+  border: 1px solid rgba(106, 106, 106, 0.73); // как у wordCard
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // чтобы визуально сочеталось с картами
+  transition: transform 0.2s ease;
+}
+
+.timer-block:hover {
+  transform: scale(1.03);
+}
+
+.timer-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: #dddddd;
+  user-select: none;
 }
 </style>
