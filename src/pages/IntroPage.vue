@@ -1,5 +1,7 @@
 <template>
   <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
+
+
   <q-btn
     align="between"
     class="q-mb-sm zoomIn padding-left-right"
