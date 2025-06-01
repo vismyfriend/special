@@ -3,7 +3,7 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
-      { path: '', component: () => import('src/pages/IntroPage.vue') },
+      { path: '', component: () => import('pages/IntroPage.vue') },
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
