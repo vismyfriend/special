@@ -14,7 +14,7 @@
               v-for="game in availableGames"
               :key="game.id"
               role="button"
-              @click="goToGameSelection(game.route)"
+              @click="goToGameSelection(game)"
             >
               <div class="game-name">{{ game.name }}</div>
               <q-tooltip v-if="game.description">{{ game.description }}</q-tooltip>
@@ -55,13 +55,13 @@ const availableGames = ref([
     route: "/",
     icon: "game2icon.png"
   },
-  // {
-  //   id: 3,
-  //   name: "Memory Cards",
-  //   description: "Тренировка памяти с карточками",
-  //   route: "/memory-cards",
-  //   icon: "game3icon.png"
-  // },
+  {
+    id: 3,
+    name: "Skeleton",
+    description: "Тпрогулки со скелетом",
+    externalUrl: "https://vismyfriend.itch.io/clicker-test",  // <- внешняя ссылка
+    icon: "game3icon.png"
+  },
   // {
   //   id: 4,
   //   name: "Spelling",
@@ -85,8 +85,12 @@ const availableGames = ref([
   // }
 ]);
 
-const goToGameSelection = (route) => {
-  router.push({ path: route });
+const goToGameSelection = (game) => {
+  if (game.externalUrl) {
+    window.open(game.externalUrl, "_blank");
+  } else {
+    router.push({ path: game.route });
+  }
 };
 
 onMounted(() => {
@@ -142,6 +146,7 @@ onMounted(() => {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.3);
+
     z-index: 1;
   }
 

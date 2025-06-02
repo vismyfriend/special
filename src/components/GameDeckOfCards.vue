@@ -153,9 +153,16 @@ const startTimer = () => {
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
 // Загрузка следующей карточки
+let isLoading = false;
+
 const loadQuestion = async () => {
+  if (isLoading) return; // если уже идет загрузка, ничего не делаем
+  isLoading = true;
+
   if (shuffledData.length === 0) {
     finishGame();
+    isLoading = false;
+
     return;
   }
 
@@ -176,6 +183,9 @@ const loadQuestion = async () => {
 
   // 5. Скрываем перевод обратно
   showTranslation.value = false;
+
+  isLoading = false;
+
 };
 
 // Возврат к предыдущей карточке
