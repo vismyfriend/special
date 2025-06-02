@@ -9,16 +9,15 @@
         >
           Ctrl + Z
         </button>
-<!--        <button @click="startTimer" class="game-btn">{{ timerLabel }}</button>-->
       </div>
         <div class="deck-of-cards">
           <div class="wordCard" @click="toggleTranslation" >
                 <div class="card-content">
                     <div class="card-text">
-                        <div class="word">{{ currentWord.ru }}</div>
+                        <div class="word">{{ currentWord.eng }}</div>
                              <div class="translation"
                                   :class="{ blurred: !showTranslation && !currentWord.isIntro }"
-                               >{{ currentWord.eng }}
+                               >{{ currentWord.ru }}
                               </div>
                     </div>
                 </div>
@@ -42,8 +41,8 @@
             >
               <div class="card-content">
                 <div class="card-text">
-                  <div class="word">{{ card.ru }}</div>
-                  <div class="translation">{{ card.eng }}</div>
+                  <div class="word">{{ card.eng }}</div>
+                  <div class="translation">{{ card.ru }}</div>
                 </div>
               </div>
             </div>
@@ -119,37 +118,36 @@ const handleCardCoverClick = () => {
 
 const timer = ref(null);
 const timeLeft = ref(0);
-const timerLabel = computed(() =>
-  timeLeft.value > 0 ? `You have ${timeLeft.value} seconds` : 'Timer'
-);
+
+const isTimerRunning = ref(false);
 
 const startTimer = () => {
-  if (timer.value) {
-    // Таймер уже работает → остановим
+  if (isTimerRunning.value) {
     clearInterval(timer.value);
     timer.value = null;
     timeLeft.value = 0;
+    isTimerRunning.value = false;
     return;
   }
 
-  // Иначе — запускаем новый
   loadQuestion();
-
   timeLeft.value = 77;
+  isTimerRunning.value = true;
 
   timer.value = setInterval(() => {
+    if (!isTimerRunning.value) return; // защита
+
     timeLeft.value -= 1;
 
     if (timeLeft.value <= 0) {
       clearInterval(timer.value);
       timer.value = null;
+      isTimerRunning.value = false;
       timeLeft.value = 0;
       alert("⏰ Время вышло!\nПереход хода к следующему игроку.");
     }
   }, 1000);
 };
-
-
 
 // Случайная перестановка карточек
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -336,6 +334,8 @@ const initMotionControls = () => {
 
 // Отписка при уходе со страницы
 onUnmounted(() => {
+  clearInterval(timer.value);
+  timer.value = null;
   window.removeEventListener('deviceorientation', handleOrientation);
   window.removeEventListener('keydown', handleKeyDown); // ← добавлено
 
@@ -349,8 +349,8 @@ onMounted(() => {
 
   // Первая карточка-инструкция
   currentWord.value = {
-    ru: "здесь появится слово",
-    eng: "объясни или переведи его",
+    ru: "объясни это мне",
+    eng: "Explain it to me",
     isIntro: true
   };
 
@@ -443,7 +443,7 @@ onMounted(() => {
 
 .word {
     font-weight: bold; /* Выделение русского слова */
-  font-size: 20px;
+  font-size: 30px;
 }
 .word::after {
     content: ""; /* Псевдоэлемент требует контент */
@@ -456,7 +456,7 @@ onMounted(() => {
 .translation {
     font-style: italic; /* Курсив для перевода */
     color: #555; /* Более светлый цвет для перевода */
-  font-size: 35px;
+  font-size: 30px;
 
 }
 

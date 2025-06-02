@@ -17,7 +17,7 @@
       style="--tail-x: 50%; --tail-y: 40%"
       @click="handleBubbleClick"
     >
-      <span v-if="infoMessage" v-html="infoMessage"></span>
+      <span v-if="infoMessage" v-html="dynamicMessage"></span>
       <span v-else>
       {{
           showTextInstead
@@ -70,8 +70,8 @@
   <q-btn
     align="between"
     class="q-mb-sm zoomIn padding-left-right"
-    color="green"
-    label="Что делать дальше ?"
+    :color="buttonColor"
+    :label="buttonLabel"
     icon-right="touch_app"
     @click="backToIntroPage"
   />
@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import shortWordsData from '../dataForGames/short-words-data';
 
 import { useRouter } from 'vue-router';
@@ -96,22 +96,48 @@ const counter = ref(0);
 const sessionStartCounter = ref(0);
 
 const sessionCounter = computed(() => counter.value - sessionStartCounter.value);
+
+
+const buttonLabel = computed(() => {
+  return sessionCounter.value >= 20
+    ? "Super! Жми сюда, разминка закончена"
+    : "Что делать дальше?";
+});
+
+const buttonColor = computed(() => {
+  return sessionCounter.value >= 20
+    ? "blue"
+    : "green";
+});
+
+const dynamicMessage = computed(() => {
+  const remaining = 20 - sessionCounter.value;
+  if (remaining <= 0) {
+    return `Разминка для мозгов и пальцев:<br><br>
+    1) Молодчина! <br>
+    2) <b>назови вслух</b> число за знаком $<br>
+    или нажми на число с долларом,<br>
+    чтобы проверить себя.`;
+  } else {
+    return `Разминка для мозгов и пальцев:<br><br>
+    1) нажми "Tap here" ${remaining} times - раз(а)<br>
+    2) <b>назови вслух</b> число за знаком $<br>
+    или нажми на число с долларом,<br>
+    чтобы проверить себя.`;
+  }
+});
+
 const backToIntroPage = () => {
   if (sessionCounter.value >= 20) {
-    router.push("/games");
+    router.push("/main-page");
   } else {
-    infoMessage.value = `Разминка для мозгов и пальцев:<br><br>
-1) нажми "Tap here" ${20 - sessionCounter.value} times - раз(а)<br>
-2) <b>назови вслух</b> число за знаком $<br>
-или нажми на число с долларом,<br>
-чтобы проверить себя.`;
-
+    infoMessage.value = dynamicMessage.value;
     showOverlay.value = true;
 
     setTimeout(() => {
       showOverlay.value = false;
       infoMessage.value = '';
-    }, 7000); // сообщение исчезнет через 7 секунд
+    }, 7000);
   }
 };
 
@@ -254,6 +280,7 @@ const handleTap = (e) => {
   counter.value++;
   saveCounter();
 
+
   // Выбираем слово - сначала из welcomeWords, потом из общего списка
   let text;
   if (shownWelcomeWords.value < welcomeWords.length) {
@@ -374,7 +401,7 @@ calc(var(--fadeStart) * 100%) {
   font-weight: bold;
   width: 215px;
   height: 215px;
-  cursor: pointer;
+  cursor: none;
   margin: 20px 0;
   transition: transform 0.1s, opacity 0.1s;
   user-select: none;
@@ -527,7 +554,7 @@ calc(var(--fadeStart) * 100%) {
   font-size: 24px;
   width: 100px;
   height: 100px;
-  cursor: pointer;
+  cursor: none;
   transition: transform 0.1s, opacity 0.1s;
   z-index: 10;
   user-select: none;
@@ -548,5 +575,7 @@ calc(var(--fadeStart) * 100%) {
   background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
   z-index: 5;
 }
-
+.q-mb-sm {
+  cursor: none;
+}
 </style>

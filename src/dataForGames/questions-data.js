@@ -54,5 +54,59 @@ const questionsData = {
 
 
   ],
+  explain: [
+    // Местоимения
+    { id: 1, eng: "I", ru: "я", hint: "/ ай /" },
+    { id: 2, eng: "You", ru: "мы", hint: "/ ю /" },
+    { id: 3, eng: "We", ru: "ты", hint: "/ ви /" },
+    { id: 4, eng: "They", ru: "вы", hint: "/ дэй /" },
+    { id: 5, eng: "He", ru: "он", hint: "/ хи /" },
+    { id: 6, eng: "She", ru: "она", hint: "/ щи /" },
+    { id: 7, eng: "It", ru: "оно", hint: "/ ит /" },
+
+    // Предлоги местоположения
+    { id: 8, eng: "in", ru: "в", hint: "/ ин /" },
+    { id: 9, eng: "on", ru: "на", hint: "/ он /" },
+    { id: 10, eng: "under", ru: "под", hint: "/ андэр /" },
+    { id: 11, eng: "next to", ru: "рядом с", hint: "/ некст ту /" },
+    { id: 12, eng: "behind", ru: "позади", hint: "/ бихайнд /" },
+    { id: 13, eng: "in front of", ru: "перед", hint: "/ ин фронт ов /" },
+    { id: 14, eng: "between", ru: "между", hint: "/ битуин /" },
+    { id: 15, eng: "above", ru: "над", hint: "/ эба́в /" },
+    { id: 16, eng: "below", ru: "под", hint: "/ било́у /" },
+
+    // Цвета
+    { id: 17, eng: "red", ru: "красный", hint: "/ ред /" },
+    { id: 18, eng: "blue", ru: "синий", hint: "/ блу /" },
+    { id: 19, eng: "green", ru: "зелёный", hint: "/ грин /" },
+    { id: 20, eng: "yellow", ru: "жёлтый", hint: "/ йелоу /" },
+    { id: 21, eng: "black", ru: "чёрный", hint: "/ блэк /" },
+    { id: 22, eng: "white", ru: "белый", hint: "/ уайт /" },
+    { id: 23, eng: "brown", ru: "коричневый", hint: "/ браун /" },
+    { id: 24, eng: "orange", ru: "оранжевый", hint: "/ ориндж /" },
+    { id: 25, eng: "pink", ru: "розовый", hint: "/ пинк /" },
+    { id: 26, eng: "gray", ru: "серый", hint: "/ грэй /" },
+
+    // Животные
+    { id: 27, eng: "cat", ru: "кот", hint: "/ кэт /" },
+    { id: 28, eng: "dog", ru: "собака", hint: "/ дог /" },
+    { id: 29, eng: "cow", ru: "корова", hint: "/ кау /" },
+    { id: 30, eng: "duck", ru: "утка", hint: "/ дак /" },
+    { id: 31, eng: "pig", ru: "свинья", hint: "/ пиг /" },
+    { id: 32, eng: "horse", ru: "лошадь", hint: "/ хoрс /" },
+    { id: 33, eng: "fish", ru: "рыба", hint: "/ фиш /" },
+    { id: 34, eng: "bird", ru: "птица", hint: "/ бёрд /" },
+    { id: 35, eng: "rabbit", ru: "кролик", hint: "/ рэбит /" },
+    { id: 36, eng: "bear", ru: "медведь", hint: "/ бэа /" },
+
+    // Транспорт
+    { id: 37, eng: "car", ru: "машина", hint: "/ кар /" },
+    { id: 38, eng: "bus", ru: "автобус", hint: "/ бас /" },
+    { id: 39, eng: "bike", ru: "велосипед", hint: "/ байк /" },
+    { id: 40, eng: "train", ru: "поезд", hint: "/ трейн /" },
+    { id: 41, eng: "plane", ru: "самолёт", hint: "/ плейн /" },
+    { id: 42, eng: "ship", ru: "корабль", hint: "/ шип /" },
+    { id: 43, eng: "truck", ru: "грузовик", hint: "/ трак /" },
+  ],
 }
 export default questionsData

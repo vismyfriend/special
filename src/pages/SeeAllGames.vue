@@ -45,7 +45,7 @@ const availableGames = ref([
     id: 1,
     name: "Alias",
     description: "Объясни слово",
-    route: "/see-all-sets-of-words/devModeNumbersFast/deck-of-cards",
+    route: "/see-all-sets-of-words/explain/deck-of-cards",
     icon: "game1icon.png"
   },
   {

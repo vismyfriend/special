@@ -11,6 +11,7 @@ const shortWordsData = {
     { id: 7, eng: "It", ru: "оно", hint: "/ ит /" },
   ],
 
+
   devModeNumbersFast: [
     { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
     { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
