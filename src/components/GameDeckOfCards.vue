@@ -502,6 +502,7 @@ onMounted(() => {
   border-radius: 5px;
   margin-top: 10px;
   cursor: none; /* Указатель мыши при наведении отключен, чтобы кастомный работал */
+  z-index: 9999;
 }
 
 .card-back-cover {

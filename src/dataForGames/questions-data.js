@@ -68,12 +68,12 @@ const questionsData = {
     { id: 8, eng: "in", ru: "в", hint: "/ ин /" },
     { id: 9, eng: "on", ru: "на", hint: "/ он /" },
     { id: 10, eng: "under", ru: "под", hint: "/ андэр /" },
-    { id: 11, eng: "next to", ru: "рядом с", hint: "/ некст ту /" },
+    { id: 11, eng: "next to, by, near", ru: "рядом с, возле, у", hint: "/ некст ту /" },
     { id: 12, eng: "behind", ru: "позади", hint: "/ бихайнд /" },
     { id: 13, eng: "in front of", ru: "перед", hint: "/ ин фронт ов /" },
     { id: 14, eng: "between", ru: "между", hint: "/ битуин /" },
     { id: 15, eng: "above", ru: "над", hint: "/ эба́в /" },
-    { id: 16, eng: "below", ru: "под", hint: "/ било́у /" },
+    { id: 16, eng: "among us", ru: "среди нас", hint: "/ эмо́н /" },
 
     // Цвета
     { id: 17, eng: "red", ru: "красный", hint: "/ ред /" },
@@ -107,6 +107,40 @@ const questionsData = {
     { id: 41, eng: "plane", ru: "самолёт", hint: "/ плейн /" },
     { id: 42, eng: "ship", ru: "корабль", hint: "/ шип /" },
     { id: 43, eng: "truck", ru: "грузовик", hint: "/ трак /" },
+
+    // Профессии (дополнение)
+    { id: 44, eng: "cook", ru: "повар", hint: "/ кук /" },
+    { id: 45, eng: "doctor", ru: "врач", hint: "/ доктэ /" },
+    { id: 46, eng: "killer", ru: "убийца", hint: "/ кИллер /" },
+    { id: 47, eng: "teacher", ru: "учитель", hint: "/ тичэ /" },
+    { id: 48, eng: "farmer", ru: "фермер", hint: "/ фармэ /" },
+    { id: 49, eng: "driver", ru: "водитель", hint: "/ драйвэ /" },
+    { id: 50, eng: "builder", ru: "строитель", hint: "/ билдэ /" },
+    { id: 51, eng: "fireman", ru: "пожарный", hint: "/ файамэн /" },
+    { id: 52, eng: "police", ru: "полиция", hint: "/ полИс /" },
+    { id: 53, eng: "sailor", ru: "моряк", hint: "/ атист /" },
+
+    { id: 54, eng: "pineapple", ru: "ананас", hint: "/ пайн эпл /" },
+    { id: 55, eng: "banana", ru: "банан", hint: "/ бэ'нана /" },
+    { id: 56, eng: "carrot", ru: "морковь", hint: "/ кэрэт /" },
+    { id: 57, eng: "bread", ru: "хлеб", hint: "/ бред /" },
+    { id: 58, eng: "milk", ru: "молоко", hint: "/ милк /" },
+    { id: 59, eng: "cheese", ru: "сыр", hint: "/ чиз /" },
+    { id: 60, eng: "eggs", ru: "яйца", hint: "/ эгз /" },
+    { id: 61, eng: "cucumber", ru: "огурец", hint: "/ кьЮкамбэ /" },
+
+
+    { id: 62, eng: "book", ru: "книга", hint: "/ бук /" },
+    { id: 63, eng: "pen", ru: "ручка", hint: "/ пэн /" },
+    { id: 64, eng: "pencil", ru: "карандаш", hint: "/ пэнсил /" },
+    { id: 65, eng: "bag", ru: "сумка", hint: "/ бэг /" },
+    { id: 66, eng: "ruler", ru: "линейка", hint: "/ рулэ /" },
+    { id: 67, eng: "eraser", ru: "ластик", hint: "/ ирэйзэ /" },
+    { id: 68, eng: "notebook", ru: "тетрадь", hint: "/ ноутбук /" },
+    { id: 69, eng: "desk", ru: "парта", hint: "/ деск /" },
+    { id: 70, eng: "chair", ru: "стул", hint: "/ чэа /" },
+
   ],
+
 }
 export default questionsData

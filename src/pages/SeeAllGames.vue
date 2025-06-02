@@ -50,39 +50,39 @@ const availableGames = ref([
   },
   {
     id: 2,
-    name: "Guess Word",
-    description: "Угадай слово по описанию",
-    route: "/guess-word",
+    name: "Тапалка",
+    description: "успевай читать слова вслух",
+    route: "/",
     icon: "game2icon.png"
   },
-  {
-    id: 3,
-    name: "Memory Cards",
-    description: "Тренировка памяти с карточками",
-    route: "/memory-cards",
-    icon: "game3icon.png"
-  },
-  {
-    id: 4,
-    name: "Spelling",
-    description: "Правильное написание слов",
-    route: "/spelling",
-    icon: "game4icon.png"
-  },
-  {
-    id: 5,
-    name: "Word Puzzle",
-    description: "Собери слово из букв",
-    route: "/word-puzzle",
-    icon: "game5icon.png"
-  },
-  {
-    id: 6,
-    name: "Listening",
-    description: "Тренировка аудирования",
-    route: "/listening",
-    icon: "game6icon.png"
-  }
+  // {
+  //   id: 3,
+  //   name: "Memory Cards",
+  //   description: "Тренировка памяти с карточками",
+  //   route: "/memory-cards",
+  //   icon: "game3icon.png"
+  // },
+  // {
+  //   id: 4,
+  //   name: "Spelling",
+  //   description: "Правильное написание слов",
+  //   route: "/spelling",
+  //   icon: "game4icon.png"
+  // },
+  // {
+  //   id: 5,
+  //   name: "Word Puzzle",
+  //   description: "Собери слово из букв",
+  //   route: "/word-puzzle",
+  //   icon: "game5icon.png"
+  // },
+  // {
+  //   id: 6,
+  //   name: "Listening",
+  //   description: "Тренировка аудирования",
+  //   route: "/listening",
+  //   icon: "game6icon.png"
+  // }
 ]);
 
 const goToGameSelection = (route) => {
