@@ -3,7 +3,8 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
-      { path: '', component: () => import('pages/IntroPage.vue') },
+      { path: '',
+        component: () => import('pages/IntroPage.vue') },
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
@@ -87,7 +88,10 @@ const routes = [
         ]
       },
 
-
+      {
+        path: '/main-page',
+        component: () => import('src/pages/MainPage.vue')
+      },
       {
         path: '/a-new-page',
         component: () => import('src/pages/visAnewPage.vue')

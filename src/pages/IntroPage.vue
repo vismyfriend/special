@@ -10,20 +10,23 @@
   <!--  <p class="chat-bubble" data-tail="bottom" style="&#45;&#45;tail-x: 30%; &#45;&#45;tail-y: -10%">-->
   <!--    Хвостик снизу<br>смещён влево и чуть выше-->
   <!--  </p>  -->
-  <p
-    class="chat-bubble"
-    data-tail="bottom"
-    style="--tail-x: 50%; --tail-y: 40%"
-    @click="handleBubbleClick"
-  >
-    <span v-if="infoMessage" v-html="infoMessage"></span>    <span v-else>
-    {{
-        showTextInstead
-          ? '$' + formattedCounter + ' — ' + textVersion
-          : '$' + formattedCounter
-      }}
-  </span>
-  </p>
+  <div class="bubble-wrapper">
+    <p
+      class="chat-bubble"
+      data-tail="bottom"
+      style="--tail-x: 50%; --tail-y: 40%"
+      @click="handleBubbleClick"
+    >
+      <span v-if="infoMessage" v-html="infoMessage"></span>
+      <span v-else>
+      {{
+          showTextInstead
+            ? '$ ' + formattedCounter + ' — ' + textVersion
+            : '$ ' + formattedCounter
+        }}
+    </span>
+    </p>
+  </div>
 
   <!--  <p class="chat-bubble" data-tail="left" style="&#45;&#45;tail-x: -10%; &#45;&#45;tail-y: 80%">-->
   <!--    Хвостик слева<br>смещён вниз и чуть левее-->
@@ -68,7 +71,7 @@
     align="between"
     class="q-mb-sm zoomIn padding-left-right"
     color="green"
-    label="Что делать дальше?"
+    label="Что делать дальше ?"
     icon-right="touch_app"
     @click="backToIntroPage"
   />
@@ -98,8 +101,8 @@ const backToIntroPage = () => {
     router.push("/games");
   } else {
     infoMessage.value = `Разминка для мозгов и пальцев:<br><br>
-1) нажми "Tap here" ${20 - sessionCounter.value} раз(а)<br>
-2) назови вслух число за знаком $<br>
+1) нажми "Tap here" ${20 - sessionCounter.value} times - раз(а)<br>
+2) <b>назови вслух</b> число за знаком $<br>
 или нажми на число с долларом,<br>
 чтобы проверить себя.`;
 
@@ -125,13 +128,13 @@ const showOverlay = ref(false);
 
 // Настройки анимации
 const animationSettings = {
-  minDistance: 150,
-  maxDistance: 250,
-  minAngle: 10,
-  maxAngle: 170,
-  minDuration: 1000,
-  maxDuration: 1800,
-  fadeStart: 0.7
+  minDistance: 200,
+  maxDistance: 350,
+  minAngle: 20,
+  maxAngle: 160,
+  minDuration: 1300,
+  maxDuration: 1900,
+  fadeStart: 0.8
 };
 
 function numberToWords(num) {
@@ -192,6 +195,9 @@ const handleBubbleClick = () => {
   }, 4000); // показываем текст на 4 секунды
 };
 // Собираем все английские слова
+const welcomeWords = ["V","V", "Vincent", "is", "my", "friend"];
+
+
 const allEnglishWords = [
   "Good Job", "Great", "Tap again", "Vismyfriend", "hamster",
   "apple", "banana", "cherry", "date", "elderberry",
@@ -200,7 +206,9 @@ const allEnglishWords = [
   ...shortWordsData.devmode1.map(item => item.eng),
   ...shortWordsData.digits.map(item => item.eng),
   ...shortWordsData.alphabetData.map(item => item.eng),
-  ...shortWordsData.halloween01.map(item => item.eng)
+  ...shortWordsData.halloween01.map(item => item.eng),
+  ...shortWordsData.introTapButtonWords.map(item => item.eng),
+
 ];
 const uniqueEnglishWords = [...new Set(allEnglishWords)];
 
@@ -237,15 +245,24 @@ onMounted(() => {
   // Запоминаем стартовое значение на момент загрузки
   sessionStartCounter.value = counter.value;
 });
-
+const shownWelcomeWords = ref(0);
 // Обработчик клика
+
 const handleTap = (e) => {
   if (e.type === 'touchstart') e.preventDefault();
 
-  counter.value++ ;
+  counter.value++;
   saveCounter();
 
-  const text = uniqueEnglishWords[Math.floor(Math.random() * uniqueEnglishWords.length)];
+  // Выбираем слово - сначала из welcomeWords, потом из общего списка
+  let text;
+  if (shownWelcomeWords.value < welcomeWords.length) {
+    text = welcomeWords[shownWelcomeWords.value];
+    shownWelcomeWords.value++;
+  } else {
+    text = uniqueEnglishWords[Math.floor(Math.random() * uniqueEnglishWords.length)];
+  }
+
   const duration = animationSettings.minDuration +
     Math.random() * (animationSettings.maxDuration - animationSettings.minDuration);
 
@@ -369,8 +386,14 @@ calc(var(--fadeStart) * 100%) {
   font-size: 18px;
   margin-top: 10px;
 }
+
+.bubble-wrapper {
+  position: relative; /* точка отсчета для абсолютного позиционирования */
+}
+
+
 .chat-bubble {
-  z-index: 11;
+
   /* Настраиваемые переменные */
   --bubble-color: white;
   --border-color: black;
@@ -380,17 +403,26 @@ calc(var(--fadeStart) * 100%) {
   --tail-x: 50%; /* Горизонтальное смещение (50% - центр) */
   --tail-y: 0%;  /* Вертикальное смещение (0% - край пузыря) */
 
-  position: relative; /* важно! без этого z-index не сработает */
+
+
+  position: absolute; /* отключаем влияние на поток документа */
+  top: 0; /* можно настраивать */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20; /* поверх других элементов */
+
+  width: 330px;
+  /* pointer-events: auto; */
 
   display: inline-block;
-  padding: 30px 40px;
+  padding: 30px 5px;
   border-radius: 45px;
   border: var(--border-width) solid var(--border-color);
   background: var(--bubble-color);
-  //font-family: 'Neucha', sans-serif;
+  /* font-family: 'Neucha', sans-serif; */
   font-size: 17px;
   text-align: center;
-  margin: 20px;
+  margin-top: 20px;
 
   &::after {
     content: '';
@@ -470,7 +502,7 @@ calc(var(--fadeStart) * 100%) {
   position: relative;
   width: 100%;
   max-width: 400px; /* подгони под нужный размер */
-  margin: 0 auto;
+  margin: 190px 0 auto auto;
 }
 
 .custom-image {
@@ -516,4 +548,5 @@ calc(var(--fadeStart) * 100%) {
   background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
   z-index: 5;
 }
+
 </style>

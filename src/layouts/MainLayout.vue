@@ -138,6 +138,7 @@ defineExpose({ audio });
 }
 
 .music-toggle-btn {
+  display: none;
   position: fixed;
   bottom: 20px;
   right: 20px;

@@ -1,204 +1,192 @@
 <template>
-  <p class="bubble right" id="intro-message">Hi. <br> Приветики</p>
+  <div class="relative">
+    <div class="phone-content">
 
+      <div id="phoneFrame">
+        <p class="bubble left" id="intro-message">Choose<br> a game</p>
 
-  <q-btn
-    align="between"
-    class="q-mb-sm zoomIn padding-left-right"
-    color="green"
-    :label="showAltLabels ? 'Where to tap next?' : 'куда тыкать дальше ?'"
-    :icon-right="showAltIcons ? 'south' : 'help'"
-    @click="toggleButtonStates"
-  />
+        <div class="q-pa-15">
+          <img src="../assets/images/special logo detective girl.png" alt="logo">
+          <div class="games-grid">
+            <div
+              class="game-card"
+              :style="{'background-image': `url(${getImagePath(game.icon)})`}"
+              v-for="game in availableGames"
+              :key="game.id"
+              role="button"
+              @click="goToGameSelection(game.route)"
+            >
+              <div class="game-name">{{ game.name }}</div>
+              <q-tooltip v-if="game.description">{{ game.description }}</q-tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <q-btn class="q-mb-sm zoomIn padding-left-right"
-         align="between"
-         icon-right="my_location"
-         :label="showAltLabels ? 'сюда , для практики' : 'tap to practice'"
-         push
-         color="primary"
-         @click="seeAllSetsOfWords" />
-
-  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
-         align="between"
-         icon-right="favorite"
-         :label="showAltLabels ? 'сюда , по приколу' : 'tap for fun!'"
-         push
-         color="primary"
-         @click="seeAllGames"
-  />
-  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
-         align="between"
-         icon-right="build_circle"
-         :label="showAltLabels ? 'сюда за доп.материалами' : 'tap for extra!'"
-         push
-         color="primary"
-         @click="goToExtraPage"
-  />
-  <q-btn class="q-mb-sm zoomIn see-all-sets-of-words-button"
-         icon="fingerprint"
-         :label="showAltLabels ? 'вход для СПЭШЛ ЭЙДЖЭНТС' :'For &nbsp; &nbsp;S.P. E.C.I.A.L &nbsp;&nbsp; Agents'"
-         stack glossy color="purple"
-         @click="goToRegistrationPage" />
-
-  <q-btn class="q-mb-sm zoomIn ask-vincent padding-left-right"
-         icon-right="phone"
-         align="between"
-         :label="showAltLabels ? 'спросить вИнсента' : 'Ask Vincent!'"
-         push
-         color="green"
-         @click="linkToVismyfriendTelegram" />
-
-
-  <!--  <q-btn class="q-mb-sm zoomIn" icon="camera" label="see photos of secret agents!" push color="primary"-->
-  <!--    @click="goToPhotosOfAgentsPage" />-->
-  <!--  <q-btn class="q-mb-sm zoomIn" icon="mail" label="пройти тест" push color="primary" @click="test" />-->
-  <!--  <q-btn-->
-  <!--    class="custom-btn"-->
-  <!--    label="НАЖМИ!"-->
-  <!--    @click="test"-->
-  <!--  />-->
-  <!--  <q-btn class="q-mb-sm zoomIn" icon="search" label="Vismycoder" push color="green" @click="goVismyCoderPage" />-->
-  <!-- а где лучше всего идеи записывать? буду здесь пока! -->
-
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import {api} from "src/api";
-import backEndTest from "src/api/backEndTest";
+import { onMounted, ref } from 'vue';
 
-const router = useRouter()
-const seeAllSetsOfWords = () => {
-  // window.location.href = '#/special-app/devModeNumbersFast';
-  window.location.href = '#/see-all-sets-of-words';
+const text = "choose \na \ngame";
+const speed = 150;
+const router = useRouter();
+
+// Функция для корректного формирования пути к изображению
+const getImagePath = (iconName) => {
+  return new URL(`../assets/images/${iconName}`, import.meta.url).href;
 };
 
+const availableGames = ref([
+  {
+    id: 1,
+    name: "Alias",
+    description: "Объясни слово",
+    route: "/see-all-sets-of-words/devModeNumbersFast/deck-of-cards",
+    icon: "game1icon.png"
+  },
+  {
+    id: 2,
+    name: "Guess Word",
+    description: "Угадай слово по описанию",
+    route: "/guess-word",
+    icon: "game2icon.png"
+  },
+  {
+    id: 3,
+    name: "Memory Cards",
+    description: "Тренировка памяти с карточками",
+    route: "/memory-cards",
+    icon: "game3icon.png"
+  },
+  {
+    id: 4,
+    name: "Spelling",
+    description: "Правильное написание слов",
+    route: "/spelling",
+    icon: "game4icon.png"
+  },
+  {
+    id: 5,
+    name: "Word Puzzle",
+    description: "Собери слово из букв",
+    route: "/word-puzzle",
+    icon: "game5icon.png"
+  },
+  {
+    id: 6,
+    name: "Listening",
+    description: "Тренировка аудирования",
+    route: "/listening",
+    icon: "game6icon.png"
+  }
+]);
 
-// const goVismyCoderPage = () => {
-//   router.push("/vismycoder")
-// }
-// const goToSpecialAppPage = () => {
-//   router.push("/special-app")
-// }
-const goToRegistrationPage = () => {
-  router.push("/registration")
-}
-
-const seeAllGames = () => {
-  router.push('/');  // новый маршрут для кнопок «по приколу»
+const goToGameSelection = (route) => {
+  router.push({ path: route });
 };
-const goToExtraPage = () => {
-  router.push('/extra-page');  // новый маршрут для кнопок «доп материалов»
-};
 
-const linkToVismyfriendTelegram = () => {
+onMounted(() => {
+  const introMessage = document.getElementById("intro-message");
+  if (!introMessage) return;
 
-  window.open('https://t.me/vismyfriend?text=Hello Vincent', '_blank'); // Открыть ccылку в новой вкладке }
+  introMessage.textContent = "";
+  let i = 0;
 
-}
-
-
-import { ref } from 'vue'
-
-const showAltLabels = ref(false)
-const showAltIcons = ref(false)
-
-const toggleLabels = () => {
-  showAltLabels.value = !showAltLabels.value
-}
-const toggleIcons = () => {
-  showAltIcons.value = !showAltIcons.value
-}
-const toggleButtonStates = () => {
-  toggleLabels();
-  toggleIcons();
-}
-const test = () => {
-  // alert("you clicked! It worked!")
-  router.push("/vismyfriend")
-
-
-}
-
-const goToPhotosOfAgentsPage = () => {
-  router.push("/photos-of-agents")
-}
-
-// Функция для получения правильного окончания
-const getOrdinalSuffix = (date) => {
-  const lastDigit = date % 10; // Последняя цифра
-  const lastTwoDigits = date % 100; // Последние две цифры
-
-  if (lastTwoDigits === 11 || lastTwoDigits === 12 || lastTwoDigits === 13) {
-    return 'th'; // Исключения для 11, 12, 13
+  function typeWriter() {
+    if (i < text.length) {
+      introMessage.textContent += text[i] === "\n" ? "\n" : text[i];
+      i++;
+      setTimeout(typeWriter, speed);
+    }
   }
 
-  // Проверяем окончание по последней цифре
-  switch (lastDigit) {
-    case 1:
-      return 'st';
-    case 2:
-      return 'nd';
-    case 3:
-      return 'rd';
-    default:
-      return 'th'; // Для всех остальных
-  }
-};
-
-
-// Функция для теста Бэкенда при старте приложения - отправляем запрос
-const connectToBackEnd = async () => {
-  try {
-    const backEndTest = await api.backEndTest.get(); // Запрос на получение данных с бэкенда
-  } catch (error) {
-    console.error("Ошибка соединения с бэкЭндиной!", error);
-  }
-};
-
-onMounted(  () => {
-
-  connectToBackEnd();
-  const currentDate = new Date();
-  const monthName = currentDate.toLocaleString('en-US', { month: 'long' }); // Явно указываем английский
-  const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' }); // Явно указываем английский
-  const currentDay = currentDate.getDate();
-  const suffix = getOrdinalSuffix(currentDay);
-
-  // Массив приветствий
-  const greetings = [
-    "Hello, friends",
-    "Welcome to SPECIAL",
-    "Hi, buddy",
-    "Хэллоу, фрэнд",
-    "Zdraste, priehali",
-    "Hola, amigos ",
-    "Privet, friend",
-    "Today is a SPECIAL day",
-  ];
-  // Выбираем случайное приветствие
-  const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-  // Обновляем сообщение
-  document.getElementById('intro-message').innerHTML = `
-    ${randomGreeting} <br>
-    today is <u><span class="purple-text">${dayName}</span></u> <br>
-    the <span class="purple-text">${currentDay}</span>-<strong>
-    <u><span class="purple-text">${suffix}</span></u></strong> of ${monthName}
-  `;
-
+  typeWriter();
 });
-
-
-
 </script>
 
 <style lang="scss" scoped>
-
-:deep(.purple-text) {
-  color: #af10af;
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
 }
+
+.game-card {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 120px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+    &::before {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.game-name {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 2;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+/* Адаптация под мобильные устройства
+@media (max-width: 600px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-icon-container {
+    width: 50px;
+    height: 50px;
+  }
+}
+*/
+
+
+.blur {
+  filter: blur(5px);
+}
+
+
 .backgroundImg {
   width: 100%;
   height: 100vh;
@@ -212,52 +200,159 @@ onMounted(  () => {
 
 }
 
-//.custom-btn {
-//  background-image: url('../assets/images/yellow_card.png');
-//  background-size: cover;
-//  background-position: center;
-//content: "";
-//  //aspect-ratio: 16 / 3; /* Подбери под свою картинку */
-////height: 30px;
-//  color: black;
-//  font-weight: bold;
-//  font-size: 20px;
-//}
-.bubble {
-  text-align: center;
+
+/*
+.phoneFrame{
+  position: absolute;
+  height: 100%;
+  z-index: -1;
+}
+*/
+
+.v-cards-choose {
+  display: flex;
+  flex-wrap: wrap;
+  /* Позволяет карточкам переходить на новую строку */
+
+}
+
+.v-card-choose {
+  background-color: #f9f9f9;
+  /* Цвет фона карточки */
+  border: 1px solid #ddd;
+  /* Цвет границы */
+  border-radius: 20px;
+  /* Закругление углов */
+  padding: 5px 20px;
+  /* Внутренние отступы */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Тень */
+  cursor: none;
+  /* Указатель мыши при наведении */
+  transition: transform 0.2s, box-shadow 0.2s;
+  /* Плавный переход при наведении */
+  margin: 1.5px;
   user-select: none;
-  font-family: "Permanent Marker";
-  font-size: 17px;
-  display: inline-block;
-  position: relative;
-  padding: 30px 40px;
-  border-radius: 45px;
-  border: 3px solid black;
-  background: white;
-  clear: both;
+
+}
+
+.v-card-choose:hover {
+  transform: scale(1.05);
+  /* Увеличение карточки при наведении */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Увеличенная тень при наведении */
+  user-select: none;
+
+}
+
+.closeThisPage {
+
+  display: block;
+  margin: 0 auto;
+}
+
+
+
+
+#phoneFrame {
+
+  position: relative; // Устанавливает элемент относительно его нормального положения
+  height: 655px; // Высота элемента
+  width: 310px; // Ширина элемента
+  background:
+    linear-gradient( // Фоновый градиент
+        to top, // Направление градиента
+        #fff -250%, // Белый цвет
+        #000000 150% // Черный цвет
+    );
+  margin: 5px auto; // Отступы сверху и снизу, центрирование по горизонтали
+  border-radius: 2em; // Скругление углов
+  border: solid 5px #6a6a6a; // Рамка вокруг элемента
+
+  box-shadow: // Тени для элемента
+    inset 0 0 2px 7px #000, // Внутренняя тень
+    inset 0 0 3px 7px #000, // Внутренняя тень
+    0 150px 200px -80px #000; // Внешняя тень
+
+
+  overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
+
+  // Стилизация полосы прокрутки
+  &::-webkit-scrollbar {
+    width: 8px; // Ширина полосы прокрутки
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; // Цвет фона полосы прокрутки
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: gray; // Цвет ползунка
+    border-radius: 10px; // Скругление углов ползунка
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: darkgray; // Цвет ползунка при наведении
+  }
+
+  &::before {
+    // Псевдоэлемент перед элементом
+    text-align: center; // Выравнивание текста по центру
+    word-spacing: 6em; // Промежуток между словами
+    color: #fff; // Цвет текста
+    font-family: helvetica; // Шрифт
+    font-size: .7em; // Размер шрифта
+    display: block; // Отображение как блочный элемент
+    height: 240px; // Высота псевдоэлемента
+    width: 240px; // Ширина псевдоэлемента
+    position: absolute; // Абсолютное позиционирование
+    margin: 30px; // Отступы
+  }
+}
+
+.phone-content {
+
+}
+.bubble {
+  // Класс bubble
+  text-align: center; // Выравнивание текста по центру
+  user-select: none; // Запрет на выделение текста
+  font-family: "Permanent Marker"; // Шрифт
+  font-size: 17px; // Размер шрифта
+  display: inline-block; // Отображение как строчно-блочный элемент
+  position: absolute; // Абсолютное позиционирование
+  padding: 30px 40px; // Внутренние отступы
+  border-radius: 10px; // Скругление углов
+  border: 3px solid black; // Рамка вокруг элемента
+  background: white; // Фоновый цвет
+  clear: both; // Очищение флоатов
+
+  padding: 16px 17px; // Внутренние отступы (переопределение предыдущих)
 
   &:before {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    height: 50px;
-    width: 90px;
-
+    // Псевдоэлемент перед элементом bubble
+    content: ''; // Пустое содержимое
+    position: absolute; // Абсолютное позиционирование
+    bottom: -50px; // Позиция снизу
+    height: 50px; // Высота псевдоэлемента
+    width: 90px; // Ширина псевдоэлемента
   }
 
   &.left {
-    float: left;
-    margin: 10px 10px 60px 10px;
+    // Состояние, когда bubble имеет класс left
+    float: left; // Обтекание слева
+    margin: 25px 1px 62px 176px; // Отступы
 
     &:before {
-      border-radius: 0 0 100%;
-      box-shadow:
+      // Псевдоэлемент перед элементом bubble с классом left
+      border-radius: 0 0 100%; // Скругление углов
+      box-shadow: // Тени для псевдоэлемента
         -2px -2px 0 0 #000 inset,
         -23px 0 0 0 #fff inset,
         -25px -2px 0 0 #000 inset;
-      left: 0;
+      left: 0; // Позиция слева
+      /* ask - в инспекторе если в это месте добавить margin-right: 15px то стрелка двигается, а если тут в стилях дописать, то в инспекторе не отображается эта строчка*/
     }
-
   }
 
   &.right {
@@ -271,6 +366,7 @@ onMounted(  () => {
         23px 0 0 0 #fff inset,
         25px -2px 0 0 #000 inset;
       right: 0;
+
     }
   }
 
@@ -385,37 +481,6 @@ onMounted(  () => {
   }
 
 }
-
-.padding-left-right {
-  padding-left: 40px;
-  padding-right: 40px;
-
-}
-.q-btn {
-  display: inline-flex
-;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  outline: 0;
-  border: 0;
-  vertical-align: middle;
-  font-size: 14px;
-  line-height: 1.715em;
-  text-decoration: none;
-  color: inherit;
-  background: transparent;
-  font-weight: 500;
-  text-transform: uppercase;
-  text-align: center;
-  width: auto;
-  height: 50px;
-  cursor: none;
-
-}
-.see-all-sets-of-words-button {
-  height: 70px !important; /* или любое нужное значение */
-  //!important нужен, чтобы переопределить встроенный стиль Quasar, если он выставляет height напрямую.
-
-}
 </style>
+
+
