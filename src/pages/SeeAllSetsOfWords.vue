@@ -14,9 +14,20 @@
       <div class="q-pa-15">
         <img src="../assets/images/special logo detective girl.png" alt="logo">
         <div class="v-cards-choose" v-for="currentSetOfWords in AllSetsOfWords" :key="currentSetOfWords.id" >
-          <div class="v-card-choose" v-if="currentSetOfWords.active" role="button"
-            @click="goToChosenGame(`/see-all-sets-of-words/${currentSetOfWords.missionName}`)">
-            {{ currentSetOfWords.description }}
+          <div
+            class="v-card-choose tooltip-wrapper"
+            v-if="currentSetOfWords.active"
+            role="button"
+            @click="goToChosenGame(`/see-all-sets-of-words/${currentSetOfWords.missionName}`)"
+            :style="{
+    '--offset-x': '5px',
+    '--offset-y': '29.5px'
+  }"
+          >
+            {{ currentSetOfWords.missionDescription }}
+            <div class="custom-tooltip">
+              {{ currentSetOfWords.missionVisibleName }}
+            </div>
           </div>
         </div>
       </div>
@@ -39,102 +50,127 @@ const introMessage = ref(null); // Добавляем ref для элемент�
 const router = useRouter()
 const $q = useQuasar()
 
-const AllSetsOfWords = ref([
 
+const AllSetsOfWords = ref([
   {
     missionName: "digits",
-    description: "цифры",
-    id: 6,
-    active: true
-  },
-  {
-    missionName: "alphabetData",
-    description: "Алфавит ENG",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "devModeNumbersFast",
-    description: "протестировать быстро",
-    id: 15,
-    active: true,
-  },
-
-  {
-    missionName: "halloween01",
-    description: "Halloween 1",
+    missionVisibleName: "Digits /дИджитс/",
+    missionDescription: "Цифры",
     id: 1,
     active: true
   },
   {
-    missionName: "car-numbers",
-    description: "car numbers",
-    id: 2,
-    active: false
-  },
-  {
-    missionName: "devmode0",
-    description: "boys' names",
-    id: 3,
+    missionName: "alphabetData",
+    missionVisibleName: "Alphabet",
+    missionDescription: "Алфавит",
+    id: 7,
     active: true
   },
   {
-    missionName: "abcde",
-    description: "bukvas",
-    id: 4,
+    missionName: "popularIrregularVerbs",
+    missionVisibleName: "30ty Naughty Verbs",
+    missionDescription: "30 капризных глаголов",
+    id: 7,
     active: true
   },
-  {
-    missionName: "story-one",
-    description: "story number one",
-    id: 5,
-    active: true
-  },
-
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 8,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 9,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 10,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 11,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "новый набор слов и выражений",
-    id: 12,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "more words",
-    id: 13,
-    active: true
-  },
-  {
-    missionName: "missssssion",
-    description: "so many words...",
-    id: 14,
-    active: true
-  },
-
-
+  // {
+  //   missionName: "SillyMistakesPart1",
+  //   missionVisibleName: "Silly mistakes - Часть 1",
+  //   missionDescription: "Глупые ошибки - Part 1",
+  //   id: 6,
+  //   active: true
+  // },
+  // {
+  //   missionName: "devModeNumbersFast",
+  //   missionVisibleName: "devModeNumbersFast",
+  //   missionDescription: "протестировать быстро",
+  //   id: 15,
+  //   active: true
+  // },
+  // {
+  //   missionName: "halloween01",
+  //   missionVisibleName: "halloween01",
+  //   missionDescription: "Halloween 1",
+  //   id: 1,
+  //   active: true
+  // },
+  // {
+  //   missionName: "carNumbers",
+  //   missionVisibleName: "car-numbers",
+  //   missionDescription: "car numbers",
+  //   id: 2,
+  //   active: false
+  // },
+  // {
+  //   missionName: "devmode0",
+  //   missionVisibleName: "devmode0",
+  //   missionDescription: "boys' names",
+  //   id: 3,
+  //   active: true
+  // },
+  // {
+  //   missionName: "abcde",
+  //   missionVisibleName: "abcde",
+  //   missionDescription: "bukvas",
+  //   id: 4,
+  //   active: true
+  // },
+  // {
+  //   missionName: "storyOne",
+  //   missionVisibleName: "story-one",
+  //   missionDescription: "story number one",
+  //   id: 5,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion1",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "новый набор слов и выражений",
+  //   id: 8,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion2",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "новый набор слов и выражений",
+  //   id: 9,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion3",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "новый набор слов и выражений",
+  //   id: 10,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion4",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "новый набор слов и выражений",
+  //   id: 11,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion5",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "новый набор слов и выражений",
+  //   id: 12,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion6",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "more words",
+  //   id: 13,
+  //   active: true
+  // },
+  // {
+  //   missionName: "missssssion7",
+  //   missionVisibleName: "missssssion",
+  //   missionDescription: "so many words...",
+  //   id: 14,
+  //   active: true
+  // }
 ])
 
 const goToChosenGame = (route) => {
@@ -455,5 +491,32 @@ onMounted(() => {
     }
   }
 
+}
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.custom-tooltip {
+  position: absolute;
+  left: 0; // ← ПРИЖАТ К ЛЕВОМУ КРАЮ
+  transform: translate(var(--offset-x, 0px), var(--offset-y, -10px));
+  bottom: 100%;
+
+  background-color: #222;
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 30px;
+  font-size: 16px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+  max-width: 300px;
+  text-align: left;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+  opacity: 1;
 }
 </style>

@@ -11,23 +11,6 @@
     :icon-right="showAltIcons ? 'south' : 'help'"
     @click="toggleButtonStates"
   />
-
-  <q-btn class="q-mb-sm zoomIn padding-left-right"
-         align="between"
-         icon-right="my_location"
-         :label="showAltLabels ? 'сюда , для практики' : 'tap to practice'"
-         push
-         color="primary"
-         @click="seeAllSetsOfWords" />
-
-  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
-         align="between"
-         icon-right="attach_money"
-         :label="showAltLabels ? 'сюда , по приколу' : 'tap for fun!'"
-         push
-         color="primary"
-         @click="goToIntroPage"
-  />
   <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
          align="between"
          icon-right="favorite"
@@ -36,6 +19,24 @@
          color="primary"
          @click="goChooseGame"
   />
+  <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right"
+         align="between"
+         icon-right="attach_money"
+         :label="showAltLabels ? 'сюда , по приколу' : 'tap for fun!'"
+         push
+         color="primary"
+         @click="goToIntroPage"
+  />
+  <q-btn class="q-mb-sm zoomIn padding-left-right"
+         align="between"
+         icon-right="my_location"
+         :label="showAltLabels ? 'сюда , для практики' : 'tap to practice'"
+         push
+         color="primary"
+         @click="seeAllSetsOfWords" />
+
+
+
   <q-btn class="q-mb-sm zoomIn tapForFun padding-left-right opacity25"
          align="between"
          icon-right="build_circle"
