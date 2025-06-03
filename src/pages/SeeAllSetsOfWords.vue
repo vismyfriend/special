@@ -68,8 +68,15 @@ const AllSetsOfWords = ref([
   },
   {
     missionName: "popularIrregularVerbs",
-    missionVisibleName: "30ty Naughty Verbs",
+    missionVisibleName: "30-ty Naughty Verbs",
     missionDescription: "30 капризных глаголов",
+    id: 7,
+    active: true
+  },
+  {
+    missionName: "clothes",
+    missionVisibleName: "Clothes and stuff",
+    missionDescription: "Одежда и все такое",
     id: 7,
     active: true
   },

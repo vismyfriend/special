@@ -42,18 +42,27 @@ const getImagePath = (iconName) => {
 
 const availableGames = ref([
   {
+    id: 5,
+    name: "Find pairs",
+    description: "Найди пары слов",
+    route: "/see-all-sets-of-words/digits/find-pairs-hard",
+    icon: "game4icon.png"
+  },
+  {
     id: 1,
     name: "Alias",
     description: "Объясни слово",
     route: "/see-all-sets-of-words/explain/deck-of-cards",
     icon: "game1icon.png"
   },
+
+
   {
-    id: 2,
-    name: "Тапалка",
-    description: "успевай читать слова вслух",
-    route: "/",
-    icon: "game2icon.png"
+    id: 4,
+    name: "Cut wires",
+    description: "Перережь нужный провод",
+    route: "/see-all-sets-of-words/clothes/find-pairs-easy",
+    icon: "wiresPic.png"
   },
   {
     id: 3,
@@ -62,13 +71,13 @@ const availableGames = ref([
     externalUrl: "https://vismyfriend.itch.io/clicker-test",  // <- внешняя ссылка
     icon: "game3icon.png"
   },
-  // {
-  //   id: 4,
-  //   name: "Spelling",
-  //   description: "Правильное написание слов",
-  //   route: "/spelling",
-  //   icon: "game4icon.png"
-  // },
+  {
+    id: 2,
+    name: "Тапалка",
+    description: "успевай читать слова вслух",
+    route: "/",
+    icon: "game2icon.png"
+  },
   // {
   //   id: 5,
   //   name: "Word Puzzle",

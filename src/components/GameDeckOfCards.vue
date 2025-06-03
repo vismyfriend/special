@@ -147,7 +147,7 @@ const startTimer = () => {
   }
 
   loadQuestion();
-  timeLeft.value = 3;
+  timeLeft.value = 77;
   isTimerRunning.value = true;
 
   timer.value = setInterval(() => {
