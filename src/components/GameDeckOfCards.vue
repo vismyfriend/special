@@ -1,5 +1,11 @@
 <template>
     <div class="game-container" v-if="currentGameData.length">
+      <div v-if="showModal" class="modal-overlay">
+        <div class="modal-content">
+          <p>{{ modalMessage }}</p>
+          <button @click="closeModal">OK</button>
+        </div>
+      </div>
       <div class="side-buttons">
 <!--        <button @click="resetGame" class="game-btn">Reset</button>-->
         <button
@@ -54,7 +60,7 @@
               :style="getCardStyle(remainingCards.length - 1)"
               @click="handleCardCoverClick"
             >
-              <img src="../assets/images/card.png" alt="Card Back" role="button"/>
+              <img src="../assets/images/nextCard.png" alt="Card Back" role="button"/>
             </div>
           </div>
         </div>
@@ -88,7 +94,17 @@ const removedWords = ref([]); // Удалённые карточки, для о�
 
 const isMotionSupported = ref(false); // Показывать кнопку разрешения
 
+const showModal = ref(false);
+const modalMessage = ref('');
 
+const openModal = (message) => {
+  modalMessage.value = message;
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
 
 // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
 const showTranslation = ref(false);
@@ -131,7 +147,7 @@ const startTimer = () => {
   }
 
   loadQuestion();
-  timeLeft.value = 77;
+  timeLeft.value = 3;
   isTimerRunning.value = true;
 
   timer.value = setInterval(() => {
@@ -144,7 +160,7 @@ const startTimer = () => {
       timer.value = null;
       isTimerRunning.value = false;
       timeLeft.value = 0;
-      alert("⏰ Время вышло!\nПереход хода к следующему игроку.");
+      openModal("⏰ Время вышло!\nПереход хода к следующему игроку.");
     }
   }, 1000);
 };
@@ -159,7 +175,7 @@ const loadQuestion = async () => {
   if (isLoading) return; // если уже идет загрузка, ничего не делаем
   isLoading = true;
 
-  if (shuffledData.length === 0) {
+  if (shuffledData.length === 1) {
     finishGame();
     isLoading = false;
 
@@ -203,7 +219,7 @@ const undoLastRemoval = () => {
 
 // Конец игры
 const finishGame = () => {
-  alert("Игра окончена! Вы просмотрели все слова.");
+  openModal("Игра окончена! Вы просмотрели все слова.");
 };
 
 // Считаем, какие карты ещё остались
@@ -584,5 +600,41 @@ onMounted(() => {
   font-weight: bold;
   color: #dddddd;
   user-select: none;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // затемнение
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  padding: 8px 16px;
+  font-weight: bold;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
 }
 </style>

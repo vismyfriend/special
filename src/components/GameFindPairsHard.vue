@@ -1,33 +1,50 @@
 <template>
-  <div class="progress-container">
-    <div class="progress-bar" :style="{ width: progressWidth }"></div>
-    <!-- Добавляем текст с процентами -->
-    <div class="progress-text" v-if="matchedPairs > 0">{{ progressPercentage }}%</div>
-  </div>
-  <div class="row" v-if="currentGameData">
-    <div class="col">
-      <div
-        class="flex direction-column wordCard"
-        :class="[engWord.active ? 'active':'', engWord.visible ? '':'invisible']"
-        v-for="engWord in engCards"
-        :key="engWord.id"
-        @click="changeActive(engWord.id, 'left')"
-      >
-        {{ engWord.lang }}
-      </div>
-    </div>
-    <div class="col">
-      <div
-        class="flex direction-column wordCard"
-        :class="[ruWord.active ? 'active':'', ruWord.visible ? '':'invisible']"
-        v-for="ruWord in ruCards"
-        :key="ruWord.id"
-        @click="changeActive(ruWord.id, 'right')"
-      >
-        {{ ruWord.lang }}
-      </div>
+  <div class="game-wrapper" :style="{ backgroundImage: 'url(/background.jpg)' }">
+    <div class="progress-container">
+      <div class="progress-bar" :style="{ width: progressWidth }"></div>
+      <div class="progress-text" v-if="matchedPairs > 0">{{ progressPercentage }}%</div>
     </div>
 
+<!--    <div class="shift-button" @click="shiftCards">↻ Показать другие</div>-->
+
+    <div class="row" v-if="currentGameData">
+      <div class="col">
+        <div
+          class="wordCard"
+          :class="[
+  engWord.active ? 'active' : '',
+  !engWord.visible ? 'faded' : '',
+  engWord.pulse ? 'pulse-once' : '',
+  engWord.pulseWrong ? 'pulse-wrong' : ''
+]"
+          v-for="engWord in engCards"
+          :key="engWord.id"
+          @click="changeActive(engWord.id, 'left')"
+        >
+          {{ engWord.lang }}
+        </div>
+      </div>
+      <div class="col">
+        <div
+          class="wordCard"
+          :class="[
+  ruWord.active ? 'active' : '',
+  !ruWord.visible ? 'faded' : '',
+  ruWord.pulse ? 'pulse-once' : '',
+  ruWord.pulseWrong ? 'pulse-wrong' : ''
+]"
+          v-for="ruWord in ruCards"
+          :key="ruWord.id"
+          @click="changeActive(ruWord.id, 'right')"
+        >
+          {{ ruWord.lang }}
+        </div>
+      </div>
+    </div>
+<!--    <div class="image-container">-->
+<!--      <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />-->
+<!--      <button class="action-button" @click="handleButtonClick">Режь правильный провод!!!</button>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -139,27 +156,52 @@ const changeActive = (id, side) => {
 
     const matched = engActive.id === ruActive.id;
 
-    if (matched) deleteCards(ruActive, engActive);
-    switchState();
+  if (matched) {
+    deleteCards(ruActive, engActive);
+  } else {
+    addWrongPulse(engActive, ruActive);  // добавляем пульсацию ошибки
+  }
+  switchState();
+};
+const addWrongPulse = (eng, ru) => {
+  eng.pulseWrong = true;
+  ru.pulseWrong = true;
+
+  setTimeout(() => {
+    eng.pulseWrong = false;
+    ru.pulseWrong = false;
+  }, 600);  // длительность совпадает с анимацией
 };
 
 const deleteCards = (ru, eng) => {
+  ru.pulse = true;
+  eng.pulse = true;
+  matchedPairs.value++;
+
+  setTimeout(() => {
     ru.visible = false;
     eng.visible = false;
-    matchedPairs.value++; // Увеличиваем количество найденных пар для прогрес бара
+    ru.pulse = false;
+    eng.pulse = false;
 
-    const allInvisible = engCards.value.every(el => el.visible === false);
-    if (allInvisible) {
-        sliceMax.value += 5;
-        sliceMin.value += 5;
+    const allInvisible = engCards.value.every(el => !el.visible);
+    if (allInvisible) shiftCards(); // теперь вызывается корректно после исчезновения карточек
+  }, 500); // через 800ms исчезает пульсация, а карточки становятся полупрозрачными
 
-        if (sliceMin.value < currentGameData.value.length) {
-            ruCards.value = splitCards("ru");
-            engCards.value = splitCards("eng");
-        } else {
-            finishGame();
-        }
-    }
+  const allInvisible = engCards.value.every(el => !el.visible);
+  if (allInvisible) shiftCards();
+};
+
+const shiftCards = () => {
+  sliceMax.value += 5;
+  sliceMin.value += 5;
+
+  if (sliceMin.value < currentGameData.value.length) {
+    ruCards.value = splitCards("ru");
+    engCards.value = splitCards("eng");
+  } else {
+    finishGame();
+  }
 };
 
 const finishGame = () => {
@@ -188,50 +230,85 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.game-wrapper {
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
 .row {
-    margin-top: 30px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
 }
+
 .col {
-    color: wheat;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
 .wordCard {
-    background-color: #f9f9f9; /* Цвет фона карточки */
-    border: 2px solid #e90e0e; /* Цвет границы */
-    border-radius: 20px; /* Закругление углов */
-    height: 50px;
-    display: flex; /* Используем flexbox */
-    justify-content: center; /* Горизонтальное выравнивание по центру */
-    align-items: center; /* Вертикальное выравнивание по центру */
-    cursor: pointer; /* Указатель мыши при наведении */
-    margin: 1.5px;
-    user-select: none;
-    color: black;
+  background-color: #f4f4f4;
+  border: 2px solid #aaa;
+  border-radius: 16px;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+.wordCard:hover {
+  background-color: #e0e0e0;
 }
 
 .active {
-    background-color: black;
-    color: white;
-}
-.invisible {
-    opacity: 0;
-    user-select: none;
+  background-color: #333;
+  color: #fff;
 }
 
+.faded {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.pulse-once {
+  animation: pulse 0.5s ease-in-out 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    background-color: #c8f7c5;
+  }
+  50% {
+    transform: scale(1.05);
+    background-color: #a2e9a2;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #f4f4f4;
+  }
+}
 
 .progress-container {
   width: 100%;
-  height: 20px; /* Высота полоски прогресса */
-  background-color: rgba(0, 0, 0, 0.1); /* Полупрозрачный фон */
-  border-radius: 10px; /* Закругление углов */
-  margin-bottom: 20px; /* Отступ снизу */
-  position: relative; /* Для позиционирования текста */
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: green; /* Цвет заполнения */
-  border-radius: 10px; /* Закругление углов */
-  transition: width 0.5s ease; /* Плавное заполнение */
+  background-color: #3ec46d;
+  border-radius: 10px;
+  transition: width 0.5s ease;
 }
 
 .progress-text {
@@ -239,10 +316,73 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: rgba(255, 255, 255, 0.6); /* Полупрозрачный белый */
-  font-size: 12px;
+  color: #fff;
+  font-size: 13px;
   font-weight: bold;
 }
 
+.shift-button {
+  margin: 10px auto 20px auto;
+  padding: 8px 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: center;
+  width: max-content;
+  transition: background-color 0.3s ease;
+}
 
+.shift-button:hover {
+  background-color: #666;
+}
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.cutter-image {
+  width: 300px;
+  height: auto;
+  transform: translate(-48px, -74px); // Смещение влево и вверх
+}
+.action-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  transform: translateY(-74px); // сдвиг кнопки вверх, к картинке
+
+  &:hover {
+    background-color: #cc0000;
+  }
+
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 8px 4px rgba(233, 14, 14, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+  }
+}
+
+.pulse-wrong {
+  animation: pulse-border 0.6s ease-in-out 1;
+  border-color: red !important;
+  z-index: 3;
+}
 </style>

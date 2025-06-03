@@ -8,7 +8,7 @@
     <svg class="lines-overlay" ref="svgLines" style="width: 100%; height: 100%;"></svg>
 
     <div class="game-container">
-      <div class="wordCard main-word" ref="leftWord">
+      <div class="wordCard main-word pulsing" ref="leftWord">
         {{ currentWord.ru }}
       </div>
       <div class="answers-container">
@@ -36,6 +36,11 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
+  <div class="image-container">
+    <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
+    <button class="action-button" @click="handleButtonClick">Режь правильный провод!!!</button>
   </div>
 </template>
 
@@ -67,7 +72,10 @@ const answerRefs = ref([]);
 const svgLines = ref(null);
 
 const progressWidth = computed(() => `${progressPercentage.value}%`);
-
+const handleButtonClick = () => {
+  console.log("Кнопка нажата — резать провода!");
+  // Здесь можно запускать доп. механику
+};
 const animateProgress = (target) => {
   const step = () => {
     const diff = target - progressPercentage.value;
@@ -186,6 +194,28 @@ const checkAnswer = (answer, index) => {
 
   if (isCorrect.value) {
     matchedPairs.value++;
+
+    // Добавляем пульсацию зелёным для правильного ответа и левого слова
+    if (answerRefs.value[index]) {
+      answerRefs.value[index].classList.add('correct-pulse');
+    }
+    if (leftWord.value) {
+      leftWord.value.classList.remove('pulsing'); // Снять красную пульсацию
+      leftWord.value.classList.add('correct-pulse');
+    }
+
+    // Убираем класс через 1.2 сек
+    setTimeout(() => {
+      if (answerRefs.value[index]) {
+        answerRefs.value[index].classList.remove('correct-pulse');
+      }
+      if (leftWord.value) {
+        leftWord.value.classList.remove('correct-pulse');
+        leftWord.value.classList.add('pulsing'); // Вернуть обратно
+
+      }
+    }, 1200);
+
     setTimeout(() => {
       currentQuestionIndex.value++;
       loadQuestion();
@@ -347,7 +377,9 @@ onMounted(() => {
 }
 
 .correct {
-  background-color: green;
+  background-color: rgba(0, 255, 0, 1);
+  border-color: green; /* зелёная граница */
+
 }
 
 .fade {
@@ -425,5 +457,82 @@ onMounted(() => {
   animation: explode-realistic 0.5s cubic-bezier(0.42, 0, 0.58, 1); // плавный «взрыв» и возврат
   will-change: transform;
 }
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
 
+.cutter-image {
+  width: 300px;
+  height: auto;
+  transform: translate(-48px, -74px); // Смещение влево и вверх
+}
+.action-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  transform: translateY(-74px); // сдвиг кнопки вверх, к картинке
+
+  &:hover {
+    background-color: #cc0000;
+  }
+
+}
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 8px 4px rgba(233, 14, 14, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+  }
+}
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 12px 6px rgba(0, 255, 0, 1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+}
+
+.correct-pulse {
+  animation: pulse-green 0.6s ease-in-out 0s 2;
+  z-index: 3;
+  border-color: green !important;
+}
+.pulsing {
+  animation: pulse-border 1.4s infinite ease-in-out;
+  z-index: 3;
+}
+@keyframes pulse-wrong {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 18px 10px rgba(233, 14, 14, 1); // чуть сильнее
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.8);
+  }
+}
+
+.wrong-pulse {
+  animation: pulse-wrong 0.6s ease-in-out 1;
+  z-index: 3;
+}
 </style>
