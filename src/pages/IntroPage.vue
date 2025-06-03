@@ -100,7 +100,7 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
-    ? "Super! Жми сюда, разминка закончена"
+    ? "Super! Разминка окончена, жми сюда"
     : "Что делать дальше?";
 });
 
@@ -114,16 +114,15 @@ const dynamicMessage = computed(() => {
   const remaining = 20 - sessionCounter.value;
   if (remaining <= 0) {
     return `Разминка для мозгов и пальцев:<br><br>
-    1) Молодчина! <br>
-    2) <b>назови вслух</b> число за знаком $<br>
-    или нажми на число с долларом,<br>
-    чтобы проверить себя.`;
+    1) Молодчина! Хорошая практика.<br>
+    2) <b>число с долларом</b> можно нажать<br>
+    и проверить правильно ли вы его произнесли<br>
+    `;
   } else {
-    return `Разминка для мозгов и пальцев:<br><br>
+    return `Разминка твоей памяти:<br><br>
     1) нажми "Tap here" ${remaining} times - раз(а)<br>
-    2) <b>назови вслух</b> число за знаком $<br>
-    или нажми на число с долларом,<br>
-    чтобы проверить себя.`;
+    2) <b>читай вслух</b> вылетающие слова<br>
+    `;
   }
 });
 
@@ -346,7 +345,7 @@ html {
 
 .flying-word {
   position: fixed;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: bold;
   color: #333;
 

@@ -33,8 +33,12 @@ const routes = [
               },
               {
                 path: 'find-pairs-easy',
-                component: () => import('src/components/GameFindPairsNEW.vue')
+                component: () => import('src/components/GameFindPairsWires.vue')
               },
+              // {
+              //   path: 'find-pairs-easy',
+              //   component: () => import('src/components/GameFindPairsNEW.vue')
+              // },
               {
                 path: 'find-pairs-hardcore',
                 component: () => import('src/components/GameFindPairsHardcore.vue')
