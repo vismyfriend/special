@@ -175,21 +175,27 @@ const startTimer = () => {
 
 let lastTiltAction = null; // 'forward' | 'back' | null
 let inNeutralZone = true;
-const TILT_THRESHOLD = 45;
-const NEUTRAL_MIN = 70;
-const NEUTRAL_MAX = 110;
-
+// Более чувствительные, реалистичные границы
+// Например, если NEUTRAL_MAX = 110, а TILT_THRESHOLD = 45,
+// то 110 + 45 = 155 — только при  сильном наклоне срабатывает.
+// Это как раз то, что ты наблюдаешь — “срабатывает, когда
+// телефон почти касается стола”.
+const NEUTRAL_MIN = 60;
+const NEUTRAL_MAX = 120;
+const TILT_THRESHOLD = 20;
 const handleOrientation = (event) => {
   if (tiltMode.value === 'off') return;
 
   updateOrientation();
-
   let angle = 0;
+
   if (orientation.value === 'portrait') {
-    angle = event.beta;
+    angle = event.beta; // -180 (вверх) to 180 (вниз)
   } else {
-    angle = -event.gamma;
+    angle = -event.gamma; // в landscape gamma - боковой наклон
   }
+
+  console.log(`Orientation: ${orientation.value}, Angle: ${angle.toFixed(1)}`);
 
   if (angle > NEUTRAL_MIN && angle < NEUTRAL_MAX) {
     inNeutralZone = true;
@@ -199,13 +205,13 @@ const handleOrientation = (event) => {
 
   if (!inNeutralZone) return;
 
-  if (angle > NEUTRAL_MAX + TILT_THRESHOLD && lastTiltAction !== 'forward') {
+  if (angle >= NEUTRAL_MAX + TILT_THRESHOLD && lastTiltAction !== 'forward') {
     handleNext();
     inNeutralZone = false;
     lastTiltAction = 'forward';
   }
 
-  if (angle < NEUTRAL_MIN - TILT_THRESHOLD && lastTiltAction !== 'back') {
+  if (angle <= NEUTRAL_MIN - TILT_THRESHOLD && lastTiltAction !== 'back') {
     handleBack();
     inNeutralZone = false;
     lastTiltAction = 'back';
