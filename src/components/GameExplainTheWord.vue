@@ -341,7 +341,7 @@ const handleOrientation = (event) => {
   else if (tiltMode.value === 'gamma') {
     const TILT_RIGHT_THRESHOLD = 50;  // Наклон вправо (→ next)
     const TILT_LEFT_THRESHOLD = -50;   // Наклон влево (← back)
-    const NEUTRAL_ZONE = 15;
+    const NEUTRAL_ZONE = 70;
 
     // Сброс триггеров в нейтральной зоне
     if (gamma > -NEUTRAL_ZONE && gamma < NEUTRAL_ZONE) {
