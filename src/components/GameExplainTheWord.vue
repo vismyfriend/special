@@ -202,50 +202,41 @@ const handleOrientation = (event) => {
   const { beta, gamma } = event;
   const now = Date.now();
 
-  // Пороговые значения (в градусах)
-  const TILT_DOWN_THRESHOLD = 45;  // Наклон "на себя" для перехода вперед
-  const TILT_UP_THRESHOLD = -45;   // Наклон "от себя" для возврата
-  const NEUTRAL_ZONE = 25;         // Допуск для возврата в нейтральное положение
-  const TILT_COOLDOWN_MS = 800;    // Защита от слишком частых срабатываний
+  const TILT_DOWN_THRESHOLD = 45;
+  const TILT_UP_THRESHOLD = -45;
+  const NEUTRAL_ZONE = 25;
+  const TILT_COOLDOWN_MS = 800;
 
-  // Определяем ориентацию телефона
-  const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;  // Поворот влево (ландшафт)
-  const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0; // Поворот вправо (ландшафт)
-  const isPortrait = !isLandscapeLeft && !isLandscapeRight;   // Портретная ориентация
+  const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;
+  const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0;
+  const isPortrait = !isLandscapeLeft && !isLandscapeRight;
 
-  // Выбираем ось наклона в зависимости от ориентации
   let tiltAxisValue;
   if (isPortrait) {
-    tiltAxisValue = beta; // Портрет: используем beta (наклон вперед/назад)
+    tiltAxisValue = beta;
   } else if (isLandscapeLeft) {
-    tiltAxisValue = -gamma; // Ландшафт влево: инвертируем gamma
+    tiltAxisValue = -gamma;
   } else {
-    tiltAxisValue = gamma; // Ландшафт вправо: используем gamma как есть
+    tiltAxisValue = gamma;
   }
 
+  // ⬇️ Обработка наклонов
+  if (tiltAxisValue > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    handleNext();
+    lastTiltTime = now;
+    canTriggerForward = false;
+  }
 
-  // Логика для наклона "на себя" (вперед)
-  if (tiltAxisValue > TILT_DOWN_THRESHOLD) {
-    if (canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-      if (navigator.vibrate) navigator.vibrate(30);
-      handleNext();
-      lastTiltTime = now;
-      canTriggerForward = false;
-      canTriggerBackward = false; // Блокируем обратное действие
-    }
+  if (tiltAxisValue < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    handleBack();
+    lastTiltTime = now;
+    canTriggerBackward = false;
   }
-  // Логика для наклона "от себя" (назад)
-  else if (tiltAxisValue < TILT_UP_THRESHOLD) {
-    if (canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-      if (navigator.vibrate) navigator.vibrate(30);
-      handleBack();
-      lastTiltTime = now;
-      canTriggerBackward = false;
-      canTriggerForward = false; // Блокируем прямое действие
-    }
-  }
-  // Сброс флагов при возврате в нейтральную зону
-  else if (tiltAxisValue > TILT_UP_THRESHOLD && tiltAxisValue < TILT_DOWN_THRESHOLD) {
+
+  // ✅ Сброс срабатывания, если устройство в нейтральной зоне
+  if (tiltAxisValue > TILT_UP_THRESHOLD + NEUTRAL_ZONE && tiltAxisValue < TILT_DOWN_THRESHOLD - NEUTRAL_ZONE) {
     canTriggerForward = true;
     canTriggerBackward = true;
   }
