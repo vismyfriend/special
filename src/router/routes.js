@@ -44,8 +44,8 @@ const routes = [
                 component: () => import('src/components/GameFindPairsHardcore.vue')
               },
               {
-                path: 'this-game-is-coming-soon-2',
-                component: () => import('components/ThisGameIsComingSoon2.vue')
+                path: 'explain-the-word',
+                component: () => import('components/GameExplainTheWord.vue')
               },
               {
                 path: 'bender',
