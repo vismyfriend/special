@@ -202,8 +202,8 @@ const handleOrientation = (event) => {
   const { beta, gamma } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 45;
-  const TILT_UP_THRESHOLD = -45;
+  const TILT_DOWN_THRESHOLD = 30;
+  const TILT_UP_THRESHOLD = -30;
   const NEUTRAL_ZONE = 25;
   const TILT_COOLDOWN_MS = 800;
 
@@ -226,11 +226,6 @@ const handleOrientation = (event) => {
     handleNext();
     lastTiltTime = now;
     canTriggerForward = false;
-
-    // ⏱️ Сброс флага через 1-2 секунды
-    setTimeout(() => {
-      canTriggerForward = true;
-    }, 1000);
   }
 
   if (tiltAxisValue < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
@@ -238,11 +233,6 @@ const handleOrientation = (event) => {
     handleBack();
     lastTiltTime = now;
     canTriggerBackward = false;
-
-    // ⏱️ Сброс флага через 1-2 секунды
-    setTimeout(() => {
-      canTriggerBackward = true;
-    }, 1000);
   }
 
   // ✅ Сброс срабатывания, если устройство в нейтральной зоне
