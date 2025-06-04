@@ -1,5 +1,4 @@
 <template>
-
   <!-- Стартовая модалка -->
   <div v-if="showStartModal" class="modal-overlay">
     <div class="modal-content">
@@ -8,11 +7,13 @@
       <button @click="chooseDesktop">💻 С компьютера</button>
     </div>
   </div>
+
+  <!-- Основной экран игры -->
   <div class="game-container" v-if="currentGameData.length">
-    <!-- Кнопка ⚙ -->
+    <!-- Кнопка ⚙ для настроек -->
     <button @click="showSettingsModal = true">⚙</button>
 
-    <!-- Модалка настроек -->
+    <!-- Модалка настроек управления наклонами -->
     <div v-if="showSettingsModal" class="modal-overlay">
       <div class="modal-content">
         <p>Режим управления наклонами:</p>
@@ -27,7 +28,8 @@
         <button @click="showSettingsModal = false">OK</button>
       </div>
     </div>
-    <!-- Модалка, показывается при окончании времени -->
+
+    <!-- Модалка окончания времени -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
         <p>{{ modalMessage }}</p>
@@ -35,7 +37,7 @@
       </div>
     </div>
 
-    <!-- Основная карточка -->
+    <!-- Карточка со словом -->
     <div class="word-card" @click="toggleTranslation">
       <div class="word">{{ currentWord.eng }}</div>
       <div class="translation">{{ currentWord.ru }}</div>
@@ -45,7 +47,8 @@
     <div class="timer" @click="startTimer">
       {{ timeLeft > 0 ? `${timeLeft} сек` : 'Старт' }}
     </div>
-    <!-- Управляющие кнопки -->
+
+    <!-- Кнопки управления -->
     <div class="button-row">
       <button @click="handleBack">← Back</button>
       <button @click="handleNext">→ Next</button>
@@ -57,20 +60,25 @@
       <span>Next: {{ nextCount }}</span>
       <span>Skip: {{ skipCount }}</span>
     </div>
-    <!-- Кнопка разрешения наклонов (только для iOS) -->
+
+    <!-- Кнопка запроса разрешения на наклоны (только iOS) -->
     <button
       v-if="!isMotionSupported && isIOS"
       @click="initMotionControls"
     >
       Разрешить наклоны
     </button>
-
   </div>
+
+  <!-- Компонент отладки наклонов (опционально) -->
+  <TiltDebugger />
 </template>
+
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
+import TiltDebugger from '../components/TiltDebugger.vue';
 
 const route = useRoute();
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -102,33 +110,42 @@ const updateOrientation = () => {
   orientation.value = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
 };
 
-// Настройки наклонов
+// Наклоны
 const isMotionSupported = ref(false);
 const tiltMode = ref('on'); // 'on' или 'off'
 
-// Обработка модалок
+// ---------------- Функции ----------------
+
 const closeModal = () => {
   showModal.value = false;
 };
+
 const openModal = (message) => {
   modalMessage.value = `${message}\n\nNext: ${nextCount.value} раз\nSkip: ${skipCount.value} раз`;
   showModal.value = true;
 };
 
-// Обработка кнопок
 const handleNext = () => {
   nextCount.value += 1;
   loadNextWord();
 };
+
 const handleSkip = () => {
   skipCount.value += 1;
   loadNextWord();
 };
+
 const handleBack = () => {
   undoLastWord();
 };
 
-// Перемешать и загрузить слово
+const toggleTranslation = () => {
+  const temp = currentWord.value.ru;
+  currentWord.value.ru = currentWord.value.eng;
+  currentWord.value.eng = temp;
+};
+
+// Загрузка следующего слова
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 const loadNextWord = () => {
   if (shuffledData.value.length === 0) {
@@ -140,6 +157,8 @@ const loadNextWord = () => {
   }
   currentWord.value = shuffledData.value.pop();
 };
+
+// Отмена предыдущего слова
 const undoLastWord = () => {
   if (removedWords.value.length === 0) return;
   if (currentWord.value) {
@@ -171,18 +190,13 @@ const startTimer = () => {
   }, 1000);
 };
 
-// ------------------ Наклоны --------------------
-
-let lastTiltAction = null; // 'forward' | 'back' | null
+// Наклоны
+let lastTiltAction = null;
 let inNeutralZone = true;
-// Более чувствительные, реалистичные границы
-// Например, если NEUTRAL_MAX = 110, а TILT_THRESHOLD = 45,
-// то 110 + 45 = 155 — только при  сильном наклоне срабатывает.
-// Это как раз то, что ты наблюдаешь — “срабатывает, когда
-// телефон почти касается стола”.
 const NEUTRAL_MIN = 60;
 const NEUTRAL_MAX = 120;
 const TILT_THRESHOLD = 20;
+
 const handleOrientation = (event) => {
   if (tiltMode.value === 'off') return;
 
@@ -190,12 +204,10 @@ const handleOrientation = (event) => {
   let angle = 0;
 
   if (orientation.value === 'portrait') {
-    angle = event.beta; // -180 (вверх) to 180 (вниз)
+    angle = event.beta;
   } else {
-    angle = -event.gamma; // в landscape gamma - боковой наклон
+    angle = -event.gamma;
   }
-
-  console.log(`Orientation: ${orientation.value}, Angle: ${angle.toFixed(1)}`);
 
   if (angle > NEUTRAL_MIN && angle < NEUTRAL_MAX) {
     inNeutralZone = true;
@@ -234,13 +246,13 @@ const initMotionControls = () => {
   }
 };
 
-// Стартовые кнопки
+// Стартовая модалка
 const chooseDesktop = () => {
   showStartModal.value = false;
 };
+
 const chooseMobile = async () => {
   showStartModal.value = false;
-
   updateOrientation();
 
   if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -276,6 +288,7 @@ onMounted(() => {
   updateOrientation();
   window.addEventListener('resize', updateOrientation);
 });
+
 onUnmounted(() => {
   clearInterval(timer.value);
   window.removeEventListener('deviceorientation', handleOrientation);
