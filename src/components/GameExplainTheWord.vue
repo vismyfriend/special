@@ -9,7 +9,24 @@
     </div>
   </div>
   <div class="game-container" v-if="currentGameData.length">
+    <!-- Кнопка ⚙ -->
+    <button @click="showSettingsModal = true">⚙</button>
 
+    <!-- Модалка настроек -->
+    <div v-if="showSettingsModal" class="modal-overlay">
+      <div class="modal-content">
+        <p>Режим управления наклонами:</p>
+        <label>
+          <input type="radio" value="off" v-model="tiltMode" />
+          🔕 Отключить
+        </label><br />
+        <label>
+          <input type="radio" value="on" v-model="tiltMode" />
+          📲 Включить
+        </label><br />
+        <button @click="showSettingsModal = false">OK</button>
+      </div>
+    </div>
     <!-- Модалка, показывается при окончании времени -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
@@ -51,85 +68,83 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
 
 const route = useRoute();
-
-// iOS-проверка
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-// Основные состояния
+// Данные игры
 const currentGameData = ref([]);
 const shuffledData = ref([]);
 const removedWords = ref([]);
 const currentWord = ref({});
+
+// Модалки
 const showModal = ref(false);
+const showStartModal = ref(true);
+const showSettingsModal = ref(false);
 const modalMessage = ref('');
+
+// Таймер
 const timeLeft = ref(0);
 const isTimerRunning = ref(false);
 const timer = ref(null);
 
-// Стартовая модалка
-const showStartModal = ref(true);
-const isMotionSupported = ref(false);
-
-// Счётчики
+// Управление
 const nextCount = ref(0);
 const skipCount = ref(0);
 
-// Сброс модалки
+// Ориентация
+const orientation = ref('portrait');
+const updateOrientation = () => {
+  orientation.value = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+};
+
+// Настройки наклонов
+const isMotionSupported = ref(false);
+const tiltMode = ref('on'); // 'on' или 'off'
+
+// Обработка модалок
 const closeModal = () => {
   showModal.value = false;
 };
-
-// Показ модалки со статистикой
 const openModal = (message) => {
   modalMessage.value = `${message}\n\nNext: ${nextCount.value} раз\nSkip: ${skipCount.value} раз`;
   showModal.value = true;
 };
 
-// Кнопки управления
+// Обработка кнопок
 const handleNext = () => {
   nextCount.value += 1;
   loadNextWord();
 };
-
 const handleSkip = () => {
   skipCount.value += 1;
   loadNextWord();
 };
-
 const handleBack = () => {
   undoLastWord();
 };
 
-// Случайная сортировка
+// Перемешать и загрузить слово
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
-
-// Следующее слово
 const loadNextWord = () => {
   if (shuffledData.value.length === 0) {
     openModal('🎉 Вы просмотрели все слова!');
     return;
   }
-
   if (currentWord.value && !currentWord.value.isIntro) {
     removedWords.value.push(currentWord.value);
   }
-
   currentWord.value = shuffledData.value.pop();
 };
-
-// Назад к предыдущему слову
 const undoLastWord = () => {
   if (removedWords.value.length === 0) return;
-
   if (currentWord.value) {
     shuffledData.value.push(currentWord.value);
   }
-
   currentWord.value = removedWords.value.pop();
 };
 
@@ -148,7 +163,6 @@ const startTimer = () => {
 
   timer.value = setInterval(() => {
     timeLeft.value -= 1;
-
     if (timeLeft.value <= 0) {
       clearInterval(timer.value);
       isTimerRunning.value = false;
@@ -157,46 +171,47 @@ const startTimer = () => {
   }, 1000);
 };
 
-// Определяем портрет или ландшафт
-const orientation = ref('portrait');
-const updateOrientation = () => {
-  orientation.value = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-};
+// ------------------ Наклоны --------------------
 
-// Cooldown — защита от случайных повторов
-let lastTiltTime = 0;
-const TILT_COOLDOWN = 1000;
+let lastTiltAction = null; // 'forward' | 'back' | null
+let inNeutralZone = true;
+const TILT_THRESHOLD = 45;
+const NEUTRAL_MIN = 70;
+const NEUTRAL_MAX = 110;
 
-// Обработка сенсоров
 const handleOrientation = (event) => {
-  const now = Date.now();
-  if (now - lastTiltTime < TILT_COOLDOWN) return;
+  if (tiltMode.value === 'off') return;
 
-  updateOrientation(); // уточняем ориентацию
+  updateOrientation();
 
   let angle = 0;
-
-  // Унификация "наклон на себя / от себя" независимо от ориентации
   if (orientation.value === 'portrait') {
-    angle = event.beta; // beta в портрете — вверх/вниз
+    angle = event.beta;
   } else {
-    angle = -event.gamma; // gamma в landscape нужно инвертировать
+    angle = -event.gamma;
   }
 
-  // Наклон "на себя" — дальше
-  if (angle > 30) {
-    loadNextWord();
-    lastTiltTime = now;
+  if (angle > NEUTRAL_MIN && angle < NEUTRAL_MAX) {
+    inNeutralZone = true;
+    lastTiltAction = null;
+    return;
   }
 
-  // Наклон "от себя" — назад
-  if (angle < -30) {
-    undoLastWord();
-    lastTiltTime = now;
+  if (!inNeutralZone) return;
+
+  if (angle > NEUTRAL_MAX + TILT_THRESHOLD && lastTiltAction !== 'forward') {
+    handleNext();
+    inNeutralZone = false;
+    lastTiltAction = 'forward';
+  }
+
+  if (angle < NEUTRAL_MIN - TILT_THRESHOLD && lastTiltAction !== 'back') {
+    handleBack();
+    inNeutralZone = false;
+    lastTiltAction = 'back';
   }
 };
 
-// Инициализация доступа к сенсорам (например, по кнопке или на старте)
 const initMotionControls = () => {
   if (window.DeviceOrientationEvent) {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -213,16 +228,14 @@ const initMotionControls = () => {
   }
 };
 
-// Кнопка выбора "С компьютера"
+// Стартовые кнопки
 const chooseDesktop = () => {
   showStartModal.value = false;
 };
-
-// Кнопка выбора "С мобильного"
 const chooseMobile = async () => {
   showStartModal.value = false;
 
-  updateOrientation(); // определим ориентацию один раз
+  updateOrientation();
 
   if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
     try {
@@ -230,7 +243,6 @@ const chooseMobile = async () => {
       if (permissionState === 'granted') {
         window.addEventListener('deviceorientation', handleOrientation);
         isMotionSupported.value = true;
-
         modalMessage.value = `✅ Разрешение получено!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
         showModal.value = true;
       }
@@ -238,32 +250,26 @@ const chooseMobile = async () => {
       console.warn('Permission denied', err);
     }
   } else {
-    // Android
     window.addEventListener('deviceorientation', handleOrientation);
     isMotionSupported.value = true;
-
     modalMessage.value = `✅ Наклоны включены!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
     showModal.value = true;
   }
 };
 
-// Инициализация при загрузке
+// Монтирование
 onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
-
   currentWord.value = {
     ru: 'Объясни это мне',
     eng: 'Explain it to me',
     isIntro: true,
   };
-
-  updateOrientation(); // установить изначальную ориентацию
-  window.addEventListener('resize', updateOrientation); // отслеживаем поворот
+  updateOrientation();
+  window.addEventListener('resize', updateOrientation);
 });
-
-// Очистка
 onUnmounted(() => {
   clearInterval(timer.value);
   window.removeEventListener('deviceorientation', handleOrientation);
@@ -347,7 +353,9 @@ button + button {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
+button:last-of-type {
+  background-color: #888;
+}
 .counter-row {
   display: flex;
   gap: 20px;
