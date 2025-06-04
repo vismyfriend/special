@@ -212,49 +212,87 @@ const handleOrientation = (event) => {
   const { beta, gamma } = event;
   const now = Date.now();
 
-  const TILT_TRIGGER_ANGLE = 25; // чувствительность
-  const TILT_COOLDOWN_MS = 800;
+  // Пороговые значения для наклонов
+  const PORTRAIT_TILT_FORWARD_THRESHOLD = 110; // Наклон от себя (вперёд)
+  const PORTRAIT_TILT_BACKWARD_THRESHOLD = 70;  // Наклон на себя (назад)
+  const LANDSCAPE_TILT_FORWARD_THRESHOLD = 60;  // Наклон от себя
+  const LANDSCAPE_TILT_BACKWARD_THRESHOLD = -60; // Наклон на себя
+  const NEUTRAL_ZONE = 10; // Зона "покоя" для сброса триггеров
+  const TILT_COOLDOWN_MS = 800; // Защита от двойного срабатывания
 
-  const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;
-  const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0;
-  const isPortrait = !isLandscapeLeft && !isLandscapeRight;
+  // Определяем ориентацию
+  const isLandscape = Math.abs(gamma) > 45;
 
-  let tiltDelta = 0;
-
-  if (isPortrait) {
-    // В портретном: beta ≈ 90° — нейтраль, >90 — на себя, <90 — от себя
-    tiltDelta = beta - 90;
-  } else if (isLandscapeLeft) {
-    // В landscape left: gamma ≈ -90 — нейтраль, >-90 — на себя, <-90 — от себя
-    tiltDelta = gamma + 90;
+  let tiltValue;
+  if (!isLandscape) {
+    // Портретная ориентация - используем beta (90° вертикально)
+    tiltValue = beta;
   } else {
-    // В landscape right: gamma ≈ +90 — нейтраль, <+90 — на себя, >+90 — от себя
-    tiltDelta = gamma - 90;
+    // Ландшафтная ориентация - используем gamma (±89°)
+    tiltValue = gamma;
   }
 
-  if (tiltDelta > TILT_TRIGGER_ANGLE && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    // Наклон на себя → Следующее слово
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleNext();
-    lastTiltTime = now;
-    canTriggerForward = false;
-  }
+  // Определяем нейтральную зону (стартовая позиция)
+  const isNeutral = !isLandscape
+    ? (tiltValue > PORTRAIT_TILT_BACKWARD_THRESHOLD - NEUTRAL_ZONE &&
+      tiltValue < PORTRAIT_TILT_FORWARD_THRESHOLD + NEUTRAL_ZONE)
+    : (tiltValue > LANDSCAPE_TILT_BACKWARD_THRESHOLD - NEUTRAL_ZONE &&
+      tiltValue < LANDSCAPE_TILT_FORWARD_THRESHOLD + NEUTRAL_ZONE);
 
-  if (tiltDelta < -TILT_TRIGGER_ANGLE && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    // Наклон от себя → Назад
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleBack();
-    lastTiltTime = now;
-    canTriggerBackward = false;
-  }
-
-  // Сброс в нейтральной зоне
-  if (Math.abs(tiltDelta) < TILT_TRIGGER_ANGLE / 2) {
+  // В нейтральной позиции сбрасываем оба триггера
+  if (isNeutral) {
     canTriggerForward = true;
     canTriggerBackward = true;
   }
 
-  // Отладка
+  // Обработка наклонов в портретной ориентации
+  if (!isLandscape) {
+    if (tiltValue > PORTRAIT_TILT_FORWARD_THRESHOLD &&
+      canTriggerForward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS) {
+      // Наклон от себя (вперёд)
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+      canTriggerBackward = true;
+    }
+    else if (tiltValue < PORTRAIT_TILT_BACKWARD_THRESHOLD &&
+      canTriggerBackward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS) {
+      // Наклон на себя (назад)
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerForward = true;
+      canTriggerBackward = false;
+    }
+  }
+  // Обработка наклонов в ландшафтной ориентации
+  else {
+    if (tiltValue > LANDSCAPE_TILT_FORWARD_THRESHOLD &&
+      canTriggerForward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS) {
+      // Наклон от себя (вперёд)
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+      canTriggerBackward = true;
+    }
+    else if (tiltValue < LANDSCAPE_TILT_BACKWARD_THRESHOLD &&
+      canTriggerBackward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS) {
+      // Наклон на себя (назад)
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerForward = true;
+      canTriggerBackward = false;
+    }
+  }
+
+  // Обновляем отладочную информацию
   triggerDebug.value.canForward = canTriggerForward;
   triggerDebug.value.canBackward = canTriggerBackward;
 };
