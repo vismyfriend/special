@@ -212,9 +212,9 @@ const handleOrientation = (event) => {
   const { beta, gamma } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 30;
-  const TILT_UP_THRESHOLD = -30;
-  const NEUTRAL_ZONE = 45;
+  const TILT_DOWN_THRESHOLD = 40;
+  const TILT_UP_THRESHOLD = -40;
+  const NEUTRAL_ZONE = 25;
   const TILT_COOLDOWN_MS = 800;
 
 
