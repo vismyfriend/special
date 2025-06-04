@@ -72,6 +72,11 @@
 
   <!-- Компонент отладки наклонов (опционально) -->
   <TiltDebugger />
+  <!-- Отладка флагов срабатывания -->
+  <div class="tilt-flags-debug">
+    <p><strong>canTriggerForward:</strong> {{ triggerDebug.canForward ? '✅' : '❌' }}</p>
+    <p><strong>canTriggerBackward:</strong> {{ triggerDebug.canBackward ? '✅' : '❌' }}</p>
+  </div>
 </template>
 
 <script setup>
@@ -82,6 +87,11 @@ import TiltDebugger from '../components/TiltDebugger.vue';
 
 const route = useRoute();
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+const triggerDebug = ref({
+  canForward: true,
+  canBackward: true,
+});
 
 // Данные игры
 const currentGameData = ref([]);
@@ -204,8 +214,9 @@ const handleOrientation = (event) => {
 
   const TILT_DOWN_THRESHOLD = 30;
   const TILT_UP_THRESHOLD = -30;
-  const NEUTRAL_ZONE = 25;
+  const NEUTRAL_ZONE = 45;
   const TILT_COOLDOWN_MS = 800;
+
 
   const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;
   const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0;
@@ -240,6 +251,10 @@ const handleOrientation = (event) => {
     canTriggerForward = true;
     canTriggerBackward = true;
   }
+
+
+  triggerDebug.value.canForward = canTriggerForward;
+  triggerDebug.value.canBackward = canTriggerBackward;
 };
 
 const initMotionControls = () => {
@@ -400,5 +415,19 @@ button:last-of-type {
   gap: 20px;
   font-size: 16px;
   color: #333;
+}
+
+.tilt-flags-debug {
+  margin-top: 20px;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: left;
+  width: fit-content;
+}
+.tilt-flags-debug p {
+  margin: 4px 0;
 }
 </style>
