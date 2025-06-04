@@ -108,16 +108,25 @@ const chooseDesktop = () => {
 const chooseMobile = async () => {
   showStartModal.value = false;
 
+  updateOrientation(); // определить текущую ориентацию
+
+  const motionMessagePortrait = `✅ Разрешение получено!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
+  const motionMessageLandscape = `✅ Разрешение получено!\n\n▶ Наклоните телефон **вправо** — следующее слово\n◀ Наклоните **влево** — предыдущее слово`;
+
+  const showInstruction = () => {
+    modalMessage.value = orientation.value === 'portrait'
+      ? motionMessagePortrait
+      : motionMessageLandscape;
+    showModal.value = true;
+  };
+
   if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
     try {
       const permissionState = await DeviceOrientationEvent.requestPermission();
       if (permissionState === 'granted') {
         window.addEventListener('deviceorientation', handleOrientation);
         isMotionSupported.value = true;
-
-        // Показать инструкцию для мобильного
-        modalMessage.value = `✅ Разрешение получено!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
-        showModal.value = true;
+        showInstruction();
       }
     } catch (err) {
       console.warn('Permission denied', err);
@@ -126,9 +135,7 @@ const chooseMobile = async () => {
     // Android
     window.addEventListener('deviceorientation', handleOrientation);
     isMotionSupported.value = true;
-
-    modalMessage.value = `✅ Наклоны включены!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
-    showModal.value = true;
+    showInstruction();
   }
 };
 // Обработчики кнопок
@@ -201,23 +208,41 @@ const startTimer = () => {
 const isMotionSupported = ref(false);
 let lastTiltTime = 0;
 const TILT_COOLDOWN = 1000;
+const orientation = ref('portrait'); // 'portrait' или 'landscape'
 
+// Проверка текущей ориентации
+const updateOrientation = () => {
+  orientation.value = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+};
+
+// Обновим при повороте экрана
+window.addEventListener('resize', updateOrientation);
+
+// Новая логика обработки наклонов
 const handleOrientation = (event) => {
-  const { beta } = event;
   const now = Date.now();
-
   if (now - lastTiltTime < TILT_COOLDOWN) return;
 
-  // Вперёд (наклон вниз)
-  if (beta > 135) {
-    loadNextWord();
-    lastTiltTime = now;
-  }
+  updateOrientation(); // на всякий случай
 
-  // Назад (наклон вверх)
-  if (beta < 45) {
-    undoLastWord();
-    lastTiltTime = now;
+  if (orientation.value === 'portrait') {
+    const { beta } = event;
+    if (beta > 135) {
+      loadNextWord();
+      lastTiltTime = now;
+    } else if (beta < 45) {
+      undoLastWord();
+      lastTiltTime = now;
+    }
+  } else {
+    const { gamma } = event;
+    if (gamma > 30) {
+      loadNextWord();
+      lastTiltTime = now;
+    } else if (gamma < -30) {
+      undoLastWord();
+      lastTiltTime = now;
+    }
   }
 };
 
@@ -251,6 +276,10 @@ onMounted(() => {
     eng: 'Explain it to me',
     isIntro: true,
   };
+
+  clearInterval(timer.value);
+  window.removeEventListener('deviceorientation', handleOrientation);
+  window.removeEventListener('resize', updateOrientation);
 
   initMotionControls();
 });
