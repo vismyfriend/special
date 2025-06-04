@@ -212,49 +212,45 @@ const handleOrientation = (event) => {
   const { beta, gamma } = event;
   const now = Date.now();
 
-  const TILT_DOWN_THRESHOLD = 40;
-  const TILT_UP_THRESHOLD = -40;
-  const NEUTRAL_ZONE = 25;
-  const TILT_COOLDOWN_MS = 800;
+  const TILT_DOWN_THRESHOLD = 40;    // Наклон от себя (вперёд)
+  const TILT_UP_THRESHOLD = -40;      // Наклон на себя (назад)
+  const NEUTRAL_ZONE = 25;            // Зона, где оба флага true
+  const TILT_COOLDOWN_MS = 800;       // Задержка между срабатываниями
 
+  // Определяем значение для оси наклона
+  const tiltValue = beta; // Используем beta для портретного режима
 
-  const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;
-  const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0;
-  const isPortrait = !isLandscapeLeft && !isLandscapeRight;
-
-  let tiltAxisValue;
-  if (isPortrait) {
-    tiltAxisValue = beta;
-  } else if (isLandscapeLeft) {
-    tiltAxisValue = -gamma;
-  } else {
-    tiltAxisValue = gamma;
-  }
-
-  // ⬇️ Обработка наклонов
-  if (tiltAxisValue > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleNext();
-    lastTiltTime = now;
-    canTriggerForward = false;
-  }
-
-  if (tiltAxisValue < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleBack();
-    lastTiltTime = now;
-    canTriggerBackward = false;
-  }
-
-  // ✅ Сброс срабатывания, если устройство в нейтральной зоне
-  if (tiltAxisValue > TILT_UP_THRESHOLD + NEUTRAL_ZONE && tiltAxisValue < TILT_DOWN_THRESHOLD - NEUTRAL_ZONE) {
-    canTriggerForward = true;
-    canTriggerBackward = true;
-  }
-
-
+  // Обновляем debug-флаги
   triggerDebug.value.canForward = canTriggerForward;
   triggerDebug.value.canBackward = canTriggerBackward;
+
+  // 1. Определяем нейтральную зону (стартовая позиция)
+  if (Math.abs(tiltValue) < NEUTRAL_ZONE) {
+    canTriggerForward = true;
+    canTriggerBackward = true;
+    return; // Выходим, если в нейтральной зоне
+  }
+
+  // 2. Обработка наклона от себя (вперёд)
+  if (tiltValue > TILT_DOWN_THRESHOLD) {
+    if (canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+      canTriggerBackward = true; // Разрешаем обратное действие
+    }
+  }
+  // 3. Обработка наклона на себя (назад)
+  else if (tiltValue < TILT_UP_THRESHOLD) {
+    if (canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerBackward = false;
+      canTriggerForward = true; // Разрешаем обратное действие
+    }
+  }
 };
 
 const initMotionControls = () => {
