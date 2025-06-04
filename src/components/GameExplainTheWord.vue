@@ -300,66 +300,42 @@ let canTriggerBackward = true;
 const handleOrientation = (event) => {
   if (tiltMode.value !== 'on') return;
 
-  const { beta, gamma } = event;
+  const { beta } = event; // Используем только beta (портретный режим)
   const now = Date.now();
 
-  // Настройки для ландшафтного режима
-  const LANDSCAPE_TILT_FORWARD_THRESHOLD = 50;  // Наклон от себя
-  const LANDSCAPE_TILT_BACKWARD_THRESHOLD = -50; // Наклон на себя
-  const LANDSCAPE_NEUTRAL_ZONE = 15; // Зона покоя
-  const TILT_COOLDOWN_MS = 800;
+  // Пороговые значения из первого проекта
+  const TILT_DOWN_THRESHOLD = 125; // Наклон от себя (вперёд)
+  const TILT_UP_THRESHOLD = 30;    // Наклон на себя (назад)
+  const NEUTRAL_ZONE = 90;         // Зона покоя
+  const TILT_COOLDOWN_MS = 800;    // Задержка между действиями
 
-  // Определяем ориентацию (только ландшафт)
-  const isLandscapeLeft = gamma < -45;  // Телефон повёрнут влево (верх слева)
-  const isLandscapeRight = gamma > 45;  // Телефон повёрнут вправо (верх справа)
-  const isLandscape = isLandscapeLeft || isLandscapeRight;
-
-  // Полностью отключаем управление наклонами в портретной ориентации
-  if (!isLandscape) {
-    canTriggerForward = false;
-    canTriggerBackward = false;
-    triggerDebug.value.canForward = false;
-    triggerDebug.value.canBackward = false;
-    return;
-  }
-
-  // Нормализуем gamma для левого и правого положения
-  const normalizedGamma = isLandscapeLeft ? -gamma : gamma;
-
-  // Определяем нейтральную зону
-  const isNeutral = Math.abs(normalizedGamma) < LANDSCAPE_NEUTRAL_ZONE;
-
-  // В нейтральной позиции сбрасываем оба триггера
-  if (isNeutral) {
-    canTriggerForward = true;
+  // Сброс триггеров в нейтральной зоне
+  if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
     canTriggerBackward = true;
+  }
+  if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
+    canTriggerForward = true;
   }
 
   // Обработка наклонов
-  if (normalizedGamma > LANDSCAPE_TILT_FORWARD_THRESHOLD &&
-    canTriggerForward &&
-    now - lastTiltTime > TILT_COOLDOWN_MS) {
-    // Наклон от себя (вперёд)
+  if (beta > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
     if (navigator.vibrate) navigator.vibrate(30);
     handleNext();
     lastTiltTime = now;
     canTriggerForward = false;
-    canTriggerBackward = true;
   }
-  else if (normalizedGamma < LANDSCAPE_TILT_BACKWARD_THRESHOLD &&
-    canTriggerBackward &&
-    now - lastTiltTime > TILT_COOLDOWN_MS) {
-    // Наклон на себя (назад)
+  else if (beta < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
     if (navigator.vibrate) navigator.vibrate(30);
     handleBack();
     lastTiltTime = now;
-    canTriggerForward = true;
     canTriggerBackward = false;
   }
 
-  // Обновляем отладочную информацию
-  triggerDebug.value.canForward = canTriggerForward;
-  triggerDebug.value.canBackward = canTriggerBackward;
+  // Обновляем отладку
+  triggerDebug.value = {
+    canForward: canTriggerForward,
+    canBackward: canTriggerBackward
+  };
 };
 
 const initMotionControls = () => {
