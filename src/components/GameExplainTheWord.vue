@@ -198,43 +198,47 @@ const NEUTRAL_MAX = 120;
 const TILT_THRESHOLD = 20;
 
 const handleOrientation = (event) => {
-  if (tiltMode.value === 'off') return;
+  const { alpha, beta, gamma } = event;
+  const now = Date.now();
 
-  updateOrientation();
-  let angle = 0;
+  // Пороговые значения (в градусах)
+  const TILT_DOWN_THRESHOLD = 45;  // Наклон "на себя" для перехода вперед
+  const TILT_UP_THRESHOLD = -45;   // Наклон "от себя" для возврата
+  const NEUTRAL_ZONE = 15;         // Допуск для возврата в нейтральное положение
+  const TILT_COOLDOWN_MS = 800;    // Защита от слишком частых срабатываний
 
-  if (orientation.value === 'portrait') {
-    // Проверка: если gamma слишком большая, значит телефон наклонён вбок — игнорируем
-    if (Math.abs(event.gamma) > 30) return;
+  // Определяем ориентацию телефона
+  const isLandscapeLeft = Math.abs(gamma) > 45 && gamma < 0;  // Поворот влево (ландшафт)
+  const isLandscapeRight = Math.abs(gamma) > 45 && gamma > 0; // Поворот вправо (ландшафт)
+  const isPortrait = !isLandscapeLeft && !isLandscapeRight;   // Портретная ориентация
 
-    angle = event.beta;
+  // Выбираем ось наклона в зависимости от ориентации
+  let tiltAxisValue;
+  if (isPortrait) {
+    tiltAxisValue = beta; // Портрет: используем beta (наклон вперед/назад)
+  } else if (isLandscapeLeft) {
+    tiltAxisValue = -gamma; // Ландшафт влево: инвертируем gamma
   } else {
-    // Проверка: если beta слишком большая, значит телефон стоит вертикально — игнорируем
-    if (Math.abs(event.beta) > 30) return;
-
-    // gamma в landscape направлен «вперёд-назад», инвертируем его для логики
-    angle = -event.gamma;
+    tiltAxisValue = gamma; // Ландшафт вправо: используем gamma как есть
   }
 
-  // Если мы в нейтральной зоне — ничего не делаем, просто ждём
-  if (angle > NEUTRAL_MIN && angle < NEUTRAL_MAX) {
-    inNeutralZone = true;
-    lastTiltAction = null;
-    return;
+  // Логика управления (аналогична для всех ориентаций)
+  if (tiltAxisValue > TILT_DOWN_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerForward) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    loadQuestion();
+    lastTiltTime = now;
+    canTriggerForward = false;
+  } else if (tiltAxisValue < TILT_UP_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerBackward) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    undoLastRemoval();
+    lastTiltTime = now;
+    canTriggerBackward = false;
   }
 
-  if (!inNeutralZone) return;
-
-  if (angle >= NEUTRAL_MAX + TILT_THRESHOLD && lastTiltAction !== 'forward') {
-    handleNext();
-    inNeutralZone = false;
-    lastTiltAction = 'forward';
-  }
-
-  if (angle <= NEUTRAL_MIN - TILT_THRESHOLD && lastTiltAction !== 'back') {
-    handleBack();
-    inNeutralZone = false;
-    lastTiltAction = 'back';
+  // Сброс флагов при возврате в нейтральную зону
+  if (Math.abs(tiltAxisValue) < NEUTRAL_ZONE) {
+    canTriggerForward = true;
+    canTriggerBackward = true;
   }
 };
 
