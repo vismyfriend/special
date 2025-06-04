@@ -14,6 +14,7 @@
     <button @click="showSettingsModal = true">⚙</button>
 
     <!-- Модалка настроек управления наклонами -->
+
     <div v-if="showSettingsModal" class="modal-overlay">
       <div class="modal-content">
         <p>Режим управления наклонами:</p>
@@ -22,8 +23,12 @@
           🔕 Отключить
         </label><br />
         <label>
-          <input type="radio" value="on" v-model="tiltMode" />
-          📲 Включить
+          <input type="radio" value="beta" v-model="tiltMode" />
+          📱 Портрет (beta)
+        </label><br />
+        <label>
+          <input type="radio" value="gamma" v-model="tiltMode" />
+          ↔️ Ландшафт (gamma)
         </label><br />
         <button @click="showSettingsModal = false">OK</button>
       </div>
@@ -122,8 +127,7 @@ const updateOrientation = () => {
 
 // Наклоны
 const isMotionSupported = ref(false);
-const tiltMode = ref('on'); // 'on' или 'off'
-
+const tiltMode = ref('beta'); // По умолчанию портретный режим
 // ---------------- Функции ----------------
 
 const closeModal = () => {
@@ -298,37 +302,65 @@ let canTriggerBackward = true;
 // };
 
 const handleOrientation = (event) => {
-  if (tiltMode.value !== 'on') return;
+  if (tiltMode.value === 'off') return;
 
-  const { beta } = event; // Используем только beta (портретный режим)
+  const { beta, gamma } = event;
   const now = Date.now();
 
-  // Пороговые значения из первого проекта
-  const TILT_DOWN_THRESHOLD = 125; // Наклон от себя (вперёд)
-  const TILT_UP_THRESHOLD = 30;    // Наклон на себя (назад)
-  const NEUTRAL_ZONE = 90;         // Зона покоя
-  const TILT_COOLDOWN_MS = 800;    // Задержка между действиями
+  // Общие настройки
+  const TILT_COOLDOWN_MS = 800;
+  const VIBRATION_DURATION = 30;
 
-  // Сброс триггеров в нейтральной зоне
-  if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
-    canTriggerBackward = true;
-  }
-  if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
-    canTriggerForward = true;
-  }
+  // Режим beta (портрет)
+  if (tiltMode.value === 'beta') {
+    const TILT_DOWN_THRESHOLD = 125;
+    const TILT_UP_THRESHOLD = 30;
+    const NEUTRAL_ZONE = 90;
 
-  // Обработка наклонов
-  if (beta > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleNext();
-    lastTiltTime = now;
-    canTriggerForward = false;
+    if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
+      canTriggerBackward = true;
+    }
+    if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
+      canTriggerForward = true;
+    }
+
+    if (beta > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+    }
+    else if (beta < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerBackward = false;
+    }
   }
-  else if (beta < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleBack();
-    lastTiltTime = now;
-    canTriggerBackward = false;
+  // Режим gamma (ландшафт)
+  else if (tiltMode.value === 'gamma') {
+    const TILT_RIGHT_THRESHOLD = 50;  // Наклон вправо (→ next)
+    const TILT_LEFT_THRESHOLD = -50;   // Наклон влево (← back)
+    const NEUTRAL_ZONE = 15;
+
+    // Сброс триггеров в нейтральной зоне
+    if (gamma > -NEUTRAL_ZONE && gamma < NEUTRAL_ZONE) {
+      canTriggerForward = true;
+      canTriggerBackward = true;
+    }
+
+    if (gamma > TILT_RIGHT_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+    }
+    else if (gamma < TILT_LEFT_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerBackward = false;
+    }
   }
 
   // Обновляем отладку
