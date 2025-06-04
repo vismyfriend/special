@@ -339,9 +339,9 @@ const handleOrientation = (event) => {
   }
   // Режим gamma (ландшафт)
   else if (tiltMode.value === 'gamma') {
-    const TILT_RIGHT_THRESHOLD = 50;  // Наклон вправо (→ next)
-    const TILT_LEFT_THRESHOLD = -50;   // Наклон влево (← back)
-    const NEUTRAL_ZONE = 70;
+    const TILT_DOWN_LANDSCAPE_THRESHOLD = 45;  // Наклон вниз (→ next)
+    const TILT_UP_LANDSCAPE_THRESHOLD = -45;   // Наклон вверх (← back)
+    const NEUTRAL_ZONE = 85;
 
     // Сброс триггеров в нейтральной зоне
     if (gamma > -NEUTRAL_ZONE && gamma < NEUTRAL_ZONE) {
@@ -349,13 +349,13 @@ const handleOrientation = (event) => {
       canTriggerBackward = true;
     }
 
-    if (gamma > TILT_RIGHT_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (gamma > TILT_DOWN_LANDSCAPE_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleNext();
       lastTiltTime = now;
       canTriggerForward = false;
     }
-    else if (gamma < TILT_LEFT_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    else if (gamma < TILT_UP_LANDSCAPE_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleBack();
       lastTiltTime = now;
