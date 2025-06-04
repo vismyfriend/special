@@ -205,7 +205,7 @@ const handleOrientation = (event) => {
   // Пороговые значения (в градусах)
   const TILT_DOWN_THRESHOLD = 45;  // Наклон "на себя" для перехода вперед
   const TILT_UP_THRESHOLD = -45;   // Наклон "от себя" для возврата
-  const NEUTRAL_ZONE = 15;         // Допуск для возврата в нейтральное положение
+  const NEUTRAL_ZONE = 25;         // Допуск для возврата в нейтральное положение
   const TILT_COOLDOWN_MS = 800;    // Защита от слишком частых срабатываний
 
   // Определяем ориентацию телефона
@@ -223,21 +223,29 @@ const handleOrientation = (event) => {
     tiltAxisValue = gamma; // Ландшафт вправо: используем gamma как есть
   }
 
-  // Логика управления
-  if (tiltAxisValue > TILT_DOWN_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerForward) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleNext();
-    lastTiltTime = now;
-    canTriggerForward = false;
-  } else if (tiltAxisValue < TILT_UP_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerBackward) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    handleBack();
-    lastTiltTime = now;
-    canTriggerBackward = false;
-  }
 
+  // Логика для наклона "на себя" (вперед)
+  if (tiltAxisValue > TILT_DOWN_THRESHOLD) {
+    if (canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleNext();
+      lastTiltTime = now;
+      canTriggerForward = false;
+      canTriggerBackward = false; // Блокируем обратное действие
+    }
+  }
+  // Логика для наклона "от себя" (назад)
+  else if (tiltAxisValue < TILT_UP_THRESHOLD) {
+    if (canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+      if (navigator.vibrate) navigator.vibrate(30);
+      handleBack();
+      lastTiltTime = now;
+      canTriggerBackward = false;
+      canTriggerForward = false; // Блокируем прямое действие
+    }
+  }
   // Сброс флагов при возврате в нейтральную зону
-  if (Math.abs(tiltAxisValue) < NEUTRAL_ZONE) {
+  else if (tiltAxisValue > TILT_UP_THRESHOLD && tiltAxisValue < TILT_DOWN_THRESHOLD) {
     canTriggerForward = true;
     canTriggerBackward = true;
   }
