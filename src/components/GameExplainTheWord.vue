@@ -191,14 +191,15 @@ const startTimer = () => {
 };
 
 // Наклоны
-let lastTiltAction = null;
-let inNeutralZone = true;
-const NEUTRAL_MIN = 60;
-const NEUTRAL_MAX = 120;
-const TILT_THRESHOLD = 20;
+
+let lastTiltTime = 0;
+let canTriggerForward = true;
+let canTriggerBackward = true;
 
 const handleOrientation = (event) => {
-  const { alpha, beta, gamma } = event;
+  if (tiltMode.value !== 'on') return;
+
+  const { beta, gamma } = event;
   const now = Date.now();
 
   // Пороговые значения (в градусах)
@@ -208,8 +209,8 @@ const handleOrientation = (event) => {
   const TILT_COOLDOWN_MS = 800;    // Защита от слишком частых срабатываний
 
   // Определяем ориентацию телефона
-  const isLandscapeLeft = Math.abs(gamma) > 45 && gamma < 0;  // Поворот влево (ландшафт)
-  const isLandscapeRight = Math.abs(gamma) > 45 && gamma > 0; // Поворот вправо (ландшафт)
+  const isLandscapeLeft = Math.abs(gamma) > 60 && gamma < 0;  // Поворот влево (ландшафт)
+  const isLandscapeRight = Math.abs(gamma) > 60 && gamma > 0; // Поворот вправо (ландшафт)
   const isPortrait = !isLandscapeLeft && !isLandscapeRight;   // Портретная ориентация
 
   // Выбираем ось наклона в зависимости от ориентации
@@ -222,15 +223,15 @@ const handleOrientation = (event) => {
     tiltAxisValue = gamma; // Ландшафт вправо: используем gamma как есть
   }
 
-  // Логика управления (аналогична для всех ориентаций)
+  // Логика управления
   if (tiltAxisValue > TILT_DOWN_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerForward) {
     if (navigator.vibrate) navigator.vibrate(30);
-    loadQuestion();
+    handleNext();
     lastTiltTime = now;
     canTriggerForward = false;
   } else if (tiltAxisValue < TILT_UP_THRESHOLD && now - lastTiltTime > TILT_COOLDOWN_MS && canTriggerBackward) {
     if (navigator.vibrate) navigator.vibrate(30);
-    undoLastRemoval();
+    handleBack();
     lastTiltTime = now;
     canTriggerBackward = false;
   }
@@ -245,16 +246,25 @@ const handleOrientation = (event) => {
 const initMotionControls = () => {
   if (window.DeviceOrientationEvent) {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      DeviceOrientationEvent.requestPermission().then((permissionState) => {
-        if (permissionState === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-          isMotionSupported.value = true;
-        }
-      });
+      DeviceOrientationEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            window.addEventListener('deviceorientation', handleOrientation);
+            isMotionSupported.value = true;
+            openModal('Управление наклонами активировано!');
+          }
+        })
+        .catch(err => {
+          console.error('Permission denied:', err);
+          openModal('Не удалось получить доступ к датчикам');
+        });
     } else {
+      // Для Android и других устройств
       window.addEventListener('deviceorientation', handleOrientation);
       isMotionSupported.value = true;
     }
+  } else {
+    openModal('Ваше устройство не поддерживает управление наклонами');
   }
 };
 
@@ -300,7 +310,6 @@ onMounted(() => {
   updateOrientation();
   window.addEventListener('resize', updateOrientation);
 });
-
 onUnmounted(() => {
   clearInterval(timer.value);
   window.removeEventListener('deviceorientation', handleOrientation);
