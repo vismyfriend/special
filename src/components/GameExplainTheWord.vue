@@ -204,11 +204,19 @@ const handleOrientation = (event) => {
   let angle = 0;
 
   if (orientation.value === 'portrait') {
+    // Проверка: если gamma слишком большая, значит телефон наклонён вбок — игнорируем
+    if (Math.abs(event.gamma) > 30) return;
+
     angle = event.beta;
   } else {
+    // Проверка: если beta слишком большая, значит телефон стоит вертикально — игнорируем
+    if (Math.abs(event.beta) > 30) return;
+
+    // gamma в landscape направлен «вперёд-назад», инвертируем его для логики
     angle = -event.gamma;
   }
 
+  // Если мы в нейтральной зоне — ничего не делаем, просто ждём
   if (angle > NEUTRAL_MIN && angle < NEUTRAL_MAX) {
     inNeutralZone = true;
     lastTiltAction = null;
