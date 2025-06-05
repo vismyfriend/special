@@ -128,7 +128,7 @@ const dynamicMessage = computed(() => {
 
 const backToIntroPage = () => {
   if (sessionCounter.value >= 20) {
-    router.push("/main-page");
+    router.push("/games");
   } else {
     infoMessage.value = dynamicMessage.value;
     showOverlay.value = true;

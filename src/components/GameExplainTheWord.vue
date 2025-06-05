@@ -310,6 +310,7 @@ const handleOrientation = (event) => {
   // Общие настройки
   const TILT_COOLDOWN_MS = 800;
   const VIBRATION_DURATION = 30;
+  let lastGamma = 90;  // Исходное значение: нейтральное положение (normalizedGamma = 90)
 
   // Режим beta (портрет)
   if (tiltMode.value === 'beta') {
@@ -338,23 +339,35 @@ const handleOrientation = (event) => {
     }
   }
   // Режим gamma (ландшафт)
+
+
   else if (tiltMode.value === 'gamma') {
-    // Преобразуем gamma в диапазон 0–180
+    // Преобразуем gamma в [0°, 180°]
     const normalizedGamma = gamma + 90;
 
-    // Пороги срабатывания (настроить под себя)
-    const TILT_BACK_THRESHOLD = 30;    // ← Наклон от себя (ранее -45° → теперь 45°)
-    const TILT_NEXT_THRESHOLD = 150;  // → Наклон на себя (ранее 45° → теперь 135°)
-    const NEUTRAL_ZONE_LOW = 80;      // Нижняя граница нейтральной зоны (около 90°)
-    const NEUTRAL_ZONE_HIGH = 100;    // Верхняя граница нейтральной зоны
+    // Настройки (можно менять под себя)
+    const TILT_BACK_THRESHOLD = 30;     // ← Наклон от себя (← back)
+    const TILT_NEXT_THRESHOLD = 150;    // → Наклон на себя (→ next)
+    const NEUTRAL_ZONE_LOW = 70;        // Широкая нейтральная зона (70°–110°)
+    const NEUTRAL_ZONE_HIGH = 110;
+    const HYSTERESIS = 10;              // Запас для гистерезиса
 
-    // Сброс триггеров только в узкой нейтральной зоне (80°–100°)
-    if (normalizedGamma > NEUTRAL_ZONE_LOW && normalizedGamma < NEUTRAL_ZONE_HIGH) {
+    // Фильтр резких скачков (игнорируем изменения > 45° за кадр)
+    const GAMMA_JUMP_THRESHOLD = 45;
+    if (Math.abs(normalizedGamma - lastGamma) > GAMMA_JUMP_THRESHOLD) {
+      lastGamma = normalizedGamma;  // Запоминаем, но не обрабатываем скачок
+      return;                       // Пропускаем кадр
+    }
+    lastGamma = normalizedGamma;    // Обновляем значение
+
+    // Сброс триггеров ТОЛЬКО если уверенно в нейтральной зоне
+    if (normalizedGamma > NEUTRAL_ZONE_LOW + HYSTERESIS &&
+      normalizedGamma < NEUTRAL_ZONE_HIGH - HYSTERESIS) {
       canTriggerForward = true;
       canTriggerBackward = true;
     }
 
-    // Срабатывание только вне нейтральной зоны
+    // Срабатывание только после выхода из нейтральной зоны
     if (normalizedGamma > TILT_NEXT_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleNext();
