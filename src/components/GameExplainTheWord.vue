@@ -205,7 +205,7 @@ let lastTiltTime = 0;
 let canTriggerForward = true;
 let canTriggerBackward = true;
 
-const TILT_COOLDOWN_MS = 1300;
+const TILT_COOLDOWN_MS = 1000;
 const VIBRATION_DURATION = 30;
 
 const handleOrientation = (event) => {
@@ -244,32 +244,29 @@ const handleOrientation = (event) => {
   };
 };
 let initialXDirection = null;
-let lastRelativeX = 0;
+
 const handleMotion = (event) => {
   if (tiltMode.value !== 'gamma') return;
 
   const now = Date.now();
   const ax = event.accelerationIncludingGravity.x;
 
-  const TILT_COOLDOWN_MS = 2000;
-  const VIBRATION_DURATION = 30;
-
+  // На первом срабатывании определяем, где "вперёд"
   if (initialXDirection === null) {
     initialXDirection = ax > 0 ? 1 : -1;
   }
 
+  // Применим знак в зависимости от ориентации
   const relativeX = ax * initialXDirection;
 
+  // Пороги срабатывания
   const FORWARD_THRESHOLD = 4.5;
   const BACKWARD_THRESHOLD = -4.5;
   const NEUTRAL_LOW = -2.5;
   const NEUTRAL_HIGH = 2.5;
 
-  // Отдельная проверка, вернулся ли телефон в нейтраль
-  if (lastRelativeX > FORWARD_THRESHOLD && relativeX < NEUTRAL_HIGH) {
+  if (relativeX > NEUTRAL_LOW && relativeX < NEUTRAL_HIGH) {
     canTriggerForward = true;
-  }
-  if (lastRelativeX < BACKWARD_THRESHOLD && relativeX > NEUTRAL_LOW) {
     canTriggerBackward = true;
   }
 
@@ -285,13 +282,12 @@ const handleMotion = (event) => {
     canTriggerBackward = false;
   }
 
-  lastRelativeX = relativeX;
-
   triggerDebug.value = {
     canForward: canTriggerForward,
     canBackward: canTriggerBackward
   };
 };
+
 const initMotionControls = () => {
   if (window.DeviceOrientationEvent) {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {

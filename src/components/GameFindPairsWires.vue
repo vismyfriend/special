@@ -31,8 +31,15 @@
             {{ answer }}
           </div>
 
-          <!-- Вынесли из .wordCard, но оставили в v-for -->
+          <!-- Сообщения об ошибках и успехах -->
           <div v-if="errorTexts[index]" class="error-text">{{ errorTexts[index] }}</div>
+          <div
+            v-if="positiveTexts[index]"
+            class="positive-text"
+            :data-is-word="!positiveWords.includes(positiveTexts[index])"
+          >
+          {{ positiveTexts[index] }}
+        </div>
         </div>
       </div>
     </div>
@@ -97,7 +104,8 @@ watch(matchedPairs, (newValue) => {
 const errorTexts = ref([]); // Сюда будем помещать 'oops!', 'boom!', и т.д.
 
 const errorWords = ['oops!', 'boom!', 'ouch!', 'no!', 'я случайно!', 'f#ck'];
-
+const positiveWords = ['YES!', 'Great', 'Awesome', 'Super', 'Correct'];
+const positiveTexts = ref([]); // Аналогично errorTexts
 
 const getRandomColor = () => {
   // Возвращает случайный яркий цвет
@@ -195,24 +203,30 @@ const checkAnswer = (answer, index) => {
   if (isCorrect.value) {
     matchedPairs.value++;
 
-    // Добавляем пульсацию зелёным для правильного ответа и левого слова
+    // Решаем, что показывать: случайное слово из списка или само правильное слово
+    const showRandomPositive = Math.random() > 0.5; // 50% шанс
+    positiveTexts.value[index] = showRandomPositive
+      ? positiveWords[Math.floor(Math.random() * positiveWords.length)]
+      : answer; // Само слово, на которое нажали (оно же правильный ответ)
+
+    // Остальная анимация и логика остаётся без изменений
     if (answerRefs.value[index]) {
       answerRefs.value[index].classList.add('correct-pulse');
     }
     if (leftWord.value) {
-      leftWord.value.classList.remove('pulsing'); // Снять красную пульсацию
+      leftWord.value.classList.remove('pulsing');
       leftWord.value.classList.add('correct-pulse');
     }
 
-    // Убираем класс через 1.2 сек
     setTimeout(() => {
-      if (answerRefs.value[index]) {
-        answerRefs.value[index].classList.remove('correct-pulse');
-      }
+      positiveTexts.value[index] = '';
+    }, 1200);
+
+    setTimeout(() => {
+      if (answerRefs.value[index]) answerRefs.value[index].classList.remove('correct-pulse');
       if (leftWord.value) {
         leftWord.value.classList.remove('correct-pulse');
-        leftWord.value.classList.add('pulsing'); // Вернуть обратно
-
+        leftWord.value.classList.add('pulsing');
       }
     }, 1200);
 
@@ -377,7 +391,7 @@ onMounted(() => {
 }
 
 .correct {
-  background-color: rgba(0, 255, 0, 1);
+  background-color: rgba(255, 255, 255, 0.77);
   border-color: green; /* зелёная граница */
 
 }
@@ -534,5 +548,20 @@ onMounted(() => {
 .wrong-pulse {
   animation: pulse-wrong 0.6s ease-in-out 1;
   z-index: 3;
+}
+.positive-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bold;
+  color: #00ff00; // Зеленый цвет
+  animation: popIn 0.3s ease, popOut 0.2s ease-in 0.7s forwards;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 10;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); // Свечение для лучшей видимости
 }
 </style>
