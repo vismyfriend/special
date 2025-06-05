@@ -1,8 +1,11 @@
 <template>
   <div class="progress-container">
     <div class="progress-bar" :style="{ width: progressWidth }"></div>
-    <div class="progress-text" v-if="progressPercentage > 0">{{ progressPercentage }}%</div>
-  </div>
+
+    <div class="progress-text" v-if="progressPercentage > 0">
+      {{ progressPercentage >= 100 ? 'проверка ответов...' : Math.round(progressPercentage) + '%' }}
+    </div>
+  </div>  <!-- Закрываем progress-container -->
 
   <div class="game-visual-wrapper">
     <svg class="lines-overlay" ref="svgLines" style="width: 100%; height: 100%;"></svg>
@@ -22,10 +25,10 @@
             @click="checkAnswer(answer, index)"
             :ref="el => answerRefs[index] = el"
             :class="{
-      active: selectedAnswer === answer && !isCorrect,
-      correct: isCorrect && selectedAnswer === answer,
-      fade: isFading[index]
-    }"
+              active: selectedAnswer === answer && !isCorrect,
+              correct: isCorrect && selectedAnswer === answer,
+              fade: isFading[index]
+            }"
             :style="{ opacity: isFading[index] ? 0 : 1 }"
           >
             {{ answer }}
@@ -38,12 +41,13 @@
             class="positive-text"
             :data-is-word="!positiveWords.includes(positiveTexts[index])"
           >
-          {{ positiveTexts[index] }}
-        </div>
+            {{ positiveTexts[index] }}
+          </div>
         </div>
       </div>
     </div>
   </div>
+
   <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
   <div class="image-container">
     <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
@@ -69,7 +73,7 @@ const selectedAnswer = ref(null);
 const isCorrect = ref(false);
 const currentQuestionIndex = ref(0);
 const isFading = ref([]);
-
+const initialTotalQuestions = ref(0);
 const totalPairs = ref(12);
 const matchedPairs = ref(0);
 const progressPercentage = ref(0);
@@ -77,6 +81,10 @@ const progressPercentage = ref(0);
 const leftWord = ref(null);
 const answerRefs = ref([]);
 const svgLines = ref(null);
+
+const failedWords = ref([]); // Сюда добавляем слова, в которых ошиблись
+const totalInitialWords = 12; // Стандартное количество слов
+const allQuestions = ref([]); // Все вопросы (изначальные + ошибочные)
 
 const progressWidth = computed(() => `${progressPercentage.value}%`);
 const handleButtonClick = () => {
@@ -97,8 +105,9 @@ const animateProgress = (target) => {
 };
 
 watch(matchedPairs, (newValue) => {
-  const targetPercentage = Math.round((newValue / totalPairs.value) * 100);
-  animateProgress(targetPercentage);
+  const total = allQuestions.value.length || 1; // Чтобы избежать деления на 0
+  const percentage = Math.min(Math.round((newValue / total) * 100), 100);
+  animateProgress(percentage);
 });
 
 const errorTexts = ref([]); // Сюда будем помещать 'oops!', 'boom!', и т.д.
@@ -174,12 +183,19 @@ const generateAnswers = (correctAnswer) => {
 };
 
 const loadQuestion = async () => {
-  if (shuffledData.length === 0 || currentQuestionIndex.value >= shuffledData.length) {
+  // Если все вопросы пройдены и нет ошибок — завершаем игру
+  if (currentQuestionIndex.value >= allQuestions.value.length && failedWords.value.length === 0) {
     finishGame();
     return;
   }
 
-  const wordData = shuffledData[currentQuestionIndex.value];
+  // Если дошли до конца изначальных вопросов, но есть ошибки — добавляем их в очередь
+  if (currentQuestionIndex.value >= allQuestions.value.length && failedWords.value.length > 0) {
+    allQuestions.value = [...allQuestions.value, ...failedWords.value];
+    failedWords.value = []; // Очищаем массив ошибок
+  }
+
+  const wordData = allQuestions.value[currentQuestionIndex.value];
   currentWord.value = wordData;
 
   const correctAnswer = wordData.eng;
@@ -202,6 +218,7 @@ const checkAnswer = (answer, index) => {
 
   if (isCorrect.value) {
     matchedPairs.value++;
+
 
     // Решаем, что показывать: случайное слово из списка или само правильное слово
     const showRandomPositive = Math.random() > 0.5; // 50% шанс
@@ -235,7 +252,13 @@ const checkAnswer = (answer, index) => {
       loadQuestion();
     }, 800);
   } else {
-
+    // Добавляем слово в массив ошибок (если его там ещё нет)
+    const alreadyFailed = failedWords.value.some(
+      (word) => word.ru === currentWord.value.ru
+    );
+    if (!alreadyFailed) {
+      failedWords.value.push(currentWord.value);
+    }
     // Добавляем всем карточкам эффект тряски
     answerRefs.value.forEach((el) => {
       if (el) el.classList.add('shake');
@@ -304,6 +327,8 @@ onMounted(() => {
   currentMission.value = route.params.missionName;
   currentGameData.value = shortWordsData[currentMission.value] || [];
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
+  initialTotalQuestions.value = shuffledData.length; // например, 12
+  allQuestions.value = [...shuffledData]; // Инициализируем allQuestions
   startTime = Date.now();
   loadQuestion();
 });
@@ -503,13 +528,13 @@ onMounted(() => {
 }
 @keyframes pulse-border {
   0% {
-    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+    box-shadow: 0 0 4px 2px rgba(233, 14, 14, 0.6);
   }
   50% {
-    box-shadow: 0 0 8px 4px rgba(233, 14, 14, 0.8);
+    box-shadow: 0 0 10px 6px rgba(233, 14, 14, 0.8);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(233, 14, 14, 0.6);
+    box-shadow: 0 0 4px 2px rgba(233, 14, 14, 0.6);
   }
 }
 @keyframes pulse-green {
