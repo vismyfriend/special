@@ -340,15 +340,17 @@ const handleOrientation = (event) => {
   // Режим gamma (ландшафт)
   else if (tiltMode.value === 'gamma') {
     const TILT_DOWN_LANDSCAPE_THRESHOLD = 45;  // Наклон на себя вниз (→ next)
-    const TILT_UP_LANDSCAPE_THRESHOLD = -45;   // Наклон от себя вверх (← back)
-    const NEUTRAL_ZONE = 90;
+    const TILT_UP_LANDSCAPE_THRESHOLD = -45;    // Наклон от себя вверх (← back)
+    const NEUTRAL_ZONE_LOW = -15;               // Нижняя граница нейтральной зоны
+    const NEUTRAL_ZONE_HIGH = 15;               // Верхняя граница нейтральной зоны
 
-    // Сброс триггеров в нейтральной зоне
-    if (gamma > -NEUTRAL_ZONE && gamma < NEUTRAL_ZONE) {
+    // Сброс триггеров только в узкой нейтральной зоне
+    if (gamma > NEUTRAL_ZONE_LOW && gamma < NEUTRAL_ZONE_HIGH) {
       canTriggerForward = true;
       canTriggerBackward = true;
     }
 
+    // Срабатывание только вне нейтральной зоны
     if (gamma > TILT_DOWN_LANDSCAPE_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleNext();
