@@ -128,7 +128,6 @@ const updateOrientation = () => {
 // Наклоны
 const isMotionSupported = ref(false);
 const tiltMode = ref('beta'); // По умолчанию портретный режим
-// ---------------- Функции ----------------
 
 const closeModal = () => {
   showModal.value = false;
@@ -159,7 +158,6 @@ const toggleTranslation = () => {
   currentWord.value.eng = temp;
 };
 
-// Загрузка следующего слова
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 const loadNextWord = () => {
   if (shuffledData.value.length === 0) {
@@ -172,7 +170,6 @@ const loadNextWord = () => {
   currentWord.value = shuffledData.value.pop();
 };
 
-// Отмена предыдущего слова
 const undoLastWord = () => {
   if (removedWords.value.length === 0) return;
   if (currentWord.value) {
@@ -181,7 +178,6 @@ const undoLastWord = () => {
   currentWord.value = removedWords.value.pop();
 };
 
-// Таймер
 const startTimer = () => {
   if (isTimerRunning.value) {
     clearInterval(timer.value);
@@ -204,201 +200,79 @@ const startTimer = () => {
   }, 1000);
 };
 
-// Наклоны
-
+// ---- Обработка наклонов ----
 let lastTiltTime = 0;
 let canTriggerForward = true;
 let canTriggerBackward = true;
 
-// const handleOrientation = (event) => {
-//   if (tiltMode.value !== 'on') return;
-//
-//   const { beta, gamma } = event;
-//   const now = Date.now();
-//
-//   // Пороговые значения для наклонов
-//   const PORTRAIT_TILT_FORWARD_THRESHOLD = 110; // Наклон от себя (вперёд)
-//   const PORTRAIT_TILT_BACKWARD_THRESHOLD = 70;  // Наклон на себя (назад)
-//   const LANDSCAPE_TILT_FORWARD_THRESHOLD = 60;  // Наклон от себя
-//   const LANDSCAPE_TILT_BACKWARD_THRESHOLD = -60; // Наклон на себя
-//   const NEUTRAL_ZONE = 10; // Зона "покоя" для сброса триггеров
-//   const TILT_COOLDOWN_MS = 800; // Защита от двойного срабатывания
-//
-//   // Определяем ориентацию
-//   const isLandscape = Math.abs(gamma) > 45;
-//
-//   let tiltValue;
-//   if (!isLandscape) {
-//     // Портретная ориентация - используем beta (90° вертикально)
-//     tiltValue = beta;
-//   } else {
-//     // Ландшафтная ориентация - используем gamma (±89°)
-//     tiltValue = gamma;
-//   }
-//
-//   // Определяем нейтральную зону (стартовая позиция)
-//   const isNeutral = !isLandscape
-//     ? (tiltValue > PORTRAIT_TILT_BACKWARD_THRESHOLD - NEUTRAL_ZONE &&
-//       tiltValue < PORTRAIT_TILT_FORWARD_THRESHOLD + NEUTRAL_ZONE)
-//     : (tiltValue > LANDSCAPE_TILT_BACKWARD_THRESHOLD - NEUTRAL_ZONE &&
-//       tiltValue < LANDSCAPE_TILT_FORWARD_THRESHOLD + NEUTRAL_ZONE);
-//
-//   // В нейтральной позиции сбрасываем оба триггера
-//   if (isNeutral) {
-//     canTriggerForward = true;
-//     canTriggerBackward = true;
-//   }
-//
-//   // Обработка наклонов в портретной ориентации
-//   if (!isLandscape) {
-//     if (tiltValue > PORTRAIT_TILT_FORWARD_THRESHOLD &&
-//       canTriggerForward &&
-//       now - lastTiltTime > TILT_COOLDOWN_MS) {
-//       // Наклон от себя (вперёд)
-//       if (navigator.vibrate) navigator.vibrate(30);
-//       handleNext();
-//       lastTiltTime = now;
-//       canTriggerForward = false;
-//       canTriggerBackward = true;
-//     }
-//     else if (tiltValue < PORTRAIT_TILT_BACKWARD_THRESHOLD &&
-//       canTriggerBackward &&
-//       now - lastTiltTime > TILT_COOLDOWN_MS) {
-//       // Наклон на себя (назад)
-//       if (navigator.vibrate) navigator.vibrate(30);
-//       handleBack();
-//       lastTiltTime = now;
-//       canTriggerForward = true;
-//       canTriggerBackward = false;
-//     }
-//   }
-//   // Обработка наклонов в ландшафтной ориентации
-//   else {
-//     if (tiltValue > LANDSCAPE_TILT_FORWARD_THRESHOLD &&
-//       canTriggerForward &&
-//       now - lastTiltTime > TILT_COOLDOWN_MS) {
-//       // Наклон от себя (вперёд)
-//       if (navigator.vibrate) navigator.vibrate(30);
-//       handleNext();
-//       lastTiltTime = now;
-//       canTriggerForward = false;
-//       canTriggerBackward = true;
-//     }
-//     else if (tiltValue < LANDSCAPE_TILT_BACKWARD_THRESHOLD &&
-//       canTriggerBackward &&
-//       now - lastTiltTime > TILT_COOLDOWN_MS) {
-//       // Наклон на себя (назад)
-//       if (navigator.vibrate) navigator.vibrate(30);
-//       handleBack();
-//       lastTiltTime = now;
-//       canTriggerForward = true;
-//       canTriggerBackward = false;
-//     }
-//   }
-//
-//   // Обновляем отладочную информацию
-//   triggerDebug.value.canForward = canTriggerForward;
-//   triggerDebug.value.canBackward = canTriggerBackward;
-// };
+const TILT_COOLDOWN_MS = 800;
+const VIBRATION_DURATION = 30;
 
 const handleOrientation = (event) => {
-  if (tiltMode.value === 'off') return;
+  if (tiltMode.value !== 'beta') return;
 
-  const { beta, gamma } = event;
+  const { beta } = event;
   const now = Date.now();
 
-  // Общие настройки
-  const TILT_COOLDOWN_MS = 800;
-  const VIBRATION_DURATION = 30;
+  const TILT_DOWN_THRESHOLD = 125;
+  const TILT_UP_THRESHOLD = 30;
+  const NEUTRAL_ZONE = 90;
 
-  // Режим beta (портрет)
-  if (tiltMode.value === 'beta') {
-    const TILT_DOWN_THRESHOLD = 125;
-    const TILT_UP_THRESHOLD = 30;
-    const NEUTRAL_ZONE = 90;
-
-    if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
-      canTriggerBackward = true;
-    }
-    if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
-      canTriggerForward = true;
-    }
-
-    if (beta > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
-      handleNext();
-      lastTiltTime = now;
-      canTriggerForward = false;
-    }
-    else if (beta < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
-      handleBack();
-      lastTiltTime = now;
-      canTriggerBackward = false;
-    }
+  if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
+    canTriggerBackward = true;
   }
-  // Режим gamma (ландшафт)
-  else if (tiltMode.value === 'gamma') {
-    // TILT SETTINGS
-    const DEAD_ZONE_LOW = -10;
-    const DEAD_ZONE_HIGH = 10;
-
-    const NEUTRAL_ZONE_1_LOW = -89.9;
-    const NEUTRAL_ZONE_1_HIGH = -75;
-
-    const NEUTRAL_ZONE_2_LOW = 75;
-    const NEUTRAL_ZONE_2_HIGH = 89.9;
-
-    const TRIGGER_BACK = -35;
-    const TRIGGER_FORWARD = 45;
-
-    const gammaRounded = Math.round(gamma * 10) / 10; // округление до 0.1
-
-    // МЕРТВАЯ ЗОНА: не делаем ничего
-    if (gammaRounded > DEAD_ZONE_LOW && gammaRounded < DEAD_ZONE_HIGH) {
-      return;
-    }
-
-    // НЕЙТРАЛЬНЫЕ ЗОНЫ — разрешаем срабатывание
-    if (
-      (gammaRounded >= NEUTRAL_ZONE_1_LOW && gammaRounded <= NEUTRAL_ZONE_1_HIGH) ||
-      (gammaRounded >= NEUTRAL_ZONE_2_LOW && gammaRounded <= NEUTRAL_ZONE_2_HIGH)
-    ) {
-      canTriggerForward = true;
-      canTriggerBackward = true;
-      return;
-    }
-
-    // ТРИГГЕР НА ВПЕРЕД
-    if (
-      gammaRounded === TRIGGER_FORWARD &&
-      canTriggerForward &&
-      now - lastTiltTime > TILT_COOLDOWN_MS
-    ) {
-      handleNext();
-      lastTiltTime = now;
-      canTriggerForward = false;
-      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
-      return;
-    }
-
-    // ТРИГГЕР НАЗАД
-    if (
-      gammaRounded === TRIGGER_BACK &&
-      canTriggerBackward &&
-      now - lastTiltTime > TILT_COOLDOWN_MS
-    ) {
-      handleBack();
-      lastTiltTime = now;
-      canTriggerBackward = false;
-      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
-      return;
-    }
-
-    // Всё остальное — тоже мёртвая зона
+  if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
+    canTriggerForward = true;
   }
 
-  // Обновляем отладку
+  if (beta > TILT_DOWN_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+    handleNext();
+    lastTiltTime = now;
+    canTriggerForward = false;
+  }
+  else if (beta < TILT_UP_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+    handleBack();
+    lastTiltTime = now;
+    canTriggerBackward = false;
+  }
+
+  triggerDebug.value = {
+    canForward: canTriggerForward,
+    canBackward: canTriggerBackward
+  };
+};
+
+const handleMotion = (event) => {
+  if (tiltMode.value !== 'gamma') return;
+
+  const now = Date.now();
+  const ax = event.accelerationIncludingGravity.x;
+
+  // Пороговые значения для landscape ориентации
+  const FORWARD_THRESHOLD = 7.0;   // Наклон "на себя"
+  const BACKWARD_THRESHOLD = -7.0; // Наклон "от себя"
+  const NEUTRAL_LOW = -3.0;
+  const NEUTRAL_HIGH = 3.0;
+
+  if (ax > NEUTRAL_LOW && ax < NEUTRAL_HIGH) {
+    canTriggerForward = true;
+    canTriggerBackward = true;
+  }
+
+  if (ax > FORWARD_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+    handleNext();
+    lastTiltTime = now;
+    canTriggerForward = false;
+  } else if (ax < BACKWARD_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+    handleBack();
+    lastTiltTime = now;
+    canTriggerBackward = false;
+  }
+
   triggerDebug.value = {
     canForward: canTriggerForward,
     canBackward: canTriggerBackward
@@ -412,6 +286,7 @@ const initMotionControls = () => {
         .then(permissionState => {
           if (permissionState === 'granted') {
             window.addEventListener('deviceorientation', handleOrientation);
+            window.addEventListener('devicemotion', handleMotion);
             isMotionSupported.value = true;
             openModal('Управление наклонами активировано!');
           }
@@ -421,8 +296,8 @@ const initMotionControls = () => {
           openModal('Не удалось получить доступ к датчикам');
         });
     } else {
-      // Для Android и других устройств
       window.addEventListener('deviceorientation', handleOrientation);
+      window.addEventListener('devicemotion', handleMotion);
       isMotionSupported.value = true;
     }
   } else {
@@ -430,7 +305,6 @@ const initMotionControls = () => {
   }
 };
 
-// Стартовая модалка
 const chooseDesktop = () => {
   showStartModal.value = false;
 };
@@ -444,6 +318,7 @@ const chooseMobile = async () => {
       const permissionState = await DeviceOrientationEvent.requestPermission();
       if (permissionState === 'granted') {
         window.addEventListener('deviceorientation', handleOrientation);
+        window.addEventListener('devicemotion', handleMotion);
         isMotionSupported.value = true;
         modalMessage.value = `✅ Разрешение получено!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
         showModal.value = true;
@@ -453,6 +328,7 @@ const chooseMobile = async () => {
     }
   } else {
     window.addEventListener('deviceorientation', handleOrientation);
+    window.addEventListener('devicemotion', handleMotion);
     isMotionSupported.value = true;
     modalMessage.value = `✅ Наклоны включены!\n\n▶ Наклоните телефон **на себя** — следующее слово\n◀ Наклоните **от себя** — предыдущее слово`;
     showModal.value = true;
@@ -475,6 +351,7 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(timer.value);
   window.removeEventListener('deviceorientation', handleOrientation);
+  window.removeEventListener('devicemotion', handleMotion);
   window.removeEventListener('resize', updateOrientation);
 });
 </script>
