@@ -8,6 +8,18 @@
     </div>
   </div>
 
+  <!-- Таймер -->
+  <div class="timer" @click="startTimer">
+    {{ timeLeft > 0 ? `${timeLeft} сек` : 'Старт' }}
+  </div>
+
+  <!-- Кнопки управления -->
+  <div class="button-row">
+    <button @click="handleBack">← Back</button>
+    <button @click="handleNext">→ Next</button>
+    <button @click="handleSkip">⏭ Skip</button>
+  </div>
+
   <!-- Основной экран игры -->
   <div class="game-container" v-if="currentGameData.length">
     <!-- Кнопка ⚙ для настроек -->
@@ -46,18 +58,6 @@
     <div class="word-card" @click="toggleTranslation">
       <div class="word">{{ currentWord.eng }}</div>
       <div class="translation">{{ currentWord.ru }}</div>
-    </div>
-
-    <!-- Таймер -->
-    <div class="timer" @click="startTimer">
-      {{ timeLeft > 0 ? `${timeLeft} сек` : 'Старт' }}
-    </div>
-
-    <!-- Кнопки управления -->
-    <div class="button-row">
-      <button @click="handleBack">← Back</button>
-      <button @click="handleNext">→ Next</button>
-      <button @click="handleSkip">⏭ Skip</button>
     </div>
 
     <!-- Счётчики -->
@@ -339,25 +339,29 @@ const handleOrientation = (event) => {
   }
   // Режим gamma (ландшафт)
   else if (tiltMode.value === 'gamma') {
-    const TILT_DOWN_LANDSCAPE_THRESHOLD = 45;  // Наклон на себя вниз (→ next)
-    const TILT_UP_LANDSCAPE_THRESHOLD = -45;    // Наклон от себя вверх (← back)
-    const NEUTRAL_ZONE_LOW = -15;               // Нижняя граница нейтральной зоны
-    const NEUTRAL_ZONE_HIGH = 15;               // Верхняя граница нейтральной зоны
+    // Преобразуем gamma в диапазон 0–180
+    const normalizedGamma = gamma + 90;
 
-    // Сброс триггеров только в узкой нейтральной зоне
-    if (gamma > NEUTRAL_ZONE_LOW && gamma < NEUTRAL_ZONE_HIGH) {
+    // Пороги срабатывания (настроить под себя)
+    const TILT_BACK_THRESHOLD = 30;    // ← Наклон от себя (ранее -45° → теперь 45°)
+    const TILT_NEXT_THRESHOLD = 150;  // → Наклон на себя (ранее 45° → теперь 135°)
+    const NEUTRAL_ZONE_LOW = 80;      // Нижняя граница нейтральной зоны (около 90°)
+    const NEUTRAL_ZONE_HIGH = 100;    // Верхняя граница нейтральной зоны
+
+    // Сброс триггеров только в узкой нейтральной зоне (80°–100°)
+    if (normalizedGamma > NEUTRAL_ZONE_LOW && normalizedGamma < NEUTRAL_ZONE_HIGH) {
       canTriggerForward = true;
       canTriggerBackward = true;
     }
 
     // Срабатывание только вне нейтральной зоны
-    if (gamma > TILT_DOWN_LANDSCAPE_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    if (normalizedGamma > TILT_NEXT_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleNext();
       lastTiltTime = now;
       canTriggerForward = false;
     }
-    else if (gamma < TILT_UP_LANDSCAPE_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+    else if (normalizedGamma < TILT_BACK_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
       handleBack();
       lastTiltTime = now;
