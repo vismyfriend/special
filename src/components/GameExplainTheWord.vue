@@ -20,6 +20,12 @@
     <button @click="handleSkip">⏭ Skip</button>
   </div>
 
+  <!-- Счётчики -->
+  <div class="counter-row">
+    <span>Next: {{ nextCount }}</span>
+    <span>Skip: {{ skipCount }}</span>
+  </div>
+
   <!-- Основной экран игры -->
   <div class="game-container" v-if="currentGameData.length">
     <!-- Кнопка ⚙ для настроек -->
@@ -58,12 +64,6 @@
     <div class="word-card" @click="toggleTranslation">
       <div class="word">{{ currentWord.eng }}</div>
       <div class="translation">{{ currentWord.ru }}</div>
-    </div>
-
-    <!-- Счётчики -->
-    <div class="counter-row">
-      <span>Next: {{ nextCount }}</span>
-      <span>Skip: {{ skipCount }}</span>
     </div>
 
     <!-- Кнопка запроса разрешения на наклоны (только iOS) -->
@@ -310,7 +310,6 @@ const handleOrientation = (event) => {
   // Общие настройки
   const TILT_COOLDOWN_MS = 800;
   const VIBRATION_DURATION = 30;
-  let lastGamma = 90;  // Исходное значение: нейтральное положение (normalizedGamma = 90)
 
   // Режим beta (портрет)
   if (tiltMode.value === 'beta') {
@@ -339,47 +338,64 @@ const handleOrientation = (event) => {
     }
   }
   // Режим gamma (ландшафт)
-
-
   else if (tiltMode.value === 'gamma') {
-    // Преобразуем gamma в [0°, 180°]
-    const normalizedGamma = gamma + 90;
+    // TILT SETTINGS
+    const DEAD_ZONE_LOW = -10;
+    const DEAD_ZONE_HIGH = 10;
 
-    // Настройки (можно менять под себя)
-    const TILT_BACK_THRESHOLD = 30;     // ← Наклон от себя (← back)
-    const TILT_NEXT_THRESHOLD = 150;    // → Наклон на себя (→ next)
-    const NEUTRAL_ZONE_LOW = 70;        // Широкая нейтральная зона (70°–110°)
-    const NEUTRAL_ZONE_HIGH = 110;
-    const HYSTERESIS = 10;              // Запас для гистерезиса
+    const NEUTRAL_ZONE_1_LOW = -89.9;
+    const NEUTRAL_ZONE_1_HIGH = -75;
 
-    // Фильтр резких скачков (игнорируем изменения > 45° за кадр)
-    const GAMMA_JUMP_THRESHOLD = 45;
-    if (Math.abs(normalizedGamma - lastGamma) > GAMMA_JUMP_THRESHOLD) {
-      lastGamma = normalizedGamma;  // Запоминаем, но не обрабатываем скачок
-      return;                       // Пропускаем кадр
+    const NEUTRAL_ZONE_2_LOW = 75;
+    const NEUTRAL_ZONE_2_HIGH = 89.9;
+
+    const TRIGGER_BACK = -35;
+    const TRIGGER_FORWARD = 45;
+
+    const gammaRounded = Math.round(gamma * 10) / 10; // округление до 0.1
+
+    // МЕРТВАЯ ЗОНА: не делаем ничего
+    if (gammaRounded > DEAD_ZONE_LOW && gammaRounded < DEAD_ZONE_HIGH) {
+      return;
     }
-    lastGamma = normalizedGamma;    // Обновляем значение
 
-    // Сброс триггеров ТОЛЬКО если уверенно в нейтральной зоне
-    if (normalizedGamma > NEUTRAL_ZONE_LOW + HYSTERESIS &&
-      normalizedGamma < NEUTRAL_ZONE_HIGH - HYSTERESIS) {
+    // НЕЙТРАЛЬНЫЕ ЗОНЫ — разрешаем срабатывание
+    if (
+      (gammaRounded >= NEUTRAL_ZONE_1_LOW && gammaRounded <= NEUTRAL_ZONE_1_HIGH) ||
+      (gammaRounded >= NEUTRAL_ZONE_2_LOW && gammaRounded <= NEUTRAL_ZONE_2_HIGH)
+    ) {
       canTriggerForward = true;
       canTriggerBackward = true;
+      return;
     }
 
-    // Срабатывание только после выхода из нейтральной зоны
-    if (normalizedGamma > TILT_NEXT_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
-      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+    // ТРИГГЕР НА ВПЕРЕД
+    if (
+      gammaRounded === TRIGGER_FORWARD &&
+      canTriggerForward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS
+    ) {
       handleNext();
       lastTiltTime = now;
       canTriggerForward = false;
-    }
-    else if (normalizedGamma < TILT_BACK_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
       if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      return;
+    }
+
+    // ТРИГГЕР НАЗАД
+    if (
+      gammaRounded === TRIGGER_BACK &&
+      canTriggerBackward &&
+      now - lastTiltTime > TILT_COOLDOWN_MS
+    ) {
       handleBack();
       lastTiltTime = now;
       canTriggerBackward = false;
+      if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
+      return;
     }
+
+    // Всё остальное — тоже мёртвая зона
   }
 
   // Обновляем отладку
