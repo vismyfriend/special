@@ -243,6 +243,7 @@ const handleOrientation = (event) => {
     canBackward: canTriggerBackward
   };
 };
+let initialXDirection = null;
 
 const handleMotion = (event) => {
   if (tiltMode.value !== 'gamma') return;
@@ -250,23 +251,31 @@ const handleMotion = (event) => {
   const now = Date.now();
   const ax = event.accelerationIncludingGravity.x;
 
-  // Пороговые значения для landscape ориентации
-  const FORWARD_THRESHOLD = 7.0;   // Наклон "на себя"
-  const BACKWARD_THRESHOLD = -7.0; // Наклон "от себя"
-  const NEUTRAL_LOW = -3.0;
-  const NEUTRAL_HIGH = 3.0;
+  // На первом срабатывании определяем, где "вперёд"
+  if (initialXDirection === null) {
+    initialXDirection = ax > 0 ? 1 : -1;
+  }
 
-  if (ax > NEUTRAL_LOW && ax < NEUTRAL_HIGH) {
+  // Применим знак в зависимости от ориентации
+  const relativeX = ax * initialXDirection;
+
+  // Пороги срабатывания
+  const FORWARD_THRESHOLD = 4.5;
+  const BACKWARD_THRESHOLD = -4.5;
+  const NEUTRAL_LOW = -2.5;
+  const NEUTRAL_HIGH = 2.5;
+
+  if (relativeX > NEUTRAL_LOW && relativeX < NEUTRAL_HIGH) {
     canTriggerForward = true;
     canTriggerBackward = true;
   }
 
-  if (ax > FORWARD_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+  if (relativeX > FORWARD_THRESHOLD && canTriggerForward && now - lastTiltTime > TILT_COOLDOWN_MS) {
     if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
     handleNext();
     lastTiltTime = now;
     canTriggerForward = false;
-  } else if (ax < BACKWARD_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
+  } else if (relativeX < BACKWARD_THRESHOLD && canTriggerBackward && now - lastTiltTime > TILT_COOLDOWN_MS) {
     if (navigator.vibrate) navigator.vibrate(VIBRATION_DURATION);
     handleBack();
     lastTiltTime = now;
@@ -337,6 +346,8 @@ const chooseMobile = async () => {
 
 // Монтирование
 onMounted(() => {
+  initialXDirection = null;
+
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
