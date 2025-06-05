@@ -1,11 +1,24 @@
 <template>
   <div class="progress-container">
-    <div class="progress-bar" :style="{ width: progressWidth }"></div>
-
-    <div class="progress-text" v-if="progressPercentage > 0">
-      {{ progressPercentage >= 100 ? 'проверка ответов...' : Math.round(progressPercentage) + '%' }}
+    <div class="progress-bar">
+      <div
+        v-for="(isFirst, index) in firstTryCorrect"
+        :key="index"
+        class="progress-segment"
+        :style="{
+        width: `${100 / allQuestions.length}%`,
+        'background-color': isFirst === true ? '#34aefa' :
+                          isFirst === false ? '#f36f78' : 'transparent'
+      }"
+      ></div>
     </div>
-  </div>  <!-- Закрываем progress-container -->
+    <div
+      class="progress-text"
+      :style="{ opacity: progressPercentage > 75 ? 0 : 1 }"
+    >
+      {{ Math.round(progressPercentage) }}%
+    </div>
+  </div>
 
   <div class="game-visual-wrapper">
     <svg class="lines-overlay" ref="svgLines" style="width: 100%; height: 100%;"></svg>
@@ -74,10 +87,10 @@ const isCorrect = ref(false);
 const currentQuestionIndex = ref(0);
 const isFading = ref([]);
 const initialTotalQuestions = ref(0);
-const totalPairs = ref(12);
+const totalQuestions = ref(0); // Добавляем новую переменную для общего количества вопросов
 const matchedPairs = ref(0);
 const progressPercentage = ref(0);
-
+const firstTryCorrect = ref([]); // Будет хранить true/false для каждого вопроса
 const leftWord = ref(null);
 const answerRefs = ref([]);
 const svgLines = ref(null);
@@ -87,28 +100,44 @@ const totalInitialWords = 12; // Стандартное количество с�
 const allQuestions = ref([]); // Все вопросы (изначальные + ошибочные)
 
 const progressWidth = computed(() => `${progressPercentage.value}%`);
+
+
 const handleButtonClick = () => {
   console.log("Кнопка нажата — резать провода!");
   // Здесь можно запускать доп. механику
 };
+// Изменяем функцию animateProgress для плавной анимации
 const animateProgress = (target) => {
-  const step = () => {
-    const diff = target - progressPercentage.value;
-    if (Math.abs(diff) > 1) {
-      progressPercentage.value += Math.sign(diff);
-      requestAnimationFrame(step);
-    } else {
-      progressPercentage.value = target;
+  const duration = 500;
+  const start = progressPercentage.value;
+  const startTime = performance.now();
+
+  const updateProgress = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    progressPercentage.value = start + (target - start) * progress;
+
+    if (progress < 1) {
+      requestAnimationFrame(updateProgress);
     }
   };
-  requestAnimationFrame(step);
-};
 
-watch(matchedPairs, (newValue) => {
-  const total = allQuestions.value.length || 1; // Чтобы избежать деления на 0
-  const percentage = Math.min(Math.round((newValue / total) * 100), 100);
-  animateProgress(percentage);
-});
+  requestAnimationFrame(updateProgress);
+};
+watch([matchedPairs, allQuestions], ([newMatched, allQuestionsList]) => {
+  // Общее количество вопросов (исходные + повторные из-за ошибок)
+  const totalQuestions = allQuestionsList.length;
+
+  // Если еще нет вопросов, прогресс 0%
+  if (totalQuestions === 0) {
+    progressPercentage.value = 0;
+    return;
+  }
+
+  // Рассчитываем процент выполнения
+  const percentage = (newMatched / totalQuestions) * 100;
+  animateProgress(Math.min(percentage, 100));
+}, { immediate: true });
 
 const errorTexts = ref([]); // Сюда будем помещать 'oops!', 'boom!', и т.д.
 
@@ -216,7 +245,18 @@ const checkAnswer = (answer, index) => {
   const correctAnswer = currentWord.value.eng;
   isCorrect.value = (answer === correctAnswer);
 
+  // Проверяем, был ли это первый ответ на текущий вопрос
+  const isFirstAnswer = !firstTryCorrect.value[currentQuestionIndex.value] &&
+    firstTryCorrect.value[currentQuestionIndex.value] !== false;
+
   if (isCorrect.value) {
+    // Записываем, был ли ответ с первого раза
+    if (isFirstAnswer) {
+      firstTryCorrect.value[currentQuestionIndex.value] = true;
+    } else {
+      firstTryCorrect.value[currentQuestionIndex.value] = false;
+    }
+
     matchedPairs.value++;
 
 
@@ -252,6 +292,11 @@ const checkAnswer = (answer, index) => {
       loadQuestion();
     }, 800);
   } else {
+
+    // Помечаем, что на этот вопрос уже был неправильный ответ
+    if (isFirstAnswer) {
+      firstTryCorrect.value[currentQuestionIndex.value] = false;
+    }
     // Добавляем слово в массив ошибок (если его там ещё нет)
     const alreadyFailed = failedWords.value.some(
       (word) => word.ru === currentWord.value.ru
@@ -328,9 +373,12 @@ onMounted(() => {
   currentGameData.value = shortWordsData[currentMission.value] || [];
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
   initialTotalQuestions.value = shuffledData.length; // например, 12
+  totalQuestions.value = initialTotalQuestions.value; // инициализируем totalQuestions
   allQuestions.value = [...shuffledData]; // Инициализируем allQuestions
   startTime = Date.now();
   loadQuestion();
+  firstTryCorrect.value = Array(allQuestions.value.length).fill(null);
+
 });
 </script>
 
@@ -342,13 +390,19 @@ onMounted(() => {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: #34aefa;
-  border-radius: 10px;
+  display: flex;
   transition: width 0.5s ease;
+}
+
+.progress-segment {
+  height: 100%;
+  //border-right: 1px solid rgba(255, 255, 255, 0.3);
+  transition: background-color 0.5s ease;
 }
 
 .progress-text {
@@ -359,8 +413,8 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.6);
   font-size: 12px;
   font-weight: bold;
+  pointer-events: none;
 }
-
 .game-visual-wrapper {
   position: relative;
 }
