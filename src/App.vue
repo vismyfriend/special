@@ -14,12 +14,13 @@ const token = ref()
 defineOptions({
   name: 'App'
 });
-// onMounted(async ()=>{
-//   const res = await api.fileData.post('egor')
+onMounted(async ()=>{
+  const res = await api.backEndTest.test()
+  const res2 = await api.backEndTest.testBd()
 // token.value = res?.data?.token
-//   console.log(token)
-// })
-//
+  console.log(res,res2)
+})
+
 
 
 </script>
