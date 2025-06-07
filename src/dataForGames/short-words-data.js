@@ -3,9 +3,9 @@
 const shortWordsData = {
   universalSet: [
     { id: 1, eng: "I", ru: "я", hint: "/ ай /" },
-    { id: 2, eng: "You", ru: "мы", hint: "/ ю /" },
-    { id: 3, eng: "We", ru: "ты", hint: "/ ви /" },
-    { id: 4, eng: "They", ru: "вы", hint: "/ дэй /" },
+    { id: 2, eng: "You", ru: "вы", hint: "/ ю /" },
+    { id: 3, eng: "We", ru: "мы", hint: "/ ви /" },
+    { id: 4, eng: "They", ru: "они", hint: "/ дэй /" },
     { id: 5, eng: "He", ru: "он", hint: "/ хи /" },
     { id: 6, eng: "She", ru: "она", hint: "/ щи /" },
     { id: 7, eng: "It", ru: "оно", hint: "/ ит /" },
@@ -32,7 +32,7 @@ const shortWordsData = {
         { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
         { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
         { id: 10, eng: "ten", ru: "десять", hint: "/ тэн /" },
-        { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ иливэн /" },
+        { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ илЭвэн /" },
         { id: 12, eng: "twelve", ru: "двенадцать", hint: "/ туэлв /" },
         { id: 13, eng: "thirteen", ru: "тринадцать", hint: "/ THётин /" },
         { id: 14, eng: "fourteen", ru: "четырнадцать", hint: "/ фортиН /" },

@@ -14,7 +14,7 @@
 
           </div>
 
-            <p class="info">можно нажимать на знаки с вопросами, чтобы подсказать какие-нибудь буквы</p>
+            <p class="info">можно нажимать знаки с вопросами, чтобы подсказать какие-нибудь буквы</p>
 
           <div class="word-navigation-container">
             <button
@@ -53,7 +53,7 @@
             type="text"
             v-model="userInput"
             @keyup.enter="checkAnswer"
-            placeholder="Введите ответ"
+            placeholder="👇"
             class="answer-input"
           />
 
@@ -386,11 +386,11 @@ onMounted(() => {
 }
 
 .english-text {
-  color: rgb(255, 255, 255);
+  color: #31e2ff;
 }
 
 .russian-text {
-  color: #31e2ff;
+  color: #60ea1a;
 }
 
 .info {
@@ -401,7 +401,7 @@ onMounted(() => {
 
 .wordCard {
   background-color: #f9f9f9;
-  border: 2px solid #31e2ff;
+  border: 2px solid #60ea1a;
   border-radius: 20px;
   padding: 10px 20px;
   margin: 10px 0;
@@ -424,7 +424,7 @@ onMounted(() => {
   border: none;
   color: #31e2ff;
   font-size: 24px;
-  cursor: pointer;
+  cursor: none;
   padding: 5px 10px;
   border-radius: 5px;
   transition: background-color 0.2s, color 0.3s, opacity 0.3s;
@@ -457,15 +457,15 @@ onMounted(() => {
 }
 
 .hint-box {
-  width: 25px;
-  height: 25px;
+  width: 27px;
+  height: 30px;
   border: 1px solid #ccc;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 2px;
-  cursor: pointer;
+  cursor: none;
   font-size: 16px;
   background-color: #ccc;
 }
@@ -476,8 +476,7 @@ onMounted(() => {
 }
 
 .answer-input {
-  margin: 10px 0;
-  padding: 8px;
+
   width: 90%;
   text-align: center;
   border: 1px solid rgba(204, 204, 204, 0);
@@ -485,7 +484,7 @@ onMounted(() => {
   font-size: 26px;
   letter-spacing: 3px;
   background-color: rgba(255, 255, 255, 0);
-  color: white;
+  color: #60ea1a;
 }
 
 .feedback-message {
@@ -518,7 +517,7 @@ onMounted(() => {
 
 .slider {
   position: absolute;
-  cursor: pointer;
+  cursor: none;
   top: 0;
   left: 0;
   right: 0;
@@ -592,7 +591,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-  cursor: pointer;
+  cursor: none;
   user-select: none;
 
   &:active {
@@ -851,7 +850,7 @@ h4 {
   border: none;
   border-radius: 8px;
   color: #2c3e50;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s;
 }
 
@@ -873,7 +872,7 @@ h4 {
   border: none;
   border-radius: 8px;
   color: #2c3e50;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s;
 }
 </style>

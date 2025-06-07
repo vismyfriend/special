@@ -53,7 +53,7 @@ const availableGames = ref([
     name: "Spell it",
     description: "Произнеси по буквам",
     route: "/see-all-sets-of-words/teenTy/spelling",
-    icon: "game4icon.png"
+    icon: "game5icon.png"
   },
   {
     id: 1,
