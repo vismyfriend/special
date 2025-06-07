@@ -87,13 +87,13 @@ const AllSetsOfWords = ref([
   //   id: 6,
   //   active: true
   // },
-  // {
-  //   missionName: "devModeNumbersFast",
-  //   missionVisibleName: "devModeNumbersFast",
-  //   missionDescription: "протестировать быстро",
-  //   id: 15,
-  //   active: true
-  // },
+  {
+    missionName: "devModeNumbersFast",
+    missionVisibleName: "devModeNumbersFast",
+    missionDescription: "протестировать быстро",
+    id: 15,
+    active: true
+  },
   // {
   //   missionName: "halloween01",
   //   missionVisibleName: "halloween01",

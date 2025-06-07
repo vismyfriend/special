@@ -55,6 +55,21 @@ const shortWordsData = {
         { id: 31, eng: "million", ru: "миллион", hint: "/ миллион /" },
         { id: 32, eng: "billion", ru: "миллиард", hint: "/ биллион /" }
     ],
+  teenTy: [
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ илЭвэн /" },
+    { id: 12, eng: "twelve", ru: "двенадцать", hint: "/ туэлв /" },
+    { id: 13, eng: "thirteen", ru: "тринадцать", hint: "/ THётин /" },
+    { id: 19, eng: "nineteen", ru: "девятнадцать", hint: "/ найнтиН /" },
+    { id: 20, eng: "twenty", ru: "двадцать", hint: "/ твэнти /" },
+    { id: 30, eng: "thirty", ru: "тридцать", hint: "/  THёрти /" },
+    { id: 15, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтин /" },
+    { id: 100, eng: "hundred", ru: "сто" },
+    { id: 1000, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+    { id: 90, eng: "ninety", ru: "девяносто", hint: "/ нАйнти /" },
+
+
+  ],
     devmode1: [
         {
             id: 1,
@@ -135,6 +150,7 @@ const shortWordsData = {
     { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
     { id: 10, eng: "zero", ru: "ноль", hint: "/ оу или зироу /" }
   ],
+
 
   alphabetData: [
     { id: 1, eng: "Aa", ru: "эй", hint: "/ эй /" },

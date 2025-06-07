@@ -99,19 +99,19 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 
 
 const buttonLabel = computed(() => {
-  return sessionCounter.value >= 20
+  return sessionCounter.value >= 25
     ? "Super! Разминка окончена, жми сюда"
     : "Что делать дальше?";
 });
 
 const buttonColor = computed(() => {
-  return sessionCounter.value >= 20
+  return sessionCounter.value >= 28
     ? "blue"
     : "green";
 });
 
 const dynamicMessage = computed(() => {
-  const remaining = 20 - sessionCounter.value;
+  const remaining = 25 - sessionCounter.value;
   if (remaining <= 0) {
     return `Разминка для мозгов и пальцев:<br><br>
     1) Молодчина! Хорошая практика.<br>
@@ -127,7 +127,7 @@ const dynamicMessage = computed(() => {
 });
 
 const backToIntroPage = () => {
-  if (sessionCounter.value >= 20) {
+  if (sessionCounter.value >= 25) {
     router.push("/games");
   } else {
     infoMessage.value = dynamicMessage.value;
@@ -220,7 +220,7 @@ const handleBubbleClick = () => {
   }, 4000); // показываем текст на 4 секунды
 };
 // Собираем все английские слова
-const welcomeWords = ["V","V", "Vincent", "is", "my", "friend"];
+const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
 
 
 const allEnglishWords = [

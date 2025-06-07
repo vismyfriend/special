@@ -49,6 +49,13 @@ const availableGames = ref([
     icon: "game4icon.png"
   },
   {
+    id: 5,
+    name: "Spell it",
+    description: "Произнеси по буквам",
+    route: "/see-all-sets-of-words/teenTy/spelling",
+    icon: "game4icon.png"
+  },
+  {
     id: 1,
     name: "Alias",
     description: "Объясни слово",

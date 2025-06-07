@@ -16,9 +16,10 @@ defineOptions({
 });
 onMounted(async ()=>{
   const res = await api.backEndTest.test()
-  const res2 = await api.backEndTest.testDb()
+  const res2 = await api.backEndTest.health()
+  const res3 = await api.backEndTest.testDb()
 // token.value = res?.data?.token
-  console.log(res,res2)
+  console.log(res,res2,res3)
 })
 
 
