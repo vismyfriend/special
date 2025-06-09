@@ -170,88 +170,100 @@ const closeModal = () => {
   showModal.value = false;
 };
 
+// Добавляем предотвращение зума
+const preventZoom = (e) => {
+  if (e.touches && e.touches.length > 1) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+};
+
 onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
   currentWord.value = {
     eng: 'Click right',
-    ru: 'Нажми направо',
+    ru: 'Нажми вправо',
     isIntro: true,
   };
   resetRevealedLetters();
+
+  // Добавляем обработчики для предотвращения зума
+  document.addEventListener('dblclick', preventZoom);
+  document.addEventListener('touchstart', preventZoom, { passive: false });
+
+  // Добавляем meta-тег для viewport (предотвращение зума)
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+  document.head.appendChild(meta);
+
 });
 </script>
 
 <style scoped>
+/* Добавляем глобальные стили для предотвращения зума */
+html {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 
+/* Основные стили */
 .game-container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  z-index: 100;
-  overflow: auto;
-}
-/* Основные стили */
-.game-container {
-  display: flex !important;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
+  justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-  padding: 40px 20px 20px 20px;
-}
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  z-index: 100;
+  touch-action: manipulation; /* для предотвращения зума*/
 
+}
 
 .game-content-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 800px;
 }
 
 .main-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  flex-grow: 1;
+  gap: 20px;
+  width: 500px; /* Фиксированная ширина центрального блока */
 }
 
-/* Стили карточки слова */
+/* Фиксированные стили карточки слова */
 .word-card {
-  width: 100%;
-  max-width: 500px;
-  min-height: 200px;
+  width: 500px; /* Фиксированная ширина */
+  height: 200px; /* Фиксированная высота */
   border-radius: 16px;
-  padding: 30px;
+  padding: 20px;
   background: linear-gradient(145deg, #ffffff 0%, #e6e9f0 100%);
-  box-shadow:
-    0 10px 20px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-}
+  overflow: hidden; /* Обрезаем длинные слова */
+  -webkit-tap-highlight-color: transparent; /* для предотвращения зума*/
 
-.word-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 15px 30px rgba(0, 0, 0, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 .word {
@@ -260,67 +272,61 @@ onMounted(() => {
   color: #2c3e50;
   text-align: center;
   user-select: none;
+  word-break: break-word; /* Перенос длинных слов */
+  max-width: 100%;
+  padding: 10px;
 }
 
-/* Стили подсказок */
+/* Адаптивные подсказки */
 .hint-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 8px;
   width: 100%;
-  max-width: 500px;
+  padding: 0 10px;
 }
 
 .hint-box {
-  width: 40px;
+  /* Размер будет адаптироваться автоматически */
+  min-width: 18px;
   height: 40px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   transition: all 0.3s ease;
   background: linear-gradient(145deg, #e0e5ec 0%, #ffffff 100%);
-  box-shadow:
-    5px 5px 10px #b8b9be,
-    -5px -5px 10px #ffffff;
+  box-shadow: 5px 5px 10px #b8b9be, -5px -5px 10px #ffffff;
   color: #7f8c8d;
+  flex-grow: 1; /* Растягиваемся по доступному месту */
+  max-width: 60px; /* Максимальный размер */
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 .hint-box.revealed {
   background: linear-gradient(145deg, #a5ffd6 0%, #79b4a9 100%);
   color: #2c3e50;
-  box-shadow:
-    3px 3px 6px #b8b9be,
-    -3px -3px 6px #ffffff;
+  font-size: 28px;
+
 }
 
 .hint-box:hover {
   transform: scale(1.05);
 }
 
-.hint-info {
-  margin-top: 15px;
-  color: #7f8c8d;
-  font-size: 16px;
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Стили кнопок */
+/* Фиксированные стили кнопок навигации */
 .nav-button {
-  width: 60px;
-  height: 300px;
-  border-radius: 50px;
+  width: 60px; /* Фиксированная ширина */
+  height: 300px; /* Фиксированная высота */
+  border-radius: 16px;
   border: none;
   background: linear-gradient(145deg, #ffffff 0%, #e6e9f0 100%);
-  box-shadow:
-    5px 5px 10px #b8b9be,
-    -5px -5px 10px #ffffff;
+  box-shadow: 5px 5px 10px #b8b9be, -5px -5px 10px #ffffff;
   font-size: 32px;
   font-weight: bold;
   color: #2c3e50;
@@ -330,30 +336,14 @@ onMounted(() => {
   justify-content: center;
   transition: all 0.3s ease;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+
 }
 
 .nav-button:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
   background: linear-gradient(145deg, #e6e9f0 0%, #ffffff 100%);
-}
-
-.skip-button {
-  margin-top: 30px;
-  padding: 12px 25px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(145deg, #ff9a9e 0%, #fad0c4 100%);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(250, 208, 196, 0.4);
-}
-
-.skip-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(250, 208, 196, 0.6);
 }
 
 /* Модальное окно */
@@ -396,10 +386,60 @@ onMounted(() => {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 .modal-content button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 600px) {
+  .game-content-wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .word-card {
+    width: 100%;
+    height: 180px;
+  }
+
+  .nav-button {
+    width: 100%;
+    height: 60px;
+    order: 1; /* Перемещаем кнопки вниз на мобильных */
+  }
+
+  .hint-box {
+    min-width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+}
+.skip-button {
+  margin-top: 30px;
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(145deg, #ff9a9e 0%, #fad0c4 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(250, 208, 196, 0.4);
+}
+
+.skip-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(250, 208, 196, 0.6);
 }
 </style>
