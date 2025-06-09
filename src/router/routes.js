@@ -87,6 +87,10 @@ const routes = [
                 path: 'word-order',
                 component: () => import('src/components/GameWordOrder.vue')
               },
+              {
+                path: 'game-translate',
+                component: () => import('src/components/GameTranslate.vue')
+              },
             ]
           },
         ]
@@ -185,6 +189,7 @@ const routes = [
     path: '/NOcanvas-test',
     component: () => import('pages/noCanvasTest.vue')
   },
+
 
   {
     path: '/:catchAll(.*)*',
