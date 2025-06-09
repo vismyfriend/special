@@ -267,7 +267,7 @@ html {
 }
 
 .word {
-  font-size: 32px;
+  font-size: 58px;
   font-weight: 700;
   color: #2c3e50;
   text-align: center;

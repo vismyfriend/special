@@ -167,7 +167,70 @@ const questionsData = {
     { id: 92, eng: "cape", ru: "накидка", EnglishLevel: "C" },
     ],
 
+  randomSet: [
 
+    // Вопросительные слова
+    { id: 1, eng: "What", ru: "что" },
+    { id: 2, eng: "Where", ru: "где" },
+    { id: 3, eng: "Why", ru: "почему" },
+
+    // Внешность (Appearance)
+    { id: 4, eng: "beautiful", ru: "красивая" },
+    { id: 5, eng: "handsome", ru: "красивый" },
+    { id: 6, eng: "tall", ru: "высокий" },
+    { id: 7, eng: "short", ru: "низкий" },
+    { id: 8, eng: "curly hair", ru: "кудрявые волосы" },
+
+    // Части тела (Parts of the Body)
+    { id: 9, eng: "head", ru: "голова" },
+    { id: 10, eng: "nose", ru: "нос" },
+    { id: 11, eng: "eyes", ru: "глаза" },
+    { id: 12, eng: "fingers", ru: "пальцы" },
+
+    // Характер (Character)
+    { id: 13, eng: "kind", ru: "добрый" },
+    { id: 14, eng: "unkind", ru: "злой" },
+    { id: 15, eng: "angry", ru: "сердитый" },
+    { id: 16, eng: "happy", ru: "счастливый" },
+    { id: 17, eng: "sad", ru: "грустный" },
+    { id: 18, eng: "clever", ru: "умный" },
+    { id: 19, eng: "silly", ru: "глупый" },
+    { id: 20, eng: "polite", ru: "вежливый" },
+    { id: 21, eng: "shy", ru: "стеснительный" },
+    { id: 22, eng: "calm", ru: "спокойный" },
+    { id: 23, eng: "friendly", ru: "дружелюбный" },
+    { id: 24, eng: "strong", ru: "сильный" },
+    { id: 25, eng: "weak", ru: "слабый" },
+
+    // Дополнительные популярные слова
+    { id: 26, eng: "brave", ru: "храбрый" },
+    { id: 27, eng: "honest", ru: "честный" },
+    { id: 28, eng: "funny", ru: "смешной" },
+    { id: 29, eng: "serious", ru: "серьёзный" },
+    { id: 30, eng: "creative", ru: "креативный" },
+    { id: 31, eng: "patient", ru: "терпеливый" },
+
+    // Профессии (Jobs)
+    { id: 32, eng: "driver", ru: "водитель" },
+    { id: 33, eng: "doctor", ru: "врач" },
+    { id: 34, eng: "teacher", ru: "учитель" },
+
+    // Действия (Actions)
+    { id: 35, eng: "smile", ru: "улыбаться" },
+    { id: 36, eng: "run", ru: "бегать" },
+    { id: 37, eng: "swim", ru: "плавать" },
+
+    // Фразы для общения
+    { id: 38, eng: "Hello!", ru: "Привет!" },
+    { id: 39, eng: "Thank you!", ru: "Спасибо!" },
+    { id: 40, eng: "Goodbye!", ru: "Пока!" },
+    { id: 41, eng: "how long", ru: "как долго", hint: "/ хау лонг /" },
+    { id: 42, eng: "when", ru: "когда", hint: "/ уэн /" },
+    { id: 43, eng: "how often", ru: "как часто", hint: "" },
+    { id: 44, eng: "who", ru: "кто", hint: "" },
+
+
+  ],
   explain: [
     // Местоимения
     { id: 1, eng: "I", ru: "я", hint: "/ ай /" },

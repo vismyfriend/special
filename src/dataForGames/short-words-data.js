@@ -19,6 +19,70 @@ const shortWordsData = {
     { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
 
   ],
+  randomSet: [
+
+    // Вопросительные слова
+    { id: 1, en: "What", ru: "что" },
+    { id: 2, en: "Where", ru: "где" },
+    { id: 3, en: "Why", ru: "почему" },
+
+    // Внешность (Appearance)
+    { id: 4, en: "beautiful", ru: "красивая" },
+    { id: 5, en: "handsome", ru: "красивый" },
+    { id: 6, en: "tall", ru: "высокий" },
+    { id: 7, en: "short", ru: "низкий" },
+    { id: 8, en: "curly hair", ru: "кудрявые волосы" },
+
+    // Части тела (Parts of the Body)
+    { id: 9, en: "head", ru: "голова" },
+    { id: 10, en: "nose", ru: "нос" },
+    { id: 11, en: "eyes", ru: "глаза" },
+    { id: 12, en: "fingers", ru: "пальцы" },
+
+    // Характер (Character)
+    { id: 13, en: "kind", ru: "добрый" },
+    { id: 14, en: "unkind", ru: "злой" },
+    { id: 15, en: "angry", ru: "сердитый" },
+    { id: 16, en: "happy", ru: "счастливый" },
+    { id: 17, en: "sad", ru: "грустный" },
+    { id: 18, en: "clever", ru: "умный" },
+    { id: 19, en: "silly", ru: "глупый" },
+    { id: 20, en: "polite", ru: "вежливый" },
+    { id: 21, en: "shy", ru: "стеснительный" },
+    { id: 22, en: "calm", ru: "спокойный" },
+    { id: 23, en: "friendly", ru: "дружелюбный" },
+    { id: 24, en: "strong", ru: "сильный" },
+    { id: 25, en: "weak", ru: "слабый" },
+
+    // Дополнительные популярные слова
+    { id: 26, en: "brave", ru: "храбрый" },
+    { id: 27, en: "honest", ru: "честный" },
+    { id: 28, en: "funny", ru: "смешной" },
+    { id: 29, en: "serious", ru: "серьёзный" },
+    { id: 30, en: "creative", ru: "креативный" },
+    { id: 31, en: "patient", ru: "терпеливый" },
+
+    // Профессии (Jobs)
+    { id: 32, en: "driver", ru: "водитель" },
+    { id: 33, en: "doctor", ru: "врач" },
+    { id: 34, en: "teacher", ru: "учитель" },
+
+    // Действия (Actions)
+    { id: 35, en: "smile", ru: "улыбаться" },
+    { id: 36, en: "run", ru: "бегать" },
+    { id: 37, en: "swim", ru: "плавать" },
+
+    // Фразы для общения
+    { id: 38, en: "Hello!", ru: "Привет!" },
+    { id: 39, en: "Thank you!", ru: "Спасибо!" },
+    { id: 40, en: "Goodbye!", ru: "Пока!" },
+    { id: 41, eng: "how long", ru: "как долго", hint: "/ хау лонг /" },
+    { id: 42, eng: "when", ru: "когда", hint: "/ уэн /" },
+    { id: 43, eng: "how often", ru: "как часто", hint: "" },
+    { id: 44, eng: "who", ru: "кто", hint: "" },
+
+
+  ],
 
 
     devModeNumbers: [
