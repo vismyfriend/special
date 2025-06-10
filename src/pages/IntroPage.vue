@@ -86,6 +86,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import shortWordsData from '../dataForGames/short-words-data';
 
 import { useRouter } from 'vue-router';
+import questionsData from "src/dataForGames/questions-data";
 
 const router = useRouter();
 
@@ -99,19 +100,19 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 
 
 const buttonLabel = computed(() => {
-  return sessionCounter.value >= 25
+  return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
     : "Что делать дальше?";
 });
 
 const buttonColor = computed(() => {
-  return sessionCounter.value >= 28
+  return sessionCounter.value >= 23
     ? "blue"
     : "green";
 });
 
 const dynamicMessage = computed(() => {
-  const remaining = 25 - sessionCounter.value;
+  const remaining = 20 - sessionCounter.value;
   if (remaining <= 0) {
     return `Разминка для мозгов и пальцев:<br><br>
     1) Молодчина! Хорошая практика.<br>
@@ -127,7 +128,7 @@ const dynamicMessage = computed(() => {
 });
 
 const backToIntroPage = () => {
-  if (sessionCounter.value >= 25) {
+  if (sessionCounter.value >= 20) {
     router.push("/games");
   } else {
     infoMessage.value = dynamicMessage.value;
@@ -220,19 +221,23 @@ const handleBubbleClick = () => {
   }, 4000); // показываем текст на 4 секунды
 };
 // Собираем все английские слова
-const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
+// const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
+const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
 
 
 const allEnglishWords = [
-  "Good Job", "Great", "Tap again", "Vismyfriend", "hamster",
+  "Good Job", "Great", "Tap again","hamster",
   "apple", "banana", "cherry", "date", "elderberry",
   ...shortWordsData.devModeNumbersFast.map(item => item.eng),
   ...shortWordsData.devModeNumbers.map(item => item.eng),
   ...shortWordsData.devmode1.map(item => item.eng),
   ...shortWordsData.digits.map(item => item.eng),
-  ...shortWordsData.alphabetData.map(item => item.eng),
   ...shortWordsData.halloween01.map(item => item.eng),
   ...shortWordsData.introTapButtonWords.map(item => item.eng),
+  ...questionsData.clothes.map(item => item.eng),
+  ...questionsData.randomSet.map(item => item.eng),
+  ...questionsData.popularIrregularVerbs.map(item => item.eng),
+  ...questionsData.a1words.map(item => item.eng),
 
 ];
 const uniqueEnglishWords = [...new Set(allEnglishWords)];
@@ -286,7 +291,7 @@ const handleTap = (e) => {
     text = welcomeWords[shownWelcomeWords.value];
     shownWelcomeWords.value++;
   } else {
-    text = uniqueEnglishWords[Math.floor(Math.random() * uniqueEnglishWords.length)];
+    text = uniqueEnglishWords[Math.floor(Math.random() * uniqueEnglishWords.length)].toLowerCase();
   }
 
   const duration = animationSettings.minDuration +
