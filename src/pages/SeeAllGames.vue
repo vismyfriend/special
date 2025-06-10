@@ -73,7 +73,7 @@ const availableGames = ref([
     id: 1,
     name: "Translate",
     description: "Переведи вслух",
-    route: "/see-all-sets-of-words/randomSet/game-translate",
+    route: "/see-all-sets-of-words/a1words/game-translate",
     icon: "game1icon.png"
   },
 
