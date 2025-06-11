@@ -27,6 +27,7 @@ const routes = [
                 path: 'print-all-words',
                 component: () => import('src/components/PrintAllWords.vue')
               },
+
               {
                 path: 'find-pairs-hard',
                 component: () => import('src/components/GameFindPairsHard.vue')
@@ -95,7 +96,10 @@ const routes = [
           },
         ]
       },
-
+      {
+        path: '/listening-exercises',
+        component: () => import('components/ListeningExercise.vue')
+      },
       {
         path: '/main-page',
         component: () => import('src/pages/MainPage.vue')

@@ -7,6 +7,8 @@
 
         <div class="q-pa-15">
           <img src="../assets/images/special logo detective girl.png" alt="logo">
+          <q-btn color="blue-5" @click="goToRegistration" class="registrationBtn"> войти как спэшл эйджент</q-btn>
+
           <div class="games-grid">
             <div
               class="game-card"
@@ -31,7 +33,7 @@
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 
-const text = "choose \na \ngame";
+const text = "test all\ngames";
 const speed = 150;
 const router = useRouter();
 
@@ -98,6 +100,12 @@ const availableGames = ref([
     description: "успевай читать слова вслух",
     route: "/",
     icon: "game2icon.png"
+  }, {
+    id: 2,
+    name: "Listen to this",
+    description: "слушай и наслаждайся",
+    route: "/listening-exercises",
+    icon: "game2icon.png"
   },
   // {
   //   id: 5,
@@ -121,6 +129,11 @@ const goToGameSelection = (game) => {
   } else {
     router.push({ path: game.route });
   }
+};
+
+const goToRegistration = () => {
+
+  router.push("/registration")
 };
 
 onMounted(() => {
@@ -515,6 +528,11 @@ onMounted(() => {
     }
   }
 
+}
+.registrationBtn {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 </style>
 

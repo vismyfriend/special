@@ -3,26 +3,31 @@
   <div class="relative">
     <div id="phoneFrame">
       <p class="bubble left" id="intro-message">Choose<br> a mission</p>
-      <!-- ask v-if="q.platform.is.desktop" добавить к диву, чтобы только с компьютера видно было, если добавляю пропадает весь див с содержимым -->
-      <!-- отображение элементов на разных платформах -->
-      <!-- 001 если с мобильного теефона кто-то открывает сайт, то эта картинка не отображается,
-       она только для десктопной версии. (если телефон горизонтально разворачивают, то тоже можно убрать рамку) -->
-
-      <!-- <img class="phoneFrame" v-if="$q.platform.is.desktop" src="../assets/images/phone frame.png" alt="logo"> -->
-<!--      <img class="backgroundImg" src="/src/assets/images/backgroundBlur.jpg" alt="blur">-->
 
       <div class="q-pa-15">
         <img src="../assets/images/special logo detective girl.png" alt="logo">
-        <div class="v-cards-choose" v-for="currentSetOfWords in AllSetsOfWords" :key="currentSetOfWords.id" >
+
+        <!-- Поле поиска -->
+        <div class="search-container">
+          <input
+            v-model="searchQuery"
+            placeholder="Search sets..."
+            class="search-input"
+          />
+        </div>
+
+        <!-- Используем filteredSets для отображения карточек -->
+        <div class="v-cards-choose">
           <div
             class="v-card-choose tooltip-wrapper"
-            v-if="currentSetOfWords.active"
+            v-for="currentSetOfWords in filteredSets"
+            :key="currentSetOfWords.id"
             role="button"
             @click="goToChosenGame(`/see-all-sets-of-words/${currentSetOfWords.missionName}`)"
             :style="{
-    '--offset-x': '5px',
-    '--offset-y': '29.5px'
-  }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             {{ currentSetOfWords.missionDescription }}
             <div class="custom-tooltip">
@@ -33,20 +38,18 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 
 const text = "choose \na \nset of words";
 const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
-
-
+const searchQuery = ref('');
 const router = useRouter()
 const $q = useQuasar()
 
@@ -63,6 +66,34 @@ const AllSetsOfWords = ref([
     missionName: "alphabetData",
     missionVisibleName: "Alphabet",
     missionDescription: "Алфавит",
+    id: 7,
+    active: true
+  },
+  {
+    missionName: "questionWords1",
+    missionVisibleName: "Question words 1",
+    missionDescription: "Вопросительные слова 1",
+    id: 7,
+    active: true
+  },
+  {
+    missionName: "questionWords2",
+    missionVisibleName: "Question words 2",
+    missionDescription: "Вопросительные слова 2",
+    id: 7,
+    active: true
+  },
+  {
+    missionName: "questionWords3",
+    missionVisibleName: "Question words 3",
+    missionDescription: "Вопросительные слова 3",
+    id: 7,
+    active: true
+  },
+  {
+    missionName: "questionWordsAll",
+    missionVisibleName: "All question words",
+    missionDescription: "Все вопросительные слова",
     id: 7,
     active: true
   },
@@ -180,6 +211,31 @@ const AllSetsOfWords = ref([
   // }
 ])
 
+// Функция для нормализации строки поиска
+const normalizeString = (str) => {
+  return str
+    .toLowerCase()
+    .replace(/[-\s]/g, ''); // удаляем дефисы и пробелы
+};
+
+// Фильтрация наборов слов
+const filteredSets = computed(() => {
+  if (!searchQuery.value) {
+    return AllSetsOfWords.value.filter(set => set.active);
+  }
+
+  const query = normalizeString(searchQuery.value);
+
+  return AllSetsOfWords.value.filter(set => {
+    return (
+      set.active && (
+        normalizeString(set.missionVisibleName).includes(query) ||
+        normalizeString(set.missionDescription).includes(query) ||
+        normalizeString(set.missionName).includes(query)
+      )
+    );
+  });
+});
 const goToChosenGame = (route) => {
 
   router.push({ path: route })
@@ -214,6 +270,26 @@ onMounted(() => {
   filter: blur(5px);
 }
 
+.search-container {
+  margin: 0 0 10px 0;
+  padding: 0 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #6a6a6a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
 
 .backgroundImg {
   width: 100%;

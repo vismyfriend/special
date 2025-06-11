@@ -11,12 +11,102 @@ const shortWordsData = {
     { id: 7, eng: "It", ru: "оно", hint: "/ ит /" },
   ],
 
+  questionWords1: [
+    { id: 1, eng: "What", ru: "что", hint: "/ уот /" },
+    { id: 2, eng: "Where", ru: "где", hint: "/ уЭ-э /" },
+    { id: 3, eng: "When", ru: "когда", hint: "/ уэн /" },
+    { id: 4, eng: "Why", ru: "почему", hint: "/ уай /" },
+    { id: 5, eng: "How", ru: "как", hint: "/ хау /" },
+    { id: 6, eng: "How often", ru: "как часто", hint: "/ хау офэн /" },
+    { id: 7, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
+    { id: 8, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
+    { id: 9, eng: "Who", ru: "кто", hint: "/ ху /" },
+  ],
+
+  questionWords2: [
+    { id: 1, eng: "What", ru: "что, какой", hint: "/ уот /" },
+    { id: 2, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
+    { id: 3, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
+    { id: 4, eng: "What time", ru: "во сколько", hint: "/ уот тайм /" },
+    { id: 5, eng: "What type", ru: "какой тип", hint: "/ уот тайп ов /" },
+    { id: 6, eng: "What kind", ru: "какой вид", hint: "/ уот кайнд ов /" },
+    { id: 7, eng: "What for", ru: "для чего", hint: "/ уот фор /" },
+    { id: 8, eng: "How", ru: "как", hint: "/ хау /" },
+    { id: 9, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
+    { id: 10, eng: "How old", ru: "какой возраст, сколько лет, насколько стар", hint: "/ хау олд /" },
+    { id: 11, eng: "Whose", ru: "чей", hint: "/ хуз /" },
+
+  ],
+
+  questionWords3: [
+    { id: 1, eng: "Which", ru: "который", hint: "/ уич /" },
+    { id: 2, eng: "How much", ru: "сколько (неисчисляемое)", hint: "/ хау мач /" },
+    { id: 3, eng: "How many", ru: "сколько (исчисляемое)", hint: "/ хау мэни /" },
+    { id: 4, eng: "How long", ru: "как долго", hint: "/ хау лонг /" },
+    { id: 5, eng: "How often", ru: "как часто", hint: "/ хау офэн /" },
+    { id: 6, eng: "How far", ru: "как далеко", hint: "/ хау фар /" },
+    { id: 7, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
+    { id: 8, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 9, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
+    { id: 10, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" }
+  ],
+
+
+  questionWordsAll: [
+    // Базовые вопросительные слова (5W1H)
+    { id: 1, eng: "What", ru: "что, какой", hint: "/ уот /" },
+    { id: 2, eng: "Where", ru: "где", hint: "/ уэ-э /" },
+    { id: 3, eng: "When", ru: "когда", hint: "/ уэн /" },
+    { id: 4, eng: "Why", ru: "почему", hint: "/ уай /" },
+    { id: 5, eng: "Who", ru: "кто", hint: "/ ху /" },
+    { id: 6, eng: "How", ru: "как", hint: "/ хау /" },
+
+    // Уточняющие формы
+    { id: 7, eng: "For whom", ru: "для кого (официально)", hint: "/ фо хум /" },
+    { id: 8, eng: "Whose", ru: "чей", hint: "/ хуз /" },
+    { id: 9, eng: "Which", ru: "который (из)", hint: "/ уич /" },
+
+    // Вопросы о количестве
+    { id: 10, eng: "How much", ru: "сколько (неисчисляемое)", hint: "/ хау мач /" },
+    { id: 11, eng: "How many", ru: "сколько (исчисляемое)", hint: "/ хау мэни /" },
+
+    // Вопросы о характеристиках
+    { id: 12, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
+    { id: 13, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
+    { id: 14, eng: "What time", ru: "во сколько", hint: "/ уот тайм /" },
+    { id: 15, eng: "What kind", ru: "какой вид", hint: "/ уот кайнд /" },
+    { id: 16, eng: "What type", ru: "какой тип", hint: "/ уот тайп /" },
+
+    // Вопросы о времени и расстоянии
+    { id: 17, eng: "How long", ru: "как долго", hint: "/ хау лонг /" },
+    { id: 18, eng: "How often", ru: "как часто", hint: "/ хау офэн /" },
+    { id: 19, eng: "How far", ru: "как далеко", hint: "/ хау фар /" },
+    { id: 20, eng: "How old", ru: "сколько лет", hint: "/ хау оулд /" },
+
+    // Специальные вопросительные фразы
+    { id: 21, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
+    { id: 22, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 23, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
+    { id: 24, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" },
+    { id: 25, eng: "What for", ru: "для чего", hint: "/ уот фор /" },
+
+    // Дополнительные полезные вопросы
+    { id: 26, eng: "How about", ru: "как насчёт", hint: "/ хау эбаут /" },
+    { id: 27, eng: "What's up", ru: "как дела (разг.)", hint: "/ уотс ап /" },
+    { id: 28, eng: "How so", ru: "как так", hint: "/ хау соу /" },
+    { id: 29, eng: "What if", ru: "что если", hint: "/ уот иф /" },
+
+  ],
+
+
+
 
   devModeNumbersFast: [
     { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
     { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
     { id: 29, eng: "hundred", ru: "сто", hint: "/ хандред /" },
     { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+    { id: 28, eng: "Test word delete after using this ", ru: "как так djnd kjkajskj dsd", hint: "/ хау соу /" },
 
   ],
   randomSet: [
@@ -283,6 +373,7 @@ const shortWordsData = {
     { id: 37, eng: "sunglasses", ru: "солнцезащитные очки", EnglishLevel: "A" },
     { id: 39, eng: "style", ru: "стиль", EnglishLevel: "A" },
     { id: 40, eng: "jewellery", ru: "ювелирные изделия", EnglishLevel: "B" },
+
 
     // Level B (B1, B2)
     { id: 41, eng: "hoodie", ru: "толстовка с капюшоном", EnglishLevel: "B" },

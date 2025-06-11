@@ -207,12 +207,14 @@ input:checked + .slider:before {
 
 .row {
     margin-top: 20px;
-    display: flex;
+  display: flex;
 }
 
 .col {
     color: wheat;
     flex-direction: column;
+  display: flex;
+
 }
 
 .index-col {
@@ -228,31 +230,44 @@ input:checked + .slider:before {
 }
 
 .eng-col {
-
+line-height: 0.8;
+  flex: 1;
 }
 
 .ru-col {
-    flex: 0 0 125px;
     font-size: 12px;
+  line-height: 0.8;
+  flex: 1;
+
 }
 
 .hint-text {
     color: #777474;
     font-size: 0.9em;
+  text-align: center; /* Центрируем подсказку */
+
 }
 
 
 .wordCard {
-    background-color: #f9f9f9;
-    border: 0.5px solid #656565;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: none;
-    user-select: none;
-    color: black;
-    height: 20px;
+  background-color: #f9f9f9;
+  border: 0.5px solid #656565;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center; /* Изменено с flex-start на center */
+  align-items: center; /* Выравнивание по вертикали по центру */
+  text-align: center; /* Добавлено для выравнивания текста */
+
+  cursor: none;
+  user-select: none;
+  color: black;
+  min-height: 10px; /* Минимальная высота */
+  padding: 4px 2px;
+  margin-bottom: 2px;
+  word-break: break-word;
+  overflow: hidden;
+  box-sizing: border-box; /* Важно для корректных расчетов */
+  height: 100%; /* Занимаем всю доступную высоту */
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавный переход */
 }
 
@@ -276,6 +291,25 @@ input:checked + .slider:before {
 
 }
 
+/* Для длинного текста */
+.wordCard > span {
+  width: 100%;
+  padding: 1px;
+  justify-content: center; /* Центрируем содержимое */
+  flex-direction: column; /* Для многострочного текста */
+}
+
+/* Специальные стили для колонок */
+.eng-col .wordCard {
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.ru-col .wordCard {
+  justify-content: flex-start;
+  text-align: center;
+  font-size: 12px;
+}
 /* Стили для печати */
 @media print {
     body {
@@ -348,7 +382,7 @@ input:checked + .slider:before {
     /* Граница ячеек */
     padding: 1px;
     /* Отступы внутри ячеек */
-    text-align: left;
+    text-align: center;
     /* Выравнивание текста */
 }
 
