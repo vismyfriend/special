@@ -7,8 +7,14 @@
 
         <div class="q-pa-15">
           <img src="../assets/images/special logo detective girl.png" alt="logo">
-          <q-btn color="blue-5" @click="goToRegistration" class="registrationBtn">  создать аккаунт спэшл эйджент и получить доступ ко всем наборам слов ?</q-btn>
-
+          <div class="registrationContainer">
+            <button class="registrationBtn"   @click="goToRegistration"
+            >создать аккаунт спэшл эйджент и получить доступ ко всем наборам слов ? </button>
+            <div class="miniButtons">
+              <button class="btn-close" title="Отказаться" @click="onDecline">✕</button>
+              <button class="btn-accept" title="Согласен" @click="onAccept">✔</button>
+            </div>
+          </div>
           <div class="games-grid">
             <div
               class="game-card"
@@ -36,6 +42,18 @@ import { onMounted, ref } from 'vue';
 const text = "test all\ngames";
 const speed = 150;
 const router = useRouter();
+
+
+const onAccept = () => {
+  // Переход на регистрацию
+  goToRegistration();
+};
+
+const onDecline = () => {
+  // Скрыть блок с кнопками или вывести сообщение
+  const container = document.querySelector(".registrationContainer");
+  if (container) container.style.display = "none";
+};
 
 // Функция для корректного формирования пути к изображению
 const getImagePath = (iconName) => {
@@ -534,11 +552,16 @@ onMounted(() => {
   }
 
 }
+
+.registrationContainer {
+  position: relative;
+  display: inline-block;
+}
 .registrationBtn {
   position: relative; /* для псевдоэлемента */
   overflow: hidden;
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px 12px 17px 12px;
   margin: 0;
   border-radius: 10px;
   line-height: 1.2;
@@ -549,6 +572,7 @@ onMounted(() => {
   transition: all 0.2s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   cursor: pointer;
+  font-size: 16px;
 }
 
 .registrationBtn::before {
@@ -590,6 +614,45 @@ onMounted(() => {
 .registrationBtn:active {
   transform: translateY(1px);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+
+
+.miniButtons {
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 13px;
+}
+
+.miniButtons button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.btn-close {
+  background: linear-gradient(to bottom, #ff4d4d, #cc0000);
+}
+
+.btn-accept {
+  background: linear-gradient(to bottom, #4CAF50, #2E7D32);
 }
 </style>
 
