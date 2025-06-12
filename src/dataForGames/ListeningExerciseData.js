@@ -8,7 +8,7 @@ export default {
       taskPicture: null,
       questions: [
         {
-          text: "There is a big baseball game today.",
+          text: "There is a big hockey match today.",
           correctAnswer: "false"
         },
         {
@@ -37,7 +37,7 @@ export default {
       audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskDescription: "Послушайте и выберите верный ответ.",
       taskID: "multiple_choice",
-      taskPicture: 'src/assets/images/listeningPicture1.jpg',
+      taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
       questions: [
         {
           text: "Как мужчина доберется туда?",
