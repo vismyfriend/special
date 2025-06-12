@@ -79,17 +79,29 @@
               <span class="option-text">{{ key }}: {{ label }}</span>
             </label>
           </div>
+
         </div>
       </div>
 
       <div class="check-button-container">
+        <!-- Text Script toggle -->
+        <div v-if="task.textScript" class="text-script-container">
+          <button class="toggle-script-btn" @click="toggleScript(index)">
+            {{ expandedScriptIndex === index ? 'Скрыть текст' : 'Показать текст аудио' }}
+          </button>
+          <div v-if="expandedScriptIndex === index" class="text-script-content">
+            <p>{{ task.textScript }}</p>
+          </div>
+        </div>
         <button
           class="check-button"
           @click="checkAnswers(index)"
         >
           Проверить
         </button>
+
       </div>
+
     </div>
   </div>
 </template>
@@ -101,6 +113,12 @@ import rawData from '../dataForGames/ListeningExerciseData'
 const exerciseData = ref(null)
 const answers = ref([])
 const checkedTasks = ref([])
+
+const expandedScriptIndex = ref(null)
+
+const toggleScript = (index) => {
+  expandedScriptIndex.value = expandedScriptIndex.value === index ? null : index
+}
 
 onMounted(() => {
   exerciseData.value = rawData
@@ -428,5 +446,34 @@ input[type="radio"]:checked + .radio-custom::after {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
+.text-script-container {
+  margin-top: 10px;
+  text-align: left;
+}
 
+.toggle-script-btn {
+  background-color: #f59e0b; /* Желтая кнопка */
+  color: white;
+  padding: 6px 10px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-script-btn:hover {
+  background-color: #d97706;
+}
+
+.text-script-content {
+  margin-top: 8px;
+  padding: 10px;
+  background-color: #fefce8;
+  border-left: 4px solid #facc15;
+  border-radius: 6px;
+  white-space: pre-line;
+  font-size: 1rem;
+  color: #1f2937;
+}
 </style>
