@@ -8,6 +8,11 @@
     <div v-for="(task, index) in exerciseData.tasks" :key="index" class="task-container">
       <h3 class="task-title">{{ task.taskDescription }}</h3>
 
+      <!-- Добавлено отображение картинки, если она есть -->
+      <div v-if="task.taskPicture" class="task-image-container">
+        <img :src="task.taskPicture" :alt="'Image for task ' + (index + 1)" class="task-image">
+      </div>
+
       <audio controls class="audio-player">
         <source :src="task.audio" type="audio/mp3" />
         Your browser does not support the audio element.
@@ -18,7 +23,7 @@
         <table class="true-false-table">
           <thead>
           <tr>
-            <th>(you can change the speed of audio)</th>
+            <th>(#vismyfriend text me if u find mistakes)</th>
             <th class="true-header">True</th>
             <th class="false-header">False</th>
           </tr>
@@ -110,17 +115,17 @@ const checkAnswers = (taskIndex) => {
 }
 
 const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => {
-  if (!checkedTasks.value[taskIndex]) return ''
+  if (!checkedTasks.value[taskIndex]) return '';
 
-  const selected = answers.value[taskIndex][questionIndex]
+  const selected = answers.value[taskIndex][questionIndex];
 
   if (optionValue === correctAnswer) {
-    return selected === optionValue ? 'correct-selected' : 'correct-not-selected'
+    return selected === optionValue ? 'correct-selected' : 'correct-not-selected';
   } else if (selected === optionValue) {
-    return 'incorrect-selected'
+    return 'incorrect-selected';
   }
-  return ''
-}
+  return '';
+};
 
 const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) => {
   if (!checkedTasks.value[taskIndex]) return ''
@@ -139,12 +144,12 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 <style scoped>
 /* Base styles */
 .exercise-container {
-  max-width: 56rem;
-  margin: 0 auto;
-  padding: 15px;
-  background-color: white;
-  border-radius: 30px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 56rem; /* Ограничение ширины блока */
+  margin: 2px 2px; /* Центрирование */
+  padding: 15px; /* Внутренний отступ */
+  background-color: white; /* Фон */
+  border-radius: 15px; /* Скругление углов */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* Тень */
 }
 
 .exercise-header {
@@ -166,7 +171,7 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 /* Task styles */
 .task-container {
   padding: 5px;
-  background-color: #cff0ff;
+  background-color: #cff0ff; /* Светло-голубой фон */
   border-radius: 1rem;
   margin-bottom: 0.5rem;
 }
@@ -184,10 +189,6 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 }
 
 /* True/False table styles */
-.true-false-container {
-  overflow-x: auto;
-}
-
 .true-false-table {
   width: 100%;
   border-collapse: collapse;
@@ -212,16 +213,15 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 }
 
 .true-header {
-  color: #10b981;
+  color: #10b981; /* Зеленый */
   text-align: center;
 }
 
 .false-header {
-  color: #ef4444;
+  color: #ef4444; /* Красный */
   text-align: center;
 }
 
-/* Radio button styles */
 .radio-label {
   display: flex;
   justify-content: center;
@@ -234,7 +234,7 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  border: 2px solid #d1d5db;
+  border: 2px solid #d1d5db; /* серый */
   position: relative;
   transition: all 0.2s;
 }
@@ -265,7 +265,8 @@ input[type="radio"]:checked + .radio-custom::after {
   background-color: #3b82f6;
 }
 
-/* Radio button states */
+/* ✅❌ Стили выбора ответов (True/False) */
+
 .radio-custom.correct-selected {
   border-color: #10b981;
 }
@@ -278,6 +279,11 @@ input[type="radio"]:checked + .radio-custom::after {
   border-color: #10b981;
 }
 
+.radio-custom.correct-not-selected::after {
+  background-color: #10b981;
+  opacity: 0.3; /* Затушенный зеленый */
+}
+
 .radio-custom.incorrect-selected {
   border-color: #ef4444;
 }
@@ -285,6 +291,8 @@ input[type="radio"]:checked + .radio-custom::after {
 .radio-custom.incorrect-selected::after {
   background-color: #ef4444;
 }
+
+
 
 /* Multiple choice styles */
 .multiple-choice-container {
@@ -303,12 +311,12 @@ input[type="radio"]:checked + .radio-custom::after {
   font-size: 1.125rem;
   font-weight: 500;
   color: #1f2937;
-  margin-bottom: 0.75rem;
+  margin-bottom: 5px;
 }
 
 .options-container {
   display: grid;
-  gap: 0.75rem;
+  gap: 5px;
   padding-left: 0.5rem;
 }
 
@@ -346,22 +354,42 @@ input[type="radio"]:checked + .radio-custom::after {
 
 .option-text {
   flex: 1;
+  padding: 2px;
 }
 
 /* Option states */
+
 .option-correct-selected {
-  background-color: #ecfdf5;
+  background-color: #ecfdf5; /* Светло-зеленый фон */
   border: 2px solid #10b981;
+}
+
+.option-correct-selected .option-input {
+  border-color: #10b981;
+  background-color: #10b981;
 }
 
 .option-correct-not-selected {
   background-color: #ecfdf5;
 }
 
+.option-correct-not-selected .option-input {
+  border-color: #10b981;
+  background-color: #10b981;
+  opacity: 0.3;
+}
+
 .option-incorrect-selected {
   background-color: #fee2e2;
   border: 2px solid #ef4444;
 }
+
+.option-incorrect-selected .option-input {
+  border-color: #ef4444;
+  background-color: #ef4444;
+}
+
+
 
 /* Button styles */
 .check-button-container {
@@ -386,4 +414,19 @@ input[type="radio"]:checked + .radio-custom::after {
 .check-button:hover {
   background-color: #2563eb;
 }
+
+
+/* Task image styles */
+.task-image-container {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.task-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
 </style>

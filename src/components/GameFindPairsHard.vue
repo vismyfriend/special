@@ -21,7 +21,10 @@
           :key="engWord.id"
           @click="changeActive(engWord.id, 'left')"
         >
-          {{ engWord.lang }}
+          <div>
+            <div>{{ engWord.lang }}</div>
+            <div v-if="engWord.hint" class="hint">{{ engWord.hint }}</div>
+          </div>
         </div>
       </div>
       <div class="col">
@@ -109,12 +112,18 @@ const selectRandomWords = (data, count) => {
 };
 
 const splitCards = (lang) => {
-    let words = currentGameData.value?.map(el => ({
-        id: el.id,
-        lang: el[lang],
-        active: false,
-        visible: true
-    }));
+  let words = currentGameData.value?.map(el => {
+    const base = {
+      id: el.id,
+      lang: el[lang],
+      active: false,
+      visible: true
+    };
+    if (lang === 'eng' && el.hint) {
+      base.hint = el.hint;
+    }
+    return base;
+  });
 
     words = words.slice(sliceMin.value, sliceMax.value); // Отображаем только часть слов
     return shuffle(words);
@@ -247,15 +256,19 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 0 2px;
 }
 
 .wordCard {
   background-color: #f4f4f4;
+  height: 70px; // или 80px — подбери нужную высоту
+
   border: 2px solid #aaa;
   border-radius: 16px;
-  padding: 10px 15px;
+  padding: 10px 5px;
   font-size: 16px;
   text-align: center;
+  align-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
@@ -264,7 +277,12 @@ onMounted(() => {
 .wordCard:hover {
   background-color: #e0e0e0;
 }
+.hint {
+  font-size: 15px;
+  color: #666;
+  line-height: 0.5;       // делает текст компактнее по вертикали
 
+}
 .active {
   background-color: #333;
   color: #fff;

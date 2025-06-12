@@ -1,6 +1,76 @@
 // чтобы удалить пустые строки нужно ввести в CTRL+F или CTRL R
 // ^\s*$\n
 const shortWordsData = {
+
+  introSetFindPairsHard: [
+    { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
+    { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
+    { id: 3, eng: "three", ru: "три", hint: "/не фри и не сри/" },
+    { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
+    { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
+    { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
+    { id: 7, eng: "seven", ru: "семь", hint: "/ сэвн /" },
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
+    { id: 10, eng: "zero", ru: "ноль", hint: "/ зИроу /" },
+    { id: 11, eng: "twelve", ru: "двенадцать", hint: "/ тВэлв /" },
+    { id: 12, eng: "twenty", ru: "двадцать", hint: "/ твЭнти /" }
+  ],
+
+  introSetSpellThis: [
+
+  { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+  { id: 100, eng: "hundred", ru: "сто", hint: "/ хандред /" },
+  { id: 1000, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+
+
+  ],
+
+  introSetCutWires: [
+    // Базовые вопросительные слова
+    { id: 1, eng: "What", ru: "какой, что", hint: "/ уот /" },
+    { id: 2, eng: "Where", ru: "где", hint: "/ уэ-э /" },
+    { id: 3, eng: "When", ru: "когда", hint: "/ уэн /" },
+    { id: 4, eng: "Why", ru: "почему", hint: "/ уай /" },
+    { id: 5, eng: "Who", ru: "кто", hint: "/ ху /" },
+    { id: 6, eng: "How", ru: "как", hint: "/ хау /" },
+
+    // Уточняющие формы
+    { id: 7, eng: "For whom", ru: "для кого (официально)", hint: "/ фо хум /" },
+    { id: 8, eng: "Whose", ru: "чей", hint: "/ хуз /" },
+    { id: 9, eng: "Which", ru: "который (из)", hint: "/ уич /" },
+
+    // Вопросы о количестве
+    { id: 10, eng: "How much", ru: "сколько (неисчисляемое)", hint: "/ хау мач /" },
+    { id: 11, eng: "How many", ru: "сколько (исчисляемое)", hint: "/ хау мэни /" },
+
+    // Вопросы о характеристиках
+    { id: 12, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
+    { id: 13, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
+    { id: 14, eng: "What time", ru: "во сколько", hint: "/ уот тайм /" },
+    { id: 15, eng: "What kind", ru: "какой вид", hint: "/ уот кайнд /" },
+    { id: 16, eng: "What type", ru: "какой тип", hint: "/ уот тайп /" },
+
+    // Вопросы о времени и расстоянии
+    { id: 17, eng: "How long", ru: "как долго", hint: "/ хау лонг /" },
+    { id: 18, eng: "How often", ru: "как часто", hint: "/ хау офэн /" },
+    { id: 19, eng: "How far", ru: "как далеко", hint: "/ хау фар /" },
+    { id: 20, eng: "How old", ru: "сколько лет, насколько стар", hint: "/ хау оулд /" },
+
+    // Специальные вопросительные фразы
+    { id: 21, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
+    { id: 22, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 23, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
+    { id: 24, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" },
+    { id: 25, eng: "What for", ru: "для чего", hint: "/ уот фор /" },
+
+    // Дополнительные полезные вопросы
+    { id: 26, eng: "How about", ru: "как насчёт", hint: "/ хау эбаут /" },
+    { id: 27, eng: "What's up", ru: "как дела (разг.)", hint: "/ уотс ап /" },
+    { id: 28, eng: "How so", ru: "как так", hint: "/ хау соу /" },
+    { id: 29, eng: "What if", ru: "что если", hint: "/ уот иф /" },
+  ],
+
   universalSet: [
     { id: 1, eng: "I", ru: "я", hint: "/ ай /" },
     { id: 2, eng: "You", ru: "вы", hint: "/ ю /" },

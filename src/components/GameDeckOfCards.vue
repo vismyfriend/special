@@ -375,8 +375,8 @@ onMounted(() => {
 
   // Первая карточка-инструкция
   currentWord.value = {
-    ru: "объясни это мне",
-    eng: "Explain it to me",
+    ru: "нажимай на колоду",
+    eng: "Объясни слово (по-русски или английски)",
     isIntro: true
   };
 
@@ -470,6 +470,7 @@ onMounted(() => {
 .word {
     font-weight: bold; /* Выделение русского слова */
   font-size: 30px;
+  line-height: 0.9;
 }
 .word::after {
     content: ""; /* Псевдоэлемент требует контент */
@@ -483,6 +484,8 @@ onMounted(() => {
     font-style: italic; /* Курсив для перевода */
     color: #555; /* Более светлый цвет для перевода */
   font-size: 30px;
+  line-height: 0.9;
+
 
 }
 

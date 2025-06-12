@@ -35,19 +35,21 @@
         >
           <div
             class="wordCard"
-            @click="checkAnswer(answer, index)"
+            @click="checkAnswer(answer.eng, index)"
             :ref="el => answerRefs[index] = el"
             :class="{
-              active: selectedAnswer === answer && !isCorrect,
-              correct: isCorrect && selectedAnswer === answer,
-              fade: isFading[index]
-            }"
+      active: selectedAnswer === answer.eng && !isCorrect,
+      correct: isCorrect && selectedAnswer === answer.eng,
+      fade: isFading[index]
+    }"
             :style="{ opacity: isFading[index] ? 0 : 1 }"
           >
-            {{ answer }}
+            <div>
+              <div class="textOnCard">{{ answer.eng }}</div>
+              <div v-if="answer.hint" class="hint">{{ answer.hint }}</div>
+            </div>
           </div>
 
-          <!-- Сообщения об ошибках и успехах -->
           <div v-if="errorTexts[index]" class="error-text">{{ errorTexts[index] }}</div>
           <div
             v-if="positiveTexts[index]"
@@ -202,13 +204,15 @@ watch(() => answers.value, async () => {
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
 const generateAnswers = (correctAnswer) => {
-  const allAnswers = currentGameData.value.map(item => item.eng);
-  const uniqueAnswers = [...new Set(allAnswers)];
-  if (uniqueAnswers.length < 4) return uniqueAnswers;
+  const allItems = currentGameData.value;
+  const correctItem = allItems.find(item => item.eng === correctAnswer);
+  const otherItems = allItems.filter(item => item.eng !== correctAnswer);
+  const uniqueOthers = Array.from(new Set(otherItems.map(item => item.eng)))
+    .map(eng => otherItems.find(item => item.eng === eng));
 
-  const incorrectAnswers = uniqueAnswers.filter(ans => ans !== correctAnswer).slice(0, 3);
-  incorrectAnswers.push(correctAnswer);
-  return shuffle(incorrectAnswers);
+  const randomIncorrect = uniqueOthers.slice(0, 3);
+  const answersArray = [...randomIncorrect, correctItem];
+  return shuffle(answersArray);
 };
 
 const loadQuestion = async () => {
@@ -450,15 +454,34 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+
   cursor: pointer;
   margin: 1.5px;
   margin-right: 25px;
   user-select: none;
   color: black;
   transition: opacity 0.5s ease;
-  width: 120px;
+  width: 145px;
+}
+.hint {
+  font-size: 14px;
+  color: #666;
+  line-height: 0.5;
+}
+.textOnCard {
+  font-size: 16px;
+  font-weight: 500;
+
 }
 
+.main-word {
+  font-size: 16px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 0.9;
+
+}
 .answers-container {
   margin-top: 20px;
   width: 120px;

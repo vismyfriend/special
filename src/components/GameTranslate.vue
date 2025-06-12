@@ -17,8 +17,7 @@
       <div class="main-content">
         <!-- Карточка со словом -->
         <div class="word-card" @click="toggleTranslation">
-          <div class="word">{{ currentWord.eng }}</div>
-
+          <div class="word" ref="wordText">{{ currentWord.eng }}</div>
         </div>
 <!--        <p class="hint-info">Нажми на букву, чтобы увидеть подсказку</p>-->
 
@@ -46,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import questionsData from '../dataForGames/questions-data';
 
@@ -69,6 +68,32 @@ const skipCount = ref(0);
 
 // Подсказки с буквами
 const revealedLetters = ref([]);
+
+
+const wordText = ref(null);
+
+const fitText = () => {
+  nextTick(() => {
+    const container = wordText.value?.parentNode;
+    const textEl = wordText.value;
+
+    if (!container || !textEl) return;
+
+    let fontSize = 58;
+    textEl.style.fontSize = fontSize + 'px';
+
+    // Уменьшаем шрифт, пока не влезает по ширине или высоте
+    while (
+      (textEl.scrollWidth > container.clientWidth ||
+        textEl.scrollHeight > container.clientHeight) &&
+      fontSize > 12
+      ) {
+      fontSize -= 1;
+      textEl.style.fontSize = fontSize + 'px';
+    }
+  });
+};
+
 
 const handleNext = () => {
   nextCount.value += 1;
@@ -110,6 +135,8 @@ const loadNextWord = () => {
   }
 
   resetRevealedLetters();
+  fitText();
+
 };
 
 const undoLastWord = () => {
@@ -178,13 +205,22 @@ const preventZoom = (e) => {
   }
 };
 
+watch(() => currentWord.value.eng, () => {
+  fitText();
+});
+
+
+
 onMounted(() => {
+  fitText();
+  window.addEventListener('resize', fitText);
+
   const missionName = route.params.missionName;
   currentGameData.value = questionsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
   currentWord.value = {
-    eng: 'Click right',
-    ru: 'Нажми вправо',
+    eng: 'Листай и переводи',
+    ru: 'подсказки',
     isIntro: true,
   };
   resetRevealedLetters();
@@ -199,6 +235,10 @@ onMounted(() => {
   meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
   document.head.appendChild(meta);
 
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', fitText);
 });
 </script>
 
@@ -272,9 +312,13 @@ html {
   color: #2c3e50;
   text-align: center;
   user-select: none;
-  word-break: break-word; /* Перенос длинных слов */
-  max-width: 100%;
+  /* word-break: break-word;  Перенос длинных слов */
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  max-height: 100%;
   padding: 10px;
+  line-height: 0.8;
 }
 
 /* Адаптивные подсказки */
@@ -285,6 +329,7 @@ html {
   gap: 8px;
   width: 100%;
   padding: 0 10px;
+  height: 120px;
 }
 
 .hint-box {

@@ -7,7 +7,7 @@
 
         <div class="q-pa-15">
           <img src="../assets/images/special logo detective girl.png" alt="logo">
-          <q-btn color="blue-5" @click="goToRegistration" class="registrationBtn"> войти как спэшл эйджент</q-btn>
+          <q-btn color="blue-5" @click="goToRegistration" class="registrationBtn">  создать аккаунт спэшл эйджент и получить доступ ко всем наборам слов ?</q-btn>
 
           <div class="games-grid">
             <div
@@ -44,48 +44,39 @@ const getImagePath = (iconName) => {
 
 const availableGames = ref([
   {
-    id: 5,
-    name: "Find pairs",
-    description: "Найди пары слов",
-    route: "/see-all-sets-of-words/digits/find-pairs-hard",
-    icon: "game4icon.png"
-  },
-  {
-    id: 5,
-    name: "Spell it",
-    description: "Произнеси по буквам",
-    route: "/see-all-sets-of-words/teenTy/spelling",
-    icon: "game5icon.png"
+    id: 4,
+    name: "Cut wires",
+    description: "Перережь нужный провод",
+    route: "/see-all-sets-of-words/introSetCutWires/find-pairs-easy",
+    icon: "wiresPic.png"
   },
   {
     id: 1,
     name: "Alias",
     description: "Объясни слово",
-    route: "/see-all-sets-of-words/explain/deck-of-cards",
-    icon: "game1icon.png"
+    route: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
+    icon: "cards.png"
   },
   {
-    id: 1,
-    name: "Say it",
-    description: "Объясни слово",
-    route: "/see-all-sets-of-words/explain/explain-the-word",
-    icon: "game1icon.png"
+    id: 2,
+    name: "Listen",
+    description: "слушай и наслаждайся",
+    route: "/listening-exercises",
+    icon: "lilsteningIcon.png"
+  },
+  {
+    id: 5,
+    name: "Find pairs",
+    description: "Найди пары слов",
+    route: "/see-all-sets-of-words/introSetFindPairsHard/find-pairs-hard",
+    icon: "game4icon.png"
   },
   {
     id: 1,
     name: "Translate",
     description: "Переведи вслух",
     route: "/see-all-sets-of-words/a1words/game-translate",
-    icon: "game1icon.png"
-  },
-
-
-  {
-    id: 4,
-    name: "Cut wires",
-    description: "Перережь нужный провод",
-    route: "/see-all-sets-of-words/clothes/find-pairs-easy",
-    icon: "wiresPic.png"
+    icon: "game6icon.png"
   },
   {
     id: 3,
@@ -95,18 +86,32 @@ const availableGames = ref([
     icon: "game3icon.png"
   },
   {
+    id: 5,
+    name: "Spell it",
+    description: "Произнеси по буквам",
+    route: "/see-all-sets-of-words/introSetSpellThis/spelling",
+    icon: "game5icon.png"
+  },
+
+  {
     id: 2,
     name: "Тапалка",
     description: "успевай читать слова вслух",
     route: "/",
-    icon: "game2icon.png"
-  }, {
-    id: 2,
-    name: "Listen to this",
-    description: "слушай и наслаждайся",
-    route: "/listening-exercises",
-    icon: "game2icon.png"
+    icon: "ButtonGreenLady.png"
   },
+  {
+    id: 1,
+    name: "coming soon",
+    description: "проблемы с поворотами",
+    route: "/see-all-sets-of-words/explain/explain-the-word",
+    icon: null
+  },
+
+
+
+
+
   // {
   //   id: 5,
   //   name: "Word Puzzle",
@@ -530,9 +535,61 @@ onMounted(() => {
 
 }
 .registrationBtn {
+  position: relative; /* для псевдоэлемента */
+  overflow: hidden;
   width: 100%;
-  padding: 0;
+  padding: 10px 12px;
   margin: 0;
+  border-radius: 10px;
+  line-height: 1.2;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(to top, #007BFF, #339CFF);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.registrationBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;  /* стартуем слева за пределами */
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: -75%;
+  }
+}
+
+.registrationBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.registrationBtn:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4);
 }
 </style>
 

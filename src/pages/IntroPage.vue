@@ -21,8 +21,8 @@
       <span v-else>
       {{
           showTextInstead
-            ? '$ ' + formattedCounter + ' — ' + textVersion
-            : '$ ' + formattedCounter
+            ? currentTapSymbol + ' ' + formattedCounter + ' — ' + textVersion
+            : currentTapSymbol +' ' + formattedCounter
         }}
     </span>
     </p>
@@ -38,7 +38,8 @@
 
   <!-- Контейнер с картинкой -->
   <div class="image-container">
-    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">
+<!--    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">-->
+    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">
 
 
 
@@ -92,6 +93,8 @@ const router = useRouter();
 
 
 // Объявляем переменные
+const currentTapSymbol = '⚡'; // Здесь можно менять символ
+
 const counter = ref(0);
 
 const sessionStartCounter = ref(0);
@@ -116,7 +119,7 @@ const dynamicMessage = computed(() => {
   if (remaining <= 0) {
     return `Разминка для мозгов и пальцев:<br><br>
     1) Молодчина! Хорошая практика.<br>
-    2) <b>число с долларом</b> можно нажать<br>
+    2) <b>число со знаком ${currentTapSymbol}</b> можно нажать<br>
     и проверить правильно ли вы его произнесли<br>
     `;
   } else {
@@ -352,9 +355,12 @@ html {
   position: fixed;
   font-size: 25px;
   font-weight: bold;
-  color: #333;
-
-
+  text-shadow:
+    0 0 1px #fff,
+    0 0 10px #ffc73b,
+    0 0 15px #ffc20d;
+  color: #ffea00;
+  /* color: #333; */
   pointer-events: none;
   z-index: 9999;
   white-space: nowrap;

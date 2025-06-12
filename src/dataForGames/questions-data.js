@@ -2,7 +2,122 @@
 // ^\s*$\n
 const questionsData = {
 
-    devModeNumbers: [
+
+
+    introSetAlias: [
+      // Цвета
+      { id: 1, eng: "red", ru: "красный", hint: "/ ред /" },
+      { id: 2, eng: "blue", ru: "синий", hint: "/ блу /" },
+      { id: 3, eng: "green", ru: "зелёный", hint: "/ грин /" },
+      { id: 4, eng: "yellow", ru: "жёлтый", hint: "/ йелоу /" },
+      { id: 5, eng: "black", ru: "чёрный", hint: "/ блэк /" },
+      { id: 6, eng: "white", ru: "белый", hint: "/ уайт /" },
+      { id: 7, eng: "brown", ru: "коричневый", hint: "/ браун /" },
+      { id: 8, eng: "orange", ru: "оранжевый", hint: "/ ориндж /" },
+      { id: 9, eng: "pink", ru: "розовый", hint: "/ пинк /" },
+      { id: 10, eng: "gray", ru: "серый", hint: "/ грэй /" },
+
+      // Животные
+      { id: 11, eng: "cat", ru: "кот", hint: "/ кэт /" },
+      { id: 12, eng: "dog", ru: "собака", hint: "/ дог /" },
+      { id: 13, eng: "cow", ru: "корова", hint: "/ кау /" },
+      { id: 14, eng: "duck", ru: "утка", hint: "/ дак /" },
+      { id: 15, eng: "pig", ru: "свинья", hint: "/ пиг /" },
+      { id: 16, eng: "horse", ru: "лошадь", hint: "/ хoрс /" },
+      { id: 17, eng: "fish", ru: "рыба", hint: "/ фиш /" },
+      { id: 18, eng: "bird", ru: "птица", hint: "/ бёрд /" },
+      { id: 19, eng: "rabbit", ru: "кролик", hint: "/ рэбит /" },
+      { id: 20, eng: "bear", ru: "медведь", hint: "/ бэа /" },
+
+      // Транспорт
+      { id: 21, eng: "car", ru: "машина", hint: "/ кар /" },
+      { id: 22, eng: "bus", ru: "автобус", hint: "/ бас /" },
+      { id: 23, eng: "bicycle", ru: "велосипед", hint: "/ байсикл /" },
+      { id: 24, eng: "train", ru: "поезд", hint: "/ трейн /" },
+      { id: 25, eng: "plane", ru: "самолёт", hint: "/ плейн /" },
+      { id: 26, eng: "ship", ru: "корабль", hint: "/ шип /" },
+
+      // Профессии
+      { id: 27, eng: "doctor", ru: "врач", hint: "/ доктэ /" },
+      { id: 28, eng: "professor", ru: "профессор", hint: "/ профЭссор /" },
+      { id: 29, eng: "driver", ru: "водитель", hint: "/ драйвэ /" },
+      { id: 30, eng: "police", ru: "полиция", hint: "/ полИс /" },
+      { id: 31, eng: "student", ru: "студент", hint: "/ стьЮдэнт /" },
+
+      // Еда
+      { id: 32, eng: "pineapple", ru: "ананас", hint: "/ пайн эпл /" },
+      { id: 33, eng: "banana", ru: "банан", hint: "/ бэ'нана /" },
+      { id: 34, eng: "carrot", ru: "морковь", hint: "/ кэрэт /" },
+      { id: 35, eng: "bread", ru: "хлеб", hint: "/ бред /" },
+      { id: 36, eng: "milk", ru: "молоко", hint: "/ милк /" },
+      { id: 37, eng: "cheese", ru: "сыр", hint: "/ чиз /" },
+      { id: 38, eng: "eggs", ru: "яйца", hint: "/ эгз /" },
+      { id: 38, eng: "pizza", ru: "пицца", hint: "/ пицца /" },
+
+      { id: 39, eng: "cucumber", ru: "огурец", hint: "/ кьЮкамбэ /" },
+
+      // Школьные принадлежности
+      { id: 40, eng: "book", ru: "книга", hint: "/ бук /" },
+      { id: 41, eng: "pen", ru: "ручка", hint: "/ пэн /" },
+      { id: 42, eng: "pencil", ru: "карандаш", hint: "/ пэнсил /" },
+      { id: 43, eng: "bag", ru: "сумка", hint: "/ бэг /" },
+      { id: 44, eng: "ruler", ru: "линейка", hint: "/ рулэ /" },
+      { id: 45, eng: "eraser", ru: "ластик", hint: "/ ирэйзэ /" },
+      { id: 46, eng: "notebook", ru: "тетрадь", hint: "/ ноутбук /" },
+      { id: 47, eng: "chair", ru: "стул", hint: "/ чэа /" },
+      { id: 47, eng: "phone", ru: "телефон", hint: "/ фОун /" },
+      { id: 47, eng: "Android", ru: "андроид", hint: "/ Эндроид /" },
+
+      // Прилагательные (внешность)
+      { id: 48, eng: "beautiful", ru: "красивая" },
+      { id: 49, eng: "handsome", ru: "красивый" },
+      { id: 50, eng: "tall", ru: "высокий" },
+      { id: 51, eng: "short", ru: "низкий" },
+      { id: 52, eng: "hungry", ru: "голодный" },
+      { id: 52, eng: "angry", ru: "злой" },
+      { id: 52, eng: "disgusting", ru: "отвратительный" },
+
+      // Части тела
+      { id: 53, eng: "head", ru: "голова" },
+      { id: 54, eng: "nose", ru: "нос" },
+      { id: 55, eng: "eyes", ru: "глаза" },
+      { id: 56, eng: "fingers", ru: "пальцы" },
+      { id: 56, eng: "shoulders", ru: "плечи" },
+      { id: 56, eng: "lips", ru: "губы" },
+      { id: 56, eng: "legs", ru: "ноги" },
+      { id: 56, eng: "hands", ru: "кисти рук" },
+
+      // Дни недели
+      { id: 57, eng: "Monday", ru: "понедельник", hint: "/ мАндэй /" },
+      { id: 58, eng: "Tuesday", ru: "вторник", hint: "/ тьЮздэй /" },
+      { id: 59, eng: "Wednesday", ru: "среда", hint: "/ уЭнздэй /" },
+      { id: 60, eng: "Thursday", ru: "четверг", hint: "/ THЁздэй /" },
+      { id: 61, eng: "Friday", ru: "пятница", hint: "/ фрАйдэй /" },
+      { id: 62, eng: "Saturday", ru: "суббота", hint: "/ сАтэдэй /" },
+      { id: 63, eng: "Sunday", ru: "воскресенье", hint: "/ сАндэй /" },
+
+      // Месяцы
+      { id: 64, eng: "January", ru: "январь", hint: "/ джЭньюэри /" },
+      { id: 65, eng: "February", ru: "февраль", hint: "/ фЭбруэри /" },
+      { id: 66, eng: "March", ru: "март", hint: "/ марч /" },
+      { id: 67, eng: "April", ru: "апрель", hint: "/ Эйприл /" },
+      { id: 68, eng: "May", ru: "май", hint: "/ мэй /" },
+      { id: 69, eng: "June", ru: "июнь", hint: "/ джун /" },
+      { id: 70, eng: "July", ru: "июль", hint: "/ джуЛай /" },
+      { id: 71, eng: "August", ru: "август", hint: "/ Огэст /" },
+      { id: 72, eng: "September", ru: "сентябрь", hint: "/ сэптЭмбэ /" },
+      { id: 73, eng: "October", ru: "октябрь", hint: "/ октОубэ /" },
+      { id: 74, eng: "November", ru: "ноябрь", hint: "/ новЭмбэ /" },
+      { id: 75, eng: "December", ru: "декабрь", hint: "/ дисЭмбэ /" },
+
+      { id: 76, eng: "Cigarette", ru: "сигарета"},
+      { id: 76, eng: "Electric scooter", ru: "электросамокат"},
+      { id: 76, eng: "Internet", ru: "интернет"},
+      { id: 76, eng: "Vincent", ru: "вИнсент"},
+
+    ],
+
+  devModeNumbers: [
         { id: 1, eng: "one", ru: "один" },
         { id: 2, eng: "two", ru: "два" },
         { id: 3, eng: "three", ru: "три" },
