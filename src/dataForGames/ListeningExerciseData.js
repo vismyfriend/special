@@ -2,8 +2,8 @@ export default {
   mainDescription: "B1 listening 1",
   tasks: [
     {
-      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskDescription: "Послушайте и ответьте True или False.",
+      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskID: "true_false",
       taskPicture: null,
       textScript: null,
@@ -35,8 +35,8 @@ export default {
       ]
     },
     {
-      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskDescription: "Listen to this audio",
+      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskID: "multiple_choice",
       taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
       textScript: '1)\n' +
@@ -175,8 +175,8 @@ export default {
       ]
     },
     {
-      audio: new URL('../assets/audio/traffic_2.mp3', import.meta.url).href,
       taskDescription: "People are describing (описывают) traffic problems in their cities and different solutions (решения). What did each city do? ",
+      audio: new URL('../assets/audio/traffic_2.mp3', import.meta.url).href,
       taskID: "multiple_choice",
       taskPicture: null,
       textScript: '1)\n' +

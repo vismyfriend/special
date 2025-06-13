@@ -5,7 +5,11 @@
       <p class="main-description">for s.p.e.c.i.a.l. agents</p>
     </div>
 
-    <div v-for="(task, index) in exerciseData.tasks" :key="index" class="task-container">
+    <div v-for="(task, index) in exerciseData.tasks"
+         :key="index"
+         class="task-container"
+         :style="{ backgroundColor: rainbowColors[index % 7] }"
+    >
       <h3 class="task-title">{{ task.taskDescription }}</h3>
 
       <!-- Добавлено отображение картинки, если она есть -->
@@ -67,7 +71,10 @@
               v-for="(label, key) in q.options"
               :key="key"
               class="option-label"
-              :class="getOptionClass(index, qi, key, q.correctAnswer)"
+              :class="[
+  getOptionClass(index, qi, key, q.correctAnswer),
+  answers[index][qi] === key && !checkedTasks[index] ? 'option-selected' : ''
+]"
             >
               <input
                 type="radio"
@@ -83,23 +90,23 @@
         </div>
       </div>
 
-      <div class="check-button-container">
-        <!-- Text Script toggle -->
-        <div v-if="task.textScript" class="text-script-container">
+
+      <!-- Блок с кнопкой -->
+      <div class="check-script-wrapper">
+        <button class="check-button" @click="checkAnswers(index)">
+          Проверить
+        </button>
+        <!-- Блок с текстом скрипта (не влияет на кнопку) -->
+
+        <div v-if="task.textScript" class="script-toggle-wrapper">
           <button class="toggle-script-btn" @click="toggleScript(index)">
             {{ expandedScriptIndex === index ? 'Скрыть текст' : 'Показать текст аудио' }}
           </button>
-          <div v-if="expandedScriptIndex === index" class="text-script-content">
-            <p>{{ task.textScript }}</p>
-          </div>
         </div>
-        <button
-          class="check-button"
-          @click="checkAnswers(index)"
-        >
-          Проверить
-        </button>
+      </div>
 
+      <div v-if="expandedScriptIndex === index" class="text-script-content">
+        <p>{{ task.textScript }}</p>
       </div>
 
     </div>
@@ -157,6 +164,16 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
   }
   return ''
 }
+
+const rainbowColors = [
+  '#cff0ff', // 1 - светло-голубой
+  '#e0c0ff', // 2 - светло-фиолетовый
+  '#ffc0cb', // 3 - розовый
+  '#ffd700', // 4 - золотой
+  '#98fb98', // 5 - светло-зеленый
+  '#ffa07a', // 6 - светло-оранжевый
+  '#ff6347'  // 7 - красный
+];
 </script>
 
 <style scoped>
@@ -189,7 +206,6 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 /* Task styles */
 .task-container {
   padding: 5px;
-  background-color: #cff0ff; /* Светло-голубой фон */
   border-radius: 1rem;
   margin-bottom: 0.5rem;
 }
@@ -350,7 +366,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .option-label:hover {
-  background-color: #f3f4f6;
+  background-color: #ceced1;
 }
 
 .option-input {
@@ -388,13 +404,14 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .option-correct-not-selected {
-  background-color: #ecfdf5;
+  background-color: rgba(236, 253, 245, 0);
+
 }
 
 .option-correct-not-selected .option-input {
   border-color: #10b981;
   background-color: #10b981;
-  opacity: 0.3;
+  opacity: 0;
 }
 
 .option-incorrect-selected {
@@ -426,6 +443,7 @@ input[type="radio"]:checked + .radio-custom::after {
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
 
 }
 
@@ -466,8 +484,9 @@ input[type="radio"]:checked + .radio-custom::after {
   background-color: #d97706;
 }
 
+
 .text-script-content {
-  margin-top: 8px;
+  margin-top: 10px;
   padding: 10px;
   background-color: #fefce8;
   border-left: 4px solid #facc15;
@@ -475,5 +494,28 @@ input[type="radio"]:checked + .radio-custom::after {
   white-space: pre-line;
   font-size: 1rem;
   color: #1f2937;
+}
+
+.check-script-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Чтобы на мобильных не ломалось */
+  margin-top: 10px;
+}
+
+.script-toggle-wrapper {
+  display: flex;
+  align-items: center;
+}
+/* Новый стиль для выбранного, но еще не проверенного варианта */
+.option-selected {
+  background-color: rgba(162, 195, 251, 0.87); /* Светло-серый */
+}
+
+.option-selected .option-input {
+  border-color: #6b7280;
+  background-color: #6b7280;
 }
 </style>
