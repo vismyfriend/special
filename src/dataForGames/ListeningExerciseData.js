@@ -1,41 +1,41 @@
 export default {
-  mainDescription: "B1 listening 1",
+  mainDescription: "Level B1 ",
   tasks: [
     {
-      taskDescription: "Послушайте и ответьте True или False.",
+      taskDescription: "Послушайте и ответьте",
       audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskID: "true_false",
       taskPicture: null,
       textScript: null,
       questions: [
         {
-          text: "There is a big hockey match today.",
+          text: "1. The city has a big hockey game today.",
           correctAnswer: "false"
         },
         {
-          text: "There is a traffic jam on the freeway.",
+          text: "2. There is a traffic jam (пробка) on the road.",
           correctAnswer: "true"
         },
         {
-          text: "Taxis usually don’t come very quickly.",
+          text: "3. Taxi usually doesn’t come very quickly.",
           correctAnswer: "false"
         },
         {
-          text: "Kevin lives close to Harry.",
+          text: "4. Kevin lives close to Harry.",
           correctAnswer: "true"
         },
         {
-          text: "The traffic is backing up because a traffic light is broken.",
+          text: "5. The traffic is slow because a traffic light is broken.",
           correctAnswer: "true"
         },
         {
-          text: "The weather is not so good.",
+          text: "6. The weather is not so good.",
           correctAnswer: "false"
         },
       ]
     },
     {
-      taskDescription: "Listen to this audio",
+      taskDescription: "Listen and answer",
       audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
       taskID: "multiple_choice",
       taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
@@ -111,18 +111,18 @@ export default {
 
       questions: [
         {
-          text: "Как мужчина доберется туда?",
+          text: "Как Vincent доберется до спэшл места?",
           options: {
-            A: "Vincent will drive him",
+            A: "Я вообще ХЗ",
             B: "by car",
             C: "on foot",
             D: "by bicycle",
             E: "by bus"
           },
-          correctAnswer: "A"
+          correctAnswer: "B"
         },
         {
-          text: "Каким способом добраться быстрее?",
+          text: "Каким способом сегодня быстрее?",
           options: {
             A: "by subway",
             B: "by taxi",
@@ -175,7 +175,7 @@ export default {
       ]
     },
     {
-      taskDescription: "People are describing (описывают) traffic problems in their cities and different solutions (решения). What did each city do? ",
+      taskDescription: "People are describing (описывают) traffic problems in their cities and different solutions (решения).",
       audio: new URL('../assets/audio/traffic_2.mp3', import.meta.url).href,
       taskID: "multiple_choice",
       taskPicture: null,
@@ -231,6 +231,26 @@ export default {
           },
           correctAnswer: "C"
         },
+
+      ]
+    },
+    {
+      taskDescription: "Если видите ошибки/опечатки или несогласны с результатом, то сдеайте скриншот и отправьте в телеграм #vismyfriend",
+      audio: null,
+      taskID: "multiple_choice",
+      taskPicture: null,
+      textScript: null,
+      questions: [
+        {
+          text: "Как вам эти задания?",
+          options: {
+            A: "Мне кажется это провал...",
+            B: "I am stupid!",
+            C: "Thank you, it was awesome! Ещё хочу"
+          },
+          correctAnswer: "C"
+        },
+
 
       ]
     },

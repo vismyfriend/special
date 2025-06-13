@@ -2,7 +2,7 @@
   <div v-if="exerciseData" class="exercise-container">
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
-      <p class="main-description">for s.p.e.c.i.a.l. agents</p>
+      <p class="main-description">Listening tasks for S.P.E.C.i.A.L. agents</p>
     </div>
 
     <div v-for="(task, index) in exerciseData.tasks"
@@ -17,7 +17,13 @@
         <img :src="task.taskPicture" :alt="'Image for task ' + (index + 1)" class="task-image">
       </div>
 
-      <audio controls class="audio-player">
+      <audio
+        v-if="task.audio"
+        controls
+        class="audio-player"
+        controlsList="nodownload"
+        oncontextmenu="return false;"
+      >
         <source :src="task.audio" type="audio/mp3" />
         Your browser does not support the audio element.
       </audio>
@@ -27,7 +33,7 @@
         <table class="true-false-table">
           <thead>
           <tr>
-            <th>(#vismyfriend text me if u find mistakes)</th>
+            <th>правда / ТРУ /  или / фОлс /  ложь :</th>
             <th class="true-header">True</th>
             <th class="false-header">False</th>
           </tr>
@@ -96,6 +102,16 @@
         <button class="check-button" @click="checkAnswers(index)">
           Проверить
         </button>
+
+        <div
+          class="score-display"
+          :class="[
+    { 'score-visible': checkedTasks[index] },
+    checkedTasks[index] ? getGrade(taskScores[index]).class : ''
+  ]"
+        >
+          {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}
+        </div>
         <!-- Блок с текстом скрипта (не влияет на кнопку) -->
 
         <div v-if="task.textScript" class="script-toggle-wrapper">
@@ -123,6 +139,16 @@ const checkedTasks = ref([])
 
 const expandedScriptIndex = ref(null)
 
+const getGrade = (percentage) => {
+  if (percentage === 100) return { letter: 'A+', class: 'grade-Aplus' };
+  if (percentage >= 85) return { letter: 'A', class: 'grade-A' };
+  if (percentage >= 75) return { letter: 'B+', class: 'grade-Bplus' };
+  if (percentage >= 60) return { letter: 'B-', class: 'grade-Bminus' };
+  if (percentage >= 40) return { letter: 'C', class: 'grade-C' };
+  if (percentage >= 20) return { letter: 'D', class: 'grade-D' };
+  if (percentage >= 10) return { letter: 'E', class: 'grade-E' };
+  return { letter: 'F', class: 'grade-F' };
+};
 const toggleScript = (index) => {
   expandedScriptIndex.value = expandedScriptIndex.value === index ? null : index
 }
@@ -133,11 +159,59 @@ onMounted(() => {
     Array(task.questions.length).fill(null)
   )
   checkedTasks.value = rawData.tasks.map(() => false)
+  // Защита от скачивания аудио
+  disableAudioDownload();
 })
 
+
+
+const disableAudioDownload = () => {
+  // 1. Блокировка контекстного меню
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.classList.contains('audio-player')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // 2. Блокировка горячих клавиш
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+    }
+  });
+};
+
 const checkAnswers = (taskIndex) => {
-  checkedTasks.value[taskIndex] = true
-}
+  checkedTasks.value[taskIndex] = true;
+
+  // Рассчитываем процент правильных ответов
+  const task = exerciseData.value.tasks[taskIndex];
+  let correctCount = 0;
+
+  task.questions.forEach((q, qi) => {
+    if (answers.value[taskIndex][qi] === q.correctAnswer) {
+      correctCount++;
+    }
+  });
+
+  const percentage = Math.round((correctCount / task.questions.length) * 100);
+  taskScores.value[taskIndex] = percentage;
+};
+
+
+
+const taskScores = ref([]); // Хранит проценты для каждого задания
+
+onMounted(() => {
+  exerciseData.value = rawData;
+  answers.value = rawData.tasks.map((task) =>
+    Array(task.questions.length).fill(null)
+  );
+  checkedTasks.value = rawData.tasks.map(() => false);
+  taskScores.value = rawData.tasks.map(() => null); // Инициализируем null вместо '?%'
+});
+
 
 const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => {
   if (!checkedTasks.value[taskIndex]) return '';
@@ -207,7 +281,7 @@ const rainbowColors = [
 .task-container {
   padding: 5px;
   border-radius: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .task-title {
@@ -291,12 +365,10 @@ input[type="radio"] {
   opacity: 0;
 }
 
-input[type="radio"]:checked + .radio-custom {
-  border-color: #3b82f6;
-}
+
 
 input[type="radio"]:checked + .radio-custom::after {
-  background-color: #3b82f6;
+  background-color: #5693f4;
 }
 
 /* ✅❌ Стили выбора ответов (True/False) */
@@ -308,15 +380,17 @@ input[type="radio"]:checked + .radio-custom::after {
 .radio-custom.correct-selected::after {
   background-color: #10b981;
 }
-
+/*
 .radio-custom.correct-not-selected {
   border-color: #10b981;
-}
+} */
 
+/*
 .radio-custom.correct-not-selected::after {
   background-color: #10b981;
-  opacity: 0.3; /* Затушенный зеленый */
+  opacity: 0.3;
 }
+*/
 
 .radio-custom.incorrect-selected {
   border-color: #ef4444;
@@ -517,5 +591,58 @@ input[type="radio"]:checked + .radio-custom::after {
 .option-selected .option-input {
   border-color: #6b7280;
   background-color: #6b7280;
+}
+
+/* Скрываем стандартную кнопку скачивания в некоторых браузерах */
+.audio-player::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
+.audio-player::-webkit-media-controls-panel {
+  -webkit-user-select: none;
+}
+
+.score-display {
+  font-size: 1rem;
+  color: #6b7280; /* Серый цвет для "?%" */
+  padding: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.score-visible {
+  color: #1f2937; /* Основной цвет для процентов */
+  font-weight: bold;
+  animation: fadeIn 0.5s ease;
+}
+
+.score-visible::after {
+  content: attr(data-grade);
+  color: #ef4444; /* Красный цвет для оценки */
+  margin-left: 2px;
+}
+
+/* Цветовые акценты для разных оценок */
+.grade-Aplus { color: #10b981 !important; } /* A+ - зеленый */
+.grade-A { color: #10b981 !important; }     /* A - зеленый */
+.grade-Bplus { color: #0e9e6f !important; } /* B+ - желтый */
+.grade-Bminus { color: #f97316 !important; }/* B- - желтый */
+.grade-C { color: #f97316 !important; }     /* C - оранжевый */
+.grade-D { color: #ef4444 !important; }     /* D - красный */
+.grade-E { color: #dc2626 !important; }     /* E - темно-красный */
+.grade-F { color: #991b1b !important; }     /* F - очень темно-красный */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .check-script-wrapper {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .score-display {
+    order: 1; /* Помещаем проценты между кнопками */
+  }
 }
 </style>
