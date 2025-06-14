@@ -79,9 +79,10 @@ const availableGames = ref([
     id: 2,
     name: "Listen",
     description: "слушай и наслаждайся",
-    route: "/listening-exercises",
+    route: "/see-all-sets-of-words/traffic1/listening-exercises",
     icon: "lilsteningIcon.png"
   },
+
   {
     id: 5,
     name: "Find pairs",

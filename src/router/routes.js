@@ -27,6 +27,10 @@ const routes = [
                 path: 'print-all-words',
                 component: () => import('src/components/PrintAllWords.vue')
               },
+              {
+                path: 'listening-exercises',
+                component: () => import('components/ListeningExercise.vue')
+              },
 
               {
                 path: 'find-pairs-hard',
@@ -96,10 +100,7 @@ const routes = [
           },
         ]
       },
-      {
-        path: '/listening-exercises',
-        component: () => import('components/ListeningExercise.vue')
-      },
+
       {
         path: '/main-page',
         component: () => import('src/pages/MainPage.vue')
@@ -107,6 +108,10 @@ const routes = [
       {
         path: '/a-new-page',
         component: () => import('src/pages/visAnewPage.vue')
+      },
+      {
+        path: '/create-special-set',
+        component: () => import('src/components/CreateSpecialSet.vue'),
       },
       {
         path: '/games',

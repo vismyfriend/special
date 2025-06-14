@@ -36,6 +36,7 @@ import scrambledData from 'src/dataForGames/scrambled-data';
 import homeworkLinksData from 'src/dataForGames/homework-links-data';
 import hwData from 'src/dataForGames/hw-data';
 import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
+import listeningExerciseData from "src/dataForGames/ListeningExerciseData";
 
 const text = "choose \nthe \ntask";
 const speed = 150; // Скорость печати (мс)
@@ -51,6 +52,13 @@ const AllGames = ref([
     name: "Print all words",
     path: "print-all-words",
     gameData: shortWordsData,
+    active: true,
+  },
+  {
+    id: 180,
+    name: "Test",
+    path: "listening-exercises",
+    gameData: listeningExerciseData,
     active: true,
   },
   {

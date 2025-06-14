@@ -1,0 +1,1 @@
+import{E as t}from"./index.9c857392.js";const m=t("game",{state:()=>({lastGameResults:null,agentName:null,gameName:null}),actions:{setLastGameResults(e,a){this.lastGameResults={time:e,mistakes:a}},setAgentName(e){this.agentName=e},setGameName(e){this.gameName=e}}});export{m as u};

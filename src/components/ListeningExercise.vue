@@ -89,7 +89,7 @@
                 v-model="answers[index][qi]"
                 class="option-input"
               />
-              <span class="option-text">{{ key }}: {{ label }}</span>
+              <span class="option-text">{{ key }} : {{ label }}</span>
             </label>
           </div>
 
@@ -100,7 +100,7 @@
       <!-- Блок с кнопкой -->
       <div class="check-script-wrapper">
         <button class="check-button" @click="checkAnswers(index)">
-          Проверить
+          Проверить - check
         </button>
 
         <div
@@ -131,13 +131,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import rawData from '../dataForGames/ListeningExerciseData'
+import { useRoute } from 'vue-router'
+import ListeningExerciseData from '../dataForGames/ListeningExerciseData' // Импортируем данные
 
+const route = useRoute()
 const exerciseData = ref(null)
 const answers = ref([])
 const checkedTasks = ref([])
-
 const expandedScriptIndex = ref(null)
+const taskScores = ref([]); // Хранит проценты для каждого задания
+const currentMission = ref('')
 
 const getGrade = (percentage) => {
   if (percentage === 100) return { letter: 'A+', class: 'grade-Aplus' };
@@ -154,13 +157,19 @@ const toggleScript = (index) => {
 }
 
 onMounted(() => {
-  exerciseData.value = rawData
-  answers.value = rawData.tasks.map((task) =>
-    Array(task.questions.length).fill(null)
-  )
-  checkedTasks.value = rawData.tasks.map(() => false)
+  currentMission.value = route.params.missionName
+  exerciseData.value = ListeningExerciseData[currentMission.value] || null
+
+  if (exerciseData.value) {
+    answers.value = exerciseData.value.tasks.map(task =>
+      Array(task.questions.length).fill(null)
+    )
+    checkedTasks.value = exerciseData.value.tasks.map(() => false)
+    taskScores.value = exerciseData.value.tasks.map(() => null)
+  }
   // Защита от скачивания аудио
-  disableAudioDownload();
+
+  disableAudioDownload()
 })
 
 
@@ -201,16 +210,7 @@ const checkAnswers = (taskIndex) => {
 
 
 
-const taskScores = ref([]); // Хранит проценты для каждого задания
 
-onMounted(() => {
-  exerciseData.value = rawData;
-  answers.value = rawData.tasks.map((task) =>
-    Array(task.questions.length).fill(null)
-  );
-  checkedTasks.value = rawData.tasks.map(() => false);
-  taskScores.value = rawData.tasks.map(() => null); // Инициализируем null вместо '?%'
-});
 
 
 const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => {
@@ -334,7 +334,7 @@ const rainbowColors = [
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: none;
 }
 
 .radio-custom {
@@ -433,7 +433,7 @@ input[type="radio"]:checked + .radio-custom::after {
   align-items: center;
   gap: 0.75rem;
   border-radius: 0.5rem;
-  cursor: pointer;
+  cursor: none;
   line-height: 15px;
 
   transition: all 0.2s;
@@ -452,7 +452,7 @@ input[type="radio"]:checked + .radio-custom::after {
   -webkit-appearance: none;
   outline: none;
   transition: all 0.2s;
-  cursor: pointer;
+  cursor: none;
 }
 
 .option-input:checked {
@@ -463,8 +463,16 @@ input[type="radio"]:checked + .radio-custom::after {
 .option-text {
   flex: 1;
   padding: 2px;
+  background: rgba(240, 248, 255, 0.52);
+  border-radius: 15px;
 }
 
+/* Новый стиль для буквы варианта */
+.option-text::first-letter {
+  font-weight: 750; /*  жирный */
+  color: #1f2937; /* Темный цвет для лучшей читаемости */
+  font-style: italic;
+}
 /* Option states */
 
 .option-correct-selected {
@@ -514,7 +522,7 @@ input[type="radio"]:checked + .radio-custom::after {
   font-weight: 500;
   border-radius: 0.5rem;
   border: none;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.2s;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
@@ -537,7 +545,17 @@ input[type="radio"]:checked + .radio-custom::after {
   max-height: 300px;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  /* Эффект "виньетки" - затемнение краев
+  mask-image: radial-gradient(
+
+    circle at center,
+    white 0%,
+    white 70%,
+    transparent 100%
+  );  */
 }
+
 .text-script-container {
   margin-top: 10px;
   text-align: left;
@@ -550,7 +568,7 @@ input[type="radio"]:checked + .radio-custom::after {
   font-weight: 500;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: none;
   transition: background-color 0.2s;
 }
 

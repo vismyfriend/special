@@ -18,6 +18,23 @@
 
         <!-- Используем filteredSets для отображения карточек -->
         <div class="v-cards-choose">
+          <!-- Специальная карточка (всегда первая) -->
+          <div
+            class="v-card-choose tooltip-wrapper create-special-set"
+            role="button"
+            @click="showSpecialCardAlert"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Создать свой S.P.E.C.I.A.L. набор
+            <div class="custom-tooltip">
+              Click to see special content
+            </div>
+          </div>
+
+          <!-- Остальные карточки из наборов -->
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets"
@@ -53,6 +70,9 @@ const searchQuery = ref('');
 const router = useRouter()
 const $q = useQuasar()
 
+const showSpecialCardAlert = () => {
+  alert('This is a special card! We can add any functionality here later.');
+};
 
 const AllSetsOfWords = ref([
   {
@@ -62,6 +82,7 @@ const AllSetsOfWords = ref([
     id: 1,
     active: true
   },
+
   {
     missionName: "alphabetData",
     missionVisibleName: "Alphabet",
@@ -88,6 +109,13 @@ const AllSetsOfWords = ref([
     missionVisibleName: "Question words 3",
     missionDescription: "Вопросительные слова 3",
     id: 7,
+    active: true
+  },
+  {
+    missionName: "traffic1",
+    missionVisibleName: "Дорожная ситуация",
+    missionDescription: "Road traffic",
+    id: 1,
     active: true
   },
   {
@@ -601,5 +629,63 @@ onMounted(() => {
 
 .tooltip-wrapper:hover .custom-tooltip {
   opacity: 1;
+}
+
+
+
+.create-special-set {
+  position: relative; /* для псевдоэлемента */
+  overflow: hidden;
+  margin: 1.5px;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(to top, #007BFF, #339CFF);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  cursor: none;
+  //font-size: 16px;
+}
+
+.create-special-set::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;  /* стартуем слева за пределами */
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: -75%;
+  }
+}
+
+.create-special-set:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.create-special-set:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4);
 }
 </style>
