@@ -27,7 +27,7 @@ const setNotify = (message, color = 'red') => {
 onMounted(async ()=>{
   const res = await api.backEndTest.health()
   if (res.status !== 200) {
-    setNotify('Ой ой, у нас ошибка бэкэндИны. Отправь скриншот совему учителю')
+    setNotify('Ой ой, у нас ошибка бэкэндИны. Отправь скриншот советскому учителю')
   }
   // console.log(res)
 })

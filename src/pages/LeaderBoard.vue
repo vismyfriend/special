@@ -1,6 +1,9 @@
 <template>
   <div class="result">
-    <p>Поздравляем! Special Agent <br> {{ gameStore.$state.agentName }} вошел в историю!</p>
+    <p>Поздравляем! Special Agent
+      <br> {{ gameStore.$state.agentName }} вошел в историю!
+      <br> набор слов {{ wordSetNameSearch(gameStore.$state.wordSet) }}
+      <br> игра {{ gameStore.$state.gameName }} </p>
 
     <!-- Здесь выводим результаты времени -->
     <p>сделай скриншот и похвастайся тичеру!</p>
@@ -69,10 +72,19 @@ import {onMounted, ref, computed} from "vue";
 import {api} from "src/api";
 import {useGameStore} from "stores/example-store";
 import { useRouter } from 'vue-router'
+import { allSetsOfWordsList, AllGames } from "src/dataForGames/allSetsOfWordsList";
+
 const router = useRouter()
 const goToMain = () => {
   router.push("/see-all-sets-of-words/")
 }
+const wordSetNameSearch = (name) => {
+  let currentWordSet = allSetsOfWordsList.find(word => word.missionName === name)
+  return currentWordSet.missionDescription
+}
+
+
+
 
 const tryAgain = () => {
   router.go(-1) // Возврат на предыдущую страницу
@@ -112,7 +124,7 @@ const toggleExpand = () => {
 const fetchLeaderboard = async () => {
   try {
     const res = await api.scores.get(gameStore.gameName); // Запрос на получение данных с бэкенда
-    const response = res.data;
+    const response = res.data.filter(el => el.wordSet === gameStore.$state.wordSet);
     console.log(response);
 
     if (Array.isArray(response)) {
@@ -140,11 +152,16 @@ const formatResult = () => {
 
 
 const setLeaderBoard = async () => {
+  if (gameStore.$state.agentName === null) {
+    gameStore.setAgentName("Secret dude");
+  }
+
   const res = await api.scores.post(
     gameStore.$state.gameName,
     gameStore.$state.lastGameResults.time,
     gameStore.$state.lastGameResults.mistakes,
-    gameStore.$state.agentName
+    gameStore.$state.agentName,
+    gameStore.$state.wordSet,
   )
 }
 

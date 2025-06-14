@@ -161,6 +161,7 @@ const finishGame = () => {
   // Отправляем результаты в бэкенд
   gameStore.setLastGameResults(duration, mistakes);
   gameStore.setGameName("FindPairsEasy");
+  gameStore.setWordSet(currentGameData.value);
 
   router.push("/leader-board/");
 };
@@ -169,7 +170,6 @@ const finishGame = () => {
 onMounted(() => {
   currentMission.value = route.params.missionName;
   currentGameData.value = shortWordsData[currentMission.value] || [];
-
   // Перемешиваем данные один раз и выбираем 12 случайных
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
 

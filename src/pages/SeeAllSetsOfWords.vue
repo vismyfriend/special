@@ -62,6 +62,7 @@ import { useQuasar } from 'quasar';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
+import { allSetsOfWordsList } from "src/dataForGames/allSetsOfWordsList";
 
 const text = "choose \na \nset of words";
 const speed = 150; // Скорость печати (мс)
@@ -71,173 +72,10 @@ const router = useRouter()
 const $q = useQuasar()
 
 const showSpecialCardAlert = () => {
-  alert('This is a special card! We can add any functionality here later.');
+  router.push('/create-special-set');
 };
 
-const AllSetsOfWords = ref([
-  {
-    missionName: "digits",
-    missionVisibleName: "Digits /дИджитс/",
-    missionDescription: "Цифры",
-    id: 1,
-    active: true
-  },
-
-  {
-    missionName: "alphabetData",
-    missionVisibleName: "Alphabet",
-    missionDescription: "Алфавит",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "questionWords1",
-    missionVisibleName: "Question words 1",
-    missionDescription: "Вопросительные слова 1",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "questionWords2",
-    missionVisibleName: "Question words 2",
-    missionDescription: "Вопросительные слова 2",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "questionWords3",
-    missionVisibleName: "Question words 3",
-    missionDescription: "Вопросительные слова 3",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "traffic1",
-    missionVisibleName: "Дорожная ситуация",
-    missionDescription: "Road traffic",
-    id: 1,
-    active: true
-  },
-  {
-    missionName: "questionWordsAll",
-    missionVisibleName: "All question words",
-    missionDescription: "Все вопросительные слова",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "popularIrregularVerbs",
-    missionVisibleName: "30-ty Naughty Verbs",
-    missionDescription: "30 капризных глаголов",
-    id: 7,
-    active: true
-  },
-  {
-    missionName: "clothes",
-    missionVisibleName: "Clothes and stuff",
-    missionDescription: "Одежда и все такое",
-    id: 7,
-    active: true
-  },
-  // {
-  //   missionName: "SillyMistakesPart1",
-  //   missionVisibleName: "Silly mistakes - Часть 1",
-  //   missionDescription: "Глупые ошибки - Part 1",
-  //   id: 6,
-  //   active: true
-  // },
-  {
-    missionName: "devModeNumbersFast",
-    missionVisibleName: "devModeNumbersFast",
-    missionDescription: "протестировать быстро",
-    id: 15,
-    active: true
-  },
-  // {
-  //   missionName: "halloween01",
-  //   missionVisibleName: "halloween01",
-  //   missionDescription: "Halloween 1",
-  //   id: 1,
-  //   active: true
-  // },
-  // {
-  //   missionName: "carNumbers",
-  //   missionVisibleName: "car-numbers",
-  //   missionDescription: "car numbers",
-  //   id: 2,
-  //   active: false
-  // },
-  // {
-  //   missionName: "devmode0",
-  //   missionVisibleName: "devmode0",
-  //   missionDescription: "boys' names",
-  //   id: 3,
-  //   active: true
-  // },
-  // {
-  //   missionName: "abcde",
-  //   missionVisibleName: "abcde",
-  //   missionDescription: "bukvas",
-  //   id: 4,
-  //   active: true
-  // },
-  // {
-  //   missionName: "storyOne",
-  //   missionVisibleName: "story-one",
-  //   missionDescription: "story number one",
-  //   id: 5,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion1",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "новый набор слов и выражений",
-  //   id: 8,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion2",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "новый набор слов и выражений",
-  //   id: 9,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion3",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "новый набор слов и выражений",
-  //   id: 10,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion4",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "новый набор слов и выражений",
-  //   id: 11,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion5",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "новый набор слов и выражений",
-  //   id: 12,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion6",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "more words",
-  //   id: 13,
-  //   active: true
-  // },
-  // {
-  //   missionName: "missssssion7",
-  //   missionVisibleName: "missssssion",
-  //   missionDescription: "so many words...",
-  //   id: 14,
-  //   active: true
-  // }
-])
+const AllSetsOfWords = ref(allSetsOfWordsList)
 
 // Функция для нормализации строки поиска
 const normalizeString = (str) => {

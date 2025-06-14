@@ -367,6 +367,9 @@ const finishGame = () => {
   const duration = Date.now() - startTime;
   gameStore.setLastGameResults(duration, mistakes);
   gameStore.setGameName("FindPairsEasy");
+  gameStore.setWordSet(currentMission.value);
+
+
   router.push("/leader-board/");
 };
 
@@ -375,6 +378,7 @@ let startTime = null;
 onMounted(() => {
   currentMission.value = route.params.missionName;
   currentGameData.value = shortWordsData[currentMission.value] || [];
+  console.log(currentMission.value);
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
   initialTotalQuestions.value = shuffledData.length; // например, 12
   totalQuestions.value = initialTotalQuestions.value; // инициализируем totalQuestions

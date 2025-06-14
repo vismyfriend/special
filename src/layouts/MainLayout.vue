@@ -113,6 +113,7 @@ defineExpose({ audio });
     max-width: 450px;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 }
 

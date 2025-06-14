@@ -5,6 +5,7 @@ export const useGameStore = defineStore('game', {
     lastGameResults: null,
     agentName: null,
     gameName: null,
+    wordSet: null,
 
   }),
   actions: {
@@ -16,6 +17,9 @@ export const useGameStore = defineStore('game', {
     },
     setGameName(gameName) {
       this.gameName = gameName
+    },
+    setWordSet(wordSet) {
+      this.wordSet = wordSet
     },
   }
 });

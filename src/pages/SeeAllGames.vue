@@ -38,6 +38,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
+import { AllGames } from "src/dataForGames/allSetsOfWordsList";
 
 const text = "test all\ngames";
 const speed = 150;
@@ -60,92 +61,7 @@ const getImagePath = (iconName) => {
   return new URL(`../assets/images/${iconName}`, import.meta.url).href;
 };
 
-const availableGames = ref([
-  {
-    id: 4,
-    name: "Cut wires",
-    description: "Перережь нужный провод",
-    route: "/see-all-sets-of-words/introSetCutWires/find-pairs-easy",
-    icon: "wiresPic.png"
-  },
-  {
-    id: 1,
-    name: "Alias",
-    description: "Объясни слово",
-    route: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
-    icon: "cards.png"
-  },
-  {
-    id: 2,
-    name: "Listen",
-    description: "слушай и наслаждайся",
-    route: "/see-all-sets-of-words/traffic1/listening-exercises",
-    icon: "lilsteningIcon.png"
-  },
-
-  {
-    id: 5,
-    name: "Find pairs",
-    description: "Найди пары слов",
-    route: "/see-all-sets-of-words/introSetFindPairsHard/find-pairs-hard",
-    icon: "game4icon.png"
-  },
-  {
-    id: 1,
-    name: "Translate",
-    description: "Переведи вслух",
-    route: "/see-all-sets-of-words/a1words/game-translate",
-    icon: "game6icon.png"
-  },
-  {
-    id: 3,
-    name: "Skeleton",
-    description: "Тпрогулки со скелетом",
-    externalUrl: "https://vismyfriend.itch.io/clicker-test",  // <- внешняя ссылка
-    icon: "game3icon.png"
-  },
-  {
-    id: 5,
-    name: "Spell it",
-    description: "Произнеси по буквам",
-    route: "/see-all-sets-of-words/introSetSpellThis/spelling",
-    icon: "game5icon.png"
-  },
-
-  {
-    id: 2,
-    name: "Тапалка",
-    description: "успевай читать слова вслух",
-    route: "/",
-    icon: "ButtonGreenLady.png"
-  },
-  {
-    id: 1,
-    name: "coming soon",
-    description: "проблемы с поворотами",
-    route: "/see-all-sets-of-words/explain/explain-the-word",
-    icon: null
-  },
-
-
-
-
-
-  // {
-  //   id: 5,
-  //   name: "Word Puzzle",
-  //   description: "Собери слово из букв",
-  //   route: "/word-puzzle",
-  //   icon: "game5icon.png"
-  // },
-  // {
-  //   id: 6,
-  //   name: "Listening",
-  //   description: "Тренировка аудирования",
-  //   route: "/listening",
-  //   icon: "game6icon.png"
-  // }
-]);
+const availableGames = ref(AllGames);
 
 const goToGameSelection = (game) => {
   if (game.externalUrl) {

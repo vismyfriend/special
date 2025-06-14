@@ -93,9 +93,9 @@ const hideInstructions = () => {
     border-radius: 50px;
   }
 .infoButton {
-    position: fixed;
+    position: absolute;
     top: 20px;
-    right: 0;
+    right: -50px;
     width: 50px; // Установите ширину кнопки
     height: 50px; // Установите высоту кнопки
     background-image: url('../assets/images/ApyGlassEmoji2.png'); // Укажите путь к вашему изображению
