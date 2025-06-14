@@ -8,6 +8,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {api} from "src/api";
+import { useQuasar } from "quasar";
 
 const token = ref()
 
@@ -15,6 +16,7 @@ defineOptions({
   name: 'App'
 })
 
+const $q = useQuasar()
 const setNotify = (message, color = 'red') => {
   $q.notify({
     color: color,
