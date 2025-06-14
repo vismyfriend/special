@@ -13,13 +13,23 @@ const token = ref()
 
 defineOptions({
   name: 'App'
-});
+})
+
+const setNotify = (message, color = 'red') => {
+  $q.notify({
+    color: color,
+    position: 'top',
+    message: message,
+    textColor: 'white',
+  })
+}
+
 onMounted(async ()=>{
-  const res = await api.backEndTest.test()
-  const res2 = await api.backEndTest.health()
-  const res3 = await api.backEndTest.testDb()
-// token.value = res?.data?.token
-  console.log(res,res2,res3)
+  const res = await api.backEndTest.health()
+  if (res.status !== 200) {
+    setNotify('Ой ой, у нас ошибка бэкэндИны. Отправь скриншот совему учителю')
+  }
+  // console.log(res)
 })
 
 
