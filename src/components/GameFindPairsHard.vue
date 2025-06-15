@@ -217,6 +217,7 @@ const finishGame = () => {
 
   gameStore.setLastGameResults(time.value, 20)
   gameStore.setGameName("FindPairsHard")
+  gameStore.setWordSet(currentMission.value);
   router.push("/leader-board/");
 
 };

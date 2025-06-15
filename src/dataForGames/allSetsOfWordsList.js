@@ -64,6 +64,19 @@ export const allSetsOfWordsList =
       id: 7,
       active: true
     },
+    {
+      missionName: "introSetCutWires",
+      missionVisibleName: "intro Set Cut Wires",
+      missionDescription: "Вопросительные слова intro",
+      id: 7,
+      active: false
+    }, {
+      missionName: "introSetFindPairsHard",
+      missionVisibleName: "introSetFindPairsHard",
+      missionDescription: "Вопросительные слова intro",
+      id: 7,
+      active: false
+    },
     // {
     //   missionName: "SillyMistakesPart1",
     //   missionVisibleName: "Silly mistakes - Часть 1",
