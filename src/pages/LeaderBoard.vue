@@ -239,6 +239,8 @@ const handleChangeName = () => {
 router.push("/registration");
 };
 const setLeaderBoard = async () => {
+
+
   if (!gameStore.$state.agentName) {
     const randomNames = [
       "Секретный парниша",
@@ -699,6 +701,7 @@ onMounted(async () => {
     text-transform: none;
     font-weight: normal;
     margin-left: 2px;
+    //display: none;
   }
 
   .you-badge {

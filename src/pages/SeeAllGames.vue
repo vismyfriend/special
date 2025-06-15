@@ -8,11 +8,19 @@
         <div class="q-pa-15">
           <img src="../assets/images/special logo detective girl.png" alt="logo">
           <div class="registrationContainer">
-            <button class="registrationBtn"   @click="goToRegistration"
-            >создать аккаунт спэшл эйджент и получить доступ ко всем наборам слов ? </button>
+            <button class="registrationBtn" @click="goToRegistration">
+              {{ registrationButtonText }}
+            </button>
             <div class="miniButtons">
-              <button class="btn-close" title="Отказаться" @click="onDecline">✕</button>
-              <button class="btn-accept" title="Согласен" @click="onAccept">✔</button>
+              <!-- Показываем разные кнопки в зависимости от наличия имени -->
+              <template v-if="hasName">
+                <button class="btn-switch-name" title="сменить имя" @click="onAccept"><></button>
+                <button class="btn-accept" title="Действие 2" @click="onQuestionClick">✔</button>
+              </template>
+              <template v-else>
+                <button class="btn-close" title="Отказаться" @click="onDecline">✕</button>
+                <button class="btn-accept" title="Согласен" @click="onAccept">✔</button>
+              </template>
             </div>
           </div>
           <div class="games-grid">
@@ -37,15 +45,55 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { AllGames } from "src/dataForGames/allSetsOfWordsList";
+import { api } from "src/api";
+
+
 
 const text = "test all\ngames";
 const speed = 150;
 const router = useRouter();
 
+// Проверяем, есть ли имя (и оно не 'nonameYet')
+const hasName = computed(() => {
+  const name = localStorage.getItem('agentName');
+  return name && name !== 'nonameYet';
+});
 
-const onAccept = () => {
+const registrationButtonText = computed(() => {
+  return hasName.value
+    ? `Привет ${localStorage.getItem('agentName')} если это не ты, нажми на стрелки, а если ты, то нажимай галку`
+    : 'Создать аккаунт спэшл эйджент и получить доступ ко всем наборам слов?';
+
+});
+
+
+// Обработчики для новых кнопок
+
+
+const onQuestionClick = async () => {
+  // Получаем сохраненное имя
+  const savedName = localStorage.getItem('agentName');
+
+  if (!savedName || savedName === 'nonameYet') {
+    console.error('Имя не найдено в localStorage');
+    return;
+
+  }
+
+
+  // Если токен уже есть, не запрашиваем его снова
+  if (!localStorage.getItem('token')) {
+    const res = await api.auth.post(savedName);
+    localStorage.setItem('token', res.data.token);
+  }
+
+  await router.push("/see-all-sets-of-words/");
+
+};
+
+  const onAccept = () => {
   // Переход на регистрацию
   goToRegistration();
 };
@@ -76,7 +124,13 @@ const goToRegistration = () => {
   router.push("/registration")
 };
 
+const userLocalStorageName = ref('');
+
+
 onMounted(() => {
+  userLocalStorageName.value = localStorage.getItem('agentName') || 'nonameYet';
+  console.log("Name in local storage : " + userLocalStorageName.value);
+
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
 
@@ -571,6 +625,10 @@ onMounted(() => {
 .btn-accept {
   background: linear-gradient(to bottom, #4CAF50, #2E7D32);
 }
+.btn-switch-name {
+  background: linear-gradient(to bottom, #FBBC05, #f9ab00);
+}
+
 </style>
 
 

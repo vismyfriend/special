@@ -203,6 +203,7 @@ onMounted(() => {
   /* Плавный переход при наведении */
   margin: 1.5px;
   user-select: none;
+  width: 100%;
 
 }
 

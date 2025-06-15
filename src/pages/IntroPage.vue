@@ -123,7 +123,8 @@ const dynamicMessage = computed(() => {
     и проверить правильно ли вы его произнесли<br>
     `;
   } else {
-    return `Разминка твоей памяти:<br><br>
+    return `Разминка твоей памяти и<br> <b>/ пронан си эйшн /</b> pronunciation :<br>
+<br><br>
     1) нажми "Tap here" ${remaining} times - раз(а)<br>
     2) <b>читай вслух</b> вылетающие слова<br>
     `;
@@ -262,11 +263,13 @@ const preventZoom = (e) => {
     e.stopPropagation();
   }
 };
+const userLocalStorageName = ref('');
 
 // Инициализация при монтировании
 onMounted(() => {
   loadCounter();
-
+  userLocalStorageName.value = localStorage.getItem('agentName') || 'nonameYet';
+console.log("Name in local storage : " + userLocalStorageName.value);
   const meta = document.createElement('meta');
   meta.name = 'viewport';
   meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
@@ -340,6 +343,8 @@ const handleTap = (e) => {
     button.classList.remove('text-shrink');
   }, 200);
 };
+
+
 </script>
 
 <style>
