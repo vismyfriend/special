@@ -48,7 +48,9 @@ import { useRouter } from 'vue-router';
 import { onMounted, ref, computed } from 'vue';
 import { AllGames } from "src/dataForGames/allSetsOfWordsList";
 import { api } from "src/api";
+import {useGameStore} from "stores/example-store";
 
+const gameStore = useGameStore();
 
 
 const text = "test all\ngames";
@@ -73,24 +75,26 @@ const registrationButtonText = computed(() => {
 
 
 const onQuestionClick = async () => {
-  // Получаем сохраненное имя
   const savedName = localStorage.getItem('agentName');
 
-  if (!savedName || savedName === 'nonameYet') {
+  if (!savedName) {
     console.error('Имя не найдено в localStorage');
     return;
-
   }
 
-
-  // Если токен уже есть, не запрашиваем его снова
+  // Проверяем токен
   if (!localStorage.getItem('token')) {
-    const res = await api.auth.post(savedName);
-    localStorage.setItem('token', res.data.token);
+    try {
+      const res = await api.auth.post(savedName);
+      localStorage.setItem('token', res.data.token);
+    } catch (error) {
+      console.error('Ошибка при получении токена:', error);
+    }
   }
 
+  // Убедимся, что имя установлено в хранилище
+  gameStore.setAgentName(savedName);
   await router.push("/see-all-sets-of-words/");
-
 };
 
   const onAccept = () => {

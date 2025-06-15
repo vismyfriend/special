@@ -153,31 +153,31 @@ const setNotify = (message, color = 'black') => {
 };
 
 const submitName = async () => {
-
-  // Валидация имени пользователя
   if (!userName.value || userName.value.trim() === "") {
     setNotify("Please enter a valid name!", 'red');
-    return; // Останавливаем выполнение, если имя пустое
+    return;
   }
 
-  setNotify(`Hello , ${userName.value}`);
+  // Проверяем, не пытается ли пользователь зарегистрировать то же имя
+  const savedName = localStorage.getItem('agentName');
+  if (savedName === userName.value) {
+    setNotify(`Welcome back, ${userName.value}!`);
+    await router.push("/see-all-sets-of-words/");
+    return;
+  }
 
-  setTimeout(() => {
-    setNotify(`Profile, ${userName.value}, is loading...`);
-  }, 2000); // Задержка 2 секунды
+  try {
+    const res = await api.auth.post(userName.value);
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('agentName', userName.value);
+    gameStore.setAgentName(userName.value);
 
-  setTimeout(() => {
-    setNotify(`I'm happy to see you`);
-
-  }, 500); // Задержка 0.5 секунды
-  await router.push("/see-all-sets-of-words/");
-
-
-  const res = await api.auth.post(userName.value);
-  localStorage.setItem('token', res.data.token);
-  localStorage.setItem('agentName', userName.value);
-  gameStore.setAgentName(userName.value);
-
+    setNotify(`Hello, ${userName.value}`);
+    await router.push("/see-all-sets-of-words/");
+  } catch (error) {
+    setNotify("Registration failed. Please try again.", 'red');
+    console.error('Registration error:', error);
+  }
 };
 
 

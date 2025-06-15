@@ -186,7 +186,7 @@ const generateUniqueId = () => {
 const visiblePlayers = computed(() => {
   return isExpanded.value
     ? topPlayers.value.slice(0, 100)
-    : topPlayers.value.slice(0, 7);
+    : topPlayers.value.slice(0, 30);
 });
 
 // Методы
@@ -238,10 +238,25 @@ const formatResult = () => {
 const handleChangeName = () => {
 router.push("/registration");
 };
-const setLeaderBoard = async () => {
 
 
-  if (!gameStore.$state.agentName) {
+
+
+// Проверка аутентификации при монтировании
+onMounted(async () => {
+
+
+  // Проверяем localStorage в первую очередь
+  const savedName = localStorage.getItem('agentName');
+  const savedToken = localStorage.getItem('token');
+
+  // Если есть сохраненное имя, но оно отличается от текущего в хранилище
+  if (savedName && savedName !== gameStore.$state.agentName) {
+    gameStore.setAgentName(savedName);
+  }
+
+  // Если нет имени вообще - генерируем случайное
+  if (!gameStore.$state.agentName && !savedName) {
     const randomNames = [
       "Секретный парниша",
       "Анонимный аноним",
@@ -261,22 +276,8 @@ const setLeaderBoard = async () => {
     gameStore.setAgentName(agentNameWithId);
     await fetchAndStoreToken(agentNameWithId);
   }
-
-  await api.scores.post(
-    gameStore.$state.gameName,
-    gameStore.$state.lastGameResults.time,
-    gameStore.$state.lastGameResults.mistakes,
-    gameStore.$state.agentName,
-    gameStore.$state.wordSet,
-  );
-};
-
-
-
-// Проверка аутентификации при монтировании
-onMounted(async () => {
   // Если есть имя агента, но нет токена, запрашиваем токен
-  if (gameStore.$state.agentName && !localStorage.getItem('token')) {
+  else if (gameStore.$state.agentName && !savedToken) {
     // Проверяем, есть ли уже ID в имени
     let agentName = gameStore.$state.agentName;
     if (!agentName.includes('(')) {
@@ -288,7 +289,15 @@ onMounted(async () => {
     await fetchAndStoreToken(agentName);
   }
 
-  await setLeaderBoard();
+  await api.scores.post(
+    gameStore.$state.gameName,
+    gameStore.$state.lastGameResults.time,
+    gameStore.$state.lastGameResults.mistakes,
+    gameStore.$state.agentName,
+    gameStore.$state.wordSet,
+  );
+
+
   await fetchLeaderboard();
   formatResult();
 });
@@ -602,7 +611,7 @@ onMounted(async () => {
   }
 
   .leaderboard {
-    max-height: 58vh;
+    max-height: 158vh;
     padding: 10px;
 
     table {
