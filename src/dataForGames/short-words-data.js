@@ -59,7 +59,7 @@ const shortWordsData = {
 
     // Специальные вопросительные фразы
     { id: 21, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
-    { id: 22, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 22, eng: "What about", ru: "что насчёт", hint: "/ уот эбаут /" },
     { id: 23, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
     { id: 24, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" },
     { id: 25, eng: "What for", ru: "для чего", hint: "/ уот фор /" },
@@ -116,7 +116,7 @@ const shortWordsData = {
     { id: 5, eng: "How often", ru: "как часто", hint: "/ хау офэн /" },
     { id: 6, eng: "How far", ru: "как далеко", hint: "/ хау фар /" },
     { id: 7, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
-    { id: 8, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 8, eng: "What about", ru: "что насчёт", hint: "/ уот эбаут /" },
     { id: 9, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
     { id: 10, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" }
   ],
@@ -155,7 +155,7 @@ const shortWordsData = {
 
     // Специальные вопросительные фразы
     { id: 21, eng: "How come", ru: "как так получилось", hint: "/ хау кам /" },
-    { id: 22, eng: "What about", ru: "как насчёт", hint: "/ уот эбаут /" },
+    { id: 22, eng: "What about", ru: "что насчёт", hint: "/ уот эбаут /" },
     { id: 23, eng: "What else", ru: "что ещё", hint: "/ уот элс /" },
     { id: 24, eng: "Why not", ru: "почему бы нет", hint: "/ уай нот /" },
     { id: 25, eng: "What for", ru: "для чего", hint: "/ уот фор /" },

@@ -1,14 +1,45 @@
 <template>
   <div class="result">
-    <p>Поздравляем! Special Agent
-      <br> {{ gameStore.$state.agentName }} вошел в историю!
-      <br> набор слов {{ wordSetNameSearch(gameStore.$state.wordSet) }}
-      <br> игра {{ gameStore.$state.gameName }} </p>
+    <!-- Блок с результатами игры -->
+    <div class="congratulations-container">
+      <h2 class="congratulations-title">Congratulations!</h2>
 
-    <!-- Здесь выводим результаты времени -->
-    <p>сделай скриншот и похвастайся тичеру!</p>
-    <!-- Таблица результатов -->
+      <div class="result-card">
 
+
+        <div class="result-row">
+          <span class="result-label">Время выполнения:</span>
+          <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
+        </div>
+
+        <div class="result-row">
+          <span class="result-label">Миссия:</span>
+          <span class="result-value">" {{ wordSetNameSearch(gameStore.$state.wordSet) }} "</span>
+        </div>
+
+        <div class="result-row">
+          <span class="result-label">Задание:</span>
+          <span class="result-value">" {{ gameStore.$state.gameName }} "</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Ваш никнейм:</span>
+          <div class="name-wrapper">
+            <span class="result-value agent-name">{{ gameStore.$state.agentName }}</span>
+            <button
+              v-if="showChangeNameButton"
+              @click="handleChangeName"
+              class="change-name-btn"
+            >
+              Сменить никнейм
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="share-message">Отправь скриншот тичеру, чтобы он гордился! 🎉</p>
+    </div>
+
+    <!-- Таблица лидеров -->
     <div v-if="topPlayers" class="leaderboard-wrapper">
       <div class="leaderboard-container">
         <div class="leaderboard">
@@ -22,20 +53,17 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Динамически генерируем 7 мест -->
             <tr
               v-for="(player, index) in visiblePlayers"
               :key="index"
               :class="{'highlight-row': yourPlace === index + 1}"
             >
-              <!-- выше динамический класс потому что есть логика-->
               <td>{{ index + 1 }}</td>
               <td>{{ player.agent }}</td>
               <td>{{ player.time }}</td>
               <td>{{ player.mistakes }}</td>
             </tr>
 
-            <!-- 8-е место для текущего игрока -->
             <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
               <td>{{yourPlace}}</td>
               <td>{{ gameStore.agentName }} (you)</td>
@@ -46,15 +74,12 @@
           </table>
         </div>
       </div>
+    </div>
 
-      </div>
+    <!-- Кнопки управления -->
     <div class="buttons-container">
-      <button class="close-btn" @click="goToMain">
-        X
-      </button>
-      <button class="try-again-btn" @click="tryAgain">
-        Try Again
-      </button>
+      <button class="close-btn" @click="goToMain">X</button>
+      <button class="try-again-btn" @click="tryAgain">Try Again</button>
       <button class="toggle-btn" @click="toggleExpand">
         {{ isExpanded ? 'Свернуть ▲' : 'Развернуть ▼' }}
       </button>
@@ -63,48 +88,23 @@
 </template>
 
 <script setup>
-
-
-
-
-// Массив с резервными данными если с Бэка не поддятулись результаты
-import {onMounted, ref, computed} from "vue";
-import {api} from "src/api";
-import {useGameStore} from "stores/example-store";
+import { onMounted, ref, computed } from "vue";
+import { api } from "src/api";
+import { useGameStore } from "stores/example-store";
 import { useRouter } from 'vue-router'
-import { allSetsOfWordsList, AllGames } from "src/dataForGames/allSetsOfWordsList";
+import { allSetsOfWordsList } from "src/dataForGames/allSetsOfWordsList";
 
-const router = useRouter()
-const goToMain = () => {
-  router.push("/see-all-sets-of-words/")
-}
-const wordSetNameSearch = (name) => {
-  let currentWordSet = allSetsOfWordsList.find(word => word.missionName === name)
-  return currentWordSet.missionDescription
-}
+const router = useRouter();
+const gameStore = useGameStore();
 
-
-
-
-const tryAgain = () => {
-  router.go(-1) // Возврат на предыдущую страницу
-}
-const gameStore = useGameStore()
-// topPlayers, который будет заполняться либо с бэкенда, либо запасными данными
+// Реактивные переменные
 const topPlayers = ref([]);
-// const topPlayers = ref();
-
-
 const yourPlace = ref();
 const isExpanded = ref(false);
+const showChangeNameButton = ref(gameStore.$state.agentName === null);
 
 
-const visiblePlayers = computed(() => {
-  return isExpanded.value
-    ? topPlayers.value.slice(0, 100)
-    : topPlayers.value.slice(0, 7);
-});
-
+// Запасные данные для таблицы лидеров
 const fallbackPlayers = [
   { agent: "TurboAgent", time: "2.00", mistakes: 0 },
   { agent: "FlashSpeed", time: "2.15", mistakes: 1 },
@@ -115,89 +115,185 @@ const fallbackPlayers = [
   { agent: "Monkey", time: "3.01", mistakes: 1 },
 ];
 
+// Вычисляемые свойства
+const visiblePlayers = computed(() => {
+  return isExpanded.value
+    ? topPlayers.value.slice(0, 100)
+    : topPlayers.value.slice(0, 7);
+});
 
-const toggleExpand = () => {
-  isExpanded.value = !isExpanded.value;
+// Методы
+const goToMain = () => router.push("/see-all-sets-of-words/");
+const tryAgain = () => router.go(-1);
+const toggleExpand = () => isExpanded.value = !isExpanded.value;
+
+const wordSetNameSearch = (name) => {
+  const currentWordSet = allSetsOfWordsList.find(word => word.missionName === name);
+  return currentWordSet?.missionDescription || name;
 };
 
-// Функция для загрузки таблицы победителей с сервера
 const fetchLeaderboard = async () => {
   try {
-    const res = await api.scores.get(gameStore.gameName); // Запрос на получение данных с бэкенда
+    const res = await api.scores.get(gameStore.gameName);
     const response = res.data.filter(el => el.wordSet === gameStore.$state.wordSet);
-    console.log(response);
 
-    if (Array.isArray(response)) {
-      topPlayers.value = response; // Обновляем массив игроков с сервера
-    } else {
-      console.warn("Полученные данные не являются массивом! использую запасные данные", response);
-      topPlayers.value = fallbackPlayers; // Используем запасные данные, если данные не массив
-    }
+    topPlayers.value = Array.isArray(response)
+      ? response
+      : fallbackPlayers;
   } catch (error) {
-    console.error("Ошибка при загрузке таблицы победителей, использую запасные данные", error);
-    topPlayers.value = fallbackPlayers; // Используем запасные данные в случае ошибки
+    console.error("Ошибка при загрузке таблицы победителей:", error);
+    topPlayers.value = fallbackPlayers;
   }
 };
 
 const formatResult = () => {
   topPlayers.value = topPlayers.value.sort((a, b) => a.time - b.time);
-  //смутируем (мутация массива)
-  topPlayers.value.forEach((player,index) => {
-    player.time = player.time / 1000
+
+  topPlayers.value.forEach((player, index) => {
+    player.time = player.time / 1000;
     if (player.agent === gameStore.$state.agentName) {
       yourPlace.value = index + 1;
     }
-  })
-}
+  });
+};
 
+
+const handleChangeName = () => {
+router.push("/registration");
+};
 
 const setLeaderBoard = async () => {
   if (gameStore.$state.agentName === null) {
-    gameStore.setAgentName("Secret dude");
+    const randomNames = [
+      "Секретный парниша",
+      "Анонимный аноним",
+      "Отчаянные домохозяйки",
+      "Агент 69",
+      "студент без имени",
+      "Patrick",
+      "Alex",
+      "NONAME",
+      "test",
+      "Professor of English"
+    ];
+    const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+    gameStore.setAgentName(randomName);
   }
 
-  const res = await api.scores.post(
+
+
+  await api.scores.post(
     gameStore.$state.gameName,
     gameStore.$state.lastGameResults.time,
     gameStore.$state.lastGameResults.mistakes,
     gameStore.$state.agentName,
     gameStore.$state.wordSet,
-  )
-}
+  );
+};
 
-
-
-onMounted( async () => {
+// Хук жизненного цикла
+onMounted(async () => {
   await setLeaderBoard();
   await fetchLeaderboard();
-  formatResult()
-})
-
+  formatResult();
+});
 </script>
 
 <style lang="scss" scoped>
-/* Таблица лидеров */
-
-/* Стили для финального блока с результатами */
 .result {
-  margin-top: 30px;
   padding: 20px 10px;
-  background: linear-gradient(145deg, #0870b5, #4096d3); /* Градиентный фон */
+  background: linear-gradient(145deg, #0870b5, #4096d3);
   color: white;
   border-radius: 15px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Тень для глубины */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-family: 'Arial', sans-serif;
+  line-height: 1.1;
 }
 
-.result p {
+.congratulations-container {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    transform: rotate(30deg);
+  }
+}
+
+.congratulations-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 10px 10px;
+  margin: 0 auto;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.result-label {
+  font-weight: 600;
+  opacity: 0.8;
+  font-size: 16px;
+}
+
+.result-value {
+  font-weight: 700;
   font-size: 18px;
-  margin-bottom: 15px;
+  text-align: right;
 }
 
-.result p:first-of-type {
-  font-weight: bold;
-  font-size: 24px;
+.agent-name {
+  color: #f9d423;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.time-value {
+  color: #00ff9d;
+  font-family: 'Courier New', monospace;
+}
+
+.share-message {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.9;
+  color: #f9d423;
+  animation: pulse 2s infinite;
 }
 
 .leaderboard-wrapper {
@@ -220,8 +316,8 @@ onMounted( async () => {
   border-radius: 10px;
   color: black;
   width: 100%;
-  max-height: 450px; /* Фиксированная высота контейнера */
-  overflow-y: auto; /* Вертикальный скролл */
+  max-height: 450px;
+  overflow-y: auto;
   margin-bottom: 10px;
 
   table {
@@ -229,17 +325,17 @@ onMounted( async () => {
     border-collapse: collapse;
     color: black;
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr 1fr; /* первый столбец 50px, остальные равные */
+    grid-template-columns: 1fr 3fr 1fr 1fr;
 
     thead, tbody, tr {
-      display: contents; /* важно для правильного отображения */
+      display: contents;
     }
 
     th, td {
       padding: 10px;
       text-align: center;
       border: 1px solid #ddd;
-      word-wrap: break-word; /* Перенос длинных слов */
+      word-wrap: break-word;
     }
 
     th {
@@ -248,7 +344,6 @@ onMounted( async () => {
       position: sticky;
       top: 0;
       z-index: 1;
-
     }
 
     tr:nth-child(even) {
@@ -262,34 +357,11 @@ onMounted( async () => {
   }
 }
 
-/* Новый стиль для выделения строки текущего игрока */
 .highlight-row td {
   border: 2px solid orange !important;
   background-color: #fff8e1;
   font-weight: bold;
 }
-
-.toggle-btn {
-  width: 210px; /* Самая широкая */
-  padding: 10px 0;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #3e8e41;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
 
 .buttons-container {
   display: flex;
@@ -297,58 +369,35 @@ onMounted( async () => {
   gap: 10px;
   margin: 20px auto 0;
   width: 100%;
-  max-width: 800px; /* Согласуем ширину с таблицей */
+  max-width: 800px;
 }
-/* Общие стили для всех кнопок */
+
 .close-btn,
 .try-again-btn,
 .toggle-btn {
-  box-shadow:
-  0 4px 6px rgba(0, 0, 0, 0.1),
-  0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow:
-      0 7px 14px rgba(0, 0, 0, 0.1),
-      0 3px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   }
 
   &:active {
     transform: translateY(1px);
-    box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      0 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
   }
-
-  &::after {
-    content: '';
-
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 8px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  &:hover::after {
-    opacity: 0.1;
-  }
-
 }
+
 .close-btn {
-  width: 50px; /* Узкая кнопка */
+  width: 50px;
   padding: 10px 0;
   background-color: #ff4444;
   color: white;
   border: none;
   border-radius: 20px;
-  cursor: pointer;
   font-size: 14px;
   font-weight: bold;
-  transition: all 0.3s;
 
   &:hover {
     background-color: #cc0000;
@@ -357,15 +406,13 @@ onMounted( async () => {
 }
 
 .try-again-btn {
-  width: 100px; /* Средняя ширина */
+  width: 100px;
   padding: 10px 0;
   background-color: #ffbb33;
   color: white;
   border: none;
   border-radius: 20px;
-  cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s;
 
   &:hover {
     background-color: #ff8800;
@@ -373,7 +420,45 @@ onMounted( async () => {
   }
 }
 
+.toggle-btn {
+  width: 210px;
+  padding: 10px 0;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #3e8e41;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 @media (max-width: 600px) {
+  .congratulations-container {
+    padding: 15px;
+  }
+
+  .congratulations-title {
+    font-size: 22px;
+  }
+
+  .result-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .result-label, .result-value {
+    font-size: 14px;
+  }
+
   .leaderboard {
     max-height: 58vh;
     padding: 10px;
@@ -385,25 +470,78 @@ onMounted( async () => {
       }
     }
   }
+
   .buttons-container {
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap; /* Перенос на узких экранах */
-
+    flex-wrap: wrap;
   }
 
   .close-btn,
   .try-again-btn,
   .toggle-btn {
-    //width: 80%;
-    width: auto; /* Автоширина */
-    padding: 10px 15px; /* Горизонтальные отступы */
+    width: auto;
+    padding: 10px 15px;
     margin-bottom: 0;
-    flex-grow: 1; /* Равномерное растяжение */
+    flex-grow: 1;
   }
 
   .toggle-btn {
-    flex-grow: 2; /* Шире других на мобилках */
+    flex-grow: 2;
+  }
+}
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.change-name-btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  background: linear-gradient(145deg, #6a3093, #a044ff);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
+  }
+}
+
+@keyframes shine {
+  0% { left: -60%; }
+  20% { left: 120%; }
+  100% { left: 120%; }
+}
+
+/* Для мобильных устройств сделаем кнопку больше */
+@media (max-width: 600px) {
+  .change-name-btn {
+    padding: 6px 12px;
+    font-size: 14px;
   }
 }
 </style>
