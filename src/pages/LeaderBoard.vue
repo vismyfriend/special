@@ -11,20 +11,36 @@
           <span class="result-label">Время выполнения:</span>
           <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
         </div>
+        <div class="result-row">
+          <span class="result-label ">Ошибок:</span>
+          <span class="result-value mistakes-amount">{{ gameStore.lastGameResults.mistakes }} mistake(s)</span>
+        </div>
 
         <div class="result-row">
           <span class="result-label">Миссия:</span>
-          <span class="result-value">" {{ wordSetNameSearch(gameStore.$state.wordSet) }} "</span>
+          <span class="result-value">"{{ wordSetNameSearch(gameStore.$state.wordSet) }}"</span>
         </div>
 
         <div class="result-row">
           <span class="result-label">Задание:</span>
-          <span class="result-value">" {{ gameStore.$state.gameName }} "</span>
+          <span class="result-value">"{{ gameStore.$state.gameName }}"</span>
         </div>
+
+
         <div class="result-row">
           <span class="result-label">Ваш никнейм:</span>
           <div class="name-wrapper">
-            <span class="result-value agent-name">{{ gameStore.$state.agentName }}</span>
+    <span class="result-value agent-name">
+      <template v-if="gameStore.$state.agentName">
+        {{ getDisplayName(gameStore.$state.agentName).name }}
+        <span
+          v-if="getDisplayName(gameStore.$state.agentName).id"
+          class="unique-id"
+        >
+          ({{ getDisplayName(gameStore.$state.agentName).id }})
+        </span>
+      </template>
+    </span>
             <button
               v-if="showChangeNameButton"
               @click="handleChangeName"
@@ -47,7 +63,7 @@
             <thead>
             <tr>
               <th>🏆</th>
-              <th>agent</th>
+              <th>лучшие за всё время :</th>
               <th>time</th>
               <th>fails</th>
             </tr>
@@ -59,14 +75,35 @@
               :class="{'highlight-row': yourPlace === index + 1}"
             >
               <td>{{ index + 1 }}</td>
-              <td>{{ player.agent }}</td>
+              <td>
+        <span class="player-name">
+          {{ getDisplayName(player.agent).name }}
+          <span
+            v-if="getDisplayName(player.agent).id"
+            class="unique-id"
+          >
+            ({{ getDisplayName(player.agent).id }})
+          </span>
+        </span>
+              </td>
               <td>{{ player.time }}</td>
               <td>{{ player.mistakes }}</td>
             </tr>
 
             <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
               <td>{{yourPlace}}</td>
-              <td>{{ gameStore.agentName }} (you)</td>
+              <td>
+        <span class="player-name">
+          {{ getDisplayName(gameStore.agentName).name }}
+          <span
+            v-if="getDisplayName(gameStore.agentName).id"
+            class="unique-id"
+          >
+            ({{ getDisplayName(gameStore.agentName).id }})
+          </span>
+          <span class="you-badge">(you)</span>
+        </span>
+              </td>
               <td>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</td>
               <td>{{ gameStore.lastGameResults.mistakes }}</td>
             </tr>
@@ -103,6 +140,25 @@ const yourPlace = ref();
 const isExpanded = ref(false);
 const showChangeNameButton = ref(gameStore.$state.agentName === null);
 
+// Функция для получения и сохранения токена
+const fetchAndStoreToken = async (agentName) => {
+  try {
+    // Получаем токен с сервера
+    const response = await api.auth.getToken(agentName);
+    const token = response.data.token;
+
+    // Сохраняем токен и имя агента
+    localStorage.setItem('token', token);
+    localStorage.setItem('agentName', agentName);
+    gameStore.setAgentName(agentName);
+
+    return token;
+  } catch (error) {
+    console.error("Ошибка при получении токена:", error);
+    throw error;
+  }
+};
+
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
@@ -115,6 +171,17 @@ const fallbackPlayers = [
   { agent: "Monkey", time: "3.01", mistakes: 1 },
 ];
 
+const generateUniqueId = () => {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = String(now.getFullYear()).slice(-2);
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${day}${month}${year}${minutes}${seconds}`;
+};
+
 // Вычисляемые свойства
 const visiblePlayers = computed(() => {
   return isExpanded.value
@@ -123,6 +190,16 @@ const visiblePlayers = computed(() => {
 });
 
 // Методы
+
+const getDisplayName = (fullName) => {
+  if (!fullName) return { name: '', id: '' };
+
+  const match = fullName.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
+  return {
+    name: match[1] || fullName,
+    id: match[2] || ''
+  };
+};
 const goToMain = () => router.push("/see-all-sets-of-words/");
 const tryAgain = () => router.go(-1);
 const toggleExpand = () => isExpanded.value = !isExpanded.value;
@@ -161,9 +238,8 @@ const formatResult = () => {
 const handleChangeName = () => {
 router.push("/registration");
 };
-
 const setLeaderBoard = async () => {
-  if (gameStore.$state.agentName === null) {
+  if (!gameStore.$state.agentName) {
     const randomNames = [
       "Секретный парниша",
       "Анонимный аноним",
@@ -174,13 +250,15 @@ const setLeaderBoard = async () => {
       "Alex",
       "NONAME",
       "test",
-      "Professor of English"
+      "Professor"
     ];
     const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
-    gameStore.setAgentName(randomName);
+    const uniqueId = generateUniqueId();
+    const agentNameWithId = `${randomName} (${uniqueId})`;
+
+    gameStore.setAgentName(agentNameWithId);
+    await fetchAndStoreToken(agentNameWithId);
   }
-
-
 
   await api.scores.post(
     gameStore.$state.gameName,
@@ -191,8 +269,23 @@ const setLeaderBoard = async () => {
   );
 };
 
-// Хук жизненного цикла
+
+
+// Проверка аутентификации при монтировании
 onMounted(async () => {
+  // Если есть имя агента, но нет токена, запрашиваем токен
+  if (gameStore.$state.agentName && !localStorage.getItem('token')) {
+    // Проверяем, есть ли уже ID в имени
+    let agentName = gameStore.$state.agentName;
+    if (!agentName.includes('(')) {
+      const uniqueId = generateUniqueId();
+      agentName = `${agentName} (${uniqueId})`;
+      gameStore.setAgentName(agentName);
+    }
+
+    await fetchAndStoreToken(agentName);
+  }
+
   await setLeaderBoard();
   await fetchLeaderboard();
   formatResult();
@@ -275,11 +368,58 @@ onMounted(async () => {
   font-size: 18px;
   text-align: right;
 }
-
 .agent-name {
   color: #f9d423;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+  word-break: break-word;
+
+  .unique-id {
+    font-size: 10px;
+    color: #aaaaaa;
+    opacity: 0.8;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: normal;
+    margin-left: 3px;
+    align-self: flex-end;
+  }
+}
+
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 60%;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  .name-wrapper {
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 100%;
+  }
+
+  .agent-name {
+    text-align: right;
+    justify-content: flex-start;
+
+    .unique-id {
+      font-size: 8px;
+    }
+  }
+}
+
+.mistakes-amount {
+  color: #f887ee;
+
 }
 
 .time-value {
@@ -542,6 +682,42 @@ onMounted(async () => {
   .change-name-btn {
     padding: 6px 12px;
     font-size: 14px;
+  }
+}
+
+.player-name {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .unique-id {
+    font-size: 10px;
+    color: #888;
+    opacity: 0.8;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: normal;
+    margin-left: 2px;
+  }
+
+  .you-badge {
+    font-size: 12px;
+    color: #4caf50;
+    margin-left: 5px;
+    font-weight: bold;
+  }
+}
+
+/* Для мобильных устройств */
+@media (max-width: 600px) {
+  .player-name {
+    .unique-id {
+      font-size: 8px;
+    }
+    .you-badge {
+      font-size: 10px;
+    }
   }
 }
 </style>

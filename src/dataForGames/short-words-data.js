@@ -3,16 +3,15 @@
 const shortWordsData = {
 
   introSetFindPairsHard: [
-    { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
-    { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
-    { id: 3, eng: "three", ru: "три", hint: "/не фри и не сри/" },
-    { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
-    { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
-    { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
-    { id: 7, eng: "seven", ru: "семь", hint: "/ сэвн /" },
+    { id: 2, eng: "thousand", ru: "тысяча", hint: "/ˈθaʊznd/" },
+    { id: 3, eng: "hundred", ru: "сто", hint: "/хандрэд/" },
+    { id: 4, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтИн /" },
+    { id: 5, eng: "fifty", ru: "пятьдесят", hint: "/ фИфти /" },
+
+    { id: 6, eng: "seventeen", ru: "семнадцать", hint: "/ сэвэнтИн /" },
+    { id: 7, eng: "seventy", ru: "семьдесят", hint: "/ сЭвэнти /" },
     { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
     { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
-    { id: 10, eng: "zero", ru: "ноль", hint: "/ зИроу /" },
     { id: 11, eng: "twelve", ru: "двенадцать", hint: "/ тВэлв /" },
     { id: 12, eng: "twenty", ru: "двадцать", hint: "/ твЭнти /" }
   ],

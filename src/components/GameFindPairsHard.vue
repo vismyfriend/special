@@ -168,6 +168,7 @@ const changeActive = (id, side) => {
   if (matched) {
     deleteCards(ruActive, engActive);
   } else {
+    mistakesCount.value++; // Увеличиваем счетчик ошибок
     addWrongPulse(engActive, ruActive);  // добавляем пульсацию ошибки
   }
   switchState();
@@ -200,7 +201,7 @@ const deleteCards = (ru, eng) => {
   const allInvisible = engCards.value.every(el => !el.visible);
   if (allInvisible) shiftCards();
 };
-
+const mistakesCount = ref(0); // Счетчик ошибок
 const shiftCards = () => {
   sliceMax.value += 5;
   sliceMin.value += 5;
@@ -215,7 +216,7 @@ const shiftCards = () => {
 
 const finishGame = () => {
 
-  gameStore.setLastGameResults(time.value, 20)
+  gameStore.setLastGameResults(time.value, mistakesCount.value)
   gameStore.setGameName("FindPairsHard")
   gameStore.setWordSet(currentMission.value);
   router.push("/leader-board/");
