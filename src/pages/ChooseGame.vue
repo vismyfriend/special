@@ -118,6 +118,12 @@ const AllGames = ref([
     path: "deck-of-cards",
     gameData: questionsData,
     active: false
+  },   {
+    id: 104,
+    name: "Translate it",
+    path: "game-translate",
+    gameData: questionsData,
+    active: false
   },
   {
     id: 105,

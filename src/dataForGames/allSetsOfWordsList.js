@@ -37,6 +37,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "whatISitVideoMission",
+      missionVisibleName: "What is it ? video mission",
+      missionDescription: "Что это ? видео миссия",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "traffic1",
       missionVisibleName: "Дорожная ситуация",
       missionDescription: "Road traffic",
