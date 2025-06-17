@@ -226,7 +226,8 @@ const handleBubbleClick = () => {
 };
 // Собираем все английские слова
 // const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
-const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
+// const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
+const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
 
 
 const allEnglishWords = [

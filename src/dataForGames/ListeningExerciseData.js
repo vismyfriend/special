@@ -522,6 +522,47 @@ const ListeningExerciseData = {
       },
     ]
   },
+  airportCode: {
+    mainDescription: "Level A2 ",
+    tasks: [
+      {
+        taskDescription: 'Listen to the situation based on a true story (основанная на реальных событиях)\n' +
+          '\n' +
+          'How did Sandy Valdivieso and her husband fly? Is it 1, 2, 3 or 4?',
+        audio: new URL('../assets/audio/airportCode.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/airportCode.jpg", import.meta.url).href,
+        textScript: '3) They flew from Los Angeles (A) to Istanbul (C) to\n' +
+          '\n' +
+          'Dhaka (D) to Istanbul (C) to Dakar (B).\n' +
+          '\n' +
+          'Transcript\n' +
+          '\n' +
+          'Sandy Valdivieso and her husband were looking forward to their holiday in Africa. They had tickets for a Turkish Airlines flight from Los Angeles to Dakar, the capital of Senegal in West Africa. However, an airline mix-up sent them 11,000 kilometres away from their destination, to another continent. They boarded their flight at Los Angeles International Airport in the USA. But unfortunately, an airline employee at the airport accidentally entered the wrong three-letter airport code into the flight booking system. The code for Dakar is DKR. But the employee entered DAC, which is the code for Dhaka, the capital of Bangladesh, in Asia.\n' +
+          '\n' +
+          'The first leg of their flight to Istanbul in Turkey went smoothly, but it was the second leg of the trip that sent them off in the wrong direction. From Turkey, they headed East rather than West.\n' +
+          '\n' +
+          'At first, Sandy and her husband did not notice that there was a problem. When the flight attendant said they were heading to Dhaka, they thought she was saying ‘Dakar’ with a Turkish accent. Several hours into the trip they woke up from a long sleep and noticed the inflight map showed the plane over the Middle East. They then realised the plane was full of passengers who looked Asian, not African. That’s when they knew that there was a serious mistake. But there was nothing they could do about it: they had to continue all the way to Bangladesh!\n' +
+          '\n' +
+          'Once on the ground, it took several hours for the airline to confirm the mistake was their fault. They apologized to Sandy and her husband and 12 hours later, they flew them back to Istanbul. From there, they took the correct plane to Senegal. To say sorry, Turkish Airlines offered the passengers two free econo class tickets to any destination it flies to.',
+
+        questions: [
+          {
+            text: "Какой у них получился маршрут по факту?",
+            options: {
+              A: "1- They flew from A to B to C to D",
+              B: "2- They flew from A to C to D to B.",
+              C: "3- They flew from A to C to D to C to B",
+              D: "4- They flew from A to C to D to C to A.",
+              E: "5- Я вообще ничего не понял, заного слушаю!"
+            },
+            correctAnswer: "С"
+          },
+        ]
+      },
+
+    ]
+  },
 
 }
 
