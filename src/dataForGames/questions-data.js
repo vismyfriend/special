@@ -6,14 +6,14 @@ const questionsData = {
 
     introSetAlias: [
       // Цвета
-      { id: 1, eng: "red", ru: "красный", hint: "/ ред /" },
+      { id: 1, eng: "red", ru: "красный", hint: "/ рэд /" },
       { id: 2, eng: "blue", ru: "синий", hint: "/ блу /" },
       { id: 3, eng: "green", ru: "зелёный", hint: "/ грин /" },
-      { id: 4, eng: "yellow", ru: "жёлтый", hint: "/ йелоу /" },
+      { id: 4, eng: "yellow", ru: "жёлтый", hint: "/ йЕлоу /" },
       { id: 5, eng: "black", ru: "чёрный", hint: "/ блэк /" },
       { id: 6, eng: "white", ru: "белый", hint: "/ уайт /" },
       { id: 7, eng: "brown", ru: "коричневый", hint: "/ браун /" },
-      { id: 8, eng: "orange", ru: "оранжевый", hint: "/ ориндж /" },
+      { id: 8, eng: "orange", ru: "оранжевый", hint: "/ Ориндж /" },
       { id: 9, eng: "pink", ru: "розовый", hint: "/ пинк /" },
       { id: 10, eng: "gray", ru: "серый", hint: "/ грэй /" },
 
@@ -116,6 +116,63 @@ const questionsData = {
       { id: 76, eng: "Vincent", ru: "вИнсент"},
 
     ],
+
+  who1: [
+
+      { id: 1, eng: "irons clothes", ru: "гладит одежду" },
+      { id: 2, eng: "walks with a dog", ru: "гуляет с собакой" },
+      { id: 3, eng: "works", ru: "работает" },
+      { id: 4, eng: "picks flowers", ru: "собирает цветы" },
+      { id: 5, eng: "kills mosquitoes", ru: "убивает комаров" },
+      { id: 6, eng: "studies English", ru: "учит английский" },
+      { id: 7, eng: "washes dirty socks", ru: "стирает грязные носки" },
+      { id: 8, eng: "sweeps the floor", ru: "подметает полы" },
+      { id: 9, eng: "washes the dishes", ru: "моет посуду" },
+      { id: 10, eng: "cleans the house", ru: "убирает дом" },
+      { id: 11, eng: "cooks food", ru: "готовит еду" },
+      { id: 12, eng: "bakes cakes", ru: "печёт торты" },
+      { id: 13, eng: "fixes broken things", ru: "чинит сломанные вещи" },
+      { id: 14, eng: "goes shopping", ru: "ходит в магазин" },
+      { id: 15, eng: "changes the bedsheets", ru: "меняет постельное бельё" },
+      { id: 16, eng: "makes the bed", ru: "заправляет постель" },
+      { id: 17, eng: "vacuums", ru: "пылесосит" },
+      { id: 18, eng: "does English homework", ru: "делает домашку по английскому" },
+      { id: 19, eng: "takes out the trash", ru: "выносит мусор" },
+      { id: 20, eng: "spends money", ru: "тратит деньги" },
+      { id: 21, eng: "reads books", ru: "читает книги" },
+      { id: 22, eng: "watches TikTok", ru: "смотрит тикток" },
+      { id: 23, eng: "plays computer games", ru: "играет в компьютерные игры" },
+      { id: 24, eng: "goes to the gym", ru: "ходит в спортзал" },
+      { id: 25, eng: "draws beautifully", ru: "рисует красиво" },
+      { id: 26, eng: "sleeps all day", ru: "спит весь день" },
+      { id: 27, eng: "does nothing all day", ru: "ничего не делает весь день" }
+
+  ],
+
+  whoAnswers1:
+[
+  { id: 1, eng: "I", ru: "Я" },
+  { id: 2, eng: "you", ru: "ты / вы" },
+  { id: 3, eng: "everybody", ru: "все" },
+  { id: 4, eng: "all my friends", ru: "все мои друзья" },
+  { id: 5, eng: "all my family", ru: "вся моя семья" },
+  { id: 6, eng: "nobody", ru: "никто" },
+  { id: 7, eng: "my neighbour", ru: "мой сосед / соседка" },
+  { id: 8, eng: "my best friend", ru: "мой лучший друг / подруга" },
+  { id: 9, eng: "my teacher of English", ru: "мой учитель английского" },
+  { id: 10, eng: "Vincent", ru: "Винсент" },
+  { id: 11, eng: "my boyfriend", ru: "мой парень" },
+  { id: 12, eng: "my dog", ru: "моя собака" },
+  { id: 13, eng: "my boss", ru: "мой начальник" },
+  { id: 14, eng: "I don't know who", ru: "я не знаю кто" },
+  { id: 15, eng: "my grandmother", ru: "моя бабушка" },
+  { id: 16, eng: "my uncle", ru: "мой дядя" },
+  { id: 17, eng: "my mom", ru: "моя мама" },
+  { id: 18, eng: "my dad", ru: "мой папа" },
+  { id: 19, eng: "I don't remember who", ru: "я не помню кто" },
+  { id: 20, eng: "my older child", ru: "мой старший ребёнок" }
+],
+
   whatISitVideoMission: [
     { id: 1, eng: "a list", ru: "список", hint: "/ə lɪst/" },
     { id: 2, eng: "a phone", ru: "телефон", hint: "/ə fəʊn/" },

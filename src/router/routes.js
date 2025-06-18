@@ -183,6 +183,10 @@ const routes = [
     component: () => import('src/pages/Vismyfriend.vue')
   },
   {
+    path: '/scroll-zoom-in',
+    component: () => import('src/pages/intros/scrollZoomIn.vue')
+  },
+  {
     path: '/noLayoutPage',
     component: () => import('src/pages/pageWithoutMainLayout.vue')
   },

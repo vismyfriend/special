@@ -532,7 +532,7 @@ const ListeningExerciseData = {
         audio: new URL('../assets/audio/airportCode.mp3', import.meta.url).href,
         taskID: "multiple_choice",
         taskPicture: new URL("../assets/images/airportCode.jpg", import.meta.url).href,
-        textScript: '3) They flew from Los Angeles (A) to Istanbul (C) to\n' +
+        textScript:
           '\n' +
           'Dhaka (D) to Istanbul (C) to Dakar (B).\n' +
           '\n' +
@@ -544,8 +544,8 @@ const ListeningExerciseData = {
           '\n' +
           'At first, Sandy and her husband did not notice that there was a problem. When the flight attendant said they were heading to Dhaka, they thought she was saying ‘Dakar’ with a Turkish accent. Several hours into the trip they woke up from a long sleep and noticed the inflight map showed the plane over the Middle East. They then realised the plane was full of passengers who looked Asian, not African. That’s when they knew that there was a serious mistake. But there was nothing they could do about it: they had to continue all the way to Bangladesh!\n' +
           '\n' +
-          'Once on the ground, it took several hours for the airline to confirm the mistake was their fault. They apologized to Sandy and her husband and 12 hours later, they flew them back to Istanbul. From there, they took the correct plane to Senegal. To say sorry, Turkish Airlines offered the passengers two free econo class tickets to any destination it flies to.',
-
+          'Once on the ground, it took several hours for the airline to confirm the mistake was their fault. They apologized to Sandy and her husband and 12 hours later, they flew them back to Istanbul. From there, they took the correct plane to Senegal. To say sorry, Turkish Airlines offered the passengers two free econo class tickets to any destination it flies to.' +
+        '\n' + '3) They flew from Los Angeles (A) to Istanbul (C) to\n',
         questions: [
           {
             text: "Какой у них получился маршрут по факту?",
@@ -556,7 +556,7 @@ const ListeningExerciseData = {
               D: "4- They flew from A to C to D to C to A.",
               E: "5- Я вообще ничего не понял, заного слушаю!"
             },
-            correctAnswer: "С"
+            correctAnswer: "C"
           },
         ]
       },

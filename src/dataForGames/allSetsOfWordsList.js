@@ -72,6 +72,20 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "who1",
+      missionVisibleName: "Who questions part 1",
+      missionDescription: "Вопросы КТО, КОГО ч.1",
+      id: 7,
+      active: true
+    },
+    {
+      missionName: "whoAnswers1",
+      missionVisibleName: "Who answers part 1",
+      missionDescription: "Ответы на Who ч.1",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "clothes",
       missionVisibleName: "Clothes and stuff",
       missionDescription: "Одежда и все такое",
