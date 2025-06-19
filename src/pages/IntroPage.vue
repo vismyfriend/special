@@ -70,11 +70,13 @@
   </div>
   <q-btn
     align="between"
-    class="q-mb-sm zoomIn padding-left-right"
+    class="q-mb-sm zoomIn padding-left-right shining"
     :color="buttonColor"
     :label="buttonLabel"
     icon-right="touch_app"
     @click="backToIntroPage"
+    style="position: relative; overflow: hidden;"
+
   />
   <div
     v-if="showOverlay"
@@ -222,7 +224,7 @@ const handleBubbleClick = () => {
   showTextInstead.value = true;
   setTimeout(() => {
     showTextInstead.value = false;
-  }, 4000); // показываем текст на 4 секунды
+  }, 6000); // показываем текст на 6 секунд
 };
 // Собираем все английские слова
 // const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
@@ -593,5 +595,41 @@ calc(var(--fadeStart) * 100%) {
 }
 .q-mb-sm {
   cursor: none;
+}
+/* Добавьте это в ваш файл стилей */
+.shining {
+  position: relative;
+  overflow: hidden;
+}
+
+.shining::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: -75%;
+  }
 }
 </style>

@@ -376,6 +376,7 @@ onMounted(() => {
 
 .inside-phone-frame {
   padding: 15px;
+
 }
 
 .game-container {

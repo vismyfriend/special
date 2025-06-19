@@ -6,7 +6,7 @@
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
 
       <div class="inside-phone-frame">
-        <q-btn push color="brown-5" @click="backToPreviousPage">📷 back to other missions 🔎 </q-btn>
+        <q-btn push color="brown-5" @click="backToPreviousPage">📷 другой набор слов 🔎 </q-btn>
 
         <div class="games-grid">
           <div
@@ -261,7 +261,7 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border: 1px solid #e0e0e0;
-  cursor: pointer;
+  cursor: none;
   min-height: 60px;
   display: flex;
   align-items: center;

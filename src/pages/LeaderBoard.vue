@@ -1,51 +1,40 @@
 <template>
+  <!-- Основной контейнер результатов -->
   <div class="result">
     <!-- Блок с результатами игры -->
     <div class="congratulations-container">
       <h2 class="congratulations-title">Congratulations!</h2>
 
       <div class="result-card">
-
-
+        <!-- Строки с результатами -->
         <div class="result-row">
           <span class="result-label">Время выполнения:</span>
           <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
         </div>
         <div class="result-row">
-          <span class="result-label ">Ошибок:</span>
+          <span class="result-label">Ошибок:</span>
           <span class="result-value mistakes-amount">{{ gameStore.lastGameResults.mistakes }} mistake(s)</span>
         </div>
-
         <div class="result-row">
           <span class="result-label">Миссия:</span>
           <span class="result-value">"{{ wordSetNameSearch(gameStore.$state.wordSet) }}"</span>
         </div>
-
         <div class="result-row">
           <span class="result-label">Задание:</span>
           <span class="result-value">"{{ gameStore.$state.gameName }}"</span>
         </div>
-
-
         <div class="result-row">
           <span class="result-label">Ваш никнейм:</span>
           <div class="name-wrapper">
-    <span class="result-value agent-name">
-      <template v-if="gameStore.$state.agentName">
-        {{ getDisplayName(gameStore.$state.agentName).name }}
-        <span
-          v-if="getDisplayName(gameStore.$state.agentName).id"
-          class="unique-id"
-        >
-          ({{ getDisplayName(gameStore.$state.agentName).id }})
-        </span>
-      </template>
-    </span>
-            <button
-              v-if="showChangeNameButton"
-              @click="handleChangeName"
-              class="change-name-btn"
-            >
+            <span class="result-value agent-name">
+              <template v-if="gameStore.$state.agentName">
+                {{ getDisplayName(gameStore.$state.agentName).name }}
+                <span v-if="getDisplayName(gameStore.$state.agentName).id" class="unique-id">
+                  ({{ getDisplayName(gameStore.$state.agentName).id }})
+                </span>
+              </template>
+            </span>
+            <button v-if="showChangeNameButton" @click="handleChangeName" class="change-name-btn">
               Сменить никнейм
             </button>
           </div>
@@ -69,22 +58,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr
-              v-for="(player, index) in visiblePlayers"
-              :key="index"
-              :class="{'highlight-row': yourPlace === index + 1}"
-            >
+            <tr v-for="(player, index) in visiblePlayers" :key="index" :class="{'highlight-row': yourPlace === index + 1}">
               <td>{{ index + 1 }}</td>
               <td>
-        <span class="player-name">
-          {{ getDisplayName(player.agent).name }}
-          <span
-            v-if="getDisplayName(player.agent).id"
-            class="unique-id"
-          >
-            ({{ getDisplayName(player.agent).id }})
-          </span>
-        </span>
+                  <span class="player-name">
+                    {{ getDisplayName(player.agent).name }}
+                    <span v-if="getDisplayName(player.agent).id" class="unique-id">
+                      ({{ getDisplayName(player.agent).id }})
+                    </span>
+                  </span>
               </td>
               <td>{{ player.time }}</td>
               <td>{{ player.mistakes }}</td>
@@ -93,16 +75,13 @@
             <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
               <td>{{yourPlace}}</td>
               <td>
-        <span class="player-name">
-          {{ getDisplayName(gameStore.agentName).name }}
-          <span
-            v-if="getDisplayName(gameStore.agentName).id"
-            class="unique-id"
-          >
-            ({{ getDisplayName(gameStore.agentName).id }})
-          </span>
-          <span class="you-badge">(you)</span>
-        </span>
+                  <span class="player-name">
+                    {{ getDisplayName(gameStore.agentName).name }}
+                    <span v-if="getDisplayName(gameStore.agentName).id" class="unique-id">
+                      ({{ getDisplayName(gameStore.agentName).id }})
+                    </span>
+                    <span class="you-badge">(you)</span>
+                  </span>
               </td>
               <td>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</td>
               <td>{{ gameStore.lastGameResults.mistakes }}</td>
@@ -115,11 +94,16 @@
 
     <!-- Кнопки управления -->
     <div class="buttons-container">
-      <button class="close-btn" @click="goToMain">X</button>
-      <button class="try-again-btn" @click="tryAgain">Try Again</button>
-      <button class="toggle-btn" @click="toggleExpand">
-        {{ isExpanded ? 'Свернуть ▲' : 'Развернуть ▼' }}
+      <button
+        v-if="shouldShowToggleButton"
+        class="toggle-btn"
+        @click="toggleExpand"
+      >
+        {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
       </button>
+      <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
+      <button class="close-btn" @click="backToSameSet">следующее задание</button>
+      <button class="games-btn" @click="goToGames">все игры</button>
     </div>
   </div>
 </template>
@@ -128,37 +112,22 @@
 import { onMounted, ref, computed } from "vue";
 import { api } from "src/api";
 import { useGameStore } from "stores/example-store";
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { allSetsOfWordsList } from "src/dataForGames/allSetsOfWordsList";
 
+// Инициализация хранилища и роутера
 const router = useRouter();
+const route = useRoute();
 const gameStore = useGameStore();
+
+// Получаем missionName из query параметров
+const missionName = ref(route.query.missionName || gameStore.$state.wordSet);
 
 // Реактивные переменные
 const topPlayers = ref([]);
 const yourPlace = ref();
 const isExpanded = ref(false);
 const showChangeNameButton = ref(gameStore.$state.agentName === null);
-
-// Функция для получения и сохранения токена
-const fetchAndStoreToken = async (agentName) => {
-  try {
-    // Получаем токен с сервера
-    const response = await api.auth.getToken(agentName);
-    const token = response.data.token;
-
-    // Сохраняем токен и имя агента
-    localStorage.setItem('token', token);
-    localStorage.setItem('agentName', agentName);
-    gameStore.setAgentName(agentName);
-
-    return token;
-  } catch (error) {
-    console.error("Ошибка при получении токена:", error);
-    throw error;
-  }
-};
-
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
@@ -171,6 +140,9 @@ const fallbackPlayers = [
   { agent: "Monkey", time: "3.01", mistakes: 1 },
 ];
 
+/**
+ * Генерация уникального ID на основе текущей даты и времени
+ */
 const generateUniqueId = () => {
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
@@ -183,14 +155,48 @@ const generateUniqueId = () => {
 };
 
 // Вычисляемые свойства
+
+/**
+ * Видимые игроки в таблице лидеров (зависит от состояния isExpanded)
+ */
 const visiblePlayers = computed(() => {
   return isExpanded.value
     ? topPlayers.value.slice(0, 100)
-    : topPlayers.value.slice(0, 30);
+    : topPlayers.value.slice(0, 8);
 });
 
+// стоит ли показать кнопку Увидеть всех игроков
+
+const shouldShowToggleButton = computed(() => {
+  return topPlayers.value.length > 8;
+});
 // Методы
 
+/**
+ * Получение и сохранение токена
+ */
+
+const goToGames = () => router.push("/games");
+
+const fetchAndStoreToken = async (agentName) => {
+  try {
+    const response = await api.auth.getToken(agentName);
+    const token = response.data.token;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('agentName', agentName);
+    gameStore.setAgentName(agentName);
+
+    return token;
+  } catch (error) {
+    console.error("Ошибка при получении токена:", error);
+    throw error;
+  }
+};
+
+/**
+ * Разделение имени агента на основное имя и ID
+ */
 const getDisplayName = (fullName) => {
   if (!fullName) return { name: '', id: '' };
 
@@ -200,29 +206,49 @@ const getDisplayName = (fullName) => {
     id: match[2] || ''
   };
 };
-const goToMain = () => router.push("/see-all-sets-of-words/");
+
+/**
+ * Возврат к играм того же набора
+ */
+const backToSameSet = () => {
+  if (missionName.value) {
+    router.push(`/see-all-sets-of-words/${missionName.value}`);
+  } else {
+    console.error("missionName is not available");
+    router.push("/see-all-sets-of-words/");
+  }
+};
+
 const tryAgain = () => router.go(-1);
 const toggleExpand = () => isExpanded.value = !isExpanded.value;
+const handleChangeName = () => router.push("/registration");
 
+/**
+ * Поиск описания набора слов по имени
+ */
 const wordSetNameSearch = (name) => {
   const currentWordSet = allSetsOfWordsList.find(word => word.missionName === name);
   return currentWordSet?.missionDescription || name;
 };
 
+/**
+ * Загрузка таблицы лидеров
+ */
 const fetchLeaderboard = async () => {
   try {
     const res = await api.scores.get(gameStore.gameName);
     const response = res.data.filter(el => el.wordSet === gameStore.$state.wordSet);
 
-    topPlayers.value = Array.isArray(response)
-      ? response
-      : fallbackPlayers;
+    topPlayers.value = Array.isArray(response) ? response : fallbackPlayers;
   } catch (error) {
     console.error("Ошибка при загрузке таблицы победителей:", error);
     topPlayers.value = fallbackPlayers;
   }
 };
 
+/**
+ * Форматирование результатов таблицы лидеров
+ */
 const formatResult = () => {
   topPlayers.value = topPlayers.value.sort((a, b) => a.time - b.time);
 
@@ -234,28 +260,16 @@ const formatResult = () => {
   });
 };
 
-
-const handleChangeName = () => {
-router.push("/registration");
-};
-
-
-
-
-// Проверка аутентификации при монтировании
+// Хук жизненного цикла
 onMounted(async () => {
-
-
-  // Проверяем localStorage в первую очередь
+  // Проверка и инициализация имени агента
   const savedName = localStorage.getItem('agentName');
   const savedToken = localStorage.getItem('token');
 
-  // Если есть сохраненное имя, но оно отличается от текущего в хранилище
   if (savedName && savedName !== gameStore.$state.agentName) {
     gameStore.setAgentName(savedName);
   }
 
-  // Если нет имени вообще - генерируем случайное
   if (!gameStore.$state.agentName && !savedName) {
     const randomNames = [
       "Секретный парниша",
@@ -276,9 +290,7 @@ onMounted(async () => {
     gameStore.setAgentName(agentNameWithId);
     await fetchAndStoreToken(agentNameWithId);
   }
-  // Если есть имя агента, но нет токена, запрашиваем токен
   else if (gameStore.$state.agentName && !savedToken) {
-    // Проверяем, есть ли уже ID в имени
     let agentName = gameStore.$state.agentName;
     if (!agentName.includes('(')) {
       const uniqueId = generateUniqueId();
@@ -289,6 +301,7 @@ onMounted(async () => {
     await fetchAndStoreToken(agentName);
   }
 
+  // Отправка результатов и загрузка таблицы лидеров
   await api.scores.post(
     gameStore.$state.gameName,
     gameStore.$state.lastGameResults.time,
@@ -297,13 +310,13 @@ onMounted(async () => {
     gameStore.$state.wordSet,
   );
 
-
   await fetchLeaderboard();
   formatResult();
 });
 </script>
 
 <style lang="scss" scoped>
+/* Основные стили контейнера */
 .result {
   padding: 20px 10px;
   background: linear-gradient(145deg, #0870b5, #4096d3);
@@ -315,6 +328,7 @@ onMounted(async () => {
   line-height: 1.1;
 }
 
+/* Стили блока с поздравлением */
 .congratulations-container {
   background: linear-gradient(135deg, #2c3e50, #4ca1af);
   border-radius: 16px;
@@ -346,6 +360,7 @@ onMounted(async () => {
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+/* Стили карточки с результатами */
 .result-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -379,6 +394,8 @@ onMounted(async () => {
   font-size: 18px;
   text-align: right;
 }
+
+/* Стили для имени агента */
 .agent-name {
   color: #f9d423;
   text-transform: uppercase;
@@ -411,33 +428,43 @@ onMounted(async () => {
   justify-content: flex-end;
 }
 
-@media (max-width: 600px) {
-  .name-wrapper {
-    flex-direction: column;
-    align-items: flex-end;
-    max-width: 100%;
+/* Стили для кнопки смены имени */
+.change-name-btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  background: linear-gradient(145deg, #6a3093, #a044ff);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   }
 
-  .agent-name {
-    text-align: right;
-    justify-content: flex-start;
+  &:active {
+    transform: translateY(1px);
+  }
 
-    .unique-id {
-      font-size: 8px;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
   }
 }
 
-.mistakes-amount {
-  color: #f887ee;
-
-}
-
-.time-value {
-  color: #00ff9d;
-  font-family: 'Courier New', monospace;
-}
-
+/* Стили сообщения о расшаривании */
 .share-message {
   margin-top: 5px;
   font-style: italic;
@@ -447,6 +474,7 @@ onMounted(async () => {
   animation: pulse 2s infinite;
 }
 
+/* Стили таблицы лидеров */
 .leaderboard-wrapper {
   display: flex;
   flex-direction: column;
@@ -514,6 +542,32 @@ onMounted(async () => {
   font-weight: bold;
 }
 
+/* Стили для имени игрока в таблице */
+.player-name {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .unique-id {
+    font-size: 10px;
+    color: #888;
+    opacity: 0.8;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: normal;
+    margin-left: 2px;
+  }
+
+  .you-badge {
+    font-size: 12px;
+    color: #4caf50;
+    margin-left: 5px;
+    font-weight: bold;
+  }
+}
+
+/* Стили контейнера кнопок */
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -523,6 +577,7 @@ onMounted(async () => {
   max-width: 800px;
 }
 
+/* Общие стили для кнопок */
 .close-btn,
 .try-again-btn,
 .toggle-btn {
@@ -540,34 +595,88 @@ onMounted(async () => {
   }
 }
 
+/* Стили конкретных кнопок */
 .close-btn {
-  width: 50px;
-  padding: 10px 0;
-  background-color: #ff4444;
+  width: 180px;
+  padding: 12px 0;
+  background: linear-gradient(145deg, #4CAF50, #2E7D32);
   color: white;
   border: none;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 25px;
+  font-size: 16px;
   font-weight: bold;
+  transition: all 0.3s;
 
   &:hover {
-    background-color: #cc0000;
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+    background: linear-gradient(145deg, #2E7D32, #4CAF50);
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
+.games-btn {
 
-.try-again-btn {
-  width: 100px;
-  padding: 10px 0;
-  background-color: #ffbb33;
+  padding: 12px 0;
+  background: linear-gradient(145deg, #9C27B0, #673AB7);
   color: white;
   border: none;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
 
   &:hover {
-    background-color: #ff8800;
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+    background: linear-gradient(145deg, #673AB7, #9C27B0);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+.try-again-btn {
+  width: 180px;
+  padding: 12px 0;
+  background: linear-gradient(145deg, #FFC107, #FF9800);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    animation: shine 6s infinite ease-in-out;
+    animation-delay: 3s;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(255, 152, 0, 0.6);
+    background: linear-gradient(145deg, #FF9800, #FFC107);
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
 
@@ -584,13 +693,26 @@ onMounted(async () => {
     background-color: #3e8e41;
   }
 }
-
+.mistakes-amount {
+  color: aqua;
+}
+.time-value{
+color: aqua;
+}
+/* Анимации */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
 
+@keyframes shine {
+  0% { left: -60%; opacity: 0; }
+  20% { left: 120%; opacity: 0.6; }
+  100% { left: 120%; opacity: 0; }
+}
+
+/* Адаптивные стили */
 @media (max-width: 600px) {
   .congratulations-container {
     padding: 15px;
@@ -610,6 +732,26 @@ onMounted(async () => {
     font-size: 14px;
   }
 
+  .name-wrapper {
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 100%;
+  }
+
+  .agent-name {
+    text-align: right;
+    justify-content: flex-start;
+
+    .unique-id {
+      font-size: 8px;
+    }
+  }
+
+  .change-name-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
   .leaderboard {
     max-height: 158vh;
     padding: 10px;
@@ -622,107 +764,6 @@ onMounted(async () => {
     }
   }
 
-  .buttons-container {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .close-btn,
-  .try-again-btn,
-  .toggle-btn {
-    width: auto;
-    padding: 10px 15px;
-    margin-bottom: 0;
-    flex-grow: 1;
-  }
-
-  .toggle-btn {
-    flex-grow: 2;
-  }
-}
-.name-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.change-name-btn {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: linear-gradient(145deg, #6a3093, #a044ff);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 20%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(30deg);
-    animation: shine 3s infinite;
-  }
-}
-
-@keyframes shine {
-  0% { left: -60%; }
-  20% { left: 120%; }
-  100% { left: 120%; }
-}
-
-/* Для мобильных устройств сделаем кнопку больше */
-@media (max-width: 600px) {
-  .change-name-btn {
-    padding: 6px 12px;
-    font-size: 14px;
-  }
-}
-
-.player-name {
-  display: inline-flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  .unique-id {
-    font-size: 10px;
-    color: #888;
-    opacity: 0.8;
-    letter-spacing: 0;
-    text-transform: none;
-    font-weight: normal;
-    margin-left: 2px;
-    //display: none;
-  }
-
-  .you-badge {
-    font-size: 12px;
-    color: #4caf50;
-    margin-left: 5px;
-    font-weight: bold;
-  }
-}
-
-/* Для мобильных устройств */
-@media (max-width: 600px) {
   .player-name {
     .unique-id {
       font-size: 8px;
@@ -730,6 +771,23 @@ onMounted(async () => {
     .you-badge {
       font-size: 10px;
     }
+  }
+
+  .buttons-container {
+    flex-direction: column;
+  }
+
+
+  .try-again-btn,
+  .close-btn,
+  .toggle-btn {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+
+  .toggle-btn {
+    order: -1; /* Перемещаем кнопку в начало на мобильных */
   }
 }
 </style>

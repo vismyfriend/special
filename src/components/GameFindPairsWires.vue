@@ -370,7 +370,13 @@ const finishGame = () => {
   gameStore.setWordSet(currentMission.value);
 
 
-  router.push("/leader-board/");
+  // Добавляем missionName в параметры маршрута
+  router.push({
+    path: "/leader-board/",
+    query: {
+      missionName: currentMission.value // Передаем текущую миссию
+    }
+  });
 };
 
 let startTime = null;

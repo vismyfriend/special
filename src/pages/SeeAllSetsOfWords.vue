@@ -462,8 +462,9 @@ onMounted(() => {
   pointer-events: none;
   transition: opacity 0.2s ease;
   z-index: 100;
-  max-width: 300px;
+  //max-width: 300px;
   text-align: left;
+  width: 100%;
 }
 
 .tooltip-wrapper:hover .custom-tooltip {
@@ -473,6 +474,7 @@ onMounted(() => {
 
 
 .create-special-set {
+  display: none;
   position: relative; /* для псевдоэлемента */
   overflow: hidden;
   margin: 1.5px;
