@@ -2,7 +2,7 @@
   <div v-if="exerciseData" class="exercise-container">
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
-      <p class="main-description">Listening tasks for S.P.E.C.i.A.L. agents</p>
+      <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
     </div>
 
     <div v-for="(task, index) in exerciseData.tasks"

@@ -65,6 +65,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "testWeakSpots1",
+      missionVisibleName: "Weak spots 1",
+      missionDescription: "Слабые места 1",
+      id: 1,
+      active: true
+    },
+    {
       missionName: "questionWordsAll",
       missionVisibleName: "All question words",
       missionDescription: "Все вопросительные слова",
