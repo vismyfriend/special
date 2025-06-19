@@ -2,6 +2,12 @@
 // ^\s*$\n
 const shortWordsData = {
 
+  testQuicklyData: [
+    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/" },
+    { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
+    { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
+
+  ],
   introSetFindPairsHard: [
     { id: 2, eng: "thousand", ru: "тысяча", hint: "/ˈθaʊznd/" },
     { id: 3, eng: "hundred", ru: "сто", hint: "/хандрэд/" },

@@ -15,12 +15,20 @@
                         <q-icon name="star" color="yellow" />
                     </span>
                 </q-btn>
-                <q-btn class="q-mb-sm zoomIn" icon="search" label="Другой набор слов" push color="primary" @click="backToPreviousPage" />
+                <q-btn class="q-mb-sm zoomIn" icon="search" label="Другой набор слов" push color="primary" @click="backToAllSets" />
 
                 <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="QUIT S.P.E.C.I.A.L App"
                 stack glossy color="purple" @click="backToIntroPage" />
-                <q-btn push color="brown-5" @click="backToPreviousPage" label="Этот же набор, другое задание"> 🔎</q-btn>
-
+              <!-- Кнопка показывается только если есть missionName -->
+              <q-btn
+                v-if="hasMissionName"
+                push
+                color="brown-5"
+                @click="backToSameSet"
+                label="Этот же набор, другое задание"
+              >
+                🔎
+              </q-btn>
 
             </div>
         </div>
@@ -31,16 +39,33 @@
 
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {computed, ref} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
+const route = useRoute()
 
 const router = useRouter();
 const isInstructionsVisible = ref(false);
-const backToPreviousPage = () => {
 
-router.push("/see-all-sets-of-words/")
+// На страницу с играми этого же набора
+const backToSameSet = () => {
+  if (hasMissionName.value) {
+    router.push(`/see-all-sets-of-words/${route.params.missionName}`);
+  } else {
+    console.error("missionName is undefined");
+    // Кнопка не должна отображаться, если missionName не определён,
+    // поэтому этот код выполнится только если что-то пошло не так
+    router.push("/see-all-sets-of-words/");
+  }
 }
 
+const backToAllSets = () => {
+  router.push("/see-all-sets-of-words/");
+}
+
+// Вычисляемое свойство для проверки наличия missionName
+const hasMissionName = computed(() => {
+  return !!route.params.missionName;
+});
 // на предидущую страницу
 // const goBack = () => {
 //   router.go(-1)

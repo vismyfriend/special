@@ -8,12 +8,19 @@
       <div class="inside-phone-frame">
         <q-btn push color="brown-5" @click="backToPreviousPage">📷 back to other missions 🔎 </q-btn>
 
-        <div class="games-container">
-          <div class="v-cards-choose" v-for="currentGame in AllGames" :key="currentGame.id">
-            <div class="v-card-choose" v-if="currentGame.active" @click="startGame(currentGame?.path)" role="button">
-              {{ currentGame.name }}
+        <div class="games-grid">
+          <div
+            class="game-card"
+            v-for="currentGame in filteredGames"
+            :key="currentGame.id"
+            @click="startGame(currentGame?.path)"
+            :class="{ 'locked': !currentGame.active }"
+          >
+            <div class="card-content">
+              <span>{{ currentGame.name }}</span>
+              <div class="card-icon" v-if="!currentGame.active">🔒</div>
+              <div class="card-icon" v-else>🕵🏻‍♂️</div>
             </div>
-            <q-btn icon="star" class="glossy" round color="deep-orange" />
           </div>
         </div>
       </div>
@@ -23,7 +30,7 @@
 
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import questionsData from "../dataForGames/questions-data";
@@ -112,18 +119,18 @@ const AllGames = ref([
     gameData: shortWordsData,
     active: true,
   },
-   {
+  {
     id: 104,
     name: "A deck of cards",
     path: "deck-of-cards",
     gameData: questionsData,
-    active: false
+    active: true
   },   {
     id: 104,
     name: "Translate it",
     path: "game-translate",
     gameData: questionsData,
-    active: false
+    active: true
   },
   {
     id: 105,
@@ -187,23 +194,20 @@ const AllGames = ref([
 
 ])
 
+
+const filteredGames = computed(() => {
+  return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
+});
+
 const startGame = (path) => {
-  router.push(`/see-all-sets-of-words/${route.params.missionName}/${path}`)
+  const game = AllGames.value.find(g => g.path === path);
+  if (game && game.active) {
+    router.push(`/see-all-sets-of-words/${route.params.missionName}/${path}`);
+  }
 }
 
 const backToPreviousPage = () => {
-  // router.push(-1)
   router.push("/see-all-sets-of-words/")
-}
-
-const compareNames = () => {
-  AllGames.value.forEach(el => {
-    const gameExists = el.gameData?.hasOwnProperty(route.params.missionName)
-    el.active = gameExists
-  })
-
-
-
 }
 
 onMounted(() => {
@@ -222,14 +226,13 @@ onMounted(() => {
   }
 
   typeWriter();
-  compareNames();
 });
 
 </script>
 
 <style lang="scss" scoped>
-.inside-phone-frame{
-  padding: 1px 15px;
+.inside-phone-frame {
+  padding: 1px 15px 15px;
 }
 
 .backgroundImg {
@@ -242,17 +245,81 @@ onMounted(() => {
   z-index: -1;
   right: 0;
   bottom: 0;
-
 }
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.game-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      flex-grow: 1;
+    }
+
+    .card-icon {
+      font-size: 16px;
+      margin-left: 8px;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &.locked {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+
+    .card-content {
+      span {
+        color: #999;
+      }
+
+      .card-icon {
+        color: #999;
+      }
+    }
+
+    &:hover {
+      transform: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
 #phoneFrame {
   position: relative; // Устанавливает элемент относительно его нормального положения
   height: 655px; // Высота элемента
   width: 310px; // Ширина элемента
   background:
     linear-gradient( // Фоновый градиент
-      to top, // Направление градиента
-      #fff -250%, // Белый цвет
-      #000000 150% // Черный цвет
+        to top, // Направление градиента
+        #fff -250%, // Белый цвет
+        #000000 150% // Черный цвет
     );
   margin: 5px auto; // Отступы сверху и снизу, центрирование по горизонтали
   border-radius: 2em; // Скругление углов
@@ -263,23 +330,23 @@ onMounted(() => {
     0 150px 200px -80px #000; // Внешняя тень
   overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
 
-// Стилизация полосы прокрутки
-&::-webkit-scrollbar {
-  width: 8px; // Ширина полосы прокрутки
-}
+  // Стилизация полосы прокрутки
+  &::-webkit-scrollbar {
+    width: 8px; // Ширина полосы прокрутки
+  }
 
-&::-webkit-scrollbar-track {
-  background: transparent; // Цвет фона полосы прокрутки
-}
+  &::-webkit-scrollbar-track {
+    background: transparent; // Цвет фона полосы прокрутки
+  }
 
-&::-webkit-scrollbar-thumb {
-  background: gray; // Цвет ползунка
-  border-radius: 10px; // Скругление углов ползунка
-}
+  &::-webkit-scrollbar-thumb {
+    background: gray; // Цвет ползунка
+    border-radius: 10px; // Скругление углов ползунка
+  }
 
-&::-webkit-scrollbar-thumb:hover {
-  background: darkgray; // Цвет ползунка при наведении
-}
+  &::-webkit-scrollbar-thumb:hover {
+    background: darkgray; // Цвет ползунка при наведении
+  }
 
   &::before {
     // Псевдоэлемент перед элементом
@@ -298,10 +365,10 @@ onMounted(() => {
 
 
 .closeThisPage {
- display: block;
- margin: 0 auto;
- border-radius: 30px;
- background-color: transparent;
+  display: block;
+  margin: 0 auto;
+  border-radius: 30px;
+  background-color: transparent;
 
 }
 
@@ -359,14 +426,14 @@ onMounted(() => {
   clear: both;
   padding: 15px;
 
-   &:before {
-     content: '';
-     position: absolute;
-     bottom: -50px;
-     height: 50px;
-     width: 90px;
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    height: 50px;
+    width: 90px;
 
-   }
+  }
 
   &.left {
     float: left;
@@ -383,119 +450,119 @@ onMounted(() => {
 
   }
   &.right {
-          float: right;
-          margin: 10px 10px 60px 10px;
-          &:before {
-            border-radius: 0 0 0 100%;
-            box-shadow:
-              2px -2px 0 0 #000 inset,
-              23px 0 0 0 #fff inset,
-              25px -2px 0 0 #000 inset;
-            right: 0;
-          }
-        }
+    float: right;
+    margin: 10px 10px 60px 10px;
+    &:before {
+      border-radius: 0 0 0 100%;
+      box-shadow:
+        2px -2px 0 0 #000 inset,
+        23px 0 0 0 #fff inset,
+        25px -2px 0 0 #000 inset;
+      right: 0;
+    }
+  }
 
-        &.think {
-          &:before {
-            height: 3px;
-            width: 3px;
-            bottom: -20px;
-            border-radius: 100%;
-            background: #fff;
-          }
-          &.left:before {
-            left: 50px;
-            box-shadow:
-              0 0 0 7px white,
-              0 0 0 10px black,
-              -20px 15px 0 5px white,
-              -20px 15px 0 8px black,
-              -40px 20px 0 2px white,
-              -40px 20px 0 5px black;
-          }
-          &.right:before {
-            right: 50px;
-            box-shadow:
-              0 0 0 7px white,
-              0 0 0 10px black,
-              20px 15px 0 5px white,
-              20px 15px 0 8px black,
-              40px 20px 0 2px white,
-              40px 20px 0 5px black;
-          }
-        }
-        &.yell {
-          &:before {
-            height: 0px;
-            width: 0px;
-            bottom: -8px;
-            border-radius: 0;
-            background: #fff;
-          }
-          &:after {
-            content: '';
-            position: absolute;
-            bottom: -41px;
-            height: 20px;
-            width: 59px;
-          }
-          &.left {
-            &:before {
-              transform: skew(-45deg);
-              left: 50px;
-              box-shadow:
-                //0 0 0 7px white,
-                0 -3px 0 5px white,
-                0 0 0 5px white,
-                0 8px 0 5px white,
-                8px 8px 0 5px white,
-                16px 8px 0 5px white,
-                24px 8px 0 5px white,
+  &.think {
+    &:before {
+      height: 3px;
+      width: 3px;
+      bottom: -20px;
+      border-radius: 100%;
+      background: #fff;
+    }
+    &.left:before {
+      left: 50px;
+      box-shadow:
+        0 0 0 7px white,
+        0 0 0 10px black,
+        -20px 15px 0 5px white,
+        -20px 15px 0 8px black,
+        -40px 20px 0 2px white,
+        -40px 20px 0 5px black;
+    }
+    &.right:before {
+      right: 50px;
+      box-shadow:
+        0 0 0 7px white,
+        0 0 0 10px black,
+        20px 15px 0 5px white,
+        20px 15px 0 8px black,
+        40px 20px 0 2px white,
+        40px 20px 0 5px black;
+    }
+  }
+  &.yell {
+    &:before {
+      height: 0px;
+      width: 0px;
+      bottom: -8px;
+      border-radius: 0;
+      background: #fff;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -41px;
+      height: 20px;
+      width: 59px;
+    }
+    &.left {
+      &:before {
+        transform: skew(-45deg);
+        left: 50px;
+        box-shadow:
+          //0 0 0 7px white,
+          0 -3px 0 5px white,
+          0 0 0 5px white,
+          0 8px 0 5px white,
+          8px 8px 0 5px white,
+          16px 8px 0 5px white,
+          24px 8px 0 5px white,
 
-                0 0 0 8px black,
-                0 8px 0 8px black,
-                8px 8px 0 8px black,
-                16px 8px 0 8px black,
-                24px 8px 0 8px black;
-            }
-            &:after {
-              border-radius: 0 0 60%;
-              transform: skew(-45deg);
-              box-shadow:
-                -3px -2px 0 0 #000 inset,
-                -14px 0 0 0 #fff inset,
-                -17px -2px 0 0 #000 inset;
-              left: 0;
-            }
-          }
-          &.right {
-            &:before {
-              transform: skew(45deg);
-              right: 50px;
-              box-shadow:
-                0 -3px 0 5px white,
-                0 0 0 5px white,
-                0 8px 0 5px white,
-                -8px 8px 0 5px white,
-                -16px 8px 0 5px white,
-                -24px 8px 0 5px white,
-                0 0 0 8px black,
-                0 8px 0 8px black,
-                -8px 8px 0 8px black,
-                -16px 8px 0 8px black,
-                -24px 8px 0 8px black;
-            }
-            &:after {
-            border-radius: 0 0 0 60%;
-              transform: skew(45deg);
-              box-shadow:
-                3px -2px 0 0 #000 inset,
-                14px 0 0 0 #fff inset,
-                17px -2px 0 0 #000 inset;
-              right: 0;
-            }
-          }
-        }
+          0 0 0 8px black,
+          0 8px 0 8px black,
+          8px 8px 0 8px black,
+          16px 8px 0 8px black,
+          24px 8px 0 8px black;
+      }
+      &:after {
+        border-radius: 0 0 60%;
+        transform: skew(-45deg);
+        box-shadow:
+          -3px -2px 0 0 #000 inset,
+          -14px 0 0 0 #fff inset,
+          -17px -2px 0 0 #000 inset;
+        left: 0;
+      }
+    }
+    &.right {
+      &:before {
+        transform: skew(45deg);
+        right: 50px;
+        box-shadow:
+          0 -3px 0 5px white,
+          0 0 0 5px white,
+          0 8px 0 5px white,
+          -8px 8px 0 5px white,
+          -16px 8px 0 5px white,
+          -24px 8px 0 5px white,
+          0 0 0 8px black,
+          0 8px 0 8px black,
+          -8px 8px 0 8px black,
+          -16px 8px 0 8px black,
+          -24px 8px 0 8px black;
+      }
+      &:after {
+        border-radius: 0 0 0 60%;
+        transform: skew(45deg);
+        box-shadow:
+          3px -2px 0 0 #000 inset,
+          14px 0 0 0 #fff inset,
+          17px -2px 0 0 #000 inset;
+        right: 0;
+      }
+    }
+  }
 
 }
 

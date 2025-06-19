@@ -3,7 +3,12 @@
 const questionsData = {
 
 
+  testQuicklyData: [
+    { id: 1, eng: "What is the capital of Great Britain?", ru: "Какая столица Великобритании?"},
+    { id: 2, eng: "What is the capital of USA?", ru: "Какая столица Америки?"},
 
+
+  ],
     introSetAlias: [
       // Цвета
       { id: 1, eng: "red", ru: "красный", hint: "/ рэд /" },

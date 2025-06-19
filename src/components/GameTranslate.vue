@@ -79,17 +79,29 @@ const fitText = () => {
 
     if (!container || !textEl) return;
 
-    let fontSize = 58;
-    textEl.style.fontSize = fontSize + 'px';
+    // Сохраняем оригинальные значения для десктопа
+    const isMobile = window.innerWidth <= 600;
+    let fontSize = isMobile ? 36 : 58; // На десктопе всегда стартуем с 58px
+    const lineHeight = isMobile ? 0.85 : 0.8;
+    const padding = isMobile ? 5 : 10;
 
-    // Уменьшаем шрифт, пока не влезает по ширине или высоте
+    textEl.style.fontSize = `${fontSize}px`;
+    textEl.style.lineHeight = lineHeight;
+    textEl.style.padding = `${padding}px`;
+
+    // Логика уменьшения сработает ТОЛЬКО если текст не помещается
     while (
       (textEl.scrollWidth > container.clientWidth ||
         textEl.scrollHeight > container.clientHeight) &&
       fontSize > 12
       ) {
       fontSize -= 1;
-      textEl.style.fontSize = fontSize + 'px';
+      textEl.style.fontSize = `${fontSize}px`;
+
+      // Дополнительная оптимизация ТОЛЬКО для мобильных
+      if (isMobile && fontSize < 24) {
+        fontSize -= 0.5; // Более плавное уменьшение
+      }
     }
   });
 };

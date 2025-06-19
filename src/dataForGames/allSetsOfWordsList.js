@@ -1,6 +1,13 @@
 export const allSetsOfWordsList =
   [
     {
+      missionName: "testQuicklyData",
+      missionVisibleName: "test quickly",
+      missionDescription: "протестировать быстро",
+      id: 1,
+      active: true
+    },
+    {
       missionName: "digits",
       missionVisibleName: "Digits /дИджитс/",
       missionDescription: "Цифры",
