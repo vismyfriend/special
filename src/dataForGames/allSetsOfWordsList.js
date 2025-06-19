@@ -107,6 +107,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "testWeakSpots6V1",
+      missionVisibleName: "test B2 C1",
+      missionDescription: "тест B2 C1",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "introSetCutWires",
       missionVisibleName: "intro Set Cut Wires",
       missionDescription: "Вопросительные слова intro",

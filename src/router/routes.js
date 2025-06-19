@@ -31,6 +31,10 @@ const routes = [
                 path: 'listening-exercises',
                 component: () => import('components/ListeningExercise.vue')
               },
+              {
+                path: 'tests-and-exams',
+                component: () => import('components/GameTestsAndExams.vue')
+              },
 
               {
                 path: 'find-pairs-hard',
