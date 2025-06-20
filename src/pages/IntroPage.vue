@@ -107,7 +107,7 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "Что делать дальше ? Куда нажимать ?";
+    : "Что делать дальше ? Куда жать ?";
 });
 
 const buttonColor = computed(() => {

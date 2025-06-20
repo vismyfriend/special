@@ -24,16 +24,16 @@ const TestsAndExamsData = {
             explanation: 'давайте разберемся почему это правильный ответ'
           },
           {
-            text: "Вопрос",
+            text: "Вопрос 2 + 2 = ?",
             options: {
-              A: "answer",
-              B: "answer",
-              C: "answer",
-              D: "answer",
-              E: "answer",
+              A: "1",
+              B: "2",
+              C: "3",
+              D: "4",
+              E: "5",
             },
             correctAnswer: "D",
-            explanation: 'давайте разберемся почему это правильный ответ'
+            explanation: 'ну типа потому что калькулятор так посчитал и все'
           },
         ]
       },

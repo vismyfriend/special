@@ -77,9 +77,9 @@
               :key="key"
               class="option-label"
               :class="[
-            getOptionClass(index, qi, key, q.correctAnswer),
-            answers[index][qi] === key && !checkedTasks[index] ? 'option-selected' : ''
-          ]"
+                getOptionClass(index, qi, key, q.correctAnswer),
+                answers[index][qi] === key && !checkedTasks[index] ? 'option-selected' : ''
+              ]"
             >
               <input
                 type="radio"
@@ -90,6 +90,21 @@
               />
               <span class="option-text">{{ key }} : {{ label }}</span>
             </label>
+          </div>
+
+          <!-- Добавленная кнопка Explain и блок с объяснением -->
+          <div v-if="checkedTasks[index]" class="explain-container">
+            <div v-if="expandedExplanations[index]?.[qi]" class="explanation-content">
+              <p>{{ q.explanation }}</p>
+            </div>
+            <button
+              class="explain-button"
+              :class="getExplainButtonClass(index, qi, q.correctAnswer)"
+              @click="toggleExplanation(index, qi)"
+            >
+              {{ expandedExplanations[index]?.[qi] ? 'Well, okay... ' : 'Explain it to me' }}
+            </button>
+
           </div>
         </div>
       </div>
@@ -136,6 +151,7 @@ const expandedScriptIndex = ref(null)
 const taskScores = ref([])
 const currentMission = ref('')
 const shuffledTasks = ref([])
+const expandedExplanations = ref([])
 
 // Функция для перемешивания массива
 const shuffleArray = (array) => {
@@ -205,11 +221,31 @@ onMounted(() => {
     )
     checkedTasks.value = shuffledTasks.value.map(() => false)
     taskScores.value = shuffledTasks.value.map(() => null)
+    expandedExplanations.value = shuffledTasks.value.map(task =>
+      Array(task.questions.length).fill(false)
+    ) // Инициализируем массив для хранения состояния объяснений
   }
 
   disableAudioDownload()
 })
 
+
+// Добавленная функция для переключения объяснения
+const toggleExplanation = (taskIndex, questionIndex) => {
+  if (!expandedExplanations.value[taskIndex]) {
+    expandedExplanations.value[taskIndex] = []
+  }
+  expandedExplanations.value[taskIndex][questionIndex] =
+    !expandedExplanations.value[taskIndex][questionIndex]
+}
+
+// Добавленная функция для определения класса кнопки Explain
+const getExplainButtonClass = (taskIndex, questionIndex, correctAnswer) => {
+  if (!checkedTasks.value[taskIndex]) return ''
+
+  const isCorrect = answers.value[taskIndex][questionIndex] === correctAnswer
+  return isCorrect ? 'explain-correct' : 'explain-incorrect'
+}
 
 const getGrade = (percentage) => {
   if (percentage === 100) return { letter: 'A+', class: 'grade-Aplus' }
@@ -294,7 +330,56 @@ const rainbowColors = [
 </script>
 
 <style scoped>
-/* Все стили остаются точно такими же, как в вашем исходном коде */
+
+.explain-container {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.explain-button {
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Базовый цвет (если что-то пойдет не так) */
+.explain-button {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+/* Если ответ правильный */
+.explain-button.explain-correct {
+  background-color: #10b981;
+  color: white;
+}
+
+/* Если ответ неправильный */
+.explain-button.explain-incorrect {
+  background-color: #ef4444;
+  color: white;
+}
+
+.explain-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.explanation-content {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #f5f3ff;
+  border-left: 3px solid #8b5cf6;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+
 .exercise-container {
   max-width: 56rem;
   margin: 2px 2px;

@@ -19,7 +19,9 @@
             <div class="card-content">
               <span>{{ currentGame.name }}</span>
               <div class="card-icon" v-if="!currentGame.active">🔒</div>
-              <div class="card-icon" v-else>🕵🏻‍♂️</div>
+              <div class="card-icon" v-else>
+                {{ currentGame.cardIcon || '🎮' }} <!-- Используем иконку из массива или дефолтную -->
+              </div>
             </div>
           </div>
         </div>
@@ -60,20 +62,7 @@ const AllGames = ref([
     name: "Print all words",
     path: "print-all-words",
     gameData: shortWordsData,
-    active: true,
-  },
-  {
-    id: 180,
-    name: "Listening",
-    path: "listening-exercises",
-    gameData: listeningExerciseData,
-    active: true,
-  },
-  {
-    id: 182,
-    name: "Tests",
-    path: "tests-and-exams",
-    gameData: TestsAndExamsData,
+    cardIcon: '🖨️', // Изменено на более подходящую иконку
     active: true,
   },
   {
@@ -81,6 +70,15 @@ const AllGames = ref([
     name: "Find pairs EASY",
     path: "find-pairs-easy",
     gameData: shortWordsData,
+    cardIcon: '✂️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 182,
+    name: "Tests",
+    path: "tests-and-exams",
+    gameData: TestsAndExamsData,
+    cardIcon: '📝', // Добавлена иконка
     active: true,
   },
   {
@@ -88,6 +86,15 @@ const AllGames = ref([
     name: "Find pairs HARD",
     path: "find-pairs-hard",
     gameData: shortWordsData,
+    cardIcon: '🧩', // Изменено на более подходящую иконку
+    active: true,
+  },
+  {
+    id: 180,
+    name: "Listening",
+    path: "listening-exercises",
+    gameData: listeningExerciseData,
+    cardIcon: '🎧', // Добавлена иконка
     active: true,
   },
   // {
@@ -118,6 +125,7 @@ const AllGames = ref([
     name: "Spelling",
     path: "spelling",
     gameData: shortWordsData,
+    cardIcon: '🔠', // Добавлена иконка
     active: true,
   },
   {
@@ -125,6 +133,7 @@ const AllGames = ref([
     name: "Spell Eight",
     path: "spell-eight",
     gameData: shortWordsData,
+    cardIcon: '✏️', // Добавлена иконка
     active: true,
   },
   {
@@ -132,12 +141,15 @@ const AllGames = ref([
     name: "A deck of cards",
     path: "deck-of-cards",
     gameData: questionsData,
+    cardIcon: '🃏', // Добавлена иконка
     active: true
-  },   {
+  },
+  {
     id: 104,
     name: "Translate it",
     path: "game-translate",
     gameData: questionsData,
+    cardIcon: '🌐', // Добавлена иконка
     active: true
   },
   {
@@ -145,14 +157,15 @@ const AllGames = ref([
     name: "TNT",
     path: "tnt",
     gameData: tntData,
+    cardIcon: '💣', // Добавлена иконка
     active: true
   },
-
   {
     id: 106,
     name: "Tricky quiz",
     path: "tricky-quiz",
     gameData: trickyQuizData,
+    cardIcon: '❓', // Добавлена иконка
     active: true
   },
   {
@@ -160,6 +173,7 @@ const AllGames = ref([
     name: "Help Bender",
     path: "bender",
     gameData: helpBenderData,
+    cardIcon: '🤖', // Добавлена иконка
     active: true
   },
   {
@@ -167,6 +181,7 @@ const AllGames = ref([
     name: "Истории",
     path: "stories",
     gameData: storiesData,
+    cardIcon: '📖', // Добавлена иконка
     active: true
   },
   {
@@ -174,6 +189,7 @@ const AllGames = ref([
     name: "Распутай слово",
     path: "scrambled",
     gameData: scrambledData,
+    cardIcon: '🔀', // Добавлена иконка
     active: true
   },
   {
@@ -181,6 +197,7 @@ const AllGames = ref([
     name: "Разные домашки",
     path: "hw-links",
     gameData: homeworkLinksData,
+    cardIcon: '📚', // Добавлена иконка
     active: true
   },
   {
@@ -188,6 +205,7 @@ const AllGames = ref([
     name: "Ссылка на домаху",
     path: "hw",
     gameData: hwData,
+    cardIcon: '📎', // Добавлена иконка
     active: true
   },
   {
@@ -195,6 +213,7 @@ const AllGames = ref([
     name: "Word Order New",
     path: "word-order",
     gameData: wordOrderNewGameData,
+    cardIcon: '🔤', // Добавлена иконка
     active: true
   },
 
@@ -265,7 +284,7 @@ onMounted(() => {
 .game-card {
   background-color: #fff;
   border-radius: 12px;
-  padding: 15px;
+  padding: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border: 1px solid #e0e0e0;
@@ -273,6 +292,7 @@ onMounted(() => {
   min-height: 60px;
   display: flex;
   align-items: center;
+  user-select: none;
 
   .card-content {
     display: flex;
@@ -287,10 +307,14 @@ onMounted(() => {
       flex-grow: 1;
     }
 
+
     .card-icon {
-      font-size: 16px;
+      font-size: 20px;
       margin-left: 8px;
+      min-width: 20px; /* Добавлено для сохранения места */
+      text-align: center; /* Центрируем иконку */
     }
+
   }
 
   &:hover {

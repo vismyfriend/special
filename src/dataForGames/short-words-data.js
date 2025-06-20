@@ -6,6 +6,7 @@ const shortWordsData = {
     { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/" },
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
+    { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
 
   ],
   introSetFindPairsHard: [
@@ -21,6 +22,73 @@ const shortWordsData = {
     { id: 11, eng: "twelve", ru: "двенадцать", hint: "/ тВэлв /" },
     { id: 12, eng: "twenty", ru: "двадцать", hint: "/ твЭнти /" }
   ],
+
+  appearanceWords: [
+    // Основные прилагательные внешности
+    { id: 1, eng: "beautiful", ru: "красивая (о женщине)", hint: "/ˈbjuːtɪfəl/" },
+    { id: 2, eng: "handsome", ru: "красивый (о мужчине)", hint: "/ˈhænsəm/" },
+    { id: 3, eng: "pretty", ru: "хорошенькая", hint: "/ˈprɪti/" },
+    { id: 4, eng: "ugly", ru: "уродливый", hint: "/ˈʌɡli/" },
+    { id: 5, eng: "attractive", ru: "привлекательный", hint: "/əˈtræktɪv/" },
+
+    // Типы телосложения
+    { id: 6, eng: "tall", ru: "высокий", hint: "/tɔːl/" },
+    { id: 7, eng: "short", ru: "низкий", hint: "/ʃɔːrt/" },
+    { id: 8, eng: "slim", ru: "стройный", hint: "/slɪm/" },
+    { id: 9, eng: "thin", ru: "худой", hint: "/θɪn/" },
+    { id: 10, eng: "fat", ru: "толстый", hint: "/fæt/" },
+    { id: 11, eng: "overweight", ru: "полный", hint: "/ˈoʊvərweɪt/" },
+    { id: 12, eng: "muscular", ru: "мускулистый", hint: "/ˈmʌskjələr/" },
+    { id: 13, eng: "well-built", ru: "хорошо сложенный", hint: "/ˌwel ˈbɪlt/" },
+    { id: 14, eng: "skinny", ru: "тощий", hint: "/ˈskɪni/" },
+    { id: 15, eng: "plump", ru: "полненький", hint: "/plʌmp/" },
+
+    // Черты лица
+    { id: 16, eng: "big blue eyes", ru: "большие голубые глаза", hint: "/bɪɡ bluː aɪz/" },
+    { id: 17, eng: "brown eyes", ru: "карие глаза", hint: "/braʊn aɪz/" },
+    { id: 18, eng: "narrow eyes", ru: "узкие глаза", hint: "/нЭроу айз/" },
+    { id: 19, eng: "long nose", ru: "длинный нос", hint: "/lɔːŋ noʊz/" },
+    { id: 20, eng: "pointed nose", ru: "острый нос", hint: "/ˈpɔɪntɪd noʊz/" },
+    { id: 21, eng: "full lips", ru: "пухлые губы", hint: "/fʊl lɪps/" },
+    { id: 22, eng: "thin lips", ru: "тонкие губы", hint: "/θɪn lɪps/" },
+    { id: 23, eng: "high cheekbones", ru: "высокие скулы", hint: "/haɪ ˈtʃiːkboʊnz/" },
+
+    // Волосы
+    { id: 24, eng: "blonde hair", ru: "светлые волосы", hint: "/blɒnd heər/" },
+    { id: 25, eng: "braids", ru: "косы", hint: "/брЭйдз/" },
+    { id: 26, eng: "red hair", ru: "рыжие волосы", hint: "/red heər/" },
+    { id: 27, eng: "black hair", ru: "черные волосы", hint: "/blæk heər/" },
+    { id: 28, eng: "gray hair", ru: "седые волосы", hint: "/ɡreɪ heər/" },
+    { id: 29, eng: "bald", ru: "лысый", hint: "/bɔːld/" },
+    { id: 30, eng: "curly hair", ru: "кудрявые волосы", hint: "/ˈkɜːrli heər/" },
+    { id: 31, eng: "straight hair", ru: "прямые волосы", hint: "/streɪt heər/" },
+    { id: 32, eng: "wavy hair", ru: "волнистые волосы", hint: "/ˈweɪvi heər/" },
+    { id: 33, eng: "short hair", ru: "короткие волосы", hint: "/ʃɔːrt heər/" },
+    { id: 34, eng: "long hair", ru: "длинные волосы", hint: "/lɔːŋ heər/" },
+    { id: 35, eng: "ponytail", ru: "хвостик", hint: "/ˈpoʊniteɪl/" },
+
+    // Особенности
+    { id: 36, eng: "beard", ru: "борода", hint: "/бИед/" },
+    { id: 37, eng: "moustache", ru: "усы", hint: "/мАсташ/" },
+    { id: 38, eng: "freckles", ru: "веснушки", hint: "/ˈfrekl̩z/" },
+    { id: 39, eng: "dimples", ru: "ямочки на щеках", hint: "/ˈdɪmpl̩z/" },
+    { id: 40, eng: "scar", ru: "шрам", hint: "/skɑːr/" },
+    { id: 41, eng: "tattoo", ru: "татуировка", hint: "/tæˈtuː/" },
+    { id: 42, eng: "piercing", ru: "пирсинг", hint: "/ˈpɪrsɪŋ/" },
+    { id: 43, eng: "glasses", ru: "очки", hint: "/ˈɡlæsɪz/" },
+
+    // Возраст
+    { id: 44, eng: "young", ru: "молодой", hint: "/jʌŋ/" },
+    { id: 45, eng: "middle-aged", ru: "среднего возраста", hint: "/ˌmɪdl̩ ˈeɪdʒd/" },
+    { id: 46, eng: "old", ru: "пожилой", hint: "/oʊld/" },
+    { id: 47, eng: "teenager", ru: "подросток", hint: "/ˈtiːneɪdʒər/" },
+
+    // Дополнительные важные слова
+    { id: 48, eng: "good-looking", ru: "симпатичный", hint: "/ˌɡʊd ˈlʊkɪŋ/" },
+    { id: 49, eng: "plain", ru: "обычной внешности", hint: "/pleɪn/" },
+    { id: 50, eng: "unusual appearance", ru: "необычная внешность", hint: "/ʌnˈjuːʒuəl əˈpɪrəns/" }
+  ],
+
 whatISitVideoMission: [
   { id: 1, eng: "a list", ru: "список", hint: "/ə lɪst/" },
   { id: 2, eng: "a phone", ru: "телефон", hint: "/ə fəʊn/" },

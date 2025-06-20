@@ -44,6 +44,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "appearanceWords",
+      missionVisibleName: "Внешность часть 1",
+      missionDescription: "Appearance part 1",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "questionWords3",
       missionVisibleName: "Question words 3",
       missionDescription: "Вопросительные слова 3",
