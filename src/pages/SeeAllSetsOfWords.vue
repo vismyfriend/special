@@ -206,7 +206,10 @@ onMounted(() => {
   width: 100%;
 
 }
+.q-btn {
+  cursor: none;
 
+}
 .v-card-choose:hover {
   transform: scale(1.05);
   /* Увеличение карточки при наведении */

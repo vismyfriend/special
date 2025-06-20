@@ -1,6 +1,45 @@
 
 const TestsAndExamsData = {
 
+  testQuicklyData: {
+    mainDescription: "Test Level A2",
+    tasks: [
+      {
+        taskDescription: 'Read out loud, choose the best variant',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'пояснения к этому заданию отсутствуют пока что, но Винсент работает над тем, чтобы они появились',
+        questions: [
+          {
+            text: "Вопросы и ответы перемешаны каждый раз когда заходите в тест, чтобы труднее было списать или скопировать у друзей",
+            options: {
+              A: "answer 1",
+              B: "answer 2",
+              C: "answer 3",
+              D: "answer 4",
+              E: "answer 5",
+            },
+            correctAnswer: "D",
+            explanation: 'давайте разберемся почему это правильный ответ'
+          },
+          {
+            text: "Вопрос",
+            options: {
+              A: "answer",
+              B: "answer",
+              C: "answer",
+              D: "answer",
+              E: "answer",
+            },
+            correctAnswer: "D",
+            explanation: 'давайте разберемся почему это правильный ответ'
+          },
+        ]
+      },
+
+    ]
+  },
 
   testPattern: {
     mainDescription: "Let's find out the weak spots",
@@ -21,7 +60,8 @@ const TestsAndExamsData = {
               D: "answer",
               E: "answer",
             },
-            correctAnswer: "D"
+            correctAnswer: "D",
+            explanation: 'давайте разберемся почему это правильный ответ'
           },
         ]
       },

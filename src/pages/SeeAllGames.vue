@@ -170,7 +170,7 @@ onMounted(() => {
   justify-content: flex-end;
   align-items: center;
   transition: all 0.3s ease;
-  cursor: pointer;
+  cursor: none;
   height: 120px;
   box-sizing: border-box;
   position: relative;
@@ -546,7 +546,7 @@ onMounted(() => {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
   transition: all 0.2s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  cursor: pointer;
+  cursor: none;
   font-size: 16px;
 }
 
@@ -601,7 +601,10 @@ onMounted(() => {
   display: flex;
   gap: 13px;
 }
+.q-btn {
+  cursor: none;
 
+}
 .miniButtons button {
   width: 32px;
   height: 32px;
@@ -610,7 +613,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: bold;
   color: white;
-  cursor: pointer;
+  cursor: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: transform 0.2s ease;
   display: flex;

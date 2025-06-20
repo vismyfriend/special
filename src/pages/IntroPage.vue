@@ -70,7 +70,7 @@
   </div>
   <q-btn
     align="between"
-    class="q-mb-sm zoomIn padding-left-right shining"
+    class="q-mb-sm zoomIn padding-left-right shining pulsing-a-bit"
     :color="buttonColor"
     :label="buttonLabel"
     icon-right="touch_app"
@@ -107,7 +107,7 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "Что делать дальше?";
+    : "Что делать дальше ? Куда нажимать ?";
 });
 
 const buttonColor = computed(() => {
@@ -135,7 +135,11 @@ const dynamicMessage = computed(() => {
 
 const backToIntroPage = () => {
   if (sessionCounter.value >= 20) {
-    router.push("/games");
+    handleBubbleClick();
+    // Задержка перед переходом
+    setTimeout(() => {
+      router.push("/games");
+    }, 2000); // 2 секунды – чтобы успело показаться сообщение
   } else {
     infoMessage.value = dynamicMessage.value;
     showOverlay.value = true;
@@ -630,6 +634,18 @@ calc(var(--fadeStart) * 100%) {
   }
   100% {
     left: -75%;
+  }
+}
+.pulsing-a-bit {
+  animation: pulse 2s infinite ease-in-out;
+
+}
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03); /* можно увеличить до 1.05, если хочется активнее */
   }
 }
 </style>

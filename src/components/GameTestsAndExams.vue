@@ -111,7 +111,7 @@
 
         <div v-if="task.textScript" class="script-toggle-wrapper">
           <button class="toggle-script-btn" @click="toggleScript(index)">
-            {{ expandedScriptIndex === index ? 'Скрыть текст' : 'Показать текст аудио' }}
+            {{ expandedScriptIndex === index ? 'Скрыть текст' : 'Explain it to me' }}
           </button>
         </div>
       </div>

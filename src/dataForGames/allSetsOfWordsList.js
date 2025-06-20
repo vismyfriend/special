@@ -3,8 +3,15 @@ export const allSetsOfWordsList =
     {
       missionName: "testQuicklyData",
       missionVisibleName: "Test quickly",
-      missionDescription: "Протестировать быстро",
+      missionDescription: "Протестировать игры",
       id: 1,
+      active: true
+    },
+    {
+      missionName: "levelCheck1",
+      missionVisibleName: "What's my level of English?",
+      missionDescription: "Какой мой уровень?",
+      id: 2,
       active: true
     },
     {

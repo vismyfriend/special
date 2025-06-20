@@ -10,10 +10,17 @@
         <div class="registration-container">
           <div class="input-container">
             <input v-model="userName" type="text" :placeholder="placeholderText" class="name-input">
-            <q-btn color="green-5" @click="submitName" class="ok-btn">OK</q-btn>
+            <q-btn
+              color="green-5"
+              :disable="isSubmitting"
+              @click="submitName"
+              class="ok-btn"
+            >
+              OK
+            </q-btn>
           </div>
 
-          <div class="virtual-keyboard">
+          <div class="virtual-keyboard" v-if="!isLoading">
             <div class="keyboard-row">
               <button class="kboardbutton" v-for="key in row1" :key="key" @click="addCharacter(key)">
                 {{ key }}
@@ -34,6 +41,11 @@
               <button class="kboardbutton" @click="addCharacter(' ')">Space</button>
               <button class="kboardbutton" @click="clearInput">Clear</button>
             </div>
+          </div>
+          <div v-if="isLoading" class="loading-container">
+            <div class="loading-message">loading ...  ( загрузка...)</div>
+
+            <img src="../assets/images/loadingDuck.gif" alt="loading" class="loading-gif" />
           </div>
           <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад </q-btn>
 
@@ -129,7 +141,8 @@ onMounted(() => {
   togglePlaceholder(); // запуск анимации мигания
 });
 
-
+const isSubmitting = ref(false);
+const isLoading = ref(false);
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
@@ -153,6 +166,8 @@ const setNotify = (message, color = 'black') => {
 };
 
 const submitName = async () => {
+  isSubmitting.value = true;
+  isLoading.value = true;
   if (!userName.value || userName.value.trim() === "") {
     setNotify("Please enter a valid name!", 'red');
     return;
@@ -162,6 +177,7 @@ const submitName = async () => {
   const savedName = localStorage.getItem('agentName');
   if (savedName === userName.value) {
     setNotify(`Welcome back, ${userName.value}!`);
+
     await router.push("/see-all-sets-of-words/");
     return;
   }
@@ -173,11 +189,16 @@ const submitName = async () => {
     gameStore.setAgentName(userName.value);
 
     setNotify(`Hello, ${userName.value}`);
+
     await router.push("/see-all-sets-of-words/");
   } catch (error) {
     setNotify("Registration failed. Please try again.", 'red');
     console.error('Registration error:', error);
+  } finally {
+    isSubmitting.value = false;
+    isLoading.value = false;
   }
+
 };
 
 
@@ -253,6 +274,7 @@ const continueAsGuest = async () => {
   width: 80%;
   gap: 10px;
   align-items: center;
+
 }
 
 .name-input {
@@ -261,6 +283,7 @@ const continueAsGuest = async () => {
   border: 2px solid #6a6a6a;
   width: 165px;
   font-size: 22px;
+  cursor: none;
 
 }
 
@@ -439,7 +462,10 @@ const continueAsGuest = async () => {
   display: flex;
   gap: 2px;
 }
+.q-btn {
+  cursor: none;
 
+}
 .kboardbutton {
   padding: 7px;
   font-size: 18px;
@@ -453,6 +479,25 @@ const continueAsGuest = async () => {
 .kboardbutton:hover {
   background-color: #555;
 }
+.loading-message {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 10px;
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Permanent Marker";
+}
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px; // как у .virtual-keyboard
+  gap: 10px;
+}
 
+.loading-gif {
+  width: 75%; // или аналогично размеру клавиатуры
+  height: auto;
+}
 
 </style>

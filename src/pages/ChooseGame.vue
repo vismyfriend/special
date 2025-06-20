@@ -574,6 +574,9 @@ onMounted(() => {
 
 }
 
+.q-btn {
+  cursor: none;
 
+}
 
 </style>

@@ -1,6 +1,29 @@
 
 const ListeningExerciseData = {
 
+  testQuicklyData: {
+    mainDescription: "Listening skills",
+    tasks: [
+      {
+        taskDescription: "Послушайте и ответьте",
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskID: "true_false",
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. Vincent is a nice teacherka",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. This audio is about this photo",
+            correctAnswer: "false"
+          },
+
+        ]
+      },
+    ]
+  },
   traffic1: {
     mainDescription: "Level B1 ",
     tasks: [
@@ -563,15 +586,15 @@ const ListeningExerciseData = {
 
     ]
   },
-  testPattern: {
-    mainDescription: "Let's find out the weak spots",
+  testPatternMultipleChoiceCopyThisAndChangeName: {
+    mainDescription: "Listening skills Level A2",
     tasks: [
       {
         taskDescription: 'Read out loud, choose the best variant',
-        audio: null,
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskID: "multiple_choice",
-        taskPicture: null,
-        textScript: null,
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
         questions: [
           {
             text: "Вопрос",
@@ -589,6 +612,31 @@ const ListeningExerciseData = {
 
     ]
   },
+  testPatternTrueFalseCopyThisAndChangeName: {
+    mainDescription: "Listening skills Level A2",
+    tasks: [
+      {
+        taskDescription: "Послушайте и ответьте",
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskID: "true_false",
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. Vincent is a nice teacherka",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. This audio is about this photo",
+            correctAnswer: "false"
+          },
+
+        ]
+      },
+
+    ]
+  },
+
   testWeakSpots1: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
