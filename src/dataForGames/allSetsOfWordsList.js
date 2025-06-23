@@ -128,6 +128,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "testForValery",
+      missionVisibleName: "Test for Valery",
+      missionDescription: "Test for Valery",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "introSetCutWires",
       missionVisibleName: "intro Set Cut Wires",
       missionDescription: "Вопросительные слова intro",
