@@ -72,6 +72,13 @@ export const allSetsOfWordsList =
       active: true
     },
     {
+      missionName: "examVariant1",
+      missionVisibleName: "Exam variant 1",
+      missionDescription: "Exam variant 1",
+      id: 1,
+      active: true
+    },
+    {
       missionName: "airportCode",
       missionVisibleName: "Airport code",
       missionDescription: "Код аэропорта",

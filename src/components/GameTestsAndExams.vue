@@ -3,7 +3,34 @@
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
       <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
+
+      <!-- Блок управления seed -->
+      <div class="seed-control">
+        <div class="seed-display">
+          Номер варианта:
+          <span class="seed-value" @click="isEditingSeed = true" v-if="!isEditingSeed">
+            {{ currentSeed }}
+          </span>
+          <input
+            v-else
+            v-model="inputSeed"
+            @keyup.enter="applySeed"
+            @blur="applySeed"
+            class="seed-input"
+            ref="seedInput"
+          >
+        </div>
+        <button
+          class="seed-copy-btn"
+          @click="copySeed"
+          title="Copy seed to clipboard"
+        >
+          📋
+        </button>
+      </div>
+
     </div>
+
 
     <div v-for="(task, index) in shuffledTasks"
          :key="index"
@@ -139,7 +166,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import TestsAndExamsData from '../dataForGames/TestsAndExamsData'
 
@@ -153,41 +180,58 @@ const currentMission = ref('')
 const shuffledTasks = ref([])
 const expandedExplanations = ref([])
 
-// Функция для перемешивания массива
-const shuffleArray = (array) => {
-  const newArray = [...array]
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[newArray[i], newArray[j]] = [newArray[j], newArray[i]]
-  }
-  return newArray
+// Добавляем новые refs для seed:
+const currentSeed = ref('')
+const inputSeed = ref('')
+const isEditingSeed = ref(false)
+const seedInput = ref(null)
+
+
+
+// Генерация случайного seed (пример: "a1b2c3")
+const generateRandomSeed = () => {
+  return Math.random().toString(36).slice(2, 8)
 }
 
-// Перемешиваем вопросы и варианты ответов
-const shuffleTest = (tasks) => {
+// Детерминированное перемешивание на основе seed
+const seededShuffle = (array, seed) => {
+  const shuffled = [...array]
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i)
+    hash |= 0 // Convert to 32bit integer
+  }
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const pseudoRandom = (hash % (i + 1) + i) % (i + 1)
+    const j = Math.abs(pseudoRandom)
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+
+// Обновлённая функция перемешивания теста
+const shuffleTest = (tasks, seed) => {
   return tasks.map(task => {
     if (task.taskID !== 'multiple_choice') return {...task}
 
-    // 1. Перемешиваем вопросы
-    const shuffledQuestions = shuffleArray([...task.questions])
+    // Перемешиваем вопросы с seed
+    const shuffledQuestions = seededShuffle([...task.questions], seed + 'questions')
 
-    // 2. Для каждого вопроса перемешиваем варианты
     const processedQuestions = shuffledQuestions.map(question => {
-      // Сохраняем правильный ответ
       const correctValue = question.options[question.correctAnswer]
+      const optionsEntries = seededShuffle(
+        Object.entries(question.options),
+        seed + 'options' + question.text
+      )
 
-      // Перемешиваем пары ключ-значение
-      const optionsEntries = shuffleArray(Object.entries(question.options))
-
-      // Создаем новые варианты с A, B, C...
       const newOptions = {}
       let newCorrectKey = 'A'
 
       optionsEntries.forEach(([oldKey, value], index) => {
-        const newKey = String.fromCharCode(65 + index) // A, B, C...
+        const newKey = String.fromCharCode(65 + index)
         newOptions[newKey] = value
-
-        // Если это был правильный ответ, сохраняем новый ключ
         if (oldKey === question.correctAnswer) {
           newCorrectKey = newKey
         }
@@ -207,23 +251,52 @@ const shuffleTest = (tasks) => {
   })
 }
 
+// Применяем новый seed
+const applySeed = async () => {
+  if (inputSeed.value.trim()) {
+    currentSeed.value = inputSeed.value.trim()
+  }
+  isEditingSeed.value = false
+
+  // Перестраиваем тест с новым seed
+  if (exerciseData.value) {
+    shuffledTasks.value = shuffleTest(exerciseData.value.tasks, currentSeed.value)
+    resetAnswers()
+  }
+}
+
+// Копируем seed в буфер обмена
+const copySeed = () => {
+  navigator.clipboard.writeText(currentSeed.value)
+  // Можно добавить уведомление об успешном копировании nuvdc1 vfwvlh 11 qc9di4 qc9di4 so2fgq
+}
+
+// Сброс ответов при смене seed
+const resetAnswers = () => {
+  answers.value = shuffledTasks.value.map(task =>
+    Array(task.questions.length).fill(null)
+  )
+  checkedTasks.value = shuffledTasks.value.map(() => false)
+  taskScores.value = shuffledTasks.value.map(() => null)
+  expandedExplanations.value = shuffledTasks.value.map(task =>
+    Array(task.questions.length).fill(false)
+  )
+}
+
+
+
+
 onMounted(() => {
   currentMission.value = route.params.missionName
   exerciseData.value = TestsAndExamsData[currentMission.value] || null
 
-  if (exerciseData.value) {
-    // 1. Перемешиваем тест
-    shuffledTasks.value = shuffleTest(exerciseData.value.tasks)
+  // Генерируем начальный seed
+  currentSeed.value = generateRandomSeed()
+  inputSeed.value = currentSeed.value
 
-    // 2. Инициализируем массивы ответов
-    answers.value = shuffledTasks.value.map(task =>
-      Array(task.questions.length).fill(null)
-    )
-    checkedTasks.value = shuffledTasks.value.map(() => false)
-    taskScores.value = shuffledTasks.value.map(() => null)
-    expandedExplanations.value = shuffledTasks.value.map(task =>
-      Array(task.questions.length).fill(false)
-    ) // Инициализируем массив для хранения состояния объяснений
+  if (exerciseData.value) {
+    shuffledTasks.value = shuffleTest(exerciseData.value.tasks, currentSeed.value)
+    resetAnswers()
   }
 
   disableAudioDownload()
@@ -330,6 +403,58 @@ const rainbowColors = [
 </script>
 
 <style scoped>
+
+/* Добавляем стили для seed-блока */
+.seed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.seed-display {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.seed-value {
+  font-family: monospace;
+  font-weight: bold;
+  color: #3b82f6;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #e0e7ff;
+}
+
+.seed-value:hover {
+  background-color: #d1d8ff;
+}
+
+.seed-input {
+  font-family: monospace;
+  padding: 2px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 80px;
+}
+
+.seed-copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.seed-copy-btn:hover {
+  background-color: #e5e7eb;
+}
+
 
 .explain-container {
   margin-top: 10px;

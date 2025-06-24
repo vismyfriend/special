@@ -68,11 +68,513 @@ const TestsAndExamsData = {
 
     ]
   },
+  examVariant1: {
+    mainDescription: "Let's find out the weak spots",
+    tasks: [
+      {
+        taskDescription: 'Советик from Vincentik: читайте ответы вслух - если звучит хорошо, то возможно ответ верный... но это не точно =)',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: null,
+        questions: [
+          {
+            text: "What time ___?",
+            options: {
+              A: "has the lesson start",
+              B: "the lesson start",
+              C: "did the lesson start",
+              D: "does the lesson start"
+            },
+            correctAnswer: "C",
+            explanation: 'Правильный ответ "C" - Past Simple для вопросов о прошедшем времени'
+          },
+          {
+            text: "Is he going to buy you a dog? Yes, he ___.",
+            options: {
+              A: "does",
+              B: "do",
+              C: "is",
+              D: "going"
+            },
+            correctAnswer: "C",
+            explanation: 'Краткий ответ требует глагола "to be" (is)'
+          },
+          {
+            text: "He'll be here ___ Sunday.",
+            options: {
+              A: "in",
+              B: "on",
+              C: "at",
+              D: "to"
+            },
+            correctAnswer: "B",
+            explanation: 'Предлог "on" используется с днями недели'
+          },
+          {
+            text: "Sam ___ her glasses!",
+            options: {
+              A: "always lose",
+              B: "is always losing",
+              C: "always is losing",
+              D: "is losing"
+            },
+            correctAnswer: "B",
+            explanation: 'Правильная конструкция Present Continuous + always для раздражения'
+          },
+          {
+            text: "I enjoy ___ to music.",
+            options: {
+              A: "listen",
+              B: "to listen",
+              C: "listening",
+              D: "am listening"
+            },
+            correctAnswer: "C",
+            explanation: 'После глагола "enjoy" используется -ing форма'
+          },
+          {
+            text: "___ TV.",
+            options: {
+              A: "I not often watch",
+              B: "I don't watch often",
+              C: "Often don't watch I",
+              D: "I don't often watch"
+            },
+            correctAnswer: "D",
+            explanation: 'Правильный порядок слов в отрицательном предложении'
+          },
+          {
+            text: "I ___ tall.",
+            options: {
+              A: "amn't",
+              B: "am not",
+              C: "both are correct"
+            },
+            correctAnswer: "B",
+            explanation: 'Правильная отрицательная форма глагола "to be"'
+          },
+          {
+            text: "A: Have you seen Jenny? B: She's in the bedroom. She ___ a nap.",
+            options: {
+              A: "has",
+              B: "is doing",
+              C: "is making",
+              D: "is having"
+            },
+            correctAnswer: "D",
+            explanation: 'Правильное выражение "to have a nap"'
+          },
+          {
+            text: "Can you look after the ___ dog while we are on holiday?",
+            options: {
+              A: "children's",
+              B: "childrens'",
+              C: "childrens's"
+            },
+            correctAnswer: "A",
+            explanation: 'Правильная форма притяжательного падежа множественного числа'
+          },
+          {
+            text: "Did you buy ___ good toys?",
+            options: {
+              A: "some",
+              B: "any",
+              C: "anything",
+              D: "a"
+            },
+            correctAnswer: "B",
+            explanation: '"Any" используется в вопросах'
+          },
+          {
+            text: "I went to university in ___ morning.",
+            options: {
+              A: "a",
+              B: "an",
+              C: "the",
+              D: "-"
+            },
+            correctAnswer: "C",
+            explanation: 'Определенный артикль с временами дня'
+          },
+          {
+            text: "My ___ daughter is two years old.",
+            options: {
+              A: "brothers",
+              B: "brothers'",
+              C: "brother's",
+              D: "brother"
+            },
+            correctAnswer: "C",
+            explanation: 'Притяжательный падеж единственного числа'
+          },
+          {
+            text: "There ___ a dog and two cats in the room.",
+            options: {
+              A: "are",
+              B: "is",
+              C: "some"
+            },
+            correctAnswer: "B",
+            explanation: 'Глагол согласуется с первым существительным (a dog)'
+          },
+          {
+            text: "Where ___?",
+            options: {
+              A: "he goes",
+              B: "does he goes",
+              C: "does he go",
+              D: "is he go"
+            },
+            correctAnswer: "C",
+            explanation: 'Правильный порядок слов в вопросе Present Simple'
+          },
+          {
+            text: "He ___ cleaning his room tonight.",
+            options: {
+              A: "is going to",
+              B: "will",
+              C: "is"
+            },
+            correctAnswer: "C",
+            explanation: 'Present Continuous для запланированных действий'
+          },
+          {
+            text: "I don't have ___ money after the weekend.",
+            options: {
+              A: "few",
+              B: "a few",
+              C: "much",
+              D: "many"
+            },
+            correctAnswer: "C",
+            explanation: '"Much" с неисчисляемыми существительными'
+          },
+          {
+            text: "Jack ___ listens to music.",
+            options: {
+              A: "is never",
+              B: "never",
+              C: "doesn't",
+              D: "doesn't never"
+            },
+            correctAnswer: "B",
+            explanation: 'Наречие частотности перед основным глаголом'
+          },
+          {
+            text: "He ___ it last Thursday.",
+            options: {
+              A: "did",
+              B: "has done",
+              C: "is doing",
+              D: "has done"
+            },
+            correctAnswer: "A",
+            explanation: 'Past Simple для завершенных действий в прошлом'
+          },
+          {
+            text: "It ___ snows in Russia",
+            options: {
+              A: "will",
+              B: "often",
+              C: "was"
+            },
+            correctAnswer: "B",
+            explanation: 'Наречие частотности для описания повторяющихся действий'
+          },
+          {
+            text: "He ___ play football.",
+            options: {
+              A: "can't to",
+              B: "can't",
+              C: "doesn't can to",
+              D: "doesn't can"
+            },
+            correctAnswer: "B",
+            explanation: 'Модальный глагол "can" не требует частицы "to"'
+          },
+          {
+            text: "I don't want ___ this film. It's horrible!",
+            options: {
+              A: "watch",
+              B: "to watch",
+              C: "to watching",
+              D: "watching"
+            },
+            correctAnswer: "B",
+            explanation: 'Глагол "want" требует инфинитива с "to"'
+          },
+          {
+            text: "Were you happy? No, I ___.",
+            options: {
+              A: "didn't",
+              B: "wasn't",
+              C: "weren't",
+              D: "am not"
+            },
+            correctAnswer: "B",
+            explanation: 'Согласование времен в кратком ответе'
+          },
+          {
+            text: "He ___ to a party next week.",
+            options: {
+              A: "goes",
+              B: "will goes",
+              C: "go",
+              D: "is going"
+            },
+            correctAnswer: "D",
+            explanation: 'Present Continuous для запланированных будущих действий'
+          },
+          {
+            text: "You ___ drink alcohol when you are a teenager.",
+            options: {
+              A: "shouldn't",
+              B: "don't must to",
+              C: "haven't to",
+              D: "are always"
+            },
+            correctAnswer: "A",
+            explanation: 'Should not для выражения рекомендации/запрета. Остальные варианты неверны грамматически'
+          },
+          {
+            text: "He is getting married ___.",
+            options: {
+              A: "yesterday",
+              B: "in five days",
+              C: "two hours ago",
+              D: "last day"
+            },
+            correctAnswer: "B",
+            explanation: 'Указание на будущее время с "in"'
+          },
+          {
+            text: "What ___ do next summer?",
+            options: {
+              A: "you",
+              B: "are you",
+              C: "do you",
+              D: "are you going to"
+            },
+            correctAnswer: "D",
+            explanation: 'Конструкция "be going to" для планов'
+          },
+          {
+            text: "I'll see you ___ 2.15 p.m.",
+            options: {
+              A: "in",
+              B: "on",
+              C: "at",
+              D: "to"
+            },
+            correctAnswer: "C",
+            explanation: 'Предлог "at" с точным временем'
+          },
+          {
+            text: "He's ___ paid for it.",
+            options: {
+              A: "yet",
+              B: "still",
+              C: "already"
+            },
+            correctAnswer: "C",
+            explanation: '"Already" для завершенных действий'
+          },
+          {
+            text: "Her friends ___ climbed this mountain.",
+            options: {
+              A: "has",
+              B: "have",
+              C: "did",
+              D: "were"
+            },
+            correctAnswer: "B",
+            explanation: 'Present Perfect с подлежащим во множественном числе'
+          },
+          {
+            text: "How many pets ___?",
+            options: {
+              A: "are you having",
+              B: "do you have",
+              C: "have you",
+              D: "you have"
+            },
+            correctAnswer: "B",
+            explanation: 'Present Simple для постоянных состояний'
+          },
+          {
+            text: "She thinks she ___ do it",
+            options: {
+              A: "will",
+              B: "going to",
+              C: "have to",
+              D: "am"
+            },
+            correctAnswer: "A",
+            explanation: '"Will" для спонтанных решений'
+          },
+          {
+            text: "I ___ when my family arrived.",
+            options: {
+              A: "were cooking",
+              B: "cooking",
+              C: "cooked",
+              D: "was cooking"
+            },
+            correctAnswer: "D",
+            explanation: 'Past Continuous для длительного действия в прошлом'
+          },
+          {
+            text: "My brother __ very well.",
+            options: {
+              A: "cans drive",
+              B: "can drive",
+              C: "can drives",
+              D: "cans drives"
+            },
+            correctAnswer: "B",
+            explanation: 'Модальный глагол "can" не изменяется'
+          },
+          {
+            text: "I ___ a car",
+            options: {
+              A: "haven't",
+              B: "don't has",
+              C: "don't have",
+              D: "have not"
+            },
+            correctAnswer: "C",
+            explanation: 'Правильное отрицание Present Simple'
+          },
+          {
+            text: "The car ___ him when he was crossing the street.",
+            options: {
+              A: "was hitting",
+              B: "were hitting",
+              C: "hit",
+              D: "hitted"
+            },
+            correctAnswer: "C",
+            explanation: 'Past Simple для завершенного действия'
+          },
+          {
+            text: "If you read this book, he ___ happy.",
+            options: {
+              A: "will be",
+              B: "is",
+              C: "will",
+              D: "be"
+            },
+            correctAnswer: "A",
+            explanation: 'Условное предложение 1 типа (If + Present, Future)'
+          },
+          {
+            text: "I haven't sold my house ___.",
+            options: {
+              A: "just",
+              B: "ever",
+              C: "already",
+              D: "yet"
+            },
+            correctAnswer: "D",
+            explanation: '"Yet" в отрицательных предложениях'
+          },
+          {
+            text: "There ___ some potatoes there yesterday.",
+            options: {
+              A: "was",
+              B: "were",
+              C: "are",
+              D: "is"
+            },
+            correctAnswer: "B",
+            explanation: 'Past Simple с подлежащим во множественном числе'
+          },
+          {
+            text: "Where ___?",
+            options: {
+              A: "were she",
+              B: "was she",
+              C: "did she be"
+            },
+            correctAnswer: "B",
+            explanation: 'Правильная форма глагола "to be" в Past Simple'
+          },
+          {
+            text: "I studied there when I ___ in Berlin.",
+            options: {
+              A: "are",
+              B: "was",
+              C: "were",
+              D: "live"
+            },
+            correctAnswer: "B",
+            explanation: 'Согласование времен в Past Simple'
+          },
+          {
+            text: "You ___ today.",
+            options: {
+              A: "illed",
+              B: "are illing",
+              C: "are ill",
+              D: "ill"
+            },
+            correctAnswer: "C",
+            explanation: 'Прилагательное "ill" с глаголом "to be"'
+          },
+          {
+            text: "We're ___ young people.",
+            options: {
+              A: "a",
+              B: "an",
+              C: "the",
+              D: "-"
+            },
+            correctAnswer: "D",
+            explanation: 'Нулевой артикль с обобщающим значением'
+          },
+          {
+            text: "If George ___, I will buy this dress.",
+            options: {
+              A: "don't come",
+              B: "doesn't come",
+              C: "willn't come",
+              D: "won't come"
+            },
+            correctAnswer: "B",
+            explanation: 'Условное предложение 1 типа (If + Present Simple)'
+          },
+          {
+            text: "I ___ you now.",
+            options: {
+              A: "am understanding",
+              B: "understanded",
+              C: "understand"
+            },
+            correctAnswer: "C",
+            explanation: 'Глагол "understand" не используется в Continuous'
+          },
+          {
+            text: "Shhhhhh! Be quiet! Your dad ___.",
+            options: {
+              A: "sleeps",
+              B: "is sleep",
+              C: "is sleeping",
+              D: "sleeping"
+            },
+            correctAnswer: "C",
+            explanation: 'Present Continuous для действий в момент речи'
+          }
+        ]
+      },
+
+    ]
+  },
   testForValery: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
       {
-        taskDescription: 'Read out loud, choose the best variant',
+        taskDescription: 'Советик from Vincentik: читайте ответы вслух - если звучит хорошо, то возможно ответ верный... но это не точно =)',
         audio: null,
         taskID: "multiple_choice",
         taskPicture: null,
@@ -87,7 +589,7 @@ const TestsAndExamsData = {
               D: "in"
             },
             correctAnswer: "B",
-            explanation: "The correct preposition for means of transport is 'by'."
+            explanation: "Когда говоришь каким транспортом добираешься, то используй предлог 'by' Попробуй составить несколько своих примеров про родственников и друзей - кто как добирается до работы? Кто на такси? Кто на автобусе."
           },
           {
             text: "Are you going to the party? – Yes, I ____",
