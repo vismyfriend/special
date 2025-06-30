@@ -5,21 +5,30 @@ export const allSetsOfWordsList =
       missionVisibleName: "Test quickly",
       missionDescription: "Протестировать игры",
       id: 1,
-      active: true
+      active: true,
+    },
+    {
+      missionName: "tagQuestionsA1",
+      missionVisibleName: "Tag Questions A1",
+      missionDescription: "Уточняющие вопросы",
+      id: 1,
+      active: true,
     },
     {
       missionName: "levelCheck1",
       missionVisibleName: "What's my level of English?",
       missionDescription: "Какой мой уровень?",
       id: 2,
-      active: true
+      active: false
     },
     {
       missionName: "digits",
       missionVisibleName: "Digits /дИджитс/",
       missionDescription: "Цифры",
       id: 1,
-      active: true
+      active: true,
+      stars: '5'
+
     },
 
     {
@@ -27,14 +36,16 @@ export const allSetsOfWordsList =
       missionVisibleName: "Alphabet",
       missionDescription: "Алфавит",
       id: 7,
-      active: true
+      active: true,
+      stars: '5'
     },
     {
       missionName: "questionWords1",
       missionVisibleName: "Question words 1",
       missionDescription: "Вопросительные слова 1",
       id: 7,
-      active: true
+      active: true,
+      stars: '1'
     },
     {
       missionName: "questionWords2",
@@ -48,7 +59,8 @@ export const allSetsOfWordsList =
       missionVisibleName: "Внешность часть 1",
       missionDescription: "Appearance part 1",
       id: 7,
-      active: true
+      active: true,
+      stars: '3'
     },
     {
       missionName: "questionWords3",
@@ -252,6 +264,22 @@ export const allSetsOfWordsList =
     //   id: 14,
     //   active: true
     // }
+    {
+      missionName: "firstAidA2",
+      missionVisibleName: "First aid A2",
+      missionDescription: "Первая помощь",
+      id: 7,
+      active: true,
+      stars: '2'
+    },
+    {
+      missionName: "tagquestionz",
+      missionVisibleName: "tag2",
+      missionDescription: "tag1",
+      id: 7,
+      active: true,
+      stars: '2'
+    },
   ]
 export const AllGames =
   [
@@ -313,6 +341,7 @@ export const AllGames =
       route: "/",
       icon: "ButtonGreenLady.png"
     },
+
     {
       id: 1,
       name: "coming soon",

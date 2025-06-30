@@ -42,13 +42,23 @@
             role="button"
             @click="goToChosenGame(`/see-all-sets-of-words/${currentSetOfWords.missionName}`)"
             :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
+    '--offset-x': '5px',
+    '--offset-y': '29.5px'
+  }"
           >
-            {{ currentSetOfWords.missionDescription }}
+            <div class="card-content">
+              <span class="card-description">{{ currentSetOfWords.missionDescription }}</span>
+              <span class="card-stars" v-if="currentSetOfWords.stars">
+      {{ getLevelStars(currentSetOfWords.stars) }}
+    </span>
+            </div>
             <div class="custom-tooltip">
-              {{ currentSetOfWords.missionVisibleName }}
+              <div class="tooltip-content">
+                <span class="mission-name">{{ currentSetOfWords.missionVisibleName }}</span>
+                <span class="mission-stars" v-if="currentSetOfWords.stars">
+        {{ getLevelStars(currentSetOfWords.stars) }}
+      </span>
+              </div>
             </div>
           </div>
         </div>
@@ -107,7 +117,11 @@ const goToChosenGame = (route) => {
   router.push({ path: route })
 
 }
-
+const getLevelStars = (stars) => {
+  if (!stars) return '';
+  const starCount = parseInt(stars);
+  return '⭐'.repeat(starCount);
+};
 
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
@@ -184,6 +198,7 @@ onMounted(() => {
   flex-wrap: wrap;
   /* Позволяет карточкам переходить на новую строку */
 
+
 }
 
 .v-card-choose {
@@ -217,6 +232,29 @@ onMounted(() => {
   /* Увеличенная тень при наведении */
   user-select: none;
 
+}
+
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* выравнивание по вертикали */
+  width: 100%;
+}
+
+.card-description {
+  text-align: left;
+  margin-right: 10px;
+  flex-grow: 1; /* позволяет описанию занимать всё доступное пространство */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* предотвращаем перенос текста */
+}
+
+.card-stars {
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0; /* предотвращает сжатие звёзд */
 }
 
 .closeThisPage {
@@ -475,6 +513,21 @@ onMounted(() => {
 }
 
 
+.tooltip-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mission-name {
+  text-align: left;
+  margin-right: 10px; /* небольшой отступ между названием и звёздами */
+}
+
+.mission-stars {
+  text-align: right;
+  white-space: nowrap; /* чтобы звёзды не переносились */
+}
 
 .create-special-set {
   display: none;

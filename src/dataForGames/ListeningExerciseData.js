@@ -5,6 +5,7 @@ const ListeningExerciseData = {
     mainDescription: "Listening skills",
     tasks: [
       {
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
         taskDescription: "Послушайте и ответьте",
         audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskID: "true_false",
@@ -1950,6 +1951,30 @@ const ListeningExerciseData = {
             },
             correctAnswer: "B",
             explanation: "The correct verb for clothes is 'wearing'."
+          },
+
+        ]
+      },
+
+    ]
+  },
+  firstAidA2: {
+    mainDescription: "Listening skills Level A2",
+    tasks: [
+      {
+        taskDescription: "Послушайте и ответьте",
+        audio: new URL('../assets/audio/firstAidA2.mp3', import.meta.url).href,
+        taskID: "true_false",
+        taskPicture: null,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. First aid",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. second aid",
+            correctAnswer: "false"
           },
 
         ]

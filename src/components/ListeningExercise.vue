@@ -3,6 +3,8 @@
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
       <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
+
+
     </div>
 
     <div v-for="(task, index) in exerciseData.tasks"
@@ -10,6 +12,23 @@
          class="task-container"
          :style="{ backgroundColor: rainbowColors[index % 7] }"
     >
+
+      <!-- Блок для необходимых слов -->
+      <div v-if="exerciseData?.tasks?.[index]?.usefulWords" class="useful-words-container">
+        <div class="useful-words">
+          <span class="useful-words-title">Useful words:</span>
+          <div class="useful-words-content">
+            <div v-for="(pair, i) in parseUsefulWords(exerciseData.tasks[index].usefulWords)"
+                 :key="i"
+                 class="word-pair">
+              <span class="english-word">{{ pair.english }}</span>
+              <span class="separator">-</span>
+              <span class="translation">{{ pair.russian }}</span>
+              <span v-if="i < parseUsefulWords(exerciseData.tasks[index].usefulWords).length - 1" class="comma">,</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <h3 class="task-title">{{ task.taskDescription }}</h3>
 
       <!-- Добавлено отображение картинки, если она есть -->
@@ -190,7 +209,15 @@ const disableAudioDownload = () => {
     }
   });
 };
+const parseUsefulWords = (wordsString) => {
+  if (!wordsString) return [];
 
+  // Разбиваем строку по запятым, затем каждую пару по дефису
+  return wordsString.split(',').map(pair => {
+    const [english, russian] = pair.split('-').map(s => s.trim());
+    return { english, russian };
+  });
+};
 const checkAnswers = (taskIndex) => {
   checkedTasks.value[taskIndex] = true;
 
@@ -275,6 +302,62 @@ const rainbowColors = [
 .main-description {
   font-size: 1.125rem;
   color: #4b5563;
+}
+
+/* Добавляем стили для seed-блока */
+.useful-words-container {
+  margin: 15px 0;
+  width: 100%;
+}
+
+.useful-words {
+  display: flex;
+  flex-direction: column; /* Меняем направление на колонку */
+  gap: 8px;
+  padding: 12px 15px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.useful-words-title {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.useful-words-content {
+  display: flex;
+  flex-direction: column; /* Каждое слово на новой строке */
+  gap: 6px;
+}
+
+.word-pair {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+}
+
+.english-word {
+  font-style: italic;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.translation {
+  color: #4b5563;
+}
+
+.separator {
+  color: #9ca3af;
+}
+
+/* Убираем запятые, так как теперь каждое слово на новой строке */
+.comma {
+  display: none;
 }
 
 /* Task styles */

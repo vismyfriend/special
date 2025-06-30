@@ -186,6 +186,8 @@ const inputSeed = ref('')
 const isEditingSeed = ref(false)
 const seedInput = ref(null)
 
+const hasSeedFeature = ref(true) // Включить/выключить seed-функционал
+const showUsefulWords = ref(true) // Показывать полезные слова
 
 
 // Генерация случайного seed (пример: "a1b2c3")

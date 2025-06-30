@@ -35,6 +35,10 @@ const routes = [
                 path: 'tests-and-exams',
                 component: () => import('components/GameTestsAndExams.vue')
               },
+              {
+                path: 'tag-questions-game',
+                component: () => import('components/GameTagQuestions.vue')
+              },
 
               {
                 path: 'find-pairs-hard',
