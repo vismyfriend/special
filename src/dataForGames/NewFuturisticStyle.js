@@ -137,12 +137,12 @@ const NewFuturisticStyleData = {
         usefulWords: 'is he? - isn`t he? , are they? - aren`t they?',
         taskDescription: "Впишите подходящий tag",
         taskID: "tag-questions",
-        taskPicture: null,
+        taskPicture: new URL("../assets/images/vincentOnKayak.jpg", import.meta.url).href,
         questions: [
           {
-            text: "Vincent is not a very stupid teacherka, ___?",
+            text: "Vincent isn`t in this picture, ___?",
             correctAnswer: "is he?",
-            explanation: 'Vincent - это он - поэтому he - предложение отрицательное, значит хвостик (tag) положительный, или же он глуп?'
+            explanation: 'Vincent - это он - поэтому he - предложение отрицательное, значит хвостик (tag) положительный. Перевод : Винсента нет на этой фотографии, или же есть?'
 
           },
           {
