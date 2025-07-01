@@ -9,6 +9,19 @@ const shortWordsData = {
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
 
   ],
+  mission001CutWiresEasy: [
+    { id: 1, eng: "cut", ru: "Резать", hint: "/кАт/" },
+    { id: 2, eng: "wires", ru: "Провода", hint: "/уАйерз/" },
+    { id: 3, eng: "find", ru: "Находить", hint: "/ фАйнд /" },
+    { id: 4, eng: "special", ru: "Особенный", hint: "/ спЭшл /" },
+    { id: 5, eng: "mission", ru: "Миссия", hint: "/ мИшн /" },
+    { id: 6, eng: "task", ru: "Задание", hint: "/ таск /" },
+    { id: 7, eng: "pair", ru: "Пара", hint: "/ пЭа /" },
+    { id: 8, eng: "wifi", ru: "беспроводной интернет", hint: "/ вай фай /" },
+    { id: 9, eng: "lazy", ru: "Ленивый", hint: "/ лЭйзи /" },
+
+
+  ],
   introSetFindPairsHard: [
     { id: 2, eng: "thousand", ru: "тысяча", hint: "/ˈθaʊznd/" },
     { id: 3, eng: "hundred", ru: "сто", hint: "/хандрэд/" },

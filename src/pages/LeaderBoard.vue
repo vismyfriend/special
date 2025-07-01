@@ -113,7 +113,7 @@ import { onMounted, ref, computed } from "vue";
 import { api } from "src/api";
 import { useGameStore } from "stores/example-store";
 import { useRoute, useRouter } from 'vue-router'
-import { allSetsOfWordsList } from "src/dataForGames/allSetsOfWordsList";
+import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
 // Инициализация хранилища и роутера
 const router = useRouter();
@@ -229,7 +229,7 @@ const handleChangeName = () => router.push("/registration");
  * Поиск описания набора слов по имени
  */
 const wordSetNameSearch = (name) => {
-  const currentWordSet = allSetsOfWordsList.find(word => word.missionName === name);
+  const currentWordSet = allGamesAndSetsOfWordsList.find(word => word.missionName === name);
   return currentWordSet?.missionDescription || name;
 };
 

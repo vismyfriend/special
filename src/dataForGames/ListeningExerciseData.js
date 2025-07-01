@@ -30,22 +30,22 @@ const ListeningExerciseData = {
     tasks: [
       {
         usefulWords: null,
-        taskDescription: "Слушайте и повторяйте вслух. Переводить не нужно, только повторять на английском. Проверим способность слышать и копировать английское произношение, правильную интоннацию, ну и рашн акцент проверим есть или нет. уан ту фри нажимай плэй и погнали лэтс гоу эйджэнт",
+        taskDescription: "Слушайте и повторяйте вслух. Переводить не нужно, только повторять. Без пауз. Каждое слово или фразу из аудио нужно повторить вслух на английском. Проверим способность слышать и копировать английское произношение, звуки, правильную интоннацию, ну и рАшн Экцент проверим есть или нет. уан ту фри нажимай плэй и погнали лэтс гоу эйджэнт",
         audio: new URL('../assets/audio/Musical-instrument.mp3', import.meta.url).href,
         taskID: "true_false",
         taskPicture: new URL("../assets/images/guitarist.jpg", import.meta.url).href,
         textScript: 'Что  действительно без подсказок сложно было? Ну ладно вот подсказка: здесь только один FALSE ответ ;) дальше сами справитесь',
         questions: [
           {
-            text: "1. Называли музыкальные интструменты?",
+            text: "1. Аудио было про интструменты?",
             correctAnswer: "true"
           },
           {
-            text: "2. Называли известных композиторов?",
+            text: "2. В этом аудио называли композиторов?",
             correctAnswer: "false"
           },
           {
-            text: "3. В слове GUITAR ударение на букву А. (20сек)",
+            text: "3. В слове GUITAR ударение на букву А? (20сек)",
             correctAnswer: "true"
           },
           {
@@ -68,39 +68,100 @@ const ListeningExerciseData = {
         audio: null,
         taskID: "multiple_choice",
         taskPicture: new URL("../assets/images/150-Musical-instrument.jpg", import.meta.url).href,
-        textScript: 'В английском языке нет уменьшительно ласкательных слов у них и Гитара и Гитароччка и Гитарка это все guitar. Ну и у них нет отдельного слова для аккордиона с клавишами или аккордиона без клавиш, поэтому у русских Аккордион - это с клавишами, а гармонь без клавишь, а у англичан это Piano Accordion и Button Accordion',
+        textScript: 'В английском языке нет уменьшительно ласкательных слов, у Англичан Гитара и Гитарочка и Гитарка это все одно слово guitar.\n' +
+          '\n' +
+          'Ну и у них нет отдельного слова для аккордеона с клавишами или аккордеона без клавиш, поэтому пользуемся великим и могучим русским языком и запоминаем, что Аккордеон - это с клавишами (Piano Accordion), а Гармошка без клавиш (Button Accordion).\n' +
+          '\n' +
+          'Если хочется нюансы и тонкости остальных слов познать, то вот они, хотя эти нюансы обычно для высокого уровня английского и обычно они редко кому в жизни пригодятся, разве что в квизе каком-нибудь или если вы музыкант: ',
 
         questions: [
           {
             text: "What instrument is not in this picture?",
             options: {
               A: "Гитарка",
-              B: "Аккордиончик",
+              B: "Аккордеончик",
               C: "Барабанчики",
               D: "Пианино",
-              E: "Гармонь"
+              E: "Гармоника",
+              F: "Гармошка"
+
             },
-            correctAnswer: "E"
+            correctAnswer: "F"
           },
           ],
       },
       {
-        taskDescription: "My friends, если увидите ошибки/отпечатки в русских или английских словах, то сдеайте скриншот и отправьте в телеграм #vismyfriend он исправит эвриthin' 4 you. Thx!",
+        usefulWords: 'strings - струнные инструменты /ˈstrɪŋz/, violin - скрипка /ˌvaɪəˈlɪn/, viola - альт /viˈoʊlə/, cello - виолончель /ˈtʃeloʊ/, double bass - контрабас /beɪs/, acoustic guitar - акустика /əˈkuːstɪk ɡɪˈtɑːr/, electric guitar - электрогитара /ɪˈlektrɪk ɡɪˈtɑːr/, banjo - банджо /ˈbændʒoʊ/, harp - арфа /hɑːrp/, woodwind - деревянные духовые /ˈwʊdwɪnd/, piccolo - пикколо /ˈpɪkəloʊ/, flute - флейта /fluːt/, clarinet - кларнет /ˌklærəˈnɛt/, oboe - гобой /ˈoʊboʊ/, recorder - блокфлейта /rɪˈkɔːrdər/, saxophone - саксофон /ˈsæksəfoʊn/, bassoon - фагот /bəˈsuːn/, brass instruments - медные духовые /bræs/, trumpet - труба /ˈtrʌmpɪt/, trombone - тромбон /trɒmˈboʊn/, French horn - валторна /frentʃ hɔːrn/, tuba - туба /ˈtuːbə/, percussion - ударные /pərˈkʌʃən/, drums - барабаны /drʌmz/, cymbals - тарелки /ˈsɪmbəlz/, tambourine - тамбурин /ˌtæmbəˈriːn/, xylophone - ксилофон /ˈzaɪləfoʊn/, keyboard - клавишные инструменты /ˈkiːbɔːrd/, piano - фортепиано /piˈænoʊ/, electric keyboard - синтезатор /ɪˈlektrɪk ˈkiːbɔːrd/, organ - орган /ˈɔːrɡən/, other - lругие /ˈʌðər/, instruments - инструменты /ˌɪnstrəmənts/, accordion - аккордеон /əˈkɔːrdiən/, harmonica - гармоника /hɑːrˈmɒnɪkə/ button accordion - гармошка /əˈkɔːrdiən/',
+        taskDescription: "Если заметите опечатку - отправьте Vismyfriend скриншот в телегу. Но это потом, а пока ответьте: ",
         audio: null,
         taskID: "multiple_choice",
         taskPicture: null,
-        textScript: 'эпроверкаээ',
+        textScript: '1) Скрипка - a violin is a small string instrument played with a bow (смычок). It has a high sound.\n' +
+          '\n' +
+          '2) Альт - a viola is a bit bigger than a violin, with a deeper sound. Also played with a bow.\n' +
+          '\n' +
+          '3) Виолончель - a cello is a large string instrument you play sitting down. It has a warm, deep sound.\n' +
+          '\n' +
+          '4) Контрабас - the double bass is the biggest string instrument! It makes very low sounds. Often used in jazz and orchestras.\n' +
+          '\n' +
+          '5) Акустическая гитара - an acoustic guitar is a wooden instrument with 6 strings. You pick strings or strum to make music.\n' +
+          '\n' +
+          '6) Электрогитара - an electric guitar needs electricity. It can make loud, rock sounds!\n' +
+          '\n' +
+          '7) Банджо - a banjo is a round instrument with a metal body. Often used in country and folk music.\n' +
+          '\n' +
+          '8) Арфа - a harp is a tall instrument with many strings. You pluck strings with your fingers to make melodies.\n' +
+          '\n' +
+          '9) Пикколо - the piccolo is the smallest flute! It makes very high sounds.\n' +
+          '\n' +
+          '10) Флейта - a flute is a silver or wooden tube. You blow air into it and cover holes to make music.\n' +
+          '\n' +
+          '11) Кларнет - a clarinet is a black wooden instrument. It has a smooth sound.\n' +
+          '\n' +
+          '12) Гобой - an oboe is a wooden instrument with a double reed (тросточки, рид, рих, наконечники). It sounds a bit "nasal" and sweet.\n' +
+          '\n' +
+          '13) Блокфлейта - a recorder is a simple plastic or wooden flute. Often the first instrument for kids!\n' +
+          '\n' +
+          '14) Саксофон - a saxophone is a shiny brass instrument with a reed. Used in jazz and pop music.\n' +
+          '\n' +
+          '15) Фагот - a bassoon is a big, long wooden instrument with a double reed (рих, часть инструмента). It makes deep, funny sounds.\n' +
+          '\n' +
+          '16) Труба - a trumpet is a shiny brass instrument with 3 buttons. It makes bright, loud sounds.\n' +
+          '\n' +
+          '17) Тромбон - a trombone is a long brass instrument with a sliding tube. It can make funny "wah-wah" sounds!\n' +
+          '\n' +
+          '18) Валторна - a French horn is a round brass instrument with a coiled tube. It has a warm, mellow (притный, душевный) sound.\n' +
+          '\n' +
+          '19) Туба - the tuba is the biggest brass instrument! It makes very low, "oom-pah" sounds.\n' +
+          '\n' +
+          '20) Барабаны - drums are instruments you hit with sticks or hands to make rhythm. The "heartbeat" of the band!\n' +
+          '\n' +
+          '21) Тарелки - cymbals are two round metal plates that crash together to make a loud "clang!"\n' +
+          '\n' +
+          '22) Тамбурин - a tambourine is a small drum with jingles (бубенцами). You shake it or hit it with your hand.\n' +
+          '\n' +
+          '23) Ксилофон - a xylophone has wooden or metal bars you hit with mallets (special hammers). Makes bright, ringing sounds.\n' +
+          '\n' +
+          '24) Фортепиано - a piano is a big instrument with black and white keys. You press them to make soft or loud sounds.\n' +
+          '\n' +
+          '25) Синтезатор - an electric keyboard is like a piano, but can make many different electronic sounds.\n' +
+          '\n' +
+          '26) Орган - an organ is a huge instrument with pipes. Often found in churches.\n' +
+          '\n' +
+          '27) Аккордеон - an accordion is a box-shaped instrument with bellows (меха - сильфон). You squeeze it and press buttons/keys to play.\n' +
+          '\n' +
+          '28) Гармоника - a harmonica is a small metal instrument you blow into. Often used in blues and folk music.',
         questions: [
           {
-            text: "Как вам эти задания?",
+            text: "What words were new for you?",
             options: {
-              S: "Ниче особенного",
-              P: "Ничего особенного",
+              S: "Nothing new",
+              P: "Ничего нового",
               E: "Nothing special",
               C: "вИнсент! Прекрати!!!",
               I: "I am stupid!",
               A: "Правильный ответ строкой ниже",
-              L: "Thank you, it's awesome! Ещё хочу",
+              L: "Невозможно знать все слова в мире",
             },
             correctAnswer: "L"
           },
@@ -109,61 +170,77 @@ const ListeningExerciseData = {
         ]
       },
       {
-        taskDescription: "People are describing (описывают) traffic problems in their cities and different solutions (решения).",
-        audio: new URL('../assets/audio/traffic_2.mp3', import.meta.url).href,
+        taskDescription: "А тест по аудированию-то будем делать или живое общение лучше показывает уровень английского, чем все эти тесты? Про грамматику я вообще молчу",
+        audio: new URL('../assets/audio/Check your English LISTENING LEVEL in 20 minutes.mp3', import.meta.url).href,
         taskID: "multiple_choice",
         taskPicture: null,
-        textScript: '1)\n' +
+        textScript: 'это же экзаменационный тест, тут без подсказок нужно! Но если очень хочется, то вот варианты ответов' +
           '\n' +
-          'In town, public transportation was never very good. You had to drive everywhere, so there was always traffic. The government wanted to make public transportation easier than driving cars. They bought some nice new buses, for example, and they added air conditioning to the ones we already had. They also began offering lower bus fares on the weekends, so more people would be encouraged to try the new buses. They raised taxi fares, too. I guess they figure that if taxis cost more, people might think about using buses more often.\n' +
           '\n' +
-          '2)\n' +
+          '1) \n' +
+          'a) post office \n' +
+          'b) party\n' +
+          'c) conference\n' +
+          'd) theater\n'+
           '\n' +
-          'Well, the problem was that thousands of people drove into the city center every day, and there weren’t enough parking spaces. So the government wanted to make parking easier. But they didn’t build more parking garages. Instead, they tried to keep cars out of the city center. Recently, they started making people who drive their cars downtown pay a daily fee. You have to pay $10 if you want to drive your car into the center between 8 a.m. and 6 p.m. At the same time, they have raised the parking lot rates, so people think twice before they drive their car into the city.\n' +
+          '2) \n' +
+          'a) Chinese \n' +
+          'b) Italian\n' +
+          'c) Greek\n' +
+          'd) Fusion\n'+
           '\n' +
-          '3)\n' +
+          '3) \n' +
+          'a) bathroom \n' +
+          'b) basement\n' +
+          'c) living room\n' +
+          'd) bedroom\n'+
           '\n' +
-          'Traffic was a real problem around here. It moved so slowly. Last year the government turned a bunch of streets downtown into one-way streets. This helped the traffic move more quickly. Special lanes on roads just for buses were built at the same time. If you’re caught driving your car in a bus lane, you have to pay a fine – and it’s a really high fine! Also, they passed a law last year that says you can only drive your car downtown three days a week. You have to display a special pass in your car that says which days you’re allowed to drive downtown.\n' +
-          '\n' +
-          '4)\n' +
-          '\n' +
-          'Air pollution in our city was a huge problem, and we really needed to lower it. I guess that’s why the government started putting special bicycle lanes on the streets downtown. That way, people can ride their bikes to work instead of using their stinky cars! They also made a rule that says there must be at least two people in your car if you want to drive downtown during the week. They also ordered these amazing new pollution-free buses. They use electricity, so they don’t put anything bad into the air.',
+          '4) \n' +
+          'a) once \n' +
+          'b) twice\n' +
+          'c) three times\n' +
+          'd) more than 3 times\n'+
+          '\n',
         questions: [
           {
-            text: "What did they do to improve transportation?",
+            text: "Tom met a TV announcer at the ____",
             options: {
-              A: "They improved the quality of buses.",
-              B: "They raised bus fares on weekends.",
-              C: "They lowered taxi fares."
+              A: "_______",
+              B: "_______",
+              C: "_______",
+              D: "_______"
             },
             correctAnswer: "A"
           },
           {
-            text: "What change was made about parking?",
+            text: "Michael hasn't tried ___ food.",
             options: {
-              A: "They built more parking garages.",
-              B: "They made drivers pay a daily fee.",
-              C: "They kept all cars out of the city center."
+              A: "___(запишите или запомните свои ответы)__",
+              B: "___(позже проверим верно ли услышали)__",
+              C: "___(варианты ответов есть в подсказках)__",
+              D: "___(но попробуйте без подсказок понять)__"
             },
             correctAnswer: "C"
           },
           {
-            text: "What was done to manage traffic jams?",
+            text: "Vanessa has recently decorated her ___ .",
             options: {
-              A: "They made many streets downtown one-way.",
-              B: "They made new lanes for cars to use.",
-              C: "They made a law that people can drive downtown every day if they have a special pass."
+              A: "_______",
+              B: "_______",
+              C: "_______",
+              D: "_______"
+            },
+            correctAnswer: "D"
+          },
+          {
+            text: "Sara has been to the south of Italy ___ .",
+            options: {
+              A: "_______",
+              B: "_______",
+              C: "_______",
+              D: "_______"
             },
             correctAnswer: "A"
-          },
-          {
-            text: "What rule was introduced to reduce pollution?",
-            options: {
-              A: "They did not allow people to ride a bicycle downtown.",
-              B: "They made a rule that there must be at least three people in a car to go downtown.",
-              C: "They bought new buses that don’t create pollution."
-            },
-            correctAnswer: "C"
           },
 
         ]

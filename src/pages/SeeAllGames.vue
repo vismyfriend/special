@@ -46,7 +46,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { onMounted, ref, computed } from 'vue';
-import { AllGames } from "src/dataForGames/allSetsOfWordsList";
+import { AllGames } from "src/dataForGames/allGamesAndSetsOfWordsList";
 import { api } from "src/api";
 import {useGameStore} from "stores/example-store";
 

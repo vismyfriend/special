@@ -40,7 +40,7 @@
             v-for="currentSetOfWords in filteredSets"
             :key="currentSetOfWords.id"
             role="button"
-            @click="goToChosenGame(`/see-all-sets-of-words/${currentSetOfWords.missionName}`)"
+            @click="goToChosenGame(currentSetOfWords)"
             :style="{
     '--offset-x': '5px',
     '--offset-y': '29.5px'
@@ -72,7 +72,7 @@ import { useQuasar } from 'quasar';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
-import { allSetsOfWordsList } from "src/dataForGames/allSetsOfWordsList";
+import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
 const text = "choose \na \nset of words";
 const speed = 150; // Скорость печати (мс)
@@ -85,7 +85,7 @@ const showSpecialCardAlert = () => {
   router.push('/create-special-set');
 };
 
-const AllSetsOfWords = ref(allSetsOfWordsList)
+const AllSetsOfWords = ref(allGamesAndSetsOfWordsList)
 
 // Функция для нормализации строки поиска
 const normalizeString = (str) => {
@@ -112,10 +112,17 @@ const filteredSets = computed(() => {
     );
   });
 });
-const goToChosenGame = (route) => {
 
-  router.push({ path: route })
-
+const goToChosenGame = (set) => {
+  if (set.type === "hardcodedLink") {
+    router.push(set.path);
+  } else if (set.type === "externalLink") {
+    // Для внешних ссылок
+    window.open(set.url, set.target || '_blank');
+  } else {
+    // Для обычных наборов
+    router.push(`/see-all-sets-of-words/${set.missionName}`);
+  }
 }
 const getLevelStars = (stars) => {
   if (!stars) return '';
