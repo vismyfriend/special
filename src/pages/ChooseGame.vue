@@ -47,8 +47,8 @@ import hwData from 'src/dataForGames/hw-data';
 import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
 import listeningExerciseData from "src/dataForGames/ListeningExerciseData";
 import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
-import NewFuturisticStyle from "src/dataForGames/NewFuturisticStyle";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
+import pnqwData from "src/dataForGames/pnqw";
 
 const text = "choose \nthe \ntask";
 const speed = 150; // Скорость печати (мс)
@@ -67,12 +67,53 @@ const AllGames = ref([
     cardIcon: '🖨️', // Изменено на более подходящую иконку
     active: true,
   },
+
   {
     id: 102,
     name: "Find pairs EASY",
     path: "find-pairs-easy",
     gameData: shortWordsData,
     cardIcon: '✂️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 104,
+    name: "Translate it",
+    path: "game-translate",
+    gameData: questionsData,
+    cardIcon: '🌐', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 101,
+    name: "Find pairs HARD",
+    path: "find-pairs-hard",
+    gameData: shortWordsData,
+    cardIcon: '🧩', // Изменено на более подходящую иконку
+    active: true,
+  },
+  {
+    id: 102,
+    name: "Spell this",
+    path: "spelling",
+    gameData: shortWordsData,
+    cardIcon: '🔠', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 103,
+    name: "Spell Ten",
+    path: "spell-ten",
+    gameData: shortWordsData,
+    cardIcon: '✏️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 180,
+    name: "Listening & Speaking",
+    path: "listening-exercises",
+    gameData: listeningExerciseData,
+    cardIcon: '🎧', // Добавлена иконка
     active: true,
   },
   {
@@ -84,29 +125,30 @@ const AllGames = ref([
     active: true,
   },
   {
-    id: 182,
+    id: 104,
+    name: "A deck of cards",
+    path: "deck-of-cards",
+    gameData: questionsData,
+    cardIcon: '🃏', // Добавлена иконка
+    active: true
+  },
+ {
+    id: 104,
+    name: "+ - ? why (PC only)",
+    path: "pnqw",
+    gameData: pnqwData,
+    cardIcon: '🃏', // Добавлена иконка
+    active: true
+  },
+ {
+    id: 104,
     name: "Tags",
     path: "tag-questions-game",
     gameData: NewFuturisticStyleData,
-    cardIcon: '', // Добавлена иконка
-    active: true,
+    cardIcon: '🃏', // Добавлена иконка
+    active: true
   },
-  {
-    id: 101,
-    name: "Find pairs HARD",
-    path: "find-pairs-hard",
-    gameData: shortWordsData,
-    cardIcon: '🧩', // Изменено на более подходящую иконку
-    active: true,
-  },
-  {
-    id: 180,
-    name: "Listening",
-    path: "listening-exercises",
-    gameData: listeningExerciseData,
-    cardIcon: '🎧', // Добавлена иконка
-    active: true,
-  },
+
   // {
   //   id: 90,
   //   name: "эта игра скоро появится",
@@ -130,38 +172,9 @@ const AllGames = ref([
   //   gameData: shortWordsData,
   //   active: true,
   // },
-  {
-    id: 102,
-    name: "Spelling",
-    path: "spelling",
-    gameData: shortWordsData,
-    cardIcon: '🔠', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 103,
-    name: "Spell Eight",
-    path: "spell-eight",
-    gameData: shortWordsData,
-    cardIcon: '✏️', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 104,
-    name: "A deck of cards",
-    path: "deck-of-cards",
-    gameData: questionsData,
-    cardIcon: '🃏', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 104,
-    name: "Translate it",
-    path: "game-translate",
-    gameData: questionsData,
-    cardIcon: '🌐', // Добавлена иконка
-    active: true
-  },
+
+
+
   {
     id: 105,
     name: "TNT",

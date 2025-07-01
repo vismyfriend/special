@@ -2,22 +2,22 @@
 const NewFuturisticStyleData = {
 
   testQuicklyData: {
-    mainDescription: "New Task For Special Agents",
+    mainDescription: "Another Super Task For Special Agents",
     tasks: [
       {
-        usefulWords: 'is he? - isn`t he? , are they? - aren`t they?',
-        taskDescription: "Впишите подходящий tag",
+        usefulWords: null,
+        taskDescription: "Впишите подходящий tag (уточняющий хвостик вопрос)",
         taskID: "tag-questions",
         taskPicture: null,
         questions: [
           {
-            text: "Vincent is not a very stupid teacherka, ___?",
+            text: "Vincent is not a girl, ___?",
             correctAnswer: "is he?",
-            explanation: 'Vincent - это он - поэтому he - предложение отрицательное, значит хвостик (tag) положительный, или же он глуп?'
+            explanation: 'Предложение отрицательное, значит хвостик вопрос должен быть положительный, ну и Винсент это мальчик = он! Да же?'
 
           },
           {
-            text: "Phoebe is Vincent's wife, ___?",
+            text: "Phoebe /фИби/ is Vincent's wife, ___? (имя женское)" ,
             correctAnswer: "isn`t she?",
             explanation: 'предложение утвердительное, значит хвостик (tag) отрицательный, она его жена, не так ли?'
 
@@ -25,106 +25,10 @@ const NewFuturisticStyleData = {
           {
             text: "These questions are simple, ___?",
             correctAnswer: "aren`t they?",
-            explanation: 'эти вопросы = они = поэтому they = предложение утвердительное, значит хвостик (tag) отрицательный, не так ли?'
+            explanation: 'эти вопросы = они = they. Начало предложения утвердительное, значит хвостик отрицательный, разве нет?'
 
           },
-          {
-            text: "It is not correct tag, ___",
-            correctAnswer: "is it?",
-            explanation: 'предложение отрицательное, значит хвостик (tag) положительный, да же?'
 
-          },
-          {
-            text: "I am smart ___",
-            correctAnswer: "aren`t I?",
-            explanation: 'это исключение тут нужно просто запомнить, что про себя и только про себя мы всегда спрашиваем - aren`t I? разве я нет?'
-
-          },
-          {
-            text: "Everyone’s ready to go, ___",
-            correctAnswer: "aren’t they?",
-            explanation: "Everyone считается единственным, но tag ставим с 'they' и предложение положительное — значит отрицательный tag."
-          },
-          {
-            text: "Let’s be reasonable, ___",
-            correctAnswer: "shall we?",
-            explanation: "После 'let’s' всегда используется tag 'shall we?'."
-          },
-          {
-            text: "There’s no place like home, ___",
-            correctAnswer: "is there?",
-            explanation: "Это утвердительное предложение с 'there is', значит нужен отрицательный tag 'is there?'."
-          },
-          {
-            text: "Alan never took his work seriously, ___",
-            correctAnswer: "did he?",
-            explanation: "Отрицательное предложение ('never'), значит tag должен быть положительным — 'did he?'."
-          },
-          {
-            text: "Patricia hardly said a word, ___",
-            correctAnswer: "did she?",
-            explanation: "'Hardly' делает предложение отрицательным, значит tag будет положительным — 'did she?'."
-          },
-          {
-            text: "Nobody has seen my wallet, ___",
-            correctAnswer: "have they?",
-            explanation: "'Nobody' — это отрицание, поэтому tag положительный и с 'they'."
-          },
-          {
-            text: "Everyone has secrets, ___",
-            correctAnswer: "don’t they?",
-            explanation: "'Everyone' — единственное число, но tag идёт с 'they'. Положительное предложение — значит отрицательный tag."
-          },
-          {
-            text: "That’s such a shame, ___",
-            correctAnswer: "isn’t it?",
-            explanation: "Положительное предложение — значит отрицательный tag 'isn’t it?'."
-          },
-          {
-            text: "Nothing surprises you anymore, ___",
-            correctAnswer: "does it?",
-            explanation: "'Nothing' — отрицание, значит tag положительный — 'does it?'."
-          },
-          {
-            text: "Nearly everyone came to the meeting, ___",
-            correctAnswer: "didn’t they?",
-            explanation: "Почти все — это положительное утверждение, значит tag будет отрицательным — 'didn’t they?'."
-          },
-          {
-            text: "I’m being silly, ___",
-            correctAnswer: "aren’t I?",
-            explanation: "Исключение: к 'I am' мы используем 'aren’t I?' как tag."
-          },
-          {
-            text: "Someone knocked at the door, ___",
-            correctAnswer: "didn’t they?",
-            explanation: "'Someone' считается как 'they' в tag'ах. Положительное предложение — отрицательный tag."
-          },
-          {
-            text: "Let’s try again, ___",
-            correctAnswer: "shall we?",
-            explanation: "После 'let’s' всегда ставим 'shall we?'."
-          },
-          {
-            text: "Everything is just perfect, ___",
-            correctAnswer: "isn’t it?",
-            explanation: "Положительное предложение, значит tag — отрицательный 'isn’t it?'."
-          },
-          {
-            text: "It’s no use, ___",
-            correctAnswer: "is it?",
-            explanation: "Выражение с отрицанием ('no use') — значит tag положительный 'is it?'."
-          },
-          {
-            text: "This was a total waste of time, ___",
-            correctAnswer: "wasn’t it?",
-            explanation: "Положительное предложение — значит tag будет отрицательным 'wasn’t it?'."
-          },
-          {
-            text: "Don’t come home late, ___",
-            correctAnswer: "will you?",
-            explanation: "После повелительного наклонения с 'don’t' tag — 'will you?'."
-          }
 
         ]
       },
@@ -134,7 +38,7 @@ const NewFuturisticStyleData = {
     mainDescription: "New Task For Special Agents",
     tasks: [
       {
-        usefulWords: 'is he? - isn`t he? , are they? - aren`t they?',
+        usefulWords: null,
         taskDescription: "Впишите подходящий tag",
         taskID: "tag-questions",
         taskPicture: new URL("../assets/images/vincentOnKayak.jpg", import.meta.url).href,

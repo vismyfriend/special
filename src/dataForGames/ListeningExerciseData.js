@@ -25,6 +25,153 @@ const ListeningExerciseData = {
       },
     ]
   },
+  WhatIsMyLevel: {
+    mainDescription: "СПЭШЛ проверка уровня",
+    tasks: [
+      {
+        usefulWords: null,
+        taskDescription: "Слушайте и повторяйте вслух. Переводить не нужно, только повторять на английском. Проверим способность слышать и копировать английское произношение, правильную интоннацию, ну и рашн акцент проверим есть или нет. уан ту фри нажимай плэй и погнали лэтс гоу эйджэнт",
+        audio: new URL('../assets/audio/Musical-instrument.mp3', import.meta.url).href,
+        taskID: "true_false",
+        taskPicture: new URL("../assets/images/guitarist.jpg", import.meta.url).href,
+        textScript: 'Что  действительно без подсказок сложно было? Ну ладно вот подсказка: здесь только один FALSE ответ ;) дальше сами справитесь',
+        questions: [
+          {
+            text: "1. Называли музыкальные интструменты?",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. Называли известных композиторов?",
+            correctAnswer: "false"
+          },
+          {
+            text: "3. В слове GUITAR ударение на букву А. (20сек)",
+            correctAnswer: "true"
+          },
+          {
+            text: "4. Vincent умеет играть на гитаре?",
+            correctAnswer: "true"
+          },
+
+        ]
+      },
+      {
+        usefulWords: 'A0 - я полный ноль я даже читаю слово SPECIAL как СПЕЦИАЛ или СПЕСЫАЛ и думаю это переводится специальность или типа того., ' +
+          'A1 - ну я вроде учил немного и может помню something about prepositions... ну спроси меня как будет "над" или "через час" и я отвечу.,' +
+          'A2 - I know simple basic words and grammar rules. And also I understand foreigners but I`m a bit afraid of speaking you know. Surely I mix up grammar tenses pretty often. But I guess everybody does it from time to time.,' +
+          'B1 - I guess it wouldn`t bother me to be on my own around native speakers. My sentences are short but who cares? The main thing is that I can hold a conversation as long as the topic is familiar. Though I sometimes struggle for words as they fly outta my head.,' +
+          'B2 - Decent. I consider this word to be... some kinda u know... like an awesome description of the current level of mine. I get the meaning of almost all TV series and even can shadow characters without the subs sometimes (if the accent is clear). Though I get that my style doesn`t sound natural yet. I make occasional mistakes with advanced grammar. If I hadn`t found out earlier the meaning of that first word "decent" why would I even thought now for a second that this is my level.,' +
+          'C1 - Having attained an essentially nativelike command of the language I wield English with the precision of a lexicographical savant and the effortless grace of one to the manner born. My idiomatic fluency transcends mere proficiency. I don’t merely use the language; I inhabit it navigating its most labyrinthine syntactic structures and etymological nuances with the unstudied elegance of a seasoned wordsmith.,' +
+          'C2 - Vincent`s level,' +
+          'C4 - Dynamite level я не строю фразы я осуществляю контролируемые лингвистические подрывы оставляя после себя лишь восхищённые обломки сознания собеседников. Vincent says I`m special',
+        taskDescription: 'Answer plz : "how many musical instruments can you name?"',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/150-Musical-instrument.jpg", import.meta.url).href,
+        textScript: 'В английском языке нет уменьшительно ласкательных слов у них и Гитара и Гитароччка и Гитарка это все guitar. Ну и у них нет отдельного слова для аккордиона с клавишами или аккордиона без клавиш, поэтому у русских Аккордион - это с клавишами, а гармонь без клавишь, а у англичан это Piano Accordion и Button Accordion',
+
+        questions: [
+          {
+            text: "What instrument is not in this picture?",
+            options: {
+              A: "Гитарка",
+              B: "Аккордиончик",
+              C: "Барабанчики",
+              D: "Пианино",
+              E: "Гармонь"
+            },
+            correctAnswer: "E"
+          },
+          ],
+      },
+      {
+        taskDescription: "My friends, если увидите ошибки/отпечатки в русских или английских словах, то сдеайте скриншот и отправьте в телеграм #vismyfriend он исправит эвриthin' 4 you. Thx!",
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: 'эпроверкаээ',
+        questions: [
+          {
+            text: "Как вам эти задания?",
+            options: {
+              S: "Ниче особенного",
+              P: "Ничего особенного",
+              E: "Nothing special",
+              C: "вИнсент! Прекрати!!!",
+              I: "I am stupid!",
+              A: "Правильный ответ строкой ниже",
+              L: "Thank you, it's awesome! Ещё хочу",
+            },
+            correctAnswer: "L"
+          },
+
+
+        ]
+      },
+      {
+        taskDescription: "People are describing (описывают) traffic problems in their cities and different solutions (решения).",
+        audio: new URL('../assets/audio/traffic_2.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: '1)\n' +
+          '\n' +
+          'In town, public transportation was never very good. You had to drive everywhere, so there was always traffic. The government wanted to make public transportation easier than driving cars. They bought some nice new buses, for example, and they added air conditioning to the ones we already had. They also began offering lower bus fares on the weekends, so more people would be encouraged to try the new buses. They raised taxi fares, too. I guess they figure that if taxis cost more, people might think about using buses more often.\n' +
+          '\n' +
+          '2)\n' +
+          '\n' +
+          'Well, the problem was that thousands of people drove into the city center every day, and there weren’t enough parking spaces. So the government wanted to make parking easier. But they didn’t build more parking garages. Instead, they tried to keep cars out of the city center. Recently, they started making people who drive their cars downtown pay a daily fee. You have to pay $10 if you want to drive your car into the center between 8 a.m. and 6 p.m. At the same time, they have raised the parking lot rates, so people think twice before they drive their car into the city.\n' +
+          '\n' +
+          '3)\n' +
+          '\n' +
+          'Traffic was a real problem around here. It moved so slowly. Last year the government turned a bunch of streets downtown into one-way streets. This helped the traffic move more quickly. Special lanes on roads just for buses were built at the same time. If you’re caught driving your car in a bus lane, you have to pay a fine – and it’s a really high fine! Also, they passed a law last year that says you can only drive your car downtown three days a week. You have to display a special pass in your car that says which days you’re allowed to drive downtown.\n' +
+          '\n' +
+          '4)\n' +
+          '\n' +
+          'Air pollution in our city was a huge problem, and we really needed to lower it. I guess that’s why the government started putting special bicycle lanes on the streets downtown. That way, people can ride their bikes to work instead of using their stinky cars! They also made a rule that says there must be at least two people in your car if you want to drive downtown during the week. They also ordered these amazing new pollution-free buses. They use electricity, so they don’t put anything bad into the air.',
+        questions: [
+          {
+            text: "What did they do to improve transportation?",
+            options: {
+              A: "They improved the quality of buses.",
+              B: "They raised bus fares on weekends.",
+              C: "They lowered taxi fares."
+            },
+            correctAnswer: "A"
+          },
+          {
+            text: "What change was made about parking?",
+            options: {
+              A: "They built more parking garages.",
+              B: "They made drivers pay a daily fee.",
+              C: "They kept all cars out of the city center."
+            },
+            correctAnswer: "C"
+          },
+          {
+            text: "What was done to manage traffic jams?",
+            options: {
+              A: "They made many streets downtown one-way.",
+              B: "They made new lanes for cars to use.",
+              C: "They made a law that people can drive downtown every day if they have a special pass."
+            },
+            correctAnswer: "A"
+          },
+          {
+            text: "What rule was introduced to reduce pollution?",
+            options: {
+              A: "They did not allow people to ride a bicycle downtown.",
+              B: "They made a rule that there must be at least three people in a car to go downtown.",
+              C: "They bought new buses that don’t create pollution."
+            },
+            correctAnswer: "C"
+          },
+
+        ]
+      },
+
+    ]
+  },
+
   traffic1: {
     mainDescription: "Level B1 ",
     tasks: [

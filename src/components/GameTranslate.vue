@@ -47,7 +47,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
-import questionsData from '../dataForGames/questions-data';
+import shortWordsData from '../dataForGames/short-words-data';
 
 const route = useRoute();
 
@@ -228,7 +228,7 @@ onMounted(() => {
   window.addEventListener('resize', fitText);
 
   const missionName = route.params.missionName;
-  currentGameData.value = questionsData[missionName] || [];
+  currentGameData.value = shortWordsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
   currentWord.value = {
     eng: 'Листай и переводи',

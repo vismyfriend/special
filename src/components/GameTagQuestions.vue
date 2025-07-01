@@ -63,7 +63,6 @@
           <input
             ref="answerInput"
             v-model="userAnswer"
-            @keyup.enter="checkAnswer"
             class="cyber-input"
             :class="inputClass"
           />
@@ -130,7 +129,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import NewFuturisticStyleData from '../dataForGames/NewFuturisticStyle.js'
 
@@ -159,6 +158,14 @@ onMounted(() => {
   const missionName = route.params.missionName
   exerciseData.value = NewFuturisticStyleData[missionName] || null
   focusInput()
+
+  // Добавляем обработчик клавиш
+  window.addEventListener('keyup', handleKeyUp)
+})
+
+// Не забываем удалить обработчик при уничтожении компонента
+onUnmounted(() => {
+  window.removeEventListener('keyup', handleKeyUp)
 })
 
 // Фокусировка на поле ввода
@@ -209,19 +216,18 @@ const parseUsefulWords = (wordsString) => {
 const checkCurrentAnswer = () => {
   return isAnswerCloseEnough(userAnswer.value, currentQuestion.value.correctAnswer)
 }
+const isEnterLocked = ref(false)
 
 // Проверка ответа
+
 const checkAnswer = () => {
+  if (isEnterLocked.value) return
+
   if (!userAnswer.value.trim()) {
     showWarning.value = true
     setTimeout(() => {
       showWarning.value = false
-    }, 2000)
-    return
-  }
-
-  if (!userAnswer.value.trim()) {
-    alert('Please enter your answer')
+    }, 200)
     return
   }
 
@@ -261,6 +267,30 @@ const checkAnswer = () => {
     // Увеличиваем счетчик неправильных попыток для этого вопроса
     questionStats.value[currentQuestionIndex.value].incorrectAttempts++
     incorrectAttempts.value++
+  }
+
+  // Блокируем Enter на 1 секунду
+  isEnterLocked.value = true
+  setTimeout(() => {
+    isEnterLocked.value = false
+  }, 1000)
+}
+
+// Обработчик нажатия клавиш
+const handleKeyUp = (event) => {
+  if (event.key === 'Enter') {
+    if (!isAnswered.value) {
+      checkAnswer()
+    } else {
+      // Если ответ уже проверен, нажатие Enter переходит к следующему вопросу
+      if (!isEnterLocked.value) {
+        if (!isLastQuestion.value) {
+          nextQuestion()
+        } else {
+          showFinalResults()
+        }
+      }
+    }
   }
 }
 

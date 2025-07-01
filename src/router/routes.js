@@ -25,7 +25,7 @@ const routes = [
               },
               {
                 path: 'print-all-words',
-                component: () => import('src/components/PrintAllWords.vue')
+                component: () => import('components/GamePrintAllWords.vue')
               },
               {
                 path: 'listening-exercises',
@@ -38,6 +38,10 @@ const routes = [
               {
                 path: 'tag-questions-game',
                 component: () => import('components/GameTagQuestions.vue')
+              },
+              {
+                path: 'pnqw',
+                component: () => import('components/GamePNQW.vue')
               },
 
               {
@@ -93,8 +97,8 @@ const routes = [
                 component: () => import('src/components/GameSpelling.vue')
               },
               {
-                path: 'spell-eight',
-                component: () => import('src/components/GameSpellEight.vue')
+                path: 'spell-ten',
+                component: () => import('components/GameSpellTen.vue')
               },
               {
                 path: 'word-order',

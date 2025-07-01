@@ -8,9 +8,22 @@ export const allSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "WhatIsMyLevel",
+      missionVisibleName: "Какой мой уровень Инглиша?",
+      missionDescription: "What is my level of English?",
+      id: 1,
+      active: true,
+    }, {
       missionName: "tagQuestionsA1",
       missionVisibleName: "Tag Questions A1",
       missionDescription: "Уточняющие вопросы",
+      id: 1,
+      active: true,
+    },
+    {
+      missionName: "wordOrderBasics",
+      missionVisibleName: "WOrder",
+      missionDescription: "опрядок слов",
       id: 1,
       active: true,
     },

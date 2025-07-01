@@ -131,13 +131,15 @@ const showChangeNameButton = ref(gameStore.$state.agentName === null);
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
-  { agent: "TurboAgent", time: "2.00", mistakes: 0 },
-  { agent: "FlashSpeed", time: "2.15", mistakes: 1 },
-  { agent: "Bond007", time: "2.61", mistakes: 0 },
-  { agent: "Godzilla", time: "2.62", mistakes: 2 },
-  { agent: "Mike", time: "2.63", mistakes: 3 },
-  { agent: "Polina", time: "3.00", mistakes: 0 },
-  { agent: "Monkey", time: "3.01", mistakes: 1 },
+  { agent: "BackEndError", time: "200.00", mistakes: 0 },
+  { agent: "FlashSpeed", time: "200.15", mistakes: 1 },
+  { agent: "Bond007", time: "2000.63", mistakes: 0 },
+  { agent: "Godzilla", time: "2010.70", mistakes: 2 },
+  { agent: "Mike", time: "2020.63", mistakes: 3 },
+  { agent: "Polina", time: "3010.00", mistakes: 0 },
+  { agent: "Monkey", time: "3020.01", mistakes: 1 },
+  { agent: "Вы под номером 112", time: "999999", mistakes: 0 },
+
 ];
 
 /**
@@ -168,7 +170,7 @@ const visiblePlayers = computed(() => {
 // стоит ли показать кнопку Увидеть всех игроков
 
 const shouldShowToggleButton = computed(() => {
-  return topPlayers.value.length > 8;
+  return topPlayers.value && topPlayers.value.length > 8;
 });
 // Методы
 
@@ -238,8 +240,7 @@ const fetchLeaderboard = async () => {
   try {
     const res = await api.scores.get(gameStore.gameName);
     const response = res.data.filter(el => el.wordSet === gameStore.$state.wordSet);
-
-    topPlayers.value = Array.isArray(response) ? response : fallbackPlayers;
+    topPlayers.value = Array.isArray(response) && response.length > 0 ? response : fallbackPlayers;
   } catch (error) {
     console.error("Ошибка при загрузке таблицы победителей:", error);
     topPlayers.value = fallbackPlayers;
@@ -302,13 +303,19 @@ onMounted(async () => {
   }
 
   // Отправка результатов и загрузка таблицы лидеров
-  await api.scores.post(
-    gameStore.$state.gameName,
-    gameStore.$state.lastGameResults.time,
-    gameStore.$state.lastGameResults.mistakes,
-    gameStore.$state.agentName,
-    gameStore.$state.wordSet,
-  );
+
+  try {
+    await api.scores.post(
+      gameStore.$state.gameName,
+      gameStore.$state.lastGameResults.time,
+      gameStore.$state.lastGameResults.mistakes,
+      gameStore.$state.agentName,
+      gameStore.$state.wordSet,
+    );
+  } catch (error) {
+    console.error("Ошибка при отправке результатов:", error);
+    // Продолжаем выполнение, даже если не удалось отправить результаты
+  }
 
   await fetchLeaderboard();
   formatResult();

@@ -2,15 +2,21 @@
   <div v-if="exerciseData" class="exercise-container">
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
-      <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
-
-
+      <div class="header-bottom">
+        <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
+        <div class="task-counter">
+          {{ currentTaskIndex + 1 }}/{{ exerciseData.tasks.length }}
+        </div>
+      </div>
     </div>
 
     <div v-for="(task, index) in exerciseData.tasks"
          :key="index"
          class="task-container"
-         :style="{ backgroundColor: rainbowColors[index % 7] }"
+         :style="{
+           backgroundColor: rainbowColors[index % 7],
+           display: index === currentTaskIndex ? 'block' : 'none'
+         }"
     >
 
       <!-- Блок для необходимых слов -->
@@ -116,34 +122,61 @@
       </div>
 
 
-      <!-- Блок с кнопкой -->
-      <div class="check-script-wrapper">
-        <button class="check-button" @click="checkAnswers(index)">
-          Проверить - check
-        </button>
-
-        <div
-          class="score-display"
-          :class="[
-    { 'score-visible': checkedTasks[index] },
-    checkedTasks[index] ? getGrade(taskScores[index]).class : ''
-  ]"
-        >
-          {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}
-        </div>
-        <!-- Блок с текстом скрипта (не влияет на кнопку) -->
-
-        <div v-if="task.textScript" class="script-toggle-wrapper">
-          <button class="toggle-script-btn" @click="toggleScript(index)">
-            {{ expandedScriptIndex === index ? 'Скрыть текст' : 'Показать текст аудио' }}
+      <div class="task-footer">
+        <!-- Верхняя строка: управление проверкой -->
+        <div class="task-controls">
+          <button
+            v-if="task.textScript"
+            class="toggle-script-btn"
+            @click="toggleScript(index)"
+          >
+            {{ expandedScriptIndex === index ? 'Скрыть подсказки' : 'Показать подсказки' }}
           </button>
+
+          <div
+            class="score-display"
+            :class="[
+        { 'score-visible': checkedTasks[index] },
+        checkedTasks[index] ? getGrade(taskScores[index]).class : ''
+      ]"
+          >
+            {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}
+          </div>
+
+          <button
+            class="check-button"
+            @click="checkAnswers(index)"
+          >
+            Проверить
+          </button>
+
         </div>
-      </div>
+        <!-- Текст скрипта (если открыт) -->
+        <div v-if="expandedScriptIndex === index" class="text-script-content">
+          <p>{{ task.textScript }}</p>
+        </div>
+        <!-- Нижняя строка: навигация (компактная) -->
+        <div class="task-navigation">
+          <button
+            class="nav-button prev-button"
+            @click="goToPrevTask"
+            :disabled="currentTaskIndex === 0"
+          >
+            ←
+          </button>
 
-      <div v-if="expandedScriptIndex === index" class="text-script-content">
-        <p>{{ task.textScript }}</p>
-      </div>
+          <button
+            class="nav-button next-button"
+            @click="goToNextTask"
+            :disabled="currentTaskIndex === exerciseData.tasks.length - 1"
+          >
+            →
+          </button>
 
+        </div>
+
+
+      </div>
     </div>
   </div>
 </template>
@@ -160,7 +193,24 @@ const checkedTasks = ref([])
 const expandedScriptIndex = ref(null)
 const taskScores = ref([]); // Хранит проценты для каждого задания
 const currentMission = ref('')
+const currentTaskIndex = ref(0) // Добавляем отслеживание текущего задания
 
+// Добавляем функцию для перехода к следующему заданию
+const goToNextTask = () => {
+  if (currentTaskIndex.value < exerciseData.value.tasks.length - 1) {
+    currentTaskIndex.value++
+    // Прокручиваем страницу вверх для удобства
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+// Добавляем функцию для перехода к предыдущему заданию (по желанию)
+const goToPrevTask = () => {
+  if (currentTaskIndex.value > 0) {
+    currentTaskIndex.value--
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
 const getGrade = (percentage) => {
   if (percentage === 100) return { letter: 'A+', class: 'grade-Aplus' };
   if (percentage >= 85) return { letter: 'A', class: 'grade-A' };
@@ -186,7 +236,6 @@ onMounted(() => {
     checkedTasks.value = exerciseData.value.tasks.map(() => false)
     taskScores.value = exerciseData.value.tasks.map(() => null)
   }
-  // Защита от скачивания аудио
 
   disableAudioDownload()
 })
@@ -278,6 +327,70 @@ const rainbowColors = [
 </script>
 
 <style scoped>
+
+/* Добавляем стили для счетчика заданий и кнопки Next Task */
+.header-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.task-counter {
+  font-size: 0.9rem;
+  color: #5a5a5a;
+  font-weight: 500;
+  padding: 4px 10px;
+  background-color: #f0f7ff; /* Пастельный голубой */
+  border-radius: 12px;
+  border: 1px solid #e0e7ff;
+  min-width: 50px;
+  text-align: center;
+}
+.next-task-wrapper {
+  display: flex;
+  justify-content: space-between; /* Распределяем кнопки по краям */
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.prev-task-button,
+.next-task-button {
+  padding: 8px 16px;
+  color: white;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.prev-task-button {
+  background-color: #6b7280; /* Серый цвет для предыдущей кнопки */
+}
+
+.prev-task-button:hover:not(:disabled) {
+  background-color: #4b5563;
+}
+
+.next-task-button {
+  background-color: #4f46e5; /* Синий цвет для следующей кнопки */
+}
+
+.next-task-button:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
+/* Стили для disabled кнопок */
+.prev-task-button:disabled,
+.next-task-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 /* Base styles */
 .exercise-container {
   max-width: 56rem; /* Ограничение ширины блока */
@@ -744,6 +857,102 @@ input[type="radio"]:checked + .radio-custom::after {
   }
   .score-display {
     order: 1; /* Помещаем проценты между кнопками */
+  }
+}
+.task-footer {
+  margin-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 15px;
+}
+
+.task-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.score-display {
+  margin: 0 auto; /* Центрируем проценты */
+  font-weight: 500;
+}
+
+.task-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 1.1rem;
+}
+
+.prev-button:not(:disabled):hover {
+  background-color: #f3f4f6;
+}
+
+.next-button:not(:disabled):hover {
+  background-color: #f3f4f6;
+}
+
+.nav-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.check-button {
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.check-button:hover {
+  background-color: #2563eb;
+}
+
+.toggle-script-btn {
+  background-color: rgba(220, 43, 250, 0.56);
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.toggle-script-btn:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .task-controls {
+    flex-wrap: wrap;
+  }
+
+  .score-display {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
   }
 }
 </style>
