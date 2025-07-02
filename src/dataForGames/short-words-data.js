@@ -9,6 +9,25 @@ const shortWordsData = {
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
 
   ],
+  ArgentinaLessonWords: [
+    { id: 1, eng: "Whale", ru: "Кит", hint: "/уЭйл/" },
+    { id: 2, eng: "Plug", ru: "вилка для розетки)", hint: "/плаг/" },
+    { id: 2, eng: "Socket", ru: "розетка", hint: "/сОкет/" },
+    { id: 3, eng: "Bicycle", ru: "Велосипед", hint: "/бАйсикл/" },
+    { id: 4, eng: "Paperclip", ru: "Скрепка", hint: "/пЭйпаклип/" },
+    { id: 5, eng: "Pacifier", ru: "Соска (USA)", hint: "/пЭсифайэ/" },
+    { id: 13, eng: "Dummy", ru: "Соска (UK)", hint: "/дАмми/" },
+    { id: 6, eng: "Dice", ru: "Игральные кости (кубики)", hint: "/дайс/" },
+    { id: 7, eng: "Crutches", ru: "Костыли", hint: "/крАчес/" },
+    { id: 8, eng: "Squirrel", ru: "Белка", hint: "/сквИрэл/" },
+    { id: 9, eng: "Draft", ru: "Сквозняк", hint: "/драфт/" },
+    { id: 10, eng: "Queue", ru: "Очередь", hint: "/кью:/" },
+    { id: 11, eng: "Chaos", ru: "Хаос", hint: "/кЭйос/" },
+    { id: 12, eng: "Fluency", ru: "Беглость речи", hint: "/флЮэнси/" },
+    { id: 14, eng: "Fluent speech", ru: "Беглая речь",},
+
+
+  ],
   mission001CutWiresEasy: [
     { id: 1, eng: "cut", ru: "Резать", hint: "/кАт/" },
     { id: 2, eng: "wires", ru: "Провода", hint: "/уАйерз/" },
@@ -19,9 +38,10 @@ const shortWordsData = {
     { id: 7, eng: "pair", ru: "Пара", hint: "/ пЭа /" },
     { id: 8, eng: "wifi", ru: "беспроводной интернет", hint: "/ вай фай /" },
     { id: 9, eng: "lazy", ru: "Ленивый", hint: "/ лЭйзи /" },
-
+    { id: 10, eng: "point", ru: "Точка между цифрами", hint: "/ пОинт /" },
 
   ],
+
   introSetFindPairsHard: [
     { id: 2, eng: "thousand", ru: "тысяча", hint: "/ˈθaʊznd/" },
     { id: 3, eng: "hundred", ru: "сто", hint: "/хандрэд/" },

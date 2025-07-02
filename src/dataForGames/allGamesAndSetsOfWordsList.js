@@ -9,7 +9,14 @@ export const allGamesAndSetsOfWordsList =
       id: 1,
       active: true,
     },
+    {
+      missionName: "WhatIsMyLevel",
+      missionVisibleName: "Какой мой уровень Инглиша?",
+      missionDescription: "What is my level of English?",
+      id: 1,
+      active: true,
 
+    },
     {
       // захардкодена ссылка вутри проекта
       type: "hardcodedLink", //  тип для идентификации
@@ -18,6 +25,19 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "/ мишн / mission 001",
       id: 1001,
       active: true,
+      stars: '1'
+
+    },
+    {
+      // захардкодена ссылка вутри проекта
+      type: "hardcodedLink", //  тип для идентификации
+      path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-hard",
+      missionVisibleName: "миссия 002 ",
+      missionDescription: "mission 002",
+      id: 1001,
+      active: true,
+      stars: '2'
+
     },
     {
       // захардкодена ссылка на внешний сайт
@@ -30,15 +50,7 @@ export const allGamesAndSetsOfWordsList =
       active: false,
       stars: '3',
     },
-    {
-      missionName: "WhatIsMyLevel",
-      missionVisibleName: "Какой мой уровень Инглиша?",
-      missionDescription: "What is my level of English?",
-      id: 1,
-      active: true,
-      stars: '1'
 
-    },
 
     {
       missionName: "wordOrderBasics",
@@ -316,6 +328,14 @@ export const allGamesAndSetsOfWordsList =
       missionName: "tagquestionz",
       missionVisibleName: "tag2",
       missionDescription: "tag1",
+      id: 7,
+      active: true,
+      stars: '2'
+    },
+    {
+      missionName: "ArgentinaLessonWords",
+      missionVisibleName: "Words from video",
+      missionDescription: "Argentina video",
       id: 7,
       active: true,
       stars: '2'

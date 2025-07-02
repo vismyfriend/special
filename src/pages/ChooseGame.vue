@@ -80,7 +80,7 @@ const AllGames = ref([
     id: 104,
     name: "Translate it",
     path: "game-translate",
-    gameData: questionsData,
+    gameData: shortWordsData, // если тут указать другую дату, то эта игра не будет отображаться в списке выбора игр
     cardIcon: '🌐', // Добавлена иконка
     active: true
   },
