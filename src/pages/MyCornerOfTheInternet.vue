@@ -121,7 +121,7 @@ const menuItems = ref([
     title: 'S.P.E.C.I.A.L',
     subItems: [
       { name: 'App', url: '/' },
-      { name: 'Website', url: '' }
+      { name: 'Website', url: '/games' }
     ]
   }
 ]);
