@@ -207,6 +207,10 @@ const routes = [
     component: () => import('src/pages/pageWithoutMainLayout2.vue')
   },
   {
+    path: '/v-is-my-friend',
+    component: () => import('src/pages/MyCornerOfTheInternet.vue')
+  },
+  {
     path: '/canvas-test',
     component: () => import('src/pages/canvasTest.vue')
   },

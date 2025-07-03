@@ -8,7 +8,7 @@
     <div class="zoom-section" ref="zoomSection">
       <div class="zoom-image-wrapper">
         <img
-          src="/src/assets/images/scrollZoomIn copy.png"
+          src="/src/assets/images/scrollZoomIn1.png"
           alt="monitor"
           class="zoom-image"
           :style="{ transform: `scale(${scale})` }"
