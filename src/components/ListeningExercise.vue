@@ -180,10 +180,6 @@
                     v-for="(option, oi) in part.options"
                     :key="oi"
                     :value="option.value"
-                    :class="{
-                'correct-option': option.isCorrect,
-                'selected-option': answers[index][qi][part.index] === option.value
-              }"
                   >
                     {{ option.value }}
                   </option>
@@ -194,12 +190,12 @@
               </template>
             </template>
           </p>
-          <div v-if="checkedTasks[index]" class="answer-feedback">
-      <span v-if="isDropDownAnswerCorrect(index, qi, task.questions[qi].text) === 'correct'"
-            class="correct-answer">✓ Верно!</span>
+          <div v-if="checkedTasks[index] && isDropDownAnswerCorrect(index, qi, task.questions[qi].text) !== ''" class="answer-feedback">
+  <span v-if="isDropDownAnswerCorrect(index, qi, task.questions[qi].text) === 'correct'"
+        class="correct-answer">✓ Верно!</span>
             <span v-else class="incorrect-answer">
-        ✗ Неверно. Где-то нужно исправить!
-      </span>
+    ✗ Неверно. Где-то нужно исправить!
+  </span>
           </div>
         </div>
       </div>
@@ -482,6 +478,9 @@ const toggleScript = (index) => {
   expandedScriptIndex.value = expandedScriptIndex.value === index ? null : index
 }
 
+const checkedStudentInputs = ref([]);
+const checkedGridTables = ref([]);
+
 onMounted(() => {
   currentMission.value = route.params.missionName;
   exerciseData.value = ListeningExerciseData[currentMission.value] || null;
@@ -502,6 +501,16 @@ onMounted(() => {
     gridTableFeedback.value = exerciseData.value.tasks.map(() => []);
     checkedTasks.value = exerciseData.value.tasks.map(() => false);
     taskScores.value = exerciseData.value.tasks.map(() => null);
+
+    // Инициализация
+    if (exerciseData.value) {
+      checkedStudentInputs.value = exerciseData.value.tasks.map(
+        task => task.taskID === 'student_input' ? false : null
+      );
+      checkedGridTables.value = exerciseData.value.tasks.map(
+        task => task.taskID === 'grid_table' ? false : null
+      );
+    }
   }
 
   disableAudioDownload();
@@ -672,6 +681,13 @@ const isDropDownAnswerCorrect = (taskIndex, questionIndex, originalText) => {
   const questionParts = splitDropDownText(originalText);
   const dropdownParts = questionParts.filter(p => p.type === 'dropdown');
 
+  // Проверяем, что все dropdown были заполнены
+  const allAnswered = dropdownParts.every(part =>
+    answers.value[taskIndex][questionIndex][part.index] !== ''
+  );
+
+  if (!allAnswered) return '';
+
   const allCorrect = dropdownParts.every(part => {
     const userAnswer = answers.value[taskIndex][questionIndex][part.index];
     return part.correctOptions.includes(userAnswer);
@@ -681,10 +697,15 @@ const isDropDownAnswerCorrect = (taskIndex, questionIndex, originalText) => {
 };
 
 // Получение класса для dropdown
+
 const getDropDownClass = (taskIndex, questionIndex, dropdownIndex, correctOptions) => {
   if (!checkedTasks.value[taskIndex]) return '';
 
   const userAnswer = answers.value[taskIndex][questionIndex][dropdownIndex];
+
+  // Если ответ не выбран - не применяем стили
+  if (userAnswer === '') return '';
+
   return correctOptions.includes(userAnswer)
     ? 'drop-down-correct'
     : 'drop-down-incorrect';
@@ -1585,7 +1606,6 @@ input[type="radio"]:checked + .radio-custom::after {
 .drop-down-correct {
   border-color: #10b981;
   background-color: #ecfdf5;
-  color: #10b981;
 }
 
 .drop-down-incorrect {
