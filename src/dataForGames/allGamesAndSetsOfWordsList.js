@@ -10,6 +10,36 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      // delete after testing
+      missionName: "student_input_newTask",
+      missionVisibleName: "Test quickly1",
+      missionDescription: "Протестировать игры1",
+      id: 1,
+      active: false,
+    },
+    {
+      missionName: "dropDownPattern",
+      missionVisibleName: "Test dropDownPattern",
+      missionDescription: "dropDownPattern1",
+      id: 1,
+      active: false,
+    },
+    {
+      missionName: "grid_table_task",
+      missionVisibleName: "Test grid_table_task",
+      missionDescription: "grid_table_task",
+      id: 1,
+      active: false,
+    },
+    {
+      // delete after testing
+      missionName: "student_input_wordOrder",
+      missionVisibleName: "Word Order task1",
+      missionDescription: "Порядок слов задание11",
+      id: 1,
+      active: false,
+    },
+    {
       missionName: "WhatIsMyLevel",
       missionVisibleName: "Какой мой уровень Инглиша?",
       missionDescription: "What is my level of English?",
@@ -339,6 +369,22 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true,
       stars: '2'
+    },
+    {
+      missionName: "directionsListeningA2",
+      missionVisibleName: "Direction Listening A2",
+      missionDescription: "Направления Аудирование А2",
+      id: 7,
+      active: true,
+      stars: '2'
+    },
+    {
+      missionName: "grid_table_agentAntony",
+      missionVisibleName: "Вспомнить всё",
+      missionDescription: "Agent Antony",
+      id: 7,
+      active: true,
+      stars: '5'
     },
   ]
 

@@ -811,10 +811,406 @@ const ListeningExerciseData = {
 
     ]
   },
+  directionsListeningA2: {
+    mainDescription: "Listening skills Level A2",
+    tasks: [
+      {
+        usefulWords: 'You are here! - /ю а хИэ/ вы находитесь здесь!, ' +
+          'Where am I? - /уЭ Эм ай/ где я?, ' +
+          'on the right - справа, ' +
+          'on the left - слева, ' +
+          'to the left - налево, ' +
+          'to the right - направо, ' +
+          'next turn - /нэкст тёрн/ следующий поворот, ' +
+          'go straight - /гоу стрЭйт/ идти прямо, ' +
+          'go ahead - /гоу э хЭд/ иди вперёд, ' +
+          'turn right - /тёрн райт/ поверни направо, ' +
+          'take right - /тэйк райт/ cверни вправо, ' +
+          'take the first left - сверни сразу влево, ' +
+          'get to - добираться до, ' +
+          'the theatre - театр, ' +
+          'until you get to - /антИл/ пока не доберешься до, ' +
+          'next to - возле и следующий / близко к, ' +
+          'opposite - /Опозит/ напротив, ' +
+          'go past something - проходить мимо чего-то, ' +
+          'traffic lights - светофор, ' +
+          'roundabout - /рАунд эбаут/ круговое движение, ' +
+          'crossroads - перекресток',
+        taskDescription: 'Послушайте и нарисуйте маршрут - линию пути людей от "You are here" до ...',
+        audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/A2_directions.png", import.meta.url).href,
+        textScript: 'A\n' +
+          'Go straight on. Then take the first left on to Green Street. Walk past the library and it’s the building next to the library on the left.\n' +
+          '\n' +
+          'B\n' +
+          'Go straight on. Go past the traffic lights. You will see a shop on the right. Go past that and it’s on the right next to the shop.\n' +
+          '\n' +
+          'C\n' +
+          'Go straight on. Go past the traffic lights and go straight on until you get to the roundabout. At the roundabout turn left. Go past the theatre. It’s the building next to the theatre, opposite the hospital.\n' +
+          '\n' +
+          'D\n' +
+          'Go straight on. Go past the traffic lights and take the second right on to King’s Road. Go past the bookshop. It’s the building next to the bookshop opposite the café.',
+        questions: [
+          {
+            text: "Какой смысл фразы 'go straight on'?",
+            options: {
+              A: "Иди назад",
+              B: "Остановись",
+              C: "Развернись",
+              D: "Продолжай идти",
+              E: "Иди направо",
+            },
+            correctAnswer: "D"
+          },
+          {
+            text: 'Как сказть "мы на перекрёстке"?',
+            options: {
+              A: "we are AT the roundabout",
+              B: "we are AT home",
+              C: "we are ON perekrestok",
+              D: "we are AT the crossroads",
+              E: "we are AT the traffic lights",
+            },
+            correctAnswer: "D"
+          },
+        ]
+      },
+    ]
+  },
+  student_input_newTask: {
+    mainDescription: "введи верный ответ",
+    tasks: [
+      {
+        usefulWords: 'on the right - справа, on the left - слева' ,
+        taskDescription: 'прочитай текст и введи недостающий слова',
+        audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
+        taskID: "student_input",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'I am on the right and my dog is on the left.',
+        questions: [
+          {
+            text: "A) Go straight on. Then take the first left on to Green Street. Walk past the ___ and it’s the building next to the library on the left.",
+            correctAnswer: "library",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "B) Go straight on. Go past the traffic lights. ___ see a shop on the right. Go past that and it’s on the right next to the shop.",
+            correctAnswer: "you'll",
+            almostCorrectAnswers: null
+
+          },
+
+        ]
+      },
+    ]
+  },
+  student_input_wordOrder: {
+    mainDescription: "Word_order порядок_слов",
+    tasks: [
+      {
+        usefulWords: null,
+        taskDescription: null,
+        audio: null,
+        taskID: "student_input",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'I am on the right and my dog is on the left.',
+        questions: [
+          {
+            text: "У моего друга красивые глаза. _ ",
+            correctAnswer: "My friend has beautiful eyes",
+            almostCorrectAnswers: ["my friend has nice eyes", "My friend's eyes are beautiful", "The eyes of my friend are beautiful"]
+          },
+          {
+            text: "__",
+            correctAnswer: "My friend doesn't have beautiful eyes",
+            almostCorrectAnswers: null
+
+          },
+          {
+            text: " привет ___",
+            correctAnswer: "my friend does not have beautiful eyes",
+            almostCorrectAnswers: null
+
+          },
+          {
+            text: " привет ____",
+            correctAnswer: "my friend does not have beautiful eyes",
+            almostCorrectAnswers: null
+
+          },
+
+        ]
+      },
+    ]
+  },
+  dropDownPattern: {
+    mainDescription: "Drop_Down",
+    tasks: [
+      {
+        usefulWords: null,
+        taskDescription: "Drop down",
+        audio: null,
+        taskID: "drop_down_text",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "I (haven't, don't have*, hasn't) a cat. But my wife (have, has*, has got*) it!",
+          },
+          {
+            text: "I don't (have*, has, know) a car. Because it is very expensive to have a car. And cars (do, are*, did, does) dangerous.",
+
+          },
+
+        ]
+      },{
+        usefulWords: "dd - dd, dd -dd",
+        taskDescription: "Drop down2 ",
+        audio: null,
+        taskID: "drop_down_text",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "I (haven't, don't have*, hasn't) a cat. But my wife (have, has*, has got*) it!",
+          },
+          {
+            text: "I don't (have*, has, know) a car. Because it is very expensive to have a car. And cars (do, are*, did, does) dangerous.",
+
+          },
+
+        ]
+      },
+    ]
+  },
+  grid_table_task1: {
+    mainDescription: "Заполните таблицу недостающими данными",
+    tasks: [
+      {
+        taskDescription: "Заполните пропуски в таблице",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Имя", "Время", "Действие", "Настроение"],
+          rows: [
+            {
+              cells: ["Alex", "8:00pm", "wake up", "happy"],
+              editable: [false, false, false, false]
+            },
+            {
+              cells: ["John", "", "", "tired"],
+              editable: [false, true, true, false],
+              correctAnswers: {
+                cells: [null, "7:30am", "get up", null],
+                almostCorrect: {
+                  1: ["7:30", "19:30"], // Индекс поля (начиная с 0)
+                  2: ["wake up", "rise"] // Индекс поля (начиная с 0)
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  grid_table_task: {
+    mainDescription: "Заполните таблицу недостающими данными",
+    tasks: [
+      {
+        taskDescription: "Заполните пропуски в таблице",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Время Grammar", "Пример"],
+          rows: [
+            {
+              cells: ["To be", "am, is, are"],
+              editable: [false, false, false, false]
+            },
+            {
+              cells: ["Present Simple", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Does Do", ],
+                almostCorrect: {
+                  1: ["Do does","does and do","does & do", "do & does", "do and does"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["", "did"],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Past Simple",null ],
+                almostCorrect: {
+                  0: ["simple past"] // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["Name", "?"],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "anyIsOk" ],
+                }
+
+            }
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_agentAntony: {
+    mainDescription: "Antony is awesome!",
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+
+        taskDescription: "Заполни пропуски в таблице:",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Russian", "English"],
+          rows: [
+            {
+              cells: ["Марвэл - моя собака", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel is my dog",],
+                almostCorrect: {
+                  1: ["Marvel's my dog"]
+                }
+              }
+            },
+            {
+              cells: ["Марвэл любит Сырника!", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel likes Cheesecake.",],
+                almostCorrect: {
+                  1: ["Marvel loves Cheesecake","Marvel likes Cheesecakes","Marvel loves Cheesecakes"]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He doesn't like milk."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он не любит молоко",null, ],
+                almostCorrect: {
+                  1: ["Ему не нравится молоко",]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He loves to run."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он любит бегать",null, ],
+                almostCorrect: {
+                  1: ["Ему нравится бегать",]
+                }
+
+              }
+            },
+            {
+              cells: ["Кто любит Марвела?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who loves Marvel?",],
+                almostCorrect: {
+                  1: ["Who likes Marvel?"]
+                }
+
+              }
+            },
+            {
+              cells: ["Кого Марвел любит?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who does Marvel love?",],
+                almostCorrect: {
+                  1: ["Who does Marvel like?"]
+                }
+              }
+            },
+          ]
+        },
+      },
+      {
+        usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
+        taskDescription: "Drop down",
+        audio: null,
+        taskID: "drop_down_text",
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "Hello friends! Let me share with you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and work at my computer. I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+          },
+
+
+        ]
+      },
+      {
+        usefulWords: null,
+        taskDescription: null,
+        audio: null,
+        taskID: "student_input",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "Позвольте мне ____",
+            correctAnswer: "Let me",
+          },
+          {
+            text: "поделиться с вами ____",
+            correctAnswer: "share with you",
+          },
+          {
+            text: "несколькими словами про моего сына____",
+            correctAnswer: "a few words about my son",
+            almostCorrectAnswers: ["a few words about cheesecake","a few words about my cheesecake",]
+
+          },
+          {
+            text: "Он не любит ТикТок ____",
+            correctAnswer: "He doesn't like TikTok",
+            almostCorrectAnswers: ["He doesn't love TikTok",]
+          },
+          {
+            text: "Кто любит ТикТок? ____",
+            correctAnswer: "Who likes TikTok?",
+            almostCorrectAnswers: ["Who loves TikTok?",]
+          },
+          {
+            text: "Кого любит ТикТок? ____",
+            correctAnswer: "Who does TikTok like?",
+            almostCorrectAnswers: ["Who does TikTok love?",]
+          },
+          {
+            text: "Кого ты любишь? ____",
+            correctAnswer: "Who do you like?",
+            almostCorrectAnswers: ["Who do you love?",]
+          },
+
+
+
+        ]
+      },
+
+    ]
+  },
+
+
+
+
+
   testPatternMultipleChoiceCopyThisAndChangeName: {
     mainDescription: "Listening skills Level A2",
     tasks: [
       {
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
         taskDescription: 'Read out loud, choose the best variant',
         audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskID: "multiple_choice",

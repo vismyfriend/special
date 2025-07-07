@@ -121,6 +121,129 @@
         </div>
       </div>
 
+      <!-- Student Input блок -->
+      <div v-else-if="task.taskID === 'student_input'" class="student-input-container">
+        <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
+          <p class="question-text">
+            <template v-for="(part, i) in splitQuestionText(q.text)">
+              <template v-if="part.startsWith('_')">
+                <input
+                  type="text"
+                  class="student-input"
+                  :class="[
+        getInputClass(index, qi, q.correctAnswer, q.almostCorrectAnswers),
+        {
+          'input-small': part.length === 1,
+          'input-medium': part.length === 2,
+          'input-large': part.length === 3,
+          'input-full': part.length >= 4
+        }
+      ]"
+                  v-model="answers[index][qi]"
+                  @keyup.enter="focusNextInput(index, qi)"
+                  :disabled="false"
+                  :data-task="index"
+                  :data-question="qi"
+                  ref="inputFields"
+                />
+              </template>
+              <template v-else>
+                {{ part }}
+              </template>
+            </template>
+          </p>
+          <div v-if="checkedTasks[index]" class="answer-feedback">
+      <span v-if="isAnswerCorrect(index, qi, q.correctAnswer, q.almostCorrectAnswers) === 'correct'"
+            class="correct-answer">✓ Верно!</span>
+            <span v-else-if="isAnswerCorrect(index, qi, q.correctAnswer, q.almostCorrectAnswers) === 'almost'"
+                  class="almost-answer">⚠ Вроде тоже норм ответ, но стоит проверить!</span>
+            <span v-else class="incorrect-answer">
+        ✗ Неверно. Правильный ответ: <strong>{{ q.correctAnswer }}</strong>
+      </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DropDown Text блок -->
+      <div v-else-if="task.taskID === 'drop_down_text'" class="drop-down-text-container">
+        <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
+          <p class="question-text">
+            <template v-for="(part, i) in splitDropDownText(q.text)" :key="i">
+              <template v-if="part.type === 'dropdown'">
+                <select
+                  class="drop-down-select"
+                  v-model="answers[index][qi][part.index]"
+                  :class="getDropDownClass(index, qi, part.index, part.correctOptions)"
+                >
+                  <option value="" disabled selected>? ? ?</option>
+                  <option
+                    v-for="(option, oi) in part.options"
+                    :key="oi"
+                    :value="option.value"
+                    :class="{
+                'correct-option': option.isCorrect,
+                'selected-option': answers[index][qi][part.index] === option.value
+              }"
+                  >
+                    {{ option.value }}
+                  </option>
+                </select>
+              </template>
+              <template v-else>
+                {{ part.text }}
+              </template>
+            </template>
+          </p>
+          <div v-if="checkedTasks[index]" class="answer-feedback">
+      <span v-if="isDropDownAnswerCorrect(index, qi, task.questions[qi].text) === 'correct'"
+            class="correct-answer">✓ Верно!</span>
+            <span v-else class="incorrect-answer">
+        ✗ Неверно. Где-то нужно исправить!
+      </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Table блок -->
+      <div v-else-if="task.taskID === 'grid_table'" class="grid-table-container">
+        <table class="grid-table">
+          <thead>
+          <tr>
+            <th v-for="(header, hi) in task.tableData.headers" :key="hi">{{ header }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(row, ri) in task.tableData.rows" :key="ri">
+            <td v-for="(cell, ci) in row.cells" :key="ci">
+              <template v-if="row.editable[ci]">
+                <input
+                  type="text"
+                  class="grid-table-input"
+                  :class="getGridInputClass(index, ri, ci, row.correctAnswers)"
+                  v-model="answers[index][ri].cells[ci]"
+                  :placeholder="row.correctAnswers?.cells[ci] === 'anyIsOkay' ? 'Any answer' : ''"
+                />
+              </template>
+              <template v-else>
+                {{ cell }}
+              </template>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div v-if="checkedTasks[index]" class="grid-table-feedback">
+          <div v-for="(feedback, fi) in gridTableFeedback[index]" :key="fi" class="feedback-item">
+            Строка {{ fi + 1 }}:
+            <span v-if="feedback.allCorrect" class="correct-feedback">✓ Все верно!</span>
+            <template v-else>
+        <span v-for="(item, key) in feedback.incorrect" :key="key" class="incorrect-feedback">
+  ✗ ожидалось "{{ item.correct }}"
+</span>
+            </template>
+          </div>
+        </div>
+      </div>
 
       <div class="task-footer">
         <!-- Верхняя строка: управление проверкой -->
@@ -182,7 +305,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import ListeningExerciseData from '../dataForGames/ListeningExerciseData' // Импортируем данные
 
@@ -195,6 +318,140 @@ const taskScores = ref([]); // Хранит проценты для каждог
 const currentMission = ref('')
 const currentTaskIndex = ref(0) // Добавляем отслеживание текущего задания
 
+
+const normalizeAnswer = (answer) => {
+  if (!answer || typeof answer !== 'string') return '';
+
+  return answer
+    // Базовые преобразования
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim()
+
+    // Обработка пунктуации (универсальная)
+    .replace(/[.,!?;:…–—]+$/g, '')      // Удаление в конце строки
+    .replace(/[.,!?;:…–—]/g, ' ')       // Замена внутри строки
+    .replace(/\s+/g, ' ')               // Фиксация пробелов
+
+    // Нормализация апострофов и кавычек
+    .replace(/[`'‘’´]/g, "'")
+
+    // Специальные формы глагола "to be"
+    // Для he/she/it
+    .replace(/(\b(?:he|she|it))'?s not\b/g, "$1 is not")   // "she's not" → "she is not"
+    .replace(/(\b(?:he|she|it)) isn'?t\b/g, "$1 is not")   // "she isn't" → "she is not"
+
+    // Для you/we/they/I
+    .replace(/(\b(?:you|we|they|i))'?re not\b/g, "$1 are not")  // "they're not" → "they are not"
+    .replace(/(\b(?:you|we|they|i)) aren'?t\b/g, "$1 are not")  // "you aren't" → "you are not"
+    .replace(/\bi'?m not\b/g, "i am not")                      // "I'm not" → "i am not"
+
+    // Остальные глаголы
+    .replace(/\bdo not\b/g, "don't")
+    .replace(/\bdoes not\b/g, "doesn't")
+    .replace(/\bdid not\b/g, "didn't")
+    .replace(/\bwill not\b/g, "won't")
+    .replace(/\bcan not\b/g, "can't")
+    .replace(/\bmust not\b/g, "mustn't")
+    .replace(/\bshould not\b/g, "should't")
+    .replace(/\bwould not\b/g, "wouldn't")
+
+    // Исправление частых ошибок
+    .replace(/\b(?:dont|doesnt|didnt|wont|cant|hadnt|hasnt|mustnt|shouldnt|wouldnt)\b/g, match =>
+      ({
+        dont: "don't",
+        doesnt: "doesn't",
+        didnt: "didn't",
+        wont: "won't",
+        cant: "can't",
+        hasnt: "hasn't",
+        hadnt: "hadn't",
+        mustnt: "mustn't",
+        shouldnt: "shouldn't",
+        wouldnt: "wouldn't"
+      }[match]))
+
+    // Контракции утвердительных форм
+    .replace(/\b(?:i am|im)\b/g, "i'm")
+    .replace(/\b(?:you are|youre)\b/g, "you're")
+    .replace(/\b(?:we are|were)\b/g, "we're")
+    .replace(/\b(?:they are|theyre)\b/g, "they're")
+    .replace(/\b(?:she is|shes)\b/g, "she's")
+    .replace(/\b(?:he is|hes)\b/g, "he's")
+    .replace(/\b(?:it is|its)\b/g, "it's")
+    .replace(/(\b[a-z]+)'ll\b/gi, "$1 will")  // Универсальная замена для любых слов
+    .replace(/(\b(?:i|you|he|she|we|they|it))'?d\b/g, "$1 would")
+
+
+    // Орфографические ошибки
+    .replace(/\brecieve\b/g, "receive")
+    .replace(/\bdefinately\b/g, "definitely")
+    .replace(/\bpractice\b/g, "practise")
+
+    // Финальная очистка
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+
+// Фокусировка на следующем поле по Enter
+const inputFields = ref([]);
+const focusNextInput = (taskIndex, questionIndex) => {
+  const nextIndex = questionIndex + 1;
+  if (nextIndex < exerciseData.value.tasks[taskIndex].questions.length) {
+    nextTick(() => {
+      const nextInput = inputFields.value.find(el =>
+        Number(el.dataset.task) === taskIndex &&
+        Number(el.dataset.question) === nextIndex
+      );
+      nextInput?.focus();
+    });
+  }
+};
+
+// Определение типа ответа (correct/almost/incorrect)
+const isAnswerCorrect = (taskIndex, questionIndex, correctAnswer, almostCorrectAnswers) => {
+  if (!checkedTasks.value[taskIndex] ||
+    exerciseData.value.tasks[taskIndex].taskID !== 'student_input') return '';
+
+  const userAnswer = normalizeAnswer(answers.value[taskIndex][questionIndex]);
+  const normalizedCorrect = normalizeAnswer(correctAnswer);
+
+  if (userAnswer === normalizedCorrect) return 'correct';
+  if (almostCorrectAnswers?.some(alt => normalizeAnswer(alt) === userAnswer)) return 'almost';
+  return 'incorrect';
+};
+
+const getInputClass = (taskIndex, questionIndex, correctAnswer, almostCorrectAnswers) => {
+  if (!checkedTasks.value[taskIndex]) return '';
+
+  // Только для student_input применяем нормализацию
+  if (exerciseData.value.tasks[taskIndex].taskID === 'student_input') {
+    const userAnswer = normalizeAnswer(answers.value[taskIndex][questionIndex]);
+    const normalizedCorrect = normalizeAnswer(correctAnswer);
+
+    if (userAnswer === normalizedCorrect) {
+      return 'student-input-correct';
+    }
+
+    if (almostCorrectAnswers &&
+      almostCorrectAnswers.some(alt => normalizeAnswer(alt) === userAnswer)) {
+      return 'student-input-almost-correct';
+    }
+
+    return 'student-input-incorrect';
+  }
+
+  // Для других типов заданий - стандартная проверка
+  return answers.value[taskIndex][questionIndex] === correctAnswer
+    ? 'student-input-correct'
+    : 'student-input-incorrect';
+};
+
+const splitQuestionText = (text) => {
+  // Регулярное выражение для поиска подчеркиваний разной длины
+  return text.split(/(_{1,4})/); // Разбиваем текст по _, __, ___ или ____, сохраняя разделитель
+};
 // Добавляем функцию для перехода к следующему заданию
 const goToNextTask = () => {
   if (currentTaskIndex.value < exerciseData.value.tasks.length - 1) {
@@ -226,19 +483,29 @@ const toggleScript = (index) => {
 }
 
 onMounted(() => {
-  currentMission.value = route.params.missionName
-  exerciseData.value = ListeningExerciseData[currentMission.value] || null
+  currentMission.value = route.params.missionName;
+  exerciseData.value = ListeningExerciseData[currentMission.value] || null;
 
   if (exerciseData.value) {
-    answers.value = exerciseData.value.tasks.map(task =>
-      Array(task.questions.length).fill(null)
-    )
-    checkedTasks.value = exerciseData.value.tasks.map(() => false)
-    taskScores.value = exerciseData.value.tasks.map(() => null)
+    answers.value = exerciseData.value.tasks.map(task => {
+      if (task.taskID === 'grid_table') {
+        return initializeGridTableAnswers(task);
+      } else if (task.taskID === 'drop_down_text') {
+        return task.questions.map(q => {
+          const dropdownCount = (q.text.match(/\(/g) || []).length;
+          return Array(dropdownCount).fill('');
+        });
+      } else {
+        return Array(task.questions.length).fill(null);
+      }
+    });
+    gridTableFeedback.value = exerciseData.value.tasks.map(() => []);
+    checkedTasks.value = exerciseData.value.tasks.map(() => false);
+    taskScores.value = exerciseData.value.tasks.map(() => null);
   }
 
-  disableAudioDownload()
-})
+  disableAudioDownload();
+});
 
 
 
@@ -267,23 +534,55 @@ const parseUsefulWords = (wordsString) => {
     return { english, russian };
   });
 };
+
 const checkAnswers = (taskIndex) => {
   checkedTasks.value[taskIndex] = true;
-
-  // Рассчитываем процент правильных ответов
   const task = exerciseData.value.tasks[taskIndex];
-  let correctCount = 0;
+  let percentage = 0;
 
-  task.questions.forEach((q, qi) => {
-    if (answers.value[taskIndex][qi] === q.correctAnswer) {
-      correctCount++;
-    }
-  });
+  if (task.taskID === 'grid_table') {
+    percentage = checkGridTableAnswers(taskIndex);
+  } else {
+    let correctCount = 0;
+    let totalQuestions = 0;
 
-  const percentage = Math.round((correctCount / task.questions.length) * 100);
+    task.questions.forEach((q, qi) => {
+      if (task.taskID === 'student_input') {
+        // Лояльная проверка только для student_input
+        const userAnswer = normalizeAnswer(answers.value[taskIndex][qi]);
+        const correctAnswer = normalizeAnswer(q.correctAnswer);
+
+        if (userAnswer === correctAnswer ||
+          (q.almostCorrectAnswers &&
+            q.almostCorrectAnswers.some(alt => normalizeAnswer(alt) === userAnswer))) {
+          correctCount++;
+        }
+        totalQuestions++;
+      } else if (task.taskID === 'drop_down_text') {
+        const questionParts = splitDropDownText(q.text);
+        const dropdownParts = questionParts.filter(p => p.type === 'dropdown');
+
+        dropdownParts.forEach((part, di) => {
+          const userAnswer = answers.value[taskIndex][qi][di];
+          if (part.correctOptions.includes(userAnswer)) {
+            correctCount++;
+          }
+          totalQuestions++;
+        });
+      } else {
+        // Стандартная строгая проверка для других типов заданий
+        if (answers.value[taskIndex][qi] === q.correctAnswer) {
+          correctCount++;
+        }
+        totalQuestions++;
+      }
+    });
+
+    percentage = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+  }
+
   taskScores.value[taskIndex] = percentage;
 };
-
 
 
 
@@ -315,6 +614,158 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
   return ''
 }
 
+
+// Функция для разбора текста с dropdown-ами
+const splitDropDownText = (text) => {
+  const parts = [];
+  let lastIndex = 0;
+
+  // Регулярное выражение для поиска вариантов в скобках
+  const regex = /\(([^)]+)\)/g;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    // Добавляем текст перед скобками
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        text: text.substring(lastIndex, match.index)
+      });
+    }
+
+    // Обрабатываем варианты внутри скобок
+    const optionsText = match[1];
+    const options = optionsText.split(',').map(opt => {
+      const trimmed = opt.trim();
+      const isCorrect = trimmed.endsWith('*');
+      return {
+        value: isCorrect ? trimmed.replace(/\*$/, '') : trimmed,
+        isCorrect
+      };
+    });
+
+    parts.push({
+      type: 'dropdown',
+      options,
+      index: parts.filter(p => p.type === 'dropdown').length,
+      correctOptions: options.filter(o => o.isCorrect).map(o => o.value)
+    });
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Добавляем оставшийся текст после последних скобок
+  if (lastIndex < text.length) {
+    parts.push({
+      type: 'text',
+      text: text.substring(lastIndex)
+    });
+  }
+
+  return parts;
+};
+
+// Проверка правильности ответов для dropdown
+const isDropDownAnswerCorrect = (taskIndex, questionIndex, originalText) => {
+  if (!checkedTasks.value[taskIndex]) return '';
+
+  const questionParts = splitDropDownText(originalText);
+  const dropdownParts = questionParts.filter(p => p.type === 'dropdown');
+
+  const allCorrect = dropdownParts.every(part => {
+    const userAnswer = answers.value[taskIndex][questionIndex][part.index];
+    return part.correctOptions.includes(userAnswer);
+  });
+
+  return allCorrect ? 'correct' : 'incorrect';
+};
+
+// Получение класса для dropdown
+const getDropDownClass = (taskIndex, questionIndex, dropdownIndex, correctOptions) => {
+  if (!checkedTasks.value[taskIndex]) return '';
+
+  const userAnswer = answers.value[taskIndex][questionIndex][dropdownIndex];
+  return correctOptions.includes(userAnswer)
+    ? 'drop-down-correct'
+    : 'drop-down-incorrect';
+};
+
+
+// Инициализация ответов для grid_table
+const gridTableFeedback = ref([]);
+
+const initializeGridTableAnswers = (task) => {
+  return task.tableData.rows.map(row => {
+    const answerObj = { cells: [] };
+    row.cells.forEach((cell, index) => {
+      answerObj.cells.push(row.editable[index] ? '' : cell);
+    });
+    return answerObj;
+  });
+};
+
+// Проверка ответов для grid_table
+const checkGridTableAnswers = (taskIndex) => {
+  const task = exerciseData.value.tasks[taskIndex];
+  const feedback = [];
+
+  task.tableData.rows.forEach((row, ri) => {
+    const rowFeedback = {
+      allCorrect: true,
+      incorrect: {}
+    };
+
+    if (!row.correctAnswers) {
+      feedback.push(rowFeedback);
+      return;
+    }
+
+    row.editable.forEach((isEditable, ci) => {
+      if (!isEditable) return;
+
+      // Если правильный ответ "any" - пропускаем проверку
+      if (row.correctAnswers.cells[ci] === "anyIsOk") return;
+
+      const userAnswer = normalizeAnswer(answers.value[taskIndex][ri].cells[ci]);
+      const correctAnswer = normalizeAnswer(row.correctAnswers.cells[ci]);
+      const almostCorrect = row.correctAnswers.almostCorrect?.[ci];
+
+      if (userAnswer !== correctAnswer &&
+        (!almostCorrect || !almostCorrect.some(alt => normalizeAnswer(alt) === userAnswer))) {
+        rowFeedback.allCorrect = false;
+        rowFeedback.incorrect[ci] = {
+          correct: row.correctAnswers.cells[ci],
+          userAnswer: answers.value[taskIndex][ri].cells[ci]
+        };
+      }
+    });
+
+    feedback.push(rowFeedback);
+  });
+
+  gridTableFeedback.value[taskIndex] = feedback;
+  const correctRows = feedback.filter(row => row.allCorrect).length;
+  return Math.round((correctRows / task.tableData.rows.length) * 100);
+};
+
+// Получение класса для input в grid_table
+const getGridInputClass = (taskIndex, rowIndex, cellIndex, correctAnswers) => {
+  if (!checkedTasks.value[taskIndex] || !correctAnswers) return '';
+
+  // Если ответ любой подходит - всегда верный
+  if (correctAnswers.cells[cellIndex] === "anyIsOk") return 'grid-input-correct';
+
+  const userAnswer = normalizeAnswer(answers.value[taskIndex][rowIndex].cells[cellIndex]);
+  const normalizedCorrect = normalizeAnswer(correctAnswers.cells[cellIndex]);
+  const almostCorrect = correctAnswers.almostCorrect?.[cellIndex];
+
+  if (userAnswer === normalizedCorrect) return 'grid-input-correct';
+  if (almostCorrect && almostCorrect.some(alt => normalizeAnswer(alt) === userAnswer)) {
+    return 'grid-input-almost-correct';
+  }
+  return 'grid-input-incorrect';
+};
+
 const rainbowColors = [
   '#cff0ff', // 1 - светло-голубой
   '#e0c0ff', // 2 - светло-фиолетовый
@@ -327,7 +778,159 @@ const rainbowColors = [
 </script>
 
 <style scoped>
+/* Grid Table стили */
+.grid-table-container {
+  margin: 20px 0;
+}
 
+.grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  background-color: cornsilk;
+}
+
+.grid-table th, .grid-table td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+}
+
+.grid-table th {
+  background-color: #f3f4f6;
+  font-weight: 500;
+}
+
+.grid-table tr:nth-child(even) {
+  background-color: #daf8f1;
+
+}
+
+.grid-table-input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.grid-input-correct {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+}
+
+.grid-input-incorrect {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.grid-input-almost-correct {
+  border-color: #f59e0b;
+  background-color: #fef3c7;
+}
+
+.grid-table-feedback {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+}
+
+.feedback-item {
+  margin-bottom: 5px;
+}
+
+.correct-feedback {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.incorrect-feedback {
+  display: inline-block;
+  margin-right: 10px;
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+/* Добавляем новые стили для student_input */
+.student-input-container {
+  display: grid;
+  gap: 15px;
+  padding: 1px;
+}
+
+.student-input {
+  padding: 1px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-align: center;
+  color: #3b82f6;
+}
+
+.input-small {
+  width: 50px;
+}
+
+.input-medium {
+  width: 100px;
+}
+
+.input-large {
+  width: 150px;
+}
+
+.input-full {
+  width: 100%;
+  text-align: left;
+
+}
+
+.student-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.student-input-correct {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.student-input-incorrect {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.answer-feedback {
+  margin-top: 5px;
+  font-size: 0.9rem;
+}
+
+.correct-answer {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.incorrect-answer {
+  color: #ef4444;
+}
+.student-input-almost-correct {
+  border-color: #f59e0b;
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.almost-answer {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.student-input:disabled {
+  opacity: 1;
+  cursor: none;
+  background-color: inherit;
+}
 /* Добавляем стили для счетчика заданий и кнопки Next Task */
 .header-bottom {
   display: flex;
@@ -362,7 +965,7 @@ const rainbowColors = [
   font-weight: 500;
   border-radius: 0.5rem;
   border: none;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.2s;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
@@ -616,6 +1219,8 @@ input[type="radio"]:checked + .radio-custom::after {
   font-weight: 500;
   color: #1f2937;
   margin-bottom: 5px;
+  line-height: 25px;
+
 }
 
 .options-container {
@@ -738,18 +1343,13 @@ input[type="radio"]:checked + .radio-custom::after {
 
 .task-image {
   max-width: 100%;
-  max-height: 300px;
+  max-height: 400px;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  display: flex
+;
 
-  /* Эффект "виньетки" - затемнение краев
-  mask-image: radial-gradient(
-
-    circle at center,
-    white 0%,
-    white 70%,
-    transparent 100%
-  );  */
 }
 
 .text-script-container {
@@ -892,7 +1492,7 @@ input[type="radio"]:checked + .radio-custom::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.2s;
   border: 1px solid #e5e7eb;
   background: white;
@@ -919,7 +1519,7 @@ input[type="radio"]:checked + .radio-custom::after {
   border-radius: 6px;
   border: none;
   font-weight: 500;
-  cursor: pointer;
+  cursor: none;
   transition: background 0.2s;
 }
 
@@ -931,7 +1531,7 @@ input[type="radio"]:checked + .radio-custom::after {
   background-color: rgba(220, 43, 250, 0.56);
   border: none;
   color: #6b7280;
-  cursor: pointer;
+  cursor: none;
   padding: 5px;
   font-size: 0.9rem;
   white-space: nowrap;
@@ -955,4 +1555,66 @@ input[type="radio"]:checked + .radio-custom::after {
     margin: 5px 0;
   }
 }
+
+/* DropDown Text стили */
+.drop-down-text-container {
+  display: grid;
+  gap: 15px;
+}
+
+.drop-down-select {
+  padding: 1px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: white;
+  color: #3b82f6;
+  cursor: none;
+  min-width: 80px;
+  transition: all 0.2s;
+  margin: 1px;
+  width: 155px;
+  text-align: center;
+}
+
+.drop-down-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.drop-down-correct {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.drop-down-incorrect {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.correct-option {
+  font-weight: bold;
+  color: #10b981;
+}
+
+.selected-option {
+  background-color: #f0f7ff;
+}
+
+.answer-feedback {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.correct-answer {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.incorrect-answer {
+  color: #ef4444;
+}
+
 </style>
