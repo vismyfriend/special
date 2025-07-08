@@ -7,7 +7,17 @@ const shortWordsData = {
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
-
+  ],
+  hardCodedLinkUP0: [
+    { id: 1, eng: 'What`s the English for "Я\u00A0рад"?', ru: 'Как на английском сказать "Я\u00A0рад"?'},
+    { id: 2, eng: 'Give an example, give\u00A0examples', ru: 'приведите пример, дайте\u00A0примеры'},
+    { id: 3, eng: 'Tell me your name', ru: 'скажите мне как вас зовут'},
+    { id: 4, eng: 'How to translate it?', ru: 'как это переводится?'},
+    { id: 5, eng: 'Who are you ? /\u00A0хУ\u00A0а\u00A0ю\u00A0/', ru: 'кто вы?'},
+    { id: 6, eng: 'How are you ? /\u00A0хАу\u00A0а\u00A0ю\u00A0/', ru: 'как вы?'},
+    { id: 7, eng: 'Where are you? /\u00A0уЭэ\u00A0а\u00A0ю\u00A0/', ru: 'где вы?'},
+    { id: 8, eng: 'Who are we ? /\u00A0хУ\u00A0а\u00A0ви\u00A0/', ru: 'кто мы?'},
+    { id: 9, eng: 'What are those? /\u00A0Уот\u00A0а\u00A0доуз\u00A0/', ru: 'что там за вещи?'},
   ],
   ArgentinaLessonWords: [
     { id: 1, eng: "Whale", ru: "Кит", hint: "/уЭйл/" },
@@ -240,6 +250,16 @@ whatISitVideoMission: [
     { id: 7, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
     { id: 8, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
     { id: 9, eng: "Who", ru: "кто", hint: "/ ху /" },
+  ],
+  hardCoded_questionWords1: [
+    { id: 1, eng: "What is it?", ru: "что это?"},
+    { id: 2, eng: "Where is it?", ru: "где это?"},
+    { id: 3, eng: "When is it?", ru: "когда это?"},
+    { id: 4, eng: "Why", ru: "почему", hint: "/ уай /" },
+    { id: 5, eng: "How", ru: "как", hint: "/ хау /" },
+    { id: 7, eng: "What color is it?", ru: "какого это цвета", hint: "/ уот кала из ит/" },
+    { id: 8, eng: "What size is it?", ru: "какого это размера", hint: "/ уот сайз из ит /" },
+    { id: 9, eng: "Who is it?", ru: "кто это", hint: "/ ху из ит /" },
   ],
 
   questionWords2: [

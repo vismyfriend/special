@@ -40,6 +40,17 @@ export const allGamesAndSetsOfWordsList =
       active: false,
     },
     {
+      // захардкодена ссылка вутри проекта
+      type: "hardcodedLink", //  тип для идентификации
+      path: "/see-all-sets-of-words/hardCodedLinkUP0/find-pairs-hard",
+      missionVisibleName: "Полезные фразы",
+      missionDescription: "Полезные фразы",
+      id: 1001,
+      active: true,
+      stars: '1'
+
+    },
+    {
       missionName: "WhatIsMyLevel",
       missionVisibleName: "Какой мой уровень Инглиша?",
       missionDescription: "What is my level of English?",
@@ -47,6 +58,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
 
     },
+
     {
       // захардкодена ссылка вутри проекта
       type: "hardcodedLink", //  тип для идентификации
@@ -121,6 +133,16 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true,
       stars: '1'
+    },
+    {
+      // захардкодена ссылка вутри проекта
+      type: "hardcodedLink", //  тип для идентификации
+      path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
+      missionVisibleName: "QW1 speaking",
+      missionDescription: "QW1 speaking",
+      id: 1001,
+      active: true,
+
     },
     {
       missionName: "questionWords2",

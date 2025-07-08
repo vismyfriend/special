@@ -230,13 +230,13 @@ input:checked + .slider:before {
 }
 
 .eng-col {
-line-height: 0.8;
+line-height: 0.9;
   flex: 1;
 }
 
 .ru-col {
     font-size: 12px;
-  line-height: 0.8;
+  line-height: 0.9;
   flex: 1;
 
 }

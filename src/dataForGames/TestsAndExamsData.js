@@ -35,6 +35,14 @@ const TestsAndExamsData = {
             correctAnswer: "D",
             explanation: 'ну типа потому что калькулятор так посчитал и все'
           },
+          {
+            text: "What is your favorite color?",
+            options: {
+              A: "1",
+            },
+            correctAnswer: "A",
+            explanation: 'какой твой любимый цвет?'
+          },
         ]
       },
 

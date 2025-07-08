@@ -96,7 +96,7 @@
       <!-- Multiple Choice -->
       <div v-else-if="task.taskID === 'multiple_choice'" class="multiple-choice-container">
         <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
-          <p class="question-text">{{ qi + 1 }}) {{ q.text }}</p>
+          <p class="question-text margin-bottom">{{ qi + 1 }}) {{ q.text }}</p>
           <div class="options-container">
             <label
               v-for="(label, key) in q.options"
@@ -241,6 +241,39 @@
         </div>
       </div>
 
+      <!-- Discussion Task блок -->
+      <div v-else-if="task.taskID === 'discussion_task'" class="discussion-task-container">
+        <div v-for="(q, qi) in task.questions" :key="qi" class="discussion-question">
+          <div class="question-controls">
+            <button
+              class="discussion-checkbox"
+              @click.stop="toggleDiscussionQuestion(index, qi)"
+              :class="{ 'checked': discussionChecked[index]?.[qi] }"
+            >
+
+            </button>
+          </div>
+          <div class="question-content" :class="{ 'collapsed': discussionCollapsed[index]?.[qi] }">
+            <div class="question-text">{{ q.text }}</div>
+            <div class="translation-section">
+              <div
+                v-if="!discussionCollapsed[index]?.[qi]"
+                class="translation-toggle"
+                @click.stop="toggleDiscussionTranslation(index, qi)"
+              >
+                <template v-if="!showTranslation[index]?.[qi]">Показать перевод</template>
+                <template v-else>
+                  <span class="translation-text">{{ q.translation }}</span>
+                </template>
+              </div>
+              <div v-if="discussionCollapsed[index]?.[qi]" class="translation-text collapsed-translation">
+                {{ q.translation }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="task-footer">
         <!-- Верхняя строка: управление проверкой -->
         <div class="task-controls">
@@ -255,20 +288,28 @@
           <div
             class="score-display"
             :class="[
-        { 'score-visible': checkedTasks[index] },
-        checkedTasks[index] ? getGrade(taskScores[index]).class : ''
-      ]"
+      { 'score-visible': checkedTasks[index] },
+      checkedTasks[index] ? getGrade(taskScores[index]).class : ''
+    ]"
           >
             {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}
           </div>
 
           <button
+            v-if="task.taskID !== 'discussion_task'"
             class="check-button"
             @click="checkAnswers(index)"
+            :data-task-type="task.taskID"
           >
             Проверить
           </button>
-
+          <button
+            v-else
+            class="check-button"
+            @click="toggleShuffle(index)"
+          >
+            {{ isShuffled ? 'Unshuffle' : 'Shuffle' }}
+          </button>
         </div>
         <!-- Текст скрипта (если открыт) -->
         <div v-if="expandedScriptIndex === index" class="text-script-content">
@@ -313,7 +354,37 @@ const expandedScriptIndex = ref(null)
 const taskScores = ref([]); // Хранит проценты для каждого задания
 const currentMission = ref('')
 const currentTaskIndex = ref(0) // Добавляем отслеживание текущего задания
+const discussionChecked = ref([]);
+const discussionCollapsed = ref([]);
+const showTranslation = ref([]);
+const isShuffled = ref(false); // Добавляем состояние перемешанности
 
+
+// Функция для перемешивания вопросов
+const toggleShuffle = (taskIndex) => {
+  if (!exerciseData.value) return;
+
+  const task = exerciseData.value.tasks[taskIndex];
+  if (task.taskID !== 'discussion_task') return;
+
+  if (isShuffled.value) {
+    // Если уже перемешано - возвращаем исходный порядок
+    task.questions = [...task.originalQuestions];
+    isShuffled.value = false;
+  } else {
+    // Сохраняем исходный порядок и перемешиваем
+    if (!task.originalQuestions) {
+      task.originalQuestions = [...task.questions];
+    }
+    task.questions = [...task.questions].sort(() => Math.random() - 0.5);
+    isShuffled.value = true;
+  }
+
+  // Сбрасываем состояние чекбоксов и свернутых вопросов
+  discussionChecked.value[taskIndex] = Array(task.questions.length).fill(false);
+  discussionCollapsed.value[taskIndex] = Array(task.questions.length).fill(false);
+  showTranslation.value[taskIndex] = Array(task.questions.length).fill(false);
+};
 
 const normalizeAnswer = (answer) => {
   if (!answer || typeof answer !== 'string') return '';
@@ -486,6 +557,20 @@ onMounted(() => {
   exerciseData.value = ListeningExerciseData[currentMission.value] || null;
 
   if (exerciseData.value) {
+    // Сохраняем оригинальный порядок И сразу перемешиваем вопросы для discussion_task
+    exerciseData.value.tasks.forEach(task => {
+      if (task.taskID === 'discussion_task') {
+        // 1. Сохраняем оригинальный порядок
+        task.originalQuestions = [...task.questions];
+
+        // 2. Перемешиваем текущие вопросы
+        task.questions = [...task.questions].sort(() => Math.random() - 0.5);
+
+        // 3. Устанавливаем флаг, что вопросы перемешаны
+        isShuffled.value = true;
+      }
+    });
+
     answers.value = exerciseData.value.tasks.map(task => {
       if (task.taskID === 'grid_table') {
         return initializeGridTableAnswers(task);
@@ -494,6 +579,8 @@ onMounted(() => {
           const dropdownCount = (q.text.match(/\(/g) || []).length;
           return Array(dropdownCount).fill('');
         });
+      } else if (task.taskID === 'discussion_task') {
+        return []; // Для discussion_task не нужны ответы
       } else {
         return Array(task.questions.length).fill(null);
       }
@@ -514,6 +601,18 @@ onMounted(() => {
   }
 
   disableAudioDownload();
+
+  if (exerciseData.value) {
+    discussionChecked.value = exerciseData.value.tasks.map(task =>
+      task.taskID === 'discussion_task' ? Array(task.questions.length).fill(false) : null
+    );
+    discussionCollapsed.value = exerciseData.value.tasks.map(task =>
+      task.taskID === 'discussion_task' ? Array(task.questions.length).fill(false) : null
+    );
+    showTranslation.value = exerciseData.value.tasks.map(task =>
+      task.taskID === 'discussion_task' ? Array(task.questions.length).fill(false) : null
+    );
+  }
 });
 
 
@@ -545,8 +644,12 @@ const parseUsefulWords = (wordsString) => {
 };
 
 const checkAnswers = (taskIndex) => {
-  checkedTasks.value[taskIndex] = true;
+
   const task = exerciseData.value.tasks[taskIndex];
+  if (task.taskID === 'discussion_task') {
+    return; // Не проверяем discussion task
+  }
+  checkedTasks.value[taskIndex] = true;
   let percentage = 0;
 
   if (task.taskID === 'grid_table') {
@@ -594,7 +697,22 @@ const checkAnswers = (taskIndex) => {
 };
 
 
+const toggleDiscussionQuestion = (taskIndex, questionIndex) => {
+  if (!discussionChecked.value[taskIndex]) return;
 
+  // Всегда переключаем состояние галочки
+  discussionChecked.value[taskIndex][questionIndex] =
+    !discussionChecked.value[taskIndex][questionIndex];
+
+  // Сворачиваем/разворачиваем вопрос
+  discussionCollapsed.value[taskIndex][questionIndex] =
+    discussionChecked.value[taskIndex][questionIndex];
+};
+
+const toggleDiscussionTranslation = (taskIndex, questionIndex) => {
+  if (!showTranslation.value[taskIndex]) return;
+  showTranslation.value[taskIndex][questionIndex] = !showTranslation.value[taskIndex][questionIndex];
+};
 
 
 const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => {
@@ -1239,7 +1357,6 @@ input[type="radio"]:checked + .radio-custom::after {
   font-size: 1.125rem;
   font-weight: 500;
   color: #1f2937;
-  margin-bottom: 5px;
   line-height: 25px;
 
 }
@@ -1636,5 +1753,119 @@ input[type="radio"]:checked + .radio-custom::after {
 .incorrect-answer {
   color: #ef4444;
 }
+/* Discussion Task стили */
+.discussion-task-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 
+.discussion-question {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.question-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.discussion-checkbox {
+  width: 24px;
+  height: 40px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.discussion-checkbox.checked {
+  background-color: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.question-content {
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.question-content.collapsed {
+  opacity: 0.8;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.margin-bottom {
+  margin-bottom: 6px;
+}
+
+
+.translation-toggle {
+  color: #6b7280;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.translation-toggle:hover {
+  background-color: #f3f4f6;
+}
+
+.translation-text {
+  display: inline-block;
+  background-color: #f8fafc;
+  border-radius: 4px;
+  color: #4b5563;
+  font-style: italic;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.collapsed-translation {
+  margin-top: 0;
+  background-color: rgba(248, 250, 252, 0.7);
+}
+
+.hide-translation-hint {
+  font-size: 0.8em;
+  color: #9ca3af;
+  margin-left: 5px;
+}
+
+/* Скрываем только текст вопроса при свертывании */
+.collapsed .question-text {
+  display: none;
+}
+
+/* Скрываем кнопку "Проверить" для discussion_task */
+.task-controls .check-button[data-task-type="discussion_task"] {
+  display: none;
+}
+
+/* Добавим в стили */
+.check-button[data-task-type="discussion_task"] {
+  background-color: #8b5cf6; /* Фиолетовый цвет для Shuffle */
+}
+
+.check-button[data-task-type="discussion_task"]:hover {
+  background-color: #7c3aed;
+}
 </style>

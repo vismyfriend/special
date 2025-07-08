@@ -655,6 +655,7 @@ input[type="radio"]:checked + .radio-custom::after {
   font-weight: 500;
   color: #1f2937;
   margin-bottom: 5px;
+  line-height: 1.1;
 }
 
 .options-container {

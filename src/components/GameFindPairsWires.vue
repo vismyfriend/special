@@ -482,7 +482,7 @@ onMounted(() => {
 .textOnCard {
   font-size: 16px;
   font-weight: 500;
-
+line-height: 0.9;
 }
 
 .main-word {

@@ -2,13 +2,13 @@
 const ListeningExerciseData = {
 
   testQuicklyData: {
-    mainDescription: "Listening skills",
+    mainDescription: "Speaking and listening",
     tasks: [
       {
-        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
         taskDescription: "Послушайте и ответьте",
-        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskID: "true_false",
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
         textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
         questions: [
@@ -23,6 +23,306 @@ const ListeningExerciseData = {
 
         ]
       },
+      {
+        taskDescription: "Заполни пропуски в таблице:",
+        taskID: "grid_table",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        tableData: {
+          headers: ["Russian", "English"],
+          rows: [
+            {
+              cells: ["Марвэл - моя собака", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel is my dog",],
+                almostCorrect: {
+                  1: ["Marvel's my dog"]
+                }
+              }
+            },
+            {
+              cells: ["Марвэл любит Сырника!", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel likes Cheesecake.",],
+                almostCorrect: {
+                  1: ["Marvel loves Cheesecake","Marvel likes Cheesecakes","Marvel loves Cheesecakes"]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He doesn't like milk."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он не любит молоко",null, ],
+                almostCorrect: {
+                  1: ["Ему не нравится молоко",]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He loves to run."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он любит бегать",null, ],
+                almostCorrect: {
+                  1: ["Ему нравится бегать",]
+                }
+
+              }
+            },
+            {
+              cells: ["Кто любит Марвела?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who loves Marvel?",],
+                almostCorrect: {
+                  1: ["Who likes Marvel?"]
+                }
+
+              }
+            },
+            {
+              cells: ["Кого Марвел любит?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who does Marvel love?",],
+                almostCorrect: {
+                  1: ["Who does Marvel like?"]
+                }
+              }
+            },
+          ]
+        },
+      },
+      {
+        taskDescription: "Drop down",
+        taskID: "drop_down_text",
+        usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
+        audio: null,
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "Hello friends! Let me share with you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and work at my computer. I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+          },
+        ]
+      },
+      {
+        taskDescription: "Discuss this:",
+        taskID: "discussion_task",
+        usefulWords: null,
+        audio: null,
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "What is your favorite animal?",
+            translation: "какое твое любимое животное",
+          },
+          {
+            text: "What is your favorite color?",
+            translation: "какой твой любимый цвет",
+          },
+          {
+            text: "How old are you?",
+            translation: "какой ваш возраст?",
+          },
+
+
+
+
+        ]
+      },
+      {
+        taskDescription: "Translate",
+        taskID: "student_input",
+        usefulWords: null,
+        audio: null,
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "Позвольте мне ____",
+            correctAnswer: "Let me",
+          },
+          {
+            text: "поделиться с вами ____",
+            correctAnswer: "share with you",
+          },
+          {
+            text: "несколькими словами про моего сына____",
+            correctAnswer: "a few words about my son",
+            almostCorrectAnswers: ["a few words about cheesecake","a few words about my cheesecake",]
+
+          },
+          {
+            text: "Он не любит ТикТок ____",
+            correctAnswer: "He doesn't like TikTok",
+            almostCorrectAnswers: ["He doesn't love TikTok",]
+          },
+          {
+            text: "Кто любит ТикТок? ____",
+            correctAnswer: "Who likes TikTok?",
+            almostCorrectAnswers: ["Who loves TikTok?",]
+          },
+          {
+            text: "Кого любит ТикТок? ____",
+            correctAnswer: "Who does TikTok like?",
+            almostCorrectAnswers: ["Who does TikTok love?",]
+          },
+          {
+            text: "Кого ты любишь? ____",
+            correctAnswer: "Who do you like?",
+            almostCorrectAnswers: ["Who do you love?",]
+          },
+
+
+
+        ]
+      },
+      {
+        taskDescription: "Listen & click the correct answer",
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: '1)\n' +
+          '\n' +
+          'A: Are you going to take the bus downtown, or are you going to take your bike?\n' +
+          '\n' +
+          'B: I think there’s too much traffic on the road today to go by bike. It’s not safe to ride in traffic.\n' +
+          '\n' +
+          'A: I guess there’s so much traffic because of the big football game. Well, look, I’m driving downtown. Can I give you a ride?\n' +
+          '\n' +
+          'B: Hey, thanks.\n' +
+          '\n' +
+          'A: So do you use your bike very often?\n' +
+          '\n' +
+          'B: Not during the week, but I ride it pretty often on the weekend.\n' +
+          '\n' +
+          '2)\n' +
+          '\n' +
+          'A: How are you going to get downtown? Are you going to drive?\n' +
+          '\n' +
+          'B: I don’t think so. I just heard the traffic report on the radio. It seems there is a traffic jam on the freeway. They said a couple of buses have broken down.\n' +
+          '\n' +
+          'A: I guess it will be quicker to take the subway.\n' +
+          '\n' +
+          'B: Absolutely!\n' +
+          '\n' +
+          '3)\n' +
+          '\n' +
+          'A: Gosh. I wonder how much longer we’ll have to wait for a bus. We’ve waited half an hour already! Do you think we should go back and get the car?\n' +
+          '\n' +
+          'B: Oh, no. I hate driving at night.\n' +
+          '\n' +
+          'A: Let’s take a taxi. I don’t want to be late for the movie.\n' +
+          '\n' +
+          'B: Good idea. I’ll call for one on cell phone. They usually come pretty quickly.\n' +
+          '\n' +
+          '4)\n' +
+          '\n' +
+          'A: How are you going to get home from the restaurant on Sunday, Harry?\n' +
+          '\n' +
+          'B: Oh, I can just take a bus or a taxi. There are usually plenty of taxis around that area at night.\n' +
+          '\n' +
+          'A: Yes, but not on a Sunday night. You might wait for a long time. Why don’t you ask Kevin to drive you home? He’s having dinner with us and he lives near you.\n' +
+          '\n' +
+          'B: That’s right. I’ll ask him.\n' +
+          '\n' +
+          '5)\n' +
+          '\n' +
+          'A: What’s the traffic like downtown today?\n' +
+          '\n' +
+          'B: It’s pretty bad. One of the traffic lights is broken, so all the traffic is backing up.\n' +
+          '\n' +
+          'A: Oh. How should I get to doctor’s appointment? Drive? Take a taxi?\n' +
+          '\n' +
+          'B: A taxi won’t be any faster than driving.\n' +
+          '\n' +
+          'A: Well then, I’ll probably take the subway to the station and then walk from there.\n' +
+          '\n' +
+          'B: Yeah, today I think that’s the fastest way.\n' +
+          '\n' +
+          '6)\n' +
+          '\n' +
+          'A: How do you plan to get to your friend’s house? Do you need a ride?\n' +
+          '\n' +
+          'B: How’s the weather?\n' +
+          '\n' +
+          'A: It’s really nice out.\n' +
+          '\n' +
+          'B: Oh, thanks anyway, but I’ll ride bike. I was going to take the bus, but I need to get some exercise.\n' +
+          '\n' +
+          'A: All right. But be careful of the traffic.',
+
+        questions: [
+          {
+            text: "Как Vincent доберется до центра?",
+            options: {
+              A: "Я вообще ХЗ, он непредсказуем!",
+              B: "by car",
+              C: "on foot",
+              D: "by bicycle",
+              E: "by bus"
+            },
+            correctAnswer: "B"
+          },
+          {
+            text: "Каким способом сегодня быстрее?",
+            options: {
+              A: "by subway",
+              B: "by taxi",
+              C: "on foot",
+              D: "by bicycle",
+            },
+            correctAnswer: "A"
+          },
+          {
+            text: "Как они доберутся?",
+            options: {
+              A: "Vincent will drive them",
+              B: "by taxi",
+              C: "on foot",
+              D: "by electric scooters",
+
+            },
+            correctAnswer: "B"
+          },
+          {
+            text: "Как он доберется до дома?",
+            options: {
+              A: "his friend will drive him",
+              B: "his friend will give him a car",
+              C: "he will ride a bike",
+              D: "his friend will call a taxi",
+            },
+            correctAnswer: "A"
+          },
+          {
+            text: "Какой самый быстрый способ сегодня?",
+            options: {
+              A: "by subway",
+              B: "by taxi",
+              C: "by bicycle",
+              D: "on a horse",
+            },
+            correctAnswer: "A"
+          },
+          {
+            text: "Как она доберется?",
+            options: {
+              A: "by bike",
+              B: "by taxi",
+              C: "on foot",
+              D: "by an electric scooter",
+            },
+            correctAnswer: "A"
+          },
+        ]
+      },
+
     ]
   },
   WhatIsMyLevel: {
@@ -248,7 +548,6 @@ const ListeningExerciseData = {
 
     ]
   },
-
   traffic1: {
     mainDescription: "Level B1 ",
     tasks: [
@@ -1201,11 +1500,6 @@ const ListeningExerciseData = {
 
     ]
   },
-
-
-
-
-
   testPatternMultipleChoiceCopyThisAndChangeName: {
     mainDescription: "Listening skills Level A2",
     tasks: [
@@ -1257,7 +1551,6 @@ const ListeningExerciseData = {
 
     ]
   },
-
   testWeakSpots1: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
@@ -2602,8 +2895,6 @@ const ListeningExerciseData = {
 
     ]
   },
-
-
 }
 
 export default ListeningExerciseData
