@@ -477,7 +477,7 @@ onMounted(() => {
 .hint {
   font-size: 14px;
   color: #666;
-  line-height: 0.5;
+  line-height: 0.9;
 }
 .textOnCard {
   font-size: 16px;

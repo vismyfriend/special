@@ -251,10 +251,6 @@ const ListeningExerciseData = {
             text: "How old are you?",
             translation: "какой ваш возраст?",
           },
-
-
-
-
         ]
       },
       {
@@ -445,7 +441,8 @@ const ListeningExerciseData = {
         ]
       },
 
-    ]
+    ],
+
   },
   WhatIsMyLevel: {
     mainDescription: "СПЭШЛ проверка уровня",
@@ -479,8 +476,8 @@ const ListeningExerciseData = {
       },
       {
         usefulWords: 'A0 - я полный ноль я даже читаю слово SPECIAL как СПЕЦИАЛ или СПЕСЫАЛ и думаю это переводится специальность или типа того., ' +
-          'A1 - ну я вроде учил немного и может помню something about prepositions... ну спроси меня как будет "над" или "через час" и я отвечу.,' +
-          'A1.5 - I can read. I can speak. Nu vot i vse navernoe. I am ready to improve my skills' +
+          'A1 - ну я вроде учил немного и может помню something about prepositions... ну спроси меня как будет "над" или "через час" и я отвечу! (но это не точно),' +
+          'A1.5 - I can read. I can speak. Nu vot i vse navernoe. I am ready to improve my skills. I am not shy and I`d be happy to practice more,' +
           'A2 - I know simple basic words and grammar rules. And also I understand foreigners but I`m a bit afraid of speaking you know. Surely I mix up grammar tenses pretty often. But I guess everybody does it from time to time.,' +
           'B1 - I guess it wouldn`t bother me to be on my own around native speakers. My sentences are short but who cares? The main thing is that I can hold a conversation as long as the topic is familiar. Though I sometimes struggle for words as they fly outta my head.,' +
           'B2 - Decent. I consider this word to be... some kinda u know... like an awesome description of the current level of mine. I get the meaning of almost all TV series and even can shadow characters without the subs sometimes (if the accent is clear). Though I get that my style doesn`t sound natural yet. I make occasional mistakes with advanced grammar. If I hadn`t found out earlier the meaning of that first word "decent" why would I even thought now for a second that this is my level.,' +
@@ -1258,21 +1255,10 @@ const ListeningExerciseData = {
           'traffic lights - светофор, ' +
           'roundabout - /рАунд эбаут/ круговое движение, ' +
           'crossroads - перекресток',
-        taskDescription: 'Послушайте и нарисуйте маршрут - линию пути людей от "You are here" до ...',
-        audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
+        taskDescription: 'Посмотрите на карту, find yourself. Do you know all the buildings here?',
         taskID: "multiple_choice",
-        taskPicture: new URL("../assets/images/A2_directions.png", import.meta.url).href,
-        textScript: 'A\n' +
-          'Go straight on. Then take the first left on to Green Street. Walk past the library and it’s the building next to the library on the left.\n' +
-          '\n' +
-          'B\n' +
-          'Go straight on. Go past the traffic lights. You will see a shop on the right. Go past that and it’s on the right next to the shop.\n' +
-          '\n' +
-          'C\n' +
-          'Go straight on. Go past the traffic lights and go straight on until you get to the roundabout. At the roundabout turn left. Go past the theatre. It’s the building next to the theatre, opposite the hospital.\n' +
-          '\n' +
-          'D\n' +
-          'Go straight on. Go past the traffic lights and take the second right on to King’s Road. Go past the bookshop. It’s the building next to the bookshop opposite the café.',
+        taskPicture: new URL("../assets/images/A2_directionsNew.png", import.meta.url).href,
+        textScript: null,
         questions: [
           {
             text: "Какой смысл фразы 'go straight on'?",
@@ -1300,11 +1286,136 @@ const ListeningExerciseData = {
             text: 'Как сказать "это не почта, это полийцейский участок"',
             options: {
               A: "it's not the police, it's the pochta",
-              B: "it's not the post station, it's the police oofice",
+              B: "it's not the post, it's the policia",
               C: "it's not the post office, it's the police station",
 
             },
             correctAnswer: "C"
+          },
+          {
+            text: 'Take the second right - означает:"',
+            options: {
+              A: "Свернуть налево на Green Street",
+              B: "Свернуть вправо на Green Street",
+              C: "Свернуть налево на King's Road",
+              D: "Свернуть вправо на King's Road",
+              E: "Взять секунду, чтобы подумать о верном повороте",
+            },
+            correctAnswer: "D"
+          },
+        ]
+      },
+      {
+        usefulWords: 'You are here! - /ю а хИэ/ вы находитесь здесь!, ' +
+          'Where am I? - /уЭ Эм ай/ где я?, ' +
+          'on the right - справа, ' +
+          'on the left - слева, ' +
+          'to the left - налево, ' +
+          'to the right - направо, ' +
+          'next turn - /нэкст тёрн/ следующий поворот, ' +
+          'go straight - /гоу стрЭйт/ идти прямо, ' +
+          'go ahead - /гоу э хЭд/ иди вперёд, ' +
+          'turn right - /тёрн райт/ поверни направо, ' +
+          'take right - /тэйк райт/ cверни вправо, ' +
+          'take the first left - сверни сразу влево, ' +
+          'get to - добираться до, ' +
+          'the theatre - театр, ' +
+          'until you get to - /антИл/ пока не доберешься до, ' +
+          'next to - возле и следующий / близко к, ' +
+          'opposite - /Опозит/ напротив, ' +
+          'go past something - проходить мимо чего-то, ' +
+          'traffic lights - светофор, ' +
+          'roundabout - /рАунд эбаут/ круговое движение, ' +
+          'crossroads - перекресток',
+        taskDescription: 'Послушайте и проложите маршрут - линию пути людей от "You are here" до ...',
+        audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
+        taskID: "student_input",
+        taskPicture: new URL("../assets/images/A2_directionsNew.png", import.meta.url).href,
+        textScript: 'A\n' +
+          'Go straight on. Then take the first left on Green Street. Walk past the library and it’s the building next to the library on the left.\n' +
+          '\n' +
+          'B\n' +
+          'Go straight on. Go past the traffic lights. You will see a shop on the right. Go past that and it’s on the right next to the shop.\n' +
+          '\n' +
+          'C\n' +
+          'Go straight on. Go past the traffic lights and go straight on until you get to the roundabout. At the roundabout turn left. Go past the theatre. It’s the building next to the theatre, opposite the hospital.\n' +
+          '\n' +
+          'D\n' +
+          'Go straight on. Go past the traffic lights and take the second right on to King’s Road. Go past the bookshop. It’s the building next to the bookshop opposite the café.',
+        questions: [
+          {
+            text: "The 1 first person is going to the __",
+            correctAnswer: "post office",
+            almostCorrectAnswers: ["post",]
+          },
+          {
+            text: "The 2 second person is going to the __",
+            correctAnswer: "underground station",
+            almostCorrectAnswers: ["metro","underground"]
+          },
+          {
+            text: "The 3 third person is going to the __",
+            correctAnswer: "cinema",
+            almostCorrectAnswers: ["movie theater",]
+          },
+          {
+            text: "The 4 fourth person is going to the __",
+            correctAnswer: "bus station",
+          },
+        ]
+      },
+      {
+        taskDescription: "Discuss this:",
+        taskID: "discussion_task",
+        usefulWords: 'You are here! - /ю а хИэ/ вы находитесь здесь!, ' +
+          'Where am I? - /уЭ Эм ай/ где я?, ' +
+          'on the right - справа, ' +
+          'on the left - слева, ' +
+          'to the left - налево, ' +
+          'to the right - направо, ' +
+          'next turn - /нэкст тёрн/ следующий поворот, ' +
+          'go straight - /гоу стрЭйт/ идти прямо, ' +
+          'go ahead - /гоу э хЭд/ иди вперёд, ' +
+          'turn right - /тёрн райт/ поверни направо, ' +
+          'take right - /тэйк райт/ cверни вправо, ' +
+          'take the first left - сверни сразу влево, ' +
+          'get to - добираться до, ' +
+          'the theatre - театр, ' +
+          'until you get to - /антИл/ пока не доберешься до, ' +
+          'next to - возле и следующий / близко к, ' +
+          'opposite - /Опозит/ напротив, ' +
+          'go past something - проходить мимо чего-то, ' +
+          'traffic lights - светофор, ' +
+          'roundabout - /рАунд эбаут/ круговое движение, ' +
+          'crossroads - перекресток',
+
+        audio: null,
+        taskPicture: new URL("../assets/images/A2_directionsNew.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "How to get to the factory from the hospital? (you are in the hospital) Tell all possible variants.",
+            translation: "Как добраться до завода если идешь с больницы? расскажи все возможные варианты",
+          },
+          {
+            text: "How to get to the Italian restaurant from the place where you are ? Tell all possible variants.",
+            translation: "Как добраться до ресторана Итальянского с того места где вы находитесь? расскажи все возможные варианты",
+          },
+          {
+            text: "How to get to the shop from the bus station? Tell all possible variants. (you are near the bus station)",
+            translation: "Как добраться до магазина если идешь с автовокзала? расскажи все возможные варианты",
+          },
+          {
+            text: "How to get to the police station from the factory? Tell all possible variants. (you are behind the factory)",
+            translation: "Как добраться до полицейского участка если идешь с завода? (ты за заводом) расскажи все возможные варианты",
+          },
+          {
+            text: "How to get to the museum from the place where you are ? Tell all possible variants.",
+            translation: "Как добраться до музея с того места где вы находитесь? расскажи все возможные варианты",
+          },
+          {
+            text: "How to get to the supermarket from the place where you are? What if the Bond Street is blocked?",
+            translation: "Как добраться до супермаркета с того места где вы находитесь? Что если улица Бонда заблокированна и по ней нельзя идти?",
           },
         ]
       },

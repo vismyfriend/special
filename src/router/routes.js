@@ -17,7 +17,7 @@ const routes = [
               { path: '', component: () => import('src/pages/ChooseGame.vue') },
               {
                 path: 'stories',
-                component: () => import('src/components/GameStories.vue')
+                component: () => import('components/GameStoriesAndWords.vue')
               },
               {
                 path: 'this-game-is-coming-soon',

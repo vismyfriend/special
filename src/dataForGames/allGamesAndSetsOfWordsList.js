@@ -10,6 +10,14 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "testQuicklyDataTwo",
+      missionVisibleName: "stories test 2",
+      missionDescription: "stories test 2",
+      id: 7,
+      active: true,
+      stars: '5'
+    },
+    {
       // delete after testing
       missionName: "student_input_newTask",
       missionVisibleName: "Test quickly1",
@@ -157,7 +165,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Appearance part 1",
       id: 7,
       active: true,
-      stars: '3'
+      stars: '2'
     },
     {
       missionName: "questionWords3",
@@ -394,11 +402,11 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       missionName: "directionsListeningA2",
-      missionVisibleName: "Direction Listening A2",
-      missionDescription: "Направления Аудирование А2",
+      missionVisibleName: "Направления A2",
+      missionDescription: "Directions А2",
       id: 7,
       active: true,
-      stars: '2'
+      stars: '3'
     },
     {
       missionName: "grid_table_agentAntony",
@@ -416,6 +424,8 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '5'
     },
+
+
   ]
 
 export const AllGames =

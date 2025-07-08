@@ -41,6 +41,7 @@ import tntData from 'src/dataForGames/tnt-data';
 import trickyQuizData from 'src/dataForGames/tricky-quiz-data';
 import helpBenderData from 'src/dataForGames/help-bender-data';
 import storiesData from 'src/dataForGames/stories-data';
+import storiesAndWordsData from 'src/dataForGames/storiesData';
 import scrambledData from 'src/dataForGames/scrambled-data';
 import homeworkLinksData from 'src/dataForGames/homework-links-data';
 import hwData from 'src/dataForGames/hw-data';
@@ -114,6 +115,14 @@ const AllGames = ref([
     path: "listening-exercises",
     gameData: listeningExerciseData,
     cardIcon: '🎧', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 1800,
+    name: "Stories",
+    path: "stories",
+    gameData: storiesAndWordsData,
+    cardIcon: '📖', // Добавлена иконка
     active: true,
   },
   {
@@ -199,14 +208,7 @@ const AllGames = ref([
     cardIcon: '🤖', // Добавлена иконка
     active: true
   },
-  {
-    id: 108,
-    name: "Истории",
-    path: "stories",
-    gameData: storiesData,
-    cardIcon: '📖', // Добавлена иконка
-    active: true
-  },
+
   {
     id: 109,
     name: "Распутай слово",
