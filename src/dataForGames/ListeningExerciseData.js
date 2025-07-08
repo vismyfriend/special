@@ -5,6 +5,128 @@ const ListeningExerciseData = {
     mainDescription: "Speaking and listening",
     tasks: [
       {
+        taskDescription: "Irregular Verbs:",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["V1", "V2", "V3", "перевод"],
+          rows: [
+            { cells: ["break", "broke", "broken", "ломать"], editable: [false, false, false, false] },
+            { cells: ["beat", "beat", "beaten", "побить"], editable: [false, false, false, false] },
+            { cells: ["become", "became", "become", "становиться"], editable: [false, false, false, false] },
+            { cells: ["begin", "began", "begun", "начинать"], editable: [false, false, false, false] },
+            { cells: ["blow", "blew", "blown", "дуть"], editable: [false, false, false, false] },
+            { cells: ["borrow", "borrowed", "borrowed", "брать в долг"], editable: [false, false, false, false] },
+            { cells: ["build", "built", "built", "строить"], editable: [false, false, false, false] },
+            { cells: ["burn", "burnt", "burnt", "сжигать, гореть"], editable: [false, false, false, false] },
+            { cells: ["buy", "bought", "bought", "покупать"], editable: [false, false, false, false] },
+            { cells: ["bring", "brought", "brought", "приносить"], editable: [false, false, false, false] },
+            { cells: ["be", "was/were", "been", "быть"], editable: [false, false, false, false] },
+            { cells: ["bite", "bit", "bitten", "кусать"], editable: [false, false, false, false] },
+            { cells: ["come", "came", "come", "приходить"], editable: [false, false, false, false] },
+            { cells: ["choose", "chose", "chosen", "выбирать"], editable: [false, false, false, false] },
+            { cells: ["catch", "caught", "caught", "ловить"], editable: [false, false, false, false] },
+            { cells: ["creep", "crept", "crept", "ползать"], editable: [false, false, false, false] },
+            { cells: ["cost", "cost", "cost", "стоить"], editable: [false, false, false, false] },
+            { cells: ["cut", "cut", "cut", "резать"], editable: [false, false, false, false] },
+            { cells: ["deal", "dealt", "dealt", "иметь дела"], editable: [false, false, false, false] },
+            { cells: ["dig", "dug", "dug", "копать"], editable: [false, false, false, false] },
+            { cells: ["do", "did", "done", "делать"], editable: [false, false, false, false] },
+            { cells: ["drive", "drove", "driven", "водить"], editable: [false, false, false, false] },
+            { cells: ["draw", "drew", "drawn", "рисовать"], editable: [false, false, false, false] },
+            { cells: ["drink", "drank", "drunk", "пить"], editable: [false, false, false, false] },
+            { cells: ["eat", "ate", "eaten", "кушать"], editable: [false, false, false, false] },
+            { cells: ["fall", "fell", "fallen", "падать"], editable: [false, false, false, false] },
+            { cells: ["feed", "fed", "fed", "кормить"], editable: [false, false, false, false] },
+            { cells: ["feel", "felt", "felt", "чувствовать"], editable: [false, false, false, false] },
+            { cells: ["fight", "fought", "fought", "сражаться"], editable: [false, false, false, false] },
+            { cells: ["find", "found", "found", "находить"], editable: [false, false, false, false] },
+            { cells: ["fly", "flew", "flown", "летать"], editable: [false, false, false, false] },
+            { cells: ["forbid", "forbade", "forbidden", "запрещать"], editable: [false, false, false, false] },
+            { cells: ["forget", "forgot", "forgotten", "забывать"], editable: [false, false, false, false] },
+            { cells: ["forgive", "forgave", "forgiven", "прощать"], editable: [false, false, false, false] },
+            { cells: ["freeze", "froze", "frozen", "замерзать"], editable: [false, false, false, false] },
+            { cells: ["grow", "grew", "grown", "расти"], editable: [false, false, false, false] },
+            { cells: ["get", "got", "gotten", "получать"], editable: [false, false, false, false] },
+            { cells: ["give", "gave", "given", "давать"], editable: [false, false, false, false] },
+            { cells: ["go", "went", "gone", "ходить"], editable: [false, false, false, false] },
+            { cells: ["have", "had", "had", "иметь"], editable: [false, false, false, false] },
+            { cells: ["hear", "heard", "heard", "слышать"], editable: [false, false, false, false] },
+            { cells: ["hide", "hid", "hidden", "прятать"], editable: [false, false, false, false] },
+            { cells: ["hit", "hit", "hit", "ударять"], editable: [false, false, false, false] },
+            { cells: ["hurt", "hurt", "hurt", "причинять боль"], editable: [false, false, false, false] },
+            { cells: ["hold", "held", "held", "держать"], editable: [false, false, false, false] },
+            { cells: ["keep", "kept", "kept", "хранить"], editable: [false, false, false, false] },
+            { cells: ["know", "knew", "known", "знать"], editable: [false, false, false, false] },
+            { cells: ["lead", "led", "led", "вести, приводить"], editable: [false, false, false, false] },
+            { cells: ["learn", "learnt", "learnt", "изучать"], editable: [false, false, false, false] },
+            { cells: ["leave", "left", "left", "покидать"], editable: [false, false, false, false] },
+            { cells: ["lend", "lent", "lent", "давать в долг"], editable: [false, false, false, false] },
+            { cells: ["let", "let", "let", "позволять"], editable: [false, false, false, false] },
+            { cells: ["lose", "lost", "lost", "терять"], editable: [false, false, false, false] },
+            { cells: ["tell a lie", "told a lie", "told a lie", "говорить ложь"], editable: [false, false, false, false] },
+            { cells: ["lie", "lay", "lain", "лежать"], editable: [false, false, false, false] },
+            { cells: ["make", "made", "made", "создавать"], editable: [false, false, false, false] },
+            { cells: ["mean", "meant", "meant", "иметь ввиду"], editable: [false, false, false, false] },
+            { cells: ["meet", "met", "met", "встречать(ся)"], editable: [false, false, false, false] },
+            { cells: ["pay", "paid", "paid", "платить"], editable: [false, false, false, false] },
+            { cells: ["put", "put", "put", "класть"], editable: [false, false, false, false] },
+            { cells: ["read", "read", "read", "читать"], editable: [false, false, false, false] },
+            { cells: ["ride", "rode", "ridden", "ездить верхом"], editable: [false, false, false, false] },
+            { cells: ["ring", "rang", "rung", "звенеть, звонить"], editable: [false, false, false, false] },
+            { cells: ["run", "ran", "run", "бегать"], editable: [false, false, false, false] },
+            { cells: ["rise", "rose", "risen", "подниматься"], editable: [false, false, false, false] },
+            { cells: ["say", "said", "said", "сказать, произнести"], editable: [false, false, false, false] },
+            { cells: ["see", "saw", "seen", "увидеть"], editable: [false, false, false, false] },
+            { cells: ["sell", "sold", "sold", "продавать"], editable: [false, false, false, false] },
+            { cells: ["send", "sent", "sent", "отправлять"], editable: [false, false, false, false] },
+            { cells: ["shake", "shook", "shaken", "трясти"], editable: [false, false, false, false] },
+            { cells: ["shoot", "shot", "shot", "стрелять"], editable: [false, false, false, false] },
+            { cells: ["shut", "shut", "shut", "захлопнуть"], editable: [false, false, false, false] },
+            { cells: ["sing", "sang", "sung", "петь"], editable: [false, false, false, false] },
+            { cells: ["sink", "sank", "sunk", "затонуть"], editable: [false, false, false, false] },
+            { cells: ["sit", "sat", "sat", "сидеть"], editable: [false, false, false, false] },
+            { cells: ["sleep", "slept", "slept", "спать"], editable: [false, false, false, false] },
+            { cells: ["slide", "slid", "slid", "скользить"], editable: [false, false, false, false] },
+            { cells: ["speak", "spoke", "spoken", "разговаривать"], editable: [false, false, false, false] },
+            { cells: ["spend", "spent", "spent", "тратить"], editable: [false, false, false, false] },
+            { cells: ["spit", "spat", "spat", "плеваться"], editable: [false, false, false, false] },
+            { cells: ["stand", "stood", "stood", "встать, стоять"], editable: [false, false, false, false] },
+            { cells: ["steal", "stole", "stolen", "воровать"], editable: [false, false, false, false] },
+            { cells: ["stick", "stuck", "stuck", "приклеить, застрять"], editable: [false, false, false, false] },
+            { cells: ["stink", "stank", "stunk", "вонять"], editable: [false, false, false, false] },
+            { cells: ["strike", "struck", "struck", "ударять"], editable: [false, false, false, false] },
+            { cells: ["swear", "swore", "sworn", "клясться, материться"], editable: [false, false, false, false] },
+            { cells: ["sweep", "swept", "swept", "подметать"], editable: [false, false, false, false] },
+            { cells: ["swim", "swam", "swum", "плавать"], editable: [false, false, false, false] },
+            { cells: ["swing", "swung", "swung", "качаться"], editable: [false, false, false, false] },
+            { cells: ["take", "took", "taken", "брать"], editable: [false, false, false, false] },
+            { cells: ["teach", "taught", "taught", "обучать"], editable: [false, false, false, false] },
+            { cells: ["tear", "tore", "torn", "порвать"], editable: [false, false, false, false] },
+            { cells: ["tell", "told", "told", "рассказывать"], editable: [false, false, false, false] },
+            { cells: ["think", "thought", "thought", "думать"], editable: [false, false, false, false] },
+            { cells: ["throw", "threw", "thrown", "бросать"], editable: [false, false, false, false] },
+            { cells: ["understand", "understood", "understood", "понимать"], editable: [false, false, false, false] },
+            { cells: ["wake up", "woke up", "woken up", "просыпаться"], editable: [false, false, false, false] },
+            { cells: ["wear", "wore", "worn", "носить одежду"], editable: [false, false, false, false] },
+            { cells: ["write", "wrote", "written", "писать"], editable: [false, false, false, false] },
+            { cells: ["weep", "wept", "wept", "хныкать"], editable: [false, false, false, false] },
+            { cells: ["win", "won", "won", "выигрывать"], editable: [false, false, false, false] },
+            { cells: ["misunderstand", "misunderstood", "misunderstood", "неправильно понять"], editable: [false, false, false, false] },
+            { cells: ["misspell", "misspelt", "misspelt", "неправильно написать"], editable: [false, false, false, false] },
+            { cells: ["mistake", "mistook", "mistaken", "ошибаться"], editable: [false, false, false, false] },
+            { cells: ["mishear", "misheard", "misheard", "неправильно услышать"], editable: [false, false, false, false] },
+            { cells: ["oversleep", "overslept", "overslept", "проспать"], editable: [false, false, false, false] },
+            { cells: ["overeat", "overate", "overeaten", "переесть"], editable: [false, false, false, false] },
+            { cells: ["overpay", "overpaid", "overpaid", "переплатить"], editable: [false, false, false, false] },
+            { cells: ["arise", "arose", "arisen", "возникнуть"], editable: [false, false, false, false] },
+            { cells: ["awake", "awoke", "awoken", "пробудиться"], editable: [false, false, false, false] },
+            { cells: ["abide", "abode", "abode", "соблюдать, пребывать, обитать"], editable: [false, false, false, false] }
+          ]
+        }
+        },
+
+      {
         taskDescription: "Послушайте и ответьте",
         taskID: "true_false",
         usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
@@ -330,14 +452,14 @@ const ListeningExerciseData = {
     tasks: [
       {
         usefulWords: null,
-        taskDescription: "Слушайте и повторяйте вслух. Переводить не нужно, только повторять. Без пауз. Каждое слово или фразу из аудио нужно повторить вслух на английском. Проверим способность слышать и копировать английское произношение, звуки, правильную интонацию, ну и рАшн Экцент проверим есть или нет. уан ту фри нажимай плэй и погнали лэтс гоу эйджэнт",
+        taskDescription: "Слушайте и повторяйте вслух. Переводить не нужно, только повторять. Без пауз. (можете настроить скорость аудио) Нужно каждое слово и фразу из аудио повторить вслух на английском языке. Проверим способность слышать и копировать английские звуки, правильную интонацию, произношение. Ну и рАшн акцент проверим есть или нет. Ван ту фри нажимай плэй и погнали лэтс гоу эйджэнт слушатинг и повторятинг вслух",
         audio: new URL('../assets/audio/Musical-instrument.mp3', import.meta.url).href,
         taskID: "true_false",
         taskPicture: new URL("../assets/images/guitarist.jpg", import.meta.url).href,
         textScript: 'Что  действительно без подсказок сложно было? Ну ладно вот подсказка: здесь только один FALSE ответ ;) дальше сами справитесь',
         questions: [
           {
-            text: "1. Аудио было про интструменты?",
+            text: "1. Аудио было про инструменты?",
             correctAnswer: "true"
           },
           {
@@ -358,6 +480,7 @@ const ListeningExerciseData = {
       {
         usefulWords: 'A0 - я полный ноль я даже читаю слово SPECIAL как СПЕЦИАЛ или СПЕСЫАЛ и думаю это переводится специальность или типа того., ' +
           'A1 - ну я вроде учил немного и может помню something about prepositions... ну спроси меня как будет "над" или "через час" и я отвечу.,' +
+          'A1.5 - I can read. I can speak. Nu vot i vse navernoe. I am ready to improve my skills' +
           'A2 - I know simple basic words and grammar rules. And also I understand foreigners but I`m a bit afraid of speaking you know. Surely I mix up grammar tenses pretty often. But I guess everybody does it from time to time.,' +
           'B1 - I guess it wouldn`t bother me to be on my own around native speakers. My sentences are short but who cares? The main thing is that I can hold a conversation as long as the topic is familiar. Though I sometimes struggle for words as they fly outta my head.,' +
           'B2 - Decent. I consider this word to be... some kinda u know... like an awesome description of the current level of mine. I get the meaning of almost all TV series and even can shadow characters without the subs sometimes (if the accent is clear). Though I get that my style doesn`t sound natural yet. I make occasional mistakes with advanced grammar. If I hadn`t found out earlier the meaning of that first word "decent" why would I even thought now for a second that this is my level.,' +
@@ -391,7 +514,7 @@ const ListeningExerciseData = {
           ],
       },
       {
-        usefulWords: 'strings - струнные инструменты /ˈstrɪŋz/, violin - скрипка /ˌvaɪəˈlɪn/, viola - альт /viˈoʊlə/, cello - виолончель /ˈtʃeloʊ/, double bass - контрабас /beɪs/, acoustic guitar - акустика /əˈkuːstɪk ɡɪˈtɑːr/, electric guitar - электрогитара /ɪˈlektrɪk ɡɪˈtɑːr/, banjo - банджо /ˈbændʒoʊ/, harp - арфа /hɑːrp/, woodwind - деревянные духовые /ˈwʊdwɪnd/, piccolo - пикколо /ˈpɪkəloʊ/, flute - флейта /fluːt/, clarinet - кларнет /ˌklærəˈnɛt/, oboe - гобой /ˈoʊboʊ/, recorder - блокфлейта /rɪˈkɔːrdər/, saxophone - саксофон /ˈsæksəfoʊn/, bassoon - фагот /bəˈsuːn/, brass instruments - медные духовые /bræs/, trumpet - труба /ˈtrʌmpɪt/, trombone - тромбон /trɒmˈboʊn/, French horn - валторна /frentʃ hɔːrn/, tuba - туба /ˈtuːbə/, percussion - ударные /pərˈkʌʃən/, drums - барабаны /drʌmz/, cymbals - тарелки /ˈsɪmbəlz/, tambourine - тамбурин /ˌtæmbəˈriːn/, xylophone - ксилофон /ˈzaɪləfoʊn/, keyboard - клавишные инструменты /ˈkiːbɔːrd/, piano - фортепиано /piˈænoʊ/, electric keyboard - синтезатор /ɪˈlektrɪk ˈkiːbɔːrd/, organ - орган /ˈɔːrɡən/, other - lругие /ˈʌðər/, instruments - инструменты /ˌɪnstrəmənts/, accordion - аккордеон /əˈkɔːrdiən/, harmonica - гармоника /hɑːrˈmɒnɪkə/ button accordion - гармошка /əˈkɔːrdiən/',
+        usefulWords: 'strings - струнные инструменты /ˈstrɪŋz/, violin - скрипка /ˌвАйолИнˈlɪn/, viola - альт /viˈoʊlə/, cello - виолончель / чЕлоу ˈtʃeloʊ/, double bass - контрабас /бЭйс/, acoustic guitar - акустика /əˈkuːstɪk ɡɪˈtɑːr/, electric guitar - электрогитара /ɪˈlektrɪk ɡɪˈtɑːr/, banjo - банджо /ˈbændʒoʊ/, harp - арфа /hɑːrp/, woodwind - деревянные духовые /ˈwʊdwɪnd/, piccolo - пикколо /ˈpɪkəloʊ/, flute - флейта /fluːt/, clarinet - кларнет /ˌklærəˈnɛt/, oboe - гобой /ˈoʊboʊ/, recorder - блокфлейта /rɪˈkɔːrdər/, saxophone - саксофон /ˈsæksəfoʊn/, bassoon - фагот /bəˈsuːn/, brass instruments - медные духовые /bræs/, trumpet - труба /ˈtrʌmpɪt/, trombone - тромбон /trɒmˈboʊn/, French horn - валторна /frentʃ hɔːrn/, tuba - туба /ˈtuːbə/, percussion - ударные /pərˈkʌʃən/, drums - барабаны /drʌmz/, cymbals - тарелки /ˈsɪmbəlz/, tambourine - тамбурин /ˌtæmbəˈriːn/, xylophone - ксилофон /ˈzaɪləfoʊn/, keyboard - клавишные инструменты /ˈkiːbɔːrd/, piano - фортепиано /piˈænoʊ/, electric keyboard - синтезатор /ɪˈlektrɪk ˈkiːbɔːrd/, organ - орган /ˈɔːrɡən/, other - lругие /ˈʌðər/, instruments - инструменты /ˌɪnstrəmənts/, accordion - аккордеон /əˈkɔːrdiən/, harmonica - гармоника /hɑːrˈmɒnɪkə/ button accordion - гармошка /əˈkɔːrdiən/',
         taskDescription: "Если заметите опечатку - отправьте Vismyfriend скриншот в телегу. Но это потом, а пока ответьте: ",
         audio: null,
         taskID: "multiple_choice",
@@ -1163,7 +1286,7 @@ const ListeningExerciseData = {
             correctAnswer: "D"
           },
           {
-            text: 'Как сказть "мы на перекрёстке"?',
+            text: 'Как сказать "мы на перекрёстке"?',
             options: {
               A: "we are AT the roundabout",
               B: "we are AT home",
@@ -1172,6 +1295,16 @@ const ListeningExerciseData = {
               E: "we are AT the traffic lights",
             },
             correctAnswer: "D"
+          },
+          {
+            text: 'Как сказать "это не почта, это полийцейский участок"',
+            options: {
+              A: "it's not the police, it's the pochta",
+              B: "it's not the post station, it's the police oofice",
+              C: "it's not the post office, it's the police station",
+
+            },
+            correctAnswer: "C"
           },
         ]
       },

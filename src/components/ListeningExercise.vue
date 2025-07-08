@@ -931,7 +931,7 @@ const rainbowColors = [
 
 .grid-table th, .grid-table td {
   border: 1px solid #e5e7eb;
-  padding: 10px;
+  padding: 1px;
   text-align: left;
 }
 
@@ -989,6 +989,9 @@ const rainbowColors = [
   color: #ef4444;
   font-size: 0.9rem;
 }
+
+
+
 /* Добавляем новые стили для student_input */
 .student-input-container {
   display: grid;
@@ -1685,7 +1688,9 @@ input[type="radio"]:checked + .radio-custom::after {
   .task-controls {
     flex-wrap: wrap;
   }
-
+  .grid-table {
+    font-size: 11px;
+  }
   .score-display {
     order: 1;
     width: 100%;

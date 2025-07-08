@@ -408,6 +408,14 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '5'
     },
+    {
+      missionName: "irregularVerbs",
+      missionVisibleName: "irregularVerbs",
+      missionDescription: "naughty verbs",
+      id: 7,
+      active: true,
+      stars: '5'
+    },
   ]
 
 export const AllGames =

@@ -38,7 +38,7 @@
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets"
-            :key="currentSetOfWords.id"
+            :key="currentSetOfWords.missionName"
             role="button"
             @click="goToChosenGame(currentSetOfWords)"
             :style="{
@@ -81,38 +81,37 @@ const searchQuery = ref('');
 const router = useRouter()
 const $q = useQuasar()
 
+
+// Делаем список реактивным
+const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
+
 const showSpecialCardAlert = () => {
   router.push('/create-special-set');
 };
 
-const AllSetsOfWords = ref(allGamesAndSetsOfWordsList)
 
-// Функция для нормализации строки поиска
+// Улучшенная функция нормализации
 const normalizeString = (str) => {
-  return str
-    .toLowerCase()
-    .replace(/[-\s]/g, ''); // удаляем дефисы и пробелы
+  if (!str) return '';
+  return str.toString().toLowerCase().replace(/[-\s]/g, ''); //удаляем дефисы и префиксы
 };
 
-// Фильтрация наборов слов
+// Оптимизированная фильтрация
 const filteredSets = computed(() => {
-  if (!searchQuery.value) {
-    return AllSetsOfWords.value.filter(set => set.active);
-  }
-
   const query = normalizeString(searchQuery.value);
 
   return AllSetsOfWords.value.filter(set => {
+    if (!set.active) return false;
+
+    if (!query) return true;
+
     return (
-      set.active && (
-        normalizeString(set.missionVisibleName).includes(query) ||
-        normalizeString(set.missionDescription).includes(query) ||
-        normalizeString(set.missionName).includes(query)
-      )
+      normalizeString(set.missionVisibleName).includes(query) ||
+      normalizeString(set.missionDescription).includes(query) ||
+      (set.missionName && normalizeString(set.missionName).includes(query))
     );
   });
 });
-
 const goToChosenGame = (set) => {
   if (set.type === "hardcodedLink") {
     router.push(set.path);
