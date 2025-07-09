@@ -42,22 +42,40 @@
             role="button"
             @click="goToChosenGame(currentSetOfWords)"
             :style="{
-    '--offset-x': '5px',
-    '--offset-y': '29.5px'
-  }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
-              <span class="card-description">{{ currentSetOfWords.missionDescription }}</span>
-              <span class="card-stars" v-if="currentSetOfWords.stars">
-      {{ getLevelStars(currentSetOfWords.stars) }}
-    </span>
+              <span class="card-description">
+                {{ currentSetOfWords.missionDescription }}
+              </span>
+              <span class="card-icons">
+                <span class="card-stars" v-if="currentSetOfWords.stars">
+                  {{ getLevelStars(currentSetOfWords.stars) }}
+                </span>
+                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                  {{ currentSetOfWords.gameIcon }}
+                </span>
+                 <img
+                   v-if="currentSetOfWords.gameImg"
+                   :src="getImagePath(currentSetOfWords.gameImg)"
+                   class="game-image"
+                   alt="game icon"
+                 >
+              </span>
             </div>
             <div class="custom-tooltip">
               <div class="tooltip-content">
                 <span class="mission-name">{{ currentSetOfWords.missionVisibleName }}</span>
-                <span class="mission-stars" v-if="currentSetOfWords.stars">
-        {{ getLevelStars(currentSetOfWords.stars) }}
-      </span>
+                <span class="mission-icons">
+                  <span class="mission-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
               </div>
             </div>
           </div>
@@ -89,7 +107,10 @@ const showSpecialCardAlert = () => {
   router.push('/create-special-set');
 };
 
-
+// Функция для получения пути к изображению
+const getImagePath = (imgName) => {
+  return new URL(`../assets/images/${imgName}`, import.meta.url).href;
+};
 // Улучшенная функция нормализации
 const normalizeString = (str) => {
   if (!str) return '';
@@ -590,5 +611,29 @@ onMounted(() => {
 .create-special-set:active {
   transform: translateY(1px);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.card-icons, .mission-icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.game-icon {
+  font-size: 1em;
+  line-height: 1;
+}
+/* Добавляем новые стили для картинок */
+.card-description {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 </style>

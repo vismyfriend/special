@@ -8,6 +8,17 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  pronounsA0: [
+    { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
+    { id: 2, eng: "he", ru: "он", hint: "/ хи/" },
+    { id: 3, eng: "she", ru: "она", hint: "/ щИ /" },
+    { id: 4, eng: "we", ru: "мы", hint: "/ уи /" },
+    { id: 5, eng: "they", ru: "они", hint: "/ Дэй /" },
+    { id: 6, eng: "you", ru: "вы", hint: "/ ю /" },
+    { id: 7, eng: "it", ru: "это", hint: "/ ит /" },
+    { id: 8, eng: "our", ru: "наш", hint: "/ АУа /" },
+    { id: 9, eng: "your", ru: "ваш", hint: "/ ё /" },
+  ],
   directionsListeningA2: [
     { id: 1, eng: "You are here!", ru: "вы находитесь здесь", hint: "/ю а хИэ/" },
     { id: 2, eng: "Where am I?", ru: "где я?", hint: "/уЭ Эм ай/" },

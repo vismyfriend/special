@@ -11,6 +11,10 @@
           <span class="result-label">Время выполнения:</span>
           <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
         </div>
+        <div class="result-row time-spelling">
+          <span class="result-label"></span>
+          <span class="result-value time-spelling-value">{{ timeInWords }} seconds</span>
+        </div>
         <div class="result-row">
           <span class="result-label">Ошибок:</span>
           <span class="result-value mistakes-amount">{{ gameStore.lastGameResults.mistakes }} mistake(s)</span>
@@ -44,6 +48,20 @@
       <p class="share-message">Отправь скриншот тичеру, чтобы он гордился! 🎉</p>
     </div>
 
+    <!-- Кнопки управления -->
+    <div class="buttons-container">
+      <button
+        v-if="shouldShowToggleButton"
+        class="toggle-btn"
+        @click="toggleExpand"
+      >
+        {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
+      </button>
+      <button class="games-btn" @click="goToGames">все игры</button>
+      <button class="close-btn" @click="backToSameSet">следующее задание</button>
+      <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
+
+    </div>
     <!-- Таблица лидеров -->
     <div v-if="topPlayers" class="leaderboard-wrapper">
       <div class="leaderboard-container">
@@ -54,7 +72,7 @@
               <th>🏆</th>
               <th>лучшие за всё время :</th>
               <th>time</th>
-              <th>fails</th>
+              <th>⚠️</th>
             </tr>
             </thead>
             <tbody>
@@ -92,19 +110,6 @@
       </div>
     </div>
 
-    <!-- Кнопки управления -->
-    <div class="buttons-container">
-      <button
-        v-if="shouldShowToggleButton"
-        class="toggle-btn"
-        @click="toggleExpand"
-      >
-        {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
-      </button>
-      <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
-      <button class="close-btn" @click="backToSameSet">следующее задание</button>
-      <button class="games-btn" @click="goToGames">все игры</button>
-    </div>
   </div>
 </template>
 
@@ -131,16 +136,83 @@ const showChangeNameButton = ref(gameStore.$state.agentName === null);
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
-  { agent: "BackEndError", time: "200.00", mistakes: 0 },
-  { agent: "FlashSpeed", time: "200.15", mistakes: 1 },
-  { agent: "Bond007", time: "2000.63", mistakes: 0 },
-  { agent: "Godzilla", time: "2010.70", mistakes: 2 },
-  { agent: "Mike", time: "2020.63", mistakes: 3 },
-  { agent: "Polina", time: "3010.00", mistakes: 0 },
-  { agent: "Monkey", time: "3020.01", mistakes: 1 },
-  { agent: "Вы под номером 112", time: "999999", mistakes: 0 },
+  { agent: "Проблема с сервером", time: "000.00", mistakes: 0 },
+  { agent: "результаты остальных", time: "1234.5", mistakes: 6 },
+  { agent: "можно увидеть позже", time: "999999", mistakes: 999 },
+
 
 ];
+
+
+// Добавляем функцию для преобразования числа в слова
+// Обновленная функция для преобразования числа в слова с правильным форматом десятичной части
+const numberToWords = (num) => {
+  const digitWords = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  num = parseFloat(num).toFixed(2); // Фиксируем 2 знака после запятой
+  const [integerPart, decimalPart] = num.split('.');
+  let result = '';
+
+  // Обрабатываем целую часть
+  const intNum = parseInt(integerPart);
+  if (intNum >= 100) {
+    result += digitWords[Math.floor(intNum / 100)] + ' hundred ';
+    const remainder = intNum % 100;
+    if (remainder > 0) {
+      if (remainder < 10) {
+        result += digitWords[remainder];
+      } else if (remainder >= 10 && remainder < 20) {
+        result += teens[remainder - 10];
+      } else {
+        result += tens[Math.floor(remainder / 10)];
+        if (remainder % 10 > 0) {
+          result += '-' + digitWords[remainder % 10];
+        }
+      }
+    }
+  } else if (intNum > 0) {
+    if (intNum < 10) {
+      result += digitWords[intNum];
+    } else if (intNum >= 10 && intNum < 20) {
+      result += teens[intNum - 10];
+    } else {
+      result += tens[Math.floor(intNum / 10)];
+      if (intNum % 10 > 0) {
+        result += '-' + digitWords[intNum % 10];
+      }
+    }
+  } else {
+    result += digitWords[0]; // zero
+  }
+
+  // Обрабатываем десятичную часть как двузначное число
+  if (decimalPart && parseInt(decimalPart) > 0) {
+    const decimalNum = parseInt(decimalPart);
+    result += ' point ';
+
+    if (decimalNum < 10) {
+      result += digitWords[decimalNum];
+    } else if (decimalNum >= 10 && decimalNum < 20) {
+      result += teens[decimalNum - 10];
+    } else {
+      result += tens[Math.floor(decimalNum / 10)];
+      if (decimalNum % 10 > 0) {
+        result += '-' + digitWords[decimalNum % 10];
+      }
+    }
+  }
+
+  return result;
+};
+
+// Вычисляемое свойство для времени прописью
+const timeInWords = computed(() => {
+  const timeInSeconds = (gameStore.lastGameResults.time / 1000).toFixed(2);
+  return numberToWords(timeInSeconds);
+});
+
 
 /**
  * Генерация уникального ID на основе текущей даты и времени
@@ -178,7 +250,7 @@ const shouldShowToggleButton = computed(() => {
  * Получение и сохранение токена
  */
 
-const goToGames = () => router.push("/games");
+const goToGames = () => router.push("/see-all-sets-of-words");
 
 const fetchAndStoreToken = async (agentName) => {
   try {
@@ -335,6 +407,7 @@ onMounted(async () => {
   line-height: 1.1;
 }
 
+
 /* Стили блока с поздравлением */
 .congratulations-container {
   background: linear-gradient(135deg, #2c3e50, #4ca1af);
@@ -367,6 +440,18 @@ onMounted(async () => {
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+/* Добавляем стили для отображения времени прописью */
+.time-spelling {
+  margin-top: -10px;
+  margin-bottom: 5px;
+
+  .time-spelling-value {
+    font-size: 19px;
+    color: #faf624;
+    font-style: italic;
+    opacity: 0.9;
+  }
+}
 /* Стили карточки с результатами */
 .result-card {
   background: rgba(255, 255, 255, 0.1);
@@ -480,6 +565,7 @@ onMounted(async () => {
   color: #f9d423;
   animation: pulse 2s infinite;
 }
+
 
 /* Стили таблицы лидеров */
 .leaderboard-wrapper {
@@ -704,7 +790,7 @@ onMounted(async () => {
   color: aqua;
 }
 .time-value{
-color: aqua;
+color: #faf624;
 }
 /* Анимации */
 @keyframes pulse {
@@ -737,6 +823,7 @@ color: aqua;
 
   .result-label, .result-value {
     font-size: 14px;
+
   }
 
   .name-wrapper {

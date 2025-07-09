@@ -1,62 +1,35 @@
 export const allGamesAndSetsOfWordsList =
   [
-
     {
-      // обычный набор слов
-      missionName: "testQuicklyData",
+      type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+      url: "https://yahoo.com",
+      target: '_blank', // Открывать в новой вкладке
+      missionVisibleName: "Написать в Telegram",
+      missionDescription: "Свяжитесь со мной в Telegram",
+      id: 1002,
+      active: false,
+      stars: '1',
+      gameImg: "wiresPic.png",
+      gameIcon:'📚'
+    },
+    {
+      missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
       missionVisibleName: "Test quickly",
-      missionDescription: "Протестировать игры",
+      missionDescription: "Протестировать fast",
       id: 1,
       active: true,
+      stars: '1',
+      gameImg: "wiresPic.png",
+      gameIcon:'📚'
     },
     {
-      missionName: "testQuicklyDataTwo",
-      missionVisibleName: "stories test 2",
-      missionDescription: "stories test 2",
-      id: 7,
-      active: true,
-      stars: '5'
-    },
-    {
-      // delete after testing
-      missionName: "student_input_newTask",
-      missionVisibleName: "Test quickly1",
-      missionDescription: "Протестировать игры1",
-      id: 1,
-      active: false,
-    },
-    {
-      missionName: "dropDownPattern",
-      missionVisibleName: "Test dropDownPattern",
-      missionDescription: "dropDownPattern1",
-      id: 1,
-      active: false,
-    },
-    {
-      missionName: "grid_table_task",
-      missionVisibleName: "Test grid_table_task",
-      missionDescription: "grid_table_task",
-      id: 1,
-      active: false,
-    },
-    {
-      // delete after testing
-      missionName: "student_input_wordOrder",
-      missionVisibleName: "Word Order task1",
-      missionDescription: "Порядок слов задание11",
-      id: 1,
-      active: false,
-    },
-    {
-      // захардкодена ссылка вутри проекта
-      type: "hardcodedLink", //  тип для идентификации
-      path: "/see-all-sets-of-words/hardCodedLinkUP0/find-pairs-hard",
-      missionVisibleName: "Полезные фразы",
-      missionDescription: "Полезные фразы",
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA0/find-pairs-easy",
+      missionVisibleName: "Местоимения",
+      missionDescription: "Слова вместо имён",
       id: 1001,
       active: true,
-      stars: '1'
-
+      stars: '3',
     },
     {
       missionName: "WhatIsMyLevel",
@@ -64,44 +37,34 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "What is my level of English?",
       id: 1,
       active: true,
-
     },
-
     {
-      // захардкодена ссылка вутри проекта
-      type: "hardcodedLink", //  тип для идентификации
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/hardCodedLinkUP0/find-pairs-hard",
+      missionVisibleName: "Полезные фразы",
+      missionDescription: "Полезные фразы",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-easy",
       missionVisibleName: "миссия 001 ",
       missionDescription: "/ мишн / mission 001",
       id: 1001,
       active: true,
       stars: '1'
-
     },
     {
-      // захардкодена ссылка вутри проекта
-      type: "hardcodedLink", //  тип для идентификации
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-hard",
       missionVisibleName: "миссия 002 ",
       missionDescription: "mission 002",
       id: 1001,
       active: true,
       stars: '2'
-
     },
-    {
-      // захардкодена ссылка на внешний сайт
-      type: "externalLink",
-      url: "https://yahoo.com",
-      target: '_blank', // Открывать в новой вкладке
-      missionVisibleName: "Написать в Telegram",
-      missionDescription: "Свяжитесь со мной в Telegram",
-      id: 1002,
-      active: false,
-      stars: '3',
-    },
-
-
     {
       missionName: "wordOrderBasics",
       missionVisibleName: "WOrder",
@@ -123,9 +86,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1,
       active: true,
       stars: '5'
-
     },
-
     {
       missionName: "alphabetData",
       missionVisibleName: "Alphabet",
@@ -143,14 +104,12 @@ export const allGamesAndSetsOfWordsList =
       stars: '1'
     },
     {
-      // захардкодена ссылка вутри проекта
-      type: "hardcodedLink", //  тип для идентификации
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
       missionVisibleName: "QW1 speaking",
       missionDescription: "QW1 speaking",
       id: 1001,
       active: true,
-
     },
     {
       missionName: "questionWords2",
@@ -401,6 +360,13 @@ export const allGamesAndSetsOfWordsList =
       stars: '2'
     },
     {
+      missionName: "directionsListeningA1",
+      missionVisibleName: "Directions A1",
+      missionDescription: "Направления А1",
+      id: 1,
+      active: true,
+    },
+    {
       missionName: "directionsListeningA2",
       missionVisibleName: "Направления A2",
       missionDescription: "Directions А2",
@@ -424,8 +390,13 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '5'
     },
-
-
+    {
+      missionName: "grid_table_AV_all",
+      missionVisibleName: "Глаголы помощники все",
+      missionDescription: "All Auxiliary Verbs",
+      id: 1,
+      active: true,
+    },
   ]
 
 export const AllGames =

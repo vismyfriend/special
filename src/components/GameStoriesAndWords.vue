@@ -3,7 +3,7 @@
     <div class="stories-header">
       <h2>{{ storiesData.mainDescription }}</h2>
       <div class="header-bottom">
-        <p class="main-description">Fill in the gaps in these mysterious stories</p>
+        <p class="main-description">for S.P.E.C.i.A.L. agents</p>
         <div class="task-counter">
           {{ currentStoryIndex + 1 }}/{{ storiesData.listOfStories.length }}
         </div>
@@ -55,14 +55,14 @@
                 type="text"
                 class="story-input"
                 :class="[
-                  getInputClass(index, part.gapIndex, part.correctAnswer),
-                  {
-                    'input-small': part.gapLength === 1,
-                    'input-medium': part.gapLength === 2,
-                    'input-large': part.gapLength === 3,
-                    'input-full': part.gapLength >= 4
-                  }
-                ]"
+            getInputClass(index, part.gapIndex, part.correctAnswer),
+            {
+              'input-small': part.gapLength === 1,
+              'input-medium': part.gapLength === 2,
+              'input-large': part.gapLength === 3,
+              'input-full': part.gapLength >= 4
+            }
+          ]"
                 v-model="answers[index][part.gapIndex]"
                 @keyup.enter="focusNextInput(index, part.gapIndex)"
                 :data-story="index"
@@ -76,7 +76,6 @@
           </template>
         </p>
       </div>
-
       <div v-if="expandedScriptIndex === index" class="text-script-content">
         <p>{{ story.hintsOrFeedback }}</p>
       </div>
@@ -173,20 +172,25 @@ const normalizeAnswer = (answer) => {
     .replace(/[.,!?;:…–—]+$/g, '')
     .replace(/[.,!?;:…–—]/g, ' ')
     .replace(/\s+/g, ' ')
+    // Специальная обработка прочерка
+    .replace(/^-$/, '') // преобразуем одиночный '-' в пустую строку
 }
 
 const splitStoryText = (text) => {
   if (!text) return []
 
-  const paragraphs = text.split('\n').filter(p => p.trim() !== '')
+  // Сначала разбиваем на абзацы по \n
+  const rawParagraphs = text.split('\n').filter(p => p.trim() !== '')
 
-  return paragraphs.map(paragraph => {
+  let gapIndex = 0 // Общий счетчик пропусков для всей истории
+  const paragraphs = []
+
+  for (const paragraph of rawParagraphs) {
     const parts = []
     let lastIndex = 0
-    let gapIndex = 0
+    let match
 
     const gapRegex = /(_+) \((.+?)\)/g
-    let match
 
     while ((match = gapRegex.exec(paragraph)) !== null) {
       if (match.index > lastIndex) {
@@ -213,10 +217,13 @@ const splitStoryText = (text) => {
       })
     }
 
-    return parts
-  })
-}
+    if (parts.length > 0) {
+      paragraphs.push(parts)
+    }
+  }
 
+  return paragraphs
+}
 const checkAnswers = (storyIndex) => {
   const story = storiesData.value.listOfStories[storyIndex]
   checkedStories.value[storyIndex] = true
@@ -228,27 +235,48 @@ const checkAnswers = (storyIndex) => {
     const userAnswer = normalizeAnswer(answers.value[storyIndex][gi])
     const correctAnswer = normalizeAnswer(gap.correctAnswer)
 
-    if (gap.correctAnswer.toLowerCase() === 'anyanswerisok' || userAnswer === correctAnswer) {
+    // Если правильный ответ - это прочерк (-)
+    if (gap.correctAnswer.trim() === '-') {
+      if (userAnswer === '' || normalizeAnswer(answers.value[storyIndex][gi]) === '-') {
+        correctCount++
+      }
+    }
+    // Если любой ответ подходит
+    else if (gap.correctAnswer.toLowerCase() === 'anyanswerisok') {
+      correctCount++
+    }
+    // Обычная проверка
+    else if (userAnswer === correctAnswer) {
       correctCount++
     }
   })
 
   storyScores.value[storyIndex] = Math.round((correctCount / gapParts.length) * 100)
 }
-
 const getInputClass = (storyIndex, gapIndex, correctAnswer) => {
   if (!checkedStories.value[storyIndex]) return ''
 
   const userAnswer = normalizeAnswer(answers.value[storyIndex][gapIndex])
   const normalizedCorrect = normalizeAnswer(correctAnswer)
 
-  if (correctAnswer.toLowerCase() === 'anyanswerisok') {
+  // Случай, когда правильный ответ - прочерк
+  if (correctAnswer.trim() === '-') {
+    if (userAnswer === '' || answers.value[storyIndex][gapIndex] === '-') {
+      return 'story-input-correct'
+    } else {
+      return 'story-input-incorrect'
+    }
+  }
+  // Случай, когда любой ответ подходит
+  else if (correctAnswer.toLowerCase() === 'anyanswerisok') {
     return 'story-input-any'
   }
-
-  return userAnswer === normalizedCorrect
-    ? 'story-input-correct'
-    : 'story-input-incorrect'
+  // Обычная проверка
+  else {
+    return userAnswer === normalizedCorrect
+      ? 'story-input-correct'
+      : 'story-input-incorrect'
+  }
 }
 
 const goToNextStory = () => {

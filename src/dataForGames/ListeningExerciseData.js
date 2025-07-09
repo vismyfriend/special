@@ -2,10 +2,34 @@
 const ListeningExerciseData = {
 
   testQuicklyData: {
-    mainDescription: "Speaking and listening",
+    mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
       {
-        taskDescription: "Irregular Verbs:",
+        taskDescription: "Grid - fill in",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["v1","v2","v3","перевод","пример",],
+          rows: [
+            {
+              cells: ["do", "did", "done","делать", "I did it"],
+              editable: [false, false, false, false, false,]
+            },
+            {
+              cells: ["eat","","eaten","","",],
+              editable: [false, true, false, true, true,],
+              correctAnswers: {
+                cells: [null, "ate",null,"есть","anyIsOk" ],
+                almostCorrect: {
+                  1: ["two","2"], // Индекс поля (начиная с 0)
+                  3: ["поесть","кушать","жрать","скушать","покушать",],
+                }
+              }
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: "GRID - Irregular Verbs:",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
@@ -124,26 +148,6 @@ const ListeningExerciseData = {
             { cells: ["abide", "abode", "abode", "соблюдать, пребывать, обитать"], editable: [false, false, false, false] }
           ]
         }
-        },
-
-      {
-        taskDescription: "Послушайте и ответьте",
-        taskID: "true_false",
-        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
-        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
-        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
-        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
-        questions: [
-          {
-            text: "1. Vincent is a nice teacherka",
-            correctAnswer: "true"
-          },
-          {
-            text: "2. This audio is about this photo",
-            correctAnswer: "false"
-          },
-
-        ]
       },
       {
         taskDescription: "Заполни пропуски в таблице:",
@@ -220,6 +224,25 @@ const ListeningExerciseData = {
         },
       },
       {
+        taskDescription: "Послушайте и ответьте",
+        taskID: "true_false",
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. Vincent is a nice teacherka",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. This audio is about this photo",
+            correctAnswer: "false"
+          },
+
+        ]
+      },
+      {
         taskDescription: "Drop down",
         taskID: "drop_down_text",
         usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
@@ -227,7 +250,9 @@ const ListeningExerciseData = {
         textScript: 'выбирай правильный ответ',
         questions: [
           {
-            text: "Hello friends! Let me share with you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and work at my computer. I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+            text: "Hello friends! Let me share (for, to, with*) you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and every day I work (in, at*, under, for, between) my computer.\n" +
+              '\n' +
+              "I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
           },
         ]
       },
@@ -440,9 +465,7 @@ const ListeningExerciseData = {
           },
         ]
       },
-
     ],
-
   },
   WhatIsMyLevel: {
     mainDescription: "СПЭШЛ проверка уровня",
@@ -1421,16 +1444,21 @@ const ListeningExerciseData = {
       },
     ]
   },
-  student_input_newTask: {
+  directionsListeningA1: {
     mainDescription: "введи верный ответ",
     tasks: [
       {
-        usefulWords: 'on the right - справа, on the left - слева' ,
+        usefulWords:
+          'on the right - справа, ' +
+          'on the left - слева, ' +
+          'to the left - налево, ' +
+          'to the right - направо, ' +
+          'take the first left - сверни сразу влево ',
         taskDescription: 'прочитай текст и введи недостающий слова',
         audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
         taskID: "student_input",
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'I am on the right and my dog is on the left.',
+        textScript: 'напишите Винсенту и он сделает подсказки к этому заданию',
         questions: [
           {
             text: "A) Go straight on. Then take the first left on to Green Street. Walk past the ___ and it’s the building next to the library on the left.",
@@ -1438,125 +1466,27 @@ const ListeningExerciseData = {
             almostCorrectAnswers: ["laibreri", "librery", "libreri"]
           },
           {
-            text: "B) Go straight on. Go past the traffic lights. ___ see a shop on the right. Go past that and it’s on the right next to the shop.",
-            correctAnswer: "you'll",
+            text: "B) Go straight on. Go past the traffic lights. You'll see a shop ___. Go past that and it’s on the right next to the shop.",
+            correctAnswer: "on the right",
             almostCorrectAnswers: null
+          },
+          {
+            text: 'C) ___ on. Go past the traffic lights and go straight on until you get to the roundabout. At the roundabout turn left. Go past the theatre. It’s the building next to the theatre, opposite the hospital',
+            correctAnswer: "go straight",
+            almostCorrectAnswers: ["go straight on"]
+          },
+          {
+            text: 'D) Go straight on. Go past the traffic lights and ___ right on to King’s Road. Go past the bookshop. It’s the building next to the bookshop opposite the café.',
 
+            correctAnswer: "take the second",
+            almostCorrectAnswers: ["take"]
           },
 
         ]
       },
     ]
   },
-  student_input_wordOrder: {
-    mainDescription: "Word_order порядок_слов",
-    tasks: [
-      {
-        usefulWords: null,
-        taskDescription: null,
-        audio: null,
-        taskID: "student_input",
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'I am on the right and my dog is on the left.',
-        questions: [
-          {
-            text: "У моего друга красивые глаза. _ ",
-            correctAnswer: "My friend has beautiful eyes",
-            almostCorrectAnswers: ["my friend has nice eyes", "My friend's eyes are beautiful", "The eyes of my friend are beautiful"]
-          },
-          {
-            text: "__",
-            correctAnswer: "My friend doesn't have beautiful eyes",
-            almostCorrectAnswers: null
-
-          },
-          {
-            text: " привет ___",
-            correctAnswer: "my friend does not have beautiful eyes",
-            almostCorrectAnswers: null
-
-          },
-          {
-            text: " привет ____",
-            correctAnswer: "my friend does not have beautiful eyes",
-            almostCorrectAnswers: null
-
-          },
-
-        ]
-      },
-    ]
-  },
-  dropDownPattern: {
-    mainDescription: "Drop_Down",
-    tasks: [
-      {
-        usefulWords: null,
-        taskDescription: "Drop down",
-        audio: null,
-        taskID: "drop_down_text",
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'выбирай правильный ответ',
-        questions: [
-          {
-            text: "I (haven't, don't have*, hasn't) a cat. But my wife (have, has*, has got*) it!",
-          },
-          {
-            text: "I don't (have*, has, know) a car. Because it is very expensive to have a car. And cars (do, are*, did, does) dangerous.",
-
-          },
-
-        ]
-      },{
-        usefulWords: "dd - dd, dd -dd",
-        taskDescription: "Drop down2 ",
-        audio: null,
-        taskID: "drop_down_text",
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'выбирай правильный ответ',
-        questions: [
-          {
-            text: "I (haven't, don't have*, hasn't) a cat. But my wife (have, has*, has got*) it!",
-          },
-          {
-            text: "I don't (have*, has, know) a car. Because it is very expensive to have a car. And cars (do, are*, did, does) dangerous.",
-
-          },
-
-        ]
-      },
-    ]
-  },
-  grid_table_task1: {
-    mainDescription: "Заполните таблицу недостающими данными",
-    tasks: [
-      {
-        taskDescription: "Заполните пропуски в таблице",
-        taskID: "grid_table",
-        tableData: {
-          headers: ["Имя", "Время", "Действие", "Настроение"],
-          rows: [
-            {
-              cells: ["Alex", "8:00pm", "wake up", "happy"],
-              editable: [false, false, false, false]
-            },
-            {
-              cells: ["John", "", "", "tired"],
-              editable: [false, true, true, false],
-              correctAnswers: {
-                cells: [null, "7:30am", "get up", null],
-                almostCorrect: {
-                  1: ["7:30", "19:30"], // Индекс поля (начиная с 0)
-                  2: ["wake up", "rise"] // Индекс поля (начиная с 0)
-                }
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
-  grid_table_task: {
+  grid_table_AV_all: {
     mainDescription: "Заполните таблицу недостающими данными",
     tasks: [
       {

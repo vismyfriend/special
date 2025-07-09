@@ -19,12 +19,11 @@
     >
       <span v-if="infoMessage" v-html="dynamicMessage"></span>
       <span v-else>
-      {{
-          showTextInstead
-            ? currentTapSymbol + ' ' + formattedCounter + ' — ' + textVersion
-            : currentTapSymbol +' ' + formattedCounter
-        }}
-    </span>
+        <span class="counter-value">{{ currentTapSymbol }} {{ formattedCounter }}</span>
+        <span class="text-value" :class="{ blurred: !showTextInstead && !initialShowText }">
+          {{ textVersion }}
+        </span>
+      </span>
     </p>
   </div>
 
@@ -96,13 +95,10 @@ const router = useRouter();
 
 // Объявляем переменные
 const currentTapSymbol = '⚡'; // Здесь можно менять символ
-
 const counter = ref(0);
-
 const sessionStartCounter = ref(0);
-
 const sessionCounter = computed(() => counter.value - sessionStartCounter.value);
-
+const initialShowText = ref(true); // Новый флаг для первоначального отображения текста
 
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
@@ -139,7 +135,7 @@ const backToIntroPage = () => {
     // Задержка перед переходом
     setTimeout(() => {
       router.push("/games");
-    }, 2000); // 2 секунды – чтобы успело показаться сообщение
+    }, 500); // пол секунды – чтобы успело показаться сообщение
   } else {
     infoMessage.value = dynamicMessage.value;
     showOverlay.value = true;
@@ -287,6 +283,12 @@ console.log("Name in local storage : " + userLocalStorageName.value);
 
   // Запоминаем стартовое значение на момент загрузки
   sessionStartCounter.value = counter.value;
+
+
+  // Через 10 секунд скрываем текст
+  setTimeout(() => {
+    initialShowText.value = false;
+  }, 10000);
 });
 const shownWelcomeWords = ref(0);
 // Обработчик клика
@@ -454,7 +456,9 @@ calc(var(--fadeStart) * 100%) {
 
 
 
-  position: absolute; /* отключаем влияние на поток документа */
+
+  position: absolute; /* absolute - тогда отключаем влияние на поток документа */
+
   top: 0; /* можно настраивать */
   left: 50%;
   transform: translateX(-50%);
@@ -547,6 +551,7 @@ calc(var(--fadeStart) * 100%) {
     }
   }
 }
+
 .image-container {
   position: relative;
   width: 100%;
@@ -561,6 +566,35 @@ calc(var(--fadeStart) * 100%) {
 
 }
 
+.counter-value {
+  display: block;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.text-value {
+  display: block;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-top: 8px;
+}
+
+.text-value::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+}
+
+.text-value.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+  cursor: pointer;
+}
 /* Кнопка, позиционируемая поверх картинки */
 .positioned-button {
   position: absolute;

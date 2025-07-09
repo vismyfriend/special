@@ -166,36 +166,38 @@
 
       <!-- DropDown Text блок -->
       <div v-else-if="task.taskID === 'drop_down_text'" class="drop-down-text-container">
-        <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
-          <p class="question-text">
-            <template v-for="(part, i) in splitDropDownText(q.text)" :key="i">
-              <template v-if="part.type === 'dropdown'">
-                <select
-                  class="drop-down-select"
-                  v-model="answers[index][qi][part.index]"
-                  :class="getDropDownClass(index, qi, part.index, part.correctOptions)"
-                >
-                  <option value="" disabled selected>? ? ?</option>
-                  <option
-                    v-for="(option, oi) in part.options"
-                    :key="oi"
-                    :value="option.value"
+        <div v-for="(question, qi) in task.questions" :key="qi" class="question-container">
+          <div v-for="(paragraph, pi) in splitDropDownText(question.text)" :key="pi" class="paragraph">
+            <p>
+              <template v-for="(part, i) in paragraph" :key="i">
+                <template v-if="part.type === 'dropdown'">
+                  <select
+                    class="drop-down-select"
+                    v-model="answers[index][qi][part.index]"
+                    :class="getDropDownClass(index, qi, part.index, part.correctOptions)"
                   >
-                    {{ option.value }}
-                  </option>
-                </select>
+                    <option value="" disabled selected>? ? ?</option>
+                    <option
+                      v-for="(option, oi) in part.options"
+                      :key="oi"
+                      :value="option.value"
+                    >
+                      {{ option.value }}
+                    </option>
+                  </select>
+                </template>
+                <template v-else>
+                  {{ part.text }}
+                </template>
               </template>
-              <template v-else>
-                {{ part.text }}
-              </template>
-            </template>
-          </p>
-          <div v-if="checkedTasks[index] && isDropDownAnswerCorrect(index, qi, task.questions[qi].text) !== ''" class="answer-feedback">
-  <span v-if="isDropDownAnswerCorrect(index, qi, task.questions[qi].text) === 'correct'"
-        class="correct-answer">✓ Верно!</span>
+            </p>
+          </div>
+          <div v-if="checkedTasks[index] && isDropDownAnswerCorrect(index, qi, question.text) !== ''" class="answer-feedback">
+      <span v-if="isDropDownAnswerCorrect(index, qi, question.text) === 'correct'"
+            class="correct-answer">✓ Верно!</span>
             <span v-else class="incorrect-answer">
-    ✗ Неверно. Где-то нужно исправить!
-  </span>
+        ✗ Неверно. Где-то нужно исправить!
+      </span>
           </div>
         </div>
       </div>
@@ -217,7 +219,7 @@
                   class="grid-table-input"
                   :class="getGridInputClass(index, ri, ci, row.correctAnswers)"
                   v-model="answers[index][ri].cells[ci]"
-                  :placeholder="row.correctAnswers?.cells[ci] === 'anyIsOkay' ? 'Any answer' : ''"
+                  :placeholder="row.correctAnswers?.cells[ci] === 'anyIsOk' ? 'Any answer' : ''"
                 />
               </template>
               <template v-else>
@@ -744,52 +746,67 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 
 // Функция для разбора текста с dropdown-ами
 const splitDropDownText = (text) => {
-  const parts = [];
-  let lastIndex = 0;
+  if (!text) return [];
 
-  // Регулярное выражение для поиска вариантов в скобках
-  const regex = /\(([^)]+)\)/g;
-  let match;
+  // Сначала разбиваем текст на абзацы по символу новой строки
+  const paragraphs = text.split('\n').filter(p => p.trim() !== '');
 
-  while ((match = regex.exec(text)) !== null) {
-    // Добавляем текст перед скобками
-    if (match.index > lastIndex) {
+  let dropdownIndex = 0; // Общий счетчик для всех dropdown в тексте
+  const result = [];
+
+  for (const paragraph of paragraphs) {
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    // Регулярное выражение для поиска вариантов в скобках
+    const regex = /\(([^)]+)\)/g;
+
+    while ((match = regex.exec(paragraph)) !== null) {
+      // Добавляем текст перед скобками
+      if (match.index > lastIndex) {
+        parts.push({
+          type: 'text',
+          text: paragraph.substring(lastIndex, match.index)
+        });
+      }
+
+      // Обрабатываем варианты внутри скобок
+      const optionsText = match[1];
+      const options = optionsText.split(',').map(opt => {
+        const trimmed = opt.trim();
+        const isCorrect = trimmed.endsWith('*');
+        return {
+          value: isCorrect ? trimmed.replace(/\*$/, '') : trimmed,
+          isCorrect
+        };
+      });
+
+      parts.push({
+        type: 'dropdown',
+        options,
+        index: dropdownIndex++, // Используем общий счетчик
+        correctOptions: options.filter(o => o.isCorrect).map(o => o.value)
+      });
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Добавляем оставшийся текст после последних скобок
+    if (lastIndex < paragraph.length) {
       parts.push({
         type: 'text',
-        text: text.substring(lastIndex, match.index)
+        text: paragraph.substring(lastIndex)
       });
     }
 
-    // Обрабатываем варианты внутри скобок
-    const optionsText = match[1];
-    const options = optionsText.split(',').map(opt => {
-      const trimmed = opt.trim();
-      const isCorrect = trimmed.endsWith('*');
-      return {
-        value: isCorrect ? trimmed.replace(/\*$/, '') : trimmed,
-        isCorrect
-      };
-    });
-
-    parts.push({
-      type: 'dropdown',
-      options,
-      index: parts.filter(p => p.type === 'dropdown').length,
-      correctOptions: options.filter(o => o.isCorrect).map(o => o.value)
-    });
-
-    lastIndex = match.index + match[0].length;
+    // Добавляем абзац в результат только если в нем есть содержимое
+    if (parts.length > 0) {
+      result.push(parts);
+    }
   }
 
-  // Добавляем оставшийся текст после последних скобок
-  if (lastIndex < text.length) {
-    parts.push({
-      type: 'text',
-      text: text.substring(lastIndex)
-    });
-  }
-
-  return parts;
+  return result;
 };
 
 // Проверка правильности ответов для dropdown
@@ -1701,8 +1718,14 @@ input[type="radio"]:checked + .radio-custom::after {
 
 /* DropDown Text стили */
 .drop-down-text-container {
-  display: grid;
-  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.paragraph {
+  margin-bottom: 10px;
+  line-height: 1.5;
 }
 
 .drop-down-select {
