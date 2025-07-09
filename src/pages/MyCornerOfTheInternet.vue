@@ -39,7 +39,7 @@
 
     <div class="app-container">
       <div class="menu-container">
-        <button class="fancy-btn">Welcome</button>
+        <button class="fancy-btn" @click="playEminem">Welcome</button>
         <button class="fancy-btn" @click="toggleRussian">
           <span>{{ isMenuOpen && currentLanguage === 'ru' ? 'Хорошо' : 'Привет' }}</span>
         </button>
@@ -55,6 +55,19 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { onMounted, onUnmounted, ref } from 'vue';
+
+const playEminem = () => {
+  const audioPath = new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href;
+  const audio = new Audio(audioPath);
+
+  const volume = 0.3; // уровень громкости от 0 до 10
+  audio.volume = Math.min(Math.max(volume / 10, 0), 1); // преобразуем в диапазон 0.0–1.0
+
+  audio.play().catch((e) => {
+    console.warn('Audio playback failed:', e);
+  });
+};
+
 // ======================
 // Данные для меню на разных языках
 // ======================
@@ -178,7 +191,9 @@ const audioManager = {
   isAudioAllowed: false,
 
   soundConfig: {
-    helloSound: '../assets/audio/magic_sound_short.mp3',
+    helloSound: new URL('../assets/audio/magic_sound_short.mp3', import.meta.url).href,
+    privetSound: '../assets/audio/trimmedStarsSound.mp3',
+    withoutMe: '../assets/audio/WithoutMeNoSpaces.mp3',
     starsMysterySound: '../assets/audio/trimmedStarsSound.mp3'
   },
 
@@ -326,7 +341,7 @@ const menuItems = ref(menuData.en); // Изначально английская
 const toggleEnglish = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('helloSound', 10, 3);
+    await audioManager.playSound('helloSound', 10, 2);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'en';
@@ -347,7 +362,7 @@ const toggleEnglish = async () => {
 const toggleRussian = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('helloSound', 4, 1);
+    await audioManager.playSound('starsMysterySound', 4, 1);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'ru';
@@ -371,13 +386,7 @@ const toggleRussian = async () => {
 // ======================
 
 // Методы для управления меню
-const toggleMenu = () => {
-  audioManager.playSound('helloSound');
-  isMenuOpen.value = !isMenuOpen.value;
-  if (!isMenuOpen.value) {
-    activeSubmenu.value = null;
-  }
-};
+
 
 const toggleSubmenu = (index) => {
   if (window.innerWidth < 769) {
