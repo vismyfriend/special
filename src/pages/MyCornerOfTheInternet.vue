@@ -41,10 +41,10 @@
       <div class="menu-container">
         <button class="fancy-btn" @click="playEminem">Welcome</button>
         <button class="fancy-btn" @click="toggleRussian">
-          <span>{{ isMenuOpen && currentLanguage === 'ru' ? 'Хорошо' : 'Привет' }}</span>
+          <span>{{ isMenuOpen && currentLanguage === 'ru' ? '<-->' : 'Привет' }}</span>
         </button>
         <button class="fancy-btn" @click="toggleEnglish">
-          <span>{{ isMenuOpen && currentLanguage === 'en' ? 'Ok' : 'Hello' }}</span>
+          <span>{{ isMenuOpen && currentLanguage === 'en' ? '<-->' : 'Hello' }}</span>
         </button>
 
       </div>
@@ -60,7 +60,7 @@ const playEminem = () => {
   const audioPath = new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href;
   const audio = new Audio(audioPath);
 
-  const volume = 0.3; // уровень громкости от 0 до 10
+  const volume = 0.1; // уровень громкости от 0 до 10
   audio.volume = Math.min(Math.max(volume / 10, 0), 1); // преобразуем в диапазон 0.0–1.0
 
   audio.play().catch((e) => {
@@ -189,6 +189,7 @@ const audioManager = {
   audioContext: null,
   activeLoops: new Set(),
   isAudioAllowed: false,
+  activeSounds: new Map(), // Трекинг активных звуков (name -> source)
 
   soundConfig: {
     helloSound: new URL('../assets/audio/magic_sound_short.mp3', import.meta.url).href,
@@ -224,7 +225,7 @@ const audioManager = {
       Object.keys(this.soundConfig).map(name =>
         this.loadSound(name, this.soundConfig[name])
       )
-      );
+    );
   },
 
   async loadSound(name, path) {
@@ -244,7 +245,6 @@ const audioManager = {
   },
 
   async playSound(name, volume = 7, loopCount = 1) {
-    // Разрешаем аудио при первом взаимодействии
     await this.allowAudio();
 
     if (!this.sounds[name]) {
@@ -252,9 +252,10 @@ const audioManager = {
       return;
     }
 
-    // Останавливаем предыдущий звук, если это loop
-    if (loopCount > 1) {
-      this.stopSound(name);
+    // Запрещаем повторное воспроизведение пока звук активен
+    if (this.activeSounds.has(name)) {
+      console.log(`Sound "${name}" is already playing`);
+      return;
     }
 
     this._playSound(name, volume, loopCount);
@@ -262,45 +263,35 @@ const audioManager = {
 
   _playSound(name, volume, loopCount) {
     const sound = this.sounds[name];
-
-    if (loopCount > 1) {
-      if (this.activeLoops.has(name)) {
-        return;
-      }
-      this.activeLoops.add(name);
-    }
-
-    const source = this.audioContext.createBufferSource();
-    source.buffer = sound.buffer;
-    sound.sources.add(source);
-
     const gainNode = this.audioContext.createGain();
     gainNode.gain.value = Math.min(Math.max(volume, 0), 10) / 10;
-
-    source.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
 
-    if (loopCount > 1) {
-      source.loop = true;
-      source.loopEnd = sound.buffer.duration * loopCount;
-    }
+    let playCount = 0;
+    const maxPlays = loopCount;
 
-    source.onended = () => {
-      sound.sources.delete(source);
-      if (loopCount > 1) {
-        this.activeLoops.delete(name);
-      }
+    const playOnce = () => {
+      const source = this.audioContext.createBufferSource();
+      source.buffer = sound.buffer;
+      source.connect(gainNode);
+      sound.sources.add(source);
+      this.activeSounds.set(name, source);
+
+      source.onended = () => {
+        sound.sources.delete(source);
+        playCount++;
+
+        if (playCount < maxPlays) {
+          playOnce();
+        } else {
+          this.activeSounds.delete(name);
+        }
+      };
+
+      source.start(0);
     };
 
-    source.start(0);
-
-    if (loopCount > 1) {
-      setTimeout(() => {
-        if (sound.sources.has(source)) {
-          source.stop();
-        }
-      }, sound.buffer.duration * loopCount * 1000);
-    }
+    playOnce();
   },
 
   stopSound(name) {
@@ -315,6 +306,12 @@ const audioManager = {
       }
     });
     sound.sources.clear();
+
+    // Останавливаем и удаляем из активных
+    if (this.activeSounds.has(name)) {
+      this.activeSounds.delete(name);
+    }
+
     this.activeLoops.delete(name);
   },
 
@@ -323,8 +320,13 @@ const audioManager = {
       this.stopSound(name);
     });
     this.activeLoops.clear();
+  },
+
+  isSoundPlaying(name) {
+    return this.activeSounds.has(name);
   }
 };
+
 
 // ======================
 // Инициализация компонента
@@ -341,7 +343,7 @@ const menuItems = ref(menuData.en); // Изначально английская
 const toggleEnglish = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('helloSound', 2, 2);
+    await audioManager.playSound('privetSound', 5, 1);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'en';
@@ -362,7 +364,7 @@ const toggleEnglish = async () => {
 const toggleRussian = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('withoutMe', 0.2, 1);
+    await audioManager.playSound('privetSound', 5, 1);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'ru';
