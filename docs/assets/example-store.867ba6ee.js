@@ -1,1 +1,0 @@
-import{J as a}from"./index.a1a9ae01.js";const m=a("game",{state:()=>({lastGameResults:null,agentName:null,gameName:null,wordSet:null}),actions:{setLastGameResults(e,t){this.lastGameResults={time:e,mistakes:t}},setAgentName(e){this.agentName=e},setGameName(e){this.gameName=e},setWordSet(e){this.wordSet=e}}});export{m as u};

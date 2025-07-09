@@ -341,7 +341,7 @@ const menuItems = ref(menuData.en); // Изначально английская
 const toggleEnglish = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('helloSound', 10, 2);
+    await audioManager.playSound('helloSound', 2, 2);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'en';
@@ -362,7 +362,7 @@ const toggleEnglish = async () => {
 const toggleRussian = async () => {
   try {
     await audioManager.allowAudio(); // First ensure audio is allowed
-    await audioManager.playSound('starsMysterySound', 4, 1);
+    await audioManager.playSound('withoutMe', 0.2, 1);
 
     if (!isMenuOpen.value) {
       currentLanguage.value = 'ru';
