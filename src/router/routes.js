@@ -195,6 +195,10 @@ const routes = [
     component: () => import('src/pages/Vismyfriend.vue')
   },
   {
+    path: '/soundcheck',
+    component: () => import('src/layouts/MainLayout.vue')
+  },
+  {
     path: '/scroll-zoom-in',
     component: () => import('src/pages/intros/scrollZoomIn.vue')
   },

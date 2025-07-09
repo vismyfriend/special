@@ -1,3 +1,4 @@
+
 <template>
   <!-- Основной контейнер с фоновым изображением -->
   <div class="background">
@@ -38,16 +39,15 @@
 
     <div class="app-container">
       <div class="menu-container">
-
-
         <button class="fancy-btn">Welcome</button>
-        <button class="fancy-btn">Привет</button>
-        <button class="fancy-btn" @click="toggleMenu">
-          <span>{{ isMenuOpen ? 'Ok' : 'Hello' }}</span>
+        <button class="fancy-btn" @click="toggleRussian">
+          <span>{{ isMenuOpen && currentLanguage === 'ru' ? 'Хорошо' : 'Привет' }}</span>
         </button>
+        <button class="fancy-btn" @click="toggleEnglish">
+          <span>{{ isMenuOpen && currentLanguage === 'en' ? 'Ok' : 'Hello' }}</span>
+        </button>
+
       </div>
-
-
     </div>
   </div>
 </template>
@@ -55,109 +55,259 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { onMounted, onUnmounted, ref } from 'vue';
-
+// ======================
+// Данные для меню на разных языках
+// ======================
+const menuData = {
+  en: [
+    {
+      title: 'About Me :',
+      subItems: [
+        { name: 'Portfolio', url: '' },
+        { name: 'YouTube', url: '' },
+        { name: 'VK', url: '' },
+        { name: 'TikTok', url: '' },
+        { name: 'Instagram', url: '' },
+        { name: 'Facebook', url: '' },
+        { name: 'Telegram', url: '' },
+        { name: 'contacts ☝', url: '' }
+      ]
+    },
+    {
+      title: 'My Projects :',
+      subItems: [
+        { name: 'Travel', url: '' },
+        { name: 'Study', url: '' },
+        { name: 'Enjoy', url: '' },
+        { name: 'Business', url: '' },
+        { name: 'English', url: '' }
+      ]
+    },
+    {
+      title: 'My games:',
+      subItems: [
+        { name: 'Tap-clicker', url: '' },
+        { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
+        { name: 'Platformer 2D', url: '' }
+      ]
+    },
+    {
+      title: 'English:',
+      subItems: [
+        { name: 'TOEFL', url: '' },
+        { name: 'IELTS', url: '' },
+        { name: 'Books', url: '' },
+        { name: 'C2', url: '' },
+        { name: 'C1', url: '' },
+        { name: 'B2', url: '' },
+        { name: 'B1', url: '' },
+        { name: 'A2', url: '' },
+        { name: 'A1', url: '' },
+      ]
+    },
+    {
+      title: 'S.P.E.C.I.A.L',
+      subItems: [
+        { name: 'App', url: '/' },
+        { name: 'Website', url: '/games' }
+      ]
+    }
+  ],
+  ru: [
+    {
+      title: 'Обо мне :',
+      subItems: [
+        { name: 'Портфолио', url: '' },
+        { name: 'YouTube', url: '' },
+        { name: 'VK', url: '' },
+        { name: 'TikTok', url: '' },
+        { name: 'Instagram', url: '' },
+        { name: 'Facebook', url: '' },
+        { name: 'Telegram', url: '' },
+        { name: 'контакты ☝', url: '' }
+      ]
+    },
+    {
+      title: 'Мои проекты:',
+      subItems: [
+        { name: 'Путешествия', url: '' },
+        { name: 'Обучение', url: '' },
+        { name: 'Удовольствия', url: '' },
+        { name: 'Бизнес', url: '' },
+        { name: 'Английский', url: '' }
+      ]
+    },
+    {
+      title: 'Мои игры:',
+      subItems: [
+        { name: 'Tap-clicker', url: '' },
+        { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
+        { name: 'Platformer 2D', url: '' }
+      ]
+    },
+    {
+      title: 'Английский:',
+      subItems: [
+        { name: 'TOEFL', url: '' },
+        { name: 'IELTS', url: '' },
+        { name: 'Books', url: '' },
+        { name: 'C2', url: '' },
+        { name: 'C1', url: '' },
+        { name: 'B2', url: '' },
+        { name: 'B1', url: '' },
+        { name: 'A2', url: '' },
+        { name: 'A1', url: '' },
+      ]
+    },
+    {
+      title: 'S.P.E.C.I.A.L',
+      subItems: [
+        { name: 'App', url: '/' },
+        { name: 'Сайт', url: '/games' }
+      ]
+    }
+  ]
+};
 // ======================
 // Audio Manager (полная версия)
 // ======================
 const audioManager = {
   sounds: {},
   audioContext: null,
-  isAudioContextStarted: false,
+  activeLoops: new Set(),
+  isAudioAllowed: false,
 
-  // Конфигурация звуков (добавляйте новые звуки здесь)
   soundConfig: {
-    helloSound: '../assets/audio/magic_sound_short.mp3' // Основной звук кнопки
+    helloSound: '../assets/audio/magic_sound_short.mp3',
+    starsMysterySound: '../assets/audio/trimmedStarsSound.mp3'
   },
 
-  // Инициализация всей аудиосистемы
   async init() {
     try {
-      this.initAudioContext();
-      await Promise.all(
-        Object.entries(this.soundConfig).map(([name, path]) =>
-          this.loadSound(name, path, 7, 1) // Громкость 7, 1 проигрывание по умолчанию
-        )
-      );
-      console.log('AudioManager initialized');
+      // Create but don't start the context yet
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      this.audioContext.suspend(); // Start in suspended state
+      await this.loadAllSounds();
+      console.log('AudioManager initialized (suspended)');
     } catch (error) {
       console.error('AudioManager init failed:', error);
     }
   },
 
-  // Создание аудиоконтекста
-  initAudioContext() {
-    if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  async allowAudio() {
+    if (!this.isAudioAllowed) {
+      if (this.audioContext?.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      this.isAudioAllowed = true;
+      console.log('Audio allowed after user interaction');
     }
   },
 
-  // Загрузка звукового файла
-  async loadSound(name, url, volume = 7, loopDuration = 1) {
+  async loadAllSounds() {
+    await Promise.all(
+      Object.keys(this.soundConfig).map(name =>
+        this.loadSound(name, this.soundConfig[name])
+      )
+      );
+  },
+
+  async loadSound(name, path) {
     try {
-      const soundUrl = new URL(url, import.meta.url).href;
+      const soundUrl = new URL(path, import.meta.url).href;
       const response = await fetch(soundUrl);
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
       this.sounds[name] = {
         buffer: audioBuffer,
-        volume: Math.min(Math.max(volume, 0), 10),
-        loopDuration: Math.max(loopDuration, 1),
-        source: null
+        sources: new Set()
       };
     } catch (error) {
       console.error(`Failed to load sound "${name}":`, error);
     }
   },
 
-  // Воспроизведение звука
-  playSound(name) {
+  async playSound(name, volume = 7, loopCount = 1) {
+    // Разрешаем аудио при первом взаимодействии
+    await this.allowAudio();
+
     if (!this.sounds[name]) {
       console.warn(`Sound "${name}" not loaded`);
       return;
     }
 
-    try {
-      this.initAudioContext();
+    // Останавливаем предыдущий звук, если это loop
+    if (loopCount > 1) {
+      this.stopSound(name);
+    }
 
-      if (this.audioContext.state === 'suspended') {
-        this.audioContext.resume().then(() => {
-          this._playSound(name);
-        });
+    this._playSound(name, volume, loopCount);
+  },
+
+  _playSound(name, volume, loopCount) {
+    const sound = this.sounds[name];
+
+    if (loopCount > 1) {
+      if (this.activeLoops.has(name)) {
         return;
       }
+      this.activeLoops.add(name);
+    }
 
-      this._playSound(name);
-    } catch (error) {
-      console.error(`Error playing sound "${name}":`, error);
+    const source = this.audioContext.createBufferSource();
+    source.buffer = sound.buffer;
+    sound.sources.add(source);
+
+    const gainNode = this.audioContext.createGain();
+    gainNode.gain.value = Math.min(Math.max(volume, 0), 10) / 10;
+
+    source.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    if (loopCount > 1) {
+      source.loop = true;
+      source.loopEnd = sound.buffer.duration * loopCount;
+    }
+
+    source.onended = () => {
+      sound.sources.delete(source);
+      if (loopCount > 1) {
+        this.activeLoops.delete(name);
+      }
+    };
+
+    source.start(0);
+
+    if (loopCount > 1) {
+      setTimeout(() => {
+        if (sound.sources.has(source)) {
+          source.stop();
+        }
+      }, sound.buffer.duration * loopCount * 1000);
     }
   },
 
-  // Внутренний метод воспроизведения
-  _playSound(name) {
+  stopSound(name) {
+    if (!this.sounds[name]) return;
+
     const sound = this.sounds[name];
+    sound.sources.forEach(source => {
+      try {
+        source.stop();
+      } catch (e) {
+        console.warn(`Error stopping sound "${name}":`, e);
+      }
+    });
+    sound.sources.clear();
+    this.activeLoops.delete(name);
+  },
 
-    if (sound.source) {
-      sound.source.stop();
-    }
-
-    sound.source = this.audioContext.createBufferSource();
-    sound.source.buffer = sound.buffer;
-
-    const gainNode = this.audioContext.createGain();
-    gainNode.gain.value = sound.volume / 10;
-
-    sound.source.connect(gainNode);
-    gainNode.connect(this.audioContext.destination);
-
-    if (sound.loopDuration > 1) {
-      sound.source.loop = true;
-      sound.source.loopEnd = sound.buffer.duration * sound.loopDuration;
-      sound.source.stop(this.audioContext.currentTime + sound.buffer.duration * sound.loopDuration);
-    }
-
-    sound.source.start(0);
-    sound.source.onended = () => sound.source = null;
+  stopAllSounds() {
+    Object.keys(this.sounds).forEach(name => {
+      this.stopSound(name);
+    });
+    this.activeLoops.clear();
   }
 };
 
@@ -168,62 +318,53 @@ const router = useRouter();
 const canvas = ref(null);
 const isMenuOpen = ref(false);
 const activeSubmenu = ref(null);
+const currentLanguage = ref('en'); // 'en' или 'ru'
+const menuItems = ref(menuData.en); // Изначально английская версия
 
-// Данные для меню
-const menuItems = ref([
-  {
-    title: 'About Me :',
-    subItems: [
-      { name: 'Portfolio', url: '' },
-      { name: 'YouTube', url: '' },
-      { name: 'VK', url: '' },
-      { name: 'TikTok', url: '' },
-      { name: 'Instagram', url: '' },
-      { name: 'Facebook', url: '' },
-      { name: 'Telegram', url: '' },
-      { name: 'contacts ☝', url: '' }
-    ]
-  },
-  {
-    title: 'My Projects :',
-    subItems: [
-      { name: 'Travel', url: '' },
-      { name: 'Study', url: '' },
-      { name: 'Enjoy', url: '' },
-      { name: 'Business', url: '' },
-      { name: 'English', url: '' }
-    ]
-  },
-  {
-    title: 'My games:',
-    subItems: [
-      { name: 'Tap-clicker', url: '' },
-      { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
-      { name: 'Platformer 2D', url: '' }
-    ]
-  },
-  {
-    title: 'English:',
-    subItems: [
-      { name: 'TOEFL', url: '' },
-      { name: 'IELTS', url: '' },
-      { name: 'Books', url: '' },
-      { name: 'C2', url: '' },
-      { name: 'C1', url: '' },
-      { name: 'B2', url: '' },
-      { name: 'B1', url: '' },
-      { name: 'A2', url: '' },
-      { name: 'A1', url: '' },
-    ]
-  },
-  {
-    title: 'S.P.E.C.I.A.L',
-    subItems: [
-      { name: 'App', url: '/' },
-      { name: 'Website', url: '/games' }
-    ]
+
+// Метод для переключения языка и управления меню
+const toggleEnglish = async () => {
+  try {
+    await audioManager.allowAudio(); // First ensure audio is allowed
+    await audioManager.playSound('helloSound', 10, 3);
+
+    if (!isMenuOpen.value) {
+      currentLanguage.value = 'en';
+      menuItems.value = menuData.en;
+      isMenuOpen.value = true;
+    } else if (currentLanguage.value === 'en') {
+      isMenuOpen.value = false;
+      activeSubmenu.value = null;
+    } else {
+      currentLanguage.value = 'en';
+      menuItems.value = menuData.en;
+    }
+  } catch (error) {
+    console.error('Error in toggleEnglish:', error);
   }
-]);
+};
+
+const toggleRussian = async () => {
+  try {
+    await audioManager.allowAudio(); // First ensure audio is allowed
+    await audioManager.playSound('helloSound', 4, 1);
+
+    if (!isMenuOpen.value) {
+      currentLanguage.value = 'ru';
+      menuItems.value = menuData.ru;
+      isMenuOpen.value = true;
+    } else if (currentLanguage.value === 'ru') {
+      isMenuOpen.value = false;
+      activeSubmenu.value = null;
+    } else {
+      currentLanguage.value = 'ru';
+      menuItems.value = menuData.ru;
+    }
+  } catch (error) {
+    console.error('Error in toggleRussian:', error);
+  }
+};
+
 
 // ======================
 // Методы компонента
@@ -496,36 +637,32 @@ onUnmounted(() => {
 });
 
 onMounted(async () => {
-  // 1. Инициализация аудио
-  await audioManager.init();
+  try {
+    // 1. Инициализация аудио (в suspended состоянии)
+    await audioManager.init();
 
-  // 2. Разблокировка аудио на мобильных
-  const unlockAudio = () => {
-    if (audioManager.audioContext?.state === 'suspended') {
-      audioManager.audioContext.resume();
-    }
-  };
-  document.addEventListener('click', unlockAudio, { once: true });
-  document.addEventListener('touchstart', unlockAudio, { once: true });
-
-  // 3. Инициализация эффекта частиц
-  resizeCanvas();
-
-  // Ждем загрузки шрифтов перед созданием частиц
-  await document.fonts.ready;
-
-  initParticles();
-  animate();
-
-  // 4. Добавляем обработчики событий
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('resize', () => {
+    // 2. Инициализация эффекта частиц
     resizeCanvas();
-    // Задержка для стабилизации после ресайза
-    setTimeout(initParticles, 100);
-  });
-  window.addEventListener('touchmove', handleTouchMove);
-  window.addEventListener('touchstart', handleTouchStart);
+
+    // Ждем загрузки шрифтов перед созданием частиц
+    await document.fonts.ready;
+
+    initParticles();
+    animate();
+
+    // 3. Добавляем обработчики событий
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      // Задержка для стабилизации после ресайза
+      setTimeout(initParticles, 100);
+    });
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchstart', handleTouchStart);
+
+  } catch (error) {
+    console.error('Initialization error:', error);
+  }
 });
 </script>
 <style>
