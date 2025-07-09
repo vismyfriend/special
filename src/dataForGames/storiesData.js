@@ -9,7 +9,7 @@ const storiesAndWordsData = {
         taskID: "stories_task",
         usefulWords: "I - am, You We They - are, It He She - is",
         audio: null,
-        taskPicture: new URL("../assets/images/AreAmIs.png", import.meta.url).href,
+        taskPicture: new URL("../assets/images/areAmIsOrNothing.png", import.meta.url).href,
         text: "Винсент _ (is) мой учитель Английского. Я _ (-) думаю, что я _ (am) хороший ученик. И Винсент _ (-) тоже так считает. Я _ (-) учусь с ним несколько месяцев. Мы _ (-) занимаемся 2 раза в неделю и мы _ (-) играем в игру словно мы _ (are) секретные агенты. \n" +
               '\n' +
               "А что насчет тебя? _ (-) ты желаешь изучать Английский? Иностранные языки _ (are) прикольные. Китайский _ (is) сложный, а вот Английский и Испанский _ (are) легкие для меня. Может потому что я _ (am) не ленивый и потому что я _ (am) секретный агент. А может потому что Винсент и я _ (are) друзья и я _ (-) люблю наши занятия. Они _ (-) радуют меня и они _ (are) интересные.",
@@ -43,6 +43,17 @@ const storiesAndWordsData = {
           " Мы _ (are) в парке. Деревья _ (are) высокие, а небо _ (is) голубое. — Смотри! Вот _ (is) Шэдоу! — кричит Том. Кот _ (-) уснул на скамейке. — Детективы _ (are) молодцы! Детективы _ (-) нашли кота. Мы _ (are) крутые! — говорю я, мы _ (-) круто справляемся с заданиями. Том _ (is) счастлив, и я _ (am) тоже. Наша миссия _ (is) выполненна! Мы _ (-) выполнили миссию.",
         hintsOrFeedback: 'if you need help call your teacher',
       },
+      {
+        storyTitle: 'The Lazy Rockers',
+        taskID: "stories_task",
+        usefulWords: null,
+        audio: null,
+        taskPicture: null,
+        text: " ",
+        hintsOrFeedback: 'if you need help call your teacher',
+      },
+
+
     ]
   },
 }
