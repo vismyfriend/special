@@ -56,20 +56,119 @@
 import { useRouter } from 'vue-router';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-// Инициализация роутера и ссылки на canvas
-const router = useRouter();
-const canvas = ref(null);
+// ======================
+// Audio Manager (полная версия)
+// ======================
+const audioManager = {
+  sounds: {},
+  audioContext: null,
+  isAudioContextStarted: false,
 
-// ======================
-// Навигация
-// ======================
-const backToIntroPage = () => {
-  router.push("/");
+  // Конфигурация звуков (добавляйте новые звуки здесь)
+  soundConfig: {
+    helloSound: '../assets/audio/magic_sound_short.mp3' // Основной звук кнопки
+  },
+
+  // Инициализация всей аудиосистемы
+  async init() {
+    try {
+      this.initAudioContext();
+      await Promise.all(
+        Object.entries(this.soundConfig).map(([name, path]) =>
+          this.loadSound(name, path, 7, 1) // Громкость 7, 1 проигрывание по умолчанию
+        )
+      );
+      console.log('AudioManager initialized');
+    } catch (error) {
+      console.error('AudioManager init failed:', error);
+    }
+  },
+
+  // Создание аудиоконтекста
+  initAudioContext() {
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  },
+
+  // Загрузка звукового файла
+  async loadSound(name, url, volume = 7, loopDuration = 1) {
+    try {
+      const soundUrl = new URL(url, import.meta.url).href;
+      const response = await fetch(soundUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+
+      this.sounds[name] = {
+        buffer: audioBuffer,
+        volume: Math.min(Math.max(volume, 0), 10),
+        loopDuration: Math.max(loopDuration, 1),
+        source: null
+      };
+    } catch (error) {
+      console.error(`Failed to load sound "${name}":`, error);
+    }
+  },
+
+  // Воспроизведение звука
+  playSound(name) {
+    if (!this.sounds[name]) {
+      console.warn(`Sound "${name}" not loaded`);
+      return;
+    }
+
+    try {
+      this.initAudioContext();
+
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume().then(() => {
+          this._playSound(name);
+        });
+        return;
+      }
+
+      this._playSound(name);
+    } catch (error) {
+      console.error(`Error playing sound "${name}":`, error);
+    }
+  },
+
+  // Внутренний метод воспроизведения
+  _playSound(name) {
+    const sound = this.sounds[name];
+
+    if (sound.source) {
+      sound.source.stop();
+    }
+
+    sound.source = this.audioContext.createBufferSource();
+    sound.source.buffer = sound.buffer;
+
+    const gainNode = this.audioContext.createGain();
+    gainNode.gain.value = sound.volume / 10;
+
+    sound.source.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    if (sound.loopDuration > 1) {
+      sound.source.loop = true;
+      sound.source.loopEnd = sound.buffer.duration * sound.loopDuration;
+      sound.source.stop(this.audioContext.currentTime + sound.buffer.duration * sound.loopDuration);
+    }
+
+    sound.source.start(0);
+    sound.source.onended = () => sound.source = null;
+  }
 };
 
-// Состояние меню
+// ======================
+// Инициализация компонента
+// ======================
+const router = useRouter();
+const canvas = ref(null);
 const isMenuOpen = ref(false);
 const activeSubmenu = ref(null);
+
 // Данные для меню
 const menuItems = ref([
   {
@@ -126,8 +225,13 @@ const menuItems = ref([
   }
 ]);
 
+// ======================
+// Методы компонента
+// ======================
+
 // Методы для управления меню
 const toggleMenu = () => {
+  audioManager.playSound('helloSound');
   isMenuOpen.value = !isMenuOpen.value;
   if (!isMenuOpen.value) {
     activeSubmenu.value = null;
@@ -148,7 +252,6 @@ const handleMouseEnter = (index) => {
 
 const handleMouseLeave = (index) => {
   if (window.innerWidth >= 769) {
-    // Добавляем небольшую задержку для плавного перехода
     setTimeout(() => {
       if (activeSubmenu.value === index) {
         activeSubmenu.value = null;
@@ -161,28 +264,22 @@ const closeAllMenus = () => {
   isMenuOpen.value = false;
   activeSubmenu.value = null;
 };
-const preventScroll = (e) => {
-  e.preventDefault();
-};
+
 const navigateTo = (section, subItem) => {
   closeAllMenus();
-
   try {
     if (typeof subItem === 'object' && subItem.url) {
       if (subItem.url.startsWith('http')) {
         window.open(subItem.url, '_blank');
       } else {
-        router.push(subItem.url)
-          .then(() => console.log("Navigation successful to", subItem.url))
-          .catch(err => console.error("Navigation error:", err));
+        router.push(subItem.url);
       }
-    } else {
-      console.log(`Navigating to ${section}/${subItem}`);
     }
   } catch (err) {
     console.error("Navigation failed:", err);
   }
 };
+
 // ======================
 // Эффект частиц
 // ======================
@@ -193,235 +290,244 @@ const getDensity = () => {
   return window.innerWidth < 768 ? 3 : 5;
 };
 
-onMounted(() => {
-  const ctx = canvas.value.getContext("2d");
-  let mouseX = 0, mouseY = 0;
-  const hoverRadius = 20; // Радиус взаимодействия с курсором
-  const easeFactor = 0.2; // Коэффициент плавности возврата частиц
-  const text = "SPECIAL"; // Текст из частиц
-  let particles = [];
+// Объявляем переменные для эффекта частиц заранее
+let animationFrameId;
+let particles = [];
+let mouseX = 0;
+let mouseY = 0;
+const hoverRadius = 20; // Радиус взаимодействия с курсором
+const easeFactor = 0.2; // Коэффициент плавности возврата частиц
+const text = "SPECIAL"; // Текст из частиц
 
-  // ======================
-  // Вспомогательные функции
-  // ======================
+// Класс для создания частиц
+class Particle {
+  constructor(x, y, color) {
+    // Текущие координаты
+    this.x = x;
+    this.y = y;
 
-  // Изменение размера canvas при ресайзе
-  const resizeCanvas = () => {
-    if (!canvas.value) return;
-    canvas.value.width = window.innerWidth;
-    canvas.value.height = window.innerHeight;
-  };
+    // Исходные координаты (куда возвращаются частицы)
+    this.origX = x;
+    this.origY = y;
 
-  // Класс для создания частиц
-  class Particle {
-    constructor(x, y, color) {
-      // Текущие координаты
-      this.x = x;
-      this.y = y;
+    this.color = color; // Цвет частицы
+    this.size = 1.5; // Размер частицы
 
-      // Исходные координаты (куда возвращаются частицы)
-      this.origX = x;
-      this.origY = y;
+    // Случайные скорости движения
+    this.vx = Math.random() * 4 - 2;
+    this.vy = Math.random() * 4 - 2;
 
-      this.color = color; // Цвет частицы
-      this.size = 1.5; // Размер частицы
+    // Флаг "разлетания" частицы
+    this.isBroken = false;
+  }
 
-      // Случайные скорости движения
-      this.vx = Math.random() * 4 - 2;
-      this.vy = Math.random() * 4 - 2;
+  // Обновление позиции частицы
+  update() {
+    // Движение частицы
+    this.x += this.vx;
+    this.y += this.vy;
 
-      // Флаг "разлетания" частицы
+    // Расчет расстояния до курсора
+    const dx = this.x - mouseX;
+    const dy = this.y - (mouseY + 270); // Учет смещения canvas
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Активация разлета при приближении курсора
+    if (distance < hoverRadius) {
+      this.isBroken = true;
+    }
+
+    // Плавное возвращение к исходной позиции
+    const localEase = this.isBroken ? 0.01 : easeFactor;
+    this.x += (this.origX - this.x) * localEase;
+    this.y += (this.origY - this.y) * localEase;
+
+    // Сброс флага разлета при возвращении
+    if (this.isBroken && Math.abs(this.x - this.origX) < 1 && Math.abs(this.y - this.origY) < 1) {
       this.isBroken = false;
-    }
-
-    // Обновление позиции частицы
-    update() {
-      // Движение частицы
-      this.x += this.vx;
-      this.y += this.vy;
-
-      // Расчет расстояния до курсора
-      const dx = this.x - mouseX;
-      const dy = this.y - (mouseY + 270); // Учет смещения canvas
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      // Активация разлета при приближении курсора
-      if (distance < hoverRadius) {
-        this.isBroken = true;
-      }
-
-      // Плавное возвращение к исходной позиции
-      const localEase = this.isBroken ? 0.01 : easeFactor;
-      this.x += (this.origX - this.x) * localEase;
-      this.y += (this.origY - this.y) * localEase;
-
-      // Сброс флага разлета при возвращении
-      if (this.isBroken && Math.abs(this.x - this.origX) < 1 && Math.abs(this.y - this.origY) < 1) {
-        this.isBroken = false;
-      }
-    }
-
-    // Отрисовка частицы
-    draw() {
-      ctx.fillStyle = this.color;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.fill();
     }
   }
 
-  // Инициализация частиц
-  const initParticles = () => {
-    particles = [];
-    const fontSize = Math.min(window.innerWidth * 0.2, 200); // Адаптивный размер шрифта
-    const currentDensity = getDensity(); // Получаем плотность частиц
+  // Отрисовка частицы
+  draw() {
+    const ctx = canvas.value.getContext("2d");
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
 
-    // Рендерим текст для получения данных пикселей
-    ctx.font = `${fontSize}px Outfit`;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, canvas.value.width / 2, canvas.value.height / 2);
+// Изменение размера canvas при ресайзе
+const resizeCanvas = () => {
+  if (!canvas.value) return;
+  canvas.value.width = window.innerWidth;
+  canvas.value.height = window.innerHeight;
+};
 
-    // Получаем данные изображения текста
-    const textWidth = ctx.measureText(text).width;
-    const imageData = ctx.getImageData(
-      canvas.value.width / 2 - textWidth / 2,
-      canvas.value.height / 2 - fontSize / 2,
-      textWidth,
-      fontSize
-    );
+// Инициализация частиц
+const initParticles = () => {
+  const ctx = canvas.value.getContext("2d");
+  particles = [];
+  const fontSize = Math.min(window.innerWidth * 0.2, 200); // Адаптивный размер шрифта
+  const currentDensity = getDensity(); // Получаем плотность частиц
 
-    // Очищаем canvas перед созданием частиц
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+  // Рендерим текст для получения данных пикселей
+  ctx.font = `${fontSize}px Outfit`;
+  ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, canvas.value.width / 2, canvas.value.height / 2);
 
-    // Создаем частицы на основе непрозрачных пикселей текста
-    for (let y = 0; y < imageData.height; y += currentDensity) {
-      for (let x = 0; x < imageData.width; x += currentDensity) {
-        const index = (x + y * imageData.width) * 4;
-        const alpha = imageData.data[index + 3];
+  // Получаем данные изображения текста
+  const textWidth = ctx.measureText(text).width;
+  const imageData = ctx.getImageData(
+    canvas.value.width / 2 - textWidth / 2,
+    canvas.value.height / 2 - fontSize / 2,
+    textWidth,
+    fontSize
+  );
 
-        // Создаем частицу для непрозрачных пикселей
-        if (alpha > 128) {
-          const posX = x + canvas.value.width / 2 - textWidth / 2;
-          const posY = y + canvas.value.height / 2 - fontSize / 2;
-          particles.push(new Particle(posX, posY, "rgba(255, 255, 255, 0.8)"));
-        }
+  // Очищаем canvas перед созданием частиц
+  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+
+  // Создаем частицы на основе непрозрачных пикселей текста
+  for (let y = 0; y < imageData.height; y += currentDensity) {
+    for (let x = 0; x < imageData.width; x += currentDensity) {
+      const index = (x + y * imageData.width) * 4;
+      const alpha = imageData.data[index + 3];
+
+      // Создаем частицу для непрозрачных пикселей
+      if (alpha > 128) {
+        const posX = x + canvas.value.width / 2 - textWidth / 2;
+        const posY = y + canvas.value.height / 2 - fontSize / 2;
+        particles.push(new Particle(posX, posY, "rgba(255, 255, 255, 0.8)"));
       }
     }
-  };
+  }
+};
 
-  // Анимация частиц
-  let animationFrameId;
+// Анимация частиц
+const animate = () => {
+  if (!canvas.value) return; // Проверка на существование canvas
 
-  const animate = () => {
-    if (!canvas.value) return; // Проверка на существование canvas
+  const ctx = canvas.value.getContext("2d");
+  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
 
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-    particles.forEach(particle => {
-      particle.update();
-      particle.draw();
+  animationFrameId = requestAnimationFrame(animate);
+};
+
+// Обработчик движения мыши
+const handleMouseMove = (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+};
+
+// Обработчик касаний для мобильных устройств
+const handleTouchMove = (e) => {
+  if (e.touches && e.touches[0]) {
+    // Получаем координаты касания
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY + 270; // Учитываем смещение canvas (top: -270px)
+
+    // Обновляем позицию "курсора" для взаимодействия с частицами
+    mouseX = touchX;
+    mouseY = touchY;
+
+    // Включаем разлёт для частиц в радиусе hoverRadius
+    particles.forEach(p => {
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < hoverRadius) {
+        p.isBroken = true;
+        p.vx = Math.random() * 4 - 2; // Случайная скорость по X
+        p.vy = Math.random() * 4 - 2; // Случайная скорость по Y
+      }
     });
+  }
+};
 
-    animationFrameId = requestAnimationFrame(animate);
+const handleTouchStart = (e) => {
+  if (e.touches && e.touches[0]) {
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY + 270; // Аналогичное смещение
+
+    // Активируем разлёт ТОЛЬКО для частиц в радиусе hoverRadius
+    particles.forEach(p => {
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < hoverRadius) {
+        p.isBroken = true;
+        p.vx = Math.random() * 4 - 2;
+        p.vy = Math.random() * 4 - 2;
+      }
+    });
+  }
+};
+
+// Функция очистки эффекта частиц
+const cleanupParticles = () => {
+  // Остановить анимацию
+  cancelAnimationFrame(animationFrameId);
+
+  // Удалить обработчики событий
+  window.removeEventListener('mousemove', handleMouseMove);
+  window.removeEventListener('resize', resizeCanvas);
+  window.removeEventListener('touchmove', handleTouchMove);
+  window.removeEventListener('touchstart', handleTouchStart);
+};
+
+// ======================
+// Хуки жизненного цикла
+// ======================
+
+// Регистрируем хуки ДО async операций
+onUnmounted(() => {
+  cleanupParticles();
+});
+
+onMounted(async () => {
+  // 1. Инициализация аудио
+  await audioManager.init();
+
+  // 2. Разблокировка аудио на мобильных
+  const unlockAudio = () => {
+    if (audioManager.audioContext?.state === 'suspended') {
+      audioManager.audioContext.resume();
+    }
   };
+  document.addEventListener('click', unlockAudio, { once: true });
+  document.addEventListener('touchstart', unlockAudio, { once: true });
 
-  // Обработчик движения мыши
-  const handleMouseMove = (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  };
+  // 3. Инициализация эффекта частиц
+  resizeCanvas();
 
-  // ======================
-  // Настройка событий
-  // ======================
+  // Ждем загрузки шрифтов перед созданием частиц
+  await document.fonts.ready;
+
+  initParticles();
+  animate();
+
+  // 4. Добавляем обработчики событий
   window.addEventListener('mousemove', handleMouseMove);
   window.addEventListener('resize', () => {
     resizeCanvas();
     // Задержка для стабилизации после ресайза
     setTimeout(initParticles, 100);
   });
-
-  // Инициализация эффекта
-  resizeCanvas();
-  document.fonts.ready.then(() => {
-    initParticles();
-    animate();
-  });
-
-
-
-  // Добавляем обработчик для мобильных касаний
-  const handleTouchMove = (e) => {
-    if (e.touches && e.touches[0]) {
-      // Получаем координаты касания
-      const touchX = e.touches[0].clientX;
-      const touchY = e.touches[0].clientY + 270; // Учитываем смещение canvas (top: -270px)
-
-      // Обновляем позицию "курсора" для взаимодействия с частицами
-      mouseX = touchX;
-      mouseY = touchY;
-
-      // Включаем разлёт для частиц в радиусе hoverRadius
-      particles.forEach(p => {
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < hoverRadius) {
-          p.isBroken = true;
-          p.vx = Math.random() * 4 - 2; // Случайная скорость по X
-          p.vy = Math.random() * 4 - 2; // Случайная скорость по Y
-        }
-      });
-    }
-  };
-
-  const handleTouchStart = (e) => {
-    if (e.touches && e.touches[0]) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY + 270; // Аналогичное смещение
-
-      // Активируем разлёт ТОЛЬКО для частиц в радиусе hoverRadius
-      particles.forEach(p => {
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < hoverRadius) {
-          p.isBroken = true;
-          p.vx = Math.random() * 4 - 2;
-          p.vy = Math.random() * 4 - 2;
-        }
-      });
-    }
-  };
-
   window.addEventListener('touchmove', handleTouchMove);
   window.addEventListener('touchstart', handleTouchStart);
-
-  // ======================
-  // Очистка при уходе со страницы
-  // ======================
-  onUnmounted(() => {
-    // Остановить анимацию
-    cancelAnimationFrame(animationFrameId);
-
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('resize', resizeCanvas);
-
-    // Удаляем только те обработчики, которые были добавлены
-    window.removeEventListener('touchmove', handleTouchMove);
-    window.removeEventListener('touchstart', handleTouchStart);
-
-    // Убираем только наши обработчики скролла
-    document.body.style.overscrollBehaviorY = '';
-    document.body.style.webkitOverflowScrolling = '';
-  });
 });
 </script>
-
 <style>
 /* Глобальные стили без scoped (применяются ко всему приложению) */
 html, body, #app {
@@ -510,7 +616,7 @@ html, body, #app {
 }
 
 .fancy-btn {
-user-select: none;
+  user-select: none;
   display: block;
   position: relative;
   margin: 0.5em 0;
