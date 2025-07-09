@@ -192,9 +192,9 @@ const audioManager = {
 
   soundConfig: {
     helloSound: new URL('../assets/audio/magic_sound_short.mp3', import.meta.url).href,
-    privetSound: '../assets/audio/trimmedStarsSound.mp3',
-    withoutMe: '../assets/audio/WithoutMeNoSpaces.mp3',
-    starsMysterySound: '../assets/audio/trimmedStarsSound.mp3'
+    privetSound: new URL('../assets/audio/trimmedStarsSound.mp3', import.meta.url).href,
+    withoutMe: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+    starsMysterySound: new URL('../assets/audio/trimmedStarsSound.mp3', import.meta.url).href,
   },
 
   async init() {
