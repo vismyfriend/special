@@ -1,6 +1,36 @@
 
 const ListeningExerciseData = {
 
+  debug: {
+    mainDescription: "mainDescription",
+    tasks: [
+      {
+        taskDescription: "taskDescription",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Name","Present Simple"],
+          rows: [
+            {
+              cells: ["do", "did", "done","делать", "I did it"],
+              editable: [false, false, false, false, false,]
+            },
+            {
+              cells: ["eat","","eaten","","",],
+              editable: [false, true, false, true, true,],
+              correctAnswers: {
+                cells: [null, "ate",null,"есть","anyIsOk" ],
+                almostCorrect: {
+                  1: ["two","2"], // Индекс поля (начиная с 0)
+                  3: ["поесть","кушать","жрать","скушать","покушать",],
+                }
+              }
+            },
+          ]
+        }
+      },
+    ],
+  },
+
   testQuicklyData: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
@@ -1284,6 +1314,17 @@ const ListeningExerciseData = {
         textScript: null,
         questions: [
           {
+            text: 'Take the second right - означает:"',
+            options: {
+              A: "Свернуть налево на Green Street",
+              B: "Свернуть вправо на Green Street",
+              C: "Свернуть налево на King's Road",
+              D: "Свернуть вправо на King's Road",
+              E: "Взять секунду, чтобы подумать о верном повороте",
+            },
+            correctAnswer: "D"
+          },
+          {
             text: "Какой смысл фразы 'go straight on'?",
             options: {
               A: "Иди назад",
@@ -1311,20 +1352,8 @@ const ListeningExerciseData = {
               A: "it's not the police, it's the pochta",
               B: "it's not the post, it's the policia",
               C: "it's not the post office, it's the police station",
-
             },
             correctAnswer: "C"
-          },
-          {
-            text: 'Take the second right - означает:"',
-            options: {
-              A: "Свернуть налево на Green Street",
-              B: "Свернуть вправо на Green Street",
-              C: "Свернуть налево на King's Road",
-              D: "Свернуть вправо на King's Road",
-              E: "Взять секунду, чтобы подумать о верном повороте",
-            },
-            correctAnswer: "D"
           },
         ]
       },
@@ -1390,6 +1419,32 @@ const ListeningExerciseData = {
       {
         taskDescription: "Discuss this:",
         taskID: "discussion_task",
+        usefulWords: null,
+        audio: null,
+        taskPicture: new URL("../assets/images/A2_directionsNew.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "What building is opposite the theatre?",
+            translation: "Какое здание находится напротив театра?",
+          },
+          {
+            text: "How many traffic lights are in the picture?",
+            translation: "Сколько светофоров на этой картинке",
+          },
+          {
+            text: "HWhat building is next to the factory?",
+            translation: "Какое здание находится рядом с заводом",
+          },
+          {
+            text: "What building is on the right to the cafe?",
+            translation: "Что за здание расположено справа от кафе?",
+          },
+        ]
+      },
+      {
+        taskDescription: "Discuss this:",
+        taskID: "discussion_task",
         usefulWords: 'You are here! - /ю а хИэ/ вы находитесь здесь!, ' +
           'Where am I? - /уЭ Эм ай/ где я?, ' +
           'on the right - справа, ' +
@@ -1445,20 +1500,24 @@ const ListeningExerciseData = {
     ]
   },
   directionsListeningA1: {
-    mainDescription: "введи верный ответ",
+    mainDescription: "Аудио файл 👇 снизу",
     tasks: [
       {
         usefulWords:
-          'on the right - справа, ' +
-          'on the left - слева, ' +
-          'to the left - налево, ' +
-          'to the right - направо, ' +
-          'take the first left - сверни сразу влево ',
-        taskDescription: 'прочитай текст и введи недостающий слова',
+          'Go straight - / гоу стрЭйт / идите прямо, ' +
+          'On the right - / он дэ райт / справа, ' +
+          'Library - / лАйбрэри / библиотека, ' +
+          'take the first left - сверни сразу влево (на\u00A0первом\u00A0повороте), ' +
+          'take the second left - сверни на втором повороте\u00A0налево', // неразрывной пробел юникод если &nbsp; не работает
+        taskDescription: '(можно изменить скорость аудио) Послушай и впиши пропущенные слова',
         audio: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
         taskID: "student_input",
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'напишите Винсенту и он сделает подсказки к этому заданию',
+        textScript: 'Если вы ввели неверный ответ, то исправьте его на верный и нажмите кнопку проверить - результат пересчитается\n' +
+          '\n' +
+          'Не ради оценок, а ради практики вашего английского! \n '+
+          '\n' +
+          'From\u00A0Vincent\u00A0with\u00A0love!',
         questions: [
           {
             text: "A) Go straight on. Then take the first left on to Green Street. Walk past the ___ and it’s the building next to the library on the left.",

@@ -409,20 +409,12 @@ export const AllGames =
       icon: "wiresPic.png"
     },
     {
-      id: 1,
-      name: "Alias",
-      description: "Объясни слово",
-      route: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
-      icon: "cards.png"
-    },
-    {
       id: 2,
       name: "Listen",
       description: "слушай и наслаждайся",
-      route: "/see-all-sets-of-words/traffic1/listening-exercises",
+      route: "/see-all-sets-of-words/directionsListeningA1/listening-exercises",
       icon: "lilsteningIcon.png"
     },
-
     {
       id: 5,
       name: "Find pairs",
@@ -430,6 +422,23 @@ export const AllGames =
       route: "/see-all-sets-of-words/introSetFindPairsHard/find-pairs-hard",
       icon: "game4icon.png"
     },
+    {
+      id: 5,
+      name: "Spell it",
+      description: "Произнеси по буквам",
+      route: "/see-all-sets-of-words/introSetSpellThis/spelling",
+      icon: "game5icon.png"
+    },
+    {
+      id: 1,
+      name: "Alias",
+      description: "Объясни слово",
+      route: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
+      icon: "cards.png"
+    },
+
+
+
     {
       id: 1,
       name: "Translate",
@@ -444,13 +453,7 @@ export const AllGames =
       externalUrl: "https://vismyfriend.itch.io/clicker-test",  // <- внешняя ссылка
       icon: "game3icon.png"
     },
-    {
-      id: 5,
-      name: "Spell it",
-      description: "Произнеси по буквам",
-      route: "/see-all-sets-of-words/introSetSpellThis/spelling",
-      icon: "game5icon.png"
-    },
+
 
     {
       id: 2,

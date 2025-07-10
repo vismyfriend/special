@@ -10,9 +10,9 @@
           </div>
           <div class="input-column">
             <!-- Передаем текущий индекс в функцию handleEnter -->
-            <input class="userInput" type="text" 
-              v-model="translations[index]" 
-              @keyup.enter="handleEnter(index)" 
+            <input class="userInput" type="text"
+              v-model="translations[index]"
+              @keyup.enter="handleEnter(index)"
               :class="{ 'correct': correctAnswers[index], 'incorrect': incorrectAnswers[index] }" />
               <!-- Это динамическое добавление классов к элементу в зависимости от значений в массиве correctAnswers и incorrectAnswers. Если перевод правильный, добавляется класс correct, если неправильный — incorrect. -->
           </div>
@@ -63,13 +63,10 @@ const checkTranslation = (index, wordId) => {
 const checkAllTranslations = () => {
   ruCards.value.forEach((ruWord, index) => {
     const correctTranslation = currentGameData.value.find(el => el.id === ruWord.id).eng;
-    if (translations.value[index].toLowerCase() === correctTranslation.toLowerCase()) {
-      correctAnswers.value[index] = true;
-      incorrectAnswers.value[index] = false;
-    } else {
-      correctAnswers.value[index] = false;
-      incorrectAnswers.value[index] = true;
-    }
+    const isCorrect = isAnswerCorrect(translations.value[index], correctTranslation);
+
+    correctAnswers.value[index] = isCorrect;
+    incorrectAnswers.value[index] = !isCorrect;
   });
 }
 // чтобы нажатие enter с клавиатуры переводило на следующее слово
@@ -92,6 +89,85 @@ const handleEnter = (index) => {
   }
 }
 
+const normalizeAnswer = (answer) => {
+  if (!answer || typeof answer !== 'string') return '';
+
+  return answer
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/[.,!?;:…–—]+$/g, '')
+    .replace(/[.,!?;:…–—]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/[`'‘’´]/g, "'")
+    .replace(/\bdo not\b/g, "don't")
+    .replace(/\bdoes not\b/g, "doesn't")
+    .replace(/\bdid not\b/g, "didn't")
+    .replace(/\bwill not\b/g, "won't")
+    .replace(/\bcan not\b/g, "can't")
+    .replace(/\b(?:dont|doesnt|didnt|wont|cant)\b/g, match =>
+      ({
+        dont: "don't",
+        doesnt: "doesn't",
+        didnt: "didn't",
+        wont: "won't",
+        cant: "can't"
+      }[match]))
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+const isTypoCloseEnough = (userWord, correctWord) => {
+  // 1. Проверка точного совпадения (самый быстрый путь)
+  if (userWord === correctWord) return true;
+
+  // 2. Строгие слова (должны совпадать точно)
+  const strictWords = ['he','his','she','her','you','your','we','our','it','is','are','was','were','do','does','did','have','has','had','who','why'];
+
+  // 3. Новое правило: слова ≤3 букв проверяем строго
+  const isShortWord = correctWord.length <= 3;
+
+  if (strictWords.includes(correctWord) || isShortWord) {
+    return false; // Не допускаем опечаток
+  }
+
+  // 4. Для остальных слов - проверка с допуском одной опечатки
+  if (Math.abs(userWord.length - correctWord.length) > 1) return false;
+
+  let errors = 0;
+  const maxLength = Math.max(userWord.length, correctWord.length);
+
+  for (let i = 0, j = 0; i < maxLength || j < maxLength; i++, j++) {
+    if (i >= userWord.length || j >= correctWord.length || userWord[i] !== correctWord[j]) {
+      errors++;
+      if (errors > 1) return false;
+      if (userWord.length > correctWord.length) j--; // Пропуск символа в correctWord
+      else if (userWord.length < correctWord.length) i--; // Пропуск символа в userWord
+    }
+  }
+
+  return true;
+};
+
+const isAnswerCorrect = (userAnswer, correctAnswer) => {
+  const normalizedUser = normalizeAnswer(userAnswer);
+  const normalizedCorrect = normalizeAnswer(correctAnswer);
+
+  if (normalizedUser === normalizedCorrect) return true;
+
+  const userWords = normalizedUser.split(' ');
+  const correctWords = normalizedCorrect.split(' ');
+
+  if (userWords.length !== correctWords.length) return false;
+
+  for (let i = 0; i < correctWords.length; i++) {
+    if (!isTypoCloseEnough(userWords[i], correctWords[i])) {
+      return false;
+    }
+  }
+
+  return true;
+};
 onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = shortWordsData[missionName];

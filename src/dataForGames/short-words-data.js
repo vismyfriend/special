@@ -18,6 +18,7 @@ const shortWordsData = {
     { id: 7, eng: "it", ru: "это", hint: "/ ит /" },
     { id: 8, eng: "our", ru: "наш", hint: "/ АУа /" },
     { id: 9, eng: "your", ru: "ваш", hint: "/ ё /" },
+    { id: 10, eng: "her", ru: "её", hint: "/ ё /" },
   ],
   directionsListeningA2: [
     { id: 1, eng: "You are here!", ru: "вы находитесь здесь", hint: "/ю а хИэ/" },
@@ -47,15 +48,17 @@ const shortWordsData = {
     { id: 25, eng: "dead end", ru: "тупик", hint: "дЭд энд" },
   ],
   hardCodedLinkUP0: [
-    { id: 1, eng: 'What`s the English for "Я\u00A0рад"?', ru: 'Как на английском сказать "Я\u00A0рад"?'},
     { id: 2, eng: 'Give an example, give\u00A0examples', ru: 'приведите пример, дайте\u00A0примеры'},
     { id: 3, eng: 'Tell me your name', ru: 'скажите мне как вас зовут'},
     { id: 4, eng: 'How to translate it?', ru: 'как это переводится?'},
-    { id: 5, eng: 'Who are you ? /\u00A0хУ\u00A0а\u00A0ю\u00A0/', ru: 'кто вы?'},
-    { id: 6, eng: 'How are you ? /\u00A0хАу\u00A0а\u00A0ю\u00A0/', ru: 'как вы?'},
-    { id: 7, eng: 'Where are you? /\u00A0уЭэ\u00A0а\u00A0ю\u00A0/', ru: 'где вы?'},
-    { id: 8, eng: 'Who are we ? /\u00A0хУ\u00A0а\u00A0ви\u00A0/', ru: 'кто мы?'},
-    { id: 9, eng: 'What are those? /\u00A0Уот\u00A0а\u00A0доуз\u00A0/', ru: 'что там за вещи?'},
+    { id: 5, eng: 'Who are you ? ', ru: 'кто вы?', hint: "/\u00A0хУ\u00A0а\u00A0ю\u00A0/" },
+    { id: 6, eng: 'How are you ? ', ru: 'как вы?', hint: "/\u00A0хАу\u00A0а\u00A0ю\u00A0/" },
+    { id: 7, eng: 'Where are you? ', ru: 'где вы?', hint: "/\u00A0уЭэ\u00A0а\u00A0ю\u00A0/" },
+    { id: 8, eng: 'Who are we ? ', ru: 'кто мы?', hint: "/\u00A0хУ\u00A0а\u00A0ви\u00A0/" },
+    { id: 9, eng: 'What are those? ', ru: 'что там за вещи?', hint: "/\u00A0Уот\u00A0а\u00A0доуз\u00A0/" },
+    { id: 10, eng: 'They are glad ', ru: 'им приятно, они\u00A0рады', hint: "/\u00A0дЭй\u00A0а\u00A0глЭд\u00A0/" },
+    { id: 11, eng: 'What`s the English for "Я\u00A0рад"?', ru: 'Как на английском сказать "Я\u00A0рад"?' },
+
   ],
   ArgentinaLessonWords: [
     { id: 1, eng: "Whale", ru: "Кит", hint: "/уЭйл/" },
@@ -95,7 +98,6 @@ const shortWordsData = {
     { id: 3, eng: "hundred", ru: "сто", hint: "/хандрэд/" },
     { id: 4, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтИн /" },
     { id: 5, eng: "fifty", ru: "пятьдесят", hint: "/ фИфти /" },
-
     { id: 6, eng: "seventeen", ru: "семнадцать", hint: "/ сэвэнтИн /" },
     { id: 7, eng: "seventy", ru: "семьдесят", hint: "/ сЭвэнти /" },
     { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
@@ -266,6 +268,12 @@ whatISitVideoMission: [
     { id: 27, eng: "What's up", ru: "как дела (разг.)", hint: "/ уотс ап /" },
     { id: 28, eng: "How so", ru: "как так", hint: "/ хау соу /" },
     { id: 29, eng: "What if", ru: "что если", hint: "/ уот иф /" },
+    { id: 30, eng: "What the hell?", ru: "какого чёрта?", hint: "/ уот дэ хэл /" },
+    { id: 31, eng: "Why the hell?", ru: "почему черт подери?", hint: "/ уай дэ хэл /" },
+    { id: 32, eng: "Where the hell?", ru: "где черт подери?", hint: "/ уЭэ дэ хэл /" },
+    { id: 33, eng: "When the hell?", ru: "когда черт подери?", hint: "/ уЭн дэ хэл /" },
+    { id: 34, eng: "Who the hell?", ru: "кто черт подери?", hint: "/ хУ дэ хэл /" },
+    { id: 35, eng: "How the hell?", ru: "как черт подери?", hint: "/ хАу дэ хэл /" },
   ],
 
   universalSet: [

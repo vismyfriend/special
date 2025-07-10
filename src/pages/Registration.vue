@@ -153,7 +153,7 @@ const gameStore = useGameStore()
 
 const backToPreviousPage = () => {
   // router.push(-1)
-  router.push("/")
+  router.push("/games")
 };
 
 const setNotify = (message, color = 'black') => {
@@ -210,7 +210,7 @@ const continueAsGuest = async () => {
   // const res2 = await api.scores.post("tnt", 134, 2, 11);
   // const res3 = await api.scores.get();
   // console.log(res3);
-  // router.push("/see-all-sets-of-words")
+  router.push("/see-all-sets-of-words")
 
   // при отправлении рекрда мы берем имя игры из раута, время в секундах, ошибки/читы, эйджент нэйм из локал
   // (сториджа)

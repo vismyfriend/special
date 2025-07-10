@@ -206,13 +206,16 @@ const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 const generateAnswers = (correctAnswer) => {
   const allItems = currentGameData.value;
   const correctItem = allItems.find(item => item.eng === correctAnswer);
-  const otherItems = allItems.filter(item => item.eng !== correctAnswer);
-  const uniqueOthers = Array.from(new Set(otherItems.map(item => item.eng)))
-    .map(eng => otherItems.find(item => item.eng === eng));
 
-  const randomIncorrect = uniqueOthers.slice(0, 3);
-  const answersArray = [...randomIncorrect, correctItem];
-  return shuffle(answersArray);
+  // Фильтруем и перемешиваем неправильные варианты
+  const otherItems = allItems.filter(item => item.eng !== correctAnswer);
+  const shuffledOthers = shuffle([...otherItems]); // ← Важно: перемешиваем!
+
+  // Берем первые 3 из перемешанного массива
+  const randomIncorrect = shuffledOthers.slice(0, 3);
+
+  // Собираем все варианты и перемешиваем их
+  return shuffle([...randomIncorrect, correctItem]);
 };
 
 const loadQuestion = async () => {

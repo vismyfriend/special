@@ -158,7 +158,7 @@
             <span v-else-if="isAnswerCorrect(index, qi, q.correctAnswer, q.almostCorrectAnswers) === 'almost'"
                   class="almost-answer">⚠ Вроде тоже норм ответ, но стоит проверить!</span>
             <span v-else class="incorrect-answer">
-        ✗ Неверно. Правильный ответ: <strong>{{ q.correctAnswer }}</strong>
+        ✗ здесь верно будет: <strong>{{ q.correctAnswer }}</strong>
       </span>
           </div>
         </div>

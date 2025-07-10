@@ -1,0 +1,1 @@
+import{p as a,b as t,c as _,e as s}from"./index.4f01ffc3.js";import{_ as c}from"./plugin-vue_export-helper.21dcd24c.js";const r={__name:"flipBook",setup(n){const e=a(),o=()=>{e.push("/")};return(p,l)=>(t(),_("div",null,[s("button",{class:"goToMainPage",onClick:o},"go to main page \u274C")]))}};var f=c(r,[["__scopeId","data-v-4c42244c"]]);export{f as default};

@@ -207,6 +207,14 @@ const routes = [
     component: () => import('src/pages/pageWithoutMainLayout.vue')
   },
   {
+    path: '/tablitsa',
+    component: () => import('src/pages/tablitsa.vue')
+  },
+  {
+    path: '/tablitsaRef',
+    component: () => import('src/pages/tablitsaRef.vue')
+  },
+  {
     path: '/noLayoutPage2',
     component: () => import('src/pages/pageWithoutMainLayout2.vue')
   },

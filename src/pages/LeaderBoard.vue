@@ -137,7 +137,7 @@ const showChangeNameButton = ref(gameStore.$state.agentName === null);
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
   { agent: "Проблема с сервером", time: "000.00", mistakes: 0 },
-  { agent: "результаты остальных", time: "1234.5", mistakes: 6 },
+  { agent: "результаты агентов", time: "1234.5", mistakes: 6 },
   { agent: "можно увидеть позже", time: "999999", mistakes: 999 },
 
 
