@@ -397,6 +397,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1,
       active: true,
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/tablitsaRef",
+      missionVisibleName: "Present Simple",
+      missionDescription: "Настоящее простое",
+      id: 1001,
+      active: true,
+      stars: '2'
+    },
   ]
 
 export const AllGames =
