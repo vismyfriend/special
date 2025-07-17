@@ -14,8 +14,8 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
-      missionVisibleName: "Test quickly",
-      missionDescription: "Протестировать fast",
+      missionVisibleName: "Протестировать fast",
+      missionDescription: "Test quickly",
       id: 1,
       active: true,
       stars: '1',
@@ -25,8 +25,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA0/find-pairs-easy",
-      missionVisibleName: "Местоимения",
-      missionDescription: "Слова вместо имён",
+      missionVisibleName: "Слова вместо имён",
+      missionDescription: "Местоимения",
       id: 1001,
       active: true,
       stars: '3',
@@ -41,8 +41,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/hardCodedLinkUP0/find-pairs-hard",
-      missionVisibleName: "Полезные фразы",
-      missionDescription: "Полезные фразы",
+      missionVisibleName: "Полезные фразы 1",
+      missionDescription: "Useful phrases 1",
       id: 1001,
       active: true,
       stars: '1'
@@ -50,8 +50,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-easy",
-      missionVisibleName: "миссия 001 ",
-      missionDescription: "/ мишн / mission 001",
+      missionVisibleName: "/ мишн / mission 001",
+      missionDescription: "миссия 001",
       id: 1001,
       active: true,
       stars: '1'
@@ -59,8 +59,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-hard",
-      missionVisibleName: "миссия 002 ",
-      missionDescription: "mission 002",
+      missionVisibleName: "mission 002 ",
+      missionDescription: "миссия 002",
       id: 1001,
       active: true,
       stars: '2'
@@ -81,8 +81,8 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       missionName: "digits",
-      missionVisibleName: "Digits /дИджитс/",
-      missionDescription: "Цифры",
+      missionVisibleName: "Цифры",
+      missionDescription: "Digits /дИджитс/",
       id: 1,
       active: true,
       stars: '5'
@@ -97,8 +97,8 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       missionName: "questionWords1",
-      missionVisibleName: "Question words 1",
-      missionDescription: "Вопросительные слова 1",
+      missionVisibleName: "Вопросительные слова 1",
+      missionDescription: "Question words 1",
       id: 7,
       active: true,
       stars: '1'
@@ -398,6 +398,13 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "checkersQuiz",
+      missionVisibleName: "Checkers",
+      missionDescription: "Shashkis",
+      id: 1,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/tablitsaRef",
       missionVisibleName: "Present Simple",
@@ -405,6 +412,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '2'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/ieltsListening1/listening-exercises",
+      missionVisibleName: "IELTS listening 1",
+      missionDescription: "IELTS аудирование 1",
+      id: 1001,
+      active: true,
+      stars: '3'
     },
   ]
 

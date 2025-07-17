@@ -33,6 +33,21 @@
               Click to see special content
             </div>
           </div>
+          <!-- Специальная карточка (случайный набор) -->
+          <div
+            class="v-card-choose tooltip-wrapper random-set"
+            role="button"
+            @click="playRandomSet"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Случайный набор
+            <div class="custom-tooltip">
+              Random Set
+            </div>
+          </div>
 
           <!-- Остальные карточки из наборов -->
           <div
@@ -48,7 +63,7 @@
           >
             <div class="card-content">
               <span class="card-description">
-                {{ currentSetOfWords.missionDescription }}
+                {{ currentSetOfWords.missionVisibleName }}
               </span>
               <span class="card-icons">
                 <span class="card-stars" v-if="currentSetOfWords.stars">
@@ -67,7 +82,7 @@
             </div>
             <div class="custom-tooltip">
               <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionVisibleName }}</span>
+                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
                 <span class="mission-icons">
                   <span class="mission-stars" v-if="currentSetOfWords.stars">
                     {{ getLevelStars(currentSetOfWords.stars) }}
@@ -92,7 +107,7 @@ import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
-const text = "choose \na \nset of words";
+const text = "choose \na \nmission \n- \nвыбирай или напиши название миссии";
 const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
 const searchQuery = ref('');
@@ -148,6 +163,28 @@ const getLevelStars = (stars) => {
   if (!stars) return '';
   const starCount = parseInt(stars);
   return '⭐'.repeat(starCount);
+};
+
+const playRandomSet = () => {
+  // Фильтруем наборы, исключая специальные (create-special-set и другие, если нужно)
+  const availableSets = filteredSets.value.filter(set =>
+    !set.type && set.active && set.missionName !== 'create-special-set'
+  );
+
+  if (availableSets.length === 0) {
+    $q.notify({
+      message: 'Нет доступных наборов для случайного выбора',
+      color: 'negative'
+    });
+    return;
+  }
+
+  // Выбираем случайный набор
+  const randomIndex = Math.floor(Math.random() * availableSets.length);
+  const randomSet = availableSets[randomIndex];
+
+  // Переходим к случайному набору
+  goToChosenGame(randomSet);
 };
 
 onMounted(() => {
@@ -355,6 +392,7 @@ onMounted(() => {
   border: 3px solid black; // Рамка вокруг элемента
   background: white; // Фоновый цвет
   clear: both; // Очищение флоатов
+  line-height: 16px;
 
   padding: 16px 17px; // Внутренние отступы (переопределение предыдущих)
 
@@ -573,6 +611,40 @@ onMounted(() => {
 }
 
 .create-special-set::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;  /* стартуем слева за пределами */
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+.random-set {
+  position: relative; /* для псевдоэлемента */
+  overflow: hidden;
+  margin: 1.5px;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(to top, #884eef, #9e6ff1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  cursor: none;
+  //font-size: 16px;
+}
+
+.random-set::before {
   content: "";
   position: absolute;
   top: 0;

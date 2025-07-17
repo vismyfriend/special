@@ -35,6 +35,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
+import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 import questionsData from "../dataForGames/questions-data";
 import shortWordsData from '../dataForGames/short-words-data';
 import tntData from 'src/dataForGames/tnt-data';
@@ -51,12 +52,14 @@ import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import pnqwData from "src/dataForGames/pnqw";
 
-const text = "choose \nthe \ntask";
+const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
 
 const router = useRouter()
 const route = useRoute()
+
+
 
 const AllGames = ref([
 
@@ -251,6 +254,8 @@ const filteredGames = computed(() => {
   return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
 });
 
+
+
 const startGame = (path) => {
   const game = AllGames.value.find(g => g.path === path);
   if (game && game.active) {
@@ -266,18 +271,41 @@ onMounted(() => {
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
 
+  // Находим соответствующую миссию
+  const missionName = route.params.missionName;
+  const mission = allGamesAndSetsOfWordsList.find(set => set.missionName === missionName);
+
+  // Формируем текст в зависимости от того, найдена ли миссия
+  if (mission) {
+    dynamicText.value = `Awesome! "${mission.missionVisibleName}" let's practice:`;
+  } else {
+    dynamicText.value = "choose\nthe\ntask"; // fallback текст
+  }
+
   introMessage.textContent = "";
   let i = 0;
 
   function typeWriter() {
-    if (i < text.length) {
-      introMessage.textContent += text[i] === "\n" ? "\n" : text[i];
+    if (i < dynamicText.value.length) {
+      introMessage.textContent += dynamicText.value[i] === "\n" ? "\n" : dynamicText.value[i];
       i++;
       setTimeout(typeWriter, speed);
     }
   }
 
   typeWriter();
+
+  // Выводим в консоль missionName и missionVisibleName
+  console.log("missionName:", missionName);
+
+  // Находим соответствующий набор в allGamesAndSetsOfWordsList
+  if (mission) {
+    console.log("missionVisibleName:", mission.missionVisibleName);
+  } else {
+    console.log("missionVisibleName not found for this mission");
+  }
+
+
 });
 
 </script>
@@ -482,6 +510,7 @@ onMounted(() => {
   background: white;
   clear: both;
   padding: 15px;
+  line-height: 16px;
 
   &:before {
     content: '';

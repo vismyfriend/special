@@ -497,6 +497,319 @@ const ListeningExerciseData = {
       },
     ],
   },
+
+  pattern_true_false: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Послушайте и ответьте",
+        taskID: "true_false",
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. Vincent is a nice teacherka",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. This audio is about this photo",
+            correctAnswer: "false"
+          },
+        ]
+      },
+    ],
+  },
+  pattern_multiple_choice: {
+    mainDescription: "PatternMC",
+    tasks: [
+      {
+        taskDescription: "Выбери правильный ответ",
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "What is another name for the game Checkers?",
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+        ]
+      },
+    ]
+  },
+  pattern_discussion_task: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Discuss this:",
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "What is your favorite animal?",
+            translation: "какое твое любимое животное",
+          },
+          {
+            text: "What is your favorite color?",
+            translation: "какой твой любимый цвет",
+          },
+          {
+            text: "How old are you?",
+            translation: "какой ваш возраст?",
+          },
+        ]
+      },
+    ],
+  },
+  pattern_drop_down_text: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Drop down",
+        taskID: "drop_down_text",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        questions: [
+          {
+            text: "Hello friends! Let me share (for, to, with*) you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and every day I work (in, at*, under, for, between) my computer.\n" +
+              '<-->\n' +
+              "I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+          },
+        ]
+      },
+    ],
+  },
+  pattern_grid_table: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Grid - fill in",
+        taskID: "grid_table",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        tableData: {
+          headers: ["v1","v2","v3","перевод","пример",],
+          rows: [
+            {
+              cells: ["do", "did", "done","делать", "I did it"],
+              editable: [false, false, false, false, false,]
+            },
+            {
+              cells: ["eat","","eaten","","",],
+              editable: [false, true, false, true, true,],
+              correctAnswers: {
+                cells: [null, "ate",null,"есть","anyIsOk" ],
+                almostCorrect: {
+                  1: ["two","2"], // Индекс поля (начиная с 0)
+                  3: ["поесть","кушать","жрать","скушать","покушать",],
+                }
+              }
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: "GRID - Irregular Verbs:",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["V1", "V2", "V3", "перевод"],
+          rows: [
+            { cells: ["break", "broke", "broken", "ломать"], editable: [false, false, false, false] },
+            { cells: ["beat", "beat", "beaten", "побить"], editable: [false, false, false, false] },
+            { cells: ["become", "became", "become", "становиться"], editable: [false, false, false, false] },
+            { cells: ["begin", "began", "begun", "начинать"], editable: [false, false, false, false] },
+            { cells: ["blow", "blew", "blown", "дуть"], editable: [false, false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Заполни пропуски в таблице:",
+        taskID: "grid_table",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        tableData: {
+          headers: ["Russian", "English"],
+          rows: [
+            {
+              cells: ["Марвэл - моя собака", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel is my dog",],
+                almostCorrect: {
+                  1: ["Marvel's my dog"]
+                }
+              }
+            },
+            {
+              cells: ["Марвэл любит Сырника!", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel likes Cheesecake.",],
+                almostCorrect: {
+                  1: ["Marvel loves Cheesecake","Marvel likes Cheesecakes","Marvel loves Cheesecakes"]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He doesn't like milk."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он не любит молоко",null, ],
+                almostCorrect: {
+                  1: ["Ему не нравится молоко",]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He loves to run."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он любит бегать",null, ],
+                almostCorrect: {
+                  1: ["Ему нравится бегать",]
+                }
+
+              }
+            },
+            {
+              cells: ["Кто любит Марвела?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who loves Marvel?",],
+                almostCorrect: {
+                  1: ["Who likes Marvel?"]
+                }
+
+              }
+            },
+            {
+              cells: ["Кого Марвел любит?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who does Marvel love?",],
+                almostCorrect: {
+                  1: ["Who does Marvel like?"]
+                }
+              }
+            },
+          ]
+        },
+      },
+    ],
+  },
+  pattern_student_input: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Translate",
+        taskID: "student_input",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        questions: [
+          {
+            text: "Напиши одну букву 'кью' _ ",
+            correctAnswer: "q",
+          },
+          {
+            text: "Особенный это - __",
+            correctAnswer: "special",
+            almostCorrectAnswers: ["special","unique","unusual"]
+
+          },
+          {
+            text: "Длинный это - ___",
+            correctAnswer: "long",
+            almostCorrectAnswers: ["not short","tall",]
+
+          },
+          {
+            text: "Новая строка - ____",
+            correctAnswer: "a new line",
+            almostCorrectAnswers: ["new line","new string", "a new string"]
+          },
+        ]
+      },
+    ],
+  },
+
+
+  ieltsListening1: {
+    mainDescription: "IELTS listening",
+    tasks: [
+      {
+        taskDescription: "Write the correct letter A, B, D, E, F, G, H",
+        taskID: "student_input",
+        usefulWords: 'Entrance - вход, Cross - крест, First Aid - первая помощь, Main field - главное поле',
+        audio: new URL('../assets/audio/Ielts_listening_1.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/ielts_listening_1.png", import.meta.url).href,
+        textScript: 'Before you listen to the audio, you have some time to look at questions 1 to 5.\n' +
+          '\n' +
+          'Now listen carefully and answer questions 1 to 5.\n' +
+          '\n' +
+          'Okay, let\'s have a look at a map of the Athletic Centre. You can see South Gate Road along the bottom of the map going horizontally, and there\'s East Gate Road on the right-hand side going from the bottom up to the top of the map. And there\'s the main entrance, also there at the bottom of the map on South Gate Road.\n' +
+          '\n' +
+          'So, first of all, you\'ll need to know where to send other parents to park their cars. That\'ll be Car Park 3. Actually, there are several car parks at the centre on both sides of the main entrance. See the large square-shaped area on the map? Car Park 3 is the top half of that square, just below the trees, so please send parents over there.\n' +
+          '\n' +
+          'Now, the changing rooms. You\'ll need to know where to find them. I remember they used to be up near the running track. You can see the running track is that large oval area on the map, but the changing rooms are much more conveniently located now. All you have to do is come in through the main entrance, immediately take the road that goes off left and aim for the building that looks a bit like a cross. That\'s where the kids will be getting changed for this year\'s sports day.\n' +
+          '\n' +
+          'Right, the first aid centre. Hopefully, we won\'t be taking too many children there, but you do need to know where it is. So, if you\'re starting from the main entrance, the quickest route is to walk around the hall on the right-hand side. There\'s no path, so you\'ll be walking on the grass. Keep straight on so you\'re walking between the main field and the oval running track, and then you can see on the map there that the first aid centre is just above those two locations, and right below that little bridge.\n' +
+          '\n' +
+          'The cafe is a bit of a walk from the main entrance. It\'s in that long, narrow building, the one that\'s near the northern end of Eastgate Road, and sort of above the oval running track. If you\'re walking from the hall, you\'ll probably want to cut through that line of trees to get up there. Anyway, you can see that that building is divided into two, and you want the room with a view of the river, not of East Gate Road.\n' +
+          '\n' +
+          'Finally, when the kids go kayaking on the river, they\'ll all have to be wearing life jackets. The life jackets are kept in a small building near the boathouse. There\'s no actual road to the life jacket shed, but it\'s just a short walk from the boathouse. You can see it there, not far from Southgate Road. So make sure no one gets into a kayak without first getting themselves a life jacket.',
+        questions: [
+          {
+            text: "1 - Carpark № 3 _",
+            correctAnswer: "e",
+          },
+          {
+            text: "2 - Changing Rooms _",
+            correctAnswer: "g",
+          },
+          {
+            text: "3 - First-aid  Rooms _",
+            correctAnswer: "a",
+          },
+          {
+            text: "4 - Cafe _",
+            correctAnswer: "b",
+          },
+          {
+            text: "5 - Life jackets _",
+            correctAnswer: "f",
+          },
+        ]
+      },
+    ],
+  },
   WhatIsMyLevel: {
     mainDescription: "СПЭШЛ проверка уровня",
     tasks: [
@@ -3123,6 +3436,141 @@ const ListeningExerciseData = {
             correctAnswer: "false"
           },
 
+        ]
+      },
+
+    ]
+  },
+  checkersQuiz: {
+    mainDescription: "Checkers",
+    tasks: [
+      {
+        taskDescription: "Выбери правильный ответ",
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/checkers.jpeg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "What is another name for the game Checkers?",
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkiss",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+          {
+            text: "The game 'Checkers' uses a strategy from an old Egyptian game. What was the name of the old game from Egypt?",
+            options: {
+              A: "alquerque",
+              B: "pyramids",
+              C: "pharaoners",
+              D: "vincentikas",
+              E: "towers"
+            },
+            correctAnswer: "A",
+            explanation: "Egyptians played it 3,000 years ago!"
+          },
+          {
+            text: "Can you play checkers on a computer?",
+            options: {
+              A: "Only on a very powerful PC",
+              B: "Sure, you can",
+              C: "You cannot",
+              D: "Windows only"
+            },
+            correctAnswer: "B",
+            explanation: "First computer checkers game was coded and played in 1951"
+          },
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+          {
+            text: "How many squares are on a checkers board?",
+            options: {
+              A: "32",
+              B: "50",
+              C: "64",
+              D: "96",
+              E: "128",
+              F: "212",
+              G: "330"
+            },
+            correctAnswer: "C",
+            explanation: "Most boards have 64 squares. But Canadians use 144 squares."
+          },
+          {
+            text: "How does a normal piece usually move?",
+            options: {
+              A: "straight forward",
+              B: "diagonally forward",
+              C: "up and down",
+              D: "backwards",
+              E: "telekinesis"
+            },
+            correctAnswer: "B",
+            explanation: "It goes to the next empty square diagonally."
+          },
+          {
+            text: "How do you capture your opponent's piece?",
+            options: {
+              A: "Jump over it",
+              B: "Steal it and run",
+              C: "Touch it",
+              D: "Say 'check and mate'",
+              E: "kick your opponent with a board"
+            },
+            correctAnswer: "A",
+            explanation: "If you jump over your opponent's piece, you capture it!"
+          },
+          {
+            text: "What happens when your piece reaches the end of the board?",
+            options: {
+              A: "You win",
+              B: "Game stops",
+              C: "It becomes a king or a queen",
+              D: "It disappears",
+              E: "Vincent cries"
+            },
+            correctAnswer: "C",
+            explanation: "Kings can move backward too - they're more powerful!"
+          },
+          {
+            text: "When does the game end?",
+            options: {
+              A: "When Vincent starts to cry",
+              B: "When the timer stops",
+              C: "When one of players cannot move",
+              D: "When all pieces are black",
+              E: "When one of the players is dead"
+            },
+            correctAnswer: "C",
+            explanation: "A player who cannot move loses the match!"
+          },
+          {
+            text: "The final question: What do people NOT use when they play checkers on a professional level?",
+            options: {
+              A: "A chessboard",
+              B: "Brains",
+              C: "Pieces",
+              D: "Timers",
+              E: "Dice"
+            },
+            correctAnswer: "E",
+            explanation: "A player who cannot move loses the match!"
+          }
         ]
       },
 
