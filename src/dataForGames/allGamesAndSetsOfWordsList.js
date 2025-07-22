@@ -422,6 +422,15 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '3'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsBSimple/find-pairs-easy",
+      missionVisibleName: "Настоящее или прошлое?",
+      missionDescription: "Present or Past?",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
   ]
 
 export const AllGames =

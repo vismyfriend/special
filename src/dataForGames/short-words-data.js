@@ -1019,6 +1019,18 @@ whatISitVideoMission: [
     { id: 48, eng: "tell, told, told", ru: "рассказывать", hint: "/ тэл /" },
     { id: 49, eng: "think, thought, thought", ru: "думать", hint: "/ синк /" },
     { id: 50, eng: "write, wrote, written", ru: "писать", hint: "/ райт /" }
+  ],
+  irregularVerbsBSimple: [
+    { id: 1, eng: "break", ru: "ломать", hint: "/ брЭйк /" },
+    { id: 2, eng: "broke", ru: "сломал", hint: "/ брэйк /" },
+    { id: 3, eng: "broken", ru: "сломанный", hint: "/ броукэн /" },
+    { id: 4, eng: "blow", ru: "дуть", hint: "/ блоу /" },
+    { id: 5, eng: "blew", ru: "дул", hint: "/ блУ /" },
+    { id: 6, eng: "blown", ru: "надутый", hint: "/ блоун /" },
+    { id: 7, eng: "buy", ru: "покупать", hint: "/ бАй /" },
+    { id: 8, eng: "bought", ru: "купил", hint: "/ бот /" },
+    { id: 9, eng: "bring", ru: "приносить", hint: "/ брин /" },
+    { id: 10, eng: "brought", ru: "принёс", hint: "/ брот /" },
   ]
 }
 export default shortWordsData

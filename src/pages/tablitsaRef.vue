@@ -21,6 +21,9 @@
           ></td>
         </tr>
         </tbody>
+
+
+
         </table>
       </div>
 
@@ -29,7 +32,8 @@
           v-for="(stamp, index) in stamps"
           :key="index"
           class="stamp"
-          :class="stamp.type"
+          :class="[stamp.type, { 'blocked': isDelaying && stamp.type === 'confidential' }]"
+          @click="stamp.action()"
         >
           {{ stamp.text }}
         </div>
@@ -37,11 +41,102 @@
     </div>
 
     <div class="noir-overlay"></div>
+    <div
+      class="stopwatch-timer"
+      :class="{ 'freeze': !isRunning && showTimer }"
+      v-if="showTimer"
+      @click="stopTimer"
+    >
+      {{ minutes }}:{{ seconds }}<span class="milliseconds">.{{ milliseconds }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onUnmounted, computed } from 'vue';
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
+// Таймер
+const showTimer = ref(false);
+const timer = ref(null);
+const startTime = ref(0);
+const elapsedTime = ref(0);
+const isRunning = ref(false);
+
+const formatTime = (time) => {
+  const mins = Math.floor(time / 60000).toString().padStart(2, '0');
+  const secs = Math.floor((time % 60000) / 1000).toString().padStart(2, '0');
+  const ms = Math.floor((time % 1000) / 10).toString().padStart(2, '0');
+  return { mins, secs, ms };
+};
+
+const minutes = computed(() => formatTime(elapsedTime.value).mins);
+const seconds = computed(() => formatTime(elapsedTime.value).secs);
+const milliseconds = computed(() => formatTime(elapsedTime.value).ms);
+// Добавляем новый реф для контроля задержки
+const isDelaying = ref(false);
+
+const updateTimer = () => {
+  if (!isRunning.value) return;
+
+  elapsedTime.value = Date.now() - startTime.value;
+
+  if (elapsedTime.value >= 75500) {
+    stopTimer();
+    return;
+  }
+
+  timer.value = requestAnimationFrame(updateTimer);
+};
+
+const startTimer = () => {
+  if (isRunning.value || isDelaying.value) return; // Не запускаем, если уже работает или в задержке
+
+  showTimer.value = true;
+  isRunning.value = true;
+  startTime.value = Date.now();
+  elapsedTime.value = 0;
+  updateTimer();
+};
+
+
+const stopTimer = () => {
+  if (isDelaying.value) return; // Если уже в процессе задержки - игнорируем
+
+  isRunning.value = false;
+  isDelaying.value = true; // Включаем флаг задержки
+
+  if (timer.value) {
+    cancelAnimationFrame(timer.value);
+    timer.value = null;
+  }
+
+  setTimeout(() => {
+    showTimer.value = false;
+    elapsedTime.value = 0;
+    isDelaying.value = false; // Сбрасываем флаг после завершения
+  }, 3000);
+};
+
+// Запуск по клику на CONFIDENTIAL
+
+const toggleConfidential = () => {
+  if (isDelaying.value) return; // Игнорируем нажатия во время задержки
+
+  if (!showTimer.value) {
+    startTimer();
+  } else {
+    stopTimer();
+  }
+};
+
+// Очистка при размонтировании
+onUnmounted(() => {
+  if (timer.value) cancelAnimationFrame(timer.value);
+});
+
 
 // Конфигурация таблицы
 const caseId = ref('.');
@@ -110,7 +205,7 @@ const tableConfig = ref({
       cells: [
         {
           content: 'hints',
-          classes: 'suspect',
+          classes: 'evidence-tag green',
 
         },
         {
@@ -141,13 +236,11 @@ const tableConfig = ref({
         {
           content: 'run<u>s</u>',
           classes: 'verb',
-          isBlurred: true // Начальное состояние - размыто
 
         },
         {
           content: 'run',
           classes: 'verb-alias',
-          isBlurred: true // Начальное состояние - размыто
 
         }
       ]
@@ -158,13 +251,11 @@ const tableConfig = ref({
         {
           content: 'kiss<u>es</u>',
           classes: 'verb',
-          isBlurred: true // Начальное состояние - размыто
 
         },
         {
           content: 'kiss',
           classes: 'verb-alias',
-          isBlurred: true // Начальное состояние - размыто
 
         }
       ]
@@ -175,13 +266,11 @@ const tableConfig = ref({
         {
           content: 'watch<u>es</u>',
           classes: 'verb',
-          isBlurred: true // Начальное состояние - размыто
 
         },
         {
           content: 'watch',
           classes: 'verb-alias',
-          isBlurred: true // Начальное состояние - размыто
 
         }
       ]
@@ -190,7 +279,7 @@ const tableConfig = ref({
     {
       cells: [
         {
-          content: 'Remember',
+          content: 'Remem <br>-ber',
           classes: ['notes-label','vertical-text']  // Вертикальный текст
         },
         {
@@ -202,7 +291,7 @@ const tableConfig = ref({
             <div class="note-line">&nbsp;&nbsp;- He doesn't write </div>
             <div class="note-line">&nbsp;&nbsp;+ Does he write? </div>
             <div class="note-line">&nbsp;o? What does he write? </div>
-            <div class="note-line">• Subject-verb agreement critical</div>
+            <div class="note-line"> \u00A0</div>
           `,    // Многострочное содержимое с HTML-разметкой
           classes: 'notes',
           isBlurred: true, // Начальное состояние - размыто
@@ -213,7 +302,7 @@ const tableConfig = ref({
     {
       cells: [
         {
-          content: 'I.V.',
+          content: 'Неви- <br> димки',
           classes: 'evidence-tag green'
           // rowspan и colspan не указаны - значит = 1 (занимает одну ячейку)
         },
@@ -250,8 +339,18 @@ const toggleBlur = (rowIndex, cellIndex) => {
   }
 };
 const stamps = ref([
-  { text: 'APPROVED!', type: 'approved' },
-  { text: 'CONFIDENTIAL', type: 'confidential' }
+  {
+    text: 'OК!',
+    type: 'approved',
+    action: () => {
+      router.push('/see-all-sets-of-words/');
+    }
+  },
+  {
+    text: 'НАДО ВЫУЧИТЬ!',
+    type: 'confidential',
+    action: toggleConfidential
+  }
 ]);
 
 // Метод для обновления конфигурации
@@ -351,7 +450,7 @@ const updateTable = (newConfig) => {
   line-height: 20px;
 
   td {
-    padding: 10px;
+    padding: 6px;
     border: 1px solid #333;
     position: relative;
 
@@ -396,11 +495,18 @@ const updateTable = (newConfig) => {
     background: #1e1e1e;
     color: #b8860b;
     font-weight: bold;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
+    //writing-mode: vertical-rl;
+    //text-orientation: upright;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-align: center;
+  }
+  .vertical-text {
+    //writing-mode: vertical-rl; /* вертикальное написание справа налево */
+    //text-orientation: upright;
+    //white-space: nowrap;
+
+
   }
 
   .verb {
@@ -421,11 +527,7 @@ const updateTable = (newConfig) => {
     user-select: none;
     transition: filter 0.2s ease;
   }
-  .vertical-text {
-    writing-mode: vertical-rl; /* вертикальное написание справа налево */
-    text-orientation: upright;
-    white-space: nowrap;
-  }
+
   .notes-label {
     background: #1e1e1e;
     color: #b8860b;
@@ -558,7 +660,7 @@ const updateTable = (newConfig) => {
     min-width: 250px; /* Минимальная ширина для сохранения структуры */
 
     td {
-      padding: 6px 5px;
+      padding: 5px 4px;
 
       &.evidence-tag,
       &.notes-label {
@@ -586,6 +688,66 @@ const updateTable = (newConfig) => {
       padding: 3px 10px;
       font-size: 12px;
     }
+  }
+}
+
+.stopwatch-timer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  font-family: 'Courier New', monospace;
+  color: #FFD700;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border: 2px solid #37ff00;
+  border-radius: 5px;
+  z-index: 1000;
+  cursor: pointer;
+  user-select: none;
+  animation: pulse 1.5s infinite;
+}
+
+.stopwatch-timer .milliseconds {
+  font-size: 1.5rem;
+  color: #10e3ff;
+}
+/* Добавляем анимацию для "заблокированного" состояния */
+.stamp.confidential:active {
+  transform: rotate(5deg) scale(0.95);
+  transition: transform 0.1s;
+}
+
+.stamp.confidential.blocked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.stopwatch-timer.freeze {
+  animation: none;
+  border-color: #10e3ff;
+  color: #10e3ff;
+  transform: translateX(-50%) scale(1.05);
+}
+
+@keyframes freeze-pulse {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.9; transform: translateX(-50%) scale(1.05); }
+}
+/* Для мобильных */
+@media (max-width: 768px) {
+  .stopwatch-timer {
+    font-size: 1.8rem;
+    padding: 8px 16px;
+    bottom: 15px;
+  }
+
+  .stopwatch-timer .milliseconds {
+    font-size: 1rem;
   }
 }
 </style>

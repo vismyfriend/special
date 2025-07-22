@@ -93,7 +93,7 @@ const menuData = {
         { name: 'Study', url: '' },
         { name: 'Enjoy', url: '' },
         { name: 'Business', url: '' },
-        { name: 'English', url: '' }
+        { name: 'English', url: '' },
       ]
     },
     {
@@ -101,6 +101,7 @@ const menuData = {
       subItems: [
         { name: 'Tap-clicker', url: '' },
         { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
+        { name: 'Guess the year', url: 'https://www.chronophoto.app/game.html' },
         { name: 'Platformer 2D', url: '' }
       ]
     },
@@ -116,6 +117,12 @@ const menuData = {
         { name: 'B1', url: '' },
         { name: 'A2', url: '' },
         { name: 'A1', url: '' },
+      ]
+    },
+    {
+      title: 'Links:',
+      subItems: [
+        { name: 'Guess the year', url: 'https://www.chronophoto.app/game.html' },
       ]
     },
     {
@@ -155,6 +162,7 @@ const menuData = {
       subItems: [
         { name: 'Tap-clicker', url: '' },
         { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
+        { name: 'Guess the year', url: 'https://www.chronophoto.app/game.html' },
         { name: 'Platformer 2D', url: '' }
       ]
     },
@@ -170,6 +178,12 @@ const menuData = {
         { name: 'B1', url: '' },
         { name: 'A2', url: '' },
         { name: 'A1', url: '' },
+      ]
+    },
+    {
+      title: 'Ссылки:',
+      subItems: [
+        { name: 'Guess the year', url: 'https://www.chronophoto.app/game.html' },
       ]
     },
     {

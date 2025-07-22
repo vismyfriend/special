@@ -760,6 +760,25 @@ const ListeningExerciseData = {
     ],
   },
 
+  directionsA2: {
+    mainDescription: "Послушай и выбери правильный ответ",
+    tasks: [
+      {
+        taskDescription: "Drop down",
+        taskID: "drop_down_text",
+        usefulWords: 'The bookstore - книжный магазин (USA), The bookshop - книжный магазин (UK)',
+        taskPicture: new URL("../assets/images/directionsA2.png", import.meta.url).href,
+        audio: new URL('../assets/audio/whereisthebookstore.mp3', import.meta.url).href,
+        questions: [
+          {
+            text: "The bookstore is Hello friends! Let me share (for, to, with*) you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and every day I work (in, at*, under, for, between) my computer.\n" +
+              '<-->\n' +
+              "I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+          },
+        ]
+      },
+    ],
+  },
 
   ieltsListening1: {
     mainDescription: "IELTS listening",
