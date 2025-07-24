@@ -1877,6 +1877,1642 @@ const ListeningExerciseData = {
       },
     ]
   },
+
+
+
+  grid_table_IrregularVerbs_b_ru: {
+    mainDescription: "Irregular Verbs 'B'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["break - broke - broken","","ломать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["be - was/were - been", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "быть"],
+                almostCorrect: {
+                  2: ["являться", "находиться", "существовать"]
+                }
+              }
+            },
+            {
+              cells: ["beat - beat - beaten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "бить"],
+                almostCorrect: {
+                  2: ["побить", "побеждать", "избивать", "победить","избить"]
+                }
+              }
+            },
+            {
+              cells: ["become - became - become", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "становиться"],
+                almostCorrect: {
+                  2: ["превращаться", "оказываться", "сделаться", "стать"]
+                }
+              }
+            },
+            {
+              cells: ["begin - began - begun", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "начинать"],
+                almostCorrect: {
+                  2: ["начать", "приступать", "запускать"]
+                }
+              }
+            },
+            {
+              cells: ["build - built - built", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "строить"],
+                almostCorrect: {
+                  2: ["построить", "создавать", "возводить"]
+                }
+              }
+            },
+            {
+              cells: ["bite - bit - bit", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "кусать"],
+                almostCorrect: {
+                  2: ["покусать", "укусить", "откусить","прикусить"]
+                }
+              }
+            },
+            {
+              cells: ["blow - blew - blown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "дуть"],
+                almostCorrect: {
+                  2: ["сдуть", "задувать", "развевать", "взрывать"]
+                }
+              }
+            },
+            {
+              cells: ["bring - brought - brought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приносить"],
+                almostCorrect: {
+                  2: ["привести", "доставлять", "привозить"]
+                }
+              }
+            },
+            {
+              cells: ["burn - burnt - burnt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "гореть"],
+                almostCorrect: {
+                  2: ["жечь", "обжигать", "сжигать"]
+                }
+              }
+            },
+            {
+              cells: ["buy - bought - bought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "покупать"],
+                almostCorrect: {
+                  2: ["купить", "приобретать", "закупать"]
+                }
+              }
+            }
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_b_gaps: {
+    mainDescription: "Irregular Verbs 'B'",
+    tasks: [
+      {
+        taskDescription: "заполни таблицу",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["обычно V1","в прошлом V2","какой V3", "перевод"],
+          rows: [
+            {
+              cells: ["burn","","burnt","гореть"],
+              editable: [false, true, false,false],
+              correctAnswers: {
+                cells: [null,"burnt", null, null],
+                almostCorrect: {
+                  1: ["burned"]
+                }
+              }
+            },
+            {
+              cells: ["","was/were","been","быть, являться"],
+              editable: [true, false, false, false,],
+              correctAnswers: {
+                cells: ["be", null, null, null],
+                almostCorrect: {
+                  0: ["to be"]
+                }
+              }
+            },
+            {
+              cells: ["beat", "beat", "", "бить, побеждать"],
+              editable: [false, false, true, false],
+              correctAnswers: {
+                cells: [null, null, "beaten", null],
+              }
+            },
+            {
+              cells: ["become", "became", "", "становиться"],
+              editable: [false, false, true, false],
+              correctAnswers: {
+                cells: [null, null, "become", null],
+              }
+            },
+            {
+              cells: ["begin", "", "", "начинать"],
+              editable: [false, true, true, false,],
+              correctAnswers: {
+                cells: [null, "began", "begun", null],
+              }
+            },
+            {
+              cells: ["", "broke", "broken", "ломать"],
+              editable: [ true, false, false, false],
+              correctAnswers: {
+                cells: ["break", null, null, null],
+              }
+            },
+            {
+              cells: ["bring", "", "brought", ""],
+              editable: [false, true, false, true],
+              correctAnswers: {
+                cells: [null, "brought", null, "приносить"],
+                almostCorrect: {
+                  3: ["привозить", "доставлять"]
+                }
+              }
+            },
+            {
+              cells: ["build", "", "", "строить"],
+              editable: [false, true, true, false],
+              correctAnswers: {
+                cells: [null, "built", "built", null],
+                almostCorrect: {}
+              }
+            },
+            {
+              cells: ["buy", "bought", "", ""],
+              editable: [false, false, true, true],
+              correctAnswers: {
+                cells: [null, null, "bought", "покупать"],
+                almostCorrect: {
+                  3: ["приобретать", "купить"]
+                }
+              }
+            },
+            {
+              cells: ["bite", "", "bit", ""],
+              editable: [false, true, false, true],
+              correctAnswers: {
+                cells: [null, "bit", null, "кусать"],
+                almostCorrect: {
+                  3: ["укусить", "грызть"]
+                }
+              }
+            }
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_c_ru: {
+    mainDescription: "Irregular Verbs 'С'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["come - came - come", "", "приходить"],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приходить"],
+                almostCorrect: {
+                  2: ["прийти", "подходить", "наступать"]
+                }
+              }
+            },
+            {
+              cells: ["choose - chose - chosen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "выбирать"],
+                almostCorrect: {
+                  2: ["выбрать", "избирать", "предпочитать"]
+                }
+              }
+            },
+            {
+              cells: ["catch - caught - caught", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ловить"],
+                almostCorrect: {
+                  2: ["поймать", "схватить", "перехватить"]
+                }
+              }
+            },
+            {
+              cells: ["creep - crept - crept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ползать"],
+                almostCorrect: {
+                  2: ["красться", "пресмыкаться", "медленно двигаться"]
+                }
+              }
+            },
+            {
+              cells: ["cost - cost - cost", "", "стоить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["cut - cut - cut", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "резать"],
+                almostCorrect: {
+                  2: ["разрезать", "отрезать", "порезать"]
+                }
+              }
+            },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_c_gaps: {
+    mainDescription: "Irregular Verbs 'C'",
+    tasks: [
+      {
+        taskDescription: "заполни таблицу",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["обычно V1","в прошлом V2","какой V3", "перевод"],
+          rows: [
+            {
+              cells: ["come","","come","приходить"],
+              editable: [false, true, false, false],
+              correctAnswers: {
+                cells: [null,"came", null, null],
+                almostCorrect: {}
+              }
+            },
+            {
+              cells: ["","chose","chosen","выбирать"],
+              editable: [true, false, false, false],
+              correctAnswers: {
+                cells: ["choose", null, null, null],
+                almostCorrect: {}
+              }
+            },
+            {
+              cells: ["catch", "", "", "ловить"],
+              editable: [false, true, true, false],
+              correctAnswers: {
+                cells: [null, "caught", "caught", null],
+                almostCorrect: {
+                  1: ["catched"],
+                  2: ["catched"]
+                }
+              }
+            },
+            {
+              cells: ["creep", "crept", "", "ползать"],
+              editable: [false, false, true, false],
+              correctAnswers: {
+                cells: [null, null, "crept", null],
+              }
+            },
+            {
+              cells: ["cost", "", "", "стоить"],
+              editable: [false, true, true, false],
+              correctAnswers: {
+                cells: [null, "cost", "cost", null],
+              }
+            },
+            {
+              cells: ["", "cut", "cut", ""],
+              editable: [true, false, false, true],
+              correctAnswers: {
+                cells: ["cut", null, null, "резать"],
+                almostCorrect: {
+                  3: ["разрезать","порезать"]
+                }
+              }
+            },
+          ]
+        }
+      }
+    ]
+  },
+
+  grid_table_IrregularVerbs_X_ru: {
+    mainDescription: "Irregular Verbs '?'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["break - broke - broken","","ломать"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+    ]
+  },
+
+  grid_table_IrregularVerbs_all_ru: {
+    mainDescription: "Irregular Verbs 'All'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "", "(что делать?)"],
+          rows: [
+            {
+              cells: ["break - broke - broken","","ломать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["be - was/were - been", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "быть"],
+                almostCorrect: {
+                  2: ["являться", "находиться", "существовать"]
+                }
+              }
+            },
+            {
+              cells: ["beat - beat - beaten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "бить"],
+                almostCorrect: {
+                  2: ["побить", "побеждать", "избивать", "победить","избить"]
+                }
+              }
+            },
+            {
+              cells: ["become - became - become", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "становиться"],
+                almostCorrect: {
+                  2: ["превращаться", "оказываться", "сделаться", "стать"]
+                }
+              }
+            },
+            {
+              cells: ["begin - began - begun", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "начинать"],
+                almostCorrect: {
+                  2: ["начать", "приступать", "запускать"]
+                }
+              }
+            },
+            {
+              cells: ["build - built - built", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "строить"],
+                almostCorrect: {
+                  2: ["построить", "создавать", "возводить"]
+                }
+              }
+            },
+            {
+              cells: ["bite - bit - bit", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "кусать"],
+                almostCorrect: {
+                  2: ["покусать", "укусить", "откусить","прикусить"]
+                }
+              }
+            },
+            {
+              cells: ["blow - blew - blown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "дуть"],
+                almostCorrect: {
+                  2: ["сдуть", "задувать", "развевать", "взрывать"]
+                }
+              }
+            },
+            {
+              cells: ["bring - brought - brought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приносить"],
+                almostCorrect: {
+                  2: ["привести", "доставлять", "привозить"]
+                }
+              }
+            },
+            {
+              cells: ["burn - burnt - burnt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "гореть"],
+                almostCorrect: {
+                  2: ["жечь", "обжигать", "сжигать"]
+                }
+              }
+            },
+            {
+              cells: ["buy - bought - bought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "покупать"],
+                almostCorrect: {
+                  2: ["купить", "приобретать", "закупать"]
+                }
+              }
+            },
+            {
+              cells: ["come - came - come", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приходить"],
+                almostCorrect: {
+                  2: ["прийти", "подходить", "наступать"]
+                }
+              }
+            },
+            {
+              cells: ["choose - chose - chosen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "выбирать"],
+                almostCorrect: {
+                  2: ["выбрать", "избирать", "предпочитать"]
+                }
+              }
+            },
+            {
+              cells: ["catch - caught - caught", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ловить"],
+                almostCorrect: {
+                  2: ["поймать", "схватить", "перехватить"]
+                }
+              }
+            },
+            {
+              cells: ["creep - crept - crept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ползать"],
+                almostCorrect: {
+                  2: ["красться", "пресмыкаться", "медленно двигаться"]
+                }
+              }
+            },
+            {
+              cells: ["cost - cost - cost", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "стоить"],
+                almostCorrect: {
+                  2: ["обходиться", "оцениваться", "иметь цену"]
+                }
+              }
+            },
+            {
+              cells: ["cut - cut - cut", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "резать"],
+                almostCorrect: {
+                  2: ["разрезать", "отрезать", "порезать"]
+                }
+              }
+            },
+            {
+              cells: ["deal - dealt - dealt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "иметь дело"],
+                almostCorrect: {
+                  2: ["раздавать", "иметь дела", "договариваться"]
+                }
+              }
+            },
+            {
+              cells: ["dig - dug - dug", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "копать"],
+                almostCorrect: {
+                  2: ["выкопать", "рыть", "закапывать"]
+                }
+              }
+            },
+            {
+              cells: ["do - did - done", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "делать"],
+                almostCorrect: {
+                  2: ["совершать", "выполнять", "изготавливать", "сделать"]
+                }
+              }
+            },
+            {
+              cells: ["drive - drove - driven", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "водить"],
+                almostCorrect: {
+                  2: ["ехать", "управлять", "гнать"]
+                }
+              }
+            },
+            {
+              cells: ["draw - drew - drawn", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "рисовать"],
+                almostCorrect: {
+                  2: ["чертить", "тащить", "извлекать"]
+                }
+              }
+            },
+            {
+              cells: ["drink - drank - drunk", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "пить"],
+                almostCorrect: {
+                  2: ["выпивать", "поглощать", "употреблять","выпить"]
+                }
+              }
+            },
+            {
+              cells: ["eat - ate - eaten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "есть"],
+                almostCorrect: {
+                  2: ["кушать", "поедать", "съедать"]
+                }
+              }
+            },
+            {
+              cells: ["fall - fell - fallen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "падать"],
+                almostCorrect: {
+                  2: ["упасть", "понижаться", "снижаться"]
+                }
+              }
+            },
+            {
+              cells: ["feed - fed - fed", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "кормить"],
+                almostCorrect: {
+                  2: ["прокормить", "питать", "давать корм"]
+                }
+              }
+            },
+            {
+              cells: ["feel - felt - felt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "чувствовать"],
+                almostCorrect: {
+                  2: ["ощущать", "испытывать", "трогать"]
+                }
+              }
+            },
+            {
+              cells: ["fight - fought - fought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "сражаться"],
+                almostCorrect: {
+                  2: ["бороться", "драться", "воевать", "спорить"]
+                }
+              }
+            },
+            {
+              cells: ["find - found - found", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "находить"],
+                almostCorrect: {
+                  2: ["обнаруживать", "отыскать", "выяснять", "искать"]
+                }
+              }
+            },
+            {
+              cells: ["fly - flew - flown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "летать"],
+                almostCorrect: {
+                  2: ["лететь", "парить", "пилотировать"]
+                }
+              }
+            },
+            {
+              cells: ["forbid - forbade - forbidden", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "запрещать"],
+                almostCorrect: {
+                  2: ["воспрещать", "не разрешать"]
+                }
+              }
+            },
+            {
+              cells: ["forget - forgot - forgotten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "забывать"],
+                almostCorrect: {
+                  2: ["забыть", "упускать из виду"]
+                }
+              }
+            },
+            {
+              cells: ["forgive - forgave - forgiven", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "прощать"],
+                almostCorrect: {
+                  2: ["извинять", "отпускать грехи"]
+                }
+              }
+            },
+            {
+              cells: ["freeze - froze - frozen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "замерзать"],
+                almostCorrect: {
+                  2: ["замораживать", "леденеть", "останавливаться", "не двигаться"]
+                }
+              }
+            },
+            {
+              cells: ["grow - grew - grown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "расти"],
+                almostCorrect: {
+                  2: ["вырастать", "выращивать", "увеличиваться"]
+                }
+              }
+            },
+            {
+              cells: ["get - got - got/gotten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "получать"],
+                almostCorrect: {
+                  2: ["добывать", "приобретать", "доставать"]
+                }
+              }
+            },
+            {
+              cells: ["give - gave - given", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "давать"],
+                almostCorrect: {
+                  2: ["подавать", "вручать", "жертвовать"]
+                }
+              }
+            },
+            {
+              cells: ["go - went - gone", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "идти"],
+                almostCorrect: {
+                  2: ["ходить", "ехать", "отправляться"]
+                }
+              }
+            },
+            {
+              cells: ["have - had - had", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "иметь"],
+                almostCorrect: {
+                  2: ["обладать", "владеть", "испытывать"]
+                }
+              }
+            },
+            {
+              cells: ["hear - heard - heard", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "слышать"],
+                almostCorrect: {
+                  2: ["услышать", "слушать", "узнавать"]
+                }
+              }
+            },
+            {
+              cells: ["hide - hid - hidden", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "прятать"],
+                almostCorrect: {
+                  2: ["скрывать", "затаиться", "утаивать"]
+                }
+              }
+            },
+            {
+              cells: ["hit - hit - hit", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ударять"],
+                almostCorrect: {
+                  2: ["бить", "попадать", "поражать"]
+                }
+              }
+            },
+            {
+              cells: ["hurt - hurt - hurt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "причинять боль"],
+                almostCorrect: {
+                  2: ["ранить", "обижать", "повреждать"]
+                }
+              }
+            },
+            {
+              cells: ["hold - held - held", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "держать"],
+                almostCorrect: {
+                  2: ["удерживать", "проводить", "содержать"]
+                }
+              }
+            },
+            {
+              cells: ["keep - kept - kept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "хранить"],
+                almostCorrect: {
+                  2: ["сохранять", "продолжать", "содержать"]
+                }
+              }
+            },
+            {
+              cells: ["know - knew - known", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "знать"],
+                almostCorrect: {
+                  2: ["узнавать", "быть знакомым", "разбираться"]
+                }
+              }
+            },
+            {
+              cells: ["learn - learnt - learnt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "учить"],
+                almostCorrect: {
+                  2: ["изучать", "узнавать", "осваивать", "учиться", "научить", "научиться"]
+                }
+              }
+            },
+            {
+              cells: ["lead - led - led", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "вести"],
+                almostCorrect: {
+                  2: ["руководить", "возглавлять", "приводить"]
+                }
+              }
+            },
+            {
+              cells: ["leave - left - left", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "оставлять"],
+                almostCorrect: {
+                  2: ["покидать", "уходить", "бросать"]
+                }
+              }
+            },
+            {
+              cells: ["lend - lent - lent", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "давать в долг"],
+                almostCorrect: {
+                  2: ["давать взаймы", "ссужать", "одалживать", "одолжить"]
+                }
+              }
+            },
+            {
+              cells: ["let - let - let", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "позволять"],
+                almostCorrect: {
+                  2: ["разрешать", "давать возможность", "сдавать внаём"]
+                }
+              }
+            },
+            {
+              cells: ["lose - lost - lost", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "терять"],
+                almostCorrect: {
+                  2: ["проигрывать", "утрачивать", "лишаться", "потерять", "проиграть"]
+                }
+              }
+            },
+            {
+              cells: ["lie - lay - lain", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "лежать"],
+                almostCorrect: {
+                  2: ["находиться", "простираться", "покоиться"]
+                }
+              }
+            },
+            {
+              cells: ["tell a lie - told a lie = lied", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "лгать"],
+                almostCorrect: {
+                  2: ["обманывать", "говорить неправду", "говорить ложь"]
+                }
+              }
+            },
+            {
+              cells: ["make - made - made", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "делать"],
+                almostCorrect: {
+                  2: ["изготавливать", "создавать", "заставлять"]
+                }
+              }
+            },
+            {
+              cells: ["mean - meant - meant", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "значить"],
+                almostCorrect: {
+                  2: ["иметь в виду", "подразумевать", "означать", "обозначать"]
+                }
+              }
+            },
+            {
+              cells: ["meet - met - met", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "встречать"],
+                almostCorrect: {
+                  2: ["встретиться", "знакомиться", "удовлетворять","встречаться"]
+                }
+              }
+            },
+            {
+              cells: ["pay - paid - paid", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "платить"],
+                almostCorrect: {
+                  2: ["оплачивать", "выплачивать", "окупаться", "оплатить", "расплатиться"]
+                }
+              }
+            },
+            {
+              cells: ["put - put - put", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "класть"],
+                almostCorrect: {
+                  2: ["помещать", "ставить", "вкладывать", "ложить", "накладывать", "положить"]
+                }
+              }
+            },
+            {
+              cells: ["read - read - read", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "читать"],
+                almostCorrect: {
+                  2: ["прочитывать", "изучать", "воспринимать"]
+                }
+              }
+            },
+            {
+              cells: ["ride - rode - ridden", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ездить верхом"],
+                almostCorrect: {
+                  2: ["кататься", "верхом", "передвигаться", "ездить"]
+                }
+              }
+            },
+            {
+              cells: ["ring - rang - rung", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "звонить"],
+                almostCorrect: {
+                  2: ["звенеть", "окружать", "созванивать"]
+                }
+              }
+            },
+            {
+              cells: ["run - ran - run", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "бежать"],
+                almostCorrect: {
+                  2: ["бегать", "управлять", "протекать"]
+                }
+              }
+            },
+            {
+              cells: ["rise - rose - risen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "подниматься"],
+                almostCorrect: {
+                  2: ["вставать", "возрастать", "восходить"]
+                }
+              }
+            },
+            {
+              cells: ["see - saw - seen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "видеть"],
+                almostCorrect: {
+                  2: ["увидеть", "смотреть", "понимать"]
+                }
+              }
+            },
+            {
+              cells: ["sell - sold - sold", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "продавать"],
+                almostCorrect: {
+                  2: ["реализовывать", "сбывать", "торговать"]
+                }
+              }
+            },
+            {
+              cells: ["send - sent - sent", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "отправлять"],
+                almostCorrect: {
+                  2: ["посылать", "пересылать", "направлять"]
+                }
+              }
+            },
+            {
+              cells: ["shake - shook - shaken", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "трясти"],
+                almostCorrect: {
+                  2: ["встряхивать", "сотрясать", "пожимать"]
+                }
+              }
+            },
+            {
+              cells: ["shoot - shot - shot", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "стрелять"],
+                almostCorrect: {
+                  2: ["застрелить", "снимать", "бросать"]
+                }
+              }
+            },
+            {
+              cells: ["shut - shut - shut", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "закрывать"],
+                almostCorrect: {
+                  2: ["затворять", "запирать", "закрыться"]
+                }
+              }
+            },
+            {
+              cells: ["sing - sang - sung", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "петь"],
+                almostCorrect: {
+                  2: ["напевать", "воспевать", "свистеть"]
+                }
+              }
+            },
+            {
+              cells: ["sit - sat - sat", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "сидеть"],
+                almostCorrect: {
+                  2: ["садиться", "восседать", "размещаться"]
+                }
+              }
+            },
+            {
+              cells: ["sink - sank - sunk", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "затонуть"],
+                almostCorrect: {
+                  2: ["потонуть", "утонуть", "уйти на дно", "тонуть",]
+                }
+              }
+            },
+            {
+              cells: ["drown - drowned - drowned", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "тонуть"],
+                almostCorrect: {
+                  2: ["потонуть", "опускаться", "оседать", "утонуть",]
+                }
+              }
+            },
+            {
+              cells: ["sleep - slept - slept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "спать"],
+                almostCorrect: {
+                  2: ["засыпать", "ночевать", "дремать"]
+                }
+              }
+            },
+            {
+              cells: ["slide - slid - slid", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "скользить"],
+                almostCorrect: {
+                  2: ["съезжать", "плавно двигаться", "проскальзывать"]
+                }
+              }
+            },
+            {
+              cells: ["spend - spent - spent", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "тратить"],
+                almostCorrect: {
+                  2: ["проводить", "расходовать", "истощать", "проводить",]
+                }
+              }
+            },
+            {
+              cells: ["spit - spat - spat", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "плевать"],
+                almostCorrect: {
+                  2: ["выплевывать", "шипеть", "брызгать", "плеваться", "плюнуть",]
+                }
+              }
+            },
+            {
+              cells: ["stand - stood - stood", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "стоять"],
+                almostCorrect: {
+                  2: ["выдерживать", "находиться", "поддерживать"]
+                }
+              }
+            },
+            {
+              cells: ["steal - stole - stolen", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "красть"],
+                almostCorrect: {
+                  2: ["воровать", "похищать", "уводить", "украсть",]
+                }
+              }
+            },
+            {
+              cells: ["stick - stuck - stuck", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "застрять"],
+                almostCorrect: {
+                  2: ["втыкать", "застревать", "прилипать", "приклеивать",]
+                }
+              }
+            },
+            {
+              cells: ["stink - stank - stunk", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "вонять"],
+                almostCorrect: {
+                  2: ["смердеть", "пахнуть", "быть неприятным"]
+                }
+              }
+            },
+            {
+              cells: ["strike - struck - struck", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ударять"],
+                almostCorrect: {
+                  2: ["бастовать", "поражать", "наносить удар", "выбивать"]
+                }
+              }
+            },
+            {
+              cells: ["swear - swore - sworn", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "клясться"],
+                almostCorrect: {
+                  2: ["ругаться", "давать присягу", "божиться", "материться", "клянуться",]
+                }
+              }
+            },
+            {
+              cells: ["sweep - swept - swept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "подметать"],
+                almostCorrect: {
+                  2: ["сметать", "проноситься", "чистить", "мести",]
+                }
+              }
+            },
+            {
+              cells: ["swim - swam - swum", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "плавать"],
+                almostCorrect: {
+                  2: ["плыть", "купаться", "скользить по воде"]
+                }
+              }
+            },
+            {
+              cells: ["swing - swung - swung", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "качаться"],
+                almostCorrect: {
+                  2: ["размахивать", "вращаться", "меняться"]
+                }
+              }
+            },
+            {
+              cells: ["speak - spoke - spoken", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "разговаривать"],
+                almostCorrect: {
+                  2: ["говорить", "выступать", "изъясняться"]
+                }
+              }
+            },
+            // Глаголы на T
+            {
+              cells: ["tell - told - told", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "рассказывать"],
+                almostCorrect: {
+                  2: ["говорить", "сообщать", "различать","рассказать"]
+                }
+              }
+            },
+            {
+              cells: ["take - took - taken", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "брать"],
+                almostCorrect: {
+                  2: ["взять", "занимать", "требовать"]
+                }
+              }
+            },
+            {
+              cells: ["teach - taught - taught", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "преподавать"],
+                almostCorrect: {
+                  2: ["учить", "обучать", "наставлять"]
+                }
+              }
+            },
+            {
+              cells: ["tear - tore - torn", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "рвать"],
+                almostCorrect: {
+                  2: ["разрывать", "отрывать", "срывать", "вырывать"]
+                }
+              }
+            },
+            {
+              cells: ["think - thought - thought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "думать"],
+                almostCorrect: {
+                  2: ["полагать", "размышлять", "считать"]
+                }
+              }
+            },
+            {
+              cells: ["throw - threw - thrown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "бросать"],
+                almostCorrect: {
+                  2: ["кидать", "метать", "сбрасывать"]
+                }
+              }
+            },
+
+            // Глаголы на U
+            {
+              cells: ["understand - understood - understood", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "понимать"],
+                almostCorrect: {
+                  2: ["осознавать", "разбираться", "уяснять", "понять"]
+                }
+              }
+            },
+
+            // Глаголы на W
+            {
+              cells: ["wake up - woke up - woken up", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "просыпаться"],
+                almostCorrect: {
+                  2: ["будить", "пробуждаться", "вставать"]
+                }
+              }
+            },
+            {
+              cells: ["wear - wore - worn", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "носить"],
+                almostCorrect: {
+                  2: ["одевать", "изнашивать", "иметь на себе", "надевать", "надеть"]
+                }
+              }
+            },
+            {
+              cells: ["write - wrote - written", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "писать"],
+                almostCorrect: {
+                  2: ["записывать", "сочинять", "выводить", "написать"]
+                }
+              }
+            },
+            {
+              cells: ["weep - wept - wept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "хныкать"],
+                almostCorrect: {
+                  2: ["рыдать", "всхлипывать", "скорбеть", "плакать", "ныть"]
+                }
+              }
+            },
+            {
+              cells: ["win - won - won", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "побеждать"],
+                almostCorrect: {
+                  2: ["выигрывать", "одерживать победу", "завоёвывать"]
+                }
+              }
+            },
+
+            // Глаголы с приставками
+            {
+              cells: ["misunderstand - misunderstood - misunderstood", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "неправильно понять"],
+                almostCorrect: {
+                  2: ["неверно истолковать", "ошибаться", "недопонять", "неправильно понимать"]
+                }
+              }
+            },
+            {
+              cells: ["misspell - misspelt - misspelt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "неправильно написать"],
+                almostCorrect: {
+                  2: ["искажать написание", "делать орф. ошибки", "писать с ошибками", "неправильно писать"]
+                }
+              }
+            },
+            {
+              cells: ["mistake - mistook - mistaken", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ошибаться"],
+                almostCorrect: {
+                  2: ["перепутать", "неправильно понять", "принять за другое", "ошибиться", "сделать ошибку", "совершить ошибку"]
+                }
+              }
+            },
+            {
+              cells: ["mishear - misheard - misheard", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "ослышаться"],
+                almostCorrect: {
+                  2: ["неправильно услышать", "перепутать на слух"]
+                }
+              }
+            },
+            {
+              cells: ["oversleep - overslept - overslept", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "проспать"],
+                almostCorrect: {
+                  2: ["проснуться слишком поздно", "заспаться", "переспать"]
+                }
+              }
+            },
+            {
+              cells: ["overeat - overate - overeaten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "переедать"],
+                almostCorrect: {
+                  2: ["объедаться", "есть слишком много", "переесть"]
+                }
+              }
+            },
+            {
+              cells: ["overpay - overpaid - overpaid", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "переплачивать"],
+                almostCorrect: {
+                  2: ["платить слишком много", "оплачивать сверх меры","переплатить"]
+                }
+              }
+            },
+            //остальные случаи can shall may will bleed
+            {
+              cells: ["can - could - - -", "", "могу, мог"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["shall - should - - -", "", "следует, следовало"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["may - might - might", "", "можно, вероятно"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["will - would - - -", "", "глагол невидимка"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["bleed - bled - bled", "", "кровоточить"],
+              editable: [false, false, false],
+            },
+
+          ]
+        }
+      }
+    ]
+  },
+
+
+
+
+
+
+
+  grid_table_IV_c: {
+    mainDescription: "Irregular Verbs 'B'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["break - broke - broken","","ломать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["be - was/were - been", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "быть"],
+                almostCorrect: {
+                  2: ["являться", "находиться", "существовать"]
+                }
+              }
+            },
+            {
+              cells: ["beat - beat - beaten", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "бить"],
+                almostCorrect: {
+                  2: ["побить", "побеждать", "избивать", "победить","избить"]
+                }
+              }
+            },
+            {
+              cells: ["become - became - become", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "становиться"],
+                almostCorrect: {
+                  2: ["превращаться", "оказываться", "сделаться", "стать"]
+                }
+              }
+            },
+            {
+              cells: ["begin - began - begun", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "начинать"],
+                almostCorrect: {
+                  2: ["начать", "приступать", "запускать"]
+                }
+              }
+            },
+            {
+              cells: ["build - built - built", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "строить"],
+                almostCorrect: {
+                  2: ["построить", "создавать", "возводить"]
+                }
+              }
+            },
+            {
+              cells: ["bite - bit - bit", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "кусать"],
+                almostCorrect: {
+                  2: ["покусать", "укусить", "откусить","прикусить"]
+                }
+              }
+            },
+            {
+              cells: ["blow - blew - blown", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "дуть"],
+                almostCorrect: {
+                  2: ["сдуть", "задувать", "развевать", "взрывать"]
+                }
+              }
+            },
+            {
+              cells: ["bring - brought - brought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приносить"],
+                almostCorrect: {
+                  2: ["привести", "доставлять", "привозить"]
+                }
+              }
+            },
+            {
+              cells: ["burn - burnt - burnt", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "гореть"],
+                almostCorrect: {
+                  2: ["жечь", "обжигать", "сжигать"]
+                }
+              }
+            },
+            {
+              cells: ["buy - bought - bought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "покупать"],
+                almostCorrect: {
+                  2: ["купить", "приобретать", "закупать"]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        taskDescription: "заполни таблицу",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["настоящее","прошлое","причастия", "перевод"],
+          rows: [
+            {
+              cells: ["burn","","burnt/burned","гореть"],
+              editable: [false, true, false,false],
+              correctAnswers: {
+                cells: [null,"burnt", null, null],
+                almostCorrect: {
+                  1: ["burned"]
+                }
+              }
+            },
+            {
+              cells: ["","was/were","been","быть,являться"],
+              editable: [true, false, false, false,],
+              correctAnswers: {
+                cells: ["be", null, null, null],
+                almostCorrect: {
+                  0: ["to be"]
+                }
+              }
+            },
+          ]
+        }
+      },
+    ]
+  },
+
   grid_table_AV_all: {
     mainDescription: "Заполните таблицу недостающими данными",
     tasks: [

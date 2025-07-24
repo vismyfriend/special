@@ -431,6 +431,32 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/describeAnimals/find-pairs-hard",
+      missionVisibleName: "Describe animals",
+      missionDescription: "Опиши животных",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs B ru",
+      missionDescription: "Naughty Verbs B ru",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },{
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs B gaps",
+      missionDescription: "Naughty Verbs B gaps",
+      id: 1001,
+      active: true,
+      stars: '2'
+    },
   ]
 
 export const AllGames =

@@ -143,8 +143,8 @@ watch([matchedPairs, allQuestions], ([newMatched, allQuestionsList]) => {
 
 const errorTexts = ref([]); // Сюда будем помещать 'oops!', 'boom!', и т.д.
 
-const errorWords = ['oops!', 'boom!', 'ouch!', 'no!', 'я случайно!', 'f#ck'];
-const positiveWords = ['YES!', 'Great', 'Awesome', 'Super', 'Correct'];
+const errorWords = ['oops!', 'boom!', 'ouch!', 'no!', 'я случайно!', 'f#.k!', 'damn!', 'crap!'];
+const positiveWords = ['YES!', 'Great', 'Awesome', 'Super', 'Correct', 'йес!','yep!', 'yup','nice!','right!'];
 const positiveTexts = ref([]); // Аналогично errorTexts
 
 const getRandomColor = () => {
@@ -469,7 +469,7 @@ onMounted(() => {
   align-items: center;
   text-align: center;
 
-  cursor: pointer;
+  cursor: none ;
   margin: 1.5px;
   margin-right: 25px;
   user-select: none;
@@ -606,7 +606,7 @@ line-height: 0.9;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: none;
   transition: background-color 0.3s ease;
 
   transform: translateY(-74px); // сдвиг кнопки вверх, к картинке
