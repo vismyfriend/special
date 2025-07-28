@@ -230,7 +230,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Вопросительные слова intro",
       id: 7,
       active: false
-    }, {
+    },
+    {
       missionName: "introSetFindPairsHard",
       missionVisibleName: "introSetFindPairsHard",
       missionDescription: "Вопросительные слова intro",
@@ -448,7 +449,8 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'📚'
-    },{
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs B gaps",
@@ -456,6 +458,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '2'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/yearGuesser",
+      missionVisibleName: "Guess the year",
+      missionDescription: "Отгадай год",
+      id: 1001,
+      active: true,
+      stars: '3'
     },
   ]
 

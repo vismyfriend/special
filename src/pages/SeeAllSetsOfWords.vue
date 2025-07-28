@@ -129,25 +129,37 @@ const getImagePath = (imgName) => {
 // Улучшенная функция нормализации
 const normalizeString = (str) => {
   if (!str) return '';
-  return str.toString().toLowerCase().replace(/[-\s]/g, ''); //удаляем дефисы и префиксы
+  return str.toString().toLowerCase()
+    .normalize("NFD") // разбивает символы с диакритиками (например, é → e + ´)
+    .replace(/[\u0300-\u036f]/g, "") // удаляет диакритические знаки
+    .replace(/[^\wа-яё\/]/g, ''); // оставляет только буквы, цифры, _ и /
 };
 
 // Оптимизированная фильтрация
 const filteredSets = computed(() => {
-  const query = normalizeString(searchQuery.value);
+  const query = normalizeString(searchQuery.value).replace(/\//g, ''); // удаляем слэши из запроса
 
   return AllSetsOfWords.value.filter(set => {
     if (!set.active) return false;
-
     if (!query) return true;
 
-    return (
-      normalizeString(set.missionVisibleName).includes(query) ||
-      normalizeString(set.missionDescription).includes(query) ||
-      (set.missionName && normalizeString(set.missionName).includes(query))
+    // Нормализуем все поля для поиска
+    const fields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName,
+      set.path,
+      set.url
+    ].filter(Boolean); // убираем пустые
+
+    return fields.some(field =>
+      normalizeString(field).includes(query)
     );
   });
+
 });
+
+
 const goToChosenGame = (set) => {
   if (set.type === "hardcodedLink") {
     router.push(set.path);
