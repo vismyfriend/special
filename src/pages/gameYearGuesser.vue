@@ -13,7 +13,7 @@
           <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
           <div class="result-info">
             <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Предположите какой это год' }}</div>
-            <div>{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : 'It looks like this is the year .... because... ' }}</div>
+            <div>{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : 'It looks like the year .... because... ' }}</div>
             <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '????' }}</div>
             <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
           </div>
@@ -292,6 +292,12 @@ const resetGame = () => {
   photos.value = getShuffledData();
 };
 
+const preventScroll = (e) => {
+  if (isDragging.value) {
+    e.preventDefault();
+  }
+};
+
 // ==================== //
 // Хуки жизненного цикла //
 // ==================== //
@@ -299,12 +305,16 @@ onMounted(() => {
   window.addEventListener('keypress', handleKeyPress);
   rulerTrack.value.addEventListener('click', handleTrackClick);
   updatePosition(window.innerWidth / 2); // Центрируем лупу при загрузке
+  window.addEventListener('touchmove', preventScroll, { passive: false });
+
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('keypress', handleKeyPress);
   rulerTrack.value?.removeEventListener('click', handleTrackClick);
   stopDrag();
+  window.removeEventListener('touchmove', preventScroll);
+
 });
 </script>
 
@@ -336,6 +346,8 @@ onBeforeUnmount(() => {
   background-color: #f5f5f5;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* отключаем гориз. скроллинг  */
+
 }
 
 .detective-board {
@@ -380,7 +392,6 @@ onBeforeUnmount(() => {
 
 .polaroid-label {
   text-align: center;
-  font-family: 'Comic Sans MS', cursive;
   color: #666;
   margin-top: 10px;
   font-size: 14px;
