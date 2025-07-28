@@ -215,6 +215,10 @@ const routes = [
     component: () => import('src/pages/tablitsaRef.vue')
   },
   {
+    path: '/yearGuesser',
+    component: () => import('src/pages/gameYearGuesser.vue')
+  },
+  {
     path: '/noLayoutPage2',
     component: () => import('src/pages/pageWithoutMainLayout2.vue')
   },

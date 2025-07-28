@@ -525,10 +525,19 @@ export const AllGames =
 
     {
       id: 1,
+      name: "Year Guesser",
+      description: "Отгадай год",
+      route: "/yearGuesser",
+      icon: "ApyGlassEmoji2.png"
+
+    },
+    {
+      id: 1,
       name: "coming soon",
       description: "проблемы с поворотами",
       route: "/see-all-sets-of-words/explain/explain-the-word",
       icon: null
+
     },
 
 

@@ -162,7 +162,8 @@ const menuData = {
       subItems: [
         { name: 'Tap-clicker', url: '' },
         { name: 'Skeleton 3D', url: 'https://vismyfriend.itch.io/clicker-test' },
-        { name: 'Guess the year', url: 'https://www.chronophoto.app/game.html' },
+        { name: 'Year guesser', url: 'https://www.chronophoto.app/game.html' },
+        { name: 'Guess the year', url: '/yearGuesser' },
         { name: 'Platformer 2D', url: '' }
       ]
     },
