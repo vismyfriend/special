@@ -108,6 +108,11 @@ const routes = [
                 path: 'game-translate',
                 component: () => import('src/components/GameTranslate.vue')
               },
+              {
+                path: 'gamePics',
+                component: () => import('src/components/GamePictures.vue')
+              },
+
             ]
           },
         ]

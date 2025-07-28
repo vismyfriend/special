@@ -51,6 +51,7 @@ import listeningExerciseData from "src/dataForGames/ListeningExerciseData";
 import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import pnqwData from "src/dataForGames/pnqw";
+import shortPicturesData from "src/dataForGames/short-pictures-data";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -242,6 +243,14 @@ const AllGames = ref([
     path: "word-order",
     gameData: wordOrderNewGameData,
     cardIcon: '🔤', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 112,
+    name: "Pictures",
+    path: "gamePics",
+    gameData: shortPicturesData,
+    cardIcon: '📎', // Добавлена иконка
     active: true
   },
 

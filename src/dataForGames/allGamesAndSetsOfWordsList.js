@@ -406,6 +406,13 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "animalsEmoji",
+      missionVisibleName: "Animals Emoji",
+      missionDescription: "Эмодзи Животных",
+      id: 1,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/tablitsaRef",
       missionVisibleName: "Present Simple",
