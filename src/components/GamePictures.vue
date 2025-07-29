@@ -12,8 +12,6 @@
           {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
         </button>
       </div>
-
-
     </div>
 
     <!-- Модалка с сообщением -->

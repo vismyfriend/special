@@ -413,6 +413,13 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "YoungSheldonS1E3",
+      missionVisibleName: "Young Sheldon s1e3",
+      missionDescription: "Young Sheldon s1e3",
+      id: 1,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/tablitsaRef",
       missionVisibleName: "Present Simple",

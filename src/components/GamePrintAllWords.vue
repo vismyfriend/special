@@ -267,7 +267,7 @@ line-height: 0.9;
   word-break: break-word;
   overflow: hidden;
   box-sizing: border-box; /* Важно для корректных расчетов */
-  height: 100%; /* Занимаем всю доступную высоту */
+  height: 40px;
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавный переход */
 }
 

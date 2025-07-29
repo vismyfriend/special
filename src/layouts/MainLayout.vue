@@ -107,6 +107,7 @@ defineExpose({ audio });
 .main-wrapper {
   display: flex;
   justify-content: center;
+  margin-top: 75px;
 
   .wrapper {
     min-width: 350px;

@@ -274,6 +274,7 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  line-height: 16px;
 }
 
 .wordCard:hover {
