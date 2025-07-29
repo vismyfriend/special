@@ -112,6 +112,10 @@ const routes = [
                 path: 'gamePics',
                 component: () => import('src/components/GamePictures.vue')
               },
+              {
+                path: 'gameDresser',
+                component: () => import('src/components/GameDresser.vue')
+              },
 
             ]
           },

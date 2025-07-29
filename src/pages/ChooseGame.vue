@@ -52,6 +52,7 @@ import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import pnqwData from "src/dataForGames/pnqw";
 import shortPicturesData from "src/dataForGames/short-pictures-data";
+import dresserGameData from "src/dataForGames/dresserGameData";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -251,6 +252,14 @@ const AllGames = ref([
     path: "gamePics",
     gameData: shortPicturesData,
     cardIcon: '📎', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 113,
+    name: "Dresser",
+    path: "gameDresser",
+    gameData: dresserGameData,
+    cardIcon: '👕',
     active: true
   },
 
