@@ -438,7 +438,7 @@ onMounted(() => {
 
 .lines-overlay {
   position: absolute;
-  top: 0;
+  top: -15px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -453,7 +453,6 @@ onMounted(() => {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
 }
 
 .wordCard {
@@ -493,10 +492,13 @@ line-height: 0.9;
   font-weight: 400;
   font-style: italic;
   line-height: 0.9;
+  height: 120px;
+  word-break: break-word; /* Перенос длинных слов */
+  overflow-wrap: break-word; /* Альтернативный вариант переноса */
+  hyphens: auto; /* Автоматическая расстановка переносов (если поддерживается) */
 
 }
 .answers-container {
-  margin-top: 20px;
   width: 120px;
 }
 

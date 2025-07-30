@@ -1,18 +1,6 @@
 <template>
   <div class="game-container" v-if="currentGameData.length">
-    <!-- Сворачиваемое меню -->
-    <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
-      <div class="top-menu-bar">
-        <button class="menu-button" @click="showAboutGame">Об игре</button>
-        <button class="menu-button" @click="restartGame">Заново</button>
-        <button class="menu-button" @click="changeSet">Другой набор</button>
-        <button class="menu-button" @click="otherGames">Другие игры</button>
-        <!-- Кнопка свернуть/развернуть -->
-        <button class="collapse-button" @click="toggleMenu">
-          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
-        </button>
-      </div>
-    </div>
+
 
     <!-- Модалка с сообщением -->
     <div v-if="showModal" class="modal-overlay">
@@ -78,9 +66,12 @@
             v-for="(letter, index) in currentWord.eng.split('')"
             :key="index"
             @click="revealLetter(index)"
-            :class="{ revealed: revealedLetters[index] }"
+            :class="{
+            revealed: revealedLetters[index],
+             space: letter === ' ' // Добавляем класс для пробелов
+            }"
           >
-            {{ revealedLetters[index] ? letter : '?' }}
+            {{ revealedLetters[index] ? letter : (letter === ' ' ? ' ' : '?') }}
           </div>
         </div>
       </div>
@@ -110,7 +101,6 @@ const showModal = ref(false);
 const modalMessage = ref('');
 const isShowingTranslation = ref(false);
 const revealedLetters = ref([]);
-const isMenuCollapsed = ref(false);
 
 // Определяем тип контента
 const currentContentType = computed(() => {
@@ -135,28 +125,12 @@ const currentContentType = computed(() => {
   return 'text';
 });
 
-// Методы для меню
-const toggleMenu = () => {
-  isMenuCollapsed.value = !isMenuCollapsed.value;
-};
-
-const showAboutGame = () => {
-  openModal('Это игра для практики английского,<br> составляй предложения с разными словами,<br>тренируй память и воображение.');
-};
-
 const restartGame = () => {
   shuffledData.value = shuffle([...currentGameData.value]);
   removedWords.value = [];
   loadNextWord();
 };
 
-const changeSet = () => {
-  router.push("/see-all-sets-of-words/")
-};
-
-const otherGames = () => {
-  router.push("/games")
-};
 
 // Разбираем варианты ответов
 const multipleChoiceOptions = computed(() => {
@@ -237,7 +211,10 @@ const revealLetter = (index) => {
 
 const resetRevealedLetters = () => {
   if (currentWord.value.eng) {
-    revealedLetters.value = Array(currentWord.value.eng.length).fill(false);
+    // Создаем массив, где пробелы сразу будут "открыты"
+    revealedLetters.value = currentWord.value.eng.split('').map(char => {
+      return char === ' ' ? true : false;
+    });
   } else {
     revealedLetters.value = [];
   }
@@ -282,11 +259,13 @@ onMounted(() => {
   shuffledData.value = shuffle([...currentGameData.value]);
   currentWord.value = {
     taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,
-    eng: "Guess the animal",
-    rus: "Угадай животное",
+    eng: "Next>",
+    rus: "Сюда тоже можно кликать",
     isIntro: true,
   };
   resetRevealedLetters();
+  toggleTranslation();
+
 });
 </script>
 
@@ -309,80 +288,6 @@ onMounted(() => {
   z-index: 100;
   touch-action: manipulation;
   transition: padding-top 0.3s ease;
-}
-
-/* Стили меню */
-.top-menu-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  overflow: visible;
-  height: auto;
-}
-
-.top-menu-bar {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  transform: translateY(0);
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.collapsed .top-menu-bar {
-  transform: translateY(-80%);
-}
-
-.collapse-button {
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90px;
-  height: 25px;
-  border: none;
-  border-radius: 0 0 10px 10px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  cursor: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: #2c3e50;
-  z-index: 1001;
-  transition: all 0.3s ease;
-}
-
-.collapse-button:hover {
-  background: #f1f3f6;
-}
-
-.menu-button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 20px;
-  background: linear-gradient(145deg, #ffffff 0%, #f1f3f6 100%);
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-  color: #2c3e50;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: none;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.menu-button:hover {
-  background: linear-gradient(145deg, #f1f3f6 0%, #e6e9f0 100%);
-  transform: translateY(-1px);
 }
 
 /* Основные стили игры */
@@ -484,7 +389,13 @@ onMounted(() => {
   color: #2c3e50;
   font-size: 28px;
 }
-
+.hint-box.space {
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  min-width: 15px;
+  max-width: 15px;
+}
 /* Стили для навигации */
 .nav-button {
   width: 60px;
@@ -572,23 +483,7 @@ onMounted(() => {
 
 /* Адаптивные стили */
 @media (max-width: 768px) {
-  .top-menu-bar {
-    flex-wrap: wrap;
-    padding: 8px;
-    gap: 6px;
-  }
 
-  .menu-button {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  .collapse-button {
-    bottom: -17px;
-    height: 20px;
-    width: 70px;
-    font-size: 10px;
-  }
 
   .content-card {
     height: 250px;
@@ -661,4 +556,7 @@ onMounted(() => {
     height: auto;
   }
 }
+
+
+
 </style>

@@ -13,23 +13,111 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚'
     },
     {
-      missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
-      missionVisibleName: "Протестировать fast",
-      missionDescription: "Test quickly",
-      id: 1,
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/",
+      missionVisibleName: "Тапалка с цифрами",
+      missionDescription: "pronunciation",
+      id: 1001,
       active: true,
-      stars: '1',
-      gameImg: "wiresPic.png",
-      gameIcon:'📚'
+      gameIcon:'🎯'
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+      missionVisibleName: "Миссия - 1",
+      missionDescription: "Самое начало",
+      id: 1001,
+      active: true,
+      gameIcon:'1️⃣'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronounsA0/find-pairs-easy",
-      missionVisibleName: "Слова вместо имён",
-      missionDescription: "Местоимения",
+      path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
+      missionVisibleName: "Миссия - 2",
+      missionDescription: "Mission - 2 ",
       id: 1001,
       active: true,
-      stars: '3',
+      gameIcon:'2️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/spelling",
+      missionVisibleName: "Миссия - 3",
+      missionDescription: "Mission - 3 ",
+      id: 1001,
+      active: true,
+      gameIcon:'3️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA0pics/gamePics",
+      missionVisibleName: "Миссия - 4",
+      missionDescription: "Mission - 4 ",
+      id: 1001,
+      active: true,
+      gameIcon:'4️⃣',
+      stars: "1"
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/spell-ten",
+      missionVisibleName: "Миссия - 5",
+      missionDescription: "Mission -5 ",
+      id: 1001,
+      active: true,
+      gameIcon:'5️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
+      missionVisibleName: "Список местоимений",
+      missionDescription: "Слова вместо имён",
+      id: 1001,
+      active: true,
+      gameIcon:'📝'
+    },
+    {
+      missionName: "questionWords1",
+      missionVisibleName: "Миссия - 6",
+      missionDescription: "Вопросительные слова 1",
+      id: 7,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
+      missionVisibleName: "Миссия - 7",
+      missionDescription: "QW1 speaking",
+      id: 1001,
+      active: true,
+      gameIcon:' 🗣❓'
+    },
+    {
+      missionName: "questionWords2",
+      missionVisibleName: "Миссия - 8",
+      missionDescription: "Вопросит. слова 2",
+      id: 7,
+      active: true,
+      gameIcon:'❓❓'
+    },
+    {
+      missionName: "questionWords3",
+      missionVisibleName: "Миссия - 9",
+      missionDescription: "Вопросит. слова 3",
+      id: 7,
+      active: true,
+      gameIcon:'❓❓❓'
+
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
+      missionVisibleName: "Список вопросительных слов",
+      missionDescription: "All question words",
+      id: 1001,
+      active: true,
     },
     {
       missionName: "WhatIsMyLevel",
@@ -95,29 +183,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '5'
     },
-    {
-      missionName: "questionWords1",
-      missionVisibleName: "Вопросительные слова 1",
-      missionDescription: "Question words 1",
-      id: 7,
-      active: true,
-      stars: '1'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
-      missionVisibleName: "QW1 speaking",
-      missionDescription: "QW1 speaking",
-      id: 1001,
-      active: true,
-    },
-    {
-      missionName: "questionWords2",
-      missionVisibleName: "Question words 2",
-      missionDescription: "Вопросительные слова 2",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "appearanceWords",
       missionVisibleName: "Внешность часть 1",
@@ -126,13 +192,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '2'
     },
-    {
-      missionName: "questionWords3",
-      missionVisibleName: "Question words 3",
-      missionDescription: "Вопросительные слова 3",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "tagQuestionsA2",
       missionVisibleName: "Tag Questions A2",
@@ -175,13 +235,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1,
       active: true
     },
-    {
-      missionName: "questionWordsAll",
-      missionVisibleName: "All question words",
-      missionDescription: "Все вопросительные слова",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "popularIrregularVerbs",
       missionVisibleName: "30-ty Naughty Verbs",
@@ -488,6 +542,16 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '3'
+    },
+    {
+      missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
+      missionVisibleName: "Протестировать fast",
+      missionDescription: "Test quickly 111",
+      id: 1,
+      active: true,
+      stars: '1',
+      gameImg: "wiresPic.png",
+      gameIcon:'📚'
     },
   ]
 

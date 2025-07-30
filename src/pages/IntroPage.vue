@@ -121,7 +121,7 @@ const dynamicMessage = computed(() => {
     и проверить правильно ли вы его произнесли<br>
     `;
   } else {
-    return `Разомни память и произношение<br> <b>/ пронАн си эйшн /</b> pronunciation :<br>
+    return `Разомни память и произношение<br> <b>pronunciation </b> / пронАн си эйшн /<br>
 <br><br>
     1) нажми "Tap here" ${remaining} times - раз(а)<br>
     2) <b>читай вслух</b> вылетающие слова<br>

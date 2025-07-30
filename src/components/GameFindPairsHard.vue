@@ -245,7 +245,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   padding: 20px;
-  min-height: 100vh;
+
 }
 
 .row {
@@ -263,11 +263,11 @@ onMounted(() => {
 
 .wordCard {
   background-color: #f4f4f4;
-  height: 70px; // или 80px — подбери нужную высоту
+  height: 75px; // или 80px — подбери нужную высоту
 
   border: 2px solid #aaa;
   border-radius: 16px;
-  padding: 10px 5px;
+  padding: 1px 5px;
   font-size: 16px;
   text-align: center;
   align-content: center;

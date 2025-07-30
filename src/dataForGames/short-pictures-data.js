@@ -50,6 +50,453 @@ const shortPicturesData = {
       multipleChoice: "in*, on*, under, above"
     }
   ],
+  pronounsA0pics: [
+    {
+      taskPicture: new URL("../assets/images/testPic1 copy.png", import.meta.url).href,
+      eng: "you",
+      rus: "ты и вы"
+    },
+    {
+      taskPicture: "🐈🐈‍⬛",
+      eng: "they are cats",
+      rus: "они кошки"
+    },
+    {
+      taskPicture: "🐈‍⬛",
+      eng: "it is a black cat",
+      rus: "это черная кошка"
+    },
+    {
+      taskPicture: "🐩🐶",
+      eng: "they are dogs",
+      rus: "они собаки"
+    },
+    {
+      taskPicture: "🐈",
+      eng: "it is a cat",
+      rus: "это кошка"
+    },
+    {
+      taskPicture: "💀",
+      eng: "it is a skeleton",
+      rus: "это скелет"
+    },
+    {
+      taskPicture: "🦮🐕‍🦺🐩🐶",
+      eng: "they are dogs",
+      rus: "они собаки"
+    },
+    {
+      taskPicture: "📚📖📕",
+      eng: "they are books",
+      rus: "книги = они"
+    },
+    {
+      taskPicture: "📕",
+      eng: "it is a red book",
+      rus: "это красная книга"
+    },
+    {
+      taskPicture: "👫👭👬",
+      eng: "they are people",
+      rus: "они люди"
+    },
+    {
+      taskPicture: "📘",
+      eng: "it is a blue book",
+      rus: "это книга"
+    },
+    {
+      taskPicture: "🍎",
+      eng: "it is an apple",
+      rus: "это яблоко"
+    },
+
+    {
+      taskPicture: "👨",
+      eng: "he is a man",
+      rus: "он мужчина"
+    },
+    {
+      taskPicture: "👨‍⚕️",
+      eng: "he is a doctor",
+      rus: "он врач"
+    },
+    {
+      taskPicture: "👦",
+      eng: "he is a boy",
+      rus: "он мальчик"
+    },
+    {
+      taskPicture: "👨‍🍳",
+      eng: "he is a cook",
+      rus: "это повар"
+    },
+    {
+      taskPicture: "👩",
+      eng: "she is a woman",
+      rus: "она женщина"
+    },
+    {
+      taskPicture: "👩‍⚕️",
+      eng: "she is a doctor",
+      rus: "она доктор"
+    },
+    {
+      taskPicture: "👧",
+      eng: "she is a girl",
+      rus: "она девочка"
+    },
+    {
+      taskPicture: "👩‍🍳",
+      eng: "She is a cook",
+      rus: "она повар"
+    },
+    {
+      taskPicture: "👶",
+      eng: "it is a baby",
+      rus: "это младенец"
+    },
+    // Единственное число (he/she)
+    {
+      taskPicture: "👨‍⚕️",
+      eng: "He is a doctor",
+      rus: "Он доктор"
+    },
+    {
+      taskPicture: "👩‍⚕️",
+      eng: "She is a doctor",
+      rus: "Она доктор"
+    },
+    {
+      taskPicture: "👨‍🍳",
+      eng: "He is a cook",
+      rus: "Он повар"
+    },
+    {
+      taskPicture: "👩‍🍳",
+      eng: "She is a cook",
+      rus: "Она повар"
+    },
+    {
+      taskPicture: "👨‍🎓",
+      eng: "He is a student",
+      rus: "Он студент"
+    },
+    {
+      taskPicture: "👩‍🎓",
+      eng: "She is a student",
+      rus: "Она студентка"
+    },
+    {
+      taskPicture: "👨‍🏫",
+      eng: "He is a teacher",
+      rus: "Он учитель"
+    },
+    {
+      taskPicture: "👩‍🏫",
+      eng: "She is a teacher",
+      rus: "Она учительница"
+    },
+    {
+      taskPicture: "👨‍🎤",
+      eng: "He is a singer",
+      rus: "Он певец"
+    },
+    {
+      taskPicture: "👩‍🎤",
+      eng: "She is a singer",
+      rus: "Она певица"
+    },
+    {
+      taskPicture: "🕺",
+      eng: "He is a dancer",
+      rus: "Он танцор"
+    },
+    {
+      taskPicture: "💃",
+      eng: "She is a dancer",
+      rus: "Она танцовщица"
+    },
+
+    // Множественное число (they)
+    {
+      taskPicture: "👨‍⚕️👩‍⚕️",
+      eng: "They are doctors",
+      rus: "Они доктора"
+    },
+    {
+      taskPicture: "👨‍🍳👩‍🍳",
+      eng: "They are cooks",
+      rus: "Они повара"
+    },
+    {
+      taskPicture: "👨‍🎓👩‍🎓",
+      eng: "They are students",
+      rus: "Они студенты"
+    },
+    {
+      taskPicture: "👨‍🏫👩‍🏫",
+      eng: "They are teachers",
+      rus: "Они учителя"
+    },
+    {
+      taskPicture: "🕺💃",
+      eng: "They are dancers",
+      rus: "Они танцоры"
+    },
+    {
+      taskPicture: "👨‍🎤👩‍🎤",
+      eng: "They are singers",
+      rus: "Они певцы"
+    },
+
+    // Гендерно-нейтральные примеры (акцент на they)
+    {
+      taskPicture: "👨‍💻👩‍💻",
+      eng: "They are programmers",
+      rus: "Они программисты"
+    },
+    {
+      taskPicture: "👨‍🔧👩‍🔧",
+      eng: "They are mechanics",
+      rus: "Они механики"
+    },
+    {
+      taskPicture: "👨‍🚀👩‍🚀",
+      eng: "They are astronauts",
+      rus: "Они космонавты"
+    },
+    // Популярные животные (it/they)
+    {
+      taskPicture: "🐘",
+      eng: "It is an elephant",
+      rus: "Это слон"
+    },
+    {
+      taskPicture: "🐘🐘",
+      eng: "They are elephants",
+      rus: "Это слоны"
+    },
+    {
+      taskPicture: "🦒",
+      eng: "It is a giraffe",
+      rus: "Это жираф"
+    },
+    {
+      taskPicture: "🐼",
+      eng: "It is a panda",
+      rus: "Это панда"
+    },
+    {
+      taskPicture: "🦁",
+      eng: "It is a lion",
+      rus: "Это лев"
+    },
+    {
+      taskPicture: "🐯",
+      eng: "It is a tiger",
+      rus: "Это тигр"
+    },
+    {
+      taskPicture: "🐻",
+      eng: "It is a bear",
+      rus: "Это медведь"
+    },
+    {
+      taskPicture: "🐰",
+      eng: "It is a rabbit",
+      rus: "Это кролик"
+    },
+    {
+      taskPicture: "🐦",
+      eng: "It is a bird",
+      rus: "Это птица"
+    },
+    {
+      taskPicture: "🐠",
+      eng: "It is a fish",
+      rus: "Это рыба"
+    },
+
+    // Еда (it/they)
+    {
+      taskPicture: "🍏🍎",
+      eng: "They are apples",
+      rus: "Это яблоки"
+    },
+    {
+      taskPicture: "🍌",
+      eng: "It is a banana",
+      rus: "Это банан"
+    },
+    {
+      taskPicture: "🍕",
+      eng: "It is a pizza",
+      rus: "Это пицца"
+    },
+    {
+      taskPicture: "🍔",
+      eng: "It is a burger",
+      rus: "Это бургер"
+    },
+    {
+      taskPicture: "🍟",
+      eng: "They are fries",
+      rus: "Это картошка фри"
+    },
+    {
+      taskPicture: "🍩",
+      eng: "It is a donut",
+      rus: "Это пончик"
+    },
+    {
+      taskPicture: "🍪",
+      eng: "It is a cookie",
+      rus: "Это печенье"
+    },
+    {
+      taskPicture: "🍦",
+      eng: "It is an ice cream",
+      rus: "Это мороженое"
+    },
+    {
+      taskPicture: "🍫",
+      eng: "It is chocolate",
+      rus: "Это шоколад"
+    },
+    {
+      taskPicture: "🍓",
+      eng: "It is a strawberry",
+      rus: "Это клубника"
+    },
+  ],
+  pronounsA0quiz1: [
+    {
+      taskPicture: "You and I",
+      eng: "We = You + I",
+      rus: "Мы = ты + я"
+    },
+    {
+      taskPicture: "Он и она = ?",
+      multipleChoice: "we, he, they*, it"
+    },
+  ],
+  speaking1: [
+    // Комбинированные эмодзи (they)
+    {
+      taskPicture: "🦮 + 🐈",
+      eng: "The dog and cat are friends",
+      rus: "Собака и кошка - друзья (они)"
+    },
+    {
+      taskPicture: "👦 + 👧",
+      eng: "The boy and girl are playing",
+      rus: "Мальчик и девочка играют (они)"
+    },
+    {
+      taskPicture: "👩 + 🐕",
+      eng: "The woman and dog are walking",
+      rus: "Женщина и собака гуляют (они)"
+    },
+    {
+      taskPicture: "📚 + 🖊️",
+      eng: "The book and pen are on the table",
+      rus: "Книга и ручка на столе (они)"
+    },
+
+    // Сцены с людьми и животными (he/she + it/they)
+    {
+      taskPicture: "👨 + 🐈",
+      eng: "He is playing with the cat",
+      rus: "Он играет с кошкой"
+    },
+    {
+      taskPicture: "👩 + 🦮",
+      eng: "She is walking the dog",
+      rus: "Она выгуливает собаку"
+    },
+    {
+      taskPicture: "👵 + 🐦",
+      eng: "She is feeding the bird",
+      rus: "Она кормит птицу"
+    },
+    {
+      taskPicture: "👴 + 🐕",
+      eng: "He is petting the dog",
+      rus: "Он гладит собаку"
+    },
+
+    // Забавные комбинации
+    {
+      taskPicture: "🐭 + 🧀",
+      eng: "The mouse loves cheese",
+      rus: "Мышка любит сыр"
+    },
+    {
+      taskPicture: "🐶 + 🦴",
+      eng: "The dog wants the bone",
+      rus: "Собака хочет косточку"
+    },
+    {
+      taskPicture: "🐈 + 🥛",
+      eng: "The cat drinks milk",
+      rus: "Кошка пьёт молоко"
+    },
+    {
+      taskPicture: "🐻 + 🍯",
+      eng: "The bear likes honey",
+      rus: "Медведь любит мёд"
+    },
+
+    // Специальные примеры для обсуждения
+    {
+      taskPicture: "👩‍👦 + 🐕",
+      eng: "The mother and son have a dog",
+      rus: "Мама и сын имеют собаку"
+    },
+    {
+      taskPicture: "👨‍👧 + 🐈",
+      eng: "The father and daughter are watching the cat",
+      rus: "Папа и дочь наблюдают за кошкой"
+    },
+    {
+      taskPicture: "👫 + 🐕 + 🐈",
+      eng: "They have a dog and a cat",
+      rus: "У них есть собака и кошка"
+    },
+    {
+      taskPicture: "👩‍🍳🍕",
+      eng: "She is cooking pizza",
+      rus: "Она готовит пиццу"
+    },
+    {
+      taskPicture: "👨‍🍳🍔",
+      eng: "He is making a burger",
+      rus: "Он делает бургер"
+    },
+    {
+      taskPicture: "👦🍦",
+      eng: "He is eating ice cream",
+      rus: "Он ест мороженое"
+    },
+    {
+      taskPicture: "👧🍪",
+      eng: "She wants a cookie",
+      rus: "Она хочет печенье"
+    },
+    {
+      taskPicture: "🦁🐯🐻",
+      eng: "They are wild animals",
+      rus: "Это дикие животные"
+    },
+    {
+      taskPicture: "🐶🐱",
+      eng: "They are pets",
+      rus: "Это домашние животные"
+    }
+  ],
+
   superJob1: [
     // Изображение
     {

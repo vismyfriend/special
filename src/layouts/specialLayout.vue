@@ -2,20 +2,18 @@
     <div>
 
 
-      <!-- Невидимая защита от ghost click -->
-      <div class="click-protector"
-           v-show="clickProtectorActive"
-           @touchstart.prevent></div>
-
-
 
       <!-- Сворачиваемое меню -->
+
+
+
       <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
         <div class="top-menu-bar">
-          <button class="menu-button" @click="showAboutGame">Доп.инфо</button>
+          <button class="menu-button" @click="showAboutGame">⚙️</button>
+          <button class="menu-button" @click="otherGames">Все задания</button>
           <button class="menu-button" @click="restartGame">Заново</button>
           <button class="menu-button" @click="changeSet">Другой набор</button>
-          <button class="menu-button" @click="otherGames">Задания</button>
+
           <!-- Кнопка свернуть/развернуть -->
           <button class="collapse-button">
             {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
@@ -82,21 +80,7 @@ const modalMessage = ref('');
 const isMenuCollapsed = ref(false);
 
 
-
-
 // Методы для меню
-
-
-const clickProtectorActive = ref(false);
-
-// При разворачивании меню (например, при hover)
-const activateProtection = () => {
-  clickProtectorActive.value = true;
-  setTimeout(() => {
-    clickProtectorActive.value = false;
-  }, 200); // Блокировка на 200 мс
-};
-
 
 
 const showAboutGame = () => {
@@ -324,23 +308,6 @@ onMounted(() => {
 }
 
 
-
-.top-menu-wrapper:hover .top-menu-bar {
-  transform: translateY(0);
-  transition: transform 0.3s ease;
-  /* Активируем защиту при разворачивании */
-  animation: menuExpand 0.3s forwards;
-}
-
-@keyframes menuExpand {
-  0% {
-    transform: translateY(-80%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .collapse-button {
   position: absolute;
   bottom: -20px;
@@ -456,16 +423,7 @@ onMounted(() => {
   cursor: none;
 }
 
-.click-protector {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999; /* Ниже меню (которое на 1000) */
-  background: transparent;
-  pointer-events: all;
+.menu-button:disabled {
+  pointer-events: none;
 }
-
-
 </style>

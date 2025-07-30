@@ -8,6 +8,7 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+
   futuramaS1E1: [
     { id: 1, eng: "Space", ru: "Космос" },
     { id: 2, eng: "it seems to go on forever", ru: "Кажется это длится вечность" },
@@ -104,6 +105,8 @@ const shortWordsData = {
     { id: 25, eng: "Faith", ru: "Вера" },
     { id: 26, eng: "chapel", ru: "часовня, капелла" },
   ],
+
+
   pronounsA0: [
     { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
     { id: 2, eng: "he", ru: "он", hint: "/ хи/" },
@@ -114,7 +117,32 @@ const shortWordsData = {
     { id: 7, eng: "it", ru: "это", hint: "/ ит /" },
     { id: 8, eng: "our", ru: "наш", hint: "/ АУа /" },
     { id: 9, eng: "your", ru: "ваш", hint: "/ ё /" },
-    { id: 10, eng: "her", ru: "её", hint: "/ ё /" },
+    { id: 10, eng: "her", ru: "её", hint: "/ хё /" },
+  ],
+  possessivePronounsA1: [
+    { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
+    { id: 2, eng: "my", ru: "мои , моя , моё", hint: "/ мaй /" },
+    { id: 3, eng: "he", ru: "он", hint: "/ хи/" },
+    { id: 4, eng: "his", ru: "его", hint: "/ хиз /" },
+    { id: 5, eng: "she", ru: "она", hint: "/ щИ /" },
+    { id: 6, eng: "her", ru: "её", hint: "/ хё /" },
+    { id: 7, eng: "we", ru: "мы", hint: "/ уи /" },
+    { id: 8, eng: "our", ru: "наш", hint: "/ АУа /" },
+    { id: 9, eng: "they", ru: "они", hint: "/ Дэй /" },
+    { id: 10, eng: "their", ru: "их", hint: "/ Дэир /" },
+    { id: 11, eng: "you", ru: "вы, ты", hint: "/ ю /" },
+    { id: 12, eng: "your", ru: "ваш, твой", hint: "/ ё /" },
+    { id: 13, eng: "it", ru: "это", hint: "/ ит /" },
+
+  ],
+  pronounsA00: [
+    { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
+    { id: 2, eng: "it", ru: "это", hint: "/ ит /" },
+    { id: 3, eng: "he", ru: "он", hint: "/ хи/" },
+    { id: 4, eng: "she", ru: "она", hint: "/ щИ /" },
+    { id: 5, eng: "we", ru: "мы", hint: "/ уи /" },
+    { id: 6, eng: "they", ru: "они", hint: "/ Дэй /" },
+    { id: 7, eng: "you", ru: "вы", hint: "/ ю /" },
   ],
   directionsListeningA2: [
     { id: 1, eng: "You are here!", ru: "вы находитесь здесь", hint: "/ю а хИэ/" },
@@ -476,6 +504,7 @@ whatISitVideoMission: [
     { id: 27, eng: "What's up", ru: "как дела (разг.)", hint: "/ уотс ап /" },
     { id: 28, eng: "How so", ru: "как так", hint: "/ хау соу /" },
     { id: 29, eng: "What if", ru: "что если", hint: "/ уот иф /" },
+    { id: 30, eng: "What a ...", ru: "что за ...", hint: "/ уот э /" },
 
   ],
 
