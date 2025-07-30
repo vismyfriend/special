@@ -415,7 +415,14 @@ export const allGamesAndSetsOfWordsList =
     {
       missionName: "YoungSheldonS1E3",
       missionVisibleName: "Young Sheldon s1e3",
-      missionDescription: "Young Sheldon s1e3",
+      missionDescription: "Детство Шелдона s1e3",
+      id: 1,
+      active: true,
+    },
+    {
+      missionName: "futuramaS1E1",
+      missionVisibleName: "Futurama s1e1",
+      missionDescription: "Футурама s1e1",
       id: 1,
       active: true,
     },

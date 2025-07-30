@@ -1,6 +1,14 @@
 <template>
     <div>
 
+
+      <!-- Невидимая защита от ghost click -->
+      <div class="click-protector"
+           v-show="clickProtectorActive"
+           @touchstart.prevent></div>
+
+
+
       <!-- Сворачиваемое меню -->
       <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
         <div class="top-menu-bar">
@@ -9,7 +17,7 @@
           <button class="menu-button" @click="changeSet">Другой набор</button>
           <button class="menu-button" @click="otherGames">Задания</button>
           <!-- Кнопка свернуть/развернуть -->
-          <button class="collapse-button" @click="toggleMenu">
+          <button class="collapse-button">
             {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
           </button>
         </div>
@@ -74,10 +82,22 @@ const modalMessage = ref('');
 const isMenuCollapsed = ref(false);
 
 
+
+
 // Методы для меню
-const toggleMenu = () => {
-  // isMenuCollapsed.value = !isMenuCollapsed.value;
+
+
+const clickProtectorActive = ref(false);
+
+// При разворачивании меню (например, при hover)
+const activateProtection = () => {
+  clickProtectorActive.value = true;
+  setTimeout(() => {
+    clickProtectorActive.value = false;
+  }, 200); // Блокировка на 200 мс
 };
+
+
 
 const showAboutGame = () => {
   openModal(`
@@ -173,6 +193,9 @@ const showInstructions = () => {
 const hideInstructions = () => {
   isInstructionsVisible.value = false;
 }
+
+
+
 
 // Через 10 сек сворачиваем меню (однократно)
 onMounted(() => {
@@ -274,6 +297,8 @@ onMounted(() => {
   transition: all 0.3s ease;
   overflow: visible;
   height: auto;
+  pointer-events: auto; /* Включаем события мыши */
+
 }
 
 
@@ -289,10 +314,31 @@ onMounted(() => {
   transform: translateY(0);
   transition: all 0.3s ease;
   position: relative;
+  pointer-events: auto; /* Включаем события мыши */
+
 }
 
 .collapsed .top-menu-bar {
   transform: translateY(-80%);
+
+}
+
+
+
+.top-menu-wrapper:hover .top-menu-bar {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  /* Активируем защиту при разворачивании */
+  animation: menuExpand 0.3s forwards;
+}
+
+@keyframes menuExpand {
+  0% {
+    transform: translateY(-80%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .collapse-button {
@@ -343,11 +389,16 @@ onMounted(() => {
 /* Свернутое состояние */
 .top-menu-wrapper.collapsed .top-menu-bar {
   transform: translateY(-80%);
+  pointer-events: none; /* Блокируем события мыши */
+
+
 }
 
 /* Ховер-эффект */
 .top-menu-wrapper.collapsed:hover .top-menu-bar {
   transform: translateY(0);
+  pointer-events: auto;
+
 }
 
 
@@ -404,4 +455,17 @@ onMounted(() => {
   border-radius: 5px;
   cursor: none;
 }
+
+.click-protector {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Ниже меню (которое на 1000) */
+  background: transparent;
+  pointer-events: all;
+}
+
+
 </style>
