@@ -284,6 +284,7 @@ onMounted(() => {
   font-size: 15px;
   color: #666;
   line-height: 0.5;       // делает текст компактнее по вертикали
+  padding: 4px 0;
 
 }
 .active {

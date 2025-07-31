@@ -134,7 +134,7 @@ const backToIntroPage = () => {
     handleBubbleClick();
     // Задержка перед переходом
     setTimeout(() => {
-      router.push("/games");
+      router.push("/see-all-sets-of-words/");
     }, 500); // пол секунды – чтобы успело показаться сообщение
   } else {
     infoMessage.value = dynamicMessage.value;

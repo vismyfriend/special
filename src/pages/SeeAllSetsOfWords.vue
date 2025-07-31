@@ -107,7 +107,7 @@ import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
-const text = "choose \na \nmission \n- \nвыбирай или напиши название миссии";
+const text = "choose \na \nmission";
 const speed = 150; // Скорость печати (мс)
 const introMessage = ref(null); // Добавляем ref для элемента
 const searchQuery = ref('');

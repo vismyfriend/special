@@ -16,7 +16,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/",
       missionVisibleName: "Тапалка с цифрами",
-      missionDescription: "pronunciation",
+      missionDescription: "Произношение и цифры",
       id: 1001,
       active: true,
       gameIcon:'🎯'
@@ -100,7 +100,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Вопросит. слова 2",
       id: 7,
       active: true,
-      gameIcon:'❓❓'
+      gameIcon:'❓'
     },
     {
       missionName: "questionWords3",
@@ -108,7 +108,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Вопросит. слова 3",
       id: 7,
       active: true,
-      gameIcon:'❓❓❓'
+      gameIcon:'❓'
 
     },
     {
@@ -120,10 +120,246 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
-      missionName: "WhatIsMyLevel",
-      missionVisibleName: "Какой мой уровень Инглиша?",
-      missionDescription: "What is my level of English?",
+      missionName: "digits",
+      missionVisibleName: "Цифры",
+      missionDescription: "Digits /дИджитс/",
       id: 1,
+      active: true,
+    },
+    {
+      missionName: "alphabetData",
+      missionVisibleName: "Alphabet",
+      missionDescription: "Алфавит",
+      id: 7,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/popularIrregularVerbs/find-pairs-easy",
+      missionVisibleName: "Неправильные глаголы",
+      missionDescription: "Irregular Verbs",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsA1/find-pairs-hard",
+      missionVisibleName: "Irregular Verbs A1",
+      missionDescription: "Naughty Verbs A1",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsA2/find-pairs-easy",
+      missionVisibleName: "Irregular Verbs A2",
+      missionDescription: "Naughty Verbs A2",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsB1/find-pairs-hard",
+      missionVisibleName: "Irregular Verbs B1",
+      missionDescription: "Naughty Verbs B1",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbs250C2/find-pairs-easy",
+      missionVisibleName: "Irregular Verbs 250",
+      missionDescription: "Naughty Verbs 250",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsGridNaughtyVerbsGrid/listening-exercises",
+      missionVisibleName: "Список неправильных глаголов",
+      missionDescription: "Irregular Verbs list",
+      id: 1001,
+      active: true,
+    },
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs part B",
+      missionDescription: "Неправильные глаголы B",
+      id: 1001,
+      active: true,
+      gameIcon:'🄱'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs part B gaps",
+      missionDescription: "Неправильные глаголы B",
+      id: 1001,
+      active: true,
+      gameIcon:'🄱'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs part C",
+      missionDescription: "Неправильные глаголы C",
+      id: 1001,
+      active: true,
+      gameIcon:'🄲'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs part C gaps",
+      missionDescription: "Неправильные глаголы C",
+      id: 1001,
+      active: true,
+      gameIcon:'🄲'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - DE",
+      missionDescription: "Неправильные глаголы DE",
+      id: 1001,
+      active: true,
+      gameIcon:'🄳🄴'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - DE gaps",
+      missionDescription: "Неправильные глаголы DE",
+      id: 1001,
+      active: true,
+      gameIcon:'🄳🄴'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - F",
+      missionDescription: "Неправильные глаголы F",
+      id: 1001,
+      active: true,
+      gameIcon:'🄵'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - F gaps",
+      missionDescription: "Неправильные глаголы F",
+      id: 1001,
+      active: true,
+      gameIcon:'🄵'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - GH",
+      missionDescription: "Неправильные глаголы GH",
+      id: 1001,
+      active: true,
+      gameIcon:'🄶🄷'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - GH gaps",
+      missionDescription: "Неправильные глаголы GH",
+      id: 1001,
+      active: true,
+      gameIcon:'🄶🄷'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - KL",
+      missionDescription: "Неправильные глаголы KL",
+      id: 1001,
+      active: true,
+      gameIcon:'🄺🄻'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - KL gaps",
+      missionDescription: "Неправильные глаголы KL",
+      id: 1001,
+      active: true,
+      gameIcon:'🄺🄻'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - MPR",
+      missionDescription: "Неправильные глаголы MPR",
+      id: 1001,
+      active: true,
+      gameIcon:'🄼🄿🅁'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - MPR gaps",
+      missionDescription: "Неправильные глаголы MPR",
+      id: 1001,
+      active: true,
+      gameIcon:'🄼🄿🅁'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - S",
+      missionDescription: "Неправильные глаголы S",
+      id: 1001,
+      active: true,
+      gameIcon:'🅂'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - S gaps",
+      missionDescription: "Неправильные глаголы S",
+      id: 1001,
+      active: true,
+      gameIcon:'🅂'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_tuw_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs - TUW",
+      missionDescription: "Неправильные глаголы TUW",
+      id: 1001,
+      active: true,
+      gameIcon:'🅃🅄🅆'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
+      missionVisibleName: "Irregular Verbs - TUW gaps",
+      missionDescription: "Неправильные глаголы TUW",
+      id: 1001,
+      active: true,
+      gameIcon:'🅃🅄🅆'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_last_ru/listening-exercises",
+      missionVisibleName: "Irregular Verbs Final",
+      missionDescription: "Неправильные глаголы",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-easy",
+      missionVisibleName: "Cut wires",
+      missionDescription: "Резать провода",
+      id: 1001,
       active: true,
     },
     {
@@ -135,64 +371,29 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1'
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-easy",
-      missionVisibleName: "/ мишн / mission 001",
-      missionDescription: "миссия 001",
-      id: 1001,
-      active: true,
-      stars: '1'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/mission001CutWiresEasy/find-pairs-hard",
-      missionVisibleName: "mission 002 ",
-      missionDescription: "миссия 002",
-      id: 1001,
-      active: true,
-      stars: '2'
-    },
-    {
-      missionName: "wordOrderBasics",
-      missionVisibleName: "WOrder",
-      missionDescription: "опрядок слов",
-      id: 1,
-      active: false,
-    },
-    {
-      missionName: "levelCheck1",
-      missionVisibleName: "What's my level of English?",
-      missionDescription: "Какой мой уровень?",
-      id: 2,
-      active: false
-    },
-    {
-      missionName: "digits",
-      missionVisibleName: "Цифры",
-      missionDescription: "Digits /дИджитс/",
-      id: 1,
-      active: true,
-      stars: '5'
-    },
-    {
-      missionName: "alphabetData",
-      missionVisibleName: "Alphabet",
-      missionDescription: "Алфавит",
-      id: 7,
-      active: true,
-      stars: '5'
-    },
 
     {
       missionName: "appearanceWords",
-      missionVisibleName: "Внешность часть 1",
-      missionDescription: "Appearance part 1",
+      missionVisibleName: "Appearance 1",
+      missionDescription: "Внешность 1",
       id: 7,
       active: true,
       stars: '2'
     },
-
+    {
+      missionName: "clothes",
+      missionVisibleName: "Clothes and stuff",
+      missionDescription: "Одежда и все такое",
+      id: 7,
+      active: true
+    },
+    {
+      missionName: "whatISitVideoMission",
+      missionVisibleName: "What is it?",
+      missionDescription: "Предметы",
+      id: 7,
+      active: true
+    },
     {
       missionName: "tagQuestionsA2",
       missionVisibleName: "Tag Questions A2",
@@ -200,13 +401,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1,
       active: true,
     },
-    {
-      missionName: "whatISitVideoMission",
-      missionVisibleName: "What is it ? video mission",
-      missionDescription: "Что это ? видео миссия",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "traffic1",
       missionVisibleName: "Дорожная ситуация",
@@ -236,13 +431,7 @@ export const allGamesAndSetsOfWordsList =
       active: true
     },
 
-    {
-      missionName: "popularIrregularVerbs",
-      missionVisibleName: "30-ty Naughty Verbs",
-      missionDescription: "30 капризных глаголов",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "who1",
       missionVisibleName: "Who questions part 1",
@@ -257,13 +446,7 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true
     },
-    {
-      missionName: "clothes",
-      missionVisibleName: "Clothes and stuff",
-      missionDescription: "Одежда и все такое",
-      id: 7,
-      active: true
-    },
+
     {
       missionName: "testWeakSpots6V1",
       missionVisibleName: "test B2 C1",
@@ -437,18 +620,75 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '5'
     },
-    {
-      missionName: "irregularVerbs",
-      missionVisibleName: "irregularVerbs",
-      missionDescription: "naughty verbs",
-      id: 7,
-      active: true,
-      stars: '5'
-    },
+
+
+
+
+
     {
       missionName: "grid_table_AV_all",
       missionVisibleName: "Глаголы помощники все",
       missionDescription: "All Auxiliary Verbs",
+      id: 1,
+      active: true,
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/irregularVerbsBSimple/find-pairs-easy",
+      missionVisibleName: "Настоящее или прошлое?",
+      missionDescription: "Present or Past?",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+
+
+
+
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/describeAnimals/find-pairs-hard",
+      missionVisibleName: "Describe animals",
+      missionDescription: "Опиши животных",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/ieltsListening1/listening-exercises",
+      missionVisibleName: "IELTS listening 1",
+      missionDescription: "IELTS аудирование 1",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
+      missionName: "YoungSheldonS1E3",
+      missionVisibleName: "Young Sheldon s1e3",
+      missionDescription: "Детство Шелдона s1e3",
+      id: 1,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songFaith/songs",
+      missionVisibleName: "Faith",
+      missionDescription: "Вера",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+
+
+    {
+      missionName: "futuramaS1E1",
+      missionVisibleName: "Futurama s1e1",
+      missionDescription: "Футурама s1e1",
       id: 1,
       active: true,
     },
@@ -467,69 +707,10 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
-      missionName: "YoungSheldonS1E3",
-      missionVisibleName: "Young Sheldon s1e3",
-      missionDescription: "Детство Шелдона s1e3",
-      id: 1,
-      active: true,
-    },
-    {
-      missionName: "futuramaS1E1",
-      missionVisibleName: "Futurama s1e1",
-      missionDescription: "Футурама s1e1",
-      id: 1,
-      active: true,
-    },
-    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/tablitsaRef",
       missionVisibleName: "Present Simple",
       missionDescription: "Настоящее простое",
-      id: 1001,
-      active: true,
-      stars: '2'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/ieltsListening1/listening-exercises",
-      missionVisibleName: "IELTS listening 1",
-      missionDescription: "IELTS аудирование 1",
-      id: 1001,
-      active: true,
-      stars: '3'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/irregularVerbsBSimple/find-pairs-easy",
-      missionVisibleName: "Настоящее или прошлое?",
-      missionDescription: "Present or Past?",
-      id: 1001,
-      active: true,
-      stars: '1'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/describeAnimals/find-pairs-hard",
-      missionVisibleName: "Describe animals",
-      missionDescription: "Опиши животных",
-      id: 1001,
-      active: true,
-      stars: '1'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_ru/listening-exercises",
-      missionVisibleName: "Irregular Verbs B ru",
-      missionDescription: "Naughty Verbs B ru",
-      id: 1001,
-      active: true,
-      gameIcon:'📚'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
-      missionVisibleName: "Irregular Verbs B gaps",
-      missionDescription: "Naughty Verbs B gaps",
       id: 1001,
       active: true,
       stars: '2'
@@ -542,6 +723,13 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '3'
+    },
+    {
+      missionName: "WhatIsMyLevel",
+      missionVisibleName: "Какой мой уровень Инглиша?",
+      missionDescription: "What is my level of English?",
+      id: 1,
+      active: true,
     },
     {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру

@@ -53,6 +53,7 @@ import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import pnqwData from "src/dataForGames/pnqw";
 import shortPicturesData from "src/dataForGames/short-pictures-data";
 import dresserGameData from "src/dataForGames/dresserGameData";
+import songsData from "src/dataForGames/SongsData";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -260,6 +261,14 @@ const AllGames = ref([
     path: "gameDresser",
     gameData: dresserGameData,
     cardIcon: '👕',
+    active: true
+  },
+  {
+    id: 113,
+    name: "Lyrics",
+    path: "songs",
+    gameData: songsData,
+    cardIcon: '🎧',
     active: true
   },
 

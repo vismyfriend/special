@@ -32,6 +32,10 @@ const routes = [
                 component: () => import('components/ListeningExercise.vue')
               },
               {
+                path: 'songs',
+                component: () => import('components/GameSongs.vue')
+              },
+              {
                 path: 'tests-and-exams',
                 component: () => import('components/GameTestsAndExams.vue')
               },
