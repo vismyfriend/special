@@ -144,24 +144,24 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/irregularVerbsA1/find-pairs-hard",
-      missionVisibleName: "Irregular Verbs A1",
-      missionDescription: "Naughty Verbs A1",
+      missionVisibleName: "Naughty Verbs A1",
+      missionDescription: "Непослушные глаголы A1",
       id: 1001,
       active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/irregularVerbsA2/find-pairs-easy",
-      missionVisibleName: "Irregular Verbs A2",
-      missionDescription: "Naughty Verbs A2",
+      missionVisibleName: "Naughty Verbs A2",
+      missionDescription: "Непослушные Verbs A2",
       id: 1001,
       active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/irregularVerbsB1/find-pairs-hard",
-      missionVisibleName: "Irregular Verbs B1",
-      missionDescription: "Naughty Verbs B1",
+      missionVisibleName: "Naughty Verbs B1",
+      missionDescription: "Непослушные Verbs B1",
       id: 1001,
       active: true,
     },
@@ -187,7 +187,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs part B",
-      missionDescription: "Неправильные глаголы B",
+      missionDescription: "Неправ. глаголы B",
       id: 1001,
       active: true,
       gameIcon:'🄱'
@@ -196,7 +196,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs part B gaps",
-      missionDescription: "Неправильные глаголы B",
+      missionDescription: "Неправ. глаголы B",
       id: 1001,
       active: true,
       gameIcon:'🄱'
@@ -205,7 +205,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs part C",
-      missionDescription: "Неправильные глаголы C",
+      missionDescription: "Неправ. глаголы C",
       id: 1001,
       active: true,
       gameIcon:'🄲'
@@ -214,7 +214,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs part C gaps",
-      missionDescription: "Неправильные глаголы C",
+      missionDescription: "Неправ. глаголы C",
       id: 1001,
       active: true,
       gameIcon:'🄲'
@@ -223,7 +223,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - DE",
-      missionDescription: "Неправильные глаголы DE",
+      missionDescription: "Неправ. глаголы DE",
       id: 1001,
       active: true,
       gameIcon:'🄳🄴'
@@ -232,7 +232,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - DE gaps",
-      missionDescription: "Неправильные глаголы DE",
+      missionDescription: "Неправ. глаголы DE",
       id: 1001,
       active: true,
       gameIcon:'🄳🄴'
@@ -241,7 +241,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - F",
-      missionDescription: "Неправильные глаголы F",
+      missionDescription: "Неправ. глаголы F",
       id: 1001,
       active: true,
       gameIcon:'🄵'
@@ -250,7 +250,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - F gaps",
-      missionDescription: "Неправильные глаголы F",
+      missionDescription: "Неправ. глаголы F",
       id: 1001,
       active: true,
       gameIcon:'🄵'
@@ -259,7 +259,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - GH",
-      missionDescription: "Неправильные глаголы GH",
+      missionDescription: "Неправ. глаголы GH",
       id: 1001,
       active: true,
       gameIcon:'🄶🄷'
@@ -268,7 +268,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - GH gaps",
-      missionDescription: "Неправильные глаголы GH",
+      missionDescription: "Неправ. глаголы GH",
       id: 1001,
       active: true,
       gameIcon:'🄶🄷'
@@ -277,7 +277,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - KL",
-      missionDescription: "Неправильные глаголы KL",
+      missionDescription: "Неправ. глаголы KL",
       id: 1001,
       active: true,
       gameIcon:'🄺🄻'
@@ -286,7 +286,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - KL gaps",
-      missionDescription: "Неправильные глаголы KL",
+      missionDescription: "Неправ. глаголы KL",
       id: 1001,
       active: true,
       gameIcon:'🄺🄻'
@@ -295,7 +295,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - MPR",
-      missionDescription: "Неправильные глаголы MPR",
+      missionDescription: "Неправ. глаголы MPR",
       id: 1001,
       active: true,
       gameIcon:'🄼🄿🅁'
@@ -304,7 +304,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - MPR gaps",
-      missionDescription: "Неправильные глаголы MPR",
+      missionDescription: "Неправ. глаголы MPR",
       id: 1001,
       active: true,
       gameIcon:'🄼🄿🅁'
@@ -313,7 +313,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - S",
-      missionDescription: "Неправильные глаголы S",
+      missionDescription: "Неправ. глаголы S",
       id: 1001,
       active: true,
       gameIcon:'🅂'
@@ -322,7 +322,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - S gaps",
-      missionDescription: "Неправильные глаголы S",
+      missionDescription: "Неправ. глаголы S",
       id: 1001,
       active: true,
       gameIcon:'🅂'
@@ -331,7 +331,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_tuw_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs - TUW",
-      missionDescription: "Неправильные глаголы TUW",
+      missionDescription: "Неправ. глаголы TUW",
       id: 1001,
       active: true,
       gameIcon:'🅃🅄🅆'
@@ -340,7 +340,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
       missionVisibleName: "Irregular Verbs - TUW gaps",
-      missionDescription: "Неправильные глаголы TUW",
+      missionDescription: "Неправ. глаголы TUW",
       id: 1001,
       active: true,
       gameIcon:'🅃🅄🅆'
@@ -349,7 +349,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/grid_table_IrregularVerbs_last_ru/listening-exercises",
       missionVisibleName: "Irregular Verbs Final",
-      missionDescription: "Неправильные глаголы",
+      missionDescription: "Неправ. глаголы",
       id: 1001,
       active: true,
       stars: '1'

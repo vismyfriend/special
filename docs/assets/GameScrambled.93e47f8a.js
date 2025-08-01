@@ -1,1 +1,0 @@
-import{p as a,b as r,c as t,e as s}from"./index.e99ada8a.js";const u={__name:"GameScrambled",setup(o){return a(),(l,e)=>(r(),t("div",null,e[0]||(e[0]=[s("h2",null," \u0442\u0443\u0442 \u043A\u043E\u0433\u0434\u0430-\u0442\u043E \u043F\u043E\u044F\u0432\u0438\u0442\u0441\u044F \u0438\u0433\u0440\u0430 ",-1)])))}};export{u as default};

@@ -10,9 +10,17 @@
       <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
         <div class="top-menu-bar">
           <button class="menu-button" @click="showAboutGame">⚙️</button>
-          <button class="menu-button" @click="otherGames">Все задания</button>
+          <button class="menu-button" @click="otherGames">Задания</button>
           <button class="menu-button" @click="restartGame">Заново</button>
           <button class="menu-button" @click="changeSet">Другой набор</button>
+
+          <!-- Кнопка с визуалом LegendaryMode -->
+          <button class="menu-button legendary-button" @click="showLegendaryModal = true">
+            <span class="legendary-visual">
+              <span class="flame">🔥</span>
+              <span class="days-counter">{{ legendaryDays }}</span>
+            </span>
+          </button>
 
           <!-- Кнопка свернуть/развернуть -->
           <button class="collapse-button">
@@ -21,6 +29,17 @@
         </div>
       </div>
 
+
+      <!-- Модальное окно LegendaryMode с передачей пропсов -->
+      <div v-if="showLegendaryModal" class="legendary-modal-overlay" @click.self="showLegendaryModal = false">
+        <div class="legendary-modal-content">
+          <LegendaryMode
+            :current-days="legendaryDays"
+            @update-days="updateLegendaryDays"
+          />
+          <button @click="showLegendaryModal = false" class="close-legendary-modal">Закрыть</button>
+        </div>
+      </div>
 
       <!-- Модалка с сообщением -->
       <div v-if="showModal" class="modal-overlay">
@@ -70,15 +89,24 @@
 
 
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+import {computed, inject, onMounted, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
+import LegendaryMode from '../components/LegendaryMode.vue';
+
 const route = useRoute()
 const router = useRouter();
 
 const showModal = ref(false);
 const modalMessage = ref('');
 const isMenuCollapsed = ref(false);
+const showLegendaryModal = ref(false);
 
+// Инициализируем legendaryDays с начальным значением 1
+const legendaryDays = ref(1);
+// Принимаем обновленное значение из LegendaryMode
+const updateLegendaryDays = (days) => {
+  legendaryDays.value = days;
+};
 
 // Методы для меню
 
@@ -183,9 +211,14 @@ const hideInstructions = () => {
 
 // Через 10 сек сворачиваем меню (однократно)
 onMounted(() => {
+  // Загружаем из localStorage при старте
+  const savedStreak = localStorage.getItem('legendaryStreak');
+  if (savedStreak) {
+    legendaryDays.value = parseInt(savedStreak) || 1;
+  }
   setTimeout(() => {
     isMenuCollapsed.value = true;
-  }, 7000); // 7 000 мс = 7 сек
+  }, 2000); // 2 000 мс = 2 сек
   window.__router = router;
   window.__modal = { close: closeModal };
 
@@ -425,5 +458,78 @@ onMounted(() => {
 
 .menu-button:disabled {
   pointer-events: none;
+}
+
+// В секции style
+.legendary-button {
+  position: relative;
+  padding-left: 40px !important; // Делаем место для иконки
+}
+
+.legendary-visual {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flame {
+  font-size: 16px;
+  line-height: 1;
+  animation: flame-flicker 1.5s infinite alternate;
+}
+
+.days-counter {
+  font-size: 10px;
+  font-weight: bold;
+  color: #090909;
+  margin-top: -3px;
+}
+
+@keyframes flame-flicker {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0.8; }
+  50% { opacity: 0.9; }
+  75% { opacity: 0.7; }
+}
+
+// Стили модального окна (как в предыдущем примере)
+.legendary-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+.legendary-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-legendary-modal {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
