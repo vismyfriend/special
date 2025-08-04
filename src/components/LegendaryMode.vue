@@ -436,9 +436,8 @@ const calendarDays = computed(generateCalendarDays);
   }
 }
 
-/* Добавляем стили для dev-кнопок */
+/* dev-кнопки display flex - отобразить */
 .dev-controls {
-  //display: flex;
   display: none;
   gap: 8px;
   justify-content: center;

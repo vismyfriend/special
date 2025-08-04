@@ -50,6 +50,200 @@ const shortPicturesData = {
       multipleChoice: "in*, on*, under, above"
     }
   ],
+  shortDiscussions1: [
+    {
+      taskPicture: "Do you need to have a shower every day?",
+      rus: "Вам нужно принимать душ каждый день?"
+    },
+    {
+      taskPicture: "Do you need to check your phone first thing in the morning?",
+      rus: "Вам нужно проверять телефон сразу после пробуждения?"
+    },
+    {
+      taskPicture: "Is it important to exercise every day?",
+      rus: "Важно ли заниматься спортом каждый день?"
+    },
+    {
+      taskPicture: "Do you usually eat breakfast?",
+      rus: "Вы обычно завтракаете?"
+    },
+    {
+      taskPicture: "Should people drink 8 glasses of water a day?",
+      rus: "Должен ли человек выпивать 8 стаканов воды в день?"
+    },
+    {
+      taskPicture: "Do you prefer to stay up late or wake up early?",
+      rus: "Вы предпочитаете ложиться поздно или вставать рано?"
+    },
+    {
+      taskPicture: "Can you cook well?",
+      rus: "Вы хорошо готовите?"
+    },
+    {
+      taskPicture: "Do you like spicy food?",
+      rus: "Вам нравится острая еда?"
+    },
+    {
+      taskPicture: "Is it okay to eat fast food sometimes?",
+      rus: "Нормально ли иногда есть фастфуд?"
+    },
+    {
+      taskPicture: "Do you enjoy trying new foods?",
+      rus: "Вам нравится пробовать новую еду?"
+    },
+    {
+      taskPicture: "Should chocolate be part of a healthy diet?",
+      rus: "Должен ли шоколад быть частью здорового питания?"
+    },
+    {
+      taskPicture: "Do you like reading books?",
+      rus: "Вам нравится читать книги?"
+    },
+    {
+      taskPicture: "Is watching movies better than reading books?",
+      rus: "Смотреть фильмы лучше, чем читать книги?"
+    },
+    {
+      taskPicture: "Should everyone have a hobby?",
+      rus: "У каждого должно быть хобби?"
+    },
+    {
+      taskPicture: "Do you enjoy shopping?",
+      rus: "Вам нравится шопинг?"
+    },
+    {
+      taskPicture: "Can video games be good for you?",
+      rus: "Могут ли видеоигры быть полезными?"
+    },
+    {
+      taskPicture: "Is it better to study alone or in a group?",
+      rus: "Лучше учиться одному или в группе?"
+    },
+    {
+      taskPicture: "Do you usually do homework at the last minute?",
+      rus: "Вы обычно делаете домашку в последний момент?"
+    },
+    {
+      taskPicture: "Should school start later in the morning?",
+      rus: "Школа должна начинаться позже утром?"
+    },
+    {
+      taskPicture: "Is it important to learn a foreign language?",
+      rus: "Важно ли учить иностранный язык?"
+    },
+    {
+      taskPicture: "Can you work well under pressure?",
+      rus: "Вы хорошо работаете под давлением?"
+    },
+    {
+      taskPicture: "Would you eat insects if they were good for health?",
+      rus: "Вы бы ели насекомых, если бы они были полезны для здоровья?"
+    },
+    {
+      taskPicture: "Can you dance well?",
+      rus: "Вы хорошо танцуете?"
+    },
+    {
+      taskPicture: "Do you believe in aliens?",
+      rus: "Вы верите в инопланетян?"
+    },
+    {
+      taskPicture: "Should pineapple be on pizza?",
+      rus: "Ананас должен быть на пицце?"
+    },
+    {
+      taskPicture: "Is it okay to wear socks with sandals?",
+      rus: "Нормально ли носить носки с сандалями?"
+    },
+    {
+      taskPicture: "Can you lick your elbow?",
+      rus: "Вы можете лизнуть свой локоть?"
+    },
+    {
+      taskPicture: "Do you talk to your pet?",
+      rus: "Вы разговариваете со своим питомцем?"
+    },
+    {
+      taskPicture: "Is it okay to eat pizza with a fork?",
+      rus: "Нормально ли есть пиццу вилкой?"
+    },
+    {
+      taskPicture: "Do you agree to wear the same socks for 30 days if somebody gives you $100 for this?",
+      rus: "Вы согласились бы носить одни и те же носки 30 дней за $100?"
+    },
+    {
+      taskPicture: "Do you believe in ghosts?",
+      rus: "Вы верите в привидений?"
+    },
+    {
+      taskPicture: "Do you sing in the shower?",
+      rus: "Вы поёте в душе?"
+    },
+    {
+      taskPicture: "Should weekends be longer than weekdays?",
+      rus: "Выходные должны быть длиннее будних дней?"
+    },
+    {
+      taskPicture: "Do you procrastinate a lot?",
+      rus: "Вы часто прокрастинируете?"
+    },
+    {
+      taskPicture: "Is it better to be rich or famous?",
+      rus: "Лучше быть богатым или знаменитым?"
+    },
+    {
+      taskPicture: "Can you sleep with the light on?",
+      rus: "Вы можете спать при свете?"
+    },
+    {
+      taskPicture: "Do you take selfies often?",
+      rus: "Вы часто делаете селфи?"
+    },
+    {
+      taskPicture: "Should smartphones be banned in schools?",
+      rus: "Смартфоны должны быть запрещены в школах?"
+    },
+    {
+      taskPicture: "Can robots replace teachers in the future?",
+      rus: "Могут ли роботы заменить учителей в будущем?"
+    },
+    {
+      taskPicture: "Do you use emojis every day?",
+      rus: "Вы используете эмодзи каждый день?"
+    },
+    {
+      taskPicture: "Is social media making people less social?",
+      rus: "Соцсети делают людей менее общительными?"
+    },
+    {
+      taskPicture: "Is it better to be too hot or too cold?",
+      rus: "Лучше быть слишком жарко или слишком холодно?"
+    },
+    {
+      taskPicture: "Can you eat an ugly worm for $100? (worm is alive)",
+      rus: "Вы бы съели некрасивого червя за $100? (червь живой)"
+    },
+    {
+      taskPicture: "Can money buy happiness?",
+      rus: "Могут ли деньги купить счастье?"
+    },
+    {
+      taskPicture: "Should cats rule the world?",
+      rus: "Должны ли кошки править миром?"
+    },
+    {
+      taskPicture: "Do you want to fly to space as a tourist?",
+      rus: "Хотели бы вы полететь в космос как турист?"
+    },
+    {
+      taskPicture: "Is it better to travel alone or with friends?",
+      rus: "Лучше путешествовать одному или с друзьями?"
+    },
+    {
+      taskPicture: "Can you jump into a swimming pool?",
+      rus: "Вы умеете прыгать в бассейн?"
+    }
+  ],
   pronounsA0pics: [
     {
       taskPicture: new URL("../assets/images/testPic1 copy.png", import.meta.url).href,

@@ -55,7 +55,7 @@
             v-for="currentSetOfWords in filteredSets"
             :key="currentSetOfWords.missionName"
             role="button"
-            @click="goToChosenGame(currentSetOfWords)"
+            @click="handlePasswordProtectedClick(currentSetOfWords)"
             :style="{
               '--offset-x': '5px',
               '--offset-y': '29.5px'
@@ -97,7 +97,38 @@
         </div>
       </div>
     </div>
+    <!-- Кастомное модальное окно для пароля -->
+    <div v-if="passwordModal" class="password-modal-overlay">
+      <div class="password-modal" :class="{ 'shake': shake }" @animationend="shake = false">
+        <div class="password-modal-header">
+          <div class="lock-icon">🔒</div>
+          <h3>Секретный доступ</h3>
+        </div>
+
+        <div class="password-modal-body">
+          <p>Этот набор защищен паролем</p>
+
+          <div class="password-input-wrapper">
+            <input
+              v-model="passwordInput"
+              type="password"
+              placeholder="Введите кодовое слово..."
+              class="password-input"
+              @keyup.enter="checkPassword"
+            >
+            <button class="unlock-btn" @click="checkPassword">
+              <div class="unlock-icon">🔓</div>
+            </button>
+          </div>
+
+          <p class="hint">Подсказка: спросите у Винсента</p>
+        </div>
+
+        <button class="close-modal" @click="closeModal">✕</button>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script setup>
@@ -114,6 +145,39 @@ const searchQuery = ref('');
 const router = useRouter()
 const $q = useQuasar()
 
+
+// Добавляем новые переменные для модального окна
+const passwordModal = ref(false);
+const passwordInput = ref('');
+const currentSetToUnlock = ref(null);
+const shake = ref(false);
+
+const handlePasswordProtectedClick = (set) => {
+  if (!set.password) {
+    goToChosenGame(set);
+    return;
+  }
+
+  currentSetToUnlock.value = set;
+  passwordModal.value = true;
+};
+
+// Функции для работы с модальным окном
+const checkPassword = () => {
+  if (passwordInput.value === currentSetToUnlock.value.password) {
+    goToChosenGame(currentSetToUnlock.value);
+    closeModal();
+  } else {
+    shake.value = true;
+    passwordInput.value = '';
+  }
+};
+
+const closeModal = () => {
+  passwordModal.value = false;
+  passwordInput.value = '';
+  shake.value = false;
+};
 
 // Делаем список реактивным
 const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
@@ -357,6 +421,7 @@ onMounted(() => {
   box-shadow: // Тени для элемента
     inset 0 0 2px 7px #000, // Внутренняя тень
     inset 0 0 3px 7px #000, // Внутренняя тень
+    0 0 30px 10px rgba(0, 0, 0, 0.6), // Внешняя тень
     0 150px 200px -80px #000; // Внешняя тень
   overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
 
@@ -721,5 +786,139 @@ onMounted(() => {
   height: 20px;
   object-fit: contain;
   flex-shrink: 0;
+}
+.password-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.password-modal {
+  position: relative;
+  background: linear-gradient(145deg, #2c3e50, #1a1a2e);
+  border-radius: 15px;
+  padding: 25px;
+  width: 320px;
+  max-width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 2px solid #6a6a6a;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+
+  &.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+}
+
+.password-modal-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 15px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #e74c3c;
+  }
+
+  .lock-icon {
+    font-size: 1.8rem;
+    margin-right: 15px;
+    color: #e74c3c;
+  }
+}
+
+.password-modal-body {
+  p {
+    margin: 0 0 15px;
+    font-size: 0.95rem;
+    color: #ecf0f1;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 15px;
+    font-style: italic;
+  }
+}
+
+.password-input-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.password-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #444;
+  border-radius: 8px 0 0 8px;
+  background-color: #34495e;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  outline: none;
+
+  &::placeholder {
+    color: #7f8c8d;
+  }
+
+  &:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3);
+  }
+}
+
+.unlock-btn {
+  background: linear-gradient(to bottom, #e74c3c, #c0392b);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: linear-gradient(to bottom, #c0392b, #a5281b);
+  }
+
+  .unlock-icon {
+    font-size: 1.2rem;
+    color: white;
+  }
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #7f8c8d;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #e74c3c;
+  }
+}
+
+/* Анимация тряски */
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 </style>

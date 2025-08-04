@@ -683,6 +683,60 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '3'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause1/listening-exercises",
+      missionVisibleName: "Short discussions 1",
+      missionDescription: "Короткие обсуждения 1",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause2/listening-exercises",
+      missionVisibleName: "Short discussions 2",
+      missionDescription: "Короткие обсуждения 2",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause3/listening-exercises",
+      missionVisibleName: "Short discussions 3",
+      missionDescription: "Короткие обсуждения 3",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause4/listening-exercises",
+      missionVisibleName: "Short discussions 4",
+      missionDescription: "Короткие обсуждения 4",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause5/listening-exercises",
+      missionVisibleName: "Short discussions 5",
+      missionDescription: "Короткие обсуждения 5",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause6/listening-exercises",
+      missionVisibleName: "Short discussions 6",
+      missionDescription: "Короткие обсуждения 6",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
 
 
     {
@@ -739,7 +793,8 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1',
       gameImg: "wiresPic.png",
-      gameIcon:'📚'
+      gameIcon:'📚',
+      password:'kl3tk1na',
     },
   ]
 

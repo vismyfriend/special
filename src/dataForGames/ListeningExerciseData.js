@@ -584,6 +584,259 @@ const ListeningExerciseData = {
       },
     ],
   },
+  yesNoBecause1: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Do you need to have a shower every day?",
+            translation: "Вам нужно принимать душ каждый день?"
+          },
+          {
+            text: "Do you need to check your phone first thing in the morning?",
+            translation: "Вам нужно проверять телефон сразу после пробуждения?"
+          },
+          {
+            text: "Is it important to exercise every day?",
+            translation: "Важно ли заниматься спортом каждый день?"
+          },
+          {
+            text: "Do you usually eat breakfast?",
+            translation: "Вы обычно завтракаете?"
+          },
+          {
+            text: "Do people need to drink 8 glasses of water a day?",
+            translation: "Нужно ли людям выпивать 8 стаканов воды в день?"
+          },
+          {
+            text: "Do you prefer to stay up late or wake up early?",
+            translation: "Вы предпочитаете поздно ложиться спать или вставать рано?"
+          },
+          {
+            text: "Can you cook well?",
+            translation: "Вы хорошо готовите?"
+          },
+          {
+            text: "Do you like spicy food?",
+            translation: "Вам нравится острая еда?"
+          },
+        ]
+      },
+    ],
+  },
+  yesNoBecause2: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Is it okay to eat fast food often?",
+            translation: "Нормально ли есть фастфуд часто?"
+          },
+          {
+            text: "Do you enjoy trying new foods?",
+            translation: "Вам нравится пробовать новую еду?"
+          },
+          {
+            text: "Is chocolate tasty? What is your favorite one?",
+            translation: "Шоколад вкусный? Какой твой любимый"
+          },
+          {
+            text: "Do you like reading books?",
+            translation: "Вам нравится читать книги?"
+          },
+          {
+            text: "Are movies better than books?",
+            translation: "Фильмы лучше, чем книги?"
+          },
+          {
+            text: "Does everyone need a hobby?",
+            translation: "У каждого должно быть хобби?"
+          },
+          {
+            text: "Do you enjoy shopping?",
+            translation: "Вам нравится шопинг?"
+          },
+          {
+            text: "Can video games be good for people?",
+            translation: "Могут ли видеоигры быть полезными для людей?"
+          }
+        ]
+      },
+    ],
+  },
+  yesNoBecause3: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Is it better to study alone or in a group?",
+            translation: "Лучше учиться одному или в группе?"
+          },
+          {
+            text: "Do you usually do homework at the last minute?",
+            translation: "Вы обычно делаете домашку в последний момент?"
+          },
+          {
+            text: "Should school start later in the morning?",
+            translation: "Школа должна начинаться позже утром?"
+          },
+          {
+            text: "Is it important to learn a foreign language?",
+            translation: "Важно ли учить иностранный язык?"
+          },
+          {
+            text: "Can you work well under pressure?",
+            translation: "Вы хорошо работаете под давлением?"
+          },
+          {
+            text: "Would you eat insects if they were good for health?",
+            translation: "Вы бы ели насекомых, если бы они были полезны для здоровья?"
+          },
+          {
+            text: "Can you dance well?",
+            translation: "Вы хорошо танцуете?"
+          },
+          {
+            text: "Do you believe in aliens?",
+            translation: "Вы верите в инопланетян?"
+          }
+        ]
+      },
+    ],
+  },
+  yesNoBecause4: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Should pineapple be on pizza?",
+            translation: "Ананас должен быть на пицце?"
+          },
+          {
+            text: "Is it okay to wear socks with sandals?",
+            translation: "Нормально ли носить носки с сандалями?"
+          },
+          {
+            text: "Can you lick your elbow?",
+            translation: "Вы можете лизнуть свой локоть?"
+          },
+          {
+            text: "Do you talk to your pet?",
+            translation: "Вы разговариваете со своим питомцем?"
+          },
+          {
+            text: "Is it okay to eat pizza with a fork?",
+            translation: "Нормально ли есть пиццу вилкой?"
+          },
+          {
+            text: "Would you wear the same socks for 30 days for $100?",
+            translation: "Вы бы носили одни носки 30 дней за $100?"
+          },
+          {
+            text: "Do you believe in ghosts?",
+            translation: "Вы верите в привидений?"
+          },
+          {
+            text: "Do you sing in the shower?",
+            translation: "Вы поёте в душе?"
+          }
+        ]
+      },
+    ],
+  },
+  yesNoBecause5: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Should weekends be longer than weekdays?",
+            translation: "Выходные должны быть длиннее будних дней?"
+          },
+          {
+            text: "Do you procrastinate a lot?",
+            translation: "Вы часто прокрастинируете?"
+          },
+          {
+            text: "Is it better to be rich or famous?",
+            translation: "Лучше быть богатым или знаменитым?"
+          },
+          {
+            text: "Can you sleep with the light on?",
+            translation: "Вы можете спать при свете?"
+          },
+          {
+            text: "Do you take selfies often?",
+            translation: "Вы часто делаете селфи?"
+          },
+          {
+            text: "Should smartphones be banned in schools?",
+            translation: "Смартфоны должны быть запрещены в школах?"
+          },
+          {
+            text: "Can robots replace teachers in the future?",
+            translation: "Могут ли роботы заменить учителей в будущем?"
+          },
+          {
+            text: "Do you use emojis every day?",
+            translation: "Вы используете эмодзи каждый день?"
+          }
+        ]
+      },
+    ],
+  },
+  yesNoBecause6: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Is social media making people less social?",
+            translation: "Соцсети делают людей менее общительными?"
+          },
+          {
+            text: "Is it better to be too hot or too cold?",
+            translation: "Лучше быть слишком жарко или слишком холодно?"
+          },
+          {
+            text: "Would you eat a live worm for $100?",
+            translation: "Вы бы съели живого червя за $100?"
+          },
+          {
+            text: "Can money buy happiness?",
+            translation: "Могут ли деньги купить счастье?"
+          },
+          {
+            text: "Should cats rule the world?",
+            translation: "Должны ли кошки править миром?"
+          },
+          {
+            text: "Would you like to fly to space as a tourist?",
+            translation: "Хотели бы вы полететь в космос как турист?"
+          },
+          {
+            text: "Is it better to travel alone or with friends?",
+            translation: "Лучше путешествовать одному или с друзьями?"
+          },
+          {
+            text: "Can you jump into a swimming pool?",
+            translation: "Вы умеете прыгать в бассейн?"
+          }
+        ]
+      },
+    ],
+  },
+
   pattern_drop_down_text: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
