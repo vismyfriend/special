@@ -51,6 +51,87 @@ const songsData = {
 
     ],
   },
+  falloutCrazyImpossible: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "listenCarefully",
+        usefulWords: null,
+        taskPicture: new URL("../assets/images/Billie_Holiday_with_Gordon_Jenkins_and_His_Orchestra_-_Crazy_He_Calls_Me.webp", import.meta.url).href,
+        audio: new URL('../assets/audio/Crazy He Calls Me – Billie Holiday.mp3', import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: "Vinyl Records (1949)",
+            audioName: null,
+            text: "I say I'll move the mountains\n" +
+              "And I'll move the (mountains)\n" +
+              "If he wants them out of the way\n" +
+              "Crazy he calls me\n" +
+              "Sure, I'm (crazy)\n" +
+              "Crazy in (love), I say\n" +
+              "I say I'll go through fire\n" +
+              "And I'll go (through) fire\n" +
+              "As he wants it, so it will be\n" +
+              "Crazy he (calls) me\n" +
+              "Sure, I'm crazy\n" +
+              "Crazy in love, you see\n" +
+              "Like the wind that shakes\n" +
+              "the bough - сук дерева\n" +
+              "He moves me (with) a (smile)\n" +
+              "The difficult I'll do right now\n" +
+              "The (impossible) will take a little while\n" +
+              "I say I'll care forever\n" +
+              "And I mean (forever)\n" +
+              "If I have to hold up the sky\n" +
+              "Crazy he calls me\n" +
+              "Sure, I'm crazy\n" +
+              "Crazy (in love) am I\n" +
+              "Like the wind that shakes the bough\n" +
+              "He moves me with a smile\n" +
+              "The (difficult) I'll do right now\n" +
+              "The impossible will (take) a little while\n" +
+              "I say I'll care forever\n" +
+              "And I (mean forever)\n" +
+              "If I have to hold up the sky\n" +
+              "Crazy he calls me\n" +
+              "Sure, I'm crazy\n" +
+              "Crazy in love am I"
+          },
+        ]
+      },
+      {
+        taskDescription: null,
+        taskID: "listenCarefully",
+        script: [
+          {
+            singer: "Translate",
+            text: "Я произношу я сдвину горы\n" +
+              "и я сдвину горы\n" +
+              "...\n" +
+              "Она говорит сдвинет горы\n" +
+              "и она сдвинет горы\n" +
+              "...\n" +
+              "Кончено же я сумашедше влюблена\n" +
+              "...\n" +
+              "Кончено же мы сумашедше влюблены\n" +
+              "...\n" +
+              "Словно ветер который качает деревья\n" +
+              "Винсент двигает меня улыбкой\n" +
+              "...\n" +
+              "Трудное я сделаю прямо сейчас\n" +
+              "А невозможному потребуется чуть дольше\n" +
+              "...\n" +
+              "Если я говорю что я сдвину горы\n" +
+              "я сдвину горы и сделаю домашнюю!\n" +
+              "...\n"
+          },
+        ]
+      },
+
+    ],
+  },
   testQuicklyData: {
     mainDescription: "How much is too much?",
     tasks: [
