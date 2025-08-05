@@ -21,6 +21,15 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'🎯'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/readingIntensive1/listening-exercises",
+      missionVisibleName: "Интенсив по чтению",
+      missionDescription: "learn to read fast",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

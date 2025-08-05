@@ -117,6 +117,10 @@ const routes = [
                 component: () => import('src/components/GamePictures.vue')
               },
               {
+                path: 'pdfPages',
+                component: () => import('src/components/pdfPages.vue')
+              },
+              {
                 path: 'gameDresser',
                 component: () => import('src/components/GameDresser.vue')
               },

@@ -584,6 +584,477 @@ const ListeningExerciseData = {
       },
     ],
   },
+  pattern_drop_down_text: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Drop down",
+        taskID: "drop_down_text",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        questions: [
+          {
+            text: "Hello friends! Let me share (for, to, with*) you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and every day I work (in, at*, under, for, between) my computer.\n" +
+              '<-->\n' +
+              "I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
+          },
+        ]
+      },
+    ],
+  },
+  pattern_drop_down_short: {
+    mainDescription: "IELTS exam listening",
+    tasks: [
+      {
+        taskDescription: "What is the location of ... ?",
+        taskID: "drop_down_text",
+        usefulWords: 'Summit - /самит/ вершина, Stables - /стЭйблз/ конюшни, Surgery room - /сЁджэри рум/ операционная' ,
+        taskPicture: new URL("../assets/images/ielts_listening_7.png", import.meta.url).href,
+        audio: new URL('../assets/audio/ielts_listening_7.mp3', import.meta.url).href,
+        textScript: 'if you need hints or help - ask #vismyfriend',
+        questions: [
+          {
+            text:
+              "Old bakery (A,B,C*,D,E,F,G,H,i)\n" +
+              "Doctor's surgery (A,B,C,D,E,F*,G,H,i)\n" +
+              "Cooper's cottage (A*,B,C,D,E,F,G,H,i)\n" +
+              "Stables (A,B,C,D,E,F,G,H*,i)\n" +
+              "Old school (A,B,C,D,E*,F,G,H,i)\n"
+          },
+        ]
+      },
+    ],
+  },
+  pattern_grid_table: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Grid - fill in",
+        taskID: "grid_table",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        tableData: {
+          headers: ["v1","v2","v3","перевод","пример",],
+          rows: [
+            {
+              cells: ["do", "did", "done","делать", "I did it"],
+              editable: [false, false, false, false, false,]
+            },
+            {
+              cells: ["eat","","eaten","","",],
+              editable: [false, true, false, true, true,],
+              correctAnswers: {
+                cells: [null, "ate",null,"есть","anyIsOk" ],
+                almostCorrect: {
+                  1: ["two","2"], // Индекс поля (начиная с 0)
+                  3: ["поесть","кушать","жрать","скушать","покушать",],
+                }
+              }
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: "GRID - Irregular Verbs:",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["V1", "V2", "V3", "перевод"],
+          rows: [
+            { cells: ["break", "broke", "broken", "ломать"], editable: [false, false, false, false] },
+            { cells: ["beat", "beat", "beaten", "побить"], editable: [false, false, false, false] },
+            { cells: ["become", "became", "become", "становиться"], editable: [false, false, false, false] },
+            { cells: ["begin", "began", "begun", "начинать"], editable: [false, false, false, false] },
+            { cells: ["blow", "blew", "blown", "дуть"], editable: [false, false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Заполни пропуски в таблице:",
+        taskID: "grid_table",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        tableData: {
+          headers: ["Russian", "English"],
+          rows: [
+            {
+              cells: ["Марвэл - моя собака", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel is my dog",],
+                almostCorrect: {
+                  1: ["Marvel's my dog"]
+                }
+              }
+            },
+            {
+              cells: ["Марвэл любит Сырника!", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Marvel likes Cheesecake.",],
+                almostCorrect: {
+                  1: ["Marvel loves Cheesecake","Marvel likes Cheesecakes","Marvel loves Cheesecakes"]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He doesn't like milk."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он не любит молоко",null, ],
+                almostCorrect: {
+                  1: ["Ему не нравится молоко",]
+                }
+
+              }
+            },
+            {
+              cells: ["", "He loves to run."],
+              editable: [true, false],
+              correctAnswers: {
+                cells: ["Он любит бегать",null, ],
+                almostCorrect: {
+                  1: ["Ему нравится бегать",]
+                }
+
+              }
+            },
+            {
+              cells: ["Кто любит Марвела?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who loves Marvel?",],
+                almostCorrect: {
+                  1: ["Who likes Marvel?"]
+                }
+
+              }
+            },
+            {
+              cells: ["Кого Марвел любит?", ""],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [null, "Who does Marvel love?",],
+                almostCorrect: {
+                  1: ["Who does Marvel like?"]
+                }
+              }
+            },
+          ]
+        },
+      },
+    ],
+  },
+  pattern_student_input: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
+      {
+        taskDescription: "Translate",
+        taskID: "student_input",
+        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
+        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
+        questions: [
+          {
+            text: "Напиши одну букву 'кью' _ ",
+            correctAnswer: "q",
+          },
+          {
+            text: "Особенный это - __",
+            correctAnswer: "special",
+            almostCorrectAnswers: ["special","unique","unusual"]
+
+          },
+          {
+            text: "Длинный это - ___",
+            correctAnswer: "long",
+            almostCorrectAnswers: ["not short","tall",]
+
+          },
+          {
+            text: "Новая строка - ____",
+            correctAnswer: "a new line",
+            almostCorrectAnswers: ["new line","new string", "a new string"]
+          },
+        ]
+      },
+    ],
+  },
+
+  readingIntensive1: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читается", "пишется"],
+          rows: [
+            { cells: ["могу, умею, банка", "/ кЭн /", "CAN"], editable: [false, false, false] },
+            { cells: ["кот, кошка, котик", "/ кЭт /", "CAT"], editable: [false, false, false] },
+            { cells: ["такси в Британии", "/ кЭб /", "CAB"], editable: [false, false, false] },
+            { cells: ["кепка", "/ кЭп /", "CAP"], editable: [false, false, false] },
+            { cells: ["шляпа, шапка", "/ хЭт /", "HAT"], editable: [false, false, false] },
+            { cells: ["мужчина, человек", "/ мЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["грустный, печальный", "/ сЭд /", "SAD"], editable: [false, false, false] },
+            { cells: ["приятель в Британии", "/ лЭд /", "LAD"], editable: [false, false, false] },
+            { cells: ["кровать, постель","/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["имя мужское Теодор", "/ тЭд /", "TED"], editable: [false, false, false] },
+            { cells: ["светодиод", "/ лЭД /", "LED"], editable: [false, false, false] },
+            { cells: ["позволять, разрешать", "/ лЭт /", "LET"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["могу, умею, банка", "CAN"], editable: [false, false] },
+            { cells: ["кот, кошка, котик", "CAT"], editable: [false, false] },
+            { cells: ["такси в Британии", "CAB"], editable: [false, false] },
+            { cells: ["кепка", "CAP"], editable: [false, false] },
+            { cells: ["шляпа, шапка", "HAT"], editable: [false, false] },
+            { cells: ["мужчина, человек", "MAN"], editable: [false, false] },
+            { cells: ["грустный, печальный", "SAD"], editable: [false, false] },
+            { cells: ["приятель в Британии", "LAD"], editable: [false, false] },
+            { cells: ["кровать, постель", "BED"], editable: [false, false] },
+            { cells: ["имя мужское Теодор", "TED"], editable: [false, false] },
+            { cells: ["светодиод", "LED"], editable: [false, false] },
+            { cells: ["позволять, разрешать", "LET"], editable: [false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["летучая мышь, бита", "BAT"], editable: [false, false] },
+            { cells: ["толстый, жирный", "FAT"], editable: [false, false] },
+            { cells: ["коврик для йоги, мат", "MAT"], editable: [false, false] },
+            { cells: ["крыса", "RAT"], editable: [false, false] },
+            { cells: ["красный цвет", "RED"], editable: [false, false] },
+            { cells: ["устанавливать, настраивать", "SET"], editable: [false, false] },
+            { cells: ["встретил", "MET"], editable: [false, false] },
+            { cells: ["лиса, лис", "FOX"], editable: [false, false] },
+            { cells: ["коробка, ящик", "BOX"], editable: [false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["мужчина один", "/ мЭЭЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["мужчин много", "/ мЭн /", "MEN"], editable: [false, false, false] },
+            { cells: ["плохой", "/ бЭЭЭд /", "BAD"], editable: [false, false, false] },
+            { cells: ["кровать", "/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["плохая кровать","/ бЭЭЭд бЭд/", "BAD BED"], editable: [false, false, false] },
+            { cells: ["плохие мужчины","/ бЭЭЭд мЭн/", "BAD MEN"], editable: [false, false, false] },
+            { cells: ["плохой мужик","/ бЭЭЭд мЭЭЭн/", "BAD MAN"], editable: [false, false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["мужик", "MAN"], editable: [ false, false] },
+            { cells: ["мужики", "MEN"], editable: [ false, false] },
+            { cells: ["плохой", "BAD"], editable: [ false, false] },
+            { cells: ["постель", "BED"], editable: [ false, false] },
+            { cells: ["некачественная постель","BAD BED"], editable: [ false, false] },
+            { cells: ["плохие мужчины","BAD MEN"], editable: [ false, false] },
+            { cells: ["один плохой мужик","BAD MAN"], editable: [ false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "Напиши по-английски"],
+          rows: [
+            { cells: ["Плохая кровать", ""],
+              editable: [ false, true ],
+              correctAnswers: {
+                cells: [null, "bad bed"],
+                almostCorrect: {
+                  1: ["a bad bed"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["1 мужчинА", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "man"],
+                almostCorrect: {
+                  1: ["a man","1 man","one man"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["мужчины", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "men"],
+              }},
+          ],
+        }
+      },
+    ],
+  },
+  readingIntensive2: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читается", "пишется"],
+          rows: [
+            { cells: ["могу, умею, банка", "/ кЭн /", "CAN"], editable: [false, false, false] },
+            { cells: ["кот, кошка, котик", "/ кЭт /", "CAT"], editable: [false, false, false] },
+            { cells: ["такси в Британии", "/ кЭб /", "CAB"], editable: [false, false, false] },
+            { cells: ["кепка", "/ кЭп /", "CAP"], editable: [false, false, false] },
+            { cells: ["шляпа, шапка", "/ хЭт /", "HAT"], editable: [false, false, false] },
+            { cells: ["мужчина, человек", "/ мЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["грустный, печальный", "/ сЭд /", "SAD"], editable: [false, false, false] },
+            { cells: ["приятель в Британии", "/ лЭд /", "LAD"], editable: [false, false, false] },
+            { cells: ["кровать, постель","/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["имя мужское Теодор", "/ тЭд /", "TED"], editable: [false, false, false] },
+            { cells: ["светодиод", "/ лЭД /", "LED"], editable: [false, false, false] },
+            { cells: ["позволять, разрешать", "/ лЭт /", "LET"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["могу, умею, банка", "CAN"], editable: [false, false] },
+            { cells: ["кот, кошка, котик", "CAT"], editable: [false, false] },
+            { cells: ["такси в Британии", "CAB"], editable: [false, false] },
+            { cells: ["кепка", "CAP"], editable: [false, false] },
+            { cells: ["шляпа, шапка", "HAT"], editable: [false, false] },
+            { cells: ["мужчина, человек", "MAN"], editable: [false, false] },
+            { cells: ["грустный, печальный", "SAD"], editable: [false, false] },
+            { cells: ["приятель в Британии", "LAD"], editable: [false, false] },
+            { cells: ["кровать, постель", "BED"], editable: [false, false] },
+            { cells: ["имя мужское Теодор", "TED"], editable: [false, false] },
+            { cells: ["светодиод", "LED"], editable: [false, false] },
+            { cells: ["позволять, разрешать", "LET"], editable: [false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["летучая мышь, бита", "BAT"], editable: [false, false] },
+            { cells: ["толстый, жирный", "FAT"], editable: [false, false] },
+            { cells: ["коврик для йоги, мат", "MAT"], editable: [false, false] },
+            { cells: ["крыса", "RAT"], editable: [false, false] },
+            { cells: ["красный цвет", "RED"], editable: [false, false] },
+            { cells: ["устанавливать, настраивать", "SET"], editable: [false, false] },
+            { cells: ["встретил", "MET"], editable: [false, false] },
+            { cells: ["лиса, лис", "FOX"], editable: [false, false] },
+            { cells: ["коробка, ящик", "BOX"], editable: [false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["мужчина один", "/ мЭЭЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["мужчин много", "/ мЭн /", "MEN"], editable: [false, false, false] },
+            { cells: ["плохой", "/ бЭЭЭд /", "BAD"], editable: [false, false, false] },
+            { cells: ["кровать", "/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["плохая кровать","/ бЭЭЭд бЭд/", "BAD BED"], editable: [false, false, false] },
+            { cells: ["плохие мужчины","/ бЭЭЭд мЭн/", "BAD MEN"], editable: [false, false, false] },
+            { cells: ["плохой мужик","/ бЭЭЭд мЭЭЭн/", "BAD MAN"], editable: [false, false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["мужик", "MAN"], editable: [ false, false] },
+            { cells: ["мужики", "MEN"], editable: [ false, false] },
+            { cells: ["плохой", "BAD"], editable: [ false, false] },
+            { cells: ["постель", "BED"], editable: [ false, false] },
+            { cells: ["некачественная постель","BAD BED"], editable: [ false, false] },
+            { cells: ["плохие мужчины","BAD MEN"], editable: [ false, false] },
+            { cells: ["один плохой мужик","BAD MAN"], editable: [ false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "Напиши по-английски"],
+          rows: [
+            { cells: ["Плохая кровать", ""],
+              editable: [ false, true ],
+              correctAnswers: {
+                cells: [null, "bad bed"],
+                almostCorrect: {
+                  1: ["a bad bed"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["1 мужчинА", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "man"],
+                almostCorrect: {
+                  1: ["a man","1 man","one man"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["мужчины", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "men"],
+              }},
+          ],
+        }
+      },
+    ],
+  },
+
+
   yesNoBecause1: {
     tasks: [
       {
@@ -976,206 +1447,6 @@ const ListeningExerciseData = {
         ]
       }
     ]
-  },
-  pattern_drop_down_text: {
-    mainDescription: "V-IS-MY-DEBUGGER",
-    tasks: [
-      {
-        taskDescription: "Drop down",
-        taskID: "drop_down_text",
-        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
-        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
-        questions: [
-          {
-            text: "Hello friends! Let me share (for, to, with*) you a few words about myself, I (do, does, are, am*, is) a secret agent Antony. I always sit (under, behind, on*, near) my chair and every day I work (in, at*, under, for, between) my computer.\n" +
-              '<-->\n' +
-              "I (haven't, don't have*, hasn't) a cat. But I (do, have*, has) a fantastic dog! (Her, His*) name is Marvel, not DC. My dog (have, has*, doesn't have*, hasn't, do) problems. I can talk about my dog endlessly, but I (haven't, don't have*, doesn't have) much time, so I am going to finish talking about my dog now. And let me (say, telk, tell*) you about new cool stories bout my baby (Cupcake*, Cheesecake*, Muffin*) ",
-          },
-        ]
-      },
-    ],
-  },
-  pattern_drop_down_short: {
-    mainDescription: "IELTS exam listening",
-    tasks: [
-      {
-        taskDescription: "What is the location of ... ?",
-        taskID: "drop_down_text",
-        usefulWords: 'Summit - /самит/ вершина, Stables - /стЭйблз/ конюшни, Surgery room - /сЁджэри рум/ операционная' ,
-        taskPicture: new URL("../assets/images/ielts_listening_7.png", import.meta.url).href,
-        audio: new URL('../assets/audio/ielts_listening_7.mp3', import.meta.url).href,
-        textScript: 'if you need hints or help - ask #vismyfriend',
-        questions: [
-          {
-            text:
-              "Old bakery (A,B,C*,D,E,F,G,H,i)\n" +
-              "Doctor's surgery (A,B,C,D,E,F*,G,H,i)\n" +
-              "Cooper's cottage (A*,B,C,D,E,F,G,H,i)\n" +
-              "Stables (A,B,C,D,E,F,G,H*,i)\n" +
-              "Old school (A,B,C,D,E*,F,G,H,i)\n"
-          },
-        ]
-      },
-    ],
-  },
-  pattern_grid_table: {
-    mainDescription: "V-IS-MY-DEBUGGER",
-    tasks: [
-      {
-        taskDescription: "Grid - fill in",
-        taskID: "grid_table",
-        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
-        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
-        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
-        tableData: {
-          headers: ["v1","v2","v3","перевод","пример",],
-          rows: [
-            {
-              cells: ["do", "did", "done","делать", "I did it"],
-              editable: [false, false, false, false, false,]
-            },
-            {
-              cells: ["eat","","eaten","","",],
-              editable: [false, true, false, true, true,],
-              correctAnswers: {
-                cells: [null, "ate",null,"есть","anyIsOk" ],
-                almostCorrect: {
-                  1: ["two","2"], // Индекс поля (начиная с 0)
-                  3: ["поесть","кушать","жрать","скушать","покушать",],
-                }
-              }
-            },
-          ]
-        }
-      },
-      {
-        taskDescription: "GRID - Irregular Verbs:",
-        taskID: "grid_table",
-        taskPicture: null,
-        tableData: {
-          headers: ["V1", "V2", "V3", "перевод"],
-          rows: [
-            { cells: ["break", "broke", "broken", "ломать"], editable: [false, false, false, false] },
-            { cells: ["beat", "beat", "beaten", "побить"], editable: [false, false, false, false] },
-            { cells: ["become", "became", "become", "становиться"], editable: [false, false, false, false] },
-            { cells: ["begin", "began", "begun", "начинать"], editable: [false, false, false, false] },
-            { cells: ["blow", "blew", "blown", "дуть"], editable: [false, false, false, false] },
-          ]
-        }
-      },
-      {
-        taskDescription: "Заполни пропуски в таблице:",
-        taskID: "grid_table",
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        tableData: {
-          headers: ["Russian", "English"],
-          rows: [
-            {
-              cells: ["Марвэл - моя собака", ""],
-              editable: [false, true],
-              correctAnswers: {
-                cells: [null, "Marvel is my dog",],
-                almostCorrect: {
-                  1: ["Marvel's my dog"]
-                }
-              }
-            },
-            {
-              cells: ["Марвэл любит Сырника!", ""],
-              editable: [false, true],
-              correctAnswers: {
-                cells: [null, "Marvel likes Cheesecake.",],
-                almostCorrect: {
-                  1: ["Marvel loves Cheesecake","Marvel likes Cheesecakes","Marvel loves Cheesecakes"]
-                }
-
-              }
-            },
-            {
-              cells: ["", "He doesn't like milk."],
-              editable: [true, false],
-              correctAnswers: {
-                cells: ["Он не любит молоко",null, ],
-                almostCorrect: {
-                  1: ["Ему не нравится молоко",]
-                }
-
-              }
-            },
-            {
-              cells: ["", "He loves to run."],
-              editable: [true, false],
-              correctAnswers: {
-                cells: ["Он любит бегать",null, ],
-                almostCorrect: {
-                  1: ["Ему нравится бегать",]
-                }
-
-              }
-            },
-            {
-              cells: ["Кто любит Марвела?", ""],
-              editable: [false, true],
-              correctAnswers: {
-                cells: [null, "Who loves Marvel?",],
-                almostCorrect: {
-                  1: ["Who likes Marvel?"]
-                }
-
-              }
-            },
-            {
-              cells: ["Кого Марвел любит?", ""],
-              editable: [false, true],
-              correctAnswers: {
-                cells: [null, "Who does Marvel love?",],
-                almostCorrect: {
-                  1: ["Who does Marvel like?"]
-                }
-              }
-            },
-          ]
-        },
-      },
-    ],
-  },
-  pattern_student_input: {
-    mainDescription: "V-IS-MY-DEBUGGER",
-    tasks: [
-      {
-        taskDescription: "Translate",
-        taskID: "student_input",
-        usefulWords: 'Special - /спэшл/ особенный, Agent - /эйджэнт/ агент',
-        audio: new URL('../assets/audio/WithoutMeNoSpaces.mp3', import.meta.url).href,
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
-        textScript: 'тут подсказки или текст аудио или ответы скоро появятся. ask #vismyfriend',
-        questions: [
-          {
-            text: "Напиши одну букву 'кью' _ ",
-            correctAnswer: "q",
-          },
-          {
-            text: "Особенный это - __",
-            correctAnswer: "special",
-            almostCorrectAnswers: ["special","unique","unusual"]
-
-          },
-          {
-            text: "Длинный это - ___",
-            correctAnswer: "long",
-            almostCorrectAnswers: ["not short","tall",]
-
-          },
-          {
-            text: "Новая строка - ____",
-            correctAnswer: "a new line",
-            almostCorrectAnswers: ["new line","new string", "a new string"]
-          },
-        ]
-      },
-    ],
   },
 
   directionsA2: {

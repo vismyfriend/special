@@ -54,6 +54,7 @@ import pnqwData from "src/dataForGames/pnqw";
 import shortPicturesData from "src/dataForGames/short-pictures-data";
 import dresserGameData from "src/dataForGames/dresserGameData";
 import songsData from "src/dataForGames/SongsData";
+import pdfPagesData from "src/dataForGames/pdfPagesData";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -268,6 +269,14 @@ const AllGames = ref([
     name: "Lyrics",
     path: "songs",
     gameData: songsData,
+    cardIcon: '🎧',
+    active: true
+  },
+  {
+    id: 113,
+    name: "PDF",
+    path: "pdfPages",
+    gameData: pdfPagesData,
     cardIcon: '🎧',
     active: true
   },
