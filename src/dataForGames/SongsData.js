@@ -51,7 +51,7 @@ const songsData = {
 
     ],
   },
-  falloutCrazyImpossible: {
+  songImpossibleFallout: {
     mainDescription: null,
     tasks: [
       {

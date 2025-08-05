@@ -836,7 +836,147 @@ const ListeningExerciseData = {
       },
     ],
   },
+  howMuchIsTooMuchDiscussion1: {
+    tasks: [
+      {
+        taskID: "discussion_task",
+        usefulWords: 'To my mind - по моему мнению, I suppose - / ай сапОуз/ я полагаю, They say that - говорят что, I`d say - я бы сказал, 5 kisses from V is too much - чересчур',
+        questions: [
+          {
+            text: "How much pizza is too much for one person?",
+            translation: "Сколько пиццы — это уже перебор для одного человека?"
+          },
+          {
+            text: "How much screen time is too much for kids?",
+            translation: "Сколько времени у экрана — это уже много для детей?"
+          },
+          {
+            text: "How much sarcasm is too much in a relationship?",
+            translation: "Когда сарказм в отношениях становится токсичным?"
+          },
+          {
+            text: "How much coffee is too much?",
+            translation: "Сколько кофе можно, чтобы не переборщить?"
+          },
+          {
+            text: "How many pelmenis is too many?",
+            translation: "Сколько пельменей считается уже перебором в пельменях?"
+          },
+          {
+            text: "How much gossip is too much at work?",
+            translation: "Когда сплетни на работе становятся невыносимыми?"
+          },
+          {
+            text: "How much glitter is too much on a birthday card?",
+            translation: "Сколько блёсток на открытке — это уже слишком?"
+          }
+        ]
+      }
+    ]
+  },
+  howMuchIsTooMuchDiscussion2: {
+    tasks: [
+      {
+        taskID: "discussion_task",
+        usefulWords: 'To my mind - по моему мнению, I suppose - / ай сапОуз/ я полагаю, They say that - говорят что, I`d say - я бы сказал, 5 kisses from V is too much - чересчур',
 
+        questions: [
+          {
+            text: "How much chocolate is too much with a cup of tea?",
+            translation: "Сколько шоколада можно съесть без вреда за одной чашечкой чая?"
+          },
+          {
+            text: "How many roses is too many for the first date?",
+            translation: "Как много роз на первом свидании будет считаться слишком уже чересчур много?"
+          },
+          {
+            text: "How much TikTok or Instagram is too much per day?",
+            translation: "Сколько часов в соцсетях — это уже зависимость?"
+          },
+          {
+            text: "How much doshirak is too much for a week?",
+            translation: "Разве может быть много Дошика?"
+          },
+          {
+            text: "How much beer is too much at a party?",
+            translation: "Разве можно переборщить с пивасиком на вечеринке?"
+          },
+          {
+            text: "How much sport exercise is too much?",
+            translation: "Когда спорта становится слишком много?"
+          }
+        ]
+      }
+    ]
+  },
+  howMuchIsTooMuchDiscussion3: {
+    tasks: [
+      {
+        taskID: "discussion_task",
+        usefulWords: 'To my mind - по моему мнению, I suppose - / ай сапОуз/ я полагаю, They say that - говорят что, I`d say - я бы сказал, 5 kisses from V is too much - чересчур',
+        questions: [
+          {
+            text: "How much fast food is too much in a week?",
+            translation: "Сколько фастфуда в неделю — это уже вредно?"
+          },
+          {
+            text: "How big lips are too big?",
+            translation: "Насколько увеличенные губы считается уже чересчур?"
+          },
+          {
+            text: "How many emoji is too many in one message? 😅😅😅😅",
+            translation: "Сколько эмодзи в письме — это непрофессионально?"
+          },
+          {
+            text: "How much sleep is too much on Saturday and Sunday?",
+            translation: "Сколько можно спать на выходных без чувства вины?"
+          },
+          {
+            text: "How much volume is too much in headphones?",
+            translation: "Когда громкость в наушниках становится опасной для слуха?"
+          },
+          {
+            text: "How much computer games is too much?",
+            translation: "Сколько играть в видеоигры, чтобы голова разболелась?"
+          }
+        ]
+      }
+    ]
+  },
+  howMuchIsTooMuchDiscussion4: {
+    tasks: [
+      {
+        taskID: "discussion_task",
+        usefulWords: 'To my mind - по моему мнению, I suppose - / ай сапОуз/ я полагаю, They say that - говорят что, I`d say - я бы сказал, 5 kisses from V is too much - чересчур',
+        questions: [
+          {
+            text: "How much soda is too much?",
+            translation: "Сколько газировки можно пить без вреда?"
+          },
+          {
+            text: "How much social media is too much before bed?",
+            translation: "Сколько времени в соцсетях вечером мешает заснуть?"
+          },
+          {
+            text: "How much joking is too much in a serious meeting?",
+            translation: "Когда шутки на серьёзной встрече становятся неуместными?"
+          },
+          {
+            text: "How much salt is too much in soup?",
+            translation: "Сколько соли в супе — это уже пересол?"
+          },
+          {
+            text: "How much homework from Vincent is too much homework?",
+            translation: "Как много домашки от Винсента считается перебором?"
+          },
+          {
+            text: "How many pets is too many?",
+            translation: "Сколько питомцев считается уже перебор с питомцами?"
+          }
+        ]
+      }
+    ]
+  },
   pattern_drop_down_text: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [

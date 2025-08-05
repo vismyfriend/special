@@ -50,7 +50,7 @@ const shortWordsData = {
     { id: 38, eng: "Depth perception", ru: "Глубинное восприятие" },
     { id: 39, eng: "Backup", ru: "Подкрепление" },
     { id: 40, eng: "I am in a hurry", ru: "Я в спешке" },
-    { id: 41, eng: "mode of death", ru: "Музей" },
+    { id: 41, eng: "mode of death", ru: "режим смерти" },
     { id: 42, eng: "slow and horrible", ru: "медленно и ужасно" },
     { id: 43, eng: "quick and painless", ru: "быстро и бесболезненно" },
     { id: 44, eng: "Lousy, stinking ripoff!", ru: "дрянная обдираловка!" },

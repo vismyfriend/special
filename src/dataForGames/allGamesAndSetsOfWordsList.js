@@ -685,6 +685,15 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songImpossibleFallout/songs",
+      missionVisibleName: "Diamond city radio",
+      missionDescription: "Crazy he calls me",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/yesNoBecause1/listening-exercises",
       missionVisibleName: "Short discussions 1",
       missionDescription: "Короткие обсуждения 1",
@@ -733,6 +742,42 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/yesNoBecause6/listening-exercises",
       missionVisibleName: "Short discussions 6",
       missionDescription: "Короткие обсуждения 6",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion1/listening-exercises",
+      missionVisibleName: "How much is too much 1?",
+      missionDescription: "Чересчур это сколько 1?",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion2/listening-exercises",
+      missionVisibleName: "How much is too much 2?",
+      missionDescription: "Чересчур это сколько 2?",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion3/listening-exercises",
+      missionVisibleName: "How much is too much 3?",
+      missionDescription: "Чересчур это сколько 3?",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion4/listening-exercises",
+      missionVisibleName: "How much is too much 4?",
+      missionDescription: "Чересчур это сколько 4?",
       id: 1001,
       active: true,
       gameIcon:'❓'
