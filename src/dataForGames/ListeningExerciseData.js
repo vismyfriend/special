@@ -789,9 +789,9 @@ const ListeningExerciseData = {
     mainDescription: null,
     tasks: [
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Без перевода - читай, везде звук /Э/",
         taskID: "grid_table",
-        taskPicture: null,
+        taskPicture: new URL("../assets/images/A sound.jpeg", import.meta.url).href,
         tableData: {
           headers: ["", "читается", "пишется"],
           rows: [
@@ -811,7 +811,7 @@ const ListeningExerciseData = {
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Без перевода - читай, везде звук /Э/",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
@@ -834,7 +834,7 @@ const ListeningExerciseData = {
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "уверенно читай - ты сможешь!",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
@@ -847,17 +847,16 @@ const ListeningExerciseData = {
             { cells: ["красный цвет", "RED"], editable: [false, false] },
             { cells: ["устанавливать, настраивать", "SET"], editable: [false, false] },
             { cells: ["встретил", "MET"], editable: [false, false] },
-            { cells: ["лиса, лис", "FOX"], editable: [false, false] },
-            { cells: ["коробка, ящик", "BOX"], editable: [false, false] },
+            { cells: ["могу", "CAN"], editable: [false, false] },
+            { cells: ["не могу", "CAN`T"], editable: [false, false] },
           ]
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Обрати внимание - короткий звук Э или длинный ЭЭЭ",
         taskID: "grid_table",
-        taskPicture: null,
         tableData: {
-          headers: ["", "читай вслух"],
+          headers: ["", "произношение"],
           rows: [
             { cells: ["мужчина один", "/ мЭЭЭн /", "MAN"], editable: [false, false, false] },
             { cells: ["мужчин много", "/ мЭн /", "MEN"], editable: [false, false, false] },
@@ -871,9 +870,10 @@ const ListeningExerciseData = {
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Проверим вашу память",
         taskID: "grid_table",
-        taskPicture: null,
+        taskPicture: new URL("../assets/images/A_sound_long.jpeg", import.meta.url).href,
+
         tableData: {
           headers: ["", "читай вслух"],
           rows: [
@@ -884,12 +884,11 @@ const ListeningExerciseData = {
             { cells: ["некачественная постель","BAD BED"], editable: [ false, false] },
             { cells: ["плохие мужчины","BAD MEN"], editable: [ false, false] },
             { cells: ["один плохой мужик","BAD MAN"], editable: [ false, false] },
-
           ]
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Write in English",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
@@ -929,18 +928,121 @@ const ListeningExerciseData = {
         tableData: {
           headers: ["", "читается", "пишется"],
           rows: [
-            { cells: ["могу, умею, банка", "/ кЭн /", "CAN"], editable: [false, false, false] },
-            { cells: ["кот, кошка, котик", "/ кЭт /", "CAT"], editable: [false, false, false] },
-            { cells: ["такси в Британии", "/ кЭб /", "CAB"], editable: [false, false, false] },
-            { cells: ["кепка", "/ кЭп /", "CAP"], editable: [false, false, false] },
-            { cells: ["шляпа, шапка", "/ хЭт /", "HAT"], editable: [false, false, false] },
-            { cells: ["мужчина, человек", "/ мЭн /", "MAN"], editable: [false, false, false] },
-            { cells: ["грустный, печальный", "/ сЭд /", "SAD"], editable: [false, false, false] },
-            { cells: ["приятель в Британии", "/ лЭд /", "LAD"], editable: [false, false, false] },
-            { cells: ["кровать, постель","/ бЭд /", "BED"], editable: [false, false, false] },
-            { cells: ["имя мужское Теодор", "/ тЭд /", "TED"], editable: [false, false, false] },
-            { cells: ["светодиод", "/ лЭД /", "LED"], editable: [false, false, false] },
-            { cells: ["позволять, разрешать", "/ лЭт /", "LET"], editable: [false, false, false] },
+            { cells: ["мальчик, парень", "/ бОй /", "BOY"], editable: [false, false, false] },
+            { cells: ["игрушка", "/ тОй /", "TOY"], editable: [false, false, false] },
+            { cells: ["документ", "/ дОк /", "DOC"], editable: [false, false, false] },
+            { cells: ["собака, пёс", "/ дОг /", "DOG"], editable: [false, false, false] },
+            { cells: ["большой", "/ бИг /", "BIG"], editable: [false, false, false] },
+            { cells: ["свинья, хрюша", "/ пИг /", "PIG"], editable: [false, false, false] },
+            { cells: ["булавка, пинкод", "/ пИн /", "PIN"], editable: [false, false, false] },
+            { cells: ["почтовый индекс", "/ зИп /", "ZIP"], editable: [false, false, false] },
+            { cells: ["сидеть", "/ сИт /", "SIT"], editable: [false, false, false] },
+            { cells: ["макать, окунаться", "/ дИп /", "DIP"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "С максимальной скоростью",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["макать, окунаться", "DIP"], editable: [false, false] },
+            { cells: ["сидеть", "SIT"], editable: [false, false] },
+            { cells: ["почтовый индекс", "ZIP"], editable: [false, false] },
+            { cells: ["свинья, хрюша", "PIG"], editable: [false, false] },
+            { cells: ["большой", "BIG"], editable: [false, false] },
+            { cells: ["булавка, пинкод", "PIN"], editable: [false, false] },
+            { cells: ["собака, пёс", "DOG"], editable: [false, false] },
+            { cells: ["документ", "DOC"], editable: [false, false] },
+            { cells: ["мальчик, парень", "BOY"], editable: [false, false] },
+            { cells: ["игрушка", "TOY"], editable: [false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "без разницы Можно О = можно А",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читается", "пишется"],
+          rows: [
+            { cells: ["горячий", "/ хОт, хАт /", "HOT"], editable: [false, false, false] },
+            { cells: ["кастрюля", "/ пОт, пАт /", "POT"], editable: [false, false, false] },
+            { cells: ["получил", "/ гОт , гАт /", "GOT"], editable: [false, false, false] },
+            { cells: ["точка", "/ дОт , дАт /", "DOT"], editable: [false, false, false] },
+            { cells: ["господь Бог", "/ гОд , гАд /", "GOD"], editable: [false, false, false] },
+            { cells: ["замОк", "/ лОк , лАк /", "LOCK"], editable: [false, false, false] },
+            { cells: ["блок", "/ блОк , блАк /", "BLOCK"], editable: [false, false, false] },
+            { cells: ["часы", "/ клОк , клАк /", "CLOCK"], editable: [false, false, false] },
+            { cells: ["место", "/ спОт , спАт /", "SPOT"], editable: [false, false, false] },
+          ]
+        }
+      },{
+        taskDescription: "без разницы Можно О = можно А",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["и так и так понятно", "как нравится так и читай"],
+          rows: [
+            { cells: ["блок", "BLOCK"], editable: [false, false] },
+            { cells: ["часы", "CLOCK"], editable: [false, false] },
+            { cells: ["замок", "LOCK"], editable: [false, false] },
+            { cells: ["место", "SPOT"], editable: [false, false] },
+            { cells: ["горячий", "HOT"], editable: [false, false] },
+            { cells: ["кастрюля", "POT"], editable: [false, false] },
+            { cells: ["получил", "GOT"], editable: [false, false] },
+            { cells: ["точка", "DOT"], editable: [false, false] },
+            { cells: ["господь Бог", "GOD"], editable: [false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Без перевода - просто читай",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читается", "пишется"],
+          rows: [
+            { cells: ["эй, привет", "/ хЭй /", "HEY"], editable: [false, false, false] },
+            { cells: ["день", "/ дЭй /", "DAY"], editable: [false, false, false] },
+            { cells: ["играть", "/ плЭй /", "PLAY"], editable: [false, false, false] },
+            { cells: ["месяц Май", "/ мЭй /", "MAY"], editable: [false, false, false] },
+            { cells: ["платить", "/ пЭй /", "PAY"], editable: [false, false, false] },
+            { cells: ["ручка", "/ пЭн /", "PEN"], editable: [false, false, false] },
+            { cells: ["курица", "/ хЭн /", "HEN"], editable: [false, false, false] },
+            { cells: ["варенье", "/ джЭм /", "JAM"], editable: [false, false, false] },
+            { cells: ["имя ДЖЭК", "/ джЭк /", "JACK"], editable: [false, false, false] },
+            { cells: ["реактивный самолёт", "/ джЭт /", "JET"], editable: [false, false, false] },
+            { cells: ["пока ещё нет", "/ йЕт /", "YET"], editable: [false, false, false] },
+            { cells: ["ага, угу, да", "/ йЕп /", "YEP"], editable: [false, false, false] },
+            { cells: ["да", "/ йЕc /", "YES"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "На максимальной сорости",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["имя Джек", "JACK"], editable: [false, false] },
+            { cells: ["реактивный самолёт", "JET"], editable: [false, false] },
+            { cells: ["пока ещё нет", "YET"], editable: [false, false] },
+            { cells: ["ага, угу, да", "YEP"], editable: [false, false] },
+            { cells: ["да", "YES"], editable: [false, false] },
+            { cells: ["эй, привет", "HEY"], editable: [false, false] },
+            { cells: ["день", "DAY"], editable: [false, false] },
+            { cells: ["играть", "PLAY"], editable: [false, false] },
+            { cells: ["месяц Май", "MAY"], editable: [false, false] },
+            { cells: ["платить", "PAY"], editable: [false, false] },
+            { cells: ["ручка", "PEN"], editable: [false, false] },
+            { cells: ["курица", "HEN"], editable: [false, false] },
+            { cells: ["варенье", "JAM"], editable: [false, false] },
+            { cells: ["мадам, мэм", "MAM"], editable: [false, false] },
+            { cells: ["ветчина", "HAM"], editable: [false, false] },
           ]
         }
       },
@@ -951,56 +1053,172 @@ const ListeningExerciseData = {
         tableData: {
           headers: ["", "читай вслух"],
           rows: [
-            { cells: ["могу, умею, банка", "CAN"], editable: [false, false] },
-            { cells: ["кот, кошка, котик", "CAT"], editable: [false, false] },
-            { cells: ["такси в Британии", "CAB"], editable: [false, false] },
-            { cells: ["кепка", "CAP"], editable: [false, false] },
-            { cells: ["шляпа, шапка", "HAT"], editable: [false, false] },
-            { cells: ["мужчина, человек", "MAN"], editable: [false, false] },
-            { cells: ["грустный, печальный", "SAD"], editable: [false, false] },
-            { cells: ["приятель в Британии", "LAD"], editable: [false, false] },
-            { cells: ["кровать, постель", "BED"], editable: [false, false] },
-            { cells: ["имя мужское Теодор", "TED"], editable: [false, false] },
-            { cells: ["светодиод", "LED"], editable: [false, false] },
-            { cells: ["позволять, разрешать", "LET"], editable: [false, false] },
 
-          ]
-        }
-      },
-      {
-        taskDescription: "Без перевода - просто читай",
-        taskID: "grid_table",
-        taskPicture: null,
-        tableData: {
-          headers: ["", "читай вслух"],
-          rows: [
-            { cells: ["летучая мышь, бита", "BAT"], editable: [false, false] },
-            { cells: ["толстый, жирный", "FAT"], editable: [false, false] },
-            { cells: ["коврик для йоги, мат", "MAT"], editable: [false, false] },
-            { cells: ["крыса", "RAT"], editable: [false, false] },
-            { cells: ["красный цвет", "RED"], editable: [false, false] },
-            { cells: ["устанавливать, настраивать", "SET"], editable: [false, false] },
-            { cells: ["встретил", "MET"], editable: [false, false] },
             { cells: ["лиса, лис", "FOX"], editable: [false, false] },
             { cells: ["коробка, ящик", "BOX"], editable: [false, false] },
           ]
         }
       },
+    ],
+  },
+  readingIntensive3: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: "'Е' вконце слова не читается",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читАЙ i ", "буква i ай"],
+          rows: [
+            { cells: ["нравится, нравиться", "/ лАЙк /", "LIKE"], editable: [false, false, false] },
+            { cells: ["щука (вид рыбы)", "/ пАЙк /", "PIKE"], editable: [false, false, false] },
+            { cells: ["имя Майк", "/ мАЙк /", "MIKE"], editable: [false, false, false] },
+            { cells: ["имя Майкл", "/ мАЙкл /", "MICHAEL"], editable: [false, false, false] },
+            { cells: ["вЕлик", "/ бАЙк /", "BIKE"], editable: [false, false, false] },
+            { cells: ["вЕлосипед", "/ бАЙсикл /", "BICYCLE"], editable: [false, false, false] },
+            { cells: ["шип, колючка", "/ спАЙк /", "SPIKE"], editable: [false, false, false] },
+            { cells: ["телефон", "/ АЙфоун /", "IPHONE"], editable: [false, false, false] },
+            { cells: ["лёд", "/ АЙс /", "ICE"], editable: [false, false, false] },
+            { cells: ["кости игральные", "/ дАЙс /", "DICE"], editable: [false, false, false] },
+            { cells: ["мыши", "/ мАЙс /", "MICE"], editable: [false, false, false] },
+            { cells: ["рис", "/ рАЙс /", "RICE"], editable: [false, false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Если вконце буква 'E' тогда",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", " i читай Ай"],
+          rows: [
+            { cells: ["имя Майк", "MIKE"], editable: [false, false] },
+            { cells: ["имя Майкл", "MICHAEL"], editable: [ false, false] },
+            { cells: ["велосипед", "BIKE"], editable: [false, false] },
+            { cells: ["вЕлосипед", "BICYCLE"], editable: [false, false] },
+            { cells: ["нравиться", "LIKE"], editable: [false, false] },
+            { cells: ["щука (рыба)", "PIKE"], editable: [false, false] },
+            { cells: ["шип, колючка", "SPIKE"], editable: [false, false] },
+            { cells: ["лёд", "ICE"], editable: [false, false] },
+            { cells: ["несколько мышей", "MICE"], editable: [false, false] },
+            { cells: ["рис", "RICE"], editable: [ false, false] },
+            { cells: ["игральные кости", "DICE"], editable: [false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "ЗАКРЫТЫЙ СЛОГ - гласная одна всего",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай коротко - И "],
+          rows: [
+            { cells: ["сидеть", "SIT"], editable: [ false, false] },
+            { cells: ["укусил", "BIT"], editable: [false, false] },
+            { cells: ["поджёг", "LIT"], editable: [false, false] },
+            { cells: ["подходить по размеру", "FIT"], editable: [false, false] },
+            { cells: ["имя Мужское", "NICK"], editable: [false, false] },
+            { cells: ["подобрать", "PICK"], editable: [false, false] },
+            { cells: ["картинка", "PIC"], editable: [false, false] },
+            { cells: ["кирпич", "BRICK"], editable: [false, false] },
+            { cells: ["больной", "SICK"], editable: [false, false] },
+            { cells: ["облизывать", "LICK"], editable: [ false, false] },
+            { cells: ["пинаться", "KICK"], editable: [false, false] },
+            { cells: ["набор", "KIT"], editable: [false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "ОТКРЫТЫЙ СЛОГ - две гласные буквы",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "буква i", "Ай"],
+          rows: [
+            { cells: ["кусать", "/ бАЙт /", "BITE"], editable: [false, false, false] },
+            { cells: ["легкий вес", "/ лАЙт /", "LITE"], editable: [false, false, false] },
+            { cells: ["скользить","/ слАЙд /", "SLIDE"], editable: [false, false, false] },
+            { cells: ["достопримечательность","/ сАЙт /", "SITE"], editable: [false, false, false] },
+            { cells: ["щука (рыба)","/ пАЙк /", "PIKE"], editable: [false, false, false] },
+            { cells: ["нравиться", "/ лАЙк /","LIKE"], editable: [false, false, false] },
+            { cells: ["воздушный змей","/ кАЙт /", "KITE"], editable: [false, false, false] },
+            { cells: ["планировать (полёт)","/ глАЙд /", "GLIDE"], editable: [false, false, false] },
+            { cells: ["широкий шаг","/ стрАЙд /", "STRIDE"], editable: [false, false, false] },
+            { cells: ["правильный, право", "/ рАЙт /","RIGHT"], editable: [false, false, false] },
+            { cells: ["свет","/ лАЙт /", "LIGHT"], editable: [false, false, false] },
+            { cells: ["драться", "/ фАЙт /","FIGHT"], editable: [false, false, false] },
+            { cells: ["вероятно","/ мАЙт /", "MIGHT"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Когда Ай i ? Когда И i ?",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["Ай", "И"],
+          rows: [
+            { cells: ["-", "-"], editable: [ false, false] },
+            { cells: ["BITE", "BIT"], editable: [ false, false] },
+            { cells: ["LITE", "LIT"], editable: [false, false] },
+            { cells: ["SLIDE", "SLID"], editable: [false, false, false] },
+            { cells: ["SITE", "SIT"], editable: [false, false, false] },
+            { cells: ["KITE", "KIT"], editable: [false, false, false] },
+            { cells: ["PIKE", "PICK"], editable: [false, false, false] },
+            { cells: ["LIKE", "LICK"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Буква ЭЙ закрытая и открытая",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["звук /ЭЙ/", "звук /Э/"],
+          rows: [
+            { cells: ["-", "-"], editable: [ false, false] },
+            { cells: ["SAME", "SAM"], editable: [ false, false] },
+            { cells: ["GAME", "GAM"], editable: [false, false] },
+            { cells: ["PLANE", "PLAN"], editable: [false, false, false] },
+            { cells: ["JAME", "JAM"], editable: [false, false, false] },
+            { cells: ["JACKE", "JACK"], editable: [false, false, false] },
+            { cells: ["JANE", "JAN"], editable: [false, false, false] },
+            { cells: ["KATE", "KAT"], editable: [ false, false] },
+            { cells: ["FAME", "FAM"], editable: [false, false, false] },
+            { cells: ["LAME", "LAM"], editable: [false, false, false] },
+            { cells: ["LANE", "LAN"], editable: [false, false, false] },
+            { cells: ["CANE", "CAN"], editable: [false, false, false] },
+          ]
+        }
+      },
+
       {
         taskDescription: "Без перевода - просто читай",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
-          headers: ["", "читай вслух"],
+          headers: ["", "читается", "пишется"],
           rows: [
-            { cells: ["мужчина один", "/ мЭЭЭн /", "MAN"], editable: [false, false, false] },
-            { cells: ["мужчин много", "/ мЭн /", "MEN"], editable: [false, false, false] },
-            { cells: ["плохой", "/ бЭЭЭд /", "BAD"], editable: [false, false, false] },
-            { cells: ["кровать", "/ бЭд /", "BED"], editable: [false, false, false] },
-            { cells: ["плохая кровать","/ бЭЭЭд бЭд/", "BAD BED"], editable: [false, false, false] },
-            { cells: ["плохие мужчины","/ бЭЭЭд мЭн/", "BAD MEN"], editable: [false, false, false] },
-            { cells: ["плохой мужик","/ бЭЭЭд мЭЭЭн/", "BAD MAN"], editable: [false, false, false] },
-
+            { cells: ["бежать", "/ рАн /", "RUN"], editable: [false, false, false] },
+            { cells: ["солнце", "/ сАн /", "SUN"], editable: [false, false, false] },
+            { cells: ["бомж, бездомный", "/ бАм /", "BUM"], editable: [false, false, false] },
+            { cells: ["булочка", "/ бАн /", "BUN"], editable: [false, false, false] },
+            { cells: ["но", "/ бАт /", "BUT"], editable: [false, false, false] },
+            { cells: ["грязь", "/ мАд /", "MUD"], editable: [false, false, false] },
+            { cells: ["кувшин", "/ джАг /", "JUG"], editable: [false, false, false] },
+            { cells: ["фу! отвращение", "/ йАк /", "YUK"], editable: [false, false, false] },
+            { cells: ["утка", "/ дак /", "DUCK"], editable: [false, false, false] },
+            { cells: ["шайба хоккей", "/ пак /", "PUCK"], editable: [false, false, false] },
+            { cells: ["удачa", "/ лак /", "LUCK"], editable: [false, false, false] },
+            { cells: ["грузовик", "/ трак /", "TRUCK"], editable: [false, false, false] },
+            { cells: ["застрять", "/ стак /", "STUCK"], editable: [false, false, false] },
+            { cells: ["обнимать", "/ хаг /", "HUG"], editable: [false, false, false] },
+            { cells: ["коврик", "/ раг /", "RUG"], editable: [false, false, false] },
+            { cells: ["чашка", "/ кап /", "CUP"], editable: [false, false, false] }
           ]
         }
       },
@@ -1009,48 +1227,64 @@ const ListeningExerciseData = {
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
-          headers: ["", "читай вслух"],
+          headers: ["", "прочитай"],
           rows: [
-            { cells: ["мужик", "MAN"], editable: [ false, false] },
-            { cells: ["мужики", "MEN"], editable: [ false, false] },
-            { cells: ["плохой", "BAD"], editable: [ false, false] },
-            { cells: ["постель", "BED"], editable: [ false, false] },
-            { cells: ["некачественная постель","BAD BED"], editable: [ false, false] },
-            { cells: ["плохие мужчины","BAD MEN"], editable: [ false, false] },
-            { cells: ["один плохой мужик","BAD MAN"], editable: [ false, false] },
-
+            { cells: ["бежать", "RUN"], editable: [false, false] },
+            { cells: ["солнце", "SUN"], editable: [false, false] },
+            { cells: ["бомж, бездомный", "BUM"], editable: [false, false] },
+            { cells: ["булочка", "BUN"], editable: [false, false] },
+            { cells: ["но", "BUT"], editable: [false, false] },
+            { cells: ["грязь", "MUD"], editable: [false, false] },
+            { cells: ["кувшин", "JUG"], editable: [false, false] },
+            { cells: ["фу! отвращение", "YUK"], editable: [false, false] },
+            { cells: ["утка", "DUCK"], editable: [false, false] },
+            { cells: ["шайба (хоккей)", "PUCK"], editable: [false, false] },
+            { cells: ["удача", "LUCK"], editable: [false, false] },
+            { cells: ["грузовик", "TRUCK"], editable: [false, false] },
+            { cells: ["застрять", "STUCK"], editable: [false, false] },
+            { cells: ["обнимать", "HUG"], editable: [false, false] },
+            { cells: ["коврик", "RUG"], editable: [false, false] },
+            { cells: ["чашка", "CUP"], editable: [false, false] }
+          ]
+        }
+      },
+    ],
+  },
+  readingIntensive4: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: "Дифтонги - двойные звуки",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читается ОУ", "пишется OA"],
+          rows: [
+            { cells: ["лодка", "/бОУт/", "BOAT"], editable: [false, false, false] },
+            { cells: ["дорога", "/рОУд/", "ROAD"], editable: [false, false, false] },
+            { cells: ["пальто", "/кОУт/", "COAT"], editable: [false, false, false] },
+            { cells: ["коза", "/гОУт/", "GOAT"], editable: [false, false, false] },
+            { cells: ["жаба", "/тОУд/", "TOAD"], editable: [false, false, false] },
+            { cells: ["тост", "/тОУст/", "TOAST"], editable: [false, false, false] },
           ]
         }
       },
       {
-        taskDescription: "Без перевода - просто читай",
+        taskDescription: "Дифтонги - двойные звуки",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
-          headers: ["", "Напиши по-английски"],
+          headers: ["", "читается АУ", "пишется OU"],
           rows: [
-            { cells: ["Плохая кровать", ""],
-              editable: [ false, true ],
-              correctAnswers: {
-                cells: [null, "bad bed"],
-                almostCorrect: {
-                  1: ["a bad bed"], // Индекс поля (начиная с 0)
-                }
-              }},
-            { cells: ["1 мужчинА", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "man"],
-                almostCorrect: {
-                  1: ["a man","1 man","one man"], // Индекс поля (начиная с 0)
-                }
-              }},
-            { cells: ["мужчины", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "men"],
-              }},
-          ],
+            { cells: ["дом", "/хАУс/", "HOUSE"], editable: [false, false, false] },
+            { cells: ["мышь", "/мАУс/", "MOUSE"], editable: [false, false, false] },
+            { cells: ["звук", "/сАУнд/", "SOUND"], editable: [false, false, false] },
+            { cells: ["громкий", "/лАУд/", "LOUD"], editable: [false, false, false] },
+            { cells: ["облако", "/клАУд/", "CLOUD"], editable: [false, false, false] }
+          ]
         }
       },
+
     ],
   },
 

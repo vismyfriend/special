@@ -236,6 +236,10 @@ const routes = [
     component: () => import('src/pages/gameYearGuesser.vue')
   },
   {
+    path: '/gameSnakeCursor',
+    component: () => import('src/pages/gameSnakeCursor.vue')
+  },
+  {
     path: '/noLayoutPage2',
     component: () => import('src/pages/pageWithoutMainLayout2.vue')
   },
