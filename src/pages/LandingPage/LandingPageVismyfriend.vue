@@ -84,7 +84,7 @@
           <div class="detective-card">
             <div class="card-header">
               <i class="fas fa-user-secret"></i>
-              <span>Цитаты от агентов :</span>
+              <span>Цитаты от <strike class="gray-text">студентов</strike> агентов :</span>
             </div>
             <div class="card-content">
               <p>"Круто, что мы учимся говорить, а не названия грамматики зубрим"</p>
@@ -563,13 +563,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
 
-// const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
-// const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
-// const gifWhatIsUp1 = new URL("/src/assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
+const gifMissionIsPossible = new URL("../assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
+const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
+const gifWhatIsUp1 = new URL("../assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
 
-const gifMissionIsPossible = "/src/assets/images/gifs/missionIsPossible.gif";
-const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
-const gifWhatIsUp1 = "..src/assets/images/gifs/whatIsUp1.gif";
+// const gifMissionIsPossible = "../assets/images/gifs/missionIsPossible.gif";
+// const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
+// const gifWhatIsUp1 = "../assets/images/gifs/whatIsUp1.gif";
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -1503,7 +1503,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
   color: #667eea;
   font-family: 'Orbitron', monospace;
-  font-weight: 700;
+  font-weight: 900;
+  font-size: 20px;
 }
 
 .card-header i {
@@ -2476,6 +2477,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .white-text {
   color: white;
+}
+
+.gray-text {
+  color: #b0b0b0;
 }
 .yellow-gradient-text {
   background: linear-gradient(135deg, #ecf162 0%, #ee5a24 100%);
