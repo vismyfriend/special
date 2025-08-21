@@ -6,7 +6,7 @@
         <div class="nav-container">
           <div class="nav-logo">
             <i class="fas fa-magnifying-glass"></i>
-            <span @click.prevent="scrollToSection('headerTitle')">S.P.E.C.I.A.L. &nbsp; / спэшл /</span>
+            <span @click.prevent="scrollToSection('headerTitle')">S.P.E.C.I.A.L &nbsp; <span class="special-font">/ спэшл /</span> </span>
           </div>
 
           <!-- Навигационное меню -->
@@ -107,7 +107,9 @@
     <section id="mission" class="mission">
       <div class="container">
         <div class="section-header">
-          <h2>Методика S.P.E.C.I.A.L.</h2>
+<!--          <h2>Методика S.P.E.C.I.A.L</h2>-->
+<!--          <h2>Методика <span class="special-font">S.P.E.C.I.A.L</span></h2>-->
+          <h2><span class="special-font highlight">спэшл методика &nbsp; </span></h2>
           <p>Индивидуальный особенный подход в изучении иностранных языков<br> - разговорный для ежедневного общения! Подробнее на карточках : </p>
         </div>
 
@@ -563,13 +565,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
 
-const gifMissionIsPossible = new URL("../assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
+const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
 const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
-const gifWhatIsUp1 = new URL("../assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
+// const gifWhatIsUp1 = new URL("../assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
 
 // const gifMissionIsPossible = "../assets/images/gifs/missionIsPossible.gif";
 // const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
-// const gifWhatIsUp1 = "../assets/images/gifs/whatIsUp1.gif";
+const gifWhatIsUp1 = "../assets/images/gifs/whatIsUp1.gif";
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -1404,8 +1406,13 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
+  font-family: Special_f1;
+  font-size: 60px;
 
+}
+.special-font {
+  font-family: 'Special_f1';
+}
 .hero-subtitle {
   font-size: 1.2rem;
   color: #b0b0b0;
@@ -2571,7 +2578,10 @@ h1, h2, h3, h4, h5, h6 {
   .nav-cta {
     display: none;
   }
-
+.highlight {
+  font-family: Special_f1;
+  font-size: 38px;
+}
   /* Overlay при открытом меню */
   .nav-menu.active::before {
     content: '';

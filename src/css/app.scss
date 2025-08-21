@@ -80,3 +80,12 @@ textarea:not([rows]) {
     padding: ($i+px);
   }
 }
+
+/* Import Special_f1 font */
+@font-face {
+  font-family: 'Special_f1';
+  src: url('../assets/fonts/Special_f1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
