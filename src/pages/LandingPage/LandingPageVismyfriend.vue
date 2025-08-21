@@ -44,8 +44,8 @@
 
           </h1>
           <p class="hero-subtitle">
-            Добро пожаловать на уроки к Винсенту (<span class="white-text">Vincent</span>). Каждый урок (<span class="white-text">mission</span>) это новое расследование,
-            а каждый студент (<span class="white-text">agent</span>) детектив, спец.агент, раскрывающий секреты языка через общение.
+            Добро пожаловать на уроки к Винсенту (<span class="white-text">Vincent</span>). Каждый урок это (<span class="white-text">mission</span>) как новое расследование,
+            а каждый студент (<span class="white-text">agent</span>) детектив, спец.агент, раскрывающий секреты языка через общение в разных жизненных ситуациях.
           </p>
           <div class="hero-stats none">
             <div class="stat">
@@ -140,7 +140,7 @@
                 <ul class="card-features">
                   <li><i class="fas fa-brain"></i> <strong>Учимся </strong>чтобы <strong>говорить</strong></li>
                   <li><i class="fas fa-fire"></i><strong>синдром собаки </strong>- это когда я всё понимаю, а говорить не могу 🐶</li>
-                  <li><i class="fas fa-user-cog"></i>  не чат-бот, не ИИ <br>реальное общение с человеком </li>
+                  <li><i class="fas fa-user-cog"></i><strong>не видео-курс</strong> не чат-бот, не ИИ <br>реальное общение с человеком </li>
                   <li><i class="fas fa-user-cog"></i>* на урок можно с питомцами</li>
                 </ul>
               </div>
@@ -153,7 +153,7 @@
                 <h3 class="sp-card-title">Practice<br>/прЭктис/</h3>
                 <ul class="card-features">
                   <li><i class="fas fa-comments"></i><strong>Практика</strong> - двигатель прогресса.</li>
-                  <li><i class="fas fa-comments"></i> Разговорные тренинги. <br>Не видео-записи</li>
+                  <li><i class="fas fa-comments"></i> Разговорные тренинги, <br>ставим произношение</li>
                   <li><i class="fas fa-fire"></i> Без учебников и только персонализированные актуальные материалы</li>
 
                 </ul>
@@ -175,10 +175,12 @@
                 <div class="card-icon">
                   <span class="special-letter">C</span>
                 </div>
-                <h3 class="sp-card-title">Culture</h3>
+                <h3 class="sp-card-title">Culture<br>/ˈkʌltʃər/</h3>
                 <ul class="card-features">
                   <li><i class="fas fa-plane"></i> Путешествия в разные страны.</li>
+                  <li><i class="fas fa-plane"></i> <strong>Mission is possible.</strong></li>
                   <li><i class="fas fa-tv"></i> Анализ мемов, сериалов, песен, фильмов, книг, журналов, трендов соцсетей и технологий</li>
+                  <li><i class="fas fa-tv"></i> Изучение через<strong> культуру</strong> англоязычных стран</li>
                 </ul>
               </div>
 
@@ -187,9 +189,9 @@
                 <div class="card-icon">
                   <span class="special-letter">I</span>
                 </div>
-                <h3 class="sp-card-title">Immersion</h3>
+                <h3 class="sp-card-title">Immersion <br>/имЁршн/ </h3>
                 <ul class="card-features">
-                  <li><i class="fas fa-pen-fancy"></i> Постепенное погружение в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков</li>
+                  <li><i class="fas fa-pen-fancy"></i> Постепенное <strong>погружение</strong> в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков</li>
                   <li><i class="fas fa-hand-holding-usd"></i> </li>
                 </ul>
               </div>
@@ -199,10 +201,11 @@
                 <div class="card-icon">
                   <span class="special-letter">A</span>
                 </div>
-                <h3 class="sp-card-title">Action and Ai</h3>
+                <h3 class="sp-card-title">Apps and Ai</h3>
                 <ul class="card-features">
                   <li><i class="fas fa-trophy"></i> Artificial Intelligence</li>
-                  <li><i class="fas fa-users"></i> Научим как взаимодействовать с Искуственным Интеллектом и пользоваться нейронными сетями</li>
+                  <li><i class="fas fa-trophy"></i> <strong>Своё приложение </strong>и уникальная <strong>платформа </strong> для тренировки памяти + <strong>электронная тетрадь</strong></li>
+                  <li><i class="fas fa-users"></i> Учимся взаимодействию с Искуственным Интеллектом и нейронными сетями для любых целей помимо изучения английского</li>
                 </ul>
               </div>
 
@@ -214,7 +217,7 @@
                 <h3 class="sp-card-title">Luck</h3>
                 <ul class="card-features">
                   <li><i class="fas fa-magic"></i> Чит-фразы ответы для любых экзаменов и реальных жизненных ситуаций.</li>
-                  <li><i class="fas fa-user-secret"></i> Как говорить уверенно, даже если знаешь мало слов.</li>
+                  <li><i class="fas fa-user-secret"></i> <strong>Как говорить уверенно </strong>, даже если знаешь мало слов.</li>
                   <li><i class="fas fa-user-secret"></i> Методы спецслужб для запоминания слов (мнемоника из CIA, ментальные карты, ассоциативное мышление)
 
                   </li>
@@ -460,7 +463,7 @@
         <div class="footer-content">
           <div class="footer-logo">
             <i class="fas fa-magnifying-glass"></i>
-            <span>S.P.E.C.i.A.L.  #vismyfriend @vismyfriend</span>
+            <span>S.P.E.C.i.A.L. &nbsp; <span class="yellow-gradient-text">#vismyfriend</span> &nbsp; @vismyfriend</span>
           </div>
           <div class="footer-links">
             <a href="#mission">О нас</a>
@@ -560,10 +563,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
 
-const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
-const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
-const gifWhatIsUp1 = new URL("/src/assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
+// const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
+// const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
+// const gifWhatIsUp1 = new URL("/src/assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
 
+const gifMissionIsPossible = "/src/assets/images/gifs/missionIsPossible.gif";
+const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
+const gifWhatIsUp1 = "..src/assets/images/gifs/whatIsUp1.gif";
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -1228,7 +1234,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .sp-card-title {
   font-size: 25px;
-  line-height: 20px;
+  line-height: 25px;
 
 
 }
@@ -1757,9 +1763,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 30px;
   }
 
-  .mission-card {
-    padding: 25px 20px;
-  }
+
 
   .special-letter {
     width: 40px;
@@ -2109,10 +2113,11 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: 1fr;
     text-align: center;
     gap: 40px;
+    margin-top: 20px;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
 
   .hero-stats {
@@ -2148,9 +2153,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 15px;
   }
 
-  .hero-title {
-    font-size: 2rem;
-  }
+
 
   .section-header h2 {
     font-size: 2rem;
@@ -2474,6 +2477,13 @@ h1, h2, h3, h4, h5, h6 {
 .white-text {
   color: white;
 }
+.yellow-gradient-text {
+  background: linear-gradient(135deg, #ecf162 0%, #ee5a24 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback для браузеров без поддержки */
+  display: inline-block;}
 /* Mobile Menu Styles */
 .mobile-menu-toggle {
   display: none;
@@ -2569,49 +2579,49 @@ h1, h2, h3, h4, h5, h6 {
     z-index: -1;
   }
 }
-
-/* Дополнительная адаптивность */
-@media (max-width: 768px) {
-  .nav-container {
-    padding: 0 15px;
-  }
-
-  .nav-logo {
-    font-size: 16px;
-
-    span {
-      display: none;
-    }
-  }
-
-  .nav-menu {
-    width: 100%;
-    max-width: none;
-
-    a {
-      font-size: 1.1rem;
-      padding: 15px 25px;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-logo {
-    i {
-      font-size: 24px;
-    }
-  }
-
-  .mobile-menu-toggle {
-    width: 25px;
-    height: 25px;
-
-    span {
-      width: 20px;
-      height: 2px;
-    }
-  }
-}
+//
+///* Дополнительная адаптивность */
+//@media (max-width: 768px) {
+//  .nav-container {
+//    padding: 0 15px;
+//  }
+//
+//  .nav-logo {
+//    font-size: 16px;
+//
+//    span {
+//      display: none;
+//    }
+//  }
+//
+//  .nav-menu {
+//    width: 100%;
+//    max-width: none;
+//
+//    a {
+//      font-size: 1.1rem;
+//      padding: 15px 25px;
+//    }
+//  }
+//}
+//
+//@media (max-width: 480px) {
+//  .nav-logo {
+//    i {
+//      font-size: 24px;
+//    }
+//  }
+//
+//  .mobile-menu-toggle {
+//    width: 25px;
+//    height: 25px;
+//
+//    span {
+//      width: 20px;
+//      height: 2px;
+//    }
+//  }
+//}
 
 .none {
   display: none;
