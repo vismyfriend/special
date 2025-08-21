@@ -1,25 +1,34 @@
-
 <template>
   <div class="landing-page">
     <!-- Navigation -->
     <section id="headerTitle">
       <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <i class="fas fa-magnifying-glass"></i>
-          <span @click.prevent="scrollToSection('headerTitle')">S.P.E.C.I.A.L. / спэшл /</span>
+        <div class="nav-container">
+          <div class="nav-logo">
+            <i class="fas fa-magnifying-glass"></i>
+            <span @click.prevent="scrollToSection('headerTitle')">S.P.E.C.I.A.L. &nbsp; / спэшл /</span>
+          </div>
+
+          <!-- Навигационное меню -->
+          <div class="nav-menu" :class="{ 'active': isMobileMenuOpen }">
+            <a href="#" @click.prevent="scrollToSection('mission'); closeMobileMenu()">Что это?</a>
+            <a href="#" @click.prevent="scrollToSection('services'); closeMobileMenu()">Сколько?</a>
+            <a href="#" @click.prevent="scrollToSection('cases'); closeMobileMenu()">Кейсы</a>
+            <a href="#" @click.prevent="scrollToSection('contact'); closeMobileMenu()">Контакты</a>
+          </div>
+
+          <div class="nav-cta">
+            <button class="btn-primary" @click.prevent="scrollToSection('services')">Записаться</button>
+          </div>
+
+          <!-- Бургер-меню -->
+          <button class="mobile-menu-toggle" @click="toggleMobileMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
-        <div class="nav-menu">
-          <a href="#" @click.prevent="scrollToSection('mission')">Что это?</a>
-          <a href="#" @click.prevent="scrollToSection('services')">Сколько?</a>
-          <a href="#" @click.prevent="scrollToSection('cases')">Кейсы</a>
-          <a href="#" @click.prevent="scrollToSection('contact')">Контакты</a>
-        </div>
-        <div class="nav-cta">
-          <button class="btn-primary" @click.prevent="scrollToSection('services')">Записаться</button>
-        </div>
-      </div>
-    </nav>
+      </nav>
     </section>
 
     <!-- Hero Section -->
@@ -30,7 +39,7 @@
       <div class="hero-content">
         <div class="hero-text">
           <h1 class="hero-title">
-            <span class="highlight">АНГЛИЙСКИЙ ЯЗЫК</span><br>
+            <span class="highlight">АНГЛИЙСКИЙ</span><br>
             English<br>
 
           </h1>
@@ -38,10 +47,10 @@
             Добро пожаловать на уроки к Винсенту (<span class="white-text">Vincent</span>). Каждый урок (<span class="white-text">mission</span>) это новое расследование,
             а каждый студент (<span class="white-text">agent</span>) детектив, спец.агент, раскрывающий секреты языка через общение.
           </p>
-          <div class="hero-stats">
+          <div class="hero-stats none">
             <div class="stat">
-              <span class="stat-number">16 years</span>
-              <span class="stat-label">опыт<br> преподавания</span>
+              <span class="stat-number">16 yearz</span>
+              <span class="stat-label">опыт<br></span>
             </div>
             <div class="stat">
               <span class="stat-number">2100+</span>
@@ -55,7 +64,7 @@
           <div class="hero-buttons">
             <button class="btn-primary btn-large" @click.prevent="scrollToSection('services')">
               <i class="fas fa-play" ></i>
-Начать <br> расследование
+              Начать <br> расследование
             </button>
 
             <button class="btn-mission btn-large" @click.prevent="scrollToSection('services')">
@@ -65,6 +74,13 @@
           </div>
         </div>
         <div class="hero-visual">
+          <div class="gif-container">
+            <img
+              :src="gifWhatIsUp1"
+              alt="Анимированный детектив"
+              class="detective-gif"
+            />
+          </div>
           <div class="detective-card">
             <div class="card-header">
               <i class="fas fa-user-secret"></i>
@@ -74,6 +90,15 @@
               <p>"Круто, что мы учимся говорить, а не названия грамматики зубрим"</p>
             </div>
           </div>
+          <!-- Добавьте гифку здесь -->
+          <div class="gif-container">
+            <img
+              :src="gifMissionIsPossible"
+              alt="Анимированный детектив"
+              class="detective-gif"
+            />
+          </div>
+
         </div>
       </div>
     </section>
@@ -533,6 +558,12 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+
+
+const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
+const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
+const gifWhatIsUp1 = new URL("/src/assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
+
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -591,6 +622,34 @@ const sliderTrack = ref(null);
 const isDragging = ref(false);
 const startPosX = ref(0);
 const currentTranslateX = ref(0);
+
+
+// Добавьте эти переменные
+const isMobileMenuOpen = ref(false);
+const isMobile = ref(false);
+
+// Методы для мобильного меню
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+};
+
+// Проверка размера экрана
+const checkScreenSize = () => {
+  isMobile.value = window.innerWidth <= 960;
+};
+
+// Обработчик изменения размера окна
+const handleResize = () => {
+  checkScreenSize();
+  if (!isMobile.value) {
+    closeMobileMenu();
+  }
+};
+
 
 // Обработчики для мыши
 const handleMouseDown = (e) => {
@@ -1046,13 +1105,16 @@ onMounted(() => {
   navbar.value = document.querySelector('.navbar');
 
   // Initialize all effects
-  window.addEventListener('scroll', handleScroll);
+  // window.addEventListener('scroll', handleScroll);
   initScrollAnimations();
   initCounterAnimations();
   initParallax();
   initTypingEffect();
   initFloatingAnimation();
   createParticles();
+
+  checkScreenSize();
+  window.addEventListener('resize', handleResize);
 
   // Add form handler
   const contactForm = document.getElementById('contactForm');
@@ -1086,6 +1148,8 @@ onMounted(() => {
 // Clean up when component unmounts
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
+
+  window.removeEventListener('resize', handleResize);
   // Remove other event listeners if needed
 });
 </script>
@@ -1175,7 +1239,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 8px;
   padding: 12px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   font-family: 'Orbitron', monospace;
   font-weight: 700;
   text-decoration: none;
@@ -1209,9 +1273,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-mission {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: linear-gradient(135deg, #ecf162 0%, #ee5a24 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  border-radius: 45px;
 }
 
 .btn-mission:hover {
@@ -1226,11 +1291,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Navigation */
 .navbar {
-  position: fixed;
+  //position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.95);
+  //background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(10px);
   z-index: 1000;
   padding: 15px 0;
@@ -1250,7 +1315,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
+  //color: white;
   font-family: 'Orbitron', monospace;
   font-weight: 700;
   font-size: 18px;
@@ -1267,7 +1332,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-menu a {
-  color: white;
+  //color: white;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -1279,12 +1344,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Hero Section */
 .hero {
-  min-height: 100vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   position: relative;
   background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
   overflow: hidden;
+  margin: 1px 10px 10px;
+  border-radius: 50px;
 }
 
 .hero-background {
@@ -1358,6 +1425,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 2rem;
   font-weight: 900;
   color: #667eea;
+  line-height: 29px;
 }
 
 .stat-label {
@@ -1375,8 +1443,34 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-visual {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+}
+
+.gif-container {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.detective-gif {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  animation: float 6s ease-in-out infinite;
+}
+
+.detective-gif:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  border-color: rgba(102, 126, 234, 0.6);
 }
 
 .detective-card {
@@ -1642,13 +1736,22 @@ h1, h2, h3, h4, h5, h6 {
     height: 36px;
     font-size: 16px;
   }
+  .gif-container {
+    max-width: 250px;
+  }
+
+  .detective-gif {
+    max-width: 80%;
+  }
 }
 
 @media (max-width: 480px) {
   .mission-slider-container {
     padding: 0 20px;
   }
-
+  .gif-container {
+    max-width: 200px;
+  }
   .mission-slider-container::before,
   .mission-slider-container::after {
     width: 30px;
@@ -2371,5 +2474,146 @@ h1, h2, h3, h4, h5, h6 {
 .white-text {
   color: white;
 }
+/* Mobile Menu Styles */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
 
+  span {
+    width: 25px;
+    height: 3px;
+    background: #667eea;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  &.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  &.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  &.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+}
+
+/* Адаптивность для навбара */
+@media (max-width: 960px) {
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+
+    &.active {
+      right: 0;
+    }
+
+    a {
+      color: #333 !important;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #667eea;
+        color: white !important;
+        transform: translateX(-5px);
+      }
+    }
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-cta {
+    display: none;
+  }
+
+  /* Overlay при открытом меню */
+  .nav-menu.active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: -1;
+  }
+}
+
+/* Дополнительная адаптивность */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 15px;
+  }
+
+  .nav-logo {
+    font-size: 16px;
+
+    span {
+      display: none;
+    }
+  }
+
+  .nav-menu {
+    width: 100%;
+    max-width: none;
+
+    a {
+      font-size: 1.1rem;
+      padding: 15px 25px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo {
+    i {
+      font-size: 24px;
+    }
+  }
+
+  .mobile-menu-toggle {
+    width: 25px;
+    height: 25px;
+
+    span {
+      width: 20px;
+      height: 2px;
+    }
+  }
+}
+
+.none {
+  display: none;
+}
 </style>
