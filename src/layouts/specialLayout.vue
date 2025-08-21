@@ -126,11 +126,16 @@ const showAboutGame = () => {
         </button>
 
         <!-- Кнопка "Об авторах" (внешняя ссылка) -->
-        <a href="https://vismyfriend.itch.io/clicker-test"
-           target="_blank"
-           style="padding: 8px 16px; background: #4CAF50; color: white; border-radius: 4px; text-decoration: none;">
-          Who is Vincent?
-        </a>
+<!--        <a href="https://vismyfriend.itch.io/clicker-test"-->
+<!--           target="_blank"-->
+<!--           style="padding: 8px 16px; background: #4CAF50; color: white; border-radius: 4px; text-decoration: none;">-->
+<!--          Who is Vincent?-->
+<!--        </a>-->
+
+        <button onclick="window.__router.push('/landing/'); window.__modal.close()"
+           style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          my site
+        </button>
       </div>
     </div>
   `);

@@ -464,7 +464,7 @@ let mouseX = 0;
 let mouseY = 0;
 const hoverRadius = 20; // Радиус взаимодействия с курсором
 const easeFactor = 0.2; // Коэффициент плавности возврата частиц
-const text = "SPECIAL"; // Текст из частиц
+const text = "Vismyfriend"; // Текст из частиц
 
 // Класс для создания частиц
 class Particle {

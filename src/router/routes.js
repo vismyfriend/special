@@ -236,6 +236,10 @@ const routes = [
     component: () => import('src/pages/gameYearGuesser.vue')
   },
   {
+    path: '/differenceSeeLook',
+    component: () => import('src/components/pageInfoWordDifference.vue')
+  },
+  {
     path: '/gameSnakeCursor',
     component: () => import('src/pages/gameSnakeCursor.vue')
   },
@@ -246,6 +250,14 @@ const routes = [
   {
     path: '/v-is-my-friend',
     component: () => import('src/pages/MyCornerOfTheInternet.vue')
+  },
+  {
+    path: '/landing',
+    component: () => import('src/pages/LandingPage/LandingPageVismyfriend.vue')
+  },
+  {
+    path: '/sounds',
+    component: () => import('src/pages/EnglishSounds.vue')
   },
   {
     path: '/canvas-test',
