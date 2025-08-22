@@ -47,6 +47,8 @@
             Добро пожаловать на уроки к Винсенту (<span class="white-text">Vincent</span>). Каждый урок это (<span class="white-text">mission</span>) как новое расследование,
             а каждый студент (<span class="white-text">agent</span>) детектив, спец.агент, раскрывающий секреты языка через общение в разных жизненных ситуациях.
           </p>
+
+
           <div class="hero-stats none">
             <div class="stat">
               <span class="stat-number">16 yearz</span>
@@ -61,16 +63,30 @@
               <span class="stat-label">доступных<br>курса </span>
             </div>
           </div>
+
           <div class="hero-buttons">
-            <button class="btn-primary btn-large" @click.prevent="scrollToSection('services')">
-              <i class="fas fa-play" ></i>
-              Начать <br> расследование
-            </button>
+<!--            <button class="btn-primary btn-large" @click.prevent="scrollToSection('services')">-->
+<!--              <i class="fas fa-play" ></i>-->
+<!--              Начать <br> расследование-->
+<!--            </button>-->
+          <div class="text-align-center">
+
+
+            <div class="gif-container">
+              <img
+                :src="gifMatrixPills"
+                alt="Анимированный детектив"
+                class="detective-gif"
+              />
+            </div>
 
             <button class="btn-mission btn-large" @click.prevent="scrollToSection('services')">
               <i class="fas fa-search" ></i>
-              Попробовать <br> бесплатно
+              Попробовать <br> <span class="special-font">бесплатно</span>
             </button>
+
+
+          </div>
           </div>
         </div>
         <div class="hero-visual">
@@ -109,7 +125,8 @@
         <div class="section-header">
 <!--          <h2>Методика S.P.E.C.I.A.L</h2>-->
 <!--          <h2>Методика <span class="special-font">S.P.E.C.I.A.L</span></h2>-->
-          <h2><span class="special-font highlight">спэшл методика &nbsp; </span></h2>
+          <h2><span class="special-font highlight">спэшл</span> S.P.E.C.I.A.L <br>
+            <span class="special-font highlight"> методика &nbsp; </span> </h2>
           <p>Индивидуальный особенный подход в изучении иностранных языков<br> - разговорный для ежедневного общения! Подробнее на карточках : </p>
         </div>
 
@@ -245,51 +262,54 @@
     <section id="services" class="services">
       <div class="container">
         <div class="section-header">
-          <h2>How much? / хау мач? /</h2>
+          <h2 >How much? / хау мач? /</h2>
           <p>Какая стоимость?</p>
         </div>
         <div class="services-grid">
           <div class="service-card">
             <div class="service-header">
-              <h3>Agent Zero 0 <br> выпить чашечку кофе</h3>
-              <div class="price">₽ 0000/урок</div>
+              <h3 >Agent Zero 0 <br> <span class="special-font yellow-gradient-text">в разведку !</span></h3>
+              <div class="price yellow-gradient-text">₽ 0000/урок</div>
             </div>
             <ul class="service-features">
               <li><i class="fas fa-check"></i> Знакомство</li>
               <li><i class="fas fa-check"></i> Определение уровня</li>
               <li><i class="fas fa-check"></i> Без навязываний</li>
               <li><i class="fas fa-check"></i> Без обязательств </li>
-            </ul>
-            <button class="btn-primary">Начну с этого</button>
-          </div>
-          <div class="service-card">
-            <div class="service-header">
-              <h3>Agent One 1 <br> волк одиночка</h3>
-              <div class="price">₽ 3500/урок</div>
-            </div>
-            <ul class="service-features">
-              <li><i class="fas fa-check"></i> Индивидуальный план занятий</li>
-              <li><i class="fas fa-check"></i> Гибкий график</li>
-              <li><i class="fas fa-check"></i> Сдача зачёта каждые 8 занятий </li>
-              <li><i class="fas fa-check"></i> Можно с выключенной камерой </li>
+              <li><i class="fas fa-check"></i> 1 на 1 урок с Винсентом </li>
             </ul>
             <button class="btn-primary">Начну с этого</button>
           </div>
           <div class="service-card featured">
+            <div class="service-header">
+              <h3>Agent One 1 <br> <span class="special-font yellow-gradient-text"> волк одиночка</span></h3>
+              <div class="price highlight-gradient-text">₽ 3500/урок</div>
+            </div>
+            <ul class="service-features">
+              <li><i class="fas fa-check"></i> Индивидуальный план занятий</li>
+              <li><i class="fas fa-check"></i> Гибкий график</li>
+              <li><i class="fas fa-check"></i> Зачёт каждые 8 занятий </li>
+              <li><i class="fas fa-check"></i> 1 на 1 уроки с Винсентом </li>
+              <li><i class="fas fa-check"></i> Можно с выключенной камерой </li>
+
+            </ul>
+            <button class="btn-primary">Записаться</button>
+          </div>
+          <div class="service-card featured">
             <div class="service-badge">Популярно</div>
             <div class="service-header">
-              <h3>Agent Two 02 <br> плечом к плечу</h3>
-              <div class="price">₽ 1500/урок</div>
+              <h3>Agent Two 02 <br> <span class="special-font yellow-gradient-text">плечом к плечу</span> </h3>
+              <div class="price yellow-gradient-text">₽ 1500/урок</div>
             </div>
             <ul class="service-features">
               <li><i class="fas fa-check"></i> Интенсив</li>
-              <li><i class="fas fa-check"></i> Командная работа 2 - 4 детектива</li>
               <li><i class="fas fa-check"></i> Поддержка напарников</li>
               <li><i class="fas fa-check"></i> Здоровая конкуренция</li>
+              <li><i class="fas fa-check"></i> Командная работа 2 - 4 детектива</li>
             </ul>
             <button class="btn-primary">Попробовать</button>
           </div>
-          <div class="service-card">
+          <div class="service-card extended">
             <div class="service-header">
               <h3>Secret Missions <br> остальные услуги</h3>
               <div class="price">от ₽ 2000</div>
@@ -297,22 +317,24 @@
             <ul class="service-features">
               <li><i class="fas fa-check"></i> Синхронный перевод</li>
               <li><i class="fas fa-check"></i> Сдача экзаменов</li>
-              <li><i class="fas fa-check"></i> Перевод статей, тех. документации,</li>
-              <li><i class="fas fa-check"></i> книг, сайтов, программ мероприятий,</li>
-              <li><i class="fas fa-check"></i> текстов ведущих, видео-аудио курсов</li>
+              <li><i class="fas fa-check"></i> Перевод статей, книг, </li>
+              <li><i class="fas fa-check"></i> программ мероприятий,</li>
+              <li><i class="fas fa-check"></i> тех. документации, сайтов,</li>
+              <li><i class="fas fa-check"></i> видео и аудио курсов</li>
+              <li><i class="fas fa-check"></i> текстов ведущих, и другое</li>
             </ul>
             <button class="btn-primary">Выбрать</button>
           </div>
           <div class="service-card">
             <div class="service-header">
-              <h3>Special Tours <br> путешествия</h3>
-              <div class="price"> от ₽ 55000</div>
+              <h3>Special Tours <br> <span class="special-font yellow-gradient-text">путешествия</span> </h3>
+              <div class="price yellow-gradient-text"> от ₽ 55000</div>
             </div>
             <ul class="service-features">
-              <li><i class="fas fa-check"></i> North</li>
-              <li><i class="fas fa-check"></i> South</li>
-              <li><i class="fas fa-check"></i> West</li>
-              <li><i class="fas fa-check"></i> East</li>
+              <li><i class="fas fa-check"></i> North America</li>
+              <li><i class="fas fa-check"></i> South Korea</li>
+              <li><i class="fas fa-check"></i> Western Europe</li>
+              <li><i class="fas fa-check"></i> Far East</li>
               <li><i class="fas fa-check"></i> Tours</li>
 
             </ul>
@@ -325,9 +347,9 @@
     <!-- Cases Section -->
     <section id="cases" class="cases">
       <div class="container">
-        <div class="section-header">
-          <h2>Успешные Кейсы</h2>
-          <p>Истории наших детективов-студентов</p>
+        <div class="section-header special-font">
+          <h2 class="section-header special-font"> Успешные Кейсы</h2>
+          <p>от детективов - студентов</p>
         </div>
         <div class="cases-grid">
           <div class="case-card">
@@ -374,18 +396,48 @@
     <section class="cta-section">
       <div class="container">
         <div class="cta-content">
-          <h2>Готовы начать расследование?</h2>
           <p>Присоединяйтесь к команде детективов и раскройте все тайны английского языка</p>
           <div class="cta-buttons">
-            <button class="btn-primary btn-large">
-              <i class="fas fa-play"></i>
-              Бесплатный пробный урок
-            </button>
-            <button class="btn-secondary btn-large">
+            <button class="btn-secondary btn-large special-font">
               <i class="fas fa-calculator"></i>
-              Рассчитать стоимость
-            </button>
+начать расследование            </button>
+            <div class="section-header">
+
+            </div>
+            <div class="contact-content">
+              <div class="contact-form">
+                <form>
+                  <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder="Имя (можно никнейм)" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="tel" id="phone" name="phone" placeholder="Телефон" required>
+                  </div>
+                  <div class="form-group">
+                    <select id="service" name="service" required>
+                      <option value="">Выберите формат обучения</option>
+                      <option value="individual">Индивидуальные занятия</option>
+                      <option value="group">Групповые занятия</option>
+                      <option value="express">Экспресс-курс</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <textarea id="message" name="message" placeholder="Здесь можно написать о ваших целях и планах по изучению английского (можно ин Russian language или ин English лангуаге ;)" rows="4"></textarea>
+                  </div>
+                  <button class="btn-mission btn-large special-font">
+                    <i class="fas fa-calculator"></i>
+                    отправить заявку
+                  </button>
+                </form>
+
+              </div>
+
+              </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -393,38 +445,10 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
       <div class="container">
-        <div class="section-header">
-          <h2>Свяжитесь с нами</h2>
-          <p>Оставьте заявку и мы свяжемся с вами в течение 24 часов</p>
-        </div>
+
         <div class="contact-content">
           <div class="contact-form">
-            <form>
-              <div class="form-group">
-                <input type="text" id="name" name="name" placeholder="Ваше имя" required>
-              </div>
-              <div class="form-group">
-                <input type="email" id="email" name="email" placeholder="Email" required>
-              </div>
-              <div class="form-group">
-                <input type="tel" id="phone" name="phone" placeholder="Телефон" required>
-              </div>
-              <div class="form-group">
-                <select id="service" name="service" required>
-                  <option value="">Выберите формат обучения</option>
-                  <option value="individual">Индивидуальные занятия</option>
-                  <option value="group">Групповые занятия</option>
-                  <option value="express">Экспресс-курс</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <textarea id="message" name="message" placeholder="Расскажите о ваших целях изучения английского" rows="4"></textarea>
-              </div>
-              <button type="submit" class="btn-primary btn-large">
-                <i class="fas fa-paper-plane"></i>
-                Отправить заявку
-              </button>
-            </form>
+
           </div>
           <div class="contact-info">
             <div class="info-card">
@@ -571,7 +595,8 @@ const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif"
 
 // const gifMissionIsPossible = "../assets/images/gifs/missionIsPossible.gif";
 // const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
-const gifWhatIsUp1 = "../assets/images/gifs/whatIsUp1.gif";
+const gifWhatIsUp1 = "/src/assets/images/gifs/whatIsUp1.gif";
+const gifMatrixPills = "/src/assets/images/gifs/MatrixPills.gif";
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -1285,6 +1310,8 @@ h1, h2, h3, h4, h5, h6 {
   color: white;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
   border-radius: 45px;
+  line-height: 18px;
+  margin-top: 10px;
 }
 
 .btn-mission:hover {
@@ -1417,7 +1444,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.2rem;
   color: #b0b0b0;
   margin-bottom: 40px;
-  line-height: 1.6;
+  line-height: 20px;
   max-width: 450px;
 
 }
@@ -1452,6 +1479,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero-visual {
@@ -1512,16 +1540,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Orbitron', monospace;
   font-weight: 900;
   font-size: 20px;
+  line-height: 20px;
+
 }
 
 .card-header i {
   font-size: 24px;
+
 }
 
 .card-content p {
   color: #b0b0b0;
   font-style: italic;
   font-size: 1.1rem;
+  line-height: 20px;
 }
 
 /* Mission Slider Styles */
@@ -1533,14 +1565,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-header h2 {
   color: #2c3e50;
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+  font-size: 3rem;
+  margin-bottom: 10px;
 }
 
 .section-header p {
   color: #7f8c8d;
   font-size: 1.1rem;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  line-height: 20px;
+
 }
 
 /* Контейнер слайдера с эффектом затухания */
@@ -1759,31 +1793,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (max-width: 480px) {
-  .mission-slider-container {
-    padding: 0 20px;
-  }
-  .gif-container {
-    max-width: 200px;
-  }
-  .mission-slider-container::before,
-  .mission-slider-container::after {
-    width: 30px;
-  }
-
-
-
-  .special-letter {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 20px;
-  }
-}
 
 /* Services Section */
 .services {
-  padding: 100px 0;
+  padding: 50px 0;
   background: white;
 }
 
@@ -1814,14 +1827,18 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
   transform: scale(1.05);
 }
+.service-card.extended {
+  height: 280px;
+}
 
 .service-badge {
   position: absolute;
   top: -15px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ecf162 0%, #ee5a24 100%);
   color: white;
+  border: solid;
   padding: 8px 20px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -1863,9 +1880,48 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
 }
 
+@media (max-width: 480px) {
+  .mission-slider-container {
+    padding: 0 20px;
+  }
+
+  .mission-slider-container::before,
+  .mission-slider-container::after {
+    width: 30px;
+  }
+
+  .service-features li {
+    padding: 1px 0;
+  }
+  .service-badge {
+    top: 90%;
+  }
+  .service-features {
+    margin-bottom: 10px;
+  }
+  .btn-primary {
+    margin-bottom: 10px;
+    left: 58%;
+    bottom: 38%;
+  }
+  .special-letter {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+  }
+
+  .service-header {
+    margin-bottom: 10px;
+  }
+  .service-header h3{
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+}
 /* Cases Section */
 .cases {
-  padding: 100px 0;
+  padding: 50px 0;
   background: #f8f9fa;
 }
 
@@ -1926,7 +1982,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* CTA Section */
 .cta-section {
-  padding: 100px 0;
+  padding: 50px 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-align: center;
@@ -2164,12 +2220,25 @@ h1, h2, h3, h4, h5, h6 {
 
 
   .section-header h2 {
-    font-size: 2rem;
+    font-size: 3rem;
+    line-height: 38px;
   }
 
   .services-grid,
   .cases-grid {
     grid-template-columns: 1fr;
+  }
+
+  .service-card {
+
+    padding: 5px 5px;
+    width: 255px;
+    height: 220px;
+
+
+  }
+  .price {
+    font-size: 20px;
   }
 }
 
@@ -2496,6 +2565,14 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-text-fill-color: transparent;
   color: transparent; /* Fallback для браузеров без поддержки */
   display: inline-block;}
+
+.highlight-gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback для браузеров без поддержки */
+  display: inline-block;}
 /* Mobile Menu Styles */
 .mobile-menu-toggle {
   display: none;
@@ -2640,5 +2717,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .none {
   display: none;
+}
+.text-align-center {
+  text-align: center;
 }
 </style>
