@@ -785,6 +785,149 @@ const ListeningExerciseData = {
     ],
   },
 
+
+  listening_b1_test_30: {
+    mainDescription: "B1 listening 30",
+    tasks: [
+      {
+        taskDescription: "Выбери правильный ответ",
+        audio: new URL('../assets/audio/b1-test-30-1.mp3', import.meta.url).href,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "What is another name for the game Checkers?",
+            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+          {
+            text: "ВУДУЕУ What is another name for the game Checkers?",
+            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+          {
+            text: "ВУДУЕУ What is another name for the game Checkers?",
+            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+          {
+            text: "ВУДУЕУ What is another name for the game Checkers?",
+            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+          {
+            text: "ВУДУЕУ What is another name for the game Checkers?",
+            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            options: {
+              A: "lazy chess",
+              B: "wooden circles",
+              C: "shashkis",
+              D: "draughts",
+              E: "corners"
+            },
+            correctAnswer: "D",
+            explanation: "People in England say 'draughts' instead of 'checkers'."
+          },
+
+          {
+            text: "How many people play checkers together?",
+            options: {
+              A: "1",
+              B: "2",
+              C: "4",
+              D: "unlimited"
+            },
+            correctAnswer: "B",
+            explanation: "One person uses dark pieces, the other uses light pieces."
+          },
+        ]
+      },
+    ]
+  },
+
+
+
   readingIntensive1: {
     mainDescription: null,
     tasks: [

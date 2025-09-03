@@ -19,6 +19,21 @@
          }"
     >
 
+      <!-- Аудиоплеер с sticky-позиционированием -->
+      <div v-if="task.audio" class="audio-player-sticky-container">
+        <audio
+          controls
+          class="audio-player"
+          controlsList="nodownload"
+          oncontextmenu="return false;"
+        >
+          <source :src="task.audio" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <!-- Остальной контент задания -->
+      <div class="task-content">
+
       <!-- Блок для необходимых слов -->
       <div v-if="exerciseData?.tasks?.[index]?.usefulWords" class="useful-words-container">
         <div class="useful-words">
@@ -42,16 +57,16 @@
         <img :src="task.taskPicture" :alt="'Image for task ' + (index + 1)" class="task-image">
       </div>
 
-      <audio
-        v-if="task.audio"
-        controls
-        class="audio-player"
-        controlsList="nodownload"
-        oncontextmenu="return false;"
-      >
-        <source :src="task.audio" type="audio/mp3" />
-        Your browser does not support the audio element.
-      </audio>
+<!--      <audio-->
+<!--        v-if="task.audio"-->
+<!--        controls-->
+<!--        class="audio-player"-->
+<!--        controlsList="nodownload"-->
+<!--        oncontextmenu="return false;"-->
+<!--      >-->
+<!--        <source :src="task.audio" type="audio/mp3" />-->
+<!--        Your browser does not support the audio element.-->
+<!--      </audio>-->
 
       <!-- True / False -->
       <div v-if="task.taskID === 'true_false'" class="true-false-container">
@@ -97,15 +112,21 @@
       <div v-else-if="task.taskID === 'multiple_choice'" class="multiple-choice-container">
         <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
           <p class="question-text margin-bottom">{{ qi + 1 }}) {{ q.text }}</p>
+
+          <!-- Добавлено: отображение картинки для вопроса, если она есть -->
+          <div v-if="q.questionPicture" class="question-image-container">
+            <img :src="q.questionPicture" :alt="'Image for question ' + (qi + 1)" class="question-image">
+          </div>
+
           <div class="options-container">
             <label
               v-for="(label, key) in q.options"
               :key="key"
               class="option-label"
               :class="[
-  getOptionClass(index, qi, key, q.correctAnswer),
-  answers[index][qi] === key && !checkedTasks[index] ? 'option-selected' : ''
-]"
+          getOptionClass(index, qi, key, q.correctAnswer),
+          answers[index][qi] === key && !checkedTasks[index] ? 'option-selected' : ''
+        ]"
             >
               <input
                 type="radio"
@@ -117,7 +138,6 @@
               <span class="option-text">{{ key }} : {{ label }}</span>
             </label>
           </div>
-
         </div>
       </div>
 
@@ -236,8 +256,8 @@
             <span v-if="feedback.allCorrect" class="correct-feedback">✓ Все верно!</span>
             <template v-else>
         <span v-for="(item, key) in feedback.incorrect" :key="key" class="incorrect-feedback">
-  ✗ ожидалось "{{ item.correct }}"
-</span>
+        ✗ ожидалось "{{ item.correct }}"
+        </span>
             </template>
           </div>
         </div>
@@ -338,6 +358,7 @@
         </div>
 
 
+      </div>
       </div>
     </div>
   </div>
@@ -1249,9 +1270,51 @@ const rainbowColors = [
   margin-bottom: 6px;
 }
 
+/* Стили для sticky аудиоплеера */
+.audio-player-sticky-container {
+  position: sticky;
+  top: 70px; /* Отступ от верха, чтобы не перекрывать заголовок */
+  z-index: 100;
+  background: white;
+  padding: 10px 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .audio-player {
   width: 100%;
   border-radius: 0.5rem;
+  position: relative;
+  z-index: 101;
+}
+
+.task-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .audio-player-sticky-container {
+    top: 60px; /* Меньший отступ на мобильных */
+    padding: 8px 0;
+  }
+
+  .audio-player {
+    font-size: 14px; /* Уменьшаем размер для мобильных */
+  }
+}
+
+/* Для случаев, когда есть скрипт, чтобы аудио не перекрывало его */
+.text-script-content {
+  margin-top: 70px; /* Добавляем отступ, чтобы скрипт не перекрывался */
+}
+
+@media (max-width: 768px) {
+  .text-script-content {
+    margin-top: 60px;
+  }
 }
 
 /* True/False table styles */
@@ -1380,7 +1443,25 @@ input[type="radio"]:checked + .radio-custom::after {
   line-height: 25px;
 
 }
+/* Стили для картинок вопросов */
+.question-image-container {
+  margin: 10px 0;
+  text-align: center;
+}
 
+.question-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .question-image {
+    max-height: 200px;
+  }
+}
 .options-container {
   display: grid;
   gap: 5px;

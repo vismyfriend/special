@@ -433,6 +433,13 @@ export const allGamesAndSetsOfWordsList =
       active: true
     },
     {
+      missionName: "listening_b1_test_30",
+      missionVisibleName: "B1 Listening 30",
+      missionDescription: "Аудирование",
+      id: 1,
+      active: true
+    },
+    {
       missionName: "testWeakSpots1",
       missionVisibleName: "Weak spots 1",
       missionDescription: "Слабые места 1",
@@ -884,7 +891,7 @@ export const allGamesAndSetsOfWordsList =
       stars: '1',
       gameImg: "wiresPic.png",
       gameIcon:'📚',
-      password:'kl3tk1na',
+      password:'test',
     },
   ]
 

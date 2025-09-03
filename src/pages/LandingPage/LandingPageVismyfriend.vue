@@ -92,7 +92,7 @@
         <div class="hero-visual">
           <div class="gif-container">
             <img
-              :src="gifWhatIsUp1"
+              :src="gifDoYouUnderstand"
               alt="Анимированный детектив"
               class="detective-gif"
             />
@@ -130,131 +130,152 @@
           <p>Индивидуальный особенный подход в изучении иностранных языков<br> - разговорный для ежедневного общения! Подробнее на карточках : </p>
         </div>
 
-        <div class="mission-slider-container">
-          <button class="slider-arrow slider-arrow-left" @click="scrollSlider(-1)">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-
-
-          <div
-            class="mission-slider"
-            @touchstart="handleTouchStart"
-            @touchmove="handleTouchMove"
-            @touchend="handleTouchEnd"
-          >
-            <div
-              class="slider-track"
-              ref="sliderTrack"
-              @mousedown="handleMouseDown"
-              @mousemove="handleMouseMove"
-              @mouseup="handleMouseUp"
-              @mouseleave="handleMouseUp"
-            >
-              <!-- Карточка S -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">S</span>
-                </div>
-                <h3 class="sp-card-title">Study to speak</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-brain"></i> <strong>Учимся </strong>чтобы <strong>говорить</strong></li>
-                  <li><i class="fas fa-fire"></i><strong>синдром собаки </strong>- это когда я всё понимаю, а говорить не могу 🐶</li>
-                  <li><i class="fas fa-user-cog"></i><strong>не видео-курс</strong> не чат-бот, не ИИ <br>реальное общение с человеком </li>
-                  <li><i class="fas fa-user-cog"></i>* на урок можно с питомцами</li>
-                </ul>
+        <Carousel v-bind="carouselConfig" class="custom-carousel">
+          <Slide v-for="(slide, index) in carouselSlides" :key="index">
+            <div class="mission-card">
+              <div class="card-icon">
+                <span class="special-letter">{{ slide.letter }}</span>
               </div>
-
-              <!-- Карточка P -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">P</span>
-                </div>
-                <h3 class="sp-card-title">Practice<br>/прЭктис/</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-comments"></i><strong>Практика</strong> - двигатель прогресса.</li>
-                  <li><i class="fas fa-comments"></i> Разговорные тренинги, <br>ставим произношение</li>
-                  <li><i class="fas fa-fire"></i> Без учебников и только персонализированные актуальные материалы</li>
-
-                </ul>
-              </div>
-
-              <!-- Карточка E -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">E</span>
-                </div>
-                <h3 class="sp-card-title">Exams</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-clock"></i> Подготовка к экзаменам, <strong>собеседованиям</strong>, тестам, релокации, созвонам, публичным выступлениям, митам, помощь в написании статей, переводах, документации, профессиональный технический английский, IT - сфера</li>
-                </ul>
-              </div>
-
-              <!-- Карточка C -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">C</span>
-                </div>
-                <h3 class="sp-card-title">Culture<br>/ˈkʌltʃər/</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-plane"></i> Путешествия в разные страны.</li>
-                  <li><i class="fas fa-plane"></i> <strong>Mission is possible.</strong></li>
-                  <li><i class="fas fa-tv"></i> Анализ мемов, сериалов, песен, фильмов, книг, журналов, трендов соцсетей и технологий</li>
-                  <li><i class="fas fa-tv"></i> Изучение через<strong> культуру</strong> англоязычных стран</li>
-                </ul>
-              </div>
-
-              <!-- Карточка I -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">I</span>
-                </div>
-                <h3 class="sp-card-title">Immersion <br>/имЁршн/ </h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-pen-fancy"></i> Постепенное <strong>погружение</strong> в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков</li>
-                  <li><i class="fas fa-hand-holding-usd"></i> </li>
-                </ul>
-              </div>
-
-              <!-- Карточка A -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">A</span>
-                </div>
-                <h3 class="sp-card-title">Apps and Ai</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-trophy"></i> Artificial Intelligence</li>
-                  <li><i class="fas fa-trophy"></i> <strong>Своё приложение </strong>и уникальная <strong>платформа </strong> для тренировки памяти + <strong>электронная тетрадь</strong></li>
-                  <li><i class="fas fa-users"></i> Учимся взаимодействию с Искуственным Интеллектом и нейронными сетями для любых целей помимо изучения английского</li>
-                </ul>
-              </div>
-
-              <!-- Карточка L -->
-              <div class="mission-card">
-                <div class="card-icon">
-                  <span class="special-letter">L</span>
-                </div>
-                <h3 class="sp-card-title">Luck</h3>
-                <ul class="card-features">
-                  <li><i class="fas fa-magic"></i> Чит-фразы ответы для любых экзаменов и реальных жизненных ситуаций.</li>
-                  <li><i class="fas fa-user-secret"></i> <strong>Как говорить уверенно </strong>, даже если знаешь мало слов.</li>
-                  <li><i class="fas fa-user-secret"></i> Методы спецслужб для запоминания слов (мнемоника из CIA, ментальные карты, ассоциативное мышление)
-
-                  </li>
-                </ul>
-              </div>
+              <h3 class="sp-card-title">{{ slide.title }}</h3>
+              <ul class="card-features">
+                <li v-for="(feature, featureIndex) in slide.features" :key="featureIndex">
+                  <i class="fas fa-check"></i> {{ feature }}
+                </li>
+              </ul>
             </div>
-          </div>
+          </Slide>
 
-          <button class="slider-arrow slider-arrow-right" @click="scrollSlider(1)">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
+          <template #addons>
+            <Navigation />
+            <Pagination />
+          </template>
+        </Carousel>
 
-        <div class="slider-dots">
-      <span v-for="(dot, index) in 7" :key="index"
-            :class="{'active': currentSlide === index}"
-            @click="goToSlide(index)"></span>
-        </div>
+<!--        <div class="mission-slider-container">-->
+<!--          <button class="slider-arrow slider-arrow-left" @click="scrollSlider(-1)">-->
+<!--            <i class="fas fa-chevron-left"></i>-->
+<!--          </button>-->
+
+
+<!--          <div-->
+<!--            class="mission-slider"-->
+<!--            @touchstart="handleTouchStart"-->
+<!--            @touchmove="handleTouchMove"-->
+<!--            @touchend="handleTouchEnd"-->
+<!--          >-->
+<!--            <div-->
+<!--              class="slider-track"-->
+<!--              ref="sliderTrack"-->
+<!--              @mousedown="handleMouseDown"-->
+<!--              @mousemove="handleMouseMove"-->
+<!--              @mouseup="handleMouseUp"-->
+<!--              @mouseleave="handleMouseUp"-->
+<!--            >-->
+<!--              &lt;!&ndash; Карточка S &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">S</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Study to speak</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-brain"></i> <strong>Учимся </strong>чтобы <strong>говорить</strong></li>-->
+<!--                  <li><i class="fas fa-fire"></i><strong>синдром собаки </strong>- это когда я всё понимаю, а говорить не могу 🐶</li>-->
+<!--                  <li><i class="fas fa-user-cog"></i><strong>не видео-курс</strong> не чат-бот, не ИИ <br>реальное общение с человеком </li>-->
+<!--                  <li><i class="fas fa-user-cog"></i>* на урок можно с питомцами</li>-->
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка P &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">P</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Practice<br>/прЭктис/</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-comments"></i><strong>Практика</strong> - двигатель прогресса.</li>-->
+<!--                  <li><i class="fas fa-comments"></i> Разговорные тренинги, <br>ставим произношение</li>-->
+<!--                  <li><i class="fas fa-fire"></i> Без учебников и только персонализированные актуальные материалы</li>-->
+
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка E &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">E</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Exams</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-clock"></i> Подготовка к экзаменам, <strong>собеседованиям</strong>, тестам, релокации, созвонам, публичным выступлениям, митам, помощь в написании статей, переводах, документации, профессиональный технический английский, IT - сфера</li>-->
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка C &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">C</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Culture<br>/ˈkʌltʃər/</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-plane"></i> Путешествия в разные страны.</li>-->
+<!--                  <li><i class="fas fa-plane"></i> <strong>Mission is possible.</strong></li>-->
+<!--                  <li><i class="fas fa-tv"></i> Анализ мемов, сериалов, песен, фильмов, книг, журналов, трендов соцсетей и технологий</li>-->
+<!--                  <li><i class="fas fa-tv"></i> Изучение через<strong> культуру</strong> англоязычных стран</li>-->
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка I &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">I</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Immersion <br>/имЁршн/ </h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-pen-fancy"></i> Постепенное <strong>погружение</strong> в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков</li>-->
+<!--                  <li><i class="fas fa-hand-holding-usd"></i> </li>-->
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка A &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">A</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Apps and Ai</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-trophy"></i> Artificial Intelligence</li>-->
+<!--                  <li><i class="fas fa-trophy"></i> <strong>Своё приложение </strong>и уникальная <strong>платформа </strong> для тренировки памяти + <strong>электронная тетрадь</strong></li>-->
+<!--                  <li><i class="fas fa-users"></i> Учимся взаимодействию с Искуственным Интеллектом и нейронными сетями для любых целей помимо изучения английского</li>-->
+<!--                </ul>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Карточка L &ndash;&gt;-->
+<!--              <div class="mission-card">-->
+<!--                <div class="card-icon">-->
+<!--                  <span class="special-letter">L</span>-->
+<!--                </div>-->
+<!--                <h3 class="sp-card-title">Luck</h3>-->
+<!--                <ul class="card-features">-->
+<!--                  <li><i class="fas fa-magic"></i> Чит-фразы ответы для любых экзаменов и реальных жизненных ситуаций.</li>-->
+<!--                  <li><i class="fas fa-user-secret"></i> <strong>Как говорить уверенно </strong>, даже если знаешь мало слов.</li>-->
+<!--                  <li><i class="fas fa-user-secret"></i> Методы спецслужб для запоминания слов (мнемоника из CIA, ментальные карты, ассоциативное мышление)-->
+
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <button class="slider-arrow slider-arrow-right" @click="scrollSlider(1)">-->
+<!--            <i class="fas fa-chevron-right"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+
+<!--        <div class="slider-dots">-->
+<!--      <span v-for="(dot, index) in 7" :key="index"-->
+<!--            :class="{'active': currentSlide === index}"-->
+<!--            @click="goToSlide(index)"></span>-->
+<!--        </div>-->
       </div>
     </section>
 
@@ -590,11 +611,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
 const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
-const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
+// const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
 // const gifWhatIsUp1 = new URL("../assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
 
 // const gifMissionIsPossible = "../assets/images/gifs/missionIsPossible.gif";
-// const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
+const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
 const gifWhatIsUp1 = "/src/assets/images/gifs/whatIsUp1.gif";
 const gifMatrixPills = "/src/assets/images/gifs/MatrixPills.gif";
 // Smooth scrolling functions
@@ -644,7 +665,107 @@ const initScrollAnimations = () => {
   });
 };
 
+// slider vue 3
+
+
+import 'vue3-carousel/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+const carouselSlides = ref([
+  {
+    letter: 'S',
+    title: 'Study to speak',
+    features: [
+      'Учимся чтобы говорить',
+      'Синдром собаки - это когда я всё понимаю, а говорить не могу 🐶',
+      'Не видео-курс, не чат-бот, не ИИ - реальное общение с человеком',
+      '* на урок можно с питомцами'
+    ]
+  },
+  {
+    letter: 'P',
+    title: 'Practice /прЭктис/',
+    features: [
+      'Практика - двигатель прогресса',
+      'Разговорные тренинги, ставим произношение',
+      'Без учебников и только персонализированные актуальные материалы'
+    ]
+  },
+  {
+    letter: 'E',
+    title: 'Exams',
+    features: [
+      'Подготовка к экзаменам, собеседованиям, тестам, релокации, созвонам, публичным выступлениям, митам, помощь в написании статей, переводах, документации, профессиональный технический английский, IT - сфера'
+    ]
+  },
+  {
+    letter: 'C',
+    title: 'Culture /ˈkʌltʃər/',
+    features: [
+      'Путешествия в разные страны',
+      'Mission is possible',
+      'Анализ мемов, сериалов, песен, фильмов, книг, журналов, трендов соцсетей и технологий',
+      'Изучение через культуру англоязычных стран'
+    ]
+  },
+  {
+    letter: 'I',
+    title: 'Immersion /имЁршн/',
+    features: [
+      `Постепенное <strong>погружение</strong> в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков`
+    ]
+  },
+  {
+    letter: 'A',
+    title: 'Apps and Ai',
+    features: [
+      'Artificial Intelligence',
+      'Своё приложение и уникальная платформа для тренировки памяти + электронная тетрадь',
+      'Учимся взаимодействию с Искуственным Интеллектом и нейронными сетями для любых целей помимо изучения английского'
+    ]
+  },
+  {
+    letter: 'L',
+    title: 'Luck',
+    features: [
+      'Чит-фразы ответы для любых экзаменов и реальных жизненных ситуаций',
+      'Как говорить уверенно, даже если знаешь мало слов',
+      'Методы спецслужб для запоминания слов (мнемоника из CIA, ментальные карты, ассоциативное мышление)'
+    ]
+  }
+]);
+
+const carouselConfig = {
+  height: 500,
+  // itemsToShow: 3,
+  wrapAround: false,
+  snapAlign: 'center',
+  transition: 500,
+  breakpoints: {
+    // 300px and up
+    300: {
+      itemsToShow: 1,
+      snapAlign: 'center',
+    },
+    // 400px and up
+    768: {
+      itemsToShow: 3,
+      snapAlign: 'start',
+    },
+
+  },
+};
+
+
+
 // Slider logic
+
+
+
+
+
+
+
 
 
 const currentSlide = ref(0);
@@ -1622,7 +1743,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mission-slider {
-  overflow: visible;
+  //overflow: visible;
   touch-action: pan-y;
   user-select: none;
   margin: 0 -15px;
@@ -1630,7 +1751,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .slider-track {
-  display: flex;
+  //display: flex;
   transition: transform 0.5s ease;
   padding: 20px 0;
   will-change: transform;
@@ -1651,7 +1772,9 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(100, 149, 237, 0.1);
   backdrop-filter: blur(2px);
-  max-width: 270px;
+  width: 270px;
+  height: 400px;
+
 }
 
 .mission-card:hover {
@@ -2714,6 +2837,79 @@ h1, h2, h3, h4, h5, h6 {
 //    }
 //  }
 //}
+
+
+
+/* Стили для карусели */
+.custom-carousel {
+  margin: 40px 0;
+}
+
+.custom-carousel :deep(.carousel__viewport) {
+  overflow: hidden;
+}
+
+.custom-carousel :deep(.carousel__track) {
+  padding: 20px 0;
+}
+
+.custom-carousel :deep(.carousel__slide) {
+  padding: 0 15px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  display: block;
+
+}
+
+.custom-carousel :deep(.carousel__slide--active) {
+  opacity: 1;
+}
+
+.custom-carousel :deep(.carousel__prev),
+.custom-carousel :deep(.carousel__next) {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #a1c4fd;
+  color: #a1c4fd;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.custom-carousel :deep(.carousel__prev):hover,
+.custom-carousel :deep(.carousel__next):hover {
+  background: #a1c4fd;
+  color: white;
+  //transform: scale(1.1);
+}
+
+.custom-carousel :deep(.carousel__pagination-button) {
+  background: #d1e0ff;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+}
+
+.custom-carousel :deep(.carousel__pagination-button--active) {
+  background: #a1c4fd;
+  transform: scale(1.3);
+}
+//
+///* Адаптивность карусели */
+//@media (max-width: 768px) {
+//  .custom-carousel :deep(.carousel__prev),
+//  .custom-carousel :deep(.carousel__next) {
+//    width: 40px;
+//    height: 40px;
+//    font-size: 14px;
+//  }
+//
+//  .custom-carousel :deep(.carousel__pagination) {
+//    margin-top: 20px;
+//  }
+//}
+
 
 .none {
   display: none;
