@@ -376,7 +376,7 @@ onMounted(() => {
   // Первая карточка-инструкция
   currentWord.value = {
     ru: "нажимай на колоду",
-    eng: "Объясни слово (по-русски или английски)",
+    eng: "Click the deck",
     isIntro: true
   };
 

@@ -124,6 +124,10 @@ const routes = [
                 path: 'gameDresser',
                 component: () => import('src/components/GameDresser.vue')
               },
+              {
+                path: '/phoneFramePattern',
+                component: () => import('pages/PhoneFramePattern.vue'),
+              },
 
             ]
           },
@@ -146,6 +150,7 @@ const routes = [
         path: '/games',
         component: () => import('pages/SeeAllGames.vue'),
       },
+
       {
         path: '/extra-page',
         component: () => import('src/pages/extraPage.vue'),

@@ -310,7 +310,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
   border: none;
   overflow: hidden; /* Обрезаем длинные слова */
@@ -352,7 +352,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: none;
   font-size: 20px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -387,7 +387,7 @@ html {
   font-size: 32px;
   font-weight: bold;
   color: #2c3e50;
-  cursor: pointer;
+  cursor: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -441,7 +441,7 @@ html {
   color: white;
   font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
   -webkit-tap-highlight-color: transparent;
 
@@ -490,7 +490,7 @@ html {
   color: white;
   font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(250, 208, 196, 0.4);
 }
