@@ -49,6 +49,22 @@
             </div>
           </div>
 
+          <!-- Специальная карточка (раномный набор) -->
+          <div
+            class="v-card-choose tooltip-wrapper randomQuestions random-set"
+            role="button"
+            @click="playRandomQuestions"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Рандомные вопросы 🎲
+            <div class="custom-tooltip">
+              Random Questions
+            </div>
+          </div>
+
           <!-- Остальные карточки из наборов -->
           <div
             class="v-card-choose tooltip-wrapper"
@@ -263,6 +279,10 @@ const playRandomSet = () => {
   goToChosenGame(randomSet);
 };
 
+const  playRandomQuestions = () => {
+  router.push('/phoneFramePattern');
+
+}
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
@@ -722,6 +742,12 @@ onMounted(() => {
   cursor: none;
   //font-size: 16px;
 }
+
+.randomQuestions {
+  background: linear-gradient(to top, #594eef, #6f75f1);
+
+}
+
 
 .random-set::before {
   content: "";

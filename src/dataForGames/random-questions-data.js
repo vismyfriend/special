@@ -113,8 +113,8 @@ const randomQuestionsData = {
     { id: 50, eng: "What is in your pocket now?", ru: "Что у вас сейчас в кармане?" },
   ],
   levelB: [
-    { id: 1, eng: "Where were you yesterday at 8pm?", ru: "Где вы были вчера в 20:00"},
-    { id: 2, eng: "What made you smile last week?", ru: "Что заставило вас улыбнуться на прошлой неделе?"},
+    { eng: "Where were you yesterday at 8pm?", ru: "Где вы были вчера в 20:00"},
+    { eng: "What made you smile last week?", ru: "Что заставило вас улыбнуться на прошлой неделе?"},
   ],
   levelC: [
     { id: 1, eng: "If you could have a super power what would it be?", ru: "Если бы вы могли иметь суперспособность, то какая бы она у вас была?"},

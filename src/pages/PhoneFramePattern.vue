@@ -19,8 +19,6 @@
           </div>
         </div>
 
-
-
         <!-- Слайдер с карточками вопросов -->
         <div class="question-randomizer">
           <div class="slider-container">
@@ -29,9 +27,10 @@
             </button>
 
             <div class="slider-track" ref="sliderTrack">
+              <!-- Используем index в качестве ключа, чтобы избежать дубликатов -->
               <div
-                v-for="(question, index) in filteredQuestions"
-                :key="question.id"
+                v-for="(question, index) in questions"
+                :key="`${question.id}-${index}`"
                 class="question-card"
                 :class="{ 'active': currentIndex === index }"
               >
@@ -64,7 +63,7 @@
           <button
             class="timer-btn"
             @click="toggleTimer"
-            :disabled="filteredQuestions.length === 0"
+            :disabled="questions.length === 0"
             :class="{ 'timer-active': timerActive }"
           >
             <i class="fas" :class="timerActive ? 'fa-stop' : 'fa-play'"></i>
@@ -84,16 +83,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
+import { ref, onMounted, computed, onUnmounted, watch, nextTick } from 'vue'
 import randomQuestionsData from '../dataForGames/random-questions-data'
 
+// Реактивные переменные
 const availableLevels = ref(['levelA', 'levelB', 'levelC'])
-const selectedLevels = ref(['levelA', 'levelB', 'levelC'])
+const selectedLevels = ref(['levelA']) // сразу включены
 const timerActive = ref(false)
 const timerCount = ref(60)
 const timerInterval = ref(null)
+const questions = ref([]) // Массив перемешанных вопросов
+const currentIndex = ref(0) // Текущий индекс вопроса
+const sliderTrack = ref(null) // Референс на слайдер
 
-// Таймер функций
+// Функции таймера
 const startTimer = () => {
   timerActive.value = true
   timerCount.value = 60
@@ -126,14 +129,16 @@ onUnmounted(() => {
   stopTimer()
 })
 
-// Собираем все вопросы в один массив с указанием уровня
+// Вычисляемое свойство: все вопросы из всех уровней
 const allQuestions = computed(() => {
   const questions = []
   availableLevels.value.forEach(level => {
     if (randomQuestionsData[level]) {
-      randomQuestionsData[level].forEach(q => {
+      randomQuestionsData[level].forEach((q, index) => {
         questions.push({
           ...q,
+          // Добавляем уровень и индекс к ID для уникальности
+          uniqueId: `${level}-${q.id || index}`,
           level: level.replace('level', ''),
           showTranslation: false
         })
@@ -143,7 +148,7 @@ const allQuestions = computed(() => {
   return questions
 })
 
-// Фильтруем вопросы по выбранным уровням
+// Вычисляемое свойство: вопросы, отфильтрованные по выбранным уровням
 const filteredQuestions = computed(() => {
   if (selectedLevels.value.length === 0) return []
 
@@ -152,11 +157,7 @@ const filteredQuestions = computed(() => {
   )
 })
 
-const questions = ref([])
-const currentIndex = ref(0)
-const sliderTrack = ref(null)
-
-// Функция для перемешивания вопросов (исправленная)
+// Функция для перемешивания вопросов
 const shuffleQuestions = (array) => {
   if (!array || array.length === 0) return []
 
@@ -179,19 +180,37 @@ const toggleTranslation = (question) => {
   question.showTranslation = !question.showTranslation
 }
 
+// Обновление позиции слайдера с проверкой на существование элемента
+const updateSliderPosition = () => {
+  // Проверяем, что элемент существует и есть вопросы
+  if (sliderTrack.value && questions.value.length > 0) {
+    const cardElement = sliderTrack.value.querySelector('.question-card')
+    // Дополнительная проверка на существование карточки
+    if (cardElement) {
+      const cardWidth = cardElement.offsetWidth
+      sliderTrack.value.style.transform = `translateX(-${currentIndex.value * cardWidth}px)`
+    }
+  }
+}
+
 // Обновляем вопросы при изменении выбора уровней
 const updateQuestions = () => {
   if (filteredQuestions.value.length > 0) {
+    // Перемешиваем отфильтрованные вопросы и сохраняем в questions.value
     questions.value = shuffleQuestions(filteredQuestions.value)
     currentIndex.value = 0
-    updateSliderPosition()
+
+    // Ждем следующего тика обновления DOM перед обновлением позиции слайдера
+    nextTick(() => {
+      updateSliderPosition()
+    })
   } else {
     questions.value = []
     currentIndex.value = 0
   }
 }
 
-// Навигация по вопросам с бесконечной прокруткой
+// Навигация по вопросам
 const nextQuestion = () => {
   if (questions.value.length === 0) return
 
@@ -214,14 +233,6 @@ const prevQuestion = () => {
     currentIndex.value = questions.value.length - 1
   }
   updateSliderPosition()
-}
-
-// Обновление позиции слайдера
-const updateSliderPosition = () => {
-  if (sliderTrack.value && questions.value.length > 0) {
-    const cardWidth = sliderTrack.value.querySelector('.question-card').offsetWidth
-    sliderTrack.value.style.transform = `translateX(-${currentIndex.value * cardWidth}px)`
-  }
 }
 
 // Обработчики для свайпа на мобильных устройствах
@@ -248,7 +259,7 @@ const handleSwipe = () => {
   }
 }
 
-// Инициализация
+// Инициализация при монтировании компонента
 onMounted(() => {
   // Добавляем обработчики для свайпа
   if (sliderTrack.value) {
@@ -257,21 +268,20 @@ onMounted(() => {
   }
 
   // Инициализируем вопросы с перемешиванием при загрузке
-  updateQuestions()
+  // Ждем следующего тика, чтобы DOM успел отрендериться
+  nextTick(() => {
+    updateQuestions()
+  })
 })
 
-// Следим за изменениями filteredQuestions и автоматически перемешиваем
+// Следим за изменениями filteredQuestions и автоматически обновляем вопросы
 watch(filteredQuestions, () => {
-  updateQuestions()
-}, { immediate: true })
-
-// Также перемешиваем при изменении selectedLevels
-watch(selectedLevels, () => {
   updateQuestions()
 })
 </script>
 
 <style lang="scss" scoped>
+/* Стили остаются без изменений */
 .level-selection {
   padding: 20px;
   text-align: center;
@@ -351,7 +361,7 @@ watch(selectedLevels, () => {
 }
 
 .timer-text {
-  font-family: monospace;
+  font-family: Special_f1;
 }
 
 .questions-info {
@@ -380,6 +390,7 @@ watch(selectedLevels, () => {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   margin-top: 15px;
 
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
@@ -395,7 +406,6 @@ watch(selectedLevels, () => {
   }
 }
 
-/* Остальные стили остаются такими же, как в вашем предыдущем коде */
 .ru.blurred {
   filter: blur(5px);
   cursor: none;
@@ -424,7 +434,6 @@ watch(selectedLevels, () => {
     inset 0 0 2px 7px #000,
     inset 0 0 3px 7px #000,
     0 150px 200px -80px #000;
-
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -477,6 +486,8 @@ watch(selectedLevels, () => {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border: 2px solid #e9ecef;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
 
   &.active {
     border-color: #667eea;
@@ -491,7 +502,6 @@ watch(selectedLevels, () => {
 .question-text {
   .eng {
     font-size: 1.8rem;
-
     color: #333;
     margin-bottom: 15px;
     line-height: 25px;
@@ -548,51 +558,5 @@ watch(selectedLevels, () => {
   font-family: Special_f1;
 }
 
-// Адаптивность
-@media (max-width: 480px) {
-  .level-checkboxes {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
 
-  .slider-container {
-    max-width: 300px;
-  }
-
-  .question-card {
-    padding: 20px;
-  }
-
-  .question-text {
-    .eng {
-      font-size: 1.2rem;
-    }
-
-    .ru {
-      font-size: 1rem;
-      min-height: 50px;
-    }
-  }
-
-  .slider-arrow {
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
-
-    &.slider-arrow-left {
-      left: -15px;
-    }
-
-    &.slider-arrow-right {
-      right: -15px;
-    }
-  }
-
-  .timer-circle {
-    width: 60px;
-    height: 60px;
-    font-size: 1.2rem;
-  }
-}
 </style>
