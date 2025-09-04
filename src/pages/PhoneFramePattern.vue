@@ -283,7 +283,7 @@ watch(filteredQuestions, () => {
 <style lang="scss" scoped>
 /* Стили остаются без изменений */
 .level-selection {
-  padding: 20px;
+  padding: 20px 10px 0 10px;
   text-align: center;
 
   h3 {
@@ -466,7 +466,7 @@ watch(filteredQuestions, () => {
   position: relative;
   width: 100%;
   max-width: 400px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
@@ -479,10 +479,10 @@ watch(filteredQuestions, () => {
 .question-card {
   flex: 0 0 100%;
   min-width: 100%;
-  height: 300px;
+  height: 350px;
   background: white;
   border-radius: 16px;
-  padding: 30px;
+  padding: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border: 2px solid #e9ecef;
   transition: all 0.3s ease;

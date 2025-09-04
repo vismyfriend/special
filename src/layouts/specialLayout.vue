@@ -122,7 +122,7 @@ const showAboutGame = () => {
         <!-- Кнопка "Обновления" (внутренний переход) -->
         <button onclick="window.__router.push('/v-is-my-friend/'); window.__modal.close()"
            style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
-          my site
+          Vismyfriend
         </button>
 
         <!-- Кнопка "Об авторах" (внешняя ссылка) -->
