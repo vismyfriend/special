@@ -72,23 +72,14 @@
           <div class="text-align-center">
 
 
-            <div class="gif-container">
-              <img
-                :src="gifMatrixPills"
-                alt="Анимированный детектив"
-                class="detective-gif"
-              />
-            </div>
+
 
             <div class="gif-container">
               <img :src="gifs.matrixPills2" alt="Matrix pills" class="detective-gif" />
 
             </div>
 
-            <div class="gif-container">
-              <img :src="gifs.matrixPills3" alt="Matrix pills" class="detective-gif" />
 
-            </div>
 
             <button class="btn-mission btn-large" @click.prevent="scrollToSection('services')">
               <i class="fas fa-search" ></i>
@@ -102,7 +93,7 @@
         <div class="hero-visual">
           <div class="gif-container">
             <img
-              :src="gifDoYouUnderstand"
+              :src="gifs.doYouUnderstand"
               alt="Анимированный детектив"
               class="detective-gif"
             />
@@ -119,7 +110,7 @@
           <!-- Добавьте гифку здесь -->
           <div class="gif-container">
             <img
-              :src="gifMissionIsPossible"
+              :src="gifs.missionIsPossible"
               alt="Анимированный детектив"
               class="detective-gif"
             />
@@ -620,24 +611,19 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
 
-
+import gifMissionIsPossible from '/src/assets/images/gifs/missionIsPossible.gif';
+import gifDoYouUnderstand from '/src/assets/images/gifs/doYouUnderstand.gif';
+import gifWhatIsUp1 from '/src/assets/images/gifs/whatIsUp1.gif';
 import gifMatrixPills2 from '/src/assets/images/gifs/MatrixPills.gif';
-import gifMatrixPills3 from 'src/assets/images/gifs/MatrixPills.gif';
 
 const gifs = ref({
   matrixPills2: gifMatrixPills2,
-  matrixPills3: gifMatrixPills3,
+  missionIsPossible: gifMissionIsPossible,
+  doYouUnderstand: gifDoYouUnderstand,
+  whatIsUp1: gifWhatIsUp1,
 });
 
 
-const gifMissionIsPossible = new URL("/src/assets/images/gifs/missionIsPossible.gif", import.meta.url).href;
-// const gifDoYouUnderstand = new URL("/src/assets/images/gifs/doYouUnderstand.gif", import.meta.url).href;
-// const gifWhatIsUp1 = new URL("../assets/images/gifs/whatIsUp1.gif", import.meta.url).href;
-
-// const gifMissionIsPossible = "../assets/images/gifs/missionIsPossible.gif";
-const gifDoYouUnderstand = "/src/assets/images/gifs/doYouUnderstand.gif";
-const gifWhatIsUp1 = "/src/assets/images/gifs/whatIsUp1.gif";
-const gifMatrixPills = "/src/assets/images/gifs/MatrixPills.gif";
 // Smooth scrolling functions
 
 const scrollToSection = (sectionId) => {
@@ -1926,9 +1912,7 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
   transform: scale(1.05);
 }
-.service-card.extended {
-  height: 280px;
-}
+
 
 .service-badge {
   position: absolute;
@@ -1994,6 +1978,9 @@ h1, h2, h3, h4, h5, h6 {
   }
   .service-badge {
     top: 90%;
+  }
+  .service-card.extended {
+    height: 280px
   }
   .service-features {
     margin-bottom: 10px;
