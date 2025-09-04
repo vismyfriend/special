@@ -786,140 +786,140 @@ const ListeningExerciseData = {
   },
 
 
-  listening_b1_test_30: {
-    mainDescription: "B1 listening 30",
+  listening_b1_test_30p1: {
+    mainDescription: "B1 listening 30p1",
     tasks: [
       {
-        taskDescription: "Выбери правильный ответ",
+        taskDescription: null,
         audio: new URL('../assets/audio/b1-test-30-1.mp3', import.meta.url).href,
+        usefulWords: 'part - часть, exhibition - / эгзибИшн / выставка, recently - /рИсэнтли/ недавно (на днях), refund - / рИфанд / возврат денег',
         taskID: "multiple_choice",
         taskPicture: null,
-        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        textScript:
+          '1   Which part of the Arts Centre only opened recently?\n' +
+          '\n' +
+          'Woman:   In the heart of the city the Arts Centre includes a concert hall, cinema and an art gallery. The cinema is presenting a programme of films by younger film-makers and is attracting larger audiences than ever. The open-air concert area is the new home to the City Orchestra with an exciting concert programme of new composers and guest performers, while the City Art Gallery has a major programme of exhibitions all summer. Guests can enjoy dinner in the popular restaurant and enjoy the wonderful views of the city and river.\n' +
+          '\n' +
+          '2   What does the shop assistant give the man?\n' +
+          '\n' +
+          'Man:   Excuse me, I bought this sweater here, but when I got home I noticed it had a hole in it.\n' +
+          '\n' +
+          'Woman:   Oh, I’m sorry. Oh yes, I see. Well I can certainly exchange it for you. We have plenty more – or would you like your money back instead?\n' +
+          '\n' +
+          'Man:   Well, I’d actually prefer one of those shirts over there but you haven’t got my size. Oh, don’t worry about it. I’ll just have a refund, please.\n' +
+          '\n' +
+          'Woman:   Of course. We’re having more shirts in next week if you’re interested.\n' +
+          '\n' +
+          '3   Where does the woman feel pain?\n' +
+          '\n' +
+          'Woman:   Hello, it’s Maria here. Just to let you know about my health problems again. I saw Dr Jones last week about my knee and he told me to rest. It still hurts and he said if things don’t improve, I should go back and see him again. Honestly, it was my ankle a few weeks ago. At least my headaches seem to have gone for the moment. Give me a ring and let me know how you are. Let’s meet for a coffee soon. Call me back.\n' +
+          '\n' +
+          '4   Where must the woman go to buy dollars?\n' +
+          '\n' +
+          'Man:   Can I help you?\n' +
+          '\n' +
+          'Woman:   I’d like to buy some dollars, please.\n' +
+          '\n' +
+          'Man:   Do you bank with us? We only sell dollars to customers who have an account at this bank.\n' +
+          '\n' +
+          'Woman:   No, I’m a tourist – I’m just in the country for a few days. I just wanted to change some euros into dollars. What do you suggest I do then?\n' +
+          '\n' +
+          'Man:   There’s a currency exchange office at the airport.\n' +
+          '\n' +
+          'Woman:   That’s so far away! Is there nowhere nearer? In a shopping mall, for example?\n' +
+          '\n' +
+          'Man:   Sorry, there used to be an exchange office in the big department store in the mall, but it closed last year.\n' +
+          '\n' +
+          '5   Which vegetable is used in all today’s recipes?\n' +
+          '\n' +
+          'Man:   On today’s Student Cookery programme, I’m going to show you how to make some really cheap and healthy meals. Forget about opening tins and think fresh! You can do wonderful things with tomatoes, potatoes – and I don’t mean chips or fries! – even cabbage, yes cabbage rolls, filled with tasty rice and herbs. And the essential vegetable in all my recipes is the ordinary onion, red or white or brown – colour doesn’t matter. First of all, you need a sharp knife. So, watch carefully and off we go …\n' +
+          '\n' +
+          '6   Where is the meeting?\n' +
+          '\n' +
+          'Man:   Do you know where today’s meeting with the Theatre Director will be held?\n' +
+          '\n' +
+          'Woman:   I thought it was in his office. Let me check his online diary.\n' +
+          '\n' +
+          'Man:   He did say he might hold it outdoors as it’s so hot. But that’s never a very good idea as papers can get blown away. I hope it’s in the staff restaurant – I could do with a cold drink!\n' +
+          '\n' +
+          'Woman:   Ah, here it is in the diary – he’s arranged it down by the lake. You could take something to drink with you – enjoy!\n' +
+          '\n' +
+          '7   How did the man want to pay?\n' +
+          '\n' +
+          'Man:   You’d think that paying a bill would be easy. On tonight’s Money Today, I’m looking at some of the difficulties there can be. The story starts with my own experience. Thinking it’d be simpler, I made the mistake of trying to pay a hotel bill in cash. Well, amazingly they insisted on me using a credit card. I didn’t have one with me, so had to get onto my internet banking site using my mobile phone to try and get my card details. Nothing’s easy.\n' +
+          '\n' +
+          '1 B   2 C   3 C   4 A   5 A   6 B   7 A',
         questions: [
           {
-            text: "What is another name for the game Checkers?",
-            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            text: "Which part of the Arts Centre only opened recently?",
+            questionPicture: new URL("../assets/images/b1-test-30-1.jpg", import.meta.url).href,
             options: {
-              A: "lazy chess",
-              B: "wooden circles",
-              C: "shashkis",
-              D: "draughts",
-              E: "corners"
+              A: "Art gallery",
+              B: "Open-air concert hall",
+              C: "Cinema",
+              D: "Mysterious toilet"
             },
-            correctAnswer: "D",
-            explanation: "People in England say 'draughts' instead of 'checkers'."
+            correctAnswer: "A",
           },
-
           {
-            text: "How many people play checkers together?",
+            text: "What does the shop assistant give the man?",
+            questionPicture: new URL("../assets/images/b1-test-30-2.jpg", import.meta.url).href,
             options: {
-              A: "1",
-              B: "2",
-              C: "4",
-              D: "unlimited"
+              A: "A",
+              B: "B",
+              C: "C",
+            },
+            correctAnswer: "C",
+          },
+          {
+            text: "Where does the woman feel pain?",
+            questionPicture: new URL("../assets/images/b1-test-30-3.jpg", import.meta.url).href,
+            options: {
+              A: "A",
+              B: "B",
+              C: "C",
+            },
+            correctAnswer: "C",
+          },
+          {
+            text: " Where must the woman go to buy dollars?",
+            questionPicture: new URL("../assets/images/b1-test-30-4.jpg", import.meta.url).href,
+            options: {
+              A: "A",
+              B: "B",
+              C: "C",
+            },
+            correctAnswer: "A",
+          },
+          {
+            text: "Which vegetable is used in all today’s recipes?",
+            questionPicture: new URL("../assets/images/b1-test-30-5.jpg", import.meta.url).href,
+            options: {
+              A: "A",
+              B: "B",
+              C: "C",
+            },
+            correctAnswer: "A",
+          },
+          {
+            text: "Where is the meeting?",
+            questionPicture: new URL("../assets/images/b1-test-30-6.jpg", import.meta.url).href,
+            options: {
+              A: "A",
+              B: "B",
+              C: "C",
             },
             correctAnswer: "B",
-            explanation: "One person uses dark pieces, the other uses light pieces."
           },
           {
-            text: "ВУДУЕУ What is another name for the game Checkers?",
-            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
+            text: "How did the man want to pay?",
+            questionPicture: new URL("../assets/images/b1-test-30-7.jpg", import.meta.url).href,
             options: {
-              A: "lazy chess",
-              B: "wooden circles",
-              C: "shashkis",
-              D: "draughts",
-              E: "corners"
+              A: "A",
+              B: "B",
+              C: "C",
             },
-            correctAnswer: "D",
-            explanation: "People in England say 'draughts' instead of 'checkers'."
-          },
-
-          {
-            text: "How many people play checkers together?",
-            options: {
-              A: "1",
-              B: "2",
-              C: "4",
-              D: "unlimited"
-            },
-            correctAnswer: "B",
-            explanation: "One person uses dark pieces, the other uses light pieces."
-          },
-          {
-            text: "ВУДУЕУ What is another name for the game Checkers?",
-            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
-            options: {
-              A: "lazy chess",
-              B: "wooden circles",
-              C: "shashkis",
-              D: "draughts",
-              E: "corners"
-            },
-            correctAnswer: "D",
-            explanation: "People in England say 'draughts' instead of 'checkers'."
-          },
-
-          {
-            text: "How many people play checkers together?",
-            options: {
-              A: "1",
-              B: "2",
-              C: "4",
-              D: "unlimited"
-            },
-            correctAnswer: "B",
-            explanation: "One person uses dark pieces, the other uses light pieces."
-          },
-          {
-            text: "ВУДУЕУ What is another name for the game Checkers?",
-            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
-            options: {
-              A: "lazy chess",
-              B: "wooden circles",
-              C: "shashkis",
-              D: "draughts",
-              E: "corners"
-            },
-            correctAnswer: "D",
-            explanation: "People in England say 'draughts' instead of 'checkers'."
-          },
-
-          {
-            text: "How many people play checkers together?",
-            options: {
-              A: "1",
-              B: "2",
-              C: "4",
-              D: "unlimited"
-            },
-            correctAnswer: "B",
-            explanation: "One person uses dark pieces, the other uses light pieces."
-          },
-          {
-            text: "ВУДУЕУ What is another name for the game Checkers?",
-            questionPicture: new URL("../assets/images/b1_listening_30_1.png", import.meta.url).href,
-            options: {
-              A: "lazy chess",
-              B: "wooden circles",
-              C: "shashkis",
-              D: "draughts",
-              E: "corners"
-            },
-            correctAnswer: "D",
-            explanation: "People in England say 'draughts' instead of 'checkers'."
-          },
-
-          {
-            text: "How many people play checkers together?",
-            options: {
-              A: "1",
-              B: "2",
-              C: "4",
-              D: "unlimited"
-            },
-            correctAnswer: "B",
-            explanation: "One person uses dark pieces, the other uses light pieces."
+            correctAnswer: "A",
           },
         ]
       },

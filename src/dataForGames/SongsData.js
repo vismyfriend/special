@@ -132,6 +132,72 @@ const songsData = {
 
     ],
   },
+  songPresentContinuous1tutu: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "listenCarefully",
+        usefulWords: "instead - / инстЭд / вместо, pour - / по / наливать, the diner - / дАйнэ / закусочная (забегаловка)",
+        audio: new URL('../assets/audio/Suzanne Vega - Toms Diner.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/present_cont.jpg", import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: null,
+            audioName: null,
+            text:
+              "Tu tu tu ru tut tu tu ru\n" +
+              "...\n" +
+              "I (am) sitting in the morning\n" +
+              "At the (diner) on the corner\n" +
+              "I am (waiting) at the counter\n" +
+              "For the man to pour the (coffee)\n" +
+              "And he fills it (only) halfway\n" +
+              "And (before) I even argue\n" +
+              "He is looking out the window\n" +
+              "At (somebody) coming in\n" +
+              "...\n" +
+              "It is always (nice) to (see) you\n" +
+              "Says the man behind the counter\n" +
+              "To the (woman) who has come in\n" +
+              "She is (shaking) her umbrella\n" +
+              "And I look the other way\n" +
+              "As they are (kissing) their hellos\n" +
+              "And I′m pretending (not) to (see) them\n" +
+              "And instead I pour the milk\n" +
+              "...\n" +
+              "I open up the paper\n" +
+              "There's a story of an actor\n" +
+              "Who had died while he was drinking\n" +
+              "It was no one I had heard of\n" +
+              "And I′m turning to the horoscope\n" +
+              "And looking for the funnies\n" +
+              "When I'm feeling someone watching me\n" +
+              "And so I raise my head\n" +
+              "There's a woman on the outside\n" +
+              "Looking inside does she see me\n" +
+              "No she does not really see me\n" +
+              "′Cause she sees her own reflection\n" +
+              "And I′m trying not to notice\n" +
+              "That she's hitching up her skirt\n" +
+              "And while she′s straightening her stockings\n" +
+              "Her hair has gotten wet\n" +
+              "Oh this rain it will continue\n" +
+              "Through the morning as I'm listening\n" +
+              "To the bells of the cathedral\n" +
+              "I am thinking of your voice\n" +
+              "And of the midnight picnic\n" +
+              "Once upon a time before the rain began\n" +
+              "And I finish up my coffee\n" +
+              "And it′s time to catch the train"
+          },
+        ]
+      },
+
+
+    ],
+  },
   testQuicklyData: {
     mainDescription: "How much is too much?",
     tasks: [

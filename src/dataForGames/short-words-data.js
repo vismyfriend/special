@@ -76,6 +76,61 @@ const shortWordsData = {
     { id: 64, eng: "Can you drive a stick?", ru: "Умеешь водить механику?" },
     { id: 65, eng: "Exactly!", ru: "Именно так!" }
   ],
+  whatTimeIsIt: [
+    { id: 1, eng: "1:15", ru: "A quarter past one", hint: "уАн фифтИн" },
+    { id: 2, eng: "1:45", ru: "A quarter past one", hint: "уАн фОти файв"  },
+    { id: 3, eng: "1:30", ru: "A half past one", hint: "one thirty" },
+    { id: 5, eng: "2:00", ru: "Two o'clock", hint: "/ту/ два ровно" },
+    { id: 6, eng: "2:15", ru: "A quarter past two", hint: "ту фифтИн" },
+    { id: 7, eng: "2:30", ru: "A half past two", hint: "ту thirty" },
+    { id: 8, eng: "2:45", ru: "A quarter to three", hint: "ту фОти файв" },
+
+    { id: 9, eng: "3:00", ru: "Three - не фри", hint: "не сри, не три" },
+    { id: 10, eng: "3:15", ru: "A quarter past three", hint: "three fifteeN" },
+    { id: 11, eng: "3:30", ru: "A half past three", hint: "three thirty" },
+    { id: 12, eng: "3:45", ru: "A quarter to four", hint: "three forty five" },
+
+    { id: 13, eng: "4:00", ru: "Four o'clock sharp", hint: "четыре ровно" },
+    { id: 14, eng: "4:15", ru: "A quarter past four", hint: "фо фифтИн" },
+    { id: 15, eng: "4:30", ru: "A half past four", hint: "four thirty" },
+    { id: 16, eng: "4:45", ru: "A quarter to five", hint: "фо фОти файв" },
+
+    { id: 17, eng: "5:00", ru: "Five o'clock", hint: "файв о'клок" },
+    { id: 18, eng: "5:15", ru: "A quarter past five", hint: "файв фифтИн" },
+    { id: 19, eng: "5:30", ru: "A half past five", hint: "файв thirty" },
+    { id: 20, eng: "5:45", ru: "A quarter to six", hint: "файв forty файв" },
+
+
+    { id: 25, eng: "7:00", ru: "Seven o'clock", hint: "сэвэн о'клок" },
+    { id: 26, eng: "7:11", ru: "Eleven past seven", hint: "сЭвн илЭвн" },
+    { id: 27, eng: "7:30", ru: "A half past seven", hint: "сЭвн thirty" },
+    { id: 28, eng: "7:45", ru: "A quarter to eight", hint: "сЭвн фОти файв" },
+
+    { id: 29, eng: "8:00", ru: "Eight o'clock", hint: "эйт о'клок" },
+    { id: 30, eng: "8:15", ru: "A quarter past eight", hint: "эйт фифтИн" },
+    { id: 31, eng: "8:30", ru: "A half past eight", hint: "eight thirty" },
+    { id: 32, eng: "8:45", ru: "A quarter to nine", hint: "эйт forty five" },
+
+    { id: 33, eng: "9:00", ru: "Nine o'clock", hint: "найн о'клок" },
+    { id: 34, eng: "9:15", ru: "A quarter past nine", hint: "найн фифтИн" },
+    { id: 35, eng: "9:30", ru: "A half past nine", hint: "найн сёти" },
+    { id: 36, eng: "9:45", ru: "A quarter to ten", hint: "найн фОти файв" },
+
+    { id: 33, eng: "19:00", ru: "Seven o'clock", hint: "найнтИИИн" },
+    { id: 34, eng: "19:15", ru: "A quarter past seven", hint: "найнтИн фифтИн" },
+    { id: 35, eng: "19:30", ru: "A half past seven", hint: "найнтИн thirty" },
+    { id: 36, eng: "19:45", ru: "A quarter to twenty", hint: "найн фОти файв" },
+
+    { id: 41, eng: "11:00", ru: "Eleven o'clock sharp", hint: "илЭвн ровно!" },
+    { id: 42, eng: "11:15", ru: "A quarter past eleven", hint: "илЭвн фифтИн" },
+    { id: 43, eng: "11:30", ru: "A half past eleven", hint: "eleven thirty" },
+    { id: 44, eng: "11:45", ru: "A quarter to twelve", hint: "илЭвн фОти фАйв" },
+
+    { id: 45, eng: "12:00", ru: "Twelve o'clock", hint: "туЭлв ровно!" },
+    { id: 46, eng: "12:15", ru: "A quarter past twelve", hint: "туЭлв фифтИн" },
+    { id: 47, eng: "12:30", ru: "A half past twelve", hint: "twelve thirty" },
+    { id: 48, eng: "12:45", ru: "A quarter to one", hint: "туЭлв фОти файв" }
+  ],
   YoungSheldonS1E3: [
     { id: 0, eng: "My dad took pride in saying that", ru: "отец гордился произносить это"},
     { id: 1, eng: "he ran a house like a tight ship", ru: "он управлял домом словно кораблем - строгий порядок (идиома)" },

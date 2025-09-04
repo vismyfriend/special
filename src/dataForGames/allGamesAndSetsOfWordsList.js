@@ -380,6 +380,23 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/whatTimeIsIt/find-pairs-easy",
+      missionVisibleName: "What time is it ? - easy",
+      missionDescription: "Который сейчас час ?",
+      id: 1001,
+      active: true,
+      stars: '1'
+    }, {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/whatTimeIsIt/find-pairs-hard",
+      missionVisibleName: "What time is it ? - hard",
+      missionDescription: "Который сейчас час ?",
+      id: 1001,
+      active: true,
+      stars: '2'
+    },
 
     {
       missionName: "appearanceWords",
@@ -433,8 +450,8 @@ export const allGamesAndSetsOfWordsList =
       active: true
     },
     {
-      missionName: "listening_b1_test_30",
-      missionVisibleName: "B1 Listening 30",
+      missionName: "listening_b1_test_30p1",
+      missionVisibleName: "B1 Listening 30p1",
       missionDescription: "Аудирование",
       id: 1,
       active: true
@@ -704,6 +721,15 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/songImpossibleFallout/songs",
       missionVisibleName: "Diamond city radio",
       missionDescription: "Crazy he calls me",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songPresentContinuous1tutu/songs",
+      missionVisibleName: "Pr. Continuous song",
+      missionDescription: "Tu tu tu tu",
       id: 1001,
       active: true,
       stars: '3'

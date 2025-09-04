@@ -3,6 +3,7 @@ const randomQuestionsData = {
 
   levelA: [
     { eng: "What is your name? And do you have a nickname?", ru: "Как вас зовут и есть ли у вас никнейм?" },
+    { eng: "Look at your watch. Tell the time. Hours and minutes, please:", ru: "Посмотрите на свои часы, скажите сколько часов и минут" },
     { eng: "What is the English for 'TAPOCHKI'?", ru: "Как на английском сказать «Тапочки»? the answer is slippers" },
     { eng: "What is the English for 'PODUSHKA'?", ru: "Как на английском сказать «Подушка»? the answer is pillow" },
     { eng: "What is the English for 'ODEYALO'?", ru: "Как на английском сказать «Одеяло»? the answer is blanket" },
