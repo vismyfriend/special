@@ -152,131 +152,6 @@
           </template>
         </Carousel>
 
-<!--        <div class="mission-slider-container">-->
-<!--          <button class="slider-arrow slider-arrow-left" @click="scrollSlider(-1)">-->
-<!--            <i class="fas fa-chevron-left"></i>-->
-<!--          </button>-->
-
-
-<!--          <div-->
-<!--            class="mission-slider"-->
-<!--            @touchstart="handleTouchStart"-->
-<!--            @touchmove="handleTouchMove"-->
-<!--            @touchend="handleTouchEnd"-->
-<!--          >-->
-<!--            <div-->
-<!--              class="slider-track"-->
-<!--              ref="sliderTrack"-->
-<!--              @mousedown="handleMouseDown"-->
-<!--              @mousemove="handleMouseMove"-->
-<!--              @mouseup="handleMouseUp"-->
-<!--              @mouseleave="handleMouseUp"-->
-<!--            >-->
-<!--              &lt;!&ndash; Карточка S &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">S</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Study to speak</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-brain"></i> <strong>Учимся </strong>чтобы <strong>говорить</strong></li>-->
-<!--                  <li><i class="fas fa-fire"></i><strong>синдром собаки </strong>- это когда я всё понимаю, а говорить не могу 🐶</li>-->
-<!--                  <li><i class="fas fa-user-cog"></i><strong>не видео-курс</strong> не чат-бот, не ИИ <br>реальное общение с человеком </li>-->
-<!--                  <li><i class="fas fa-user-cog"></i>* на урок можно с питомцами</li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка P &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">P</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Practice<br>/прЭктис/</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-comments"></i><strong>Практика</strong> - двигатель прогресса.</li>-->
-<!--                  <li><i class="fas fa-comments"></i> Разговорные тренинги, <br>ставим произношение</li>-->
-<!--                  <li><i class="fas fa-fire"></i> Без учебников и только персонализированные актуальные материалы</li>-->
-
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка E &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">E</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Exams</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-clock"></i> Подготовка к экзаменам, <strong>собеседованиям</strong>, тестам, релокации, созвонам, публичным выступлениям, митам, помощь в написании статей, переводах, документации, профессиональный технический английский, IT - сфера</li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка C &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">C</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Culture<br>/ˈkʌltʃər/</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-plane"></i> Путешествия в разные страны.</li>-->
-<!--                  <li><i class="fas fa-plane"></i> <strong>Mission is possible.</strong></li>-->
-<!--                  <li><i class="fas fa-tv"></i> Анализ мемов, сериалов, песен, фильмов, книг, журналов, трендов соцсетей и технологий</li>-->
-<!--                  <li><i class="fas fa-tv"></i> Изучение через<strong> культуру</strong> англоязычных стран</li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка I &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">I</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Immersion <br>/имЁршн/ </h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-pen-fancy"></i> Постепенное <strong>погружение</strong> в атмосферу английского, чтобы он органично стал вторым разговорным языком в вашей копилке навыков</li>-->
-<!--                  <li><i class="fas fa-hand-holding-usd"></i> </li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка A &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">A</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Apps and Ai</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-trophy"></i> Artificial Intelligence</li>-->
-<!--                  <li><i class="fas fa-trophy"></i> <strong>Своё приложение </strong>и уникальная <strong>платформа </strong> для тренировки памяти + <strong>электронная тетрадь</strong></li>-->
-<!--                  <li><i class="fas fa-users"></i> Учимся взаимодействию с Искуственным Интеллектом и нейронными сетями для любых целей помимо изучения английского</li>-->
-<!--                </ul>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; Карточка L &ndash;&gt;-->
-<!--              <div class="mission-card">-->
-<!--                <div class="card-icon">-->
-<!--                  <span class="special-letter">L</span>-->
-<!--                </div>-->
-<!--                <h3 class="sp-card-title">Luck</h3>-->
-<!--                <ul class="card-features">-->
-<!--                  <li><i class="fas fa-magic"></i> Чит-фразы ответы для любых экзаменов и реальных жизненных ситуаций.</li>-->
-<!--                  <li><i class="fas fa-user-secret"></i> <strong>Как говорить уверенно </strong>, даже если знаешь мало слов.</li>-->
-<!--                  <li><i class="fas fa-user-secret"></i> Методы спецслужб для запоминания слов (мнемоника из CIA, ментальные карты, ассоциативное мышление)-->
-
-<!--                  </li>-->
-<!--                </ul>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <button class="slider-arrow slider-arrow-right" @click="scrollSlider(1)">-->
-<!--            <i class="fas fa-chevron-right"></i>-->
-<!--          </button>-->
-<!--        </div>-->
-
-<!--        <div class="slider-dots">-->
-<!--      <span v-for="(dot, index) in 7" :key="index"-->
-<!--            :class="{'active': currentSlide === index}"-->
-<!--            @click="goToSlide(index)"></span>-->
-<!--        </div>-->
       </div>
     </section>
 
@@ -288,19 +163,26 @@
           <p>Какая стоимость?</p>
         </div>
         <div class="services-grid">
-          <div class="service-card">
-            <div class="service-header">
-              <h3 >Agent Zero 0 <br> <span class="special-font yellow-gradient-text">в разведку !</span></h3>
-              <div class="price yellow-gradient-text">₽ 0000/урок</div>
+          <div class="service-card-wrapper">
+            <div class="service-card">
+              <div class="service-content">
+                <div class="service-header">
+                  <h3>Agent Zero 0 <br> <span class="special-font yellow-gradient-text">в разведку !</span></h3>
+                  <div class="price yellow-gradient-text">₽ 0000/урок</div>
+                </div>
+                <ul class="service-features">
+                  <li><i class="fas fa-check"></i> Знакомство</li>
+                  <li><i class="fas fa-check"></i> Определение уровня</li>
+                  <li><i class="fas fa-check"></i> Без навязываний</li>
+                  <li><i class="fas fa-check"></i> Без обязательств </li>
+                  <li><i class="fas fa-check"></i> 1 на 1 урок с Винсентом </li>
+                </ul>
+              </div>
+
             </div>
-            <ul class="service-features">
-              <li><i class="fas fa-check"></i> Знакомство</li>
-              <li><i class="fas fa-check"></i> Определение уровня</li>
-              <li><i class="fas fa-check"></i> Без навязываний</li>
-              <li><i class="fas fa-check"></i> Без обязательств </li>
-              <li><i class="fas fa-check"></i> 1 на 1 урок с Винсентом </li>
-            </ul>
-            <button class="btn-primary">Начну с этого</button>
+            <div class="service-action">
+              <button class="btn-primary">Начну с этого</button>
+            </div>
           </div>
           <div class="service-card featured">
             <div class="service-header">
@@ -1891,6 +1773,9 @@ h1, h2, h3, h4, h5, h6 {
   gap: 30px;
 }
 
+.service-card-wrapper {
+  display: flex;
+}
 .service-card {
   background: white;
   border: 2px solid #e9ecef;
@@ -1988,9 +1873,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   .btn-primary {
     margin-bottom: 10px;
-    left: 58%;
-    bottom: 38%;
+    //left: 58%;
+    //bottom: 38%;
   }
+
   .special-letter {
     width: 40px;
     height: 40px;
