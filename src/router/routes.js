@@ -11,6 +11,10 @@ const routes = [
         children: [
           { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
           {
+            path: '/phoneFramePattern',
+            component: () => import('pages/PhoneFramePattern.vue'),
+          },
+          {
             path: ':missionName',
             component: () => import('src/layouts/GameLayout.vue'),
             children: [
@@ -124,10 +128,7 @@ const routes = [
                 path: 'gameDresser',
                 component: () => import('src/components/GameDresser.vue')
               },
-              {
-                path: '/phoneFramePattern',
-                component: () => import('pages/PhoneFramePattern.vue'),
-              },
+
 
             ]
           },

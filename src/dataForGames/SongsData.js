@@ -138,7 +138,7 @@ const songsData = {
       {
         taskDescription: null,
         taskID: "listenCarefully",
-        usefulWords: "instead - / инстЭд / вместо, pour - / по / наливать, the diner - / дАйнэ / закусочная (забегаловка)",
+        usefulWords: "dinner - /дИнэр/ ужин, diner - /дАйнэр/ забегаловка(закусочная), counter - /кАунтэр/ барная стойка, at the counter - у барной стойки, in the corner - в углу, instead - / инстЭд / вместо, instead of Vincent - вместо Винсента, pour - / по / наливать, halfway - наполовину",
         audio: new URL('../assets/audio/Suzanne Vega - Toms Diner.mp3', import.meta.url).href,
         taskPicture: new URL("../assets/images/present_cont.jpg", import.meta.url).href,
         extraInfo: null,
@@ -175,6 +175,7 @@ const songsData = {
               "And looking for the funnies\n" +
               "When I'm feeling someone watching me\n" +
               "And so I raise my head\n" +
+              "...\n" +
               "There's a woman on the outside\n" +
               "Looking inside does she see me\n" +
               "No she does not really see me\n" +
@@ -183,19 +184,15 @@ const songsData = {
               "That she's hitching up her skirt\n" +
               "And while she′s straightening her stockings\n" +
               "Her hair has gotten wet\n" +
+              "...\n" +
               "Oh this rain it will continue\n" +
               "Through the morning as I'm listening\n" +
               "To the bells of the cathedral\n" +
-              "I am thinking of your voice\n" +
-              "And of the midnight picnic\n" +
-              "Once upon a time before the rain began\n" +
-              "And I finish up my coffee\n" +
-              "And it′s time to catch the train"
+              "...\n" +
+              "I am thinking of your voice\n"
           },
         ]
       },
-
-
     ],
   },
   testQuicklyData: {

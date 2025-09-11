@@ -101,7 +101,7 @@ const ListeningExerciseData = {
             { cells: ["forgive", "forgave", "forgiven", "прощать"], editable: [false, false, false, false] },
             { cells: ["freeze", "froze", "frozen", "замерзать"], editable: [false, false, false, false] },
             { cells: ["grow", "grew", "grown", "расти"], editable: [false, false, false, false] },
-            { cells: ["get", "got", "gotten", "получать"], editable: [false, false, false, false] },
+            { cells: ["get", "got", "got", "получать"], editable: [false, false, false, false] },
             { cells: ["give", "gave", "given", "давать"], editable: [false, false, false, false] },
             { cells: ["go", "went", "gone", "ходить"], editable: [false, false, false, false] },
             { cells: ["have", "had", "had", "иметь"], editable: [false, false, false, false] },
@@ -954,7 +954,7 @@ const ListeningExerciseData = {
         }
       },
       {
-        taskDescription: "Без перевода - читай, везде звук /Э/",
+        taskDescription: "Даже если хочетя читать А, читай везде /Э/",
         taskID: "grid_table",
         taskPicture: null,
         tableData: {
@@ -2995,7 +2995,16 @@ const ListeningExerciseData = {
         tableData: {
           headers: ["V1", "V2", "V3", "перевод"],
           rows: [
-            { cells: ["break", "broke", "broken", "ломать"], editable: [false, false, false, false] },
+            { cells: ["разбить", "разбил", "разбитый", "сломанный"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
+            { cells: ["настоящее (обычно)", "прошлое (вчера)", "прилагательные (какой, какие)", "разломанные"], editable: [false, false, false, false] },
+
+            { cells: ["break", "broke", "broken", ""], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+            { cells: ["buy", "bought", "bought", "/бай, бот, бот/"], editable: [false, false, false, false] },
+            { cells: ["покупаю", "купил", "купленный", ""], editable: [false, false, false, false] },
+
             { cells: ["beat", "beat", "beaten", "побить"], editable: [false, false, false, false] },
             { cells: ["become", "became", "become", "становиться"], editable: [false, false, false, false] },
             { cells: ["begin", "began", "begun", "начинать"], editable: [false, false, false, false] },
@@ -3003,23 +3012,29 @@ const ListeningExerciseData = {
             { cells: ["borrow", "borrowed", "borrowed", "брать в долг"], editable: [false, false, false, false] },
             { cells: ["build", "built", "built", "строить"], editable: [false, false, false, false] },
             { cells: ["burn", "burnt", "burnt", "сжигать, гореть"], editable: [false, false, false, false] },
-            { cells: ["buy", "bought", "bought", "покупать"], editable: [false, false, false, false] },
             { cells: ["bring", "brought", "brought", "приносить"], editable: [false, false, false, false] },
             { cells: ["be", "was/were", "been", "быть"], editable: [false, false, false, false] },
             { cells: ["bite", "bit", "bitten", "кусать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["come", "came", "come", "приходить"], editable: [false, false, false, false] },
             { cells: ["choose", "chose", "chosen", "выбирать"], editable: [false, false, false, false] },
             { cells: ["catch", "caught", "caught", "ловить"], editable: [false, false, false, false] },
             { cells: ["creep", "crept", "crept", "ползать"], editable: [false, false, false, false] },
             { cells: ["cost", "cost", "cost", "стоить"], editable: [false, false, false, false] },
             { cells: ["cut", "cut", "cut", "резать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
             { cells: ["deal", "dealt", "dealt", "иметь дела"], editable: [false, false, false, false] },
             { cells: ["dig", "dug", "dug", "копать"], editable: [false, false, false, false] },
             { cells: ["do", "did", "done", "делать"], editable: [false, false, false, false] },
             { cells: ["drive", "drove", "driven", "водить"], editable: [false, false, false, false] },
             { cells: ["draw", "drew", "drawn", "рисовать"], editable: [false, false, false, false] },
             { cells: ["drink", "drank", "drunk", "пить"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["eat", "ate", "eaten", "кушать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["fall", "fell", "fallen", "падать"], editable: [false, false, false, false] },
             { cells: ["feed", "fed", "fed", "кормить"], editable: [false, false, false, false] },
             { cells: ["feel", "felt", "felt", "чувствовать"], editable: [false, false, false, false] },
@@ -3030,18 +3045,26 @@ const ListeningExerciseData = {
             { cells: ["forget", "forgot", "forgotten", "забывать"], editable: [false, false, false, false] },
             { cells: ["forgive", "forgave", "forgiven", "прощать"], editable: [false, false, false, false] },
             { cells: ["freeze", "froze", "frozen", "замерзать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["grow", "grew", "grown", "расти"], editable: [false, false, false, false] },
-            { cells: ["get", "got", "gotten", "получать"], editable: [false, false, false, false] },
+            { cells: ["get", "got", "got", "получать"], editable: [false, false, false, false] },
             { cells: ["give", "gave", "given", "давать"], editable: [false, false, false, false] },
             { cells: ["go", "went", "gone", "ходить"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["have", "had", "had", "иметь"], editable: [false, false, false, false] },
             { cells: ["hear", "heard", "heard", "слышать"], editable: [false, false, false, false] },
             { cells: ["hide", "hid", "hidden", "прятать"], editable: [false, false, false, false] },
             { cells: ["hit", "hit", "hit", "ударять"], editable: [false, false, false, false] },
             { cells: ["hurt", "hurt", "hurt", "причинять боль"], editable: [false, false, false, false] },
             { cells: ["hold", "held", "held", "держать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["keep", "kept", "kept", "хранить"], editable: [false, false, false, false] },
             { cells: ["know", "knew", "known", "знать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["lead", "led", "led", "вести, приводить"], editable: [false, false, false, false] },
             { cells: ["learn", "learnt", "learnt", "изучать"], editable: [false, false, false, false] },
             { cells: ["leave", "left", "left", "покидать"], editable: [false, false, false, false] },
@@ -3050,16 +3073,24 @@ const ListeningExerciseData = {
             { cells: ["lose", "lost", "lost", "терять"], editable: [false, false, false, false] },
             { cells: ["tell a lie", "told a lie", "told a lie", "говорить ложь"], editable: [false, false, false, false] },
             { cells: ["lie", "lay", "lain", "лежать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["make", "made", "made", "создавать"], editable: [false, false, false, false] },
             { cells: ["mean", "meant", "meant", "иметь ввиду"], editable: [false, false, false, false] },
             { cells: ["meet", "met", "met", "встречать(ся)"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["pay", "paid", "paid", "платить"], editable: [false, false, false, false] },
             { cells: ["put", "put", "put", "класть"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["read", "read", "read", "читать"], editable: [false, false, false, false] },
             { cells: ["ride", "rode", "ridden", "ездить верхом"], editable: [false, false, false, false] },
             { cells: ["ring", "rang", "rung", "звенеть, звонить"], editable: [false, false, false, false] },
             { cells: ["run", "ran", "run", "бегать"], editable: [false, false, false, false] },
             { cells: ["rise", "rose", "risen", "подниматься"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["say", "said", "said", "сказать, произнести"], editable: [false, false, false, false] },
             { cells: ["see", "saw", "seen", "увидеть"], editable: [false, false, false, false] },
             { cells: ["sell", "sold", "sold", "продавать"], editable: [false, false, false, false] },
@@ -3084,18 +3115,26 @@ const ListeningExerciseData = {
             { cells: ["sweep", "swept", "swept", "подметать"], editable: [false, false, false, false] },
             { cells: ["swim", "swam", "swum", "плавать"], editable: [false, false, false, false] },
             { cells: ["swing", "swung", "swung", "качаться"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["take", "took", "taken", "брать"], editable: [false, false, false, false] },
             { cells: ["teach", "taught", "taught", "обучать"], editable: [false, false, false, false] },
             { cells: ["tear", "tore", "torn", "порвать"], editable: [false, false, false, false] },
             { cells: ["tell", "told", "told", "рассказывать"], editable: [false, false, false, false] },
             { cells: ["think", "thought", "thought", "думать"], editable: [false, false, false, false] },
             { cells: ["throw", "threw", "thrown", "бросать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["understand", "understood", "understood", "понимать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["wake up", "woke up", "woken up", "просыпаться"], editable: [false, false, false, false] },
             { cells: ["wear", "wore", "worn", "носить одежду"], editable: [false, false, false, false] },
             { cells: ["write", "wrote", "written", "писать"], editable: [false, false, false, false] },
             { cells: ["weep", "wept", "wept", "хныкать"], editable: [false, false, false, false] },
             { cells: ["win", "won", "won", "выигрывать"], editable: [false, false, false, false] },
+            { cells: ["", "", "", ""], editable: [true, true, true, true] },
+
             { cells: ["misunderstand", "misunderstood", "misunderstood", "неправильно понять"], editable: [false, false, false, false] },
             { cells: ["misspell", "misspelt", "misspelt", "неправильно написать"], editable: [false, false, false, false] },
             { cells: ["mistake", "mistook", "mistaken", "ошибаться"], editable: [false, false, false, false] },
@@ -3112,26 +3151,99 @@ const ListeningExerciseData = {
     ],
   },
 
-  grid_table_IrregularVerbs_b_ru: {
-    mainDescription: "Irregular Verbs 'B'",
+  grid_table_IrregularVerbs_b_part_1_ru: {
+    mainDescription: "Irregular Verbs 'B' part 1",
     tasks: [
       {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
           rows: [
             {
-              cells: ["break - broke - broken","","ломать"],
+              cells: ["break - broke - broken", "", "ломать"],
               editable: [false, false, false]
             },
             {
-              cells: ["be - was/were - been", "", ""],
+              cells: ["БрЭйк - БрОУк - БрОУкЭн", "", "БрЭйк - БрОУк - БрОУкЭн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["buy - bought - bought", "", "покупать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["Бай - Бот - Бот", "", "Бай - Бот - Бот"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["bring - brought - brought", "", "приносить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["Брин - Брот - Брот", "", "Брин - Брот - Брот"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["beat - beat - beaten", "", "бить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["би:т - би:т - би:тэн", "", "би:т - би:т - би:тэн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["build - built - built", "", "строить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["БилД - БилТ - БилТ", "", "БилД - БилТ - БилТ"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["bite - bit - bit", "", "кусать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["байт - бит - бит", "", "байт - бит - бит"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси 3 формы вслух", "","и перевод :"],
+          rows: [
+            {
+              cells: ["break - broke - broken","",""],
               editable: [false, false, true],
               correctAnswers: {
-                cells: [null, null, "быть"],
+                cells: [null, null, "ломать"],
                 almostCorrect: {
-                  2: ["являться", "находиться", "существовать"]
+                  2: ["сломать", "нарушить", "поломать"]
+                }
+              }
+            },
+            {
+              cells: ["buy - bought - bought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "покупать"],
+                almostCorrect: {
+                  2: ["купить", "приобретать", "закупать"]
+                }
+              }
+            },
+            {
+              cells: ["bring - brought - brought", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "приносить"],
+                almostCorrect: {
+                  2: ["привести", "доставлять", "привозить"]
                 }
               }
             },
@@ -3142,26 +3254,6 @@ const ListeningExerciseData = {
                 cells: [null, null, "бить"],
                 almostCorrect: {
                   2: ["побить", "побеждать", "избивать", "победить","избить"]
-                }
-              }
-            },
-            {
-              cells: ["become - became - become", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "становиться"],
-                almostCorrect: {
-                  2: ["превращаться", "оказываться", "сделаться", "стать"]
-                }
-              }
-            },
-            {
-              cells: ["begin - began - begun", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "начинать"],
-                almostCorrect: {
-                  2: ["начать", "приступать", "запускать"]
                 }
               }
             },
@@ -3185,6 +3277,108 @@ const ListeningExerciseData = {
                 }
               }
             },
+          ]
+        }
+      },{
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Скажи вслух на английском", "",""],
+          rows: [
+            {
+              cells: ["принести - принёс - принесённый","",""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["купить - купил - купленный", "", ""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["ударить - ударил - избитый", "", ""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["кусать - укусил - покусанный", "", ""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["строить - построил - построенный", "", ""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["разбить - разбил - разбитый", "", ""],
+              editable: [false, false, true],
+            },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_b_part_2_ru: {
+    mainDescription: "Irregular Verbs 'B' part 2",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
+          rows: [
+            {
+              cells: ["blow - blew - blown", "", "дУть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["БлоУ - блУ: - БлоУН", "", "БлоУ - блУ: - БлоУН"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["burn - burnt - burnt", "", "гореть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["бЁрн - бёрнТ - бёрнТ", "", "бЁрн - бёрнТ - бёрнТ"],
+              editable: [false, false, false]
+            },
+
+            {
+              cells: ["become - became - become", "", "становиться"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["бикАм - бикЭйм - бикАм", "", "бикАм - бикЭйм - бикАм"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["begin - began - begun", "", "начинать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["бигИн - бигЭн - бигАн", "", "бигИн - бигЭн - бигАн"],
+              editable: [false, false, false]
+            },
+
+
+
+
+
+            {
+              cells: ["be - was/were - been", "", "быть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["Би - воз / вё - Бин", "", "Би - воз / вё - Бин"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси 3 формы вслух", "","и перевод :"],
+          rows: [
             {
               cells: ["blow - blew - blown", "", ""],
               editable: [false, false, true],
@@ -3195,16 +3389,7 @@ const ListeningExerciseData = {
                 }
               }
             },
-            {
-              cells: ["bring - brought - brought", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "приносить"],
-                almostCorrect: {
-                  2: ["привести", "доставлять", "привозить"]
-                }
-              }
-            },
+
             {
               cells: ["burn - burnt - burnt", "", ""],
               editable: [false, false, true],
@@ -3215,21 +3400,75 @@ const ListeningExerciseData = {
                 }
               }
             },
+
             {
-              cells: ["buy - bought - bought", "", ""],
+              cells: ["become - became - become", "", ""],
               editable: [false, false, true],
               correctAnswers: {
-                cells: [null, null, "покупать"],
+                cells: [null, null, "становиться"],
                 almostCorrect: {
-                  2: ["купить", "приобретать", "закупать"]
+                  2: ["превращаться", "оказываться", "сделаться", "стать"]
                 }
               }
-            }
+            },
+            {
+              cells: ["begin - began - begun", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "начинать"],
+                almostCorrect: {
+                  2: ["начать", "приступать", "запускать"]
+                }
+              }
+            },
+            {
+              cells: ["be - was/were - been", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "быть"],
+                almostCorrect: {
+                  2: ["являться", "находиться", "существовать"]
+                }
+              }
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Скажи на английском громко", "",""],
+          rows: [
+            {
+              cells: ["есть - был / были - побывал", "", ""],
+              editable: [false, false, true],
+            },
+            {
+              cells: ["жечь - сожгли - сгоревший", "", ""],
+              editable: [false, false, true],
+            },
+
+            {
+              cells: ["надувать - надул - взорвавшийся", "", ""],
+              editable: [false, false, true],
+            },
+
+            {
+              cells: ["начинаю - начал - начавшийся", "", ""],
+              editable: [false, false, true],
+            },
+
+            {
+              cells: ["стать - стал - ставший", "", ""],
+              editable: [false, false, true],
+            },
           ]
         }
       },
     ]
   },
+
   grid_table_IrregularVerbs_b_gaps: {
     mainDescription: "Irregular Verbs 'B'",
     tasks: [
@@ -3337,7 +3576,64 @@ const ListeningExerciseData = {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
+          rows: [
+            {
+              cells: ["come - came - come", "", "приходить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["кАм - кЕйм - кАм", "", "кАм - кЕйм - кАм"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["choose - chose - chosen", "", "выбирать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["чУз - чОуз - чОузн", "", "чУз - чОуз - чОузн"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["catch - caught - caught", "", "ловить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["кЭч - кОт - кОт", "", "кЭч - кОт - кОт"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["creep - crept - crept", "", "ползать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["крИп - крЭпт - крЭпт", "", "крИп - крЭпт - крЭпт"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["cost - cost - cost", "", "стоить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["кост - кост - кост", "", "кост - кост - кост"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["cut - cut - cut", "", "резать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["кАт - кАт - кАт", "", "кАт - кАт - кАт"],
+              editable: [false, false, false],
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси 3 формы вслух", "","и перевод :"],
           rows: [
             {
               cells: ["come - came - come", "", "приходить"],
@@ -3380,8 +3676,11 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["cost - cost - cost", "", "стоить"],
-              editable: [false, false, false],
+              cells: ["cost - cost - cost", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "стоить"],
+              }
             },
             {
               cells: ["cut - cut - cut", "", ""],
@@ -3470,7 +3769,73 @@ const ListeningExerciseData = {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
+          rows: [
+            {
+              cells: ["deal - dealt - dealt", "", "иметь дело"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["дИл - дЭлт - дЭлт", "", "дИл - дЭлт - дЭлт"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["dig - dug - dug", "", "копать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["диГ - дАГ - дАГ", "", "диГ - дАГ - дАГ"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["do - did - done", "", "делать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["ду: - дид - дАн", "", "ду - дид - дАн"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["drive - drove - driven", "", "водить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["дрАйв - дрОУв - дрИвн", "", "дрАйв - дрОУв - дрИвн"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["draw - drew - drawn", "", "рисовать"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["дрО - дрУ: - дроУн", "", "дрО - дрУ - дроУн"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["drink - drank - drunk", "", "пить"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["дринк - дрЭнк - дранк", "", "дринк - дрЭнк - дранк"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["eat - ate - eaten", "", "есть"],
+              editable: [false, false, false],
+            },
+            {
+              cells: ["Ит - эЙт - Итэн", "", "Ит - эЙт - Итэн"],
+              editable: [false, false, false],
+            }
+          ]
+        }
+      },
+
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси 3 формы вслух", "","и перевод :"],
           rows: [
             {
               cells: ["deal - dealt - dealt", "", ""],
@@ -3548,7 +3913,7 @@ const ListeningExerciseData = {
     ]
   },
   grid_table_IrregularVerbs_de_gaps: {
-    mainDescription: "Irregular Verbs 'D'",
+    mainDescription: "Irregular Verbs 'DE'",
     tasks: [
       {
         taskDescription: "заполни таблицу",
@@ -3619,9 +3984,58 @@ const ListeningExerciseData = {
       }
     ]
   },
-  grid_table_IrregularVerbs_f_ru: {
-    mainDescription: "Irregular Verbs '?'",
+  grid_table_IrregularVerbs_f_part_1_ru: {
+    mainDescription: "Irregular Verbs 'F' part 1",
     tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["fall - fell - fallen", "", "падать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фОл - фЭл - фОлэн", "", "Фол - фЭл - фОлэн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["feed - fed - fed", "", "кормить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фи:Д - фэД - фэД", "", "фи:Д - фэД - фэД"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["feel - felt - felt", "", "чувствовать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фи:л - фэлт - фэлт", "", "фи:л - фэлт - фэлт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["fight - fought - fought", "", "сражаться"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["файт - фо:т - фо:т", "", "файт - фо:т - фо:т"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["find - found - found", "", "находить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фАЙнд - фАунд - фАунд", "", "фАЙнд - фАунд - фАунд"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
       {
         taskDescription: null,
         taskID: "grid_table",
@@ -3678,6 +4092,72 @@ const ListeningExerciseData = {
                 }
               }
             },
+
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_f_part_2_ru: {
+    mainDescription: "Irregular Verbs 'F' part 2",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["fly - flew - flown", "", "летать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["флай - флю: - флоун", "", "флай - флю: - флоун"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["forbid - forbade - forbidden", "", "запрещать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фёбид - фёбэйд - фёбиден", "", "фёбид - фёбэйд - фёбиден"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["forget - forgot - forgotten", "", "забывать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фёгЭт - фёгОт - фёгОтен", "", "фёгЭт - фёгОт - фёгОтен"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["forgive - forgave - forgiven", "", "прощать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фёгив - фёгэйв - фёгивен", "", "фёгив - фёгэйв - фёгивен"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["freeze - froze - frozen", "", "замерзать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["фри:з - фроуз - фроузен", "", "фри:з - фроуз - фроузен"],
+              editable: [false, false, false]
+            }
+          ]
+        }
+      },
+
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+
             {
               cells: ["fly - flew - flown", "", ""],
               editable: [false, false, true],
@@ -3733,6 +4213,7 @@ const ListeningExerciseData = {
       },
     ]
   },
+
   grid_table_IrregularVerbs_f_gaps: {
     mainDescription: "Irregular Verbs 'F'",
     tasks: [
@@ -3828,62 +4309,156 @@ const ListeningExerciseData = {
       }
     ]
   },
-  grid_table_IrregularVerbs_gh_ru: {
-    mainDescription: "Irregular Verbs 'G,H'",
+  grid_table_IrregularVerbs_g_ru: {
+    mainDescription: "Irregular Verbs 'G'",
     tasks: [
       {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
+          rows: [
+            {
+              cells: ["grow - grew - grown", "", "расти"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["гроу - грУ: - гроУн", "", "гроу - грУ: - гроУн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["get - got - got", "", "получать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["гет - гат - гат", "", "гет - гот - гот"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["give - gave - given", "", "давать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["гив - гэйв - гивен", "", "гив - гэйв - гивен"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["go - went - gone", "", "идти"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["гоу - уэнт - гАн", "", "гоу - уэнт - гАн"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси вслух 3", "","формы и перевод"],
           rows: [
             {
               cells: ["grow - grew - grown", "", ""],
               editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "расти"],
-                almostCorrect: {
-                  2: ["вырастать", "выращивать", "увеличиваться"]
-                }
-              }
             },
             {
-              cells: ["get - got - got/gotten", "", ""],
+              cells: ["get - got - got", "", ""],
               editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "получать"],
-                almostCorrect: {
-                  2: ["добывать", "приобретать", "доставать"]
-                }
-              }
             },
             {
               cells: ["give - gave - given", "", ""],
               editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "давать"],
-                almostCorrect: {
-                  2: ["подавать", "вручать", "жертвовать"]
-                }
-              }
             },
             {
               cells: ["go - went - gone", "", ""],
               editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "идти"],
-                almostCorrect: {
-                  2: ["ходить", "ехать", "отправляться"]
-                }
-              }
             },
             {
               cells: ["have - had - had", "", ""],
               editable: [false, false, true],
+            },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_h_ru: {
+    mainDescription: "Irregular Verbs 'H'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Тренируй произношение", ""," и говори уверенно"],
+          rows: [
+
+            {
+              cells: ["have - had - had", "", "иметь"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["хэв - хэд - хэд", "", "хэв - хэд - хэд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["hear - heard - heard", "", "слышать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["хИэр - хЁрд - хЁрд", "", "хИэр - хЁрд - хЁрд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["hide - hid - hidden", "", "прятать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["хАЙд - хид - хИдн", "", "хАЙд - хид - хИдн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["hit - hit - hit", "", "ударять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["хит - хит - хит", "", ""],
+              editable: [false, false, false]
+            },
+
+            {
+              cells: ["хЁрт - хЁрт - хЁрт", "", "хЁрт - хЁрт - хЁрт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["hurt - hurt - hurt", "", "причинять боль"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["hold - held - held", "", "держать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["хОУлд - хЭлд - хЭлд", "", "хОУлд - хЭлд - хЭлд"],
+              editable: [false, false, false]
+            }
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Громко произнеси все", "","3 формы и перевод"],
+          rows: [
+            {
+              cells: ["hurt - hurt - hurt", "", ""],
+              editable: [false, false, true],
               correctAnswers: {
-                cells: [null, null, "иметь"],
+                cells: [null, null, "причинять боль"],
                 almostCorrect: {
-                  2: ["обладать", "владеть", "испытывать"]
+                  2: ["ранить", "обижать", "повреждать"]
                 }
               }
             },
@@ -3894,6 +4469,26 @@ const ListeningExerciseData = {
                 cells: [null, null, "слышать"],
                 almostCorrect: {
                   2: ["услышать", "слушать", "узнавать"]
+                }
+              }
+            },
+            {
+              cells: ["hold - held - held", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "держать"],
+                almostCorrect: {
+                  2: ["удерживать", "проводить", "содержать"]
+                }
+              }
+            },
+            {
+              cells: ["have - had - had", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "иметь"],
+                almostCorrect: {
+                  2: ["обладать", "владеть", "испытывать"]
                 }
               }
             },
@@ -3914,26 +4509,6 @@ const ListeningExerciseData = {
                 cells: [null, null, "ударять"],
                 almostCorrect: {
                   2: ["бить", "попадать", "поражать"]
-                }
-              }
-            },
-            {
-              cells: ["hurt - hurt - hurt", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "причинять боль"],
-                almostCorrect: {
-                  2: ["ранить", "обижать", "повреждать"]
-                }
-              }
-            },
-            {
-              cells: ["hold - held - held", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "держать"],
-                almostCorrect: {
-                  2: ["удерживать", "проводить", "содержать"]
                 }
               }
             },
@@ -3959,7 +4534,7 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["","got","got/gotten","получать"],
+              cells: ["","got","got","получать"],
               editable: [true, false, false, false],
               correctAnswers: {
                 cells: ["get", null, null, null],
@@ -4042,6 +4617,83 @@ const ListeningExerciseData = {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
+          headers: ["Читай громко и уверенно", "",""],
+          rows: [
+            {
+              cells: ["keep - kept - kept", "", "хранить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ки:п - кэпт - кэпт", "", "ки:п - кэпт - кэпт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["know - knew - known", "", "знать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ноу - ню: - ноун", "", "ноу - ню: - ноун"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["learn - learnt - learnt", "", "учить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["лёр:н - лёр:нт - лёр:нт", "", "лёр:н - лёр:нт - лёр:нт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["lead - led - led", "", "вести"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ли:д - лэд - лэд", "", "ли:д - лэд - лэд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["leave - left - left", "", "оставлять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ли:в - лЭфт - лЭфт", "", "ли:в - лЭфт - лЭфт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["lend - lent - lent", "", "давать в долг"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["лэнД - лэнТ - лэнТ", "", "лэнД - лэнТ - лэнТ"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["let - let - let", "", "позволять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["lose - lost - lost", "", "терять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["лу:з - лост - лост", "", "лу:з - лост - лост"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["lie - lay - lain", "", "лежать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["лАй - лЭй - лЭйн", "", "лАй - лЭй - лЭйн"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
           headers: ["Напиши перевод глагола", "","(что делать?)"],
           rows: [
             {
@@ -4055,14 +4707,19 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["know - knew - known", "", ""],
-              editable: [false, false, true],
+              cells: ["know - knew - known", "", "букву К перед N"],
+              editable: [false, false, false],
               correctAnswers: {
                 cells: [null, null, "знать"],
                 almostCorrect: {
                   2: ["узнавать", "быть знакомым", "разбираться"]
                 }
               }
+            },
+            {
+              cells: ["/ нОу - нЮ - нОУн /", "", "не произносим"],
+              editable: [false, false, false],
+
             },
             {
               cells: ["learn - learnt - learnt", "", ""],
@@ -4125,7 +4782,7 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["lie - lay - lain", "", ""],
+              cells: ["lie - lay - lain", "", "лАй - лЭй - лЭйн"],
               editable: [false, false, true],
               correctAnswers: {
                 cells: [null, null, "лежать"],
@@ -4135,8 +4792,8 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["tell a lie - told a lie = lied", "", ""],
-              editable: [false, false, true],
+              cells: ["tell a lie. Told a lie.  Lied", "", "тоулд э лАй = лАйд"],
+              editable: [false, false, false],
               correctAnswers: {
                 cells: [null, null, "лгать"],
                 almostCorrect: {
@@ -4253,7 +4910,88 @@ const ListeningExerciseData = {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["Читай уверенно, тренируй", "","произношение и память"],
+          rows: [
+            {
+              cells: ["make - made - made", "", "создавать, делать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["mean - meant - meant", "", "значить, иметь ввиду"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["мИн - мЭнт - мЭнт", "", "мИн - мЭнт - мЭнт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["meet - met - met", "", "встречать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["мИ:т - мЭт - мЭт", "", "мИ:т - мЭт - мЭт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["pay - paid - paid", "", "платить, заплатить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["put - put - put", "", "класть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["пУт - пУт - пУт", "", "пУт - пУт - пУт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ри:д - рэд - рэд", "", "ри:д - рэд - рэд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["read - read - read", "", "читать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ride - rode - ridden", "", "ездить верхом"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["райд - роуд - ридн", "", "райд - роуд - ридн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["ring - rang - rung", "", "звонить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["рИнг - рЭнг - рАнг", "", "рИнг - рЭнг - рАнг"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["run - ran - run", "", "бежать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["рАн - рЭн - рАн", "", "рАн - рЭн - рАн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["rise - rose - risen", "", "подниматься"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["райз - роуз - ризн", "", "райз - роуз - ризн"],
+              editable: [false, false, false]
+            }
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Произнеси вслух", "","все формы и перевод"],
           rows: [
             {
               cells: ["make - made - made", "", ""],
@@ -4358,6 +5096,7 @@ const ListeningExerciseData = {
           ]
         }
       },
+
     ]
   },
   grid_table_IrregularVerbs_mpr_gaps: {
@@ -4450,9 +5189,86 @@ const ListeningExerciseData = {
       }
     ]
   },
-  grid_table_IrregularVerbs_s_ru: {
-    mainDescription: "Irregular Verbs 'S'",
+  grid_table_IrregularVerbs_s_part_1_ru: {
+    mainDescription: "Irregular Verbs 'S' part 1",
     tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Громко и четко произноси", "","вслух"],
+          rows: [
+            {
+              cells: ["see - saw - seen", "", "видеть (но не смотреть:)"],
+              editable: [false, false, false]
+            },
+            {
+              cells: [" си - со - син", "", " си - со - син"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["sell - sold - sold", "", "продавать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["send - sent - sent", "", "отправлять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сэнД - сэнт - сэнт", "", "сэнД - сэнт - сэнт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["shake - shook - shaken", "", "трясти"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["шэйк - шук - шэйкен", "", "шэйк - шук - шэйкен"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["shoot - shot - shot", "", "стрелять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["шу:т - шот - шот", "", "шу:т - шот - шот"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["shut - shut - shut", "", "закрывать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["шат - шат - шат", "", "шат - шат - шат"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["sing - sang - sung", "", "петь"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["синг - сэнг - санг", "", "синг - сэнг - санг"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["sink - sank - sunk", "", "затонуть (предметы)"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["синк - сЭнк - сАнк", "", "синк - сЭнк - сАнк"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["drown - drowned - drowned", "", "тонуть (люди)"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["драун - драунд - драунд", "", "драун - драунд - драунд"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
       {
         taskDescription: null,
         taskID: "grid_table",
@@ -4529,16 +5345,7 @@ const ListeningExerciseData = {
                 }
               }
             },
-            {
-              cells: ["sit - sat - sat", "", ""],
-              editable: [false, false, true],
-              correctAnswers: {
-                cells: [null, null, "сидеть"],
-                almostCorrect: {
-                  2: ["садиться", "восседать", "размещаться"]
-                }
-              }
-            },
+
             {
               cells: ["sink - sank - sunk", "", ""],
               editable: [false, false, true],
@@ -4556,6 +5363,95 @@ const ListeningExerciseData = {
                 cells: [null, null, "тонуть"],
                 almostCorrect: {
                   2: ["потонуть", "опускаться", "оседать", "утонуть",]
+                }
+              }
+            },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_s_part_2_ru: {
+    mainDescription: "Irregular Verbs 'S part 2'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Громко и четко произноси", "","вслух"],
+          rows: [
+            {
+              cells: ["sit - sat - sat", "", "сидеть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сит - сэт - сэт", "", "сит - сэт - сэт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["sleep - slept - slept", "", "спать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сли:п - слэпт - слэпт", "", "сли:п - слэпт - слэпт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["slide - slid - slid", "", "скользить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["слайд - слид - слид", "", "слайд - слид - слид"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["spend - spent - spent", "", "тратить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["спэнД - спэнт - спэнт", "", "спэнД - спэнт - спэнт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["spit - spat - spat", "", "плевать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["спит - спЭт - спЭт", "", "спит - спЭт - спЭт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["stand - stood - stood", "", "стоять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["стэнд - студ - студ", "", "стэнд - студ - студ"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["steal - stole - stolen", "", "красть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сти:л - стоУл - стоУлэн", "", "сти:л - стоУл - стоУлэн"],
+              editable: [false, false, false]
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+            {
+              cells: ["sit - sat - sat", "", ""],
+              editable: [false, false, true],
+              correctAnswers: {
+                cells: [null, null, "сидеть"],
+                almostCorrect: {
+                  2: ["садиться", "восседать", "размещаться"]
                 }
               }
             },
@@ -4619,6 +5515,94 @@ const ListeningExerciseData = {
                 }
               }
             },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_s_part_3_ru: {
+    mainDescription: "Irregular Verbs 'S part 3'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Громко и четко произноси", "","вслух"],
+          rows: [
+            {
+              cells: ["stick - stuck - stuck", "", "застрять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["стик - стак - стак", "", "стик - стак - стак"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["stink - stank - stunk", "", "вонять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["стинк - стЭнк - стАнк", "", "стинк - стЭнк - стАнк"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["strike - struck - struck", "", "ударять"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["страйк - страк - страк", "", "страйк - страк - страк"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["swear - swore - sworn", "", "клясться"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сВЭа - свО: - свОрн", "", "сВЭа - свО: - свОрн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["sweep - swept - swept", "", "подметать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["сви:п - свэпт - свэпт", "", "сви:п - свэпт - свэпт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["swim - swam - swum", "", "плавать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["свим - свЭм - свАм", "", "свим - свЭм - свАм"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["swing - swung - swung", "", "качаться"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["свинг - свАнг - свАнг", "", "свинг - свАнг - свАнг"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["speak - spoke - spoken", "", "разговаривать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["спи:к - спОУк - споУкен", "", "спи:к - спОУк - споУкен"],
+              editable: [false, false, false]
+            }
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          rows: [
+
             {
               cells: ["stick - stuck - stuck", "", ""],
               editable: [false, false, true],
@@ -4704,6 +5688,7 @@ const ListeningExerciseData = {
       },
     ]
   },
+
   grid_table_IrregularVerbs_s_gaps: {
     mainDescription: "Irregular Verbs 'S'",
     tasks: [
@@ -4828,14 +5813,81 @@ const ListeningExerciseData = {
       }
     ]
   },
-  grid_table_IrregularVerbs_tuw_ru: {
-    mainDescription: "Irregular Verbs 'T,U,W'",
+  grid_table_IrregularVerbs_t_ru: {
+    mainDescription: "Irregular Verbs 'T'",
     tasks: [
       {
         taskDescription: null,
         taskID: "grid_table",
         tableData: {
-          headers: ["Напиши перевод глагола", "","(что делать?)"],
+          headers: ["вслух вслух вслух", "","читай всё вслух"],
+          rows: [
+            {
+              cells: ["tell - told - told", "", "рассказывать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["тэл - тОУлд - тОУлд", "", "тэл - тОУлд - тОУлд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["take - took - taken", "", "брать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["тэйк - тук - тэйкн", "", "тэйк - тук - тэйкн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["teach - taught - taught", "", "преподавать, обучать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["тич - тот - тот", "", "тич - тот - тот"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["tear - tore - torn", "", "рвать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["тЭа - тор - торн", "", "тЭа - тор - торн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["глухой МЕЖЗУБНЫЙ звук TH", "", "не Финк и не Синк"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["think - thought - thought", "", "думать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["", "", "th-ынк , th-от , th-от"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["throw - threw - thrown", "", "бросать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["", "", "th-РОУ , th-РУ , th-РОУН"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["глухой МЕЖЗУБНЫЙ звук TH", "", "не Сроу и не Фроу"],
+              editable: [false, false, false]
+            },
+
+
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["тренируй произношение ", "","всех форм и перевод"],
           rows: [
             {
               cells: ["tell - told - told", "", ""],
@@ -4898,7 +5950,78 @@ const ListeningExerciseData = {
               }
             },
 
-            // Глаголы на U
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_uw_ru: {
+    mainDescription: "Irregular Verbs 'U,W'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["увереннее с произношением,", "","внятно и громко"],
+          rows: [
+            {
+              cells: ["understand - understood", "", "понимать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["андэстЭнд - андэстУд ", "", "андэстЭнд - андэстУд"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["wake up - woke up - woken up", "", "просыпаться"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["вЭйк ап - вОУк ап - вОУкэн", "", "уэйк - уоук - уокэн"],
+              editable: [false, false, false]
+            },
+
+            {
+              cells: ["wear - wore - worn", "", "носить"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["вЭа - во - ворн", "", "вЭа - во - ворн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["write - wrote - written", "", "писать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["райт - роУт - ритн", "", "райт - роУт - ритн"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["weep - wept - wept", "", "хныкать, ныть"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["уи:п - уЭпт - уЭпт", "", "уи:п - уЭпт - уЭпт"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["win - won - won", "", "побеждать"],
+              editable: [false, false, false]
+            },
+            {
+              cells: ["уин - уАн - уАн", "", "вин - вАн - вАн"],
+              editable: [false, false, false]
+            }
+          ]
+        }
+      },{
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["тренируй произношение ", "","всех форм и перевод"],
+          rows: [
+                        // Глаголы на U
             {
               cells: ["understand - understood - understood", "", ""],
               editable: [false, false, true],
@@ -5568,7 +6691,7 @@ const ListeningExerciseData = {
               }
             },
             {
-              cells: ["get - got - got/gotten", "", ""],
+              cells: ["get - got - got", "", ""],
               editable: [false, false, true],
               correctAnswers: {
                 cells: [null, null, "получать"],
