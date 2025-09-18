@@ -4112,7 +4112,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["флай - флю: - флоун", "", "флай - флю: - флоун"],
+              cells: ["флай - флУ - флОУн", "", "флай - флУ - флОУн"],
               editable: [false, false, false]
             },
             {
@@ -4120,7 +4120,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["фёбид - фёбэйд - фёбиден", "", "фёбид - фёбэйд - фёбиден"],
+              cells: ["фобИд - фоБЭйд - фоБИдэн", "", "фобИд - фоБЭйд - фоБИдэн"],
               editable: [false, false, false]
             },
             {
@@ -4128,7 +4128,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["фёгЭт - фёгОт - фёгОтен", "", "фёгЭт - фёгОт - фёгОтен"],
+              cells: ["фогет - фогот - фоготэн", "", "фогет - фогот - фоготэн"],
               editable: [false, false, false]
             },
             {
@@ -4136,7 +4136,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["фёгив - фёгэйв - фёгивен", "", "фёгив - фёгэйв - фёгивен"],
+              cells: ["фогив - фогэйв - фогивэн", "", "фогив - фогэйв - фогивэн"],
               editable: [false, false, false]
             },
             {
@@ -4144,7 +4144,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["фри:з - фроуз - фроузен", "", "фри:з - фроуз - фроузен"],
+              cells: ["фриз - фроуз - фроузен", "", "фриз - фроуз - фроузен"],
               editable: [false, false, false]
             }
           ]
@@ -5235,11 +5235,11 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["shut - shut - shut", "", "закрывать"],
+              cells: ["shut - shut - shut", "", "захлопывать,закрывать"],
               editable: [false, false, false]
             },
             {
-              cells: ["шат - шат - шат", "", "шат - шат - шат"],
+              cells: ["шАт - шАт - шАт", "", "шАт - шАт - шАт"],
               editable: [false, false, false]
             },
             {
@@ -5247,11 +5247,11 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["синг - сэнг - санг", "", "синг - сэнг - санг"],
+              cells: ["синг - сЭнг - сАнг", "", "синг - сЭнг - сАнг"],
               editable: [false, false, false]
             },
             {
-              cells: ["sink - sank - sunk", "", "затонуть (предметы)"],
+              cells: ["sink - sank - sunk", "", "затонуть (о предметах)"],
               editable: [false, false, false]
             },
             {
@@ -5259,7 +5259,7 @@ const ListeningExerciseData = {
               editable: [false, false, false]
             },
             {
-              cells: ["drown - drowned - drowned", "", "тонуть (люди)"],
+              cells: ["drown - drowned - drowned", "", "тонуть (о людях)"],
               editable: [false, false, false]
             },
             {

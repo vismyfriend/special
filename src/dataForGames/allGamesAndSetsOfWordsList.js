@@ -962,6 +962,17 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'📚'
     },
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/ImOnlyHumanSong/game-translate",
+      missionVisibleName: "I am only human",
+      missionDescription: "I'm only human",
+      id: 1001,
+      active: true,
+      gameIcon:' 🗣'
+    },
     {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
       missionVisibleName: "Протестировать fast",
@@ -973,6 +984,7 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚',
       password:'test',
     },
+
   ]
 
 export const AllGames =
