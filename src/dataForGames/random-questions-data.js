@@ -359,6 +359,83 @@ const randomQuestionsData = {
     { eng: "What animal does your teacher of English remind you of?", ru: "Како животное вам напоминает Винсент?" },
     { eng: "What food would your English teacher never eat?", ru: "Какую еду ваш учитель английского никогда бы не стал есть?" },
     { eng: "What would your English teacher do if they won the lottery?", ru: "Что бы сделал ваш учитель английского, если бы выиграл в лотерею?" },
+
+    // questions about NAMES
+
+
+      { eng: "Can you spell your family name letter by letter?", ru: "Можете произнести фамилию вашей семьи по буквам?" },
+      { eng: "Do you like your name? Have you ever considered changing it?", ru: "Вам нравится ваше имя? Вы когда-нибудь задумывались о его смене?" },
+      { eng: "How do people address you? Do they use your name, a title, or some other combination of words?", ru: "Как к вам обращаются люди? Они используют ваше имя, титул или какую-то другую комбинацию слов?" },
+      { eng: "Do you have a nickname? How did you get it? Who uses it?", ru: "У вас есть прозвище? Как оно у вас появилось? Кто его использует?" },
+      { eng: "Is the meaning of a name important in your culture? Does your name mean anything?", ru: "Важно ли значение имени в вашей культуре? Ваше имя что-то означает?" },
+      { eng: "What are some common names for pets? Can people have the same names? Why or why not?", ru: "Какие бывают распространенные клички для домашних животных? Могут ли люди иметь такие же имена? Почему да или нет?" },
+      { eng: "How do people in your country choose baby names?", ru: "Как в вашей стране выбирают имена для детей?" },
+      { eng: "In both 2021 and 2022, in the United States, the most popular baby name for boys was Liam, and for girls it was Olivia. How about in your country?", ru: "И в 2021, и в 2022 году в США самым популярным именем для мальчиков был Лиам, а для девочек — Оливия. А как в вашей стране?" },
+      { eng: "Have you thought about the names that you might give to your children (if you have them)?", ru: "Вы задумывались о именах, которые могли бы дать своим детям (если они у вас будут)?" },
+      { eng: "Does a person's name influence how others think of them? Will the right name help you to have a good life?", ru: "Влияет ли имя человека на то, как о нем думают другие? Поможет ли правильное имя иметь хорошую жизнь?" },
+      { eng: "In some countries, it is traditional for women to change their name when they get married. What do you think about this?", ru: "В некоторых странах традиционно женщины меняют фамилию при замужестве. Что вы думаете об этом?" },
+      { eng: "Which famous person has a cool name? Why do you like it?", ru: "У какого известного человека крутое имя? Почему оно вам нравится?" },
+      { eng: "What are some names from other cultures that you hear often?", ru: "Какие имена из других культур вы часто слышите?" },
+      { eng: "Kids sometimes tease other kids about their name. Can you recall any examples from your childhood?", ru: "Дети иногда дразнят других детей из-за их имени. Можете вспомнить примеры из своего детства?" },
+      { eng: "Do you remember other people's names easily? If you forget a person's name, what do you do?", ru: "Вы легко запоминаете имена других людей? Если вы забыли имя человека, что вы делаете?" },
+      { eng: "What's the most common name among your friends? How many people do you know with that name?", ru: "Какое самое распространенное имя среди ваших друзей? Сколько людей с таким именем вы знаете?" },
+      { eng: "In your opinion, is it better to have a common name or an uncommon one?", ru: "По вашему мнению, лучше иметь распространенное имя или необычное?" },
+      { eng: "What were common names in your grandparents' generation? Do they sound old-fashioned now or are they still popular?", ru: "Какие имена были распространены в поколении ваших бабушек и дедушек? Они сейчас звучат старомодно или все еще популярны?" },
+      { eng: "Is there a product or company name that you like? Do you think the name helps their business?", ru: "Есть ли продукт или название компании, которое вам нравится? Как вы думаете, это имя помогает их бизнесу?" },
+
+
+    // questions about AGE
+
+
+{ eng: "Who is the oldest person you know? What do you know about their life?", ru: "Кто самый старший человек, которого вы знаете? Что вы знаете о его жизни?" },
+{ eng: "What does a person's age tell us? What do we know about a sixty-year-old that's different from a thirty-year-old?", ru: "Что нам говорит возраст человека? Что мы знаем о шестидесятилетнем, что отличается от тридцатилетнего?" },
+{ eng: "Is a person's age important in your culture? How is it important?", ru: "Важен ли возраст человека в вашей культуре? Как именно он важен?" },
+{ eng: "Are you friends with anyone who is much older or younger than you? Does an age difference make it difficult to be friends?", ru: "Вы дружите с кем-то, кто намного старше или младше вас? Мешает ли разница в возрасте дружбе?" },
+{ eng: "What is your earliest memory? How old were you? Why do you remember that moment?", ru: "Какое ваше самое раннее воспоминание? Сколько вам было лет? Почему вы помните этот момент?" },
+{ eng: "In your opinion, what is the best age to be? What is good about that age?", ru: "По вашему мнению, какой возраст самый лучший? Что хорошего в этом возрасте?" },
+{ eng: "Growing up can be hard. Is there an age you didn't enjoy?", ru: "Взросление может быть трудным. Был ли возраст, который вам не нравился?" },
+{ eng: "Our tastes in many areas change as we get older. What did you like before that you don't like now? What did you dislike before but now enjoy?", ru: "Наши вкусы во многих сферах меняются с возрастом. Что вам нравилось раньше, но не нравится сейчас? Что вам не нравилось раньше, но нравится сейчас?" },
+{ eng: "Do you respect the elderly? How do you show your respect?", ru: "Вы уважаете пожилых людей? Как вы проявляете свое уважение?" },
+{ eng: "Are young people less polite than they used to be? If so, why is this?", ru: "Молодежь сейчас менее вежлива, чем раньше? Если да, то почему?" },
+{ eng: "Do you ever give advice to people who are younger than you? What advice could you give to a teenager?", ru: "Вы даете советы людям, которые младше вас? Какой совет вы могли бы дать подростку?" },
+{ eng: "Have you met any grumpy old men or women? What makes them seem unhappy?", ru: "Встречали ли вы ворчливых стариков или старушек? Что делает их такими недовольными?" },
+{ eng: "When is it okay to ask someone their age? Do you mind telling people your age?", ru: "Когда можно спрашивать кого-то о его возрасте? Вы против того, чтобы говорить людям свой возраст?" },
+{ eng: "What is the best age for a person to settle down and get married? Why?", ru: "Какой возраст лучше всего подходит для того, чтобы остепениться и жениться/выйти замуж? Почему?" },
+{ eng: "Would you date someone much older or younger than you? What's the maximum age difference you would accept?", ru: "Стали бы вы встречаться с кем-то намного старше или младше вас? Какую максимальную разницу в возрасте вы бы приняли?" },
+{ eng: "Age-related diseases such as Alzheimer's make life difficult for some elderly people and their family members. Do you have any experience with this in your family?", ru: "Возрастные заболевания, такие как болезнь Альцгеймера, усложняют жизнь некоторым пожилым людям и их родственникам. Был ли у вас такой опыт в вашей семье?" },
+{ eng: "What happens to senior citizens in your culture? Are retirement homes common? Or do older generations continue to live with their children? Which is better?", ru: "Как складывается жизнь пожилых людей в вашей культуре? Дома престарелых распространены? Или старшее поколение продолжает жить со своими детьми? Что лучше?" },
+{ eng: "Some people try to hold on to their youth with exercise, surgery, or medication. How do you feel about getting older?", ru: "Некоторые люди пытаются сохранить свою молодость с помощью упражнений, операций или лекарств. Как вы относитесь к старению?" },
+{ eng: "What age do you hope to reach? Is there such a thing as an ideal age to die?", ru: "До какого возраста вы надеетесь дожить? Существует ли идеальный возраст для смерти?" },
+{ eng: "Oscar Wilde said, 'I am not young enough to know everything.' What do you think he meant?", ru: "Оскар Уайльд сказал: 'Я не достаточно молод, чтобы знать всё'. Как вы думаете, что он имел в виду?" },
+
+    // questions about Dating and relationships
+
+    { eng: "How do people meet people to date these days? Is it mainly with dating apps?", ru: "Как люди сейчас знакомятся для свиданий? В основном через приложения для знакомств?" },
+    { eng: "What is your ideal type? Be as specific as possible.", ru: "Какой у вас идеальный тип? Опишите как можно конкретнее." },
+    { eng: "What activities are enjoyable to do on a first date?", ru: "Какие занятия приятно делать на первом свидании?" },
+    { eng: "Is it a man's responsibility to ask a woman out? If you're a woman, have you asked a man out on a first date?", ru: "Это ответственность мужчины - приглашать женщину на свидание? Если вы женщина, вы сами приглашали мужчину на первое свидание?" },
+    { eng: "Who should pay on a date? How about splitting the bill?", ru: "Кто должен платить на свидании? Как насчет того, чтобы разделить счет?" },
+    { eng: "Is it okay to date several people at the same time?", ru: "Нормально ли встречаться с несколькими людьми одновременно?" },
+    { eng: "Do you have any bad dating experiences you would like to share? If not, maybe you have heard about some from your friends?", ru: "У вас есть неудачный опыт свиданий, которым вы хотели бы поделиться? Если нет, возможно, вы слышали о таком от друзей?" },
+    { eng: "Have you ever been on a double date or group date? How was it?", ru: "Вы когда-нибудь были на двойном свидании или групповом свидании? Как это было?" },
+    { eng: "Do you like to talk a lot? Are you quiet when you first meet someone? Is it okay if one person does most of the talking on a date?", ru: "Вы любите много говорить? Вы молчаливы, когда впервые встречаете кого-то? Нормально ли, если один человек делает большую часть разговора на свидании?" },
+    { eng: "How can you tell if the other person is enjoying the date or wanting the date to end?", ru: "Как вы можете определить, что другому человеку нравится свидание или он хочет его закончить?" },
+    { eng: "If you were on a date with someone and they kept checking their phone or watch, what would you do about it? Would you say something?", ru: "Если бы вы были на свидании с кем-то, и он постоянно проверял телефон или часы, что бы вы сделали? Вы бы что-то сказали?" },
+    { eng: "What is the appropriate age to start dating?", ru: "Какой подходящий возраст для начала свиданий?" },
+    { eng: "Is it important to date many people before getting married? Is it better to be with one person for your entire life?", ru: "Важно ли встречаться со многими людьми до брака? Лучше ли быть с одним человеком всю жизнь?" },
+    { eng: "Describe your ideal romantic date. What would you do first, next, and then last?", ru: "Опишите ваше идеальное романтическое свидание. Что бы вы сделали сначала, потом и в конце?" },
+    { eng: "Can you predict who will make a good couple? Have you introduced people to each other in the hope they would become a couple?", ru: "Вы можете предсказать, кто составит хорошую пару? Вы знакомили людей друг с другом в надежде, что они станут парой?" },
+    { eng: "Is it okay to date someone your friend already dated? Or are they forever off-limits?", ru: "Нормально ли встречаться с кем-то, с кем уже встречался ваш друг? Или они навсегда запретны?" },
+    { eng: "Have you ever been on a blind date? How did it go?", ru: "Вы когда-нибудь были на свидании вслепую? Как оно прошло?" },
+
+
+    // questions about
+
+
+
+
+
+
   ],
   levelC: [
     { eng: "If you could have a super power what would it be?", ru: "Если бы вы могли иметь суперспособность, то какая бы она у вас была?"},
@@ -437,6 +514,53 @@ const randomQuestionsData = {
     { eng: "How do personal values influence our life choices?", ru: "Как личные ценности влияют на наш жизненный выбор?" },
     { eng: "What makes a conversation truly meaningful?", ru: "Что делает разговор по-настоящему значимым?" },
     { eng: "How can we develop better critical thinking skills?", ru: "Как мы можем развивать лучшие навыки критического мышления?" },
+
+    // questions about meeting people
+
+    { eng: "How often do you meet new people? How do you usually meet them?", ru: "Как часто вы знакомитесь с новыми людьми? Как обычно вы с ними знакомитесь?" },
+    { eng: "When you meet someone for the first time, how do you feel?", ru: "Когда вы встречаете кого-то впервые, что вы чувствуете?" },
+    { eng: "How long does it take you to feel comfortable with a new person?", ru: "Сколько времени вам нужно, чтобы почувствовать себя комфортно с новым человеком?" },
+    { eng: "What is the first thing you usually do or say when you meet a person for the first time?", ru: "Что вы обычно делаете или говорите в первую очередь, когда встречаете человека впервые?" },
+    { eng: "Do you know any good ice-breaker questions?", ru: "Знаете ли вы хорошие вопросы-ледоколы (для начала разговора)?" },
+    { eng: "Which topics do you avoid when you talk with someone for the first time? Which topics are safe?", ru: "Каких тем вы избегаете, когда разговариваете с кем-то впервые? Какие темы безопасны?" },
+    { eng: "What does 'first impressions matter' mean? Do you agree?", ru: "Что означает 'первое впечатление имеет значение'? Вы согласны с этим?" },
+    { eng: "Do you think you make a good first impression?", ru: "Как вы думаете, вы производите хорошее первое впечатление?" },
+    { eng: "Have you ever met a boyfriend or girlfriend's parents? What kind of impression did you make?", ru: "Вы когда-нибудь встречались с родителями парня или девушки? Какое впечатление вы произвели?" },
+    { eng: "When you meet someone and hear their name, do you remember it easily? Do you have any tricks to remember names well?", ru: "Когда вы встречаете кого-то и слышите его имя, вы легко его запоминаете? У вас есть какие-либо хитрости, чтобы хорошо запоминать имена?" },
+    { eng: "Have you ever introduced yourself to a stranger in public? Why? What did you say?", ru: "Вы когда-нибудь знакомились с незнакомцем в общественном месте? Почему? Что вы сказали?" },
+    { eng: "Is it more comfortable for you to meet men or women? Why?", ru: "Вам комфортнее знакомиться с мужчинами или женщинами? Почему?" },
+    { eng: "Have you ever met somebody and immediately hit it off? What made you get along so quickly?", ru: "Вы когда-нибудь встречали кого-то и сразу же находили общий язык? Что помогло вам так быстро поладить?" },
+    { eng: "Have you ever been to a party where people were mingling? How good are you at circulating?", ru: "Вы были на вечеринке, где люди общаются друг с другом? Насколько вы хороши в том, чтобы перемещаться и общаться?" },
+    { eng: "Do you remember faces? If you have met a person, do you easily recognize them later?", ru: "Вы запоминаете лица? Если вы встречали человека, вы легко узнаете его позже?" },
+    { eng: "If you are walking down a street and see someone you think you know, do you always stop and say hello? Why or why not?", ru: "Если вы идете по улице и видите someone, кого, как вам кажется, вы знаете, вы всегда останавливаетесь и здороваетесь? Почему да или нет?" },
+    { eng: "How do people meet romantic partners these days?", ru: "Как люди в наши дни встречают романтических партнеров?" },
+    { eng: "Some couples have romantic or funny stories about how they first met. Have you heard any good ones you would like to share?", ru: "У некоторых пар есть романтичные или забавные истории о том, как они впервые встретились. Слышали ли вы какие-нибудь хорошие истории, которыми хотели бы поделиться?" },
+
+
+
+    // questions about shopping
+
+    { eng: "Do you like shopping? For what kinds of things?", ru: "Вы любите ходить по магазинам? За какими вещами?" },
+    { eng: "Have you ever spent too much money? What did you buy? How did you feel afterwards?", ru: "Вы когда-нибудь тратили слишком много денег? Что вы купили? Что вы почувствовали потом?" },
+    { eng: "How long do you usually shop for? Do you try to get your shopping done as fast as possible?", ru: "Как долго вы обычно ходите по магазинам? Вы стараетесь закончить покупки как можно быстрее?" },
+    { eng: "How much do you shop online? What kinds of things do you buy online? What would you rather buy in person?", ru: "Как часто вы покупаете что-то онлайн? Какие вещи вы покупаете в интернете? Что вы предпочли бы купить лично?" },
+    { eng: "Think about an expensive thing that you bought. Was it worth what you paid for it?", ru: "Подумайте о дорогой вещи, которую вы купили. Она стоила тех денег, что вы за нее заплатили?" },
+    { eng: "Do you prefer to shop alone or with other people? What are the advantages and disadvantages of each?", ru: "Вы предпочитаете ходить по магазинам один или с другими людьми? Каковы преимущества и недостатки каждого варианта?" },
+    { eng: "Who does the grocery shopping in your household? How often do they do it?", ru: "Кто покупает продукты в вашей семье? Как часто они это делают?" },
+    { eng: "Are you a bargain hunter? Do you get excited about sales and discounts? When are the best sales in your country?", ru: "Вы охотник за выгодными покупками? Вы радуетесь распродажам и скидкам? Когда в вашей стране проходят лучшие распродажи?" },
+    { eng: "Which do you prefer? Buying things for yourself or for other people?", ru: "Что вы предпочитаете? Покупать вещи для себя или для других людей?" },
+    { eng: "Do you collect points or stamps at any stores? Which loyalty programs are worthwhile?", ru: "Вы собираете балы или печати в каких-либо магазинах? Какие программы лояльности стоят того?" },
+    { eng: "In the United States, the Friday after Thanksgiving is known as Black Friday and is famous for big sales and aggressive behavior by shoppers. Have you ever had any problems with other shoppers?", ru: "В США пятница после Дня Благодарения известна как Черная пятница и славится большими скидками и агрессивным поведением покупателей. У вас когда-нибудь были проблемы с другими покупателями?" },
+    { eng: "Shoplifting is when someone takes something from a shop without paying. How common is this crime in your country? How do shops try to prevent shoplifting?", ru: "Воровство в магазинах — это когда кто-то забирает что-то из магазина, не заплатив. Насколько распространено это преступление в вашей стране? Как магазины пытаются предотвратить воровство?" },
+    { eng: "Have you ever worked in a shop? What was the store selling? Does that kind of job suit you?", ru: "Вы когда-нибудь работали в магазине? Что продавал магазин? Подходит ли вам такая работа?" },
+    { eng: "If you were to open your own shop, what kinds of things would you like to sell?", ru: "Если бы вы открыли свой собственный магазин, что бы вы хотели в нем продавать?" },
+    { eng: "Have you ever returned something to the shop you bought it from? Why did you return it? Did you get a refund?", ru: "Вы когда-нибудь возвращали что-то в магазин, где купили? Почему вы вернули это? Вам вернули деньги?" },
+    { eng: "Do you care where products are made? Do you prefer to buy things which are made in your own country? Why or why not?", ru: "Вам важно, где произведены товары? Вы предпочитаете покупать вещи, сделанные в вашей собственной стране? Почему да или нет?" },
+    { eng: "Some countries have late-night or all-night shopping. What time of day do you like to shop?", ru: "В некоторых странах есть ночные или круглосуточные магазины. В какое время дня вы любите делать покупки?" },
+    { eng: "Have you been shopping abroad? Which are the best cities for shopping?", ru: "Вы покупали что-то за границей? Какие города лучшие для шопинга?" },
+
+
+
 
   ],
 

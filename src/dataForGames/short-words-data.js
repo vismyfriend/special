@@ -37,6 +37,13 @@ const shortWordsData = {
     { id: 25, eng: "Are you blind?", ru: "Ты что, слепой?" },
     { id: 26, eng: "Is she blind?", ru: "Она что, слепая?" }
   ],
+
+  Vincent2025: [
+    { id: 1, eng: "nonchalant", ru: "беспечный" },
+    { id: 2, eng: "wo bu he cha", ru: "я не пью чай" },
+    { id: 3, eng: "ni he cha ma?", ru: "вы пьете чай?" },
+
+  ],
   WhatIsMyAgeAgainBlink182Song: [
       { id: 1, eng: "puddle", ru: "лужа" },
       { id: 2, eng: "clumsy", ru: "неуклюжий" },

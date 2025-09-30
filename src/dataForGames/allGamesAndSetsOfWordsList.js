@@ -30,6 +30,33 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'📚'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/readingIntensive2/listening-exercises",
+      missionVisibleName: "Интенсив по чтению ч. 2",
+      missionDescription: "learn to read fast",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/readingIntensive3/listening-exercises",
+      missionVisibleName: "Интенсив по чтению ч. 3",
+      missionDescription: "learn to read fast",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/readingIntensive4/listening-exercises",
+      missionVisibleName: "Интенсив по чтению ч. 4",
+      missionDescription: "learn to read fast",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -94,6 +121,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'❓'
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
@@ -920,6 +948,15 @@ export const allGamesAndSetsOfWordsList =
       stars: '3'
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/newspaper",
+      missionVisibleName: "Newspaper",
+      missionDescription: "Газеты",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
       missionName: "WhatIsMyLevel",
       missionVisibleName: "Какой мой уровень Инглиша?",
       missionDescription: "What is my level of English?",
@@ -981,6 +1018,13 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:' 🗣'
+    },
+    {
+      missionName: "Vincent2025",
+      missionVisibleName: "Vincent 2025",
+      missionDescription: "Набор Винсента 2025",
+      id: 7,
+      active: true,
     },
     {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
@@ -1065,6 +1109,14 @@ export const AllGames =
       name: "Year Guesser",
       description: "Отгадай год",
       route: "/yearGuesser",
+      icon: "ApyGlassEmoji2.png"
+
+    },
+    {
+      id: 1,
+      name: "News Paper",
+      description: "Отгадай год",
+      route: "/newspaper",
       icon: "ApyGlassEmoji2.png"
 
     },

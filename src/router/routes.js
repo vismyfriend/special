@@ -5,6 +5,7 @@ const routes = [
     children: [
       { path: '',
         component: () => import('pages/IntroPage.vue') },
+
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
@@ -214,6 +215,14 @@ const routes = [
   },
 
   {
+    path: '/newspaper',
+    component: () => import('src/pages/GameNewspaper.vue')
+  },
+  {
+    path: '/newspaper',
+    component: () => import('src/pages/GameNewspaper.vue')
+  },
+  {
     path: '/vismyfriend',
     component: () => import('src/pages/Vismyfriend.vue')
   },
@@ -241,6 +250,7 @@ const routes = [
     path: '/yearGuesser',
     component: () => import('src/pages/gameYearGuesser.vue')
   },
+
   {
     path: '/differenceSeeLook',
     component: () => import('src/components/pageInfoWordDifference.vue')
