@@ -69,7 +69,32 @@ const shortWordsData = {
       { id: 22, eng: "they are barely naked", ru: "Они едва ли не голые!" },
       { id: 23, eng: "act your age", ru: "Веди себя подобающе своему возрасту" }
   ],
-
+  idiomsPerfectMatch: [
+    { id: 24, eng: "To adore each other", ru: "Обожать друг друга." },
+    { id: 25, eng: "Adorable", ru: "Очаровательный, прелестный" },
+    { id: 26, eng: "incredible / incredibly", ru: "Невероятный / невероятно" },
+    { id: 27, eng: "ambitious", ru: "Амбициозный" },
+    { id: 28, eng: "stubborn", ru: "Упрямый" },
+    { id: 29, eng: "inseparable!", ru: "Неразлучные!" },
+    { id: 30, eng: "It is very rare these days.", ru: "Это редкость в наши дни." },
+    { id: 31, eng: "so much in common.", ru: "Так много общего." },
+    { id: 32, eng: "troublemakers", ru: "Нарушители спокойствия, смутьяны" },
+    { id: 33, eng: "a plot", ru: "Сюжет; заговор" },
+    { id: 34, eng: "to plot something together", ru: "строить планы / замышлять" },
+    { id: 35, eng: "They are like two peas in a pod.", ru: "Они похожи как две капли воды." },
+    { id: 36, eng: "They are two of a kind", ru: "Они одного поля ягоды." },
+    { id: 37, eng: "They are made for each other.", ru: "Они созданы друг для друга." },
+    { id: 38, eng: "They are a perfect match.", ru: "Они идеальное сочетание" },
+    { id: 39, eng: "Life is in full swing", ru: "Жизнь бьёт ключом." },
+    { id: 40, eng: "a chanterelle", ru: "Лисичка (mushroom - гриб)" },
+    { id: 41, eng: "a handle", ru: "Ручка (инструмента, двери)" },
+    { id: 42, eng: "a tail", ru: "Хвост" },
+    { id: 43, eng: "a bow and an arrow", ru: "Лук и стрела" },
+    { id: 44, eng: "edible", ru: "Съедобный" },
+    { id: 45, eng: "improve", ru: "Улучшать(ся)" },
+    { id: 46, eng: "an ancient weapon", ru: "Древнее оружие" },
+    { id: 47, eng: "a sign", ru: "Знак, табличка, признак" }
+  ],
 
 
   futuramaS1E1: [

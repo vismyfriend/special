@@ -772,6 +772,15 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/idiomsPerfectMatch/find-pairs-hard",
+      missionVisibleName: "Two peas in a pod",
+      missionDescription: "идиомы 1 idioms 1",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -794,6 +803,15 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/songFaith/songs",
       missionVisibleName: "Faith",
       missionDescription: "Вера",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/story4/songs",
+      missionVisibleName: "story 4",
+      missionDescription: "История 4",
       id: 1001,
       active: true,
       stars: '3'

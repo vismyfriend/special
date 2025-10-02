@@ -213,15 +213,52 @@ const routes = [
       },
     ]
   },
+    // http://192.168.0.21:9000/special/ localhost
 
   {
-    path: '/newspaper',
-    component: () => import('src/pages/GameNewspaper.vue')
+    path: '/special',
+    component: () => import('src/layouts/TestingLayout.vue'),
+    children: [
+      {
+        path: '/neat',
+        component: () => import('src/pages/intros/neatDeskIntro.vue')
+      },
+      {
+        path: '/notebook',
+        component: () => import('src/pages/intros/notebookBlank.vue')
+      },
+      {
+        path: '/notebook1',
+        component: () => import('src/pages/intros/notebook1.vue')
+      },
+      {
+        path: '/examplePage',
+        component: () => import('src/pages/intros/ExamplePage.vue')
+      },
+      {
+        path: '/hw1',
+        component: () => import('src/pages/intros/notebookPattern1.vue')
+      },
+      {
+        path: '/newspaper',
+        component: () => import('src/pages/GameNewspaper.vue')
+      },
+      {
+        path: '/specialHeader',
+        component: () => import('src/layouts/specialLayout.vue'),
+        children: [
+          {
+            path: '/homework1',
+            component: () => import('src/pages/CopyBook/HomeWork1.vue'),
+          },
+        ]
+      },
+
+    ]
+
   },
-  {
-    path: '/newspaper',
-    component: () => import('src/pages/GameNewspaper.vue')
-  },
+
+
   {
     path: '/vismyfriend',
     component: () => import('src/pages/Vismyfriend.vue')

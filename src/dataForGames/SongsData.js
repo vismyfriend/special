@@ -195,6 +195,59 @@ const songsData = {
       },
     ],
   },
+  story4: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "listenCarefully",
+        usefulWords:
+          "instead of ... - /инстЭд/ вместо ... , " +
+          "a few days - /э фью/ несколько дней, " +
+          "died few days - /э фью/ несколько дней, " +
+          "later - /лЭйтэ/ спустя(позже)сочная), ",
+
+        audio: new URL('../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.png", import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: null,
+            audioName: null,
+            text:
+              "A man always went to the same bar " +
+              "at the (same) time every day and " +
+              "asked for two glasses of beer. He drank them and\n" +
+              "then asked for two more.\n" +
+              "One day the man behind the bar said to him, 'Why do you\n" +
+              "always ask for two glasses of beer? Why don't you get one\n" +
+              "big glass instead?'\n" +
+              "The man answered, 'Because I do not like to drink alone.\n" +
+              "I drink with my friend.'\n" +
+              "But a few days later the man came in and asked only for\n" +
+              "one beer.\n" +
+              "'Oh,' said the barman, 'has your friend died?'\n" +
+              "'Oh, no,' said the man. 'He is very well. This beer is for\n" +
+              "him. But I have stopped drinking beer. My doctor doesn't\n" +
+              "want me to drink any more because it is dangerous for me.'\n" +
+              "What did the man in this\n" +
+              "story do every day?\n" +
+              "What did he ask for ?\n" +
+              "What did he do then?\n" +
+              "What did the man behind\n" +
+              "the bar say one day ?\n" +
+              "What did the man answer?\n" +
+              "What happened a few days\n" +
+              "later?\n" +
+              "What did the man ask for this\n" +
+              "time?\n" +
+              "What did the barman ask ?\n" +
+              "What did the man answer ?"
+          },
+        ]
+      },
+    ],
+  },
   testQuicklyData: {
     mainDescription: "How much is too much?",
     tasks: [
