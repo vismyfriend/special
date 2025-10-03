@@ -786,6 +786,138 @@ const ListeningExerciseData = {
   },
 
 
+  listening_introductory2_i5: {
+    mainDescription: "Story i5",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/10 5. A good fishing.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/10 5. A good fishing.png", import.meta.url).href,
+        textScript:
+          'Paul Robinson liked fishing very much.\n' +
+          'In the summer he went out fishing every evening. And in the winter he fished on Saturdays and Sundays. ' +
+          'His wife Joan did not see him very much.\n ' +
+          'Then one day last summer Paul said to her, \'I\'m going to have two weeks holiday this year, and we are going to go to Scotland and fish there.\n' +
+          '"And what am I going to do?", said Joan.\n' +
+          '"You are going to fish with me", Paul answered.\n' +
+          'They went to Scotland and fished there for two weeks. Then they came home, and Joan talked to her neighbour, Mrs. Andrews, about her fishing trip with her husband.\n' +
+          '"I did everything wrong on the trip", she said to her.I talked loudly in the boat and the fish were afraid. I put the wrong things on my hook, I pulled my line in very quickly...\n' +
+          'and I caught a lot more fish than Paul did.',
+        questions: [
+          {
+            text: "Does Paul like or dislike fishing?",
+          },
+          {
+            text: "Where did he and his wife go last August?",
+          },
+          {
+            text: "What did they do for two weeks?",
+          },
+          {
+            text: "Who did Joan talk to after that?",
+          },
+          {
+            text: "What did Joan do wrong?",
+          },
+        ]
+      },
+    ],
+  },
+  listening_elementary1_e11: {
+    mainDescription: "Story e11",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/(11) Elementary Stories for Reproduction.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/(11) Elementary Stories for Reproduction.png", import.meta.url).href,
+        textScript:
+          'The lights were red, so the old man stopped his car and waited for them to change to green. While he was waiting, a police car came up behind him, hit his car hard in the back and stopped.\n' +
+          'There were two policemen in the police car, and they were very surprised and glad when the old man got out of his car and walked towards them without any trouble after such an accident. He was over 70 years old.\n' +
+          'The old man came to the door of the police car, smiled kindly, and said: "Tell me, young man, how do you stop this car when the lights are red and I am not here ?"',
+        questions: [
+          {
+            text: "Why did the old man stop his car ?",
+          },
+          {
+            text: "What did he wait for ?",
+          },
+          {
+            text: "What happened while he was waiting ?",
+          },
+          {
+            text: "What people were there in the police car ?",
+          },
+          {
+            text: "What did the old man do ?",
+          },
+          {
+            text: "How did the policemen feel about it ?",
+          },
+          {
+            text: "Why were they surprised ?",
+          },
+          {
+            text: "How old was the man ?",
+          },
+          {
+            text: "What did the old man ask the police officers?",
+          },
+        ]
+      },
+    ],
+  },
+  listening_elementary1_e4: {
+    mainDescription: "Story e4",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.png", import.meta.url).href,
+        textScript:
+          "A man always went to the same bar at the (same) time every day and asked for two glasses of beer. He drank them and then asked for two more.\n" +
+          "One day the man behind the bar asked him, 'Why do you always ask for two glasses of beer? Why don't you get one big glass instead /инстЭд/ (вместо) двух маленьких один большой?'\n" +
+          "The man answered, 'Because I do not like to drink alone. I drink with my friend.'\n" +
+          "But a few days later the man came in and asked only for one beer.\n" +
+          "'Oh,' said the barman, 'has your friend died?'\n" +
+          "'Oh, no,' said the man. 'He is very well. This beer is for him. But I have stopped drinking beer. My doctor doesn't want me to drink any more because it is dangerous for me.'\n"
+          ,
+        questions: [
+          {
+            text: "What did the man from this story do every day?",
+          },
+          {
+            text: "What did he ask for ?",
+          },
+          {
+            text: "What did he do then?",
+          },
+          {
+            text: "What did the man behind the bar ask one day ?\n",
+          },
+          {
+            text: "What did the man answer?",
+          },
+          {
+            text: "What happened a few days later?",
+          },
+          {
+            text: "What did the man ask for this time?",
+          },
+          {
+            text: "What did the barman ask ?",
+          },
+          {
+            text: "What did the man answer ?",
+          },
+        ]
+      },
+    ],
+  },
+
+
+
+
+
   listening_b1_test_30p1: {
     mainDescription: "B1 listening 30p1",
     tasks: [

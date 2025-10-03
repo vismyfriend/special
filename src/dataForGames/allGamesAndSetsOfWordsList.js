@@ -792,6 +792,31 @@ export const allGamesAndSetsOfWordsList =
       stars: '3'
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/listening_introductory2_i5/listening-exercises",
+      missionVisibleName: "Story - Fishing - i5",
+      missionDescription: "Про рыбалку",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/listening_elementary1_e4/listening-exercises",
+      missionVisibleName: "Story - Friends in a bar - e4",
+      missionDescription: "Про бдрузей в баре",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/listening_elementary1_e11/listening-exercises",
+      missionVisibleName: "Story - Car crash - e11",
+      missionDescription: "Про car accident",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+    {
       missionName: "YoungSheldonS1E3",
       missionVisibleName: "Young Sheldon s1e3",
       missionDescription: "Детство Шелдона s1e3",
@@ -807,15 +832,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '3'
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/story4/songs",
-      missionVisibleName: "story 4",
-      missionDescription: "История 4",
-      id: 1001,
-      active: true,
-      stars: '3'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/songImpossibleFallout/songs",
