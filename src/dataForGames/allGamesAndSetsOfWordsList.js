@@ -831,6 +831,14 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '3'
+    },  {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songILoveMyLife/songs",
+      missionVisibleName: "I love my life",
+      missionDescription: "Я люблю свою жизнь",
+      id: 1001,
+      active: true,
+      stars: '3'
     },
 
     {
