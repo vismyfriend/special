@@ -1,12 +1,7 @@
 <template>
   <div class="container">
     <div class="background-wrapper">
-      <img
-        src="src/assets/images/introCopybook.jpg"
-        alt="monitor"
-        class="background-image"
-        ref="bgImage"
-      />
+
 
       <!-- Текст вопроса -->
       <div class="question-text" :style="questionStyle">
@@ -57,7 +52,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 
-const bgImage = ref(null)
 const customMessage = ref('') // Храним текст из поля ввода
 const hoverAnswer = ref(-1) // Отслеживаем наведение на кнопки
 
@@ -273,6 +267,11 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   height: 100%;
+  /* Добавляем фон через CSS */
+  background-image: url('assets/images/introCopybook.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .background-image {
