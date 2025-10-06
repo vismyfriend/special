@@ -268,7 +268,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   /* Добавляем фон через CSS */
-  background-image: url('assets/images/introCopybook.jpg');
+  background-image: url('/src/assets/images/introCopybook.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
