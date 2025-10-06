@@ -14,6 +14,16 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+      missionVisibleName: "Миссия - 1",
+      missionDescription: "Самое начало",
+      id: 1001,
+      active: true,
+      gameIcon:'1️⃣'
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/",
       missionVisibleName: "Тапалка с цифрами",
       missionDescription: "Произношение и цифры",
@@ -58,15 +68,7 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚'
     },
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "Миссия - 1",
-      missionDescription: "Самое начало",
-      id: 1001,
-      active: true,
-      gameIcon:'1️⃣'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",

@@ -787,12 +787,13 @@ const ListeningExerciseData = {
 
 
   listening_introductory2_i5: {
-    mainDescription: "Story i5",
+    mainDescription: "Fishing with wife 'i5'",
     tasks: [
       {
         taskID: "multiple_choice",
         audio: new URL('../assets/audio/storiesListening/10 5. A good fishing.mp3', import.meta.url).href,
-        taskPicture: new URL("../assets/audio/storiesListening/10 5. A good fishing.png", import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/10 5. A good fishing.jpg", import.meta.url).href,
+        usefulWords: 'talk loudly - говорить гормко, neighbour - /нЭйбор/ сосед(ка),',
         textScript:
           'Paul Robinson liked fishing very much.\n' +
           'In the summer he went out fishing every evening. And in the winter he fished on Saturdays and Sundays. ' +
@@ -824,12 +825,12 @@ const ListeningExerciseData = {
     ],
   },
   listening_elementary1_e11: {
-    mainDescription: "Story e11",
+    mainDescription: "Road accident 'e11'",
     tasks: [
       {
         taskID: "multiple_choice",
         audio: new URL('../assets/audio/storiesListening/(11) Elementary Stories for Reproduction.mp3', import.meta.url).href,
-        taskPicture: new URL("../assets/audio/storiesListening/(11) Elementary Stories for Reproduction.png", import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/(11) Elementary Stories for Reproduction.jpg", import.meta.url).href,
         textScript:
           'The lights were red, so the old man stopped his car and waited for them to change to green. While he was waiting, a police car came up behind him, hit his car hard in the back and stopped.\n' +
           'There were two policemen in the police car, and they were very surprised and glad when the old man got out of his car and walked towards them without any trouble after such an accident. He was over 70 years old.\n' +
@@ -867,12 +868,12 @@ const ListeningExerciseData = {
     ],
   },
   listening_elementary1_e4: {
-    mainDescription: "Story e4",
+    mainDescription: "friends in a bar 'e4'",
     tasks: [
       {
         taskID: "multiple_choice",
         audio: new URL('../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.mp3', import.meta.url).href,
-        taskPicture: new URL("../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.png", import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/Elementary Stories for Reproduction-№ 4.jpg", import.meta.url).href,
         textScript:
           "A man always went to the same bar at the (same) time every day and asked for two glasses of beer. He drank them and then asked for two more.\n" +
           "One day the man behind the bar asked him, 'Why do you always ask for two glasses of beer? Why don't you get one big glass instead /инстЭд/ (вместо) двух маленьких один большой?'\n" +
@@ -909,6 +910,199 @@ const ListeningExerciseData = {
           {
             text: "What did the man answer ?",
           },
+        ]
+      },
+    ],
+  },
+  listening_elementary1_e2: {
+    mainDescription: "How do you make a B ? 'e2'",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/telephone call.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/telephone call.jpg", import.meta.url).href,
+        textScript:
+          "Mrs Jones was waiting for an important telephone call, but she had no bread in the house, so she left the baby at home and said to his five-year-old brother,'I am going to the shops, Jimmy, and I will be back in a few minutes.'\n" +
+          "\n" +
+          "While she was out, the telephone rang, and Jimmy answered. 'Hello,' said a man, 'is your mother there?'\n" +
+          "'No,' answered Jimmy.\n" +
+          "'Well, when she comes back, say to her, \"Mr Baker telephoned\".'\n" +
+          "'What?'\n" +
+          "'Mr Baker. Write it down. B-A-K-E-R.'\n" +
+          "'How do you write a 'B'?'\n" +
+          "'How do I write . . . ? Listen, little boy, is there anybody else with you? Any brothers or sisters?'\n" +
+          "'My brother Billy is here.'\n" +
+          "'Good, I want to talk to him, please.'\n" +
+          "'All right.' Jimmy took the telephone to the baby's bed and gave it to Billy. \n" +
+          "\n" +
+          "When their mother came back, she asked,\n" +
+          "'Did anyone telephone?'\n" +
+          "'Yes,' said Jimmy, 'a man. But he only wanted to talk to Billy.'\n"
+          ,
+        questions: [
+          {
+            text: "What was Mrs Jones waiting for?",
+          },
+          {
+            text: "Why did she go out and what did she do with her babies?",
+          },
+          {
+            text: "What did she say to Jimmy?",
+          },
+          {
+            text: "How old was he?",
+          },
+          {
+            text: "What happened while she was out?",
+          },
+          {
+            text: "What did Jimmy do?",
+          },
+          {
+            text: "What did the man say?",
+          },
+          {
+            text: "What did Jimmy answer?",
+          },
+          {
+            text: "What did the man say then?",
+          },
+          {
+            text: "What did Jimmy say?",
+          },
+          {
+            text: "What was the man's answer?",
+          },
+          {
+            text: "What did Jimmy ask him then?",
+          },
+          {
+            text: "What did the man say then?",
+          },
+          {
+            text: "What did Jimmy answer?",
+          },
+          {
+            text: "What did the man say?",
+          },
+          {
+            text: "What did Jimmy say?",
+          },
+          {
+            text: "What did he do?",
+          },
+          {
+            text: "What did Jimmy's mother do when she came home?",
+          },
+          {
+            text: "What did Jimmy answer?",
+          }
+        ]
+      },
+    ],
+  },
+  listening_intermediate_b7: {
+    mainDescription: "Fancy taxi 'b7'",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/fancy taxi b7.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/fancy taxi b7.jpg", import.meta.url).href,
+        textScript:
+          "Two rich ladies were sharing a taxi and talking about the high cost of going anywhere by taxi.\n" +
+          "One of the ladies said: 'Taxis are terribly expensive these days. The owners get a lot of money for nothing.'\n" +
+          "'Yes,' said the other lady, 'and the drivers get such big tips that they soon become rich. They ought to be ashamed of themselves.'\n" +
+          "One of the ladies was smoking a cigarette. After a minute or two she said to the other lady, 'Can you see an ashtray in this taxi? There isn't one on my side.'\n" +
+          "'No,' said the other, 'there isn't one on this side either.\n" +
+          "Driver! Where is the ashtray in this taxi? Why haven't you got one?'\n" +
+          "The driver, who had heard everything the ladies had said, answered, 'Oh, just drop the ashes on the carpet—I have a servant who comes in and cleans, three days in the week!'\n"
+          ,
+        questions: [
+          {
+            text: "What were the two rich ladies doing?",
+          },
+          {
+            text: "What were they talking about?",
+          },
+          {
+            text: "What did one of them say?",
+          },
+          {
+            text: "What did the other one say?",
+          },
+          {
+            text: "What was one of the ladies doing?",
+          },
+          {
+            text: "What did she say to the other lady?",
+          },
+          {
+            text: "What did the other lady answer?",
+          },
+          {
+            text: "What did she say to the driver?",
+          },
+          {
+            text: "What did he answer?",
+          },
+          {
+            text: "Why did he answer in this way?",
+          }
+        ]
+      },
+    ],
+  },
+  listening_intermediate_b5: {
+    mainDescription: "Cut a branch 'b5'",
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        audio: new URL('../assets/audio/storiesListening/cut a branch.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/storiesListening/cut a branch.jpg", import.meta.url).href,
+        textScript:
+          "Nasreddin was cutting a branch off a tree in his garden. While he was sawing, another man passed in the street. He stopped and said, 'Excuse me, but if you continue to saw that branch like that, you will fall down with it.' He said this because Nasreddin was sitting on the branch and cutting it at a place between himself and the trunk of the tree.\n" +
+          "Nasreddin said nothing. He thought, 'This is some foolish person who has no work to do and goes about telling other people what to do and what not to do.' The man continued on his way.\n" +
+          "Of course, after a few minutes, the branch fell and Nasreddin fell with it.\n" +
+          "'My God!' he cried. 'That man knows the future!' and he ran after him to ask how long he was going to live. But the man had\n"
+          ,
+        questions: [
+          {
+            text: "What was Nasreddin doing at the beginning of this story?",
+          },
+          {
+            text: "Who passed in the street?",
+          },
+          {
+            text: "What did the man say?",
+          },
+          {
+            text: "Why did he say this?",
+          },
+          {
+            text: "What did Nasreddin say?",
+          },
+          {
+            text: "What did he think?",
+          },
+          {
+            text: "What did the other man do then?",
+          },
+          {
+            text: "What happened after a few minutes?",
+          },
+          {
+            text: "What did Nasreddin say then?",
+          },
+          {
+            text: "What did he do?",
+          },
+          {
+            text: "Why did he do this?",
+          },
+          {
+            text: "Did he find the man? Why (not)?",
+          },
+
         ]
       },
     ],

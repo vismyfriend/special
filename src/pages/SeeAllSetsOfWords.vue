@@ -11,7 +11,7 @@
         <div class="search-container">
           <input
             v-model="searchQuery"
-            placeholder="Search sets..."
+            placeholder="Введите название миссии..."
             class="search-input"
           />
         </div>
@@ -31,6 +31,39 @@
             Создать свой S.P.E.C.I.A.L. набор
             <div class="custom-tooltip">
               Click to see special content
+            </div>
+          </div>
+
+
+          <!-- Специальная карточка (змейка) -->
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism3"
+            role="button"
+            @click="playSnake"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Snake - змейка
+            <div class="custom-tooltip">
+              Snake - змейка
+            </div>
+          </div>
+
+          <!-- Специальная карточка (НОВЫЙ ОРАНЖЕВЫЙ СТИЛЬ) -->
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism"
+            role="button"
+            @click="playRandomSet"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Новый оранжевый стиль
+            <div class="custom-tooltip">
+              New Orange style
             </div>
           </div>
           <!-- Специальная карточка (случайный набор) -->
@@ -283,6 +316,14 @@ const  playRandomQuestions = () => {
   router.push('/phoneFramePattern');
 
 }
+
+
+const  playSnake = () => {
+  router.push('/gameSnakeCursor');
+
+}
+
+
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
@@ -328,6 +369,11 @@ onMounted(() => {
   &:focus {
     border-color: #6a6a6a;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  &::placeholder {
+    font-style: italic; /* Курсив */
+    color: #888; /* Можно добавить цвет для лучшей читаемости */
+    opacity: 0.8; /* Немного прозрачности */
   }
 }
 
@@ -693,6 +739,91 @@ onMounted(() => {
   white-space: nowrap; /* чтобы звёзды не переносились */
 }
 
+
+
+.glassMorphism {
+  position: relative;
+  overflow: hidden;
+  margin: 1.5px;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: white;
+
+  /* Глассморфизм */
+  background: rgba(255, 107, 53, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  cursor: none;
+}
+
+/* Эффект пузырьков */
+.glassMorphism::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.6;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+/* Анимированные пузырьки */
+.glassMorphism::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 2px, transparent 0),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2) 3px, transparent 0),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.25) 1px, transparent 0),
+    radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.15) 2px, transparent 0);
+  background-size: 50% 50%, 60% 60%, 70% 70%, 80% 80%;
+  animation: bubbles 8s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes bubbles {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+  100% { background-position: 100% 100%, 200% 200%, -100% 150%, 150% -100%; }
+}
+
+.glassMorphism:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: rgba(255, 107, 53, 0.35);
+  box-shadow:
+    0 12px 40px rgba(255, 107, 53, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.glassMorphism:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+
+
+
+
 .create-special-set {
   display: none;
   position: relative; /* для псевдоэлемента */
@@ -947,4 +1078,105 @@ onMounted(() => {
   30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
   40%, 60% { transform: translate3d(4px, 0, 0); }
 }
+
+.glassMorphism3 {
+  position: relative;
+  overflow: hidden;
+  margin: 1.5px;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: white;
+
+  /* Глассморфизм */
+  background: rgba(110, 255, 53, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  cursor: none;
+}
+
+/* Бликовый эффект */
+.glassMorphism3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0.6;
+  pointer-events: none;
+  animation: shine 3s infinite ease-in-out;
+}
+
+/* Геометрические фигуры - квадраты и крестики */
+.glassMorphism3::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image:
+    /* Квадраты */
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+      /* Крестики */
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+
+  background-size:
+    15px 15px, /* Размер квадратов */
+    15px 15px, /* Размер квадратов */
+    20px 20px, /* Размер крестиков */
+    20px 20px; /* Размер крестиков */
+
+  background-position:
+    0 0,       /* Квадраты */
+    8px 8px,   /* Смещение квадратов */
+    0 0,       /* Крестики */
+    10px 10px; /* Смещение крестиков */
+
+  animation: geometricFloat 20s infinite linear;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Анимация движения геометрических фигур */
+@keyframes geometricFloat {
+  0% {
+    background-position:
+      0px 0px,
+      8px 8px,
+      0px 0px,
+      10px 10px;
+  }
+  100% {
+    background-position:
+      100px 100px,
+      108px 108px,
+      200px 200px,
+      210px 210px;
+  }
+}
+
+
+
+
 </style>
+
+
+

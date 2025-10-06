@@ -2,7 +2,7 @@
   <div class="container">
     <div class="background-wrapper">
       <img
-        src="/src/assets/images/introCopybook.jpg"
+        src="src/assets/images/introCopybook.jpg"
         alt="monitor"
         class="background-image"
         ref="bgImage"
