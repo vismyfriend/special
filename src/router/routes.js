@@ -30,6 +30,10 @@ const routes = [
               },
               {
                 path: 'print-all-words',
+                component: () => import('components/GamePrintAllWordsNotebook.vue')
+              },
+              {
+                path: 'print',
                 component: () => import('components/GamePrintAllWords.vue')
               },
               {
@@ -250,6 +254,11 @@ const routes = [
           {
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
+          },
+          // НОВЫЙ МАРШРУТ БЕЗ ЛЕЙАУТА
+          {
+            path: '/direct-print/:missionName',
+            component: () => import('src/components/GamePrintAllWordsNotebook.vue')
           },
         ]
       },
