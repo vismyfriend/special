@@ -29,7 +29,7 @@
         v-if="showInput"
         class="message-input"
         v-model="customMessage"
-        placeholder="Нажмите сюда и введите ваше имя по-английски"
+        placeholder="Нажмите сюда и введите ваше имя английскими буквами"
         :style="inputStyle"
       ></textarea>
 
@@ -238,7 +238,7 @@ const openTelegramMessage = () => {
 
   dynamicMessage += ` \n\nHow is your life? What are you doing now?`
 
-  const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(dynamicMessage)}`
+  const telegramUrl = `https://t.me/${username}?text=${encodeURI(dynamicMessage)}`
   window.open(telegramUrl, '_blank')
 }
 
