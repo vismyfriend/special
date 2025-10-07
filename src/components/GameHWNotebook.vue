@@ -38,8 +38,8 @@
             <div class="materials-section" v-if="hasAdditionalMaterials">
               <div class="section-title"> Ох уж этот Vincent...</div>
               <div class="materials-content">
-                <p>напридумывает фраз всяких, а мне</p>
-                <p>будь готов их переводить special agent!</p>
+                <p>напридумывает фраз всяких,</p>
+                <p>а мне переводить, я же special agent!</p>
               </div>
             </div>
 
@@ -80,7 +80,7 @@
                   <textarea
                     class="message-input"
                     v-model="customMessage"
-                    placeholder="Составьте Винсентику что-нибудь из слов из этой домашки, пусть тоже переводит!"
+                    placeholder="Составьте для Ви что-нибудь из слов в списке, пусть тоже переводит (любое предложение)!"
                   ></textarea>
 
                   <button
@@ -166,7 +166,7 @@ const validateHomework = () => {
 };
 // Функция отправки в Telegram
 const openTelegramMessage = () => {
-  const username = 'omgbuddy';
+  const username = 'vismyfriend';
 
   // Формируем сообщение с домашним заданием
   let homeworkMessage = "";
