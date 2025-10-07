@@ -40,6 +40,7 @@ const routes = [
                 path: 'print',
                 component: () => import('components/GamePrintAllWords.vue')
               },
+
               {
                 path: 'listening-exercises',
                 component: () => import('components/ListeningExercise.vue')
@@ -160,7 +161,10 @@ const routes = [
         path: '/games',
         component: () => import('pages/SeeAllGames.vue'),
       },
-
+      {
+        path: '/swapyGame1',
+        component: () => import('components/GameDragAndDropSwapy.vue')
+      },
       {
         path: '/extra-page',
         component: () => import('src/pages/extraPage.vue'),
