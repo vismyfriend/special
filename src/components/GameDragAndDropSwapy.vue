@@ -87,6 +87,12 @@ export default {
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',
         dragClass: 'sortable-drag',
+
+        forceFallback: true,      // 💥 обязательно
+        fallbackOnBody: true,     // чтобы не было странных сдвигов
+        fallbackTolerance: 3,     // чтобы случайный тап не запускал drag
+        fallbackOffset: { x: 0, y: -10 }, // немного поднимаем "призрак" вверх
+
         onStart: (evt) => {
           this.draggedIndex = evt.oldIndex
           this.draggedWord = this.currentWords[evt.oldIndex].word
@@ -97,7 +103,6 @@ export default {
             this.draggedIndex = null
             return
           }
-
           const moved = this.currentWords.splice(oldIndex, 1)[0]
           this.currentWords.splice(newIndex, 0, moved)
           this.draggedIndex = null
@@ -174,6 +179,7 @@ export default {
   padding: 30px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
+  transform: translateZ(0); /* фикс для iOS */
   border-radius: 18px;
   border: 2px solid rgba(255, 255, 255, 0.15);
   min-height: 140px;
@@ -343,6 +349,7 @@ export default {
 }
 
 /* Адаптивность */
+
 @media (max-width: 768px) {
   .drag-game {
     margin: 15px;
