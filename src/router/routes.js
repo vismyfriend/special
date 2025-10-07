@@ -30,6 +30,10 @@ const routes = [
               },
               {
                 path: 'print-all-words',
+                component: () => import('components/GameHWNotebook.vue')
+              },
+              {
+                path: 'print-all-words2',
                 component: () => import('components/GamePrintAllWordsNotebook.vue')
               },
               {

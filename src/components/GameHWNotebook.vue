@@ -11,13 +11,13 @@
           <!-- Содержимое тетради -->
           <div class="notebook-content" ref="contentRef">
             <!-- Заголовок урока -->
-            <div class="lesson-title">
-              {{ currentMission }}
+            <div class="lesson-title display-none">
+              "{{ currentMission }}"
             </div>
 
             <!-- Слова и фразы -->
             <div class="words-section">
-              <div class="section-title ">Секретная миссия : </div>
+              <div class="section-title display-none">Секретная миссия : </div>
               <div class="lesson-title"></div>
               <div class="words-list">
                 <div
@@ -38,8 +38,59 @@
             <div class="materials-section" v-if="hasAdditionalMaterials">
               <div class="section-title"> Ох уж этот Vincent...</div>
               <div class="materials-content">
-                <p>напридумывает словосочетаний всяких,</p>
+                <p>напридумывает фраз всяких, а мне</p>
                 <p>будь готов их переводить special agent!</p>
+              </div>
+            </div>
+
+            <!-- Секция домашнего задания -->
+            <div class="homework-section " v-if="showHomeworkSection">
+              <div class="section-title ">Cейчас напишу :</div>
+              <div class="homework-content">
+                <p>и даже без подсказок может попробую</p>
+
+                <div class="homework-words">
+                  <div class="homework-word" v-for="(word, index) in homeworkWords" :key="'hw-' + index">
+                    <div class="word-header">
+                      <span class="word-number">{{ index + 1 }}. </span>
+                      <span class="word-to-translate">{{ word.ru }}</span>
+                      <!-- Показываем кнопку подсказки только если подсказка еще не показана -->
+                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)">
+      🔍️ показать подсказку
+    </span>
+                    </div>
+
+                    <!-- Показываем подсказку только если она активна -->
+                    <div class="hint-content" v-if="word.showHint">
+                      <span class="hint-text">{{ word.hint }}</span>
+                    </div>
+
+                    <input
+                      type="text"
+                      v-model="word.userTranslation"
+                      :placeholder="'введите перевод...'"
+                      class="translation-input"
+                      @input="validateHomework"
+                    >
+                  </div>
+                </div>
+
+                <!-- Поле для имени и кнопка отправки -->
+                <div class="homework-submission">
+                  <textarea
+                    class="message-input"
+                    v-model="customMessage"
+                    placeholder="Составьте Винсентику что-нибудь из слов из этой домашки, пусть тоже переводит!"
+                  ></textarea>
+
+                  <button
+                    class="homework-submit-btn"
+                    @click="openTelegramMessage"
+                    :disabled="!isHomeworkValid"
+                  >
+                    Send to Vismyfriend →
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -65,12 +116,85 @@ const currentMission = ref('');
 const currentGameData = ref([]);
 const contentRef = ref(null);
 const notebookHeight = ref(600);
+const customMessage = ref('');
+const homeworkWords = ref([]);
 
 // Вычисляем, есть ли дополнительные материалы
 const hasAdditionalMaterials = computed(() => {
   return currentGameData.value.length > 0;
 });
 
+// Показывать ли секцию домашнего задания
+const showHomeworkSection = computed(() => {
+  return homeworkWords.value.length > 0;
+});
+
+// Валидность домашнего задания
+const isHomeworkValid = computed(() => {
+  return homeworkWords.value.every(word =>
+    word.userTranslation && word.userTranslation.trim() !== ''
+  );
+});
+
+// Количество использованных подсказок
+const usedHintsCount = computed(() => {
+  return homeworkWords.value.filter(word => word.showHint).length;
+});
+
+// Функция для выбора случайных слов для домашнего задания
+const selectHomeworkWords = () => {
+  if (currentGameData.value.length === 0) return [];
+
+  // Берем до 5 случайных слов из текущего урока
+  const shuffled = [...currentGameData.value].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, Math.min(5, shuffled.length)).map(word => ({
+    ...word,
+    userTranslation: '',
+    showHint: false // добавляем флаг для показа подсказки
+  }));
+};
+
+// Функция переключения подсказки
+const toggleHint = (word) => {
+  word.showHint = !word.showHint;
+};
+
+// Валидация домашнего задания
+const validateHomework = () => {
+  // Можно добавить дополнительную логику валидации при необходимости
+  console.log('Homework validation updated');
+};
+// Функция отправки в Telegram
+const openTelegramMessage = () => {
+  const username = 'omgbuddy';
+
+  // Формируем сообщение с домашним заданием
+  let homeworkMessage = "";
+
+  // Создаем восклицательные знаки по количеству подсказок
+  const exclamationMarks = '!'.repeat(usedHintsCount.value);
+
+
+  // Добавляем текст сообщения только если оно заполнено студентом
+  if (customMessage.value.trim()) {
+    homeworkMessage += `Hi VVVVincent${exclamationMarks} \n\n I am not a lazy ass, and it is my message to you: \n"${customMessage.value.trim()}"\n\n`;
+  } else {
+    homeworkMessage += `Hi Vincentik${exclamationMarks}\n\n I am a little lazy today.\n And how do you feel?\n It is my homework: \n\n`;
+  }
+
+  homeworkMessage += "Words from homework:\n";
+  homeworkWords.value.forEach((word, index) => {
+    homeworkMessage += `${index + 1}. ${word.eng}\n`; // Добавляем \n для переноса строки
+  });
+
+  homeworkMessage += `\nMy translation:\n`;
+  homeworkWords.value.forEach((word, index) => {
+    homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
+  });
+
+  const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(homeworkMessage)}`;
+  window.open(telegramUrl, '_blank');
+};
 // Функция для расчета высоты тетради
 const calculateContentHeight = () => {
   if (!contentRef.value) return 600;
@@ -109,6 +233,9 @@ onMounted(() => {
   currentMission.value = route.params.missionName || 'Текущий урок';
   currentGameData.value = shortWordsData[currentMission.value] || [];
 
+  // Выбираем слова для домашнего задания
+  homeworkWords.value = selectHomeworkWords();
+
   // Настраиваем высоту тетради после загрузки данных
   setTimeout(() => {
     notebookHeight.value = calculateContentHeight();
@@ -117,6 +244,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+
 .container {
   width: 100%;
   min-height: 100vh;
@@ -204,6 +332,7 @@ onMounted(() => {
 /* Заголовок урока */
 .lesson-title {
   font-size: 20px;
+  font-family: Special_f1;
   font-weight: bold;
   text-align: center;
   margin-bottom: 30px;
@@ -222,6 +351,7 @@ onMounted(() => {
 .section-title {
   font-size: 18px;
   font-weight: bold;
+  font-family: Special_f1;
   margin-bottom: 15px;
   color: #25598e;
   border-left: 3px solid #00ff14;
@@ -422,6 +552,7 @@ onMounted(() => {
   min-height: 20px;
   margin: 0;
   padding: 0;
+
 }
 
 /* Отступы между строками слов */
@@ -429,8 +560,221 @@ onMounted(() => {
   margin-top: 0; /* Убираем отступы, так как каждая строка занимает ровно одну клетку */
 }
 
-.dnone {
-  display: none;
 
+/* Стили для секции домашнего задания */
+.homework-section {
+  margin-bottom: 20px;
+}
+
+.homework-content {
+  p {
+    margin-bottom: 20px;
+    line-height: 20px;
+    min-height: 20px;
+  }
+}
+
+.homework-words {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.homework-word {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.word-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.hint-icon {
+  color: #1e5799;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}
+
+.hint-content {
+  margin-left: 25px;
+  animation: fadeIn 0.3s ease;
+}
+
+.hint-text {
+  font-style: italic;
+  font-family: 'Arial', serif;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.homework-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.homework-word-line {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.word-number {
+  font-weight: bold;
+  font-family: Special_f1;
+  font-size: 12px;
+
+  color: #1e5799;
+  min-width: 25px;
+}
+
+.word-to-translate {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 16px;
+}
+
+.translation-input {
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: 'Times New Roman', serif;
+  margin-left: 20px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    transform: translateX(5px);
+  }
+
+  &::placeholder {
+    color: #aaa;
+    font-style: italic;
+  }
+}
+
+.homework-submission {
+  margin-top: 18px;
+  padding-top: 20px;
+  border-top: 2px dashed #e0e8e8;
+}
+
+.message-input {
+  width: 280px;
+  min-height: 80px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: 'Times New Roman', serif;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  resize: vertical;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+
+  &::placeholder {
+    color: #aaa;
+    font-style: italic;
+  }
+}
+
+.homework-submit-btn {
+  background: linear-gradient(180deg, #4CAF50, #45a049);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  padding: 12px 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-family: 'Times New Roman', serif;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, #45a049, #4CAF50);
+  }
+
+  &:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Адаптивность для домашнего задания */
+@media (max-width: 768px) {
+  .homework-item {
+    gap: 6px;
+  }
+
+  .translation-input {
+    margin-left: 20px;
+    font-size: 13px;
+  }
+
+  .word-to-translate {
+    font-size: 15px;
+  }
+}
+
+/* Стили для печати - домашнее задание */
+@media print {
+  .translation-input {
+    border: 1px solid #ccc;
+    background: white;
+    color: #333;
+    margin-left: 25px;
+  }
+
+  .message-input,
+  .homework-submit-btn {
+    display: none;
+  }
+
+  .homework-submission {
+    border-top: 1px solid #ccc;
+  }
+
+  .homework-item {
+    margin-bottom: 15px;
+  }
+}
+
+.display-none {
+  display: none;
 }
 </style>

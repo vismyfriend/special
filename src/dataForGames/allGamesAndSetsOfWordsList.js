@@ -15,7 +15,25 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "Миссия - 1",
+      missionVisibleName: "Миссия - 1 - легкая",
+      missionDescription: "Самое начало",
+      id: 1001,
+      active: true,
+      gameIcon:'1️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/find-pairs-hard",
+      missionVisibleName: "Миссия - 1 - средняя",
+      missionDescription: "Самое начало",
+      id: 1001,
+      active: true,
+      gameIcon:'1️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
+      missionVisibleName: "Миссия - 1 - сложная",
       missionDescription: "Самое начало",
       id: 1001,
       active: true,
@@ -28,8 +46,35 @@ export const allGamesAndSetsOfWordsList =
       missionVisibleName: "Тапалка с цифрами",
       missionDescription: "Произношение и цифры",
       id: 1001,
-      active: true,
+      active: false,
       gameIcon:'🎯'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/listening_elementary1_e2/listening-exercises",
+      missionVisibleName: "Story - Little Brother - e2",
+      missionDescription: "Про маленького брата",
+      id: 1001,
+      active: true,
+      gameIcon:'📚'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
+      missionVisibleName: "Миссия - 2 - easy",
+      missionDescription: "Mission - 2 - легкая",
+      id: 1001,
+      active: true,
+      gameIcon:'2️⃣'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/game-translate",
+      missionVisibleName: "Миссия - 2 - medium",
+      missionDescription: "Mission - 2 - средняя",
+      id: 1001,
+      active: true,
+      gameIcon:'2️⃣'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -69,15 +114,7 @@ export const allGamesAndSetsOfWordsList =
     },
 
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
-      missionVisibleName: "Миссия - 2",
-      missionDescription: "Mission - 2 ",
-      id: 1001,
-      active: true,
-      gameIcon:'2️⃣'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/spelling",
@@ -809,15 +846,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/listening_elementary1_e2/listening-exercises",
-      missionVisibleName: "Story - Little Brother - e2",
-      missionDescription: "Про маленького брата",
-      id: 1001,
-      active: true,
-      stars: '3'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/listening_elementary1_e11/listening-exercises",

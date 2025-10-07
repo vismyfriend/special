@@ -4,8 +4,9 @@
     <div id="phoneFrame">
       <p class="bubble left" id="intro-message">Choose<br> a mission</p>
 
-      <div class="q-pa-15">
-        <img src="../assets/images/special logo detective girl.png" alt="logo">
+      <div class="q-pa-15 ">
+        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">
+<!--        <img src="../assets/images/special logo detective girl.png" alt="logo">-->
 
         <!-- Поле поиска -->
         <div class="search-container">
@@ -18,7 +19,7 @@
 
         <!-- Используем filteredSets для отображения карточек -->
         <div class="v-cards-choose">
-          <!-- Специальная карточка (всегда первая) -->
+          <!-- 1. Создать свой набор (всегда первый) -->
           <div
             class="v-card-choose tooltip-wrapper create-special-set"
             role="button"
@@ -34,74 +35,10 @@
             </div>
           </div>
 
-
-          <!-- Специальная карточка (змейка) -->
-          <div
-            class="v-card-choose tooltip-wrapper glassMorphism3"
-            role="button"
-            @click="playSnake"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Snake - змейка
-            <div class="custom-tooltip">
-              Snake - змейка
-            </div>
-          </div>
-
-          <!-- Специальная карточка (НОВЫЙ ОРАНЖЕВЫЙ СТИЛЬ) -->
-          <div
-            class="v-card-choose tooltip-wrapper glassMorphism"
-            role="button"
-            @click="playRandomSet"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Новый оранжевый стиль
-            <div class="custom-tooltip">
-              New Orange style
-            </div>
-          </div>
-          <!-- Специальная карточка (случайный набор) -->
-          <div
-            class="v-card-choose tooltip-wrapper random-set"
-            role="button"
-            @click="playRandomSet"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Случайный набор слов 🎲
-            <div class="custom-tooltip">
-              Random Set
-            </div>
-          </div>
-
-          <!-- Специальная карточка (раномный набор) -->
-          <div
-            class="v-card-choose tooltip-wrapper randomQuestions random-set"
-            role="button"
-            @click="playRandomQuestions"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Рандомные вопросы 🎲
-            <div class="custom-tooltip">
-              Random Questions
-            </div>
-          </div>
-
-          <!-- Остальные карточки из наборов -->
+          <!-- 2. Первые 3 обычных набора -->
           <div
             class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets"
+            v-for="currentSetOfWords in filteredSets.slice(0, 3)"
             :key="currentSetOfWords.missionName"
             role="button"
             @click="handlePasswordProtectedClick(currentSetOfWords)"
@@ -121,12 +58,12 @@
                 <span class="game-icon" v-if="currentSetOfWords.gameIcon">
                   {{ currentSetOfWords.gameIcon }}
                 </span>
-                 <img
-                   v-if="currentSetOfWords.gameImg"
-                   :src="getImagePath(currentSetOfWords.gameImg)"
-                   class="game-image"
-                   alt="game icon"
-                 >
+                <img
+                  v-if="currentSetOfWords.gameImg"
+                  :src="getImagePath(currentSetOfWords.gameImg)"
+                  class="game-image"
+                  alt="game icon"
+                >
               </span>
             </div>
             <div class="custom-tooltip">
@@ -143,9 +80,165 @@
               </div>
             </div>
           </div>
+
+          <!-- 3. Оранжевый стиль -->
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism"
+            role="button"
+            @click="tapalka"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Тапалка с цифрами
+            <div class="custom-tooltip">
+              Произношение цифр и слов
+            </div>
+          </div>
+
+          <!-- 4. Следующие 5 обычных наборов -->
+          <div
+            class="v-card-choose tooltip-wrapper"
+            v-for="currentSetOfWords in filteredSets.slice(3, 4)"
+            :key="currentSetOfWords.missionName"
+            role="button"
+            @click="handlePasswordProtectedClick(currentSetOfWords)"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                {{ currentSetOfWords.missionVisibleName }}
+              </span>
+              <span class="card-icons">
+                <span class="card-stars" v-if="currentSetOfWords.stars">
+                  {{ getLevelStars(currentSetOfWords.stars) }}
+                </span>
+                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                  {{ currentSetOfWords.gameIcon }}
+                </span>
+                <img
+                  v-if="currentSetOfWords.gameImg"
+                  :src="getImagePath(currentSetOfWords.gameImg)"
+                  class="game-image"
+                  alt="game icon"
+                >
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
+                <span class="mission-icons">
+                  <span class="mission-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Змейка -->
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism3"
+            role="button"
+            @click="playSnake"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Snake - снэЙк - змеЙка
+            <div class="custom-tooltip">
+              Snaсk - снЭк - перекус
+            </div>
+          </div>
+
+          <!-- 6. Все остальные обычные наборы -->
+          <div
+            class="v-card-choose tooltip-wrapper"
+            v-for="currentSetOfWords in filteredSets.slice(4)"
+            :key="currentSetOfWords.missionName"
+            role="button"
+            @click="handlePasswordProtectedClick(currentSetOfWords)"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                {{ currentSetOfWords.missionVisibleName }}
+              </span>
+              <span class="card-icons">
+                <span class="card-stars" v-if="currentSetOfWords.stars">
+                  {{ getLevelStars(currentSetOfWords.stars) }}
+                </span>
+                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                  {{ currentSetOfWords.gameIcon }}
+                </span>
+                <img
+                  v-if="currentSetOfWords.gameImg"
+                  :src="getImagePath(currentSetOfWords.gameImg)"
+                  class="game-image"
+                  alt="game icon"
+                >
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
+                <span class="mission-icons">
+                  <span class="mission-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Остальные специальные карточки -->
+          <div
+            class="v-card-choose tooltip-wrapper random-set"
+            role="button"
+            @click="playRandomSet"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Случайный набор слов 🎲
+            <div class="custom-tooltip">
+              Random Set
+            </div>
+          </div>
+
+          <div
+            class="v-card-choose tooltip-wrapper randomQuestions random-set"
+            role="button"
+            @click="playRandomQuestions"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Рандомные вопросы 🎲
+            <div class="custom-tooltip">
+              Random Questions
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
     <!-- Кастомное модальное окно для пароля -->
     <div v-if="passwordModal" class="password-modal-overlay">
       <div class="password-modal" :class="{ 'shake': shake }" @animationend="shake = false">
@@ -177,7 +270,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -320,6 +412,10 @@ const  playRandomQuestions = () => {
 
 const  playSnake = () => {
   router.push('/gameSnakeCursor');
+
+}
+const  tapalka = () => {
+  router.push('/');
 
 }
 
@@ -469,7 +565,9 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-
+.border-radius50 {
+  border-radius: 50px;
+}
 #phoneFrame {
   position: relative; // Устанавливает элемент относительно его нормального положения
   height: 655px; // Высота элемента
