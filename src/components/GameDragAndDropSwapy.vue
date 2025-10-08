@@ -13,7 +13,12 @@
       >
         <div
           class="word"
-          :class="{ 'dragging-placeholder': draggedIndex === index }"
+          :class="{
+            'dragging-placeholder': draggedIndex === index,
+            'correct-position': getWordStatus(index) === 'correct',
+            'incorrect-position': getWordStatus(index) === 'incorrect',
+            'not-checked': getWordStatus(index) === 'not-checked'
+          }"
         >
           <span v-if="draggedIndex === index" class="drag-emoji">👇</span>
           <span v-else class="word-text">{{ item.word }}</span>
@@ -50,11 +55,33 @@ export default {
       draggedIndex: null,
       currentSentenceIndex: 0,
       sentences: [
-        'Виктор не заставляй меня думать',
-        'Спать погнали а ?',
-        'JavaScript — интересный язык, но иногда сложный!',
-        'Когда-нибудь я напишу свой первый большой проект.',
-        'Vue.js — отличная библиотека для создания интерфейсов.'
+        "1 2 3 4",
+        "a b c d",
+        "а б в г",
+        "Does my friend study English 3 times a week?",
+        "My friend doesn't study English 3 times a week",
+        "Do you study French 1 time a week ?",
+        "I don't study French language .",
+        "Do I study German language ?",
+        "Does she usually drink coffee in the morning?",
+        "Does he often go to the gym?",
+        "Does it sometimes snow in October?",
+        "Does your sister rarely watch horror films?",
+        "Does his brother always help with homework?",
+        "Does her cat never eat vegetables?",
+        "Does this computer frequently freeze?",
+        "Does our teacher sometimes give tests?",
+        "Does his dog usually bark at strangers?",
+        "Does Maria often practice English?",
+        "Does my notebook help me study English?",
+        "Does Polina write new words every day?",
+        "Does her cat drink milk often?",
+        "Does our shop work on Sundays?",
+        "Does Vincent love chips sometimes?",
+        "Does your brother play football regularly?",
+        "Does this computer work well usually?",
+        "Does Maria watch TV in the evening?",
+        "Does his dog bark at night often?",
       ],
       currentWords: [],
       originalOrder: []
@@ -71,14 +98,53 @@ export default {
       const words = this.splitSentence(text)
 
       this.originalOrder = words.map(word => ({ id: this.uuid(), word }))
+
+      // Перемешиваем слова
       this.currentWords = [...this.originalOrder].sort(() => Math.random() - 0.5)
+
+      // Проверяем, не стоит ли первое слово на правильном месте
+      if (this.currentWords[0].word === this.originalOrder[0].word) {
+        // Если стоит - перемещаем его в конец
+        const firstWord = this.currentWords.shift()
+        this.currentWords.push(firstWord)
+      }
+
       this.status = 'Перетащи слова в правильном порядке'
 
       this.$nextTick(() => this.initializeSortable())
     },
 
     splitSentence(sentence) {
-      return sentence.match(/[\wа-яА-ЯёЁ]+|[^\s\wа-яА-ЯёЁ]+/g) || []
+      // Улучшенное разбиение: знаки препинания остаются с словами
+      const words = [];
+      let currentWord = '';
+
+      for (let i = 0; i < sentence.length; i++) {
+        const char = sentence[i];
+
+        if (char === ' ') {
+          // При встрече пробела добавляем накопленное слово
+          if (currentWord) {
+            words.push(currentWord);
+            currentWord = '';
+          }
+        } else if (/[.,!?;:]/.test(char)) {
+          // Если это знак препинания, добавляем его к текущему слову
+          currentWord += char;
+          words.push(currentWord);
+          currentWord = '';
+        } else {
+          // Обычный символ слова
+          currentWord += char;
+        }
+      }
+
+      // Добавляем последнее слово, если оно есть
+      if (currentWord) {
+        words.push(currentWord);
+      }
+
+      return words;
     },
 
     initializeSortable() {
@@ -116,6 +182,23 @@ export default {
       })
     },
 
+    // Умная проверка позиций слов
+    getWordStatus(index) {
+      // Если это первое слово и оно неправильное - все слова не проверены
+      if (index === 0 && this.currentWords[index].word !== this.originalOrder[index].word) {
+        return 'not-checked'
+      }
+
+      // Проверяем все слова до текущего включительно
+      for (let i = 0; i <= index; i++) {
+        if (this.currentWords[i].word !== this.originalOrder[i].word) {
+          return i === index ? 'incorrect' : 'not-checked'
+        }
+      }
+
+      return 'correct'
+    },
+
     checkSentence() {
       const userSentence = this.currentWords.map(w => w.word).join(' ')
       const correctSentence = this.originalOrder.map(w => w.word).join(' ')
@@ -124,6 +207,15 @@ export default {
         setTimeout(this.nextSentence, 1500)
       } else {
         this.status = '❌ Пока не совсем правильно. Попробуй ещё раз!'
+
+        // Показываем подсказку с первым неправильным словом
+        const firstWrongIndex = this.currentWords.findIndex((word, index) =>
+          word.word !== this.originalOrder[index].word
+        )
+
+        if (firstWrongIndex !== -1) {
+          this.status += ` Обрати внимание на слово "${this.currentWords[firstWrongIndex].word}"`
+        }
       }
     },
 
@@ -207,7 +299,7 @@ export default {
   padding: 14px 20px;
   font-weight: 600;
   user-select: none;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.25s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   color: #1f2937;
   font-size: 16px;
@@ -224,7 +316,45 @@ export default {
   box-shadow: 0 6px 16px rgba(74, 222, 128, 0.35);
 }
 
-/* убираем любые transform во время drag — источник “срывов” */
+/* Стили для умной подсветки */
+.correct-position {
+  border-color: #1aff00 !important;
+  background: #4ade80c7 !important;
+  color: white !important;
+  box-shadow: 0 10px 20px rgba(74, 222, 128, 0.45);
+
+  animation: glow 1.5s ease-in-out infinite alternate;
+
+}
+
+.incorrect-position {
+  //border-color: #ef4444 !important;
+  //background: #fecaca !important;
+  //color: #991b1b !important;
+  //box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+  border-color: #9ca3af !important;
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.not-checked {
+  border-color: #9ca3af !important;
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 6px 16px rgba(74, 222, 128, 0.35);
+  }
+  to {
+    box-shadow: 0 6px 16px rgba(62, 228, 123, 0.49);
+  }
+}
+
+/* убираем любые transform во время drag — источник "срывов" */
 .sortable-chosen .word,
 .sortable-drag .word,
 .word:active {
@@ -261,14 +391,18 @@ export default {
 }
 
 .sortable-chosen .word {
-  background: #4ade80 !important;
-  color: white !important;
-  box-shadow: 0 10px 20px rgba(74, 222, 128, 0.45);
+
+
+  border-color: #fbbf24 !important;
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4) !important;
+
 }
 
 .sortable-drag .word {
-  background: #22c55e !important;
-  color: white !important;
+  background: #fef3c7 !important;
+  color: black !important;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
@@ -283,6 +417,10 @@ export default {
   border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   margin: 25px 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .game-controls {
