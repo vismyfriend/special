@@ -38,6 +38,7 @@ import { useRouter } from 'vue-router';
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 import questionsData from "../dataForGames/questions-data";
 import shortWordsData from '../dataForGames/short-words-data';
+import shortSentencesWordOrderData from '../dataForGames/short-sentences-word-order';
 import tntData from 'src/dataForGames/tnt-data';
 import trickyQuizData from 'src/dataForGames/tricky-quiz-data';
 import helpBenderData from 'src/dataForGames/help-bender-data';
@@ -81,6 +82,14 @@ const AllGames = ref([
     name: "Find pairs EASY",
     path: "find-pairs-easy",
     gameData: shortWordsData,
+    cardIcon: '✂️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 103,
+    name: "Word-order-sortableJS",
+    path: "word-order-sortable",
+    gameData: shortSentencesWordOrderData,
     cardIcon: '✂️', // Добавлена иконка
     active: true,
   },

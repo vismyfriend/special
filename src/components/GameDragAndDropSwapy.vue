@@ -1,8 +1,10 @@
 <template>
   <div class="drag-game">
     <div class="game-header">
-      <h2>🧩 Восстанови предложение</h2>
-      <p>Перетащи слова в правильном порядке</p>
+      <h2>🧩 Перетяни правильный слова порядок в</h2>
+      <div class="progress-info">
+        {{ completedSentences.size }} / {{ currentGameData.length }}
+      </div>
     </div>
 
     <div ref="container" class="sentence-container">
@@ -26,16 +28,9 @@
       </div>
     </div>
 
-    <div class="game-status">
-      <div class="status-message">{{ status }}</div>
-    </div>
-
     <div class="game-controls">
-      <button @click="checkSentence" class="control-button check">
-        ✅ Проверить
-      </button>
-      <button @click="nextSentence" class="control-button next">
-        🔄 Следующее
+      <button @click="handleControlButton" class="control-button" :class="buttonClass">
+        {{ buttonText }}
       </button>
     </div>
   </div>
@@ -43,58 +38,114 @@
 
 <script>
 import Sortable from 'sortablejs'
+import { useRoute } from 'vue-router'
+import shortSentencesWordOrderData from '../dataForGames/short-sentences-word-order'
 
 export default {
   name: 'GameDragAndDropSortable',
 
+  setup() {
+    const route = useRoute()
+    return {
+      route
+    }
+  },
+
   data() {
     return {
       sortable: null,
-      status: 'Готов к работе',
       draggedWord: null,
       draggedIndex: null,
       currentSentenceIndex: 0,
-      sentences: [
-        "1 2 3 4",
-        "a b c d",
-        "а б в г",
-        "Does my friend study English 3 times a week?",
-        "My friend doesn't study English 3 times a week",
-        "Do you study French 1 time a week ?",
-        "I don't study French language .",
-        "Do I study German language ?",
-        "Does she usually drink coffee in the morning?",
-        "Does he often go to the gym?",
-        "Does it sometimes snow in October?",
-        "Does your sister rarely watch horror films?",
-        "Does his brother always help with homework?",
-        "Does her cat never eat vegetables?",
-        "Does this computer frequently freeze?",
-        "Does our teacher sometimes give tests?",
-        "Does his dog usually bark at strangers?",
-        "Does Maria often practice English?",
-        "Does my notebook help me study English?",
-        "Does Polina write new words every day?",
-        "Does her cat drink milk often?",
-        "Does our shop work on Sundays?",
-        "Does Vincent love chips sometimes?",
-        "Does your brother play football regularly?",
-        "Does this computer work well usually?",
-        "Does Maria watch TV in the evening?",
-        "Does his dog bark at night often?",
-      ],
+      currentGameData: [],
+      sentences: [], // Будет заполнен из currentGameData
       currentWords: [],
-      originalOrder: []
+      originalOrder: [],
+      completedSentences: new Set(),
+      remainingSentences: [],
+      gamePhase: 'first-round'
+    }
+  },
+
+  computed: {
+    isCurrentSentenceCompleted() {
+      const userSentence = this.currentWords.map(w => w.word).join(' ')
+      const correctSentence = this.originalOrder.map(w => w.word).join(' ')
+      return userSentence === correctSentence
+    },
+
+    buttonText() {
+      if (this.gamePhase === 'completed') {
+        return '🎉 Завершить игру'
+      }
+      return this.isCurrentSentenceCompleted ? '🔄 Следующее' : '⏭️ Пропустить пока что'
+    },
+
+    buttonClass() {
+      if (this.gamePhase === 'completed') {
+        return 'finish'
+      }
+      return this.isCurrentSentenceCompleted ? 'next' : 'skip'
+    },
+
+    allSentencesCompleted() {
+      return this.completedSentences.size === this.currentGameData.length
     }
   },
 
   mounted() {
-    this.loadSentence()
+    this.initializeGame()
   },
 
   methods: {
+    initializeGame() {
+      // Загружаем данные по missionName из роута
+      const missionName = this.route.params.missionName
+      this.currentGameData = shortSentencesWordOrderData[missionName] || []
+
+      // Преобразуем данные в массив предложений
+      this.sentences = this.currentGameData.map(item => item.eng)
+
+      this.completedSentences = new Set()
+      this.remainingSentences = [...this.sentences.keys()]
+      this.gamePhase = 'first-round'
+      this.currentSentenceIndex = 0
+      this.loadSentence()
+    },
+
     loadSentence() {
-      const text = this.sentences[this.currentSentenceIndex].trim()
+      let sentenceIndex
+
+      if (this.gamePhase === 'first-round') {
+        sentenceIndex = this.currentSentenceIndex
+      } else if (this.gamePhase === 'remaining') {
+        // Проверяем, что remainingSentences не пустой и currentSentenceIndex в пределах
+        if (this.remainingSentences.length === 0 || this.currentSentenceIndex >= this.remainingSentences.length) {
+          this.prepareRemainingSentences()
+          return
+        }
+        sentenceIndex = this.remainingSentences[this.currentSentenceIndex]
+      } else if (this.gamePhase === 'completed') {
+        this.finishGame()
+        return
+      }
+
+      // Защита от неопределенного индекса
+      if (sentenceIndex === undefined || sentenceIndex >= this.sentences.length) {
+        console.error('Invalid sentence index:', sentenceIndex)
+        this.prepareRemainingSentences()
+        return
+      }
+
+      const text = this.sentences[sentenceIndex]?.trim()
+
+      // Дополнительная проверка на существование текста
+      if (!text) {
+        console.error('No text found for sentence index:', sentenceIndex)
+        this.prepareRemainingSentences()
+        return
+      }
+
       const words = this.splitSentence(text)
 
       this.originalOrder = words.map(word => ({ id: this.uuid(), word }))
@@ -104,47 +155,39 @@ export default {
 
       // Проверяем, не стоит ли первое слово на правильном месте
       if (this.currentWords[0].word === this.originalOrder[0].word) {
-        // Если стоит - перемещаем его в конец
         const firstWord = this.currentWords.shift()
         this.currentWords.push(firstWord)
       }
-
-      this.status = 'Перетащи слова в правильном порядке'
 
       this.$nextTick(() => this.initializeSortable())
     },
 
     splitSentence(sentence) {
-      // Улучшенное разбиение: знаки препинания остаются с словами
-      const words = [];
-      let currentWord = '';
+      const words = []
+      let currentWord = ''
 
       for (let i = 0; i < sentence.length; i++) {
-        const char = sentence[i];
+        const char = sentence[i]
 
         if (char === ' ') {
-          // При встрече пробела добавляем накопленное слово
           if (currentWord) {
-            words.push(currentWord);
-            currentWord = '';
+            words.push(currentWord)
+            currentWord = ''
           }
         } else if (/[.,!?;:]/.test(char)) {
-          // Если это знак препинания, добавляем его к текущему слову
-          currentWord += char;
-          words.push(currentWord);
-          currentWord = '';
+          currentWord += char
+          words.push(currentWord)
+          currentWord = ''
         } else {
-          // Обычный символ слова
-          currentWord += char;
+          currentWord += char
         }
       }
 
-      // Добавляем последнее слово, если оно есть
       if (currentWord) {
-        words.push(currentWord);
+        words.push(currentWord)
       }
 
-      return words;
+      return words
     },
 
     initializeSortable() {
@@ -158,10 +201,9 @@ export default {
 
         forceFallback: true,
         fallbackOnBody: true,
-        fallbackTolerance: 5, // немного повысим устойчивость
+        fallbackTolerance: 5,
         fallbackOffset: { x: 0, y: -8 },
 
-        // без задержек — drag стартует мгновенно
         delay: 0,
         delayOnTouchOnly: false,
 
@@ -184,12 +226,10 @@ export default {
 
     // Умная проверка позиций слов
     getWordStatus(index) {
-      // Если это первое слово и оно неправильное - все слова не проверены
       if (index === 0 && this.currentWords[index].word !== this.originalOrder[index].word) {
         return 'not-checked'
       }
 
-      // Проверяем все слова до текущего включительно
       for (let i = 0; i <= index; i++) {
         if (this.currentWords[i].word !== this.originalOrder[i].word) {
           return i === index ? 'incorrect' : 'not-checked'
@@ -199,30 +239,76 @@ export default {
       return 'correct'
     },
 
-    checkSentence() {
-      const userSentence = this.currentWords.map(w => w.word).join(' ')
-      const correctSentence = this.originalOrder.map(w => w.word).join(' ')
-      if (userSentence === correctSentence) {
-        this.status = '✅ Правильно! Отличная работа!'
-        setTimeout(this.nextSentence, 1500)
-      } else {
-        this.status = '❌ Пока не совсем правильно. Попробуй ещё раз!'
-
-        // Показываем подсказку с первым неправильным словом
-        const firstWrongIndex = this.currentWords.findIndex((word, index) =>
-          word.word !== this.originalOrder[index].word
-        )
-
-        if (firstWrongIndex !== -1) {
-          this.status += ` Обрати внимание на слово "${this.currentWords[firstWrongIndex].word}"`
-        }
+    handleControlButton() {
+      if (this.gamePhase === 'completed') {
+        this.finishGame()
+        return
       }
+
+      // Если предложение завершено, добавляем в completed
+      if (this.isCurrentSentenceCompleted) {
+        let currentIndex
+        if (this.gamePhase === 'first-round') {
+          currentIndex = this.currentSentenceIndex
+        } else {
+          currentIndex = this.remainingSentences[this.currentSentenceIndex]
+        }
+        this.completedSentences.add(currentIndex)
+      }
+
+      this.nextSentence()
     },
 
     nextSentence() {
-      this.currentSentenceIndex =
-        (this.currentSentenceIndex + 1) % this.sentences.length
+      if (this.gamePhase === 'first-round') {
+        this.currentSentenceIndex++
+
+        // Завершили первый круг
+        if (this.currentSentenceIndex >= this.sentences.length) {
+          this.prepareRemainingSentences()
+          return
+        }
+      } else if (this.gamePhase === 'remaining') {
+        this.currentSentenceIndex++
+
+        // Завершили все оставшиеся предложения
+        if (this.currentSentenceIndex >= this.remainingSentences.length) {
+          if (this.allSentencesCompleted) {
+            this.gamePhase = 'completed'
+          } else {
+            // Начинаем новый круг с оставшихся предложений
+            this.currentSentenceIndex = 0
+          }
+        }
+      }
+
       this.loadSentence()
+    },
+
+    prepareRemainingSentences() {
+      // Собираем индексы незавершенных предложений
+      this.remainingSentences = []
+      for (let i = 0; i < this.sentences.length; i++) {
+        if (!this.completedSentences.has(i)) {
+          this.remainingSentences.push(i)
+        }
+      }
+
+      if (this.remainingSentences.length === 0) {
+        this.gamePhase = 'completed'
+        this.finishGame()
+      } else {
+        this.gamePhase = 'remaining'
+        this.currentSentenceIndex = 0
+        this.loadSentence()
+      }
+    },
+
+    finishGame() {
+      console.log('🎉 Игра завершена! Все предложения составлены правильно!')
+      setTimeout(() => {
+      }, 100)
+      this.initializeGame() // Начинаем заново
     },
 
     uuid() {
@@ -246,7 +332,7 @@ export default {
   border-radius: 20px;
   color: white;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-  user-select: none; /* чтобы текст не выделялся при drag */
+  user-select: none;
 }
 
 .game-header {
@@ -255,26 +341,32 @@ export default {
 }
 
 .game-header h2 {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   margin-bottom: 10px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   font-weight: 700;
 }
 
-.game-header p {
-  font-size: 1.15rem;
-  opacity: 0.9;
-  margin: 0;
+.progress-info {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: Special_f1;
 }
 
 .sentence-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 6px;
   justify-content: center;
   align-items: center;
   margin: 35px 0;
-  padding: 25px;
+  padding: 5px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 18px;
@@ -296,7 +388,7 @@ export default {
   background: white;
   border: 2px solid #4ade80;
   border-radius: 14px;
-  padding: 14px 20px;
+  padding: 10px 10px;
   font-weight: 600;
   user-select: none;
   transition: all 0.25s ease;
@@ -322,16 +414,10 @@ export default {
   background: #4ade80c7 !important;
   color: white !important;
   box-shadow: 0 10px 20px rgba(74, 222, 128, 0.45);
-
   animation: glow 1.5s ease-in-out infinite alternate;
-
 }
 
 .incorrect-position {
-  //border-color: #ef4444 !important;
-  //background: #fecaca !important;
-  //color: #991b1b !important;
-  //box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
   border-color: #9ca3af !important;
   background: #f3f4f6 !important;
   color: #6b7280 !important;
@@ -354,7 +440,7 @@ export default {
   }
 }
 
-/* убираем любые transform во время drag — источник "срывов" */
+/* убираем любые transform во время drag */
 .sortable-chosen .word,
 .sortable-drag .word,
 .word:active {
@@ -370,7 +456,7 @@ export default {
 }
 
 .drag-emoji {
-  font-size: 24px;
+  font-size: 20px;
   animation: bounce 0.8s ease-in-out infinite;
 }
 
@@ -391,13 +477,10 @@ export default {
 }
 
 .sortable-chosen .word {
-
-
   border-color: #fbbf24 !important;
   background: #fef3c7 !important;
   color: #92400e !important;
   box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4) !important;
-
 }
 
 .sortable-drag .word {
@@ -407,26 +490,9 @@ export default {
   z-index: 1000;
 }
 
-.status-message {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 16px 24px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1.2rem;
-  text-align: center;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  margin: 25px 0;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .game-controls {
   display: flex;
   justify-content: center;
-  gap: 20px;
   margin-top: 20px;
 }
 
@@ -434,48 +500,42 @@ export default {
   padding: 14px 30px;
   border: none;
   border-radius: 12px;
-  font-weight: 600;
-  font-size: 17px;
-  cursor: pointer;
+  font-size: 15px;
+  cursor: none;
   transition: all 0.25s ease;
-  min-width: 150px;
+  min-width: 220px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  font-family: Special_f1;
 }
 
-.control-button.check {
+.control-button.next {
   background: linear-gradient(135deg, #4ade80, #22c55e);
   color: white;
 }
 
-.control-button.next {
+.control-button.skip {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
+.control-button.finish {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  animation: celebrate 2s ease-in-out infinite;
+}
+
 .control-button:hover {
   transform: translateY(-2px) scale(1.03);
 }
+
 .control-button:active {
   transform: scale(0.97);
 }
 
-/* адаптив */
-@media (max-width: 768px) {
-  .drag-game {
-    margin: 15px;
-    padding: 20px;
-  }
-  .sentence-container {
-    padding: 18px;
-    gap: 8px;
-  }
-  .word {
-    padding: 12px 16px;
-    font-size: 15px;
-  }
-  .control-button {
-    width: 100%;
-  }
+@keyframes celebrate {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
+
 </style>

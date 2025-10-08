@@ -70,6 +70,10 @@ const routes = [
                 path: 'find-pairs-easy',
                 component: () => import('src/components/GameFindPairsWires.vue')
               },
+              {
+                path: 'word-order-sortable',
+                component: () => import('src/components/GameDragAndDropSwapy.vue')
+              },
               // {
               //   path: 'find-pairs-easy',
               //   component: () => import('src/components/GameFindPairsNEW.vue')
