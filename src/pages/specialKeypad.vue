@@ -1,5 +1,5 @@
 <template>
-  <div class="keypad-container">
+  <div class="keypad-container" :data-theme="theme" :data-platform="platform">
     <main>
       <div class="keypad" :data-platform="platform" :data-theme="theme">
         <div class="keypad__base">
@@ -70,7 +70,6 @@
       </div>
     </main>
 
-
     <!-- БЛОК КАПЧИ -->
     <div class="captcha-container" :class="captcha.status">
       <div class="captcha-message">
@@ -88,8 +87,7 @@
           <option value="gemini">Gemini</option>
           <option value="claude">Claude</option>
           <option value="perplexity">Perplexity</option>
-          <option value="newplatform">New Platform</option> <!-- НОВАЯ ПЛАТФОРМА -->
-
+          <option value="newplatform">New Platform</option>
         </select>
       </div>
 
@@ -112,7 +110,7 @@
 </template>
 
 <script>
-import aiBaseImage from '/src/assets/images/keyPad7.png' // НОВОЕ ИЗОБРАЖЕНИЕ С 8 КЛАВИШАМИ
+import aiBaseImage from '/src/assets/images/keyPad7.png'
 import keypadSingleImage from '/src/assets/images/keypad-single.png'
 import keySoundPress from '/src/assets/audio/keySoundPress.mp3'
 
@@ -121,17 +119,16 @@ export default {
 
   data() {
     return {
-      isTouchDevice: false, // ДОБАВЬ ЭТОТ ФЛАГ
-      lastActionTime: 0, // Для защиты от быстрых повторных нажатий
+      isTouchDevice: false,
+      lastActionTime: 0,
       platform: 'perplexity',
       theme: 'dark',
       muted: false,
-      // ДОБАВЬ НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ КАПЧИ
       captcha: {
         message: '',
-        status: 'waiting', // waiting, success, failed
-        targetKey: '', // случайная буква для проверки
-        targetKeyName: '' // русское название буквы
+        status: 'waiting',
+        targetKey: '',
+        targetKeyName: ''
       },
       keys: {
         one: { pressed: false, travel: 26 },
@@ -148,8 +145,7 @@ export default {
         aiBase: aiBaseImage,
         keypadSingle: keypadSingleImage
       },
-      blockKeyRelease: false // ДОБАВЬ ЭТОТ ФЛАГ
-
+      blockKeyRelease: false
     }
   },
 
@@ -159,15 +155,16 @@ export default {
       return Object.entries(others).map(([id, config]) => ({ id, ...config }))
     }
   },
+
   mounted() {
     this.initializeAudio()
     this.setupKeyListeners()
     this.updateDocumentTheme()
-    this.generateCaptcha() // ГЕНЕРИРУЕМ КАПЧУ ПРИ ЗАГРУЗКЕ
+    this.generateCaptcha()
 
-    // ОПРЕДЕЛЯЕМ ТИП УСТРОЙСТВА ПРИ ЗАГРУЗКЕ
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
   },
+
   watch: {
     theme() {
       this.updateDocumentTheme()
@@ -181,7 +178,13 @@ export default {
       }
     }
   },
+
   methods: {
+    goToIntroPage() {
+      if (this.$router) {
+        this.$router.push("/see-all-sets-of-words")
+      }
+    },
 
     initializeAudio() {
       this.clickAudio = new Audio(keySoundPress)
@@ -192,14 +195,13 @@ export default {
       window.addEventListener('keydown', this.handleKeyDown)
       window.addEventListener('keyup', this.handleKeyUp)
     },
+
     handleTouchStart(keyId, event) {
-      // ДЛЯ TOUCH: всегда предотвращаем и обрабатываем
       event.preventDefault()
       this.pressKey(keyId, event)
     },
 
     handleMouseDown(keyId, event) {
-      // ДЛЯ MOUSE: обрабатываем только если не touch устройство
       if (!this.isTouchDevice) {
         this.pressKey(keyId, event)
       }
@@ -209,13 +211,13 @@ export default {
       const keyMap = {
         'Meta': 'one',
         'Tab': 'two',
-        's': 'two',    // S
-        'p': 'three',  // P
-        'e': 'four',   // E
-        'c': 'five',   // C
-        'i': 'six',    // I
-        'a': 'seven',  // A
-        'l': 'eight'   // L
+        's': 'two',
+        'p': 'three',
+        'e': 'four',
+        'c': 'five',
+        'i': 'six',
+        'a': 'seven',
+        'l': 'eight'
       }
 
       const keyId = keyMap[event.key.toLowerCase()]
@@ -231,7 +233,6 @@ export default {
         'c': 'three',
         'v': 'four',
         'Escape': 'five',
-        // ДОБАВЬ НОВЫЕ КЛАВИШИ
         'a': 'six',
         'b': 'seven',
         'd': 'eight'
@@ -244,26 +245,19 @@ export default {
     },
 
     cyclePlatformAndTheme() {
-      // Список платформ для циклического переключения
       const platforms = ['macos', 'gemini', 'claude', 'perplexity', 'newplatform']
       const themes = ['dark', 'light', 'system']
 
-      // Находим текущие индексы
       const currentPlatformIndex = platforms.indexOf(this.platform)
       const currentThemeIndex = themes.indexOf(this.theme)
 
-      // Переключаем platform на следующую (по кругу)
       this.platform = platforms[(currentPlatformIndex + 1) % platforms.length]
-
-      // Переключаем theme на следующую (по кругу)
       this.theme = themes[(currentThemeIndex + 1) % themes.length]
 
-      // Обновляем документ (watch уже должен сработать, но на всякий случай)
       this.updateDocumentTheme()
     },
 
     generateCaptcha() {
-      // Доступные буквы и их русские названия
       const availableKeys = [
         { key: 's', name: 'эс' },
         { key: 'p', name: 'пи' },
@@ -274,7 +268,6 @@ export default {
         { key: 'l', name: 'эл' }
       ]
 
-      // Выбираем случайную букву
       const randomKey = availableKeys[Math.floor(Math.random() * availableKeys.length)]
 
       this.captcha.targetKey = randomKey.key
@@ -291,45 +284,39 @@ export default {
       if (pressedKey === this.captcha.targetKey) {
         this.captcha.status = 'success'
         this.captcha.message = '✅ тест IQ пройден !'
-        this.blockKeyRelease = false // РАЗБЛОКИРУЕМ ОТПУСКАНИЕ
+        this.blockKeyRelease = false
+
+        setTimeout(() => {
+          this.goToIntroPage()
+        }, 3000)
       } else {
         this.captcha.status = 'failed'
         this.captcha.message = '❌ недостаточный IQ ...'
-
-        // БЛОКИРУЕМ ОТПУСКАНИЕ КЛАВИШИ
         this.blockKeyRelease = true
-
-        // ОСТАВЛЯЕМ КЛАВИШУ ЗАЖАТОЙ
         this.keys[keyId].pressed = true
 
         setTimeout(() => {
-          // РАЗБЛОКИРУЕМ И ОТПУСКАЕМ КЛАВИШУ
           this.blockKeyRelease = false
           this.keys[keyId].pressed = false
           this.generateCaptcha()
         }, 3000)
       }
     },
+
     pressKey(keyId, event) {
-      // ЗАЩИТА ОТ БЫСТРЫХ ПОВТОРНЫХ НАЖАТИЙ (300ms)
       const now = Date.now()
       if (now - this.lastActionTime < 300) return
       this.lastActionTime = now
 
-      // ЗАЩИТА ОТ ДВОЙНЫХ НАЖАТИЙ
       if (this.keys[keyId].pressed) return
 
       this.keys[keyId].pressed = true
-
-      // НЕМЕДЛЕННОЕ ВОСПРОИЗВЕДЕНИЕ ЗВУКА
       this.playClickSound()
 
-      // ДЛЯ МОБИЛЬНЫХ: предотвращаем генерацию click события
       if (event && this.isTouchDevice) {
         event.preventDefault()
       }
 
-      // ИСПОЛЬЗУЕМ requestAnimationFrame ДЛЯ ГАРАНТИРОВАННОГО ОДНОГО СРАБАТЫВАНИЯ
       requestAnimationFrame(() => {
         if (keyId === 'one') {
           this.cyclePlatformAndTheme()
@@ -341,7 +328,6 @@ export default {
 
     playClickSound() {
       if (!this.muted && this.clickAudio) {
-        // СБРАСЫВАЕМ И СРАЗУ ПРОИГРЫВАЕМ
         this.clickAudio.currentTime = 0
         const playPromise = this.clickAudio.play()
 
@@ -353,16 +339,11 @@ export default {
       }
     },
 
-
     releaseKey(keyId) {
-      // НЕ ОТПУСКАЕМ КЛАВИШУ ЕСЛИ ОНА ЗАБЛОКИРОВАНА
       if (!this.blockKeyRelease) {
         this.keys[keyId].pressed = false
       }
     },
-
-
-
 
     updateDocumentTheme() {
       document.documentElement.dataset.theme = this.theme
@@ -378,18 +359,147 @@ export default {
 </script>
 
 <style scoped>
-/* Основные стили */
+
+/* ОСНОВНЫЕ СТИЛИ КОМПОНЕНТА */
 .keypad-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
+  padding: 2rem;
   min-height: 100vh;
   justify-content: center;
+  scale: 1.2;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif, system-ui;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* Явно задаем цвета вместо light-dark() */
+  background: var(--keypad-bg, #fff);
+  color: var(--keypad-color, #333);
 }
 
+/* Фон только для этого компонента */
+.keypad-container::before {
+  --size: 45px;
+  --line-light: color-mix(in hsl, #333, transparent 1%); /* Уменьшил прозрачность */
+  --line-dark: color-mix(in hsl, #fff, transparent 50%);  /* Уменьшил прозрачность */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(90deg, var(--keypad-line, var(--line-light)) 1px, transparent 1px var(--size)) calc(var(--size) * 0.36) 50% / var(--size) var(--size),
+    linear-gradient(var(--keypad-line, var(--line-light)) 1px, transparent 1px var(--size)) 0% calc(var(--size) * 0.32) / var(--size) var(--size);
+  mask: linear-gradient(-20deg, transparent 40%, white);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Темная тема */
+.keypad-container[data-theme='dark'] {
+  --keypad-bg: #000;
+  --keypad-color: #fff;
+  --keypad-line: var(--line-dark);
+}
+
+.keypad-container[data-theme='light'] {
+  --keypad-bg: #fff;
+  --keypad-color: #333;
+  --keypad-line: var(--line-light);
+}
+
+/* Системная тема - используем медиа-запрос */
+.keypad-container[data-theme='system'] {
+  --keypad-bg: #fff;
+  --keypad-color: #333;
+  --keypad-line: var(--line-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .keypad-container[data-theme='system'] {
+    --keypad-bg: #000;
+    --keypad-color: #fff;
+    --keypad-line: var(--line-dark);
+  }
+}
+
+/* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ КАПЧИ */
+.captcha-container {
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  max-width: 400px;
+  margin: 0 auto;
+
+  /* Явные цвета для светлой и темной тем */
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.keypad-container[data-theme='dark'] .captcha-container,
+.keypad-container[data-theme='system'] .captcha-container {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+}
+
+.captcha-container.waiting {
+  border-color: #666;
+}
+
+.keypad-container[data-theme='dark'] .captcha-container.waiting,
+.keypad-container[data-theme='system'] .captcha-container.waiting {
+  border-color: #999;
+}
+
+.captcha-container.success {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.keypad-container[data-theme='dark'] .captcha-container.success,
+.keypad-container[data-theme='system'] .captcha-container.success {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.captcha-container.failed {
+  border-color: #f44336;
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.keypad-container[data-theme='dark'] .captcha-container.failed,
+.keypad-container[data-theme='system'] .captcha-container.failed {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.captcha-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: Special_f1;
+  color: inherit; /* Наследует цвет от родителя */
+}
+
+.captcha-retry {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+}
+
+.keypad-container[data-theme='dark'] .captcha-retry,
+.keypad-container[data-theme='system'] .captcha-retry {
+  color: #999;
+}
+
+/* Остальные стили без изменений */
 .controls {
-  //display: flex;
   display: none;
   gap: 1rem;
   flex-wrap: wrap;
@@ -406,7 +516,6 @@ export default {
   font-weight: bold;
 }
 
-/* Ключевые стили из оригинального кода */
 .keypad {
   position: relative;
   aspect-ratio: 400 / 310;
@@ -443,7 +552,6 @@ export default {
   container-type: inline-size;
 }
 
-/* Стили для цвета кнопок */
 .key img {
   filter: hue-rotate(calc(var(--hue, 0) * 1deg))
   saturate(var(--saturate, 1))
@@ -461,9 +569,8 @@ export default {
   translate: -50% 1%;
 }
 
-/* Добавь стили для новой платформы */
 [data-platform='newplatform'] #one img {
-  --hue: 120; /* Зеленый оттенок */
+  --hue: 120;
   --brightness: 0.8;
   --saturate: 1.0;
 }
@@ -476,9 +583,6 @@ export default {
   display: grid;
 }
 
-
-
-/* Стили для разных платформ на кнопке #one */
 [data-platform='gemini'] #one img {
   --brightness: 1.4;
   --saturate: 0.4;
@@ -501,7 +605,6 @@ export default {
   --brightness: 0.6;
 }
 
-/* Стили для текста на разных платформах */
 [data-platform='gemini'] #one .key__text {
   color: hsl(214, 81%, 100%);
 }
@@ -518,100 +621,45 @@ export default {
   color: #fff;
   font-size: 22cqi;
 }
-/* Позиционирование кнопок */
+
 #one {
   left: 2.43%;
   bottom: 72.2%;
 }
 
 #two {
-  left: 14.43%;  /* 2.43% + 12.0% */
-  bottom: 63.17%; /* 72.2% - 9.03% */
+  left: 14.43%;
+  bottom: 63.17%;
 }
 
 #three {
-  left: 26.43%;  /* 14.43% + 12.0% */
-  bottom: 54.14%; /* 63.17% - 9.03% */
+  left: 26.43%;
+  bottom: 54.14%;
 }
 
 #four {
-  left: 38.43%;  /* 26.43% + 12.0% */
-  bottom: 45.11%; /* 54.14% - 9.03% */
+  left: 38.43%;
+  bottom: 45.11%;
 }
 
 #five {
-  left: 50.43%;  /* 38.43% + 12.0% */
-  bottom: 36.08%; /* 45.11% - 9.03% */
+  left: 50.43%;
+  bottom: 36.08%;
 }
 
 #six {
-  left: 62.43%;  /* 50.43% + 12.0% */
-  bottom: 27.05%; /* 36.08% - 9.03% */
+  left: 62.43%;
+  bottom: 27.05%;
 }
 
 #seven {
-  left: 74.43%;  /* 62.43% + 12.0% */
-  bottom: 18.02%; /* 27.05% - 9.03% */
+  left: 74.43%;
+  bottom: 18.02%;
 }
 
 #eight {
   left: 86.4%;
   bottom: 9%;
-}
-
-/* Стили для капчи */
-.captcha-container {
-  text-align: center;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  background: light-dark(rgba(255,255,255,0.9), rgba(0,0,0,0.9));
-  backdrop-filter: blur(10px);
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.captcha-container.waiting {
-  border-color: light-dark(#666, #999);
-}
-
-.captcha-container.success {
-  border-color: #4CAF50;
-  background: light-dark(rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.2));
-}
-
-.captcha-container.failed {
-  border-color: #f44336;
-  background: light-dark(rgba(244, 67, 54, 0.1), rgba(244, 67, 54, 0.2));
-}
-
-.captcha-message {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: light-dark(#333, #28d0f4);
-  margin-bottom: 0.5rem;
-  font-family: Special_f1;
-}
-
-.captcha-retry {
-  font-size: 0.9rem;
-  color: light-dark(#666, #999);
-  font-style: italic;
-}
-
-
-
-/* Обнови отступы контейнера */
-.keypad-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem; /* УМЕНЬШИЛИ ОТСТУП */
-  padding: 2rem;
-  min-height: 100vh;
-  justify-content: center;
-  scale: 1.2;
 }
 
 .keypad__single {
@@ -658,7 +706,6 @@ export default {
   width: 100%;
 }
 
-/* Стили для разных платформ */
 [data-key] {
   display: none;
   position: absolute;
@@ -677,55 +724,8 @@ export default {
   display: grid;
 }
 
-/* Стиль для заблокированной клавиши при ошибке */
 .key[data-pressed="true"].locked {
-  pointer-events: none; /* Отключаем клики */
-  opacity: 0.7;
-}
-</style>
-
-<style>
-/* Глобальные стили для фона */
-body {
-  background: light-dark(#fff, #000);
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif, system-ui;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-body::before {
-  --size: 45px;
-  --line: color-mix(in hsl, canvasText, transparent 80%);
-  content: '';
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  background:
-    linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) calc(var(--size) * 0.36) 50% / var(--size) var(--size),
-    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 0% calc(var(--size) * 0.32) / var(--size) var(--size);
-  mask: linear-gradient(-20deg, transparent 50%, white);
-  top: 0;
-  transform-style: flat;
   pointer-events: none;
-  z-index: -1;
-}
-
-/* Стили для системных тем */
-[data-theme='light'] {
-  color-scheme: light only;
-}
-
-[data-theme='dark'] {
-  color-scheme: dark only;
-}
-
-[data-theme='system'] {
-  color-scheme: light dark;
+  opacity: 0.7;
 }
 </style>
