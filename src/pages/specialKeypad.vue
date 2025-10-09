@@ -14,9 +14,9 @@
           id="one"
           class="key keypad__single"
           :data-pressed="keys.one.pressed"
-          @mousedown="pressKey('one')"
+          @mousedown="handleMouseDown('one', $event)"
           @mouseup="releaseKey('one')"
-          @touchstart="pressKey('one')"
+          @touchstart="handleTouchStart('one', $event)"
           @touchend="releaseKey('one')"
         >
           <span class="key__mask">
@@ -52,9 +52,9 @@
           :id="key.id"
           class="key keypad__single"
           :data-pressed="keys[key.id].pressed"
-          @mousedown="pressKey(key.id)"
+          @mousedown="handleMouseDown(key.id, $event)"
           @mouseup="releaseKey(key.id)"
-          @touchstart="pressKey(key.id)"
+          @touchstart="handleTouchStart(key.id, $event)"
           @touchend="releaseKey(key.id)"
         >
           <span class="key__mask">
@@ -121,6 +121,8 @@ export default {
 
   data() {
     return {
+      isTouchDevice: false, // ДОБАВЬ ЭТОТ ФЛАГ
+      lastActionTime: 0, // Для защиты от быстрых повторных нажатий
       platform: 'perplexity',
       theme: 'dark',
       muted: false,
@@ -162,6 +164,9 @@ export default {
     this.setupKeyListeners()
     this.updateDocumentTheme()
     this.generateCaptcha() // ГЕНЕРИРУЕМ КАПЧУ ПРИ ЗАГРУЗКЕ
+
+    // ОПРЕДЕЛЯЕМ ТИП УСТРОЙСТВА ПРИ ЗАГРУЗКЕ
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
   },
   watch: {
     theme() {
@@ -177,6 +182,7 @@ export default {
     }
   },
   methods: {
+
     initializeAudio() {
       this.clickAudio = new Audio(keySoundPress)
       this.clickAudio.muted = this.muted
@@ -185,6 +191,18 @@ export default {
     setupKeyListeners() {
       window.addEventListener('keydown', this.handleKeyDown)
       window.addEventListener('keyup', this.handleKeyUp)
+    },
+    handleTouchStart(keyId, event) {
+      // ДЛЯ TOUCH: всегда предотвращаем и обрабатываем
+      event.preventDefault()
+      this.pressKey(keyId, event)
+    },
+
+    handleMouseDown(keyId, event) {
+      // ДЛЯ MOUSE: обрабатываем только если не touch устройство
+      if (!this.isTouchDevice) {
+        this.pressKey(keyId, event)
+      }
     },
 
     handleKeyDown(event) {
@@ -292,23 +310,33 @@ export default {
         }, 3000)
       }
     },
-    pressKey(keyId) {
-      // ПРОСТАЯ ЗАЩИТА ОТ ДВОЙНЫХ НАЖАТИЙ
+    pressKey(keyId, event) {
+      // ЗАЩИТА ОТ БЫСТРЫХ ПОВТОРНЫХ НАЖАТИЙ (300ms)
+      const now = Date.now()
+      if (now - this.lastActionTime < 300) return
+      this.lastActionTime = now
+
+      // ЗАЩИТА ОТ ДВОЙНЫХ НАЖАТИЙ
       if (this.keys[keyId].pressed) return
 
       this.keys[keyId].pressed = true
 
-      // НЕМЕДЛЕННОЕ ВОСПРОИЗВЕДЕНИЕ ЗВУКА ДЛЯ МОБИЛЬНЫХ
+      // НЕМЕДЛЕННОЕ ВОСПРОИЗВЕДЕНИЕ ЗВУКА
       this.playClickSound()
 
-      // ЗАДЕРЖКА ДЛЯ ВИЗУАЛЬНОГО ЭФФЕКТА (опционально)
-      setTimeout(() => {
+      // ДЛЯ МОБИЛЬНЫХ: предотвращаем генерацию click события
+      if (event && this.isTouchDevice) {
+        event.preventDefault()
+      }
+
+      // ИСПОЛЬЗУЕМ requestAnimationFrame ДЛЯ ГАРАНТИРОВАННОГО ОДНОГО СРАБАТЫВАНИЯ
+      requestAnimationFrame(() => {
         if (keyId === 'one') {
           this.cyclePlatformAndTheme()
         } else {
           this.checkCaptcha(keyId)
         }
-      }, 50)
+      })
     },
 
     playClickSound() {

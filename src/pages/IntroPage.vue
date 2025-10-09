@@ -103,7 +103,7 @@ const initialShowText = ref(true); // Новый флаг для первона�
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "Что дальше Vincent ? Куда жать ?";
+    : "Что дальше Vincent ? Куда нажимать ?";
 });
 
 const buttonColor = computed(() => {
