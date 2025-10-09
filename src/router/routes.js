@@ -165,10 +165,7 @@ const routes = [
         path: '/games',
         component: () => import('pages/SeeAllGames.vue'),
       },
-      {
-        path: '/swapyGame1',
-        component: () => import('components/GameDragAndDropSwapy.vue')
-      },
+
       {
         path: '/extra-page',
         component: () => import('src/pages/extraPage.vue'),
@@ -271,6 +268,10 @@ const routes = [
           {
             path: '/direct-print/:missionName',
             component: () => import('src/components/GamePrintAllWordsNotebook.vue')
+          },
+          {
+            path: '/pixelArt',
+            component: () => import('pages/PixelArtEditor.vue')
           },
         ]
       },
