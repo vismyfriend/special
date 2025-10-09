@@ -292,21 +292,36 @@ export default {
         }, 3000)
       }
     },
-
     pressKey(keyId) {
-      // ПРЕДОТВРАЩАЕМ ДВОЙНОЕ СРАБАТЫВАНИЕ
+      // ПРОСТАЯ ЗАЩИТА ОТ ДВОЙНЫХ НАЖАТИЙ
       if (this.keys[keyId].pressed) return
 
       this.keys[keyId].pressed = true
+
+      // НЕМЕДЛЕННОЕ ВОСПРОИЗВЕДЕНИЕ ЗВУКА ДЛЯ МОБИЛЬНЫХ
       this.playClickSound()
 
-      // ОСОБАЯ ЛОГИКА ДЛЯ КНОПКИ META (#one)
-      if (keyId === 'one') {
-        this.cyclePlatformAndTheme()
-      } else {
-        // ПРОВЕРЯЕМ КАПЧУ ПРИ НАЖАТИИ
+      // ЗАДЕРЖКА ДЛЯ ВИЗУАЛЬНОГО ЭФФЕКТА (опционально)
+      setTimeout(() => {
+        if (keyId === 'one') {
+          this.cyclePlatformAndTheme()
+        } else {
+          this.checkCaptcha(keyId)
+        }
+      }, 50)
+    },
 
-        this.checkCaptcha(keyId)
+    playClickSound() {
+      if (!this.muted && this.clickAudio) {
+        // СБРАСЫВАЕМ И СРАЗУ ПРОИГРЫВАЕМ
+        this.clickAudio.currentTime = 0
+        const playPromise = this.clickAudio.play()
+
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Игнорируем ошибки на мобильных
+          })
+        }
       }
     },
 
@@ -319,12 +334,7 @@ export default {
     },
 
 
-    playClickSound() {
-      if (!this.muted && this.clickAudio) {
-        this.clickAudio.currentTime = 0
-        this.clickAudio.play().catch(e => console.log('Audio play failed:', e))
-      }
-    },
+
 
     updateDocumentTheme() {
       document.documentElement.dataset.theme = this.theme
