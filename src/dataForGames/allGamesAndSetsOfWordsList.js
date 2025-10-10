@@ -15,30 +15,42 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "Миссия - 1 - легкая",
+      missionVisibleName: "ХУ ИЗ ХУ ? Who is who",
       missionDescription: "Самое начало",
       id: 1001,
       active: true,
-      gameIcon:'1️⃣'
+      gameIcon:'0️⃣',
+      stars: 1
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-hard",
-      missionVisibleName: "Миссия - 1 - средняя",
+      missionVisibleName: "Миссия - 001",
       missionDescription: "Самое начало",
+      id: 1001,
+      active: true,
+      gameIcon:'🧩'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
+      missionVisibleName: "Домашка - 001",
+      missionDescription: "Homework 001",
       id: 1001,
       active: true,
       gameIcon:'1️⃣'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
-      missionVisibleName: "Миссия - 1 - сложная",
-      missionDescription: "Самое начало",
+      path: "/see-all-sets-of-words/whoIsWho/find-pairs-easy",
+      missionVisibleName: "Первые предложения",
+      missionDescription: "Составь предложение",
       id: 1001,
       active: true,
-      gameIcon:'1️⃣'
+      gameIcon:'🧨'
     },
+
+
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -49,6 +61,25 @@ export const allGamesAndSetsOfWordsList =
       active: false,
       gameIcon:'🎯'
     },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
+      missionVisibleName: "Миссия - 002",
+      missionDescription: "Mission - 002",
+      id: 1001,
+      active: true,
+      gameIcon:'🧩'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA1/game-translate",
+      missionVisibleName: "Миссия - 002 - в классе",
+      missionDescription: "Mission - 002 - in class",
+      id: 1001,
+      active: true,
+      gameIcon:'👀'
+    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/listening_elementary1_e2/listening-exercises",
@@ -57,24 +88,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'📚'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
-      missionVisibleName: "Миссия - 2 - easy",
-      missionDescription: "Mission - 2 - легкая",
-      id: 1001,
-      active: true,
-      gameIcon:'2️⃣'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/possessivePronounsA1/game-translate",
-      missionVisibleName: "Миссия - 2 - medium",
-      missionDescription: "Mission - 2 - средняя",
-      id: 1001,
-      active: true,
-      gameIcon:'2️⃣'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -101,7 +114,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "learn to read fast",
       id: 1001,
       active: true,
-      gameIcon:'📚'
+      gameIcon:'📚',
+      category: "reading" // ← будет в этом наборе
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -110,7 +124,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "learn to read fast",
       id: 1001,
       active: true,
-      gameIcon:'📚'
+      gameIcon:'📚',
+      category: "reading" // ← будет в этом наборе
     },
 
 
@@ -870,6 +885,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Вера",
       id: 1001,
       active: true,
+      category: "categoryX", // ← будет в этом наборе
       stars: '3'
     },  {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -897,6 +913,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Tu tu tu tu",
       id: 1001,
       active: true,
+      category: "categoryY", // ← будет в этом наборе
+
       stars: '3'
     },
     {
@@ -1053,7 +1071,9 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "learn to read fast 2",
       id: 1001,
       active: true,
-      gameIcon:'📚'
+      gameIcon:'📚',
+      category: "reading" // ← будет в этом наборе
+
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1062,7 +1082,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "learn to read fast 3",
       id: 1001,
       active: true,
-      gameIcon:'📚'
+      gameIcon:'📚',
+
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

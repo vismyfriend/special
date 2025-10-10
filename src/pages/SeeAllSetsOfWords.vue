@@ -18,6 +18,7 @@
         </div>
 
         <!-- Используем filteredSets для отображения карточек -->
+
         <div class="v-cards-choose">
           <!-- 1. Создать свой набор (всегда первый) -->
           <div
@@ -34,6 +35,10 @@
               Click to see special content
             </div>
           </div>
+
+
+
+
 
           <!-- 2. Первые 3 обычных набора -->
           <div
@@ -97,6 +102,184 @@
             </div>
           </div>
 
+
+
+
+
+
+          <!-- 2. КАТЕГОРИЯ ЧТЕНИЯ (если есть наборы с category: 'reading') -->
+          <div
+            v-if="readingSets.length > 0"
+            class="v-card-choose tooltip-wrapper reading-category"
+            @click="toggleReadingCategory"
+            :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                 🚀 Интенсивы ( {{ readingSets.length }} )
+              </span>
+              <span class="card-icons">
+                <span class="expand-icon">{{ isReadingExpanded ? '▼' : '▶' }}</span>
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              for super agents
+            </div>
+          </div>
+
+          <!-- 2.1. РАСКРЫТЫЕ НАБОРЫ ЧТЕНИЯ -->
+          <div
+            v-if="isReadingExpanded"
+            class="reading-sets-container"
+          >
+            <div
+              v-for="currentSetOfWords in readingSets"
+              :key="currentSetOfWords.missionName"
+              class="v-card-choose tooltip-wrapper reading-set"
+              @click="handlePasswordProtectedClick(currentSetOfWords)"
+              :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+            >
+              <div class="card-content">
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
+                <span class="card-icons">
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+              <div class="custom-tooltip">
+                {{ currentSetOfWords.missionDescription }}
+              </div>
+            </div>
+          </div>
+
+
+
+          <div
+            v-if="categoryXSets.length > 0"
+            class="v-card-choose tooltip-wrapper category-x"
+            @click="toggleCategoryX"
+            :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                🔥 Категория X ( {{ categoryXSets.length }} )
+              </span>
+              <span class="card-icons">
+                <span class="expand-icon">{{ isCategoryXExpanded ? '▼' : '▶' }}</span>
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              Секретные задания категории X
+            </div>
+          </div>
+
+          <!-- 5.1. РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ X -->
+          <div
+            v-if="isCategoryXExpanded"
+            class="category-sets-container category-x-sets"
+          >
+            <div
+              v-for="currentSetOfWords in categoryXSets"
+              :key="currentSetOfWords.missionName"
+              class="v-card-choose tooltip-wrapper category-set"
+              @click="handlePasswordProtectedClick(currentSetOfWords)"
+              :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+            >
+              <div class="card-content">
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
+                <span class="card-icons">
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+              <div class="custom-tooltip">
+                {{ currentSetOfWords.missionDescription }}
+              </div>
+            </div>
+          </div>
+
+
+
+          <div
+            v-if="categoryYSets.length > 0"
+            class="v-card-choose tooltip-wrapper category-y"
+            @click="toggleCategoryY"
+            :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                ⚡ Категория Y ( {{ categoryYSets.length }} )
+              </span>
+              <span class="card-icons">
+                <span class="expand-icon">{{ isCategoryYExpanded ? '▼' : '▶' }}</span>
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              Продвинутые задания категории Y
+            </div>
+          </div>
+
+          <!-- 7.1. РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ Y -->
+          <div
+            v-if="isCategoryYExpanded"
+            class="category-sets-container category-y-sets"
+          >
+            <div
+              v-for="currentSetOfWords in categoryYSets"
+              :key="currentSetOfWords.missionName"
+              class="v-card-choose tooltip-wrapper category-set"
+              @click="handlePasswordProtectedClick(currentSetOfWords)"
+              :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+            >
+              <div class="card-content">
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
+                <span class="card-icons">
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+              <div class="custom-tooltip">
+                {{ currentSetOfWords.missionDescription }}
+              </div>
+            </div>
+          </div>
+
           <!-- 4. Следующие 5 обычных наборов -->
           <div
             class="v-card-choose tooltip-wrapper"
@@ -143,6 +326,9 @@
             </div>
           </div>
 
+
+
+
           <!-- 5. Змейка -->
           <div
             class="v-card-choose tooltip-wrapper glassMorphism3"
@@ -158,6 +344,8 @@
               Snaсk - снЭк - перекус
             </div>
           </div>
+
+
 
           <!-- 6. Все остальные обычные наборы -->
           <div
@@ -190,6 +378,11 @@
                 >
               </span>
             </div>
+
+
+
+
+
             <div class="custom-tooltip">
               <div class="tooltip-content">
                 <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
@@ -292,6 +485,53 @@ const passwordModal = ref(false);
 const passwordInput = ref('');
 const currentSetToUnlock = ref(null);
 const shake = ref(false);
+
+/// Категории
+const isReadingExpanded = ref(false)
+const isCategoryXExpanded = ref(false)
+const isCategoryYExpanded = ref(false)
+
+// Компьютеды для группировки
+const readingSets = computed(() => {
+  return allGamesAndSetsOfWordsList.filter(set =>
+    set.active && set.category === 'reading'
+  )
+})
+
+const categoryXSets = computed(() => {
+  return allGamesAndSetsOfWordsList.filter(set =>
+    set.active && set.category === 'categoryX'
+  )
+})
+
+const categoryYSets = computed(() => {
+  return allGamesAndSetsOfWordsList.filter(set =>
+    set.active && set.category === 'categoryY'
+  )
+})
+
+// Функции переключения
+const toggleReadingCategory = () => {
+  isReadingExpanded.value = !isReadingExpanded.value
+}
+
+const toggleCategoryX = () => {
+  isCategoryXExpanded.value = !isCategoryXExpanded.value
+}
+
+const toggleCategoryY = () => {
+  isCategoryYExpanded.value = !isCategoryYExpanded.value
+}
+
+const setsWithoutCategory = computed(() => {
+  return allGamesAndSetsOfWordsList.filter(set =>
+    set.active && !set.category // только наборы БЕЗ категории
+  )
+})
+
+
+
+
 
 const handlePasswordProtectedClick = (set) => {
   if (!set.password) {
@@ -826,6 +1066,97 @@ onMounted(() => {
   justify-content: space-between;
   width: 100%;
 }
+
+
+
+/* Стили для категории чтения */
+.reading-category {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: 2px solid #5a6fd8;
+  font-weight: bold;
+
+  .expand-icon {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+}
+
+.reading-sets-container {
+  width: 100%;
+  margin: 5px 0;
+
+  .reading-set {
+    background: rgba(102, 126, 234, 0.1);
+    border-left: 3px solid #667eea;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.2);
+    }
+  }
+}
+
+
+/* Стили для категории X */
+.category-x {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  border: 2px solid #ff4757;
+  font-weight: bold;
+
+  .expand-icon {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+}
+
+.category-x-sets {
+  .category-set {
+    background: rgba(255, 107, 107, 0.1);
+    border-left: 3px solid #ff6b6b;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+
+    &:hover {
+      background: rgba(255, 107, 107, 0.2);
+    }
+  }
+}
+
+/* Стили для категории Y */
+.category-y {
+  background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%);
+  color: white;
+  border: 2px solid #00d2d3;
+  font-weight: bold;
+
+  .expand-icon {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+}
+
+.category-y-sets {
+  .category-set {
+    background: rgba(0, 210, 211, 0.1);
+    border-left: 3px solid #00d2d3;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+
+    &:hover {
+      background: rgba(0, 210, 211, 0.2);
+    }
+  }
+}
+
+/* Общие стили для контейнеров категорий */
+.category-sets-container {
+  width: 100%;
+  margin: 5px 0;
+}
+
 
 .mission-name {
   text-align: left;

@@ -262,6 +262,16 @@ const shortWordsData = {
     { id: 9, eng: "your", ru: "ваш", hint: "/ ё /" },
     { id: 10, eng: "her", ru: "её", hint: "/ хё /" },
   ],
+  whoIsWho: [
+    { id: 1, eng: "is my teacher", ru: "Vincent", hint: "училка- тичер" },
+    { id: 2, eng: "am not silly", ru: "I", hint: "глупый- силли" },
+    { id: 3, eng: "are special", ru: "We", hint: "особенные- спэшл" },
+    { id: 4, eng: "my neighbours", ru: "I like", hint: "соседи- нЭйборз" },
+    { id: 5, eng: "is it now", ru: "What time", hint: "сейчас- нау" },
+    { id: 6, eng: "is eleven", ru: "1 + 10", hint: "илэвн" },
+    { id: 7, eng: "is twelve", ru: "24 - 12", hint: "туЭлв" },
+
+  ],
   possessivePronounsA1: [
     { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
     { id: 2, eng: "my", ru: "мои , моя , моё", hint: "/ мaй /" },

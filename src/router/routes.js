@@ -345,6 +345,10 @@ const routes = [
     path: '/NOcanvas-test',
     component: () => import('pages/noCanvasTest.vue')
   },
+  {
+    path: '/test',
+    component: () => import('pages/PageForTestingImports.vue')
+  },
 
 
   {

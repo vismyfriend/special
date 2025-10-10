@@ -38,16 +38,17 @@
             <div class="materials-section" v-if="hasAdditionalMaterials">
               <div class="section-title"> Ох уж этот Vincent...</div>
               <div class="materials-content">
-                <p>напридумывает фраз всяких,</p>
-                <p>а мне переводить, я же special agent!</p>
+                <p>напридумывает фраз всяких, a мне</p>
+                <p>писать и переводить... Ладно, напишу!</p>
+                <p>Я же понимаю, что училка для меня</p>
+                <p>старался. И я не ленивая задница! </p>
               </div>
             </div>
 
             <!-- Секция домашнего задания -->
             <div class="homework-section " v-if="showHomeworkSection">
-              <div class="section-title ">Cейчас напишу :</div>
+<!--              <div class="section-title ">Cейчас напишу :</div>-->
               <div class="homework-content">
-                <p>и даже без подсказок может попробую</p>
 
                 <div class="homework-words">
                   <div class="homework-word" v-for="(word, index) in homeworkWords" :key="'hw-' + index">
@@ -648,7 +649,7 @@ onMounted(() => {
 .word-to-translate {
   font-weight: bold;
   color: #2c3e50;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .translation-input {
@@ -747,7 +748,7 @@ onMounted(() => {
   }
 
   .word-to-translate {
-    font-size: 15px;
+    font-size: 18px;
   }
 }
 
