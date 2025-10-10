@@ -1,115 +1,149 @@
 <template>
   <!-- Основной контейнер результатов -->
   <div class="result">
-    <!-- Блок с результатами игры -->
-    <div class="congratulations-container">
-      <h2 class="congratulations-title">Congratulations!</h2>
+    <!-- Упрощенный вид результатов -->
+    <div class="simple-results" v-if="!showDetailed">
+      <div class="simple-container">
+        <h2 class="simple-title">Скажи вслух :</h2>
+        <div class="stat-item time-words">
+          <span class="stat-value time-words-value">{{ timeInWords }} seconds</span>
+        </div>
+        <div class="simple-stats">
+          <div class="stat-item">
+            <span class="stat-label">My time is:</span>
+            <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}s</span>
+          </div>
+<!--          <div class="stat-item">-->
+<!--            <span class="stat-label">mistakes :</span>-->
+<!--            <span class="stat-value mistakes-value">{{ gameStore.lastGameResults.mistakes }}</span>-->
+<!--          </div>-->
 
-      <div class="result-card">
-        <!-- Строки с результатами -->
-        <div class="result-row">
-          <span class="result-label">Время выполнения:</span>
-          <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
         </div>
-        <div class="result-row time-spelling">
-          <span class="result-label"></span>
-          <span class="result-value time-spelling-value">{{ timeInWords }} seconds</span>
+
+        <div class="simple-buttons">
+          <button class="simple-btn try-again" @click="tryAgain">ещё разок ! я лучше могу</button>
+<!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
+          <button class="simple-btn details-btn" @click="showDetailed = true">
+            всё, сдаюсь ▼
+          </button>
         </div>
-        <div class="result-row">
-          <span class="result-label">Ошибок:</span>
-          <span class="result-value mistakes-amount">{{ gameStore.lastGameResults.mistakes }} mistake(s)</span>
+      </div>
+    </div>
+
+    <!-- Подробный вид (как было раньше) -->
+    <div class="detailed-results" v-else>
+      <!-- Блок с результатами игры -->
+      <div class="congratulations-container">
+        <h2 class="congratulations-title">Отправь скриншот Винсентику</h2>
+
+        <div class="result-card">
+          <!-- Строки с результатами -->
+          <div class="result-row">
+            <span class="result-label">Время выполнения:</span>
+            <span class="result-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} сек.</span>
+          </div>
+          <div class="result-row time-spelling">
+            <span class="result-label"></span>
+            <span class="result-value time-spelling-value">{{ timeInWords }} seconds</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Ошибок:</span>
+            <span class="result-value mistakes-amount">{{ gameStore.lastGameResults.mistakes }} mistake(s)</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Миссия:</span>
+            <span class="result-value">"{{ wordSetNameSearch(gameStore.$state.wordSet) }}"</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Задание:</span>
+            <span class="result-value">"{{ gameStore.$state.gameName }}"</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Ваш никнейм:</span>
+            <div class="name-wrapper">
+              <span class="result-value agent-name">
+                <template v-if="gameStore.$state.agentName">
+                  {{ getDisplayName(gameStore.$state.agentName).name }}
+                  <span v-if="getDisplayName(gameStore.$state.agentName).id" class="unique-id">
+                    ({{ getDisplayName(gameStore.$state.agentName).id }})
+                  </span>
+                </template>
+              </span>
+              <button v-if="showChangeNameButton" @click="handleChangeName" class="change-name-btn">
+                Сменить никнейм
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="result-row">
-          <span class="result-label">Миссия:</span>
-          <span class="result-value">"{{ wordSetNameSearch(gameStore.$state.wordSet) }}"</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">Задание:</span>
-          <span class="result-value">"{{ gameStore.$state.gameName }}"</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">Ваш никнейм:</span>
-          <div class="name-wrapper">
-            <span class="result-value agent-name">
-              <template v-if="gameStore.$state.agentName">
-                {{ getDisplayName(gameStore.$state.agentName).name }}
-                <span v-if="getDisplayName(gameStore.$state.agentName).id" class="unique-id">
-                  ({{ getDisplayName(gameStore.$state.agentName).id }})
-                </span>
-              </template>
-            </span>
-            <button v-if="showChangeNameButton" @click="handleChangeName" class="change-name-btn">
-              Сменить никнейм
-            </button>
+
+        <p class="share-message">Отправь скриншот тичеру, чтобы он гордился! 🎉</p>
+      </div>
+
+      <!-- Кнопки управления -->
+      <div class="buttons-container">
+        <button
+          v-if="shouldShowToggleButton"
+          class="toggle-btn"
+          @click="toggleExpand"
+        >
+          {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
+        </button>
+        <button class="games-btn" @click="goToGames">все игры</button>
+        <button class="close-btn" @click="backToSameSet">следующее задание</button>
+        <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
+        <button class="simple-view-btn" @click="showDetailed = false">
+          Simple View ▲
+        </button>
+      </div>
+
+      <!-- Таблица лидеров -->
+      <div v-if="topPlayers" class="leaderboard-wrapper">
+        <div class="leaderboard-container">
+          <div class="leaderboard">
+            <table>
+              <thead>
+              <tr>
+                <th>🏆</th>
+                <th>лучшие за всё время :</th>
+                <th>time</th>
+                <th>⚠️</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(player, index) in visiblePlayers" :key="index" :class="{'highlight-row': yourPlace === index + 1}">
+                <td>{{ index + 1 }}</td>
+                <td>
+                    <span class="player-name">
+                      {{ getDisplayName(player.agent).name }}
+                      <span v-if="getDisplayName(player.agent).id" class="unique-id">
+                        ({{ getDisplayName(player.agent).id }})
+                      </span>
+                    </span>
+                </td>
+                <td>{{ player.time }}</td>
+                <td>{{ player.mistakes }}</td>
+              </tr>
+
+              <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
+                <td>{{yourPlace}}</td>
+                <td>
+                    <span class="player-name">
+                      {{ getDisplayName(gameStore.agentName).name }}
+                      <span v-if="getDisplayName(gameStore.agentName).id" class="unique-id">
+                        ({{ getDisplayName(gameStore.agentName).id }})
+                      </span>
+                      <span class="you-badge">(you)</span>
+                    </span>
+                </td>
+                <td>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</td>
+                <td>{{ gameStore.lastGameResults.mistakes }}</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-
-      <p class="share-message">Отправь скриншот тичеру, чтобы он гордился! 🎉</p>
     </div>
-
-    <!-- Кнопки управления -->
-    <div class="buttons-container">
-      <button
-        v-if="shouldShowToggleButton"
-        class="toggle-btn"
-        @click="toggleExpand"
-      >
-        {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
-      </button>
-      <button class="games-btn" @click="goToGames">все игры</button>
-      <button class="close-btn" @click="backToSameSet">следующее задание</button>
-      <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
-
-    </div>
-    <!-- Таблица лидеров -->
-    <div v-if="topPlayers" class="leaderboard-wrapper">
-      <div class="leaderboard-container">
-        <div class="leaderboard">
-          <table>
-            <thead>
-            <tr>
-              <th>🏆</th>
-              <th>лучшие за всё время :</th>
-              <th>time</th>
-              <th>⚠️</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(player, index) in visiblePlayers" :key="index" :class="{'highlight-row': yourPlace === index + 1}">
-              <td>{{ index + 1 }}</td>
-              <td>
-                  <span class="player-name">
-                    {{ getDisplayName(player.agent).name }}
-                    <span v-if="getDisplayName(player.agent).id" class="unique-id">
-                      ({{ getDisplayName(player.agent).id }})
-                    </span>
-                  </span>
-              </td>
-              <td>{{ player.time }}</td>
-              <td>{{ player.mistakes }}</td>
-            </tr>
-
-            <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
-              <td>{{yourPlace}}</td>
-              <td>
-                  <span class="player-name">
-                    {{ getDisplayName(gameStore.agentName).name }}
-                    <span v-if="getDisplayName(gameStore.agentName).id" class="unique-id">
-                      ({{ getDisplayName(gameStore.agentName).id }})
-                    </span>
-                    <span class="you-badge">(you)</span>
-                  </span>
-              </td>
-              <td>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</td>
-              <td>{{ gameStore.lastGameResults.mistakes }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -133,6 +167,7 @@ const topPlayers = ref([]);
 const yourPlace = ref();
 const isExpanded = ref(false);
 const showChangeNameButton = ref(gameStore.$state.agentName === null);
+const showDetailed = ref(false); // Управление отображением подробного вида
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
@@ -397,6 +432,162 @@ onMounted(async () => {
 <style lang="scss" scoped>
 /* Основные стили контейнера */
 .result {
+  padding: 20px 10px;
+  background: linear-gradient(145deg, #0870b5, #4096d3);
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.1;
+  min-height: 400px;
+}
+
+/* Стили для упрощенного вида */
+.simple-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+}
+
+.simple-container {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.simple-title {
+  font-size: 32px;
+  font-family: Special_f1;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-weight: bold;
+}
+
+.simple-stats {
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.stat-label {
+  font-size: 20px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.time-value {
+  color: #faf624;
+}
+
+.mistakes-value {
+  color: #ff6b6b;
+}
+
+.time-words {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.time-words-value {
+  font-size: 18px;
+  color: #faf624;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.simple-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.simple-btn {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.try-again {
+  background: linear-gradient(145deg, #FFC107, #FF9800);
+  color: white;
+  font-family: Special_f1;
+}
+
+.next-mission {
+  background: linear-gradient(145deg, #4CAF50, #2E7D32);
+  color: white;
+}
+
+.details-btn {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.simple-view-btn {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+/* Стили для подробного вида (остаются как были) */
+.detailed-results {
   padding: 20px 10px;
   background: linear-gradient(145deg, #0870b5, #4096d3);
   color: white;

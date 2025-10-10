@@ -1,1 +1,0 @@
-import{p as t,o as a,f as o,h as r}from"./index.6c6610dc.js";const u={__name:"GameTNT",setup(s){return t(),(n,e)=>(a(),o("div",null,e[0]||(e[0]=[r("h2",null," \u0442\u0443\u0442 \u043A\u043E\u0433\u0434\u0430-\u0442\u043E \u043F\u043E\u044F\u0432\u0438\u0442\u0441\u044F \u0438\u0433\u0440\u0430 ",-1)])))}};export{u as default};
