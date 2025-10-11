@@ -51,6 +51,7 @@ import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
 import listeningExerciseData from "src/dataForGames/ListeningExerciseData";
 import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
+import MillionaireData from "src/dataForGames/MillionaireData";
 import pnqwData from "src/dataForGames/pnqw";
 import shortPicturesData from "src/dataForGames/short-pictures-data";
 import dresserGameData from "src/dataForGames/dresserGameData";
@@ -164,12 +165,20 @@ const AllGames = ref([
     gameData: pnqwData,
     cardIcon: '🃏', // Добавлена иконка
     active: true
-  },
+ },
  {
     id: 104,
     name: "Tags",
     path: "tag-questions-game",
     gameData: NewFuturisticStyleData,
+    cardIcon: '🃏', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 1005,
+    name: "Millionaire",
+    path: "millionaire",
+    gameData: MillionaireData,
     cardIcon: '🃏', // Добавлена иконка
     active: true
   },

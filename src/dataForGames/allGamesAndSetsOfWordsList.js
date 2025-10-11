@@ -885,9 +885,19 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Вера",
       id: 1001,
       active: true,
-      category: "categoryX", // ← будет в этом наборе
       stars: '3'
-    },  {
+    },
+    {
+
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA01/millionaire",
+      missionVisibleName: "Does Do Are Am Is",
+      missionDescription: "миллионер квиз",
+      id: 1001,
+      active: true,
+      category: "categoryX", // ← будет в этом наборе
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/songILoveMyLife/songs",
       missionVisibleName: "I love my life",
