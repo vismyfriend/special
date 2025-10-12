@@ -75,6 +75,10 @@ const routes = [
                 component: () => import('src/components/GameMillionaire.vue')
               },
               {
+                path: 'sorting',
+                component: () => import('src/components/GameDragAndSorting.vue')
+              },
+              {
                 path: 'word-order-sortable',
                 component: () => import('src/components/GameDragAndDropSwapy.vue')
               },

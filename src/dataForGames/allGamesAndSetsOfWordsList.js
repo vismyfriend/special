@@ -32,6 +32,33 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'🧩'
     },
     {
+      missionName: "pattern-memory",
+      missionVisibleName: "Игра на память",
+      category: "gamePatterns",
+      active: true,
+      // ... остальные поля ...
+    },
+    {
+      missionName: "pattern-puzzle",
+      missionVisibleName: "Головоломка с паттернами",
+      category: "gamePatterns",
+      active: true,
+    },
+
+    // Добавляем наборы для CategoryChinese
+    {
+      missionName: "chinese-basics",
+      missionVisibleName: "Китайский: основы",
+      category: ["chinese","gamePatterns"],
+      active: true,
+    },
+    {
+      missionName: "chinese-characters",
+      missionVisibleName: "Китайские иероглифы",
+      category: "chinese",
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
       missionVisibleName: "Домашка - 001",
@@ -39,6 +66,13 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'1️⃣'
+    },
+    {
+      missionName: "pattern",
+      missionVisibleName: "All patterns",
+      missionDescription: "Все шаблоны",
+      id: 7,
+      active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -115,7 +149,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'📚',
-      category: "reading" // ← будет в этом наборе
+      category: ["reading","chinese"] // ← будет в этом наборе
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

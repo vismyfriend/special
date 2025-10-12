@@ -37,6 +37,7 @@ import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 import questionsData from "../dataForGames/questions-data";
+import sortingWordsData from '../dataForGames/sortingWordsData'
 import shortWordsData from '../dataForGames/short-words-data';
 import shortSentencesWordOrderData from '../dataForGames/short-sentences-word-order';
 import tntData from 'src/dataForGames/tnt-data';
@@ -92,6 +93,13 @@ const AllGames = ref([
     path: "word-order-sortable",
     gameData: shortSentencesWordOrderData,
     cardIcon: '✂️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 103,
+    name: "New sorting game",
+    path: "sorting",
+    gameData: sortingWordsData,
     active: true,
   },
   {

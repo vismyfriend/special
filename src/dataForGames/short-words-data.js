@@ -2,11 +2,26 @@
 // ^\s*$\n
 const shortWordsData = {
 
+
+
   testQuicklyData: [
     { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/" },
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
+  ],
+
+
+
+  pattern: [
+    { id: 1, eng: "bag", ru: "сумака", hint: "/ БЭГ /" },
+    { id: 2, eng: "bug", ru: "жук", hint: "/ БАГ /" },
+    { id: 3, eng: "big", ru: "большой", hint: "/ БИГ /" },
+    { id: 4, eng: "phone", ru: "телефон", hint: "/ ФОУН /" },
+    { id: 5, eng: "beer", ru: "пиво", hint: "/ БИИИИР /" },
+    { id: 6, eng: "bird", ru: "птица", hint: "/ БЁРД /" },
+    { id: 7, eng: "bear", ru: "медведь", hint: "/ БЭА /" },
+    { id: 8, eng: "beard", ru: "борода", hint: "/ БИЭРД /" },
   ],
 
   ImOnlyHumanSong: [
