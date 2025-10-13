@@ -276,6 +276,48 @@ export default {
       this.captcha.status = 'waiting'
     },
 
+
+    async playSuccessAnimation() {
+      // Сбрасываем все кнопки в исходное положение
+      this.resetAllKeys();
+
+      // Ждем немного перед началом анимации
+      await this.delay(800);
+
+      // Запускаем волну нажатий
+      const keyIds = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
+
+      for (let i = 0; i < keyIds.length; i++) {
+        this.pressKeyWithAnimation(keyIds[i]);
+        await this.delay(100); // Интервал между нажатиями
+      }
+
+      // Ждем завершения анимации и переходим
+      await this.delay(500);
+      this.goToIntroPage();
+    },
+
+    resetAllKeys() {
+      Object.keys(this.keys).forEach(keyId => {
+        this.keys[keyId].pressed = false;
+      });
+    },
+
+    pressKeyWithAnimation(keyId) {
+      // Нажимаем кнопку
+      this.keys[keyId].pressed = true;
+      this.playClickSound();
+
+      // Автоматически отпускаем через короткое время
+      setTimeout(() => {
+        this.keys[keyId].pressed = false;
+      }, 200);
+    },
+
+    delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+
     checkCaptcha(keyId) {
       if (this.captcha.status !== 'waiting') return
 
@@ -286,9 +328,8 @@ export default {
         this.captcha.message = '✅ тест IQ пройден !'
         this.blockKeyRelease = false
 
-        setTimeout(() => {
-          this.goToIntroPage()
-        }, 3000)
+        // Заменяем простой setTimeout на красивую анимацию
+        this.playSuccessAnimation();
       } else {
         this.captcha.status = 'failed'
         this.captcha.message = '❌ недостаточный IQ ...'
@@ -727,5 +768,50 @@ export default {
 .key[data-pressed="true"].locked {
   pointer-events: none;
   opacity: 0.7;
+}
+
+
+/* Анимация для волны нажатий */
+.key[data-pressed="true"] .key__content {
+  translate: 0 calc(var(--travel, 20) * 1%);
+  transition: translate 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Специальная анимация для успешного прохождения */
+.key.success-animation[data-pressed="true"] .key__content {
+  translate: 0 calc(var(--travel, 20) * 1%);
+  transition: translate 0.1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Эффект свечения для анимации */
+@keyframes keyGlow {
+  0%, 100% {
+    filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(var(--saturate, 1)) brightness(var(--brightness, 1));
+  }
+  50% {
+    filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(calc(var(--saturate, 1) * 1.3)) brightness(calc(var(--brightness, 1) * 1.4));
+  }
+}
+
+.key.success-animation[data-pressed="true"] img {
+  animation: keyGlow 0.2s ease-in-out;
+}
+
+/* Анимация для сообщения об успехе */
+.captcha-container.success {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+  animation: successPulse 2s ease-in-out;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(76, 175, 80, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+  }
 }
 </style>

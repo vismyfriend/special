@@ -42,8 +42,8 @@ const routes = [
               },
 
               {
-                path: 'listening-exercises',
-                component: () => import('components/ListeningExercise.vue')
+                path: 'brainStorm',
+                component: () => import('components/BrainStormExercises.vue')
               },
               {
                 path: 'songs',
@@ -130,10 +130,7 @@ const routes = [
                 path: 'spell-ten',
                 component: () => import('components/GameSpellTen.vue')
               },
-              {
-                path: 'word-order',
-                component: () => import('src/components/GameWordOrder.vue')
-              },
+
               {
                 path: 'game-translate',
                 component: () => import('src/components/GameTranslate.vue')

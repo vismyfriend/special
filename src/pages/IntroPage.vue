@@ -38,7 +38,8 @@
   <!-- Контейнер с картинкой -->
   <div class="image-container">
 <!--    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">-->
-    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">
+<!--    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">-->
+    <img src="../assets/images/whereToClick.png" alt="greenButton" class="custom-image">
 
 
 
@@ -51,7 +52,7 @@
       ref="buttonRef"
       class="positioned-button"
 
-    >Tap here</button>
+    >Cliсk here</button>
     <!--    <div class="counter">Вы увидели: <span>{{ counter }}</span></div>-->
 
     <Teleport to="body">
@@ -141,7 +142,7 @@ const backToIntroPage = () => {
     showOverlay.value = true;
 
     setTimeout(() => {
-      showOverlay.value = false;
+      // showOverlay.value = false;
       infoMessage.value = '';
     }, 7000);
   }
@@ -155,7 +156,7 @@ const buttonRef = ref(null);
 
 
 const infoMessage = ref('');
-const showOverlay = ref(false);
+const showOverlay = ref(true);
 
 
 // Настройки анимации
@@ -229,7 +230,8 @@ const handleBubbleClick = () => {
 // Собираем все английские слова
 // const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
 // const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
-const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
+// const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
+const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
 
 
 const allEnglishWords = [
@@ -239,6 +241,7 @@ const allEnglishWords = [
   ...shortWordsData.devModeNumbers.map(item => item.eng),
   ...shortWordsData.devmode1.map(item => item.eng),
   ...shortWordsData.digits.map(item => item.eng),
+  ...shortWordsData.irregularVerbsB1.map(item => item.eng),
   ...shortWordsData.halloween01.map(item => item.eng),
   ...shortWordsData.introTapButtonWords.map(item => item.eng),
   ...questionsData.clothes.map(item => item.eng),
@@ -427,9 +430,12 @@ calc(var(--fadeStart) * 100%) {
   height: 215px;
   cursor: none;
   margin: 20px 0;
+  padding: 50px;
   transition: transform 0.1s, opacity 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  font-family: Special_f1, sans-serif;
+  line-height: 35px;
 }
 
 
@@ -557,6 +563,7 @@ calc(var(--fadeStart) * 100%) {
   width: 100%;
   max-width: 400px; /* подгони под нужный размер */
   margin: 190px 0 auto auto;
+  z-index: 6;
 }
 
 .custom-image {
@@ -618,7 +625,7 @@ calc(var(--fadeStart) * 100%) {
 }
 
 .text-shrink {
-  font-size: 25px !important; /* уменьшаем на 3px от 24px */
+  font-size: 24px !important; /* уменьшаем на 3px от 24px */
   transition: font-size 0.2s ease;
 }
 
@@ -633,6 +640,7 @@ calc(var(--fadeStart) * 100%) {
 }
 .q-mb-sm {
   cursor: none;
+  z-index: 6;
 }
 /* Добавьте это в ваш файл стилей */
 .shining {

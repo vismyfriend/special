@@ -227,9 +227,9 @@
               '--offset-y': '29.5px'
             }"
           >
-            Тапалка с цифрами
+            Разминка
             <div class="custom-tooltip">
-              Произношение цифр и слов
+              Произношение
             </div>
           </div>
 
@@ -1461,7 +1461,7 @@ onMounted(() => {
 
 .categoryExamples-sets {
   .category-set {
-    //background: rgba(0, 210, 211, 0.1);
+    background: rgb(107 177 255);
     border-left: 3px solid #00d2d3;
     margin-left: 10px;
     width: calc(100% - 10px);

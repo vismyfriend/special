@@ -1,6 +1,7 @@
 <template>
   <div class="parent">
   <img class="backgroundImg" :class="{'blur' : blurredPage}" :src="currentBackgroundDay?.img" alt="">
+
   </div>
   <div class="main-wrapper">
     <div class="wrapper">

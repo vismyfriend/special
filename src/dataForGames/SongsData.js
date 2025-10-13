@@ -195,6 +195,86 @@ const songsData = {
       },
     ],
   },
+  pattern: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: "I love my life",
+        taskID: "listenCarefully",
+        usefulWords: "Tether - связывать , " +
+          "Tie - привязывать, " +
+          "tether & tie - это синонимы (взаимозаменяемые), " +
+          "soul - душа, let go - отпускать, completely - полностью, " +
+          "strong enough - сильный вполне(достаточно)," +
+          "eventually - так или иначе это (в конце концов)," +
+          "all that matters - все что имеет значение," +
+          "promise - /прОмис/ обещать," +
+          "madness - безумие",
+        audio: new URL('../assets/audio/songs/I love my life.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/audio/songs/life_is_good.jpg", import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: null,
+            audioName: null,
+            text:
+              "Tether your (soul) to me\n" +
+              "I will never let go (completely)\n" +
+              "One day your hands will be\n" +
+              "(Strong) enough (to) hold me\n" +
+              "...\n" +
+              "I might not be there for all your battles\n" +
+              "But you'll win them (eventually)\n" +
+              "I pray that I'm giving you (all) (that) (matters)\n" +
+              "So one day you'll say to me\n" +
+              "...\n" +
+              "I love my life\n" +
+              "I am powerful\n" +
+              "I am (beautiful)\n" +
+              "I am free\n" +
+              "...\n" +
+              "I love my life\n" +
+              "I am wonderful\n" +
+              "I am (magical)\n" +
+              "I am me\n" +
+              "I love my life\n" +
+              "...\n" +
+              "I am not my (mistakes)\n" +
+              "And God knows, I've made a few\n" +
+              "I started to question the angels\n" +
+              "And the (answer) they gave was you\n" +
+              "...\n" +
+              "I cannot (promise) there won't be sadness\n" +
+              "I wish I could take it from you\n" +
+              "But you'll find the courage to face the (madness)\n" +
+              "And sing it because it's true\n" +
+              "...\n" +
+              "I love my life\n" +
+              "I am powerful\n" +
+              "I am beautiful\n" +
+              "I am free\n" +
+              "...\n" +
+              "I love my life\n" +
+              "I am wonderful\n" +
+              "I am magical\n" +
+              "I am me\n" +
+              "I love my life\n" +
+              "...\n" +
+              "Find the others\n" +
+              "With hearts\n" +
+              "Like yours\n" +
+              "Run far, run free\n" +
+              "I'm with you\n" +
+              "...\n" +
+              "I love my life\n" +
+              "I am powerful\n" +
+              "I am beautiful\n" +
+              "I am free\n"
+          },
+        ]
+      },
+    ],
+  },
   songILoveMyLife: {
     mainDescription: null,
     tasks: [

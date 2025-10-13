@@ -31,7 +31,7 @@
       <!-- Заголовок -->
       <div class="neon-header">
         <h2 class="glowing-text">{{ exerciseData.mainDescription }}</h2>
-        <p class="cyber-description">training protocol - уточняющие вопросы</p>
+        <p class="cyber-description">the more mistakes, the smarter I am</p>
       </div>
 
       <!-- Полезные слова -->
@@ -58,14 +58,20 @@
         </div>
 
         <!-- Вопрос -->
+        <!-- Вопрос -->
         <div class="question-input-container">
           <div class="question-text">{{ currentQuestion.text }}</div>
-          <input
+
+          <!-- Текстовая область с автоматическим размером -->
+          <textarea
             ref="answerInput"
             v-model="userAnswer"
-            class="cyber-input"
+            class="cyber-textarea"
             :class="inputClass"
-          />
+            rows="1"
+            placeholder="Type your answer here..."
+            style="resize: none; overflow-y: auto;"
+          ></textarea>
 
           <!-- Результат проверки -->
           <div v-if="isAnswered" class="result-display">
@@ -129,7 +135,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NewFuturisticStyleData from '../dataForGames/NewFuturisticStyle.js'
 
@@ -153,6 +159,30 @@ const lastAnswerSubmitted = ref('') // Последний отправленны
 const showWarning = ref(false)
 
 
+// Автоматическое изменение размера textarea
+const autoResizeTextarea = () => {
+  nextTick(() => {
+    const textarea = answerInput.value
+    if (textarea) {
+      textarea.style.height = 'auto'
+      textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px' // Максимальная высота 300px
+    }
+  })
+}
+
+
+// Вотчер для автоматического изменения размера
+watch(() => userAnswer.value, () => {
+  autoResizeTextarea()
+})
+
+
+// Также вызываем при смене вопроса
+watch(() => currentQuestionIndex.value, () => {
+  nextTick(() => {
+    autoResizeTextarea()
+  })
+})
 // Инициализация
 onMounted(() => {
   const missionName = route.params.missionName
@@ -620,37 +650,41 @@ const resetTest = () => {
   color: #e0e0ff;
   line-height: 1.4;
 }
-
-/* Поле ввода */
-.cyber-input {
+.cyber-textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 10px 0;
   background-color: #0a0a1a;
   border: 1px solid #3a5a7a;
   color: #7fffd4;
   font-family: 'Courier New', monospace;
-  font-size: 20px;
+  font-size: 16px;
   border-radius: 4px;
   transition: all 0.3s;
+  line-height: 1.4;
+  min-height: 60px; /* Минимальная высота */
 }
 
-.cyber-input:focus {
+.cyber-textarea:focus {
   outline: none;
   border-color: #40e0d0;
   box-shadow: 0 0 10px rgba(64, 224, 208, 0.3);
 }
 
+.cyber-textarea::placeholder {
+  color: #3a5a7a;
+  font-style: italic;
+}
+
 .input-correct {
-  border-color: #00ffaa;
-  box-shadow: 0 0 5px #00ffaa;
+  border-color: #00ffaa !important;
+  box-shadow: 0 0 5px #00ffaa !important;
 }
 
 .input-incorrect {
-  border-color: #ff5577;
-  box-shadow: 0 0 5px #ff5577;
+  border-color: #ff5577 !important;
+  box-shadow: 0 0 5px #ff5577 !important;
 }
-
 /* Блок кнопок */
 .buttons-container {
   display: flex;

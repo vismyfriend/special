@@ -48,8 +48,7 @@ import storiesAndWordsData from 'src/dataForGames/storiesData';
 import scrambledData from 'src/dataForGames/scrambled-data';
 import homeworkLinksData from 'src/dataForGames/homework-links-data';
 import hwData from 'src/dataForGames/hw-data';
-import wordOrderNewGameData from 'src/dataForGames/word-order-new-data';
-import listeningExerciseData from "src/dataForGames/ListeningExerciseData";
+import brainStormExercisesData from "src/dataForGames/brainStormExerciseData";
 import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import MillionaireData from "src/dataForGames/MillionaireData";
@@ -89,18 +88,20 @@ const AllGames = ref([
   },
   {
     id: 103,
-    name: "Word-order-sortableJS",
+    name: "Correct order",
     path: "word-order-sortable",
     gameData: shortSentencesWordOrderData,
-    cardIcon: '✂️', // Добавлена иконка
+    cardIcon: '👌', // Добавлена иконка
     active: true,
   },
   {
     id: 103,
-    name: "New sorting game",
+    name: "Sort it out",
     path: "sorting",
     gameData: sortingWordsData,
     active: true,
+    cardIcon: '🛒', // Добавлена иконка
+
   },
   {
     id: 104,
@@ -136,10 +137,10 @@ const AllGames = ref([
   },
   {
     id: 180,
-    name: "Listening & Speaking",
-    path: "listening-exercises",
-    gameData: listeningExerciseData,
-    cardIcon: '🎧', // Добавлена иконка
+    name: "Brainstorm",
+    path: "brainstorm",
+    gameData: brainStormExercisesData,
+    cardIcon: '🧠', // Добавлена иконка
     active: true,
   },
   {
@@ -179,7 +180,7 @@ const AllGames = ref([
     name: "Tags",
     path: "tag-questions-game",
     gameData: NewFuturisticStyleData,
-    cardIcon: '🃏', // Добавлена иконка
+    cardIcon: '🏷️', // Добавлена иконка
     active: true
   },
   {
@@ -187,7 +188,7 @@ const AllGames = ref([
     name: "Millionaire",
     path: "millionaire",
     gameData: MillionaireData,
-    cardIcon: '🃏', // Добавлена иконка
+    cardIcon: '💰', // Добавлена иконка
     active: true
   },
 
@@ -266,14 +267,7 @@ const AllGames = ref([
     cardIcon: '📎', // Добавлена иконка
     active: true
   },
-  {
-    id: 112,
-    name: "Word Order New",
-    path: "word-order",
-    gameData: wordOrderNewGameData,
-    cardIcon: '🔤', // Добавлена иконка
-    active: true
-  },
+
   {
     id: 112,
     name: "Pictures",
@@ -290,14 +284,7 @@ const AllGames = ref([
     cardIcon: '👕',
     active: true
   },
-  {
-    id: 113,
-    name: "Lyrics",
-    path: "songs",
-    gameData: songsData,
-    cardIcon: '🎧',
-    active: true
-  },
+
   {
     id: 113,
     name: "PDF",
@@ -306,7 +293,14 @@ const AllGames = ref([
     cardIcon: '🎧',
     active: true
   },
-
+  {
+    id: 113,
+    name: "Lyrics",
+    path: "songs",
+    gameData: songsData,
+    cardIcon: '🎧',
+    active: true
+  },
 
 
 ])

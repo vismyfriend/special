@@ -8,21 +8,6 @@
       <p>{{ currentGameData.instructions }}</p>
     </div>
 
-    <!-- Слова для перетаскивания -->
-    <div ref="wordsContainer" class="words-container">
-      <div
-        v-for="item in availableWords"
-        :key="item.id"
-        class="word-card"
-        :data-id="item.id"
-        :class="getWordCardClass(item.id)"
-        @click="showHintTemporarily(item.id)"
-      >
-        <div class="word-eng">{{ item.eng }}</div>
-        <div class="word-ru" :class="getHintClass(item.id)">{{ item.ru }}</div>
-      </div>
-    </div>
-
     <!-- Колонки для сортировки -->
     <div class="columns-container">
       <div
@@ -53,13 +38,29 @@
       </div>
     </div>
 
+    <!-- Слова для перетаскивания -->
+    <div ref="wordsContainer" class="words-container">
+      <div
+        v-for="item in availableWords"
+        :key="item.id"
+        class="word-card"
+        :data-id="item.id"
+        :class="getWordCardClass(item.id)"
+        @click="showHintTemporarily(item.id)"
+      >
+        <div class="word-eng">{{ item.eng }}</div>
+        <div class="word-ru" :class="getHintClass(item.id)">{{ item.ru }}</div>
+      </div>
+    </div>
+
     <div class="game-controls">
 
-      <button @click="toggleHints" class="control-button hints">
-        {{ hintsHidden ? '👁️ Показать подсказки' : '🙈 Скрыть подсказки' }}
-      </button>
+
       <button @click="checkAnswers" class="control-button check">
         ✅ поделиться
+      </button>
+      <button @click="toggleHints" class="control-button hints">
+        {{ hintsHidden ? '👁️ Показать подсказки' : '🙈 Скрыть подсказки' }}
       </button>
     </div>
   </div>
@@ -128,7 +129,7 @@ export default {
       const missionName = this.route.params.missionName || 'fruitsVegetables'
       this.currentGameData = sortingWordsData[missionName] || sortingWordsData.fruitsVegetables
 
-      this.currentWords = [...this.currentGameData.items]
+      this.currentWords = this.shuffleArray([...this.currentGameData.items])
       this.columnAssignments = {}
       this.completedItems = new Set()
       this.columnRefs = {}
@@ -169,6 +170,15 @@ export default {
           delete this.hintTimers[wordId]
         }, 5000)
       }
+    },
+
+    shuffleArray(array) {
+      const shuffled = [...array]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      return shuffled
     },
 
     getHintClass(wordId) {
@@ -386,7 +396,7 @@ export default {
   gap: 6px;
   justify-content: center;
   margin: 25px 0;
-  padding: 20px;
+  padding: 5px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 15px;
@@ -398,7 +408,7 @@ export default {
   background: white;
   border: 2px solid #4ade80;
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 6px 9px;
   font-weight: 600;
   cursor: none;
   user-select: none;

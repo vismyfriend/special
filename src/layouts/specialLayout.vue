@@ -2,6 +2,11 @@
     <div>
 
 
+      <div
+        v-if="showOverlay"
+        class="overlay"
+      ></div>
+
 
       <!-- Сворачиваемое меню -->
 
@@ -100,6 +105,8 @@ const showModal = ref(false);
 const modalMessage = ref('');
 const isMenuCollapsed = ref(false);
 const showLegendaryModal = ref(false);
+const showOverlay = ref(true);
+
 
 // Инициализируем legendaryDays с начальным значением 1
 const legendaryDays = ref(1);
@@ -536,5 +543,15 @@ onMounted(() => {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
+  z-index: -1;
 }
 </style>

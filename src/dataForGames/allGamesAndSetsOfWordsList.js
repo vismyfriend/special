@@ -12,16 +12,6 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/find-pairs-hard",
-      missionVisibleName: "Соединить пары",
-      missionDescription: "Connect the wires",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
       path: "/see-all-sets-of-words/pattern/word-order-sortable",
       missionVisibleName: "Правильный порядок",
       missionDescription: "Word order",
@@ -32,14 +22,140 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/sorting",
-      missionVisibleName: "Перетянуть куда нужно",
-      missionDescription: "Drag the items",
+      path: "/see-all-sets-of-words/pattern/find-pairs-hard",
+      missionVisibleName: "Соединить пары",
+      missionDescription: "Connect the wires",
       id: 1001,
       active: true,
       gameIcon:'🕵️',
       category: "categoryExamplesPatterns"
     },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/millionaire",
+      missionVisibleName: "Кто станет миллионером",
+      missionDescription: "who wants to be rich?",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/game-translate",
+      missionVisibleName: "Подскажи первую букву",
+      missionDescription: "Give me a hint",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/sorting",
+      missionVisibleName: "Сортировка",
+      missionDescription: "sort it out",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/print-all-words",
+      missionVisibleName: "Тетрадь",
+      missionDescription: "Notebook",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/spelling",
+      missionVisibleName: "Напечатай 1 слово",
+      missionDescription: "Type a word",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/tag-questions-game",
+      missionVisibleName: "Напечатай предложение",
+      missionDescription: "Type a sentence",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/spell-ten",
+      missionVisibleName: "Напечатай 10 слов",
+      missionDescription: "Type a word",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/songILoveMyLife/songs",
+      missionVisibleName: "Аудио задания",
+      missionDescription: "Singing a song",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/yearGuesser",
+      missionVisibleName: "Отгадай год",
+      missionDescription: "Guess the year",
+      id: 1001,
+      active: true,
+      stars: '3',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/pnqw",
+      missionVisibleName: "Нажимай по порядку",
+      missionDescription: "Click the order",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns"
+
+    },
+    {
+      type: "hardcodedLink",
+      path: "/phoneFramePattern",
+      missionVisibleName: "Случайные вопросы",
+      missionDescription: "Рандомные вопросы",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns"
+
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/checkersQuiz/brainStorm",
+      missionVisibleName: "Квиз разный",
+      missionDescription: "Квизы аудирование",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns"
+
+    },
+
+
+
+
 
 
     {
@@ -114,7 +230,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/listening_elementary1_e2/listening-exercises",
+      path: "/see-all-sets-of-words/listening_elementary1_e2/brainStorm",
       missionVisibleName: "Story - Little Brother - e2",
       missionDescription: "Про маленького брата",
       id: 1001,
@@ -123,7 +239,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive1/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive1/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 1",
       missionDescription: "learn to read fast",
       id: 1001,
@@ -132,7 +248,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive2/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive2/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 2",
       missionDescription: "learn to read fast",
       id: 1001,
@@ -141,7 +257,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive3/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive3/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 3",
       missionDescription: "learn to read fast",
       id: 1001,
@@ -151,7 +267,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive4/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive4/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 4",
       missionDescription: "learn to read fast",
       id: 1001,
@@ -298,7 +414,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/irregularVerbsGridNaughtyVerbsGrid/listening-exercises",
+      path: "/see-all-sets-of-words/irregularVerbsGridNaughtyVerbsGrid/brainStorm",
       missionVisibleName: "Список неправильных глаголов",
       missionDescription: "Irregular Verbs list",
       id: 1001,
@@ -308,7 +424,7 @@ export const allGamesAndSetsOfWordsList =
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_part_1_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_part_1_ru/brainStorm",
       missionVisibleName: "Irregular Verbs part 1 B",
       missionDescription: "Неправ. глаголы 1 B",
       id: 1001,
@@ -317,7 +433,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_part_2_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_part_2_ru/brainStorm",
       missionVisibleName: "Irregular Verbs part 2 B",
       missionDescription: "Неправ. глаголы 2 B",
       id: 1001,
@@ -326,7 +442,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_b_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs part B gaps",
       missionDescription: "Неправ. глаголы B",
       id: 1001,
@@ -335,7 +451,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_ru/brainStorm",
       missionVisibleName: "Irregular Verbs part C",
       missionDescription: "Неправ. глаголы C",
       id: 1001,
@@ -344,7 +460,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_c_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs part C gaps",
       missionDescription: "Неправ. глаголы C",
       id: 1001,
@@ -353,7 +469,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - DE",
       missionDescription: "Неправ. глаголы DE",
       id: 1001,
@@ -362,7 +478,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_de_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - DE gaps",
       missionDescription: "Неправ. глаголы DE",
       id: 1001,
@@ -371,7 +487,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_part_1_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_part_1_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - F1",
       missionDescription: "Неправ. глаголы F1",
       id: 1001,
@@ -380,7 +496,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_part_2_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_part_2_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - F2",
       missionDescription: "Неправ. глаголы F2",
       id: 1001,
@@ -389,7 +505,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_f_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - F gaps",
       missionDescription: "Неправ. глаголы F",
       id: 1001,
@@ -398,7 +514,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_g_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_g_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - G",
       missionDescription: "Неправ. глаголы G",
       id: 1001,
@@ -407,7 +523,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_h_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_h_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - H",
       missionDescription: "Неправ. глаголы H",
       id: 1001,
@@ -416,7 +532,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_gh_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - GH gaps",
       missionDescription: "Неправ. глаголы GH",
       id: 1001,
@@ -425,7 +541,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - KL",
       missionDescription: "Неправ. глаголы KL",
       id: 1001,
@@ -434,7 +550,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_kl_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - KL gaps",
       missionDescription: "Неправ. глаголы KL",
       id: 1001,
@@ -443,7 +559,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - MPR",
       missionDescription: "Неправ. глаголы MPR",
       id: 1001,
@@ -452,7 +568,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_mpr_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - MPR gaps",
       missionDescription: "Неправ. глаголы MPR",
       id: 1001,
@@ -461,7 +577,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_1_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_1_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - S1",
       missionDescription: "Неправ. глаголы S1",
       id: 1001,
@@ -470,7 +586,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_2_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_2_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - S2",
       missionDescription: "Неправ. глаголы S2",
       id: 1001,
@@ -479,7 +595,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_3_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_part_3_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - S3",
       missionDescription: "Неправ. глаголы S3",
       id: 1001,
@@ -488,7 +604,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - S gaps",
       missionDescription: "Неправ. глаголы S",
       id: 1001,
@@ -497,7 +613,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_t_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_t_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - T",
       missionDescription: "Неправ. глаголы T",
       id: 1001,
@@ -506,7 +622,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_uw_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_uw_ru/brainStorm",
       missionVisibleName: "Irregular Verbs - UW",
       missionDescription: "Неправ. глаголы UW",
       id: 1001,
@@ -515,7 +631,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_s_gaps/brainStorm",
       missionVisibleName: "Irregular Verbs - TUW gaps",
       missionDescription: "Неправ. глаголы TUW",
       id: 1001,
@@ -524,7 +640,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_last_ru/listening-exercises",
+      path: "/see-all-sets-of-words/grid_table_IrregularVerbs_last_ru/brainStorm",
       missionVisibleName: "Irregular Verbs Final",
       missionDescription: "Неправ. глаголы",
       id: 1001,
@@ -870,7 +986,7 @@ export const allGamesAndSetsOfWordsList =
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/ieltsListening1/listening-exercises",
+      path: "/see-all-sets-of-words/ieltsListening1/brainStorm",
       missionVisibleName: "IELTS listening 1",
       missionDescription: "IELTS аудирование 1",
       id: 1001,
@@ -879,7 +995,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/listening_introductory2_i5/listening-exercises",
+      path: "/see-all-sets-of-words/listening_introductory2_i5/brainStorm",
       missionVisibleName: "Story - Fishing - i5",
       missionDescription: "Про рыбалку",
       id: 1001,
@@ -887,7 +1003,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/listening_elementary1_e4/listening-exercises",
+      path: "/see-all-sets-of-words/listening_elementary1_e4/brainStorm",
       missionVisibleName: "Story - Friends in a bar - e4",
       missionDescription: "Про бдрузей в баре",
       id: 1001,
@@ -896,7 +1012,7 @@ export const allGamesAndSetsOfWordsList =
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/listening_elementary1_e11/listening-exercises",
+      path: "/see-all-sets-of-words/listening_elementary1_e11/brainStorm",
       missionVisibleName: "Story - Car crash - e11",
       missionDescription: "Про car accident",
       id: 1001,
@@ -955,13 +1071,11 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Tu tu tu tu",
       id: 1001,
       active: true,
-      category: "categoryExamplesPatterns", // ← будет в этом наборе
-
       stars: '3'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause1/listening-exercises",
+      path: "/see-all-sets-of-words/yesNoBecause1/brainStorm",
       missionVisibleName: "Short discussions 1",
       missionDescription: "Короткие обсуждения 1",
       id: 1001,
@@ -970,7 +1084,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause2/listening-exercises",
+      path: "/see-all-sets-of-words/yesNoBecause2/brainStorm",
       missionVisibleName: "Short discussions 2",
       missionDescription: "Короткие обсуждения 2",
       id: 1001,
@@ -979,7 +1093,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause3/listening-exercises",
+      path: "/see-all-sets-of-words/yesNoBecause3/brainStorm",
       missionVisibleName: "Short discussions 3",
       missionDescription: "Короткие обсуждения 3",
       id: 1001,
@@ -988,7 +1102,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause4/listening-exercises",
+      path: "/see-all-sets-of-words/yesNoBecause4/brainStorm",
       missionVisibleName: "Short discussions 4",
       missionDescription: "Короткие обсуждения 4",
       id: 1001,
@@ -997,7 +1111,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause5/listening-exercises",
+      path: "/see-all-sets-of-words/yesNoBecause5/brainStorm",
       missionVisibleName: "Short discussions 5",
       missionDescription: "Короткие обсуждения 5",
       id: 1001,
@@ -1006,7 +1120,16 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yesNoBecause6/listening-exercises",
+      path: "/see-all-sets-of-words/sortVerbs/sorting",
+      missionVisibleName: "Sort Verbs",
+      missionDescription: "Sort Verbs",
+      id: 1001,
+      active: true,
+      gameIcon:'❓'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yesNoBecause6/brainStorm",
       missionVisibleName: "Short discussions 6",
       missionDescription: "Короткие обсуждения 6",
       id: 1001,
@@ -1015,7 +1138,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion1/listening-exercises",
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion1/brainStorm",
       missionVisibleName: "How much is too much 1?",
       missionDescription: "Чересчур это сколько 1?",
       id: 1001,
@@ -1024,7 +1147,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion2/listening-exercises",
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion2/brainStorm",
       missionVisibleName: "How much is too much 2?",
       missionDescription: "Чересчур это сколько 2?",
       id: 1001,
@@ -1033,7 +1156,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion3/listening-exercises",
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion3/brainStorm",
       missionVisibleName: "How much is too much 3?",
       missionDescription: "Чересчур это сколько 3?",
       id: 1001,
@@ -1042,7 +1165,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion4/listening-exercises",
+      path: "/see-all-sets-of-words/howMuchIsTooMuchDiscussion4/brainStorm",
       missionVisibleName: "How much is too much 4?",
       missionDescription: "Чересчур это сколько 4?",
       id: 1001,
@@ -1081,15 +1204,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '2'
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/yearGuesser",
-      missionVisibleName: "Guess the year",
-      missionDescription: "Отгадай год",
-      id: 1001,
-      active: true,
-      stars: '3'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/newspaper",
@@ -1108,7 +1223,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive2/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive2/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 2",
       missionDescription: "learn to read fast 2",
       id: 1001,
@@ -1119,7 +1234,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive3/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive3/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 3",
       missionDescription: "learn to read fast 3",
       id: 1001,
@@ -1138,7 +1253,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/readingIntensive4/listening-exercises",
+      path: "/see-all-sets-of-words/readingIntensive4/brainStorm",
       missionVisibleName: "Интенсив по чтению ч. 4",
       missionDescription: "learn to read fast 4",
       id: 1001,
@@ -1178,7 +1293,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Все шаблоны",
       id: 7,
       active: true,
-    },{
+    },
+    {
     missionName: "pattern-memory",
     missionVisibleName: "Игра на память",
     category: "gamePatterns",
@@ -1232,7 +1348,7 @@ export const AllGames =
       id: 2,
       name: "Listen",
       description: "слушай и наслаждайся",
-      route: "/see-all-sets-of-words/directionsListeningA1/listening-exercises",
+      route: "/see-all-sets-of-words/directionsListeningA1/brainStorm",
       icon: "lilsteningIcon.png"
     },
     {

@@ -34,6 +34,123 @@ const NewFuturisticStyleData = {
       },
     ]
   },
+  pattern: {
+    mainDescription: "New Task For Special Agents",
+    tasks: [
+      {
+        usefulWords: null,
+        taskDescription: "Переведи предложение",
+        taskID: "tag-questions",
+        taskPicture: new URL("../assets/images/vincentOnKayak.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "Мой учитель любит лодки",
+            correctAnswer: "My teacher loves boats",
+            explanation: 'likes или loves впринципе одно ии тоже, так что это не ошибка. Главное окончание S не забыть likeS, loves'
+
+          },
+          {
+            text: "Phoebe is Vincent's wife, ___?",
+            correctAnswer: "isn`t she?",
+            explanation: 'предложение утвердительное, значит хвостик (tag) отрицательный, она его жена, не так ли?'
+
+          },
+          {
+            text: "These questions are simple, ___?",
+            correctAnswer: "aren`t they?",
+            explanation: 'эти вопросы = они = поэтому they = предложение утвердительное, значит хвостик (tag) отрицательный, не так ли?'
+
+          },
+          {
+            text: "Anna is happy today, ___?",
+            correctAnswer: "isn't she?",
+            explanation: "Анна сегодня счастлива, разве нет? (утвердительное предложение, значит хвостик=уточнение отрицательный)"
+          },
+          {
+            text: "They aren't at home, ___?",
+            correctAnswer: "are they?",
+            explanation: "Их нет дома, или дома они? (отрицательное начало 'aren't' → хвостик 'are they')"
+          },
+          {
+            text: "Tom plays football, ___?",
+            correctAnswer: "doesn't he?",
+            explanation: "Том играет в футбол, да? (утвердительное с глаголом → хвостик 'doesn't')"
+          },
+          {
+            text: "You don't like coffee, ___?",
+            correctAnswer: "do you?",
+            explanation: "Ты не любишь кофе, так? (отрицательное с 'don't' → хвостик 'do')"
+          },
+          {
+            text: "She went to school, ___?",
+            correctAnswer: "didn't she?",
+            explanation: "Она ходила в школу, или не ходила? (утвердительное в прошлом → хвостик отрицательный)"
+          },
+          {
+            text: "We studied Maths, ___?",
+            correctAnswer: "didn't we?",
+            explanation: "Мы изучали математику, или не изучали мы?)"
+          },
+          {
+            text: "It's sunny today, ___?",
+            correctAnswer: "isn't it?",
+            explanation: "Сегодня солнечно, да? (утвердительное с 'is' → хвостик 'isn't')"
+          },
+          {
+            text: "You aren't tired, ___?",
+            correctAnswer: "are you?",
+            explanation: "Ты сейчас не уставший, верно? (tired - прилагательное, а не глагол)"
+          },
+          {
+            text: "Dogs love meat, ___?",
+            correctAnswer: "don't they?",
+            explanation: "Собаки любят мясо, да? (утвердительное с глаголом → хвостик 'don't')"
+          },
+          {
+            text: "He doesn't speak French, ___?",
+            correctAnswer: "does he?",
+            explanation: "Он не говорит по-французски, так? (отрицательное с 'doesn't' → хвостик 'does')"
+          },
+          {
+            text: "They visited Paris, ___?",
+            correctAnswer: "didn't they?",
+            explanation: "Они посетили Париж, да? (утвердительное в прошлом → хвостик 'didn't')"
+          },
+          {
+            text: "I'm not your enemy, ___?",
+            correctAnswer: "am I?",
+            explanation: "Я тебе не враг, да?"
+          },
+          {
+            text: "The bus stops here, ___?",
+            correctAnswer: "doesn't it?",
+            explanation: "Автобус останавливается здесь, да? (утвердительное с глаголом → хвостик 'doesn't')"
+          },
+          {
+            text: "You were happy, ___?",
+            correctAnswer: "weren't you?",
+            explanation: "Ты был счастлив, да? (утвердительное с 'were' → хвостик 'weren't')"
+          },
+          {
+            text: "She didn't call, ___?",
+            correctAnswer: "did she?",
+            explanation: "Она не звонила, верно? (отрицательное с 'didn't' → хвостик 'did')"
+          },
+          {
+            text: "We're early, ___?",
+            correctAnswer: "aren't we?",
+            explanation: "Мы пришли рано, да? (утвердительное с 'are' → хвостик 'aren't')"
+          },
+          {
+            text: "Coffee is hot, ___?",
+            correctAnswer: "isn't it?",
+            explanation: "Кофе горячий, или же нет? ( в английском кофе это оно = it)"
+          }
+
+        ]
+      },
+    ]
+  },
   tagQuestionsA2: {
     mainDescription: "New Task For Special Agents",
     tasks: [

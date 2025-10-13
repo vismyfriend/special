@@ -18,8 +18,12 @@
         <!-- Карточка со словом -->
         <div class="word-card" @click="toggleTranslation">
           <div class="word" ref="wordText">{{ currentWord.eng }}</div>
+          <!-- Блок с произношением -->
+          <div v-if="currentWord.hint" class="pronunciation-hint">
+            {{ currentWord.hint }}
+          </div>
         </div>
-<!--        <p class="hint-info">Нажми на букву, чтобы увидеть подсказку</p>-->
+        <!--        <p class="hint-info">Нажми на букву, чтобы увидеть подсказку</p>-->
 
         <!-- Блок с подсказками-буквами -->
         <div class="hint-container">
@@ -40,7 +44,7 @@
     </div>
 
     <!-- Кнопка пропуска внизу -->
-<!--    <button class="skip-button" @click="handleSkip">⏭ Пропустить</button>-->
+    <!--    <button class="skip-button" @click="handleSkip">⏭ Пропустить</button>-->
   </div>
 </template>
 
@@ -142,8 +146,11 @@ const loadNextWord = () => {
   if (isShowingTranslation.value) {
     const tempWord = currentWord.value.eng;
     const tempTranslation = currentWord.value.ru;
+    const tempHint = currentWord.value.hint;
     currentWord.value.eng = tempTranslation;
     currentWord.value.ru = tempWord;
+    // Для русского слова скрываем произношение
+    currentWord.value.hint = '';
   }
 
   resetRevealedLetters();
@@ -159,7 +166,8 @@ const undoLastWord = () => {
   const lastWord = removedWords.value.pop();
   currentWord.value = {
     eng: lastWord.eng,
-    ru: lastWord.ru
+    ru: lastWord.ru,
+    hint: lastWord.hint
   };
 
   // Восстанавливаем состояние языка
@@ -168,6 +176,8 @@ const undoLastWord = () => {
     const tempTranslation = currentWord.value.ru;
     currentWord.value.eng = tempTranslation;
     currentWord.value.ru = tempWord;
+    // Для русского слова скрываем произношение
+    currentWord.value.hint = '';
     isShowingTranslation.value = true;
   } else {
     isShowingTranslation.value = false;
@@ -187,9 +197,23 @@ const toggleTranslation = () => {
   // Переключаем состояние языка
   isShowingTranslation.value = !isShowingTranslation.value;
 
+  // Если показываем английское слово - показываем произношение, если русское - скрываем
+  if (isShowingTranslation.value) {
+    // Сейчас показываем русское слово, скрываем произношение
+    currentWord.value.hint = '';
+  } else {
+    // Сейчас показываем английское слово, восстанавливаем произношение
+    const originalWord = removedWords.value.find(w => w.eng === currentWord.value.ru) ||
+      shuffledData.value.find(w => w.eng === currentWord.value.ru);
+    if (originalWord) {
+      currentWord.value.hint = originalWord.hint;
+    }
+  }
+
   // Сбрасываем открытые буквы
   resetRevealedLetters();
 };
+
 const revealLetter = (index) => {
   revealedLetters.value[index] = true;
 };
@@ -308,6 +332,7 @@ html {
   background: linear-gradient(145deg, #ffffff 0%, #e6e9f0 100%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: none;
@@ -315,6 +340,7 @@ html {
   border: none;
   overflow: hidden; /* Обрезаем длинные слова */
   -webkit-tap-highlight-color: transparent; /* для предотвращения зума*/
+  position: relative;
 
 }
 
@@ -331,6 +357,49 @@ html {
   max-height: 100%;
   padding: 10px;
   line-height: 0.8;
+}
+
+/* Стили для блока произношения */
+.pronunciation-hint {
+  font-size: 21px;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 8px;
+  text-align: center;
+  position: relative;
+  padding: 4px 12px;
+}
+
+/* Добавляем пунктирную линию с помощью псевдоэлемента */
+.pronunciation-hint::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+  transparent 0%,
+  transparent 10%,
+  #bdc3c7 10%,
+  #bdc3c7 20%,
+  transparent 20%,
+  transparent 30%,
+  #bdc3c7 30%,
+  #bdc3c7 40%,
+  transparent 40%,
+  transparent 50%,
+  #bdc3c7 50%,
+  #bdc3c7 60%,
+  transparent 60%,
+  transparent 70%,
+  #bdc3c7 70%,
+  #bdc3c7 80%,
+  transparent 80%,
+  transparent 90%,
+  #bdc3c7 90%,
+  #bdc3c7 100%);
+  opacity: 0.7;
 }
 
 /* Адаптивные подсказки */
@@ -469,6 +538,16 @@ html {
     height: 180px;
   }
 
+  .word {
+    font-size: 36px;
+  }
+
+  .pronunciation-hint {
+    font-size: 14px;
+    margin-top: 6px;
+    padding: 3px 8px;
+  }
+
   .nav-button {
     width: 100%;
     height: 60px;
@@ -481,6 +560,7 @@ html {
     font-size: 18px;
   }
 }
+
 .skip-button {
   margin-top: 30px;
   padding: 12px 25px;
