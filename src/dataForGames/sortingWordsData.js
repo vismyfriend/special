@@ -22,6 +22,30 @@ const sortingWordsData = {
     ]
   },
 
+  sortingArticlesTheAnA: {
+    columns: [
+      { id: 'a', title: '--- A --- говорим Э если 1-ый звук слова согласный ' },
+      { id: 'an', title: '--- An --- говорим ЭН если 1-ый звук слова гласный ' },
+      { id: 'the', title: '--- The --- говорим ДЭ перед всеми уникальными предметами' }
+    ],
+    items: [
+      { id: 1, eng: '🌐 internet', ru: '`интернет', correctColumn: 'the' },
+      { id: 2, eng: '🐘 elephant ', ru: '`элефант - слон', correctColumn: 'an' },
+      { id: 3, eng: '🍊 orange', ru: '`ориндж - апельсин', correctColumn: 'an' },
+      { id: 4, eng: '🧅 onion', ru: '`анион - лучок', correctColumn: 'an' },
+      { id: 5, eng: '⏰ hour', ru: '`Аур - час', correctColumn: 'an' },
+      { id: 6, eng: '🎃 pumpkin', ru: '`пАмпкин - тыква', correctColumn: 'a' },
+      { id: 7, eng: '🎓 university', ru: 'Йюни`вёсити - университет', correctColumn: 'a' },
+      { id: 8, eng: '🍌 banana', ru: 'бэ`нАнэ - банан', correctColumn: 'a' },
+      { id: 9, eng: '🥒 cucumber', ru: '`кьЮкамбэ - огурчик', correctColumn: 'a' },
+      { id: 10, eng: '🌙 Moon', ru: 'мун - луна', correctColumn: 'the' },
+      { id: 11, eng: '💡 idea', ru: 'ай`дИа - идея', correctColumn: 'an' },
+
+
+
+    ]
+  },
+
   articlesAnNoA: {
     title: "Артикли A/An",
     instructions: "Перетащите слова в колонки с правильными артиклями",
@@ -58,23 +82,23 @@ const sortingWordsData = {
   },
   sortVerbs: {
     columns: [
-      { id: 'v1', title: 'V1 (Present)' },
-      { id: 'v2', title: 'V2 (Past)' },
-      { id: 'v3', title: 'V3 (Past Participle)' }
+      { id: 'v1', title: 'делаем обычно' },
+      { id: 'v2', title: 'сделали вчера' },
+      { id: 'v3', title: 'какие новости' }
     ],
     items: [
       { id: 1, eng: 'be', ru: 'быть', correctColumn: 'v1' },
-      { id: 2, eng: 'am, is, are', ru: 'быть (формы)', correctColumn: 'v1' },
+      { id: 2, eng: 'am, is, are', ru: 'быть', correctColumn: 'v1' },
       { id: 3, eng: 'was, were', ru: 'был(и)', correctColumn: 'v2' },
-      { id: 4, eng: 'been', ru: 'бывший', correctColumn: 'v3' },
+      { id: 4, eng: 'been', ru: '(по)бывал', correctColumn: 'v3' },
 
-      { id: 5, eng: 'become', ru: 'становиться', correctColumn: 'v1' },
+      { id: 5, eng: 'become', ru: 'становиться, ставший', correctColumn: ['v1','v3'] },
       { id: 6, eng: 'became', ru: 'стал', correctColumn: 'v2' },
-      { id: 7, eng: 'become', ru: 'ставший', correctColumn: 'v3' },
+      { id: 7, eng: 'become', ru: 'становиться, ставший', correctColumn: ['v1','v3'] },
 
       { id: 8, eng: 'begin', ru: 'начинать', correctColumn: 'v1' },
       { id: 9, eng: 'began', ru: 'начал', correctColumn: 'v2' },
-      { id: 10, eng: 'begun', ru: 'начавший', correctColumn: 'v3' },
+      { id: 10, eng: 'begun', ru: 'начавшийся', correctColumn: 'v3' },
 
       { id: 11, eng: 'bite', ru: 'кусать', correctColumn: 'v1' },
       { id: 12, eng: 'bit', ru: 'укусил', correctColumn: 'v2' },
@@ -82,39 +106,40 @@ const sortingWordsData = {
 
       { id: 14, eng: 'blow', ru: 'дуть', correctColumn: 'v1' },
       { id: 15, eng: 'blew', ru: 'дул', correctColumn: 'v2' },
-      { id: 16, eng: 'blown', ru: 'дувший', correctColumn: 'v3' },
+      { id: 16, eng: 'blown', ru: 'надуый', correctColumn: 'v3' },
 
       { id: 17, eng: 'break', ru: 'ломать', correctColumn: 'v1' },
       { id: 18, eng: 'broke', ru: 'сломал', correctColumn: 'v2' },
       { id: 19, eng: 'broken', ru: 'сломанный', correctColumn: 'v3' },
 
       { id: 20, eng: 'bring', ru: 'приносить', correctColumn: 'v1' },
-      { id: 21, eng: 'brought', ru: 'принес', correctColumn: 'v2' },
-      { id: 22, eng: 'brought', ru: 'принесенный', correctColumn: 'v3' },
+      { id: 21, eng: 'brought', ru: 'принес, принесенный', correctColumn: ['v2','v3']},
+      { id: 22, eng: 'brought', ru: 'принес, принесенный', correctColumn: ['v2','v3']},
 
       { id: 23, eng: 'build', ru: 'строить', correctColumn: 'v1' },
-      { id: 24, eng: 'built', ru: 'построил', correctColumn: 'v2' },
-      { id: 25, eng: 'built', ru: 'построенный', correctColumn: 'v3' },
+      { id: 24, eng: 'built', ru: 'построил, построенный', correctColumn: 'v2' },
+      { id: 25, eng: 'built', ru: 'построил, построенный', correctColumn: 'v3' },
 
       { id: 26, eng: 'buy', ru: 'покупать', correctColumn: 'v1' },
-      { id: 27, eng: 'bought', ru: 'купил', correctColumn: 'v2' },
-      { id: 28, eng: 'bought', ru: 'купленный', correctColumn: 'v3' },
+      { id: 27, eng: 'bought', ru: 'купил, купленный', correctColumn: ['v2','v3'] },
+      { id: 28, eng: 'bought', ru: 'купил, купленный', correctColumn: ['v2','v3'] },
 
       { id: 29, eng: 'catch', ru: 'ловить', correctColumn: 'v1' },
-      { id: 30, eng: 'caught', ru: 'поймал', correctColumn: 'v2' },
-      { id: 31, eng: 'caught', ru: 'пойманный', correctColumn: 'v3' },
+      { id: 30, eng: 'caught', ru: 'поймал, пойманный', correctColumn: ['v2','v3'] },
+      { id: 31, eng: 'caught', ru: 'поймал, пойманный', correctColumn: ['v2','v3'] },
 
       { id: 32, eng: 'choose', ru: 'выбирать', correctColumn: 'v1' },
       { id: 33, eng: 'chose', ru: 'выбрал', correctColumn: 'v2' },
       { id: 34, eng: 'chosen', ru: 'выбранный', correctColumn: 'v3' },
 
-      { id: 35, eng: 'come', ru: 'приходить', correctColumn: 'v1' },
+      { id: 35, eng: 'come', ru: 'приходить, пришедший', correctColumn: ['v1','v3'] },
       { id: 36, eng: 'came', ru: 'пришел', correctColumn: 'v2' },
-      { id: 37, eng: 'come', ru: 'пришедший', correctColumn: 'v3' },
+      { id: 37, eng: 'come', ru: 'приходить, пришедший', correctColumn: ['v1','v3']},
 
-      { id: 38, eng: 'cut', ru: 'резать', correctColumn: 'v1' },
-      { id: 39, eng: 'cut', ru: 'резал', correctColumn: 'v2' },
-      { id: 40, eng: 'cut', ru: 'резанный', correctColumn: 'v3' },
+      // cut - все три формы одинаковые
+      { id: 38, eng: 'cut', ru: 'резать, резал, резанный', correctColumn: ['v1','v2','v3'] },
+      { id: 39, eng: 'cut', ru: 'резать, резал, резанный', correctColumn: ['v1','v2','v3'] },
+      { id: 40, eng: 'cut', ru: 'резать, резал, резанный', correctColumn: ['v1','v2','v3'] },
 
       { id: 41, eng: 'do', ru: 'делать', correctColumn: 'v1' },
       { id: 42, eng: 'did', ru: 'сделал', correctColumn: 'v2' },
@@ -136,13 +161,15 @@ const sortingWordsData = {
       { id: 54, eng: 'fell', ru: 'упал', correctColumn: 'v2' },
       { id: 55, eng: 'fallen', ru: 'упавший', correctColumn: 'v3' },
 
+      // feel - v2 и v3 одинаковые
       { id: 56, eng: 'feel', ru: 'чувствовать', correctColumn: 'v1' },
-      { id: 57, eng: 'felt', ru: 'чувствовал', correctColumn: 'v2' },
-      { id: 58, eng: 'felt', ru: 'ощущаемый', correctColumn: 'v3' },
+      { id: 57, eng: 'felt', ru: 'чувствовал, ощущаемый', correctColumn: ['v2','v3'] },
+      { id: 58, eng: 'felt', ru: 'чувствовал, ощущаемый', correctColumn: ['v2','v3'] },
 
+      // find - v2 и v3 одинаковые
       { id: 59, eng: 'find', ru: 'находить', correctColumn: 'v1' },
-      { id: 60, eng: 'found', ru: 'нашел', correctColumn: 'v2' },
-      { id: 61, eng: 'found', ru: 'найденный', correctColumn: 'v3' },
+      { id: 60, eng: 'found', ru: 'нашел, найденный', correctColumn: ['v2','v3'] },
+      { id: 61, eng: 'found', ru: 'нашел, найденный', correctColumn: ['v2','v3'] },
 
       { id: 62, eng: 'fly', ru: 'летать', correctColumn: 'v1' },
       { id: 63, eng: 'flew', ru: 'летал', correctColumn: 'v2' },
@@ -156,9 +183,10 @@ const sortingWordsData = {
       { id: 69, eng: 'froze', ru: 'заморозил', correctColumn: 'v2' },
       { id: 70, eng: 'frozen', ru: 'замороженный', correctColumn: 'v3' },
 
+      // get - v2 и v3 одинаковые
       { id: 71, eng: 'get', ru: 'получать', correctColumn: 'v1' },
-      { id: 72, eng: 'got', ru: 'получил', correctColumn: 'v2' },
-      { id: 73, eng: 'got', ru: 'полученный', correctColumn: 'v3' },
+      { id: 72, eng: 'got', ru: 'получил, полученный', correctColumn: ['v2','v3'] },
+      { id: 73, eng: 'got', ru: 'получил, полученный', correctColumn: ['v2','v3'] },
 
       { id: 74, eng: 'give', ru: 'давать', correctColumn: 'v1' },
       { id: 75, eng: 'gave', ru: 'дал', correctColumn: 'v2' },
@@ -172,25 +200,30 @@ const sortingWordsData = {
       { id: 81, eng: 'grew', ru: 'рос', correctColumn: 'v2' },
       { id: 82, eng: 'grown', ru: 'выросший', correctColumn: 'v3' },
 
+      // have - v2 и v3 одинаковые
       { id: 83, eng: 'have', ru: 'иметь', correctColumn: 'v1' },
-      { id: 84, eng: 'had', ru: 'имел', correctColumn: 'v2' },
-      { id: 85, eng: 'had', ru: 'имевший', correctColumn: 'v3' },
+      { id: 84, eng: 'had', ru: 'имел, имевший', correctColumn: ['v2','v3'] },
+      { id: 85, eng: 'had', ru: 'имел, имевший', correctColumn: ['v2','v3'] },
 
+      // hear - v2 и v3 одинаковые
       { id: 86, eng: 'hear', ru: 'слышать', correctColumn: 'v1' },
-      { id: 87, eng: 'heard', ru: 'слышал', correctColumn: 'v2' },
-      { id: 88, eng: 'heard', ru: 'услышанный', correctColumn: 'v3' },
+      { id: 87, eng: 'heard', ru: 'слышал, услышанный', correctColumn: ['v2','v3'] },
+      { id: 88, eng: 'heard', ru: 'слышал, услышанный', correctColumn: ['v2','v3'] },
 
-      { id: 89, eng: 'hit', ru: 'ударять', correctColumn: 'v1' },
-      { id: 90, eng: 'hit', ru: 'ударил', correctColumn: 'v2' },
-      { id: 91, eng: 'hit', ru: 'ударенный', correctColumn: 'v3' },
+      // hit - все три формы одинаковые
+      { id: 89, eng: 'hit', ru: 'ударять, ударил, ударенный', correctColumn: ['v1','v2','v3'] },
+      { id: 90, eng: 'hit', ru: 'ударять, ударил, ударенный', correctColumn: ['v1','v2','v3'] },
+      { id: 91, eng: 'hit', ru: 'ударять, ударил, ударенный', correctColumn: ['v1','v2','v3'] },
 
+      // hold - v2 и v3 одинаковые
       { id: 92, eng: 'hold', ru: 'держать', correctColumn: 'v1' },
-      { id: 93, eng: 'held', ru: 'держал', correctColumn: 'v2' },
-      { id: 94, eng: 'held', ru: 'удерживаемый', correctColumn: 'v3' },
+      { id: 93, eng: 'held', ru: 'держал, удерживаемый', correctColumn: ['v2','v3'] },
+      { id: 94, eng: 'held', ru: 'держал, удерживаемый', correctColumn: ['v2','v3'] },
 
-      { id: 95, eng: 'hurt', ru: 'причинять боль', correctColumn: 'v1' },
-      { id: 96, eng: 'hurt', ru: 'причинил боль', correctColumn: 'v2' },
-      { id: 97, eng: 'hurt', ru: 'раненый', correctColumn: 'v3' },
+      // hurt - все три формы одинаковые
+      { id: 95, eng: 'hurt', ru: 'причинять боль', correctColumn: ['v1','v2','v3'] },
+      { id: 96, eng: 'hurt', ru: 'причинил боль', correctColumn: ['v1','v2','v3'] },
+      { id: 97, eng: 'hurt', ru: 'раненый', correctColumn: ['v1','v2','v3'] },
 
       { id: 98, eng: 'know', ru: 'знать', correctColumn: 'v1' },
       { id: 99, eng: 'knew', ru: 'знал', correctColumn: 'v2' },

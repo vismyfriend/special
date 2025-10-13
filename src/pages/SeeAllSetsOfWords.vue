@@ -967,31 +967,58 @@ onMounted(() => {
 .blur {
   filter: blur(5px);
 }
-
 .search-container {
   margin: 0 0 10px 0;
   padding: 0 10px;
 }
 
 .search-input {
+  scale: 1.1;
   width: 100%;
   padding: 8px 15px;
   border-radius: 20px;
   border: 3px solid #000000;
-  font-size: 11px;
+  font-size: 15px;
+  font-family: Special_f1;
   outline: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 
-  &:focus {
-    border-color: #6a6a6a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  /* Анимация дыхания */
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.search-input:focus {
+  border-color: #6a6a6a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: none; /* Останавливаем анимацию при фокусе */
+}
+
+.search-input::placeholder {
+  font-style: italic;
+  font-family: Helvetica;
+
+  font-size: 11px;
+  color: #888;
+  opacity: 0.8;
+  /* Анимация мерцания placeholder */
+  animation: placeholderPulse 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #000000;
   }
-  &::placeholder {
-    font-style: italic; /* Курсив */
-    color: #888; /* Можно добавить цвет для лучшей читаемости */
-    opacity: 0.8; /* Немного прозрачности */
+  50% {
+    transform: scale(1.02);
+    border-color: #4a4a4a;
   }
+}
+
+@keyframes placeholderPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .backgroundImg {
@@ -1088,6 +1115,7 @@ onMounted(() => {
 
 .border-radius50 {
   border-radius: 50px;
+  margin-bottom: -15px;
 }
 #phoneFrame {
   position: relative; // Устанавливает элемент относительно его нормального положения

@@ -173,12 +173,29 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "ХУ ИЗ ХУ ? Who is who ?",
-      missionDescription: "Самое начало",
+      missionVisibleName: "ХУ ИЗ ХУ ? Who is who",
+      missionDescription: "местоимения",
       id: 1001,
       active: true,
-      gameIcon:'0️⃣',
-      stars: 1
+      gameIcon:'🙊',
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
+      missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
+      missionDescription: "Артикли",
+      id: 1001,
+      active: true,
+      gameIcon:'🙉',
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/yoSoyGrutIamGrut/word-order-sortable",
+      missionVisibleName: "Я ЕСТЬ ГРУТ",
+      missionDescription: "To be - быть",
+      id: 1001,
+      active: true,
+      gameIcon:'🙈',
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

@@ -242,6 +242,12 @@ export default {
             onAdd: (evt) => {
               const itemId = evt.item.getAttribute('data-id')
               this.columnAssignments[itemId] = column.id
+
+
+              // Обновляем высоты после добавления элемента
+              this.$nextTick(() => {
+                this.updateAllColumnsHeight();
+              });
             }
           })
           this.sortableInstances.push(columnSortable)
@@ -260,12 +266,32 @@ export default {
         }
       }, 500)
     },
+    updateAllColumnsHeight() {
+      const columns = document.querySelectorAll('.column-content');
+      let maxHeight = 180; // минимальная высота
 
+      // Находим максимальную высоту среди всех колонок
+      columns.forEach(column => {
+        const height = column.scrollHeight;
+        if (height > maxHeight) {
+          maxHeight = height;
+        }
+      });
+
+      // Устанавливаем всем колонкам одинаковую высоту
+      columns.forEach(column => {
+        column.style.minHeight = `${maxHeight}px`;
+      });
+    },
     checkWordStatuses() {
       this.currentWords.forEach(word => {
         if (this.columnAssignments[word.id]) {
           const currentColumn = this.columnAssignments[word.id]
-          const isCorrect = currentColumn === word.correctColumn
+
+          // Поддержка как строк, так и массивов correctColumn
+          const isCorrect = Array.isArray(word.correctColumn)
+            ? word.correctColumn.includes(currentColumn)
+            : word.correctColumn === currentColumn
 
           if (this.wordStatus[word.id] === null ||
             (isCorrect && this.wordStatus[word.id] !== 'correct') ||
@@ -314,13 +340,22 @@ export default {
       let currentMistakes = 0
 
       this.currentWords.forEach(word => {
-        if (this.columnAssignments[word.id] === word.correctColumn) {
-          correctCount++
-          this.completedItems.add(word.id)
-          this.wordStatus[word.id] = 'correct'
-        } else if (this.columnAssignments[word.id]) {
-          currentMistakes++
-          this.wordStatus[word.id] = 'incorrect'
+        const currentColumn = this.columnAssignments[word.id]
+
+        if (currentColumn) {
+          // Поддержка multiple correct columns
+          const isCorrect = Array.isArray(word.correctColumn)
+            ? word.correctColumn.includes(currentColumn)
+            : word.correctColumn === currentColumn
+
+          if (isCorrect) {
+            correctCount++
+            this.completedItems.add(word.id)
+            this.wordStatus[word.id] = 'correct'
+          } else {
+            currentMistakes++
+            this.wordStatus[word.id] = 'incorrect'
+          }
         }
       })
 
@@ -498,7 +533,7 @@ export default {
   backdrop-filter: blur(15px);
   border: 2px dashed rgba(255, 255, 255, 0.3);
   border-radius: 15px;
-  padding: 20px;
+  padding: 5px;
   min-height: 250px;
   transition: border-color 0.3s ease;
   position: relative;
@@ -516,9 +551,11 @@ export default {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 1.1rem;
   display: flex;
+  flex-direction: column-reverse;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  line-height: 18px;
 }
 
 .column-icon {

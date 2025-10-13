@@ -95,7 +95,8 @@ const router = useRouter();
 
 
 // Объявляем переменные
-const currentTapSymbol = '⚡'; // Здесь можно менять символ
+// const currentTapSymbol = '⚡'; // Здесь можно менять символ
+const currentTapSymbol = '🎃'; // Здесь можно менять символ
 const counter = ref(0);
 const sessionStartCounter = ref(0);
 const sessionCounter = computed(() => counter.value - sessionStartCounter.value);
