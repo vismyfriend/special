@@ -38,16 +38,21 @@
 
 <script>
 import Sortable from 'sortablejs'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import shortSentencesWordOrderData from '../dataForGames/short-sentences-word-order'
+import { useGameStore } from 'stores/example-store'
 
 export default {
   name: 'GameDragAndDropSortable',
 
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const gameStore = useGameStore()
     return {
-      route
+      route,
+      router,
+      gameStore
     }
   },
 
@@ -58,12 +63,16 @@ export default {
       draggedIndex: null,
       currentSentenceIndex: 0,
       currentGameData: [],
-      sentences: [], // Будет заполнен из currentGameData
+      sentences: [],
+      shuffledSentences: [], // Добавляем перемешанные предложения
       currentWords: [],
       originalOrder: [],
       completedSentences: new Set(),
       remainingSentences: [],
-      gamePhase: 'first-round'
+      gamePhase: 'first-round',
+      startTime: null,
+      mistakes: 0,
+      totalAttempts: 0
     }
   },
 
@@ -99,18 +108,34 @@ export default {
 
   methods: {
     initializeGame() {
-      // Загружаем данные по missionName из роута
       const missionName = this.route.params.missionName
       this.currentGameData = shortSentencesWordOrderData[missionName] || []
 
-      // Преобразуем данные в массив предложений
       this.sentences = this.currentGameData.map(item => item.eng)
 
+      // Перемешиваем предложения
+      this.shuffledSentences = this.shuffleArray([...this.sentences])
+
       this.completedSentences = new Set()
-      this.remainingSentences = [...this.sentences.keys()]
+      this.remainingSentences = [...this.shuffledSentences.keys()] // Используем перемешанные индексы
       this.gamePhase = 'first-round'
       this.currentSentenceIndex = 0
+
+      this.startTime = Date.now()
+      this.mistakes = 0
+      this.totalAttempts = 0
+
       this.loadSentence()
+    },
+
+    // Функция для перемешивания массива
+    shuffleArray(array) {
+      const shuffled = [...array]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      return shuffled
     },
 
     loadSentence() {
@@ -119,7 +144,6 @@ export default {
       if (this.gamePhase === 'first-round') {
         sentenceIndex = this.currentSentenceIndex
       } else if (this.gamePhase === 'remaining') {
-        // Проверяем, что remainingSentences не пустой и currentSentenceIndex в пределах
         if (this.remainingSentences.length === 0 || this.currentSentenceIndex >= this.remainingSentences.length) {
           this.prepareRemainingSentences()
           return
@@ -130,16 +154,15 @@ export default {
         return
       }
 
-      // Защита от неопределенного индекса
-      if (sentenceIndex === undefined || sentenceIndex >= this.sentences.length) {
+      if (sentenceIndex === undefined || sentenceIndex >= this.shuffledSentences.length) {
         console.error('Invalid sentence index:', sentenceIndex)
         this.prepareRemainingSentences()
         return
       }
 
-      const text = this.sentences[sentenceIndex]?.trim()
+      // Берем текст из перемешанного массива
+      const text = this.shuffledSentences[sentenceIndex]?.trim()
 
-      // Дополнительная проверка на существование текста
       if (!text) {
         console.error('No text found for sentence index:', sentenceIndex)
         this.prepareRemainingSentences()
@@ -150,10 +173,8 @@ export default {
 
       this.originalOrder = words.map(word => ({ id: this.uuid(), word }))
 
-      // Перемешиваем слова
       this.currentWords = [...this.originalOrder].sort(() => Math.random() - 0.5)
 
-      // Проверяем, не стоит ли первое слово на правильном месте
       if (this.currentWords[0].word === this.originalOrder[0].word) {
         const firstWord = this.currentWords.shift()
         this.currentWords.push(firstWord)
@@ -220,11 +241,11 @@ export default {
           const moved = this.currentWords.splice(oldIndex, 1)[0]
           this.currentWords.splice(newIndex, 0, moved)
           this.draggedIndex = null
+          this.totalAttempts++
         }
       })
     },
 
-    // Умная проверка позиций слов
     getWordStatus(index) {
       if (index === 0 && this.currentWords[index].word !== this.originalOrder[index].word) {
         return 'not-checked'
@@ -245,10 +266,14 @@ export default {
         return
       }
 
-      // Если предложение завершено, добавляем в completed
+      if (!this.isCurrentSentenceCompleted) {
+        this.mistakes++
+      }
+
       if (this.isCurrentSentenceCompleted) {
         let currentIndex
         if (this.gamePhase === 'first-round') {
+          // Сохраняем индекс из перемешанного массива
           currentIndex = this.currentSentenceIndex
         } else {
           currentIndex = this.remainingSentences[this.currentSentenceIndex]
@@ -263,20 +288,17 @@ export default {
       if (this.gamePhase === 'first-round') {
         this.currentSentenceIndex++
 
-        // Завершили первый круг
-        if (this.currentSentenceIndex >= this.sentences.length) {
+        if (this.currentSentenceIndex >= this.shuffledSentences.length) {
           this.prepareRemainingSentences()
           return
         }
       } else if (this.gamePhase === 'remaining') {
         this.currentSentenceIndex++
 
-        // Завершили все оставшиеся предложения
         if (this.currentSentenceIndex >= this.remainingSentences.length) {
           if (this.allSentencesCompleted) {
             this.gamePhase = 'completed'
           } else {
-            // Начинаем новый круг с оставшихся предложений
             this.currentSentenceIndex = 0
           }
         }
@@ -286,9 +308,8 @@ export default {
     },
 
     prepareRemainingSentences() {
-      // Собираем индексы незавершенных предложений
       this.remainingSentences = []
-      for (let i = 0; i < this.sentences.length; i++) {
+      for (let i = 0; i < this.shuffledSentences.length; i++) {
         if (!this.completedSentences.has(i)) {
           this.remainingSentences.push(i)
         }
@@ -305,10 +326,32 @@ export default {
     },
 
     finishGame() {
-      console.log('🎉 Игра завершена! Все предложения составлены правильно!')
-      setTimeout(() => {
-      }, 100)
-      this.initializeGame() // Начинаем заново
+      const duration = Date.now() - this.startTime
+
+      const gameResults = {
+        missionName: this.route.params.missionName,
+        gameType: 'SentenceOrder',
+        completionTime: duration,
+        mistakes: this.mistakes,
+        totalSentences: this.currentGameData.length,
+        completedSentences: this.completedSentences.size,
+        totalAttempts: this.totalAttempts,
+        accuracy: Math.round((this.completedSentences.size / this.currentGameData.length) * 100),
+        timestamp: new Date().toISOString()
+      }
+
+      this.gameStore.setLastGameResults(duration, this.mistakes)
+      this.gameStore.setGameName("SentenceOrder")
+      this.gameStore.setWordSet(this.route.params.missionName)
+
+      console.log('🎉 Игра завершена! Результаты:', gameResults)
+
+      this.router.push({
+        path: "/leader-board/",
+        query: {
+          missionName: this.route.params.missionName
+        }
+      })
     },
 
     uuid() {
@@ -323,6 +366,7 @@ export default {
 </script>
 
 <style scoped>
+/* Стили остаются без изменений */
 .drag-game {
   max-width: 800px;
   margin: 30px auto;
@@ -408,7 +452,6 @@ export default {
   box-shadow: 0 6px 16px rgba(74, 222, 128, 0.35);
 }
 
-/* Стили для умной подсветки */
 .correct-position {
   border-color: #1aff00 !important;
   background: #4ade80c7 !important;
@@ -440,14 +483,12 @@ export default {
   }
 }
 
-/* убираем любые transform во время drag */
 .sortable-chosen .word,
 .sortable-drag .word,
 .word:active {
   transform: none !important;
 }
 
-/* плейсхолдер */
 .dragging-placeholder {
   background: rgba(255, 255, 255, 0.2) !important;
   border: 2px dashed rgba(255, 255, 255, 0.5) !important;
@@ -460,7 +501,6 @@ export default {
   animation: bounce 0.8s ease-in-out infinite;
 }
 
-/* анимации */
 @keyframes pulse {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
@@ -471,7 +511,6 @@ export default {
   50% { transform: translateY(-4px); }
 }
 
-/* стили Sortable */
 .sortable-ghost {
   opacity: 0.5;
 }
@@ -501,7 +540,7 @@ export default {
   border: none;
   border-radius: 12px;
   font-size: 15px;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.25s ease;
   min-width: 220px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
@@ -537,5 +576,4 @@ export default {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
 }
-
 </style>

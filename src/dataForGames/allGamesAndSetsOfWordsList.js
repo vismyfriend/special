@@ -1,6 +1,48 @@
 export const allGamesAndSetsOfWordsList =
   [
     {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/find-pairs-easy",
+      missionVisibleName: "Обезвредить бомбу",
+      missionDescription: "Cut the wires",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/find-pairs-hard",
+      missionVisibleName: "Соединить пары",
+      missionDescription: "Connect the wires",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/word-order-sortable",
+      missionVisibleName: "Правильный порядок",
+      missionDescription: "Word order",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/sorting",
+      missionVisibleName: "Перетянуть куда нужно",
+      missionDescription: "Drag the items",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+
+    {
       type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
       url: "https://yahoo.com",
       target: '_blank', // Открывать в новой вкладке
@@ -15,7 +57,7 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "ХУ ИЗ ХУ ? Who is who",
+      missionVisibleName: "ХУ ИЗ ХУ ? Who is who ?",
       missionDescription: "Самое начало",
       id: 1001,
       active: true,
@@ -31,33 +73,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'🧩'
     },
-    {
-      missionName: "pattern-memory",
-      missionVisibleName: "Игра на память",
-      category: "gamePatterns",
-      active: true,
-      // ... остальные поля ...
-    },
-    {
-      missionName: "pattern-puzzle",
-      missionVisibleName: "Головоломка с паттернами",
-      category: "gamePatterns",
-      active: true,
-    },
 
-    // Добавляем наборы для CategoryChinese
-    {
-      missionName: "chinese-basics",
-      missionVisibleName: "Китайский: основы",
-      category: ["chinese","gamePatterns"],
-      active: true,
-    },
-    {
-      missionName: "chinese-characters",
-      missionVisibleName: "Китайские иероглифы",
-      category: "chinese",
-      active: true,
-    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA1/print-all-words",
@@ -67,13 +83,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'1️⃣'
     },
-    {
-      missionName: "pattern",
-      missionVisibleName: "All patterns",
-      missionDescription: "Все шаблоны",
-      id: 7,
-      active: true,
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/whoIsWho/find-pairs-easy",
@@ -82,18 +92,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'🧨'
-    },
-
-
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/",
-      missionVisibleName: "Тапалка с цифрами",
-      missionDescription: "Произношение и цифры",
-      id: 1001,
-      active: false,
-      gameIcon:'🎯'
     },
 
     {
@@ -957,7 +955,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Tu tu tu tu",
       id: 1001,
       active: true,
-      category: "categoryY", // ← будет в этом наборе
+      category: "categoryExamplesPatterns", // ← будет в этом наборе
 
       stars: '3'
     },
@@ -1172,6 +1170,39 @@ export const allGamesAndSetsOfWordsList =
       missionVisibleName: "Vincent 2025",
       missionDescription: "Набор Винсента 2025",
       id: 7,
+      active: true,
+    },
+    {
+      missionName: "pattern",
+      missionVisibleName: "Посмотреть все шаблоны",
+      missionDescription: "Все шаблоны",
+      id: 7,
+      active: true,
+    },{
+    missionName: "pattern-memory",
+    missionVisibleName: "Игра на память",
+    category: "gamePatterns",
+    active: true,
+    // ... остальные поля ...
+  },
+    {
+      missionName: "pattern-puzzle",
+      missionVisibleName: "Головоломка с паттернами",
+      category: "gamePatterns",
+      active: true,
+    },
+
+    // Добавляем наборы для CategoryChinese
+    {
+      missionName: "chinese-basics",
+      missionVisibleName: "Китайский: основы",
+      category: ["chinese","gamePatterns"],
+      active: true,
+    },
+    {
+      missionName: "chinese-characters",
+      missionVisibleName: "Китайские иероглифы",
+      category: "chinese",
       active: true,
     },
     {

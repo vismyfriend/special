@@ -12,7 +12,7 @@
         <div class="search-container">
           <input
             v-model="searchQuery"
-            placeholder="Введите название миссии..."
+            placeholder="_ _ _ Введите название или листайте _ _ _"
             class="search-input"
           />
         </div>
@@ -20,6 +20,9 @@
         <!-- Используем filteredSets для отображения карточек -->
 
         <div class="v-cards-choose">
+
+
+
           <!-- 1. Создать свой набор (всегда первый) -->
           <div
             class="v-card-choose tooltip-wrapper create-special-set"
@@ -40,7 +43,7 @@
 
 
 
-          <!-- 2. Первые 3 обычных набора -->
+          <!-- 1 display none, а дальше 2-3-4 - по порядку это 3 обычных набора -->
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets.slice(0, 3)"
@@ -86,27 +89,90 @@
             </div>
           </div>
 
-          <!-- 3. -->
+          <!-- 5. Рандомные вопросы  -->
+
+
           <div
-            class="v-card-choose tooltip-wrapper glassMorphism"
+            class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
-            @click="tapalka"
+            @click="playRandomQuestions"
             :style="{
               '--offset-x': '5px',
               '--offset-y': '29.5px'
             }"
           >
-            Тапалка с цифрами
+            Рандомные вопросы : 🎲
             <div class="custom-tooltip">
-              Произношение цифр и слов
+              Random Questions
             </div>
           </div>
 
 
-          <!-- 4. Следующие 5 обычных наборов -->
+
+          <!-- КАТЕГОРИЯ Y EXAMPLES -->
+
+
+          <div
+            v-if="categoryExamplesPatternsSets.length > 0"
+            class="v-card-choose tooltip-wrapper categoryExamples"
+            @click="togglecategoryExamplesPatterns"
+            :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                examples ( {{ categoryExamplesPatternsSets.length }} )
+              </span>
+              <span class="card-icons">
+                <span class="expand-icon">{{ iscategoryExamplesPatternsExpanded ? '▼' : '▶' }}</span>
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              примеры заданий
+            </div>
+          </div>
+
+          <!-- РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ YEXAMPLES -->
+          <div
+            v-if="iscategoryExamplesPatternsExpanded"
+            class="category-sets-container categoryExamples-sets"
+          >
+            <div
+              v-for="currentSetOfWords in categoryExamplesPatternsSets"
+              :key="currentSetOfWords.missionName"
+              class="v-card-choose tooltip-wrapper category-set"
+              @click="handlePasswordProtectedClick(currentSetOfWords)"
+              :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+            >
+              <div class="card-content">
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
+                <span class="card-icons">
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+              <div class="custom-tooltip">
+                {{ currentSetOfWords.missionDescription }}
+              </div>
+            </div>
+          </div>
+
+          <!--Следующие 2 обычных наборов -->
+
           <div
             class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(3, 4)"
+            v-for="currentSetOfWords in filteredSets.slice(3, 5)"
             :key="currentSetOfWords.missionName"
             role="button"
             @click="handlePasswordProtectedClick(currentSetOfWords)"
@@ -152,28 +218,27 @@
 
 
 
-          <!-- 5. Змейка -->
           <div
-            class="v-card-choose tooltip-wrapper glassMorphism3"
+            class="v-card-choose tooltip-wrapper glassMorphism"
             role="button"
-            @click="playSnake"
+            @click="tapalka"
             :style="{
               '--offset-x': '5px',
               '--offset-y': '29.5px'
             }"
           >
-            Snake - снэЙк - змеЙка
+            Тапалка с цифрами
             <div class="custom-tooltip">
-              Snaсk - снЭк - перекус
+              Произношение цифр и слов
             </div>
           </div>
 
 
+          <!--Следующие 2 обычных наборов -->
 
-          <!-- 6. Все остальные обычные наборы -->
           <div
             class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(4)"
+            v-for="currentSetOfWords in filteredSets.slice(5, 8)"
             :key="currentSetOfWords.missionName"
             role="button"
             @click="handlePasswordProtectedClick(currentSetOfWords)"
@@ -201,10 +266,181 @@
                 >
               </span>
             </div>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
+                <span class="mission-icons">
+                  <span class="mission-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Змейка -->
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism3"
+            role="button"
+            @click="playSnake"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Snake - снэЙк - змеЙка
+            <div class="custom-tooltip">
+              Snaсk - снЭк - перекус
+            </div>
+          </div>
 
 
 
 
+
+          <!-- Category Game Patterns -->
+          <div
+            v-if="gamePatternsSets.length > 0"
+            class="v-card-choose tooltip-wrapper category-game-patterns"
+            @click="toggleGamePatterns"
+            :style="{
+    '--offset-x': '5px',
+    '--offset-y': '29.5px'
+  }"
+          >
+            <div class="card-content">
+    <span class="card-description">
+      🎮 Games by Vincent ( {{ gamePatternsSets.length }} )
+    </span>
+              <span class="card-icons">
+      <span class="expand-icon">{{ isGamePatternsExpanded ? '▼' : '▶' }}</span>
+    </span>
+            </div>
+            <div class="custom-tooltip">
+              Игры с паттернами
+
+            </div>
+          </div>
+
+          <!-- Раскрытые наборы Game Patterns -->
+          <div
+            v-if="isGamePatternsExpanded"
+            class="category-sets-container category-game-patterns-sets"
+          >
+            <div
+              v-for="currentSetOfWords in gamePatternsSets"
+              :key="currentSetOfWords.missionName"
+              class="v-card-choose tooltip-wrapper category-set"
+              @click="handlePasswordProtectedClick(currentSetOfWords)"
+              :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+            >
+              <div class="card-content">
+      <span class="card-description">
+        {{ currentSetOfWords.missionVisibleName }}
+      </span>
+                <span class="card-icons">
+        <span class="card-stars" v-if="currentSetOfWords.stars">
+          {{ getLevelStars(currentSetOfWords.stars) }}
+        </span>
+        <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+          {{ currentSetOfWords.gameIcon }}
+        </span>
+      </span>
+              </div>
+              <div class="custom-tooltip">
+                {{ currentSetOfWords.missionDescription }}
+              </div>
+            </div>
+          </div>
+
+
+
+          <!--Следующие 2 обычных наборов -->
+
+          <div
+            class="v-card-choose tooltip-wrapper"
+            v-for="currentSetOfWords in filteredSets.slice(8, 11)"
+            :key="currentSetOfWords.missionName"
+            role="button"
+            @click="handlePasswordProtectedClick(currentSetOfWords)"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                {{ currentSetOfWords.missionVisibleName }}
+              </span>
+              <span class="card-icons">
+                <span class="card-stars" v-if="currentSetOfWords.stars">
+                  {{ getLevelStars(currentSetOfWords.stars) }}
+                </span>
+                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                  {{ currentSetOfWords.gameIcon }}
+                </span>
+                <img
+                  v-if="currentSetOfWords.gameImg"
+                  :src="getImagePath(currentSetOfWords.gameImg)"
+                  class="game-image"
+                  alt="game icon"
+                >
+              </span>
+            </div>
+            <div class="custom-tooltip">
+              <div class="tooltip-content">
+                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
+                <span class="mission-icons">
+                  <span class="mission-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Все остальные обычные наборы -->
+          <div
+            class="v-card-choose tooltip-wrapper"
+            v-for="currentSetOfWords in filteredSets.slice(11)"
+            :key="currentSetOfWords.missionName"
+            role="button"
+            @click="handlePasswordProtectedClick(currentSetOfWords)"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            <div class="card-content">
+              <span class="card-description">
+                {{ currentSetOfWords.missionVisibleName }}
+              </span>
+              <span class="card-icons">
+                <span class="card-stars" v-if="currentSetOfWords.stars">
+                  {{ getLevelStars(currentSetOfWords.stars) }}
+                </span>
+                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                  {{ currentSetOfWords.gameIcon }}
+                </span>
+                <img
+                  v-if="currentSetOfWords.gameImg"
+                  :src="getImagePath(currentSetOfWords.gameImg)"
+                  class="game-image"
+                  alt="game icon"
+                >
+              </span>
+            </div>
 
             <div class="custom-tooltip">
               <div class="tooltip-content">
@@ -237,20 +473,6 @@
             </div>
           </div>
 
-          <div
-            class="v-card-choose tooltip-wrapper randomQuestions random-set"
-            role="button"
-            @click="playRandomQuestions"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Рандомные вопросы 🎲
-            <div class="custom-tooltip">
-              Random Questions
-            </div>
-          </div>
 
 
 
@@ -371,64 +593,6 @@
 
 
 
-          <!-- Category Game Patterns -->
-          <div
-            v-if="gamePatternsSets.length > 0"
-            class="v-card-choose tooltip-wrapper category-game-patterns"
-            @click="toggleGamePatterns"
-            :style="{
-    '--offset-x': '5px',
-    '--offset-y': '29.5px'
-  }"
-          >
-            <div class="card-content">
-    <span class="card-description">
-      🎮 Игровые паттерны ( {{ gamePatternsSets.length }} )
-    </span>
-              <span class="card-icons">
-      <span class="expand-icon">{{ isGamePatternsExpanded ? '▼' : '▶' }}</span>
-    </span>
-            </div>
-            <div class="custom-tooltip">
-              Игры с паттернами
-
-            </div>
-          </div>
-
-          <!-- Раскрытые наборы Game Patterns -->
-          <div
-            v-if="isGamePatternsExpanded"
-            class="category-sets-container category-game-patterns-sets"
-          >
-            <div
-              v-for="currentSetOfWords in gamePatternsSets"
-              :key="currentSetOfWords.missionName"
-              class="v-card-choose tooltip-wrapper category-set"
-              @click="handlePasswordProtectedClick(currentSetOfWords)"
-              :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
-            >
-              <div class="card-content">
-      <span class="card-description">
-        {{ currentSetOfWords.missionVisibleName }}
-      </span>
-                <span class="card-icons">
-        <span class="card-stars" v-if="currentSetOfWords.stars">
-          {{ getLevelStars(currentSetOfWords.stars) }}
-        </span>
-        <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-          {{ currentSetOfWords.gameIcon }}
-        </span>
-      </span>
-              </div>
-              <div class="custom-tooltip">
-                {{ currentSetOfWords.missionDescription }}
-              </div>
-            </div>
-          </div>
-
           <!-- Category Chinese -->
           <div
             v-if="chineseSets.length > 0"
@@ -488,61 +652,6 @@
 
 
 
-          <div
-            v-if="categoryYSets.length > 0"
-            class="v-card-choose tooltip-wrapper category-y"
-            @click="toggleCategoryY"
-            :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
-          >
-            <div class="card-content">
-              <span class="card-description">
-                ⚡ Категория Y ( {{ categoryYSets.length }} )
-              </span>
-              <span class="card-icons">
-                <span class="expand-icon">{{ isCategoryYExpanded ? '▼' : '▶' }}</span>
-              </span>
-            </div>
-            <div class="custom-tooltip">
-              Продвинутые задания категории Y
-            </div>
-          </div>
-
-          <!-- 7.1. РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ Y -->
-          <div
-            v-if="isCategoryYExpanded"
-            class="category-sets-container category-y-sets"
-          >
-            <div
-              v-for="currentSetOfWords in categoryYSets"
-              :key="currentSetOfWords.missionName"
-              class="v-card-choose tooltip-wrapper category-set"
-              @click="handlePasswordProtectedClick(currentSetOfWords)"
-              :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
-            >
-              <div class="card-content">
-                <span class="card-description">
-                  {{ currentSetOfWords.missionVisibleName }}
-                </span>
-                <span class="card-icons">
-                  <span class="card-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
-              </div>
-              <div class="custom-tooltip">
-                {{ currentSetOfWords.missionDescription }}
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -608,7 +717,7 @@ const shake = ref(false);
 /// Категории
 const isReadingExpanded = ref(false)
 const isCategoryXExpanded = ref(false)
-const isCategoryYExpanded = ref(false)
+const iscategoryExamplesPatternsExpanded = ref(false)
 const isGamePatternsExpanded = ref(false)
 const isChineseExpanded = ref(false)
 
@@ -633,9 +742,9 @@ const categoryXSets = computed(() => {
   )
 })
 
-const categoryYSets = computed(() => {
+const categoryExamplesPatternsSets = computed(() => {
   return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'categoryY')
+    set.active && hasCategory(set, 'categoryExamplesPatterns')
   )
 })
 
@@ -672,8 +781,8 @@ const toggleCategoryX = () => {
   isCategoryXExpanded.value = !isCategoryXExpanded.value
 }
 
-const toggleCategoryY = () => {
-  isCategoryYExpanded.value = !isCategoryYExpanded.value
+const togglecategoryExamplesPatterns = () => {
+  iscategoryExamplesPatternsExpanded.value = !iscategoryExamplesPatternsExpanded.value
 }
 
 
@@ -737,7 +846,7 @@ const filteredSets = computed(() => {
       set.active &&
       !hasCategory(set, 'reading') &&
       !hasCategory(set, 'categoryX') &&
-      !hasCategory(set, 'categoryY') &&
+      !hasCategory(set, 'categoryExamplesPatterns') &&
       !hasCategory(set, 'gamePatterns') &&
       !hasCategory(set, 'chinese')
     );
@@ -868,8 +977,8 @@ onMounted(() => {
   width: 100%;
   padding: 8px 15px;
   border-radius: 20px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+  border: 3px solid #000000;
+  font-size: 11px;
   outline: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -1338,7 +1447,7 @@ onMounted(() => {
 }
 
 /* Стили для категории Y */
-.category-y {
+.categoryExamples {
   background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%);
   color: white;
   border: 2px solid #00d2d3;
@@ -1350,9 +1459,9 @@ onMounted(() => {
   }
 }
 
-.category-y-sets {
+.categoryExamples-sets {
   .category-set {
-    background: rgba(0, 210, 211, 0.1);
+    //background: rgba(0, 210, 211, 0.1);
     border-left: 3px solid #00d2d3;
     margin-left: 10px;
     width: calc(100% - 10px);

@@ -14,7 +14,7 @@ const shortWordsData = {
 
 
   pattern: [
-    { id: 1, eng: "bag", ru: "сумака", hint: "/ БЭГ /" },
+    { id: 1, eng: "bag", ru: "сумка", hint: "/ БЭГ /" },
     { id: 2, eng: "bug", ru: "жук", hint: "/ БАГ /" },
     { id: 3, eng: "big", ru: "большой", hint: "/ БИГ /" },
     { id: 4, eng: "phone", ru: "телефон", hint: "/ ФОУН /" },
