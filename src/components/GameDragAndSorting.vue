@@ -1,45 +1,25 @@
 <template>
   <div class="drag-sort-game">
-    <div class="game-header">
-      <h2>{{ currentGameData.title }}</h2>
-      <div class="progress-info">
-        {{ completedItems.size }} / {{ currentGameData.items.length }}
-      </div>
-    </div>
-
     <div class="instructions">
-      <p>{{ currentGameData.instructions }}</p>
-    </div>
-
-    <!-- Подсказки с переводами -->
-    <div v-if="showHints" class="hints-container">
-      <div class="hints-title">📚 Подсказки:</div>
-      <div class="hints-list">
-        <div
-          v-for="item in currentWords"
-          :key="item.id"
-          class="hint-item"
-        >
-          <span class="eng-word">{{ item.eng }}</span> -
-          <span class="ru-word">{{ item.ru }}</span>
-        </div>
-      </div>
+      <p>Перетащите слова в правильные категории</p>
     </div>
 
     <!-- Слова для перетаскивания -->
-    <div v-if="gamePhase !== 'completed'" ref="wordsContainer" class="words-container">
+    <div ref="wordsContainer" class="words-container">
       <div
         v-for="item in availableWords"
         :key="item.id"
         class="word-card"
         :data-id="item.id"
+        :class="getWordCardClass(item.id)"
       >
         {{ item.eng }}
+        <div class="word-ru">{{ item.ru }}</div>
       </div>
     </div>
 
     <!-- Колонки для сортировки -->
-    <div v-if="gamePhase !== 'completed'" class="columns-container">
+    <div class="columns-container">
       <div
         v-for="column in currentGameData.columns"
         :key="column.id"
@@ -55,47 +35,21 @@
             :key="item.id"
             class="word-card in-column"
             :data-id="item.id"
+            :class="getWordCardClass(item.id)"
           >
             {{ item.eng }}
+            <div class="word-ru">{{ item.ru }}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Экран завершения -->
-    <div v-if="gamePhase === 'completed'" class="completion-screen">
-      <div class="completion-content">
-        <h3>🎉 Поздравляем!</h3>
-        <p>Вы успешно завершили задание!</p>
-        <div class="completion-stats">
-          <p>Правильно распределено: {{ completedItems.size }} из {{ currentGameData.items.length }}</p>
-          <p>Процент правильных ответов: {{ percentage }}%</p>
-        </div>
-        <div class="completion-buttons">
-          <button @click="goToResults" class="control-button results">
-            📊 Посмотреть результаты
-          </button>
-          <button @click="initializeGame" class="control-button restart">
-            🔄 Начать заново
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div v-else class="game-controls">
-      <button
-        @click="checkAnswers"
-        class="control-button"
-        :class="buttonClass"
-        :disabled="!allWordsPlaced"
-      >
-        {{ buttonText }}
+    <div class="game-controls">
+      <button @click="checkAnswers" class="control-button">
+        Проверить
       </button>
-      <button @click="toggleHints" class="control-button hint">
-        {{ showHints ? '🙈 Скрыть подсказки' : '💡 Показать подсказки' }}
-      </button>
-      <button @click="resetGame" class="control-button reset">
-        🔄 Сбросить
+      <button @click="resetGame" class="control-button">
+        Сбросить
       </button>
     </div>
   </div>
@@ -105,6 +59,7 @@
 import Sortable from 'sortablejs'
 import { useRoute, useRouter } from 'vue-router'
 import sortingWordsData from '../dataForGames/sortingWordsData'
+import { useGameStore } from 'stores/example-store'
 
 export default {
   name: 'GameDragAndSorting',
@@ -112,9 +67,11 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const gameStore = useGameStore()
     return {
       route,
-      router
+      router,
+      gameStore
     }
   },
 
@@ -131,9 +88,13 @@ export default {
       columnAssignments: {},
       completedItems: new Set(),
       columnRefs: {},
-      gamePhase: 'playing',
-      showHints: false,
-      gameResults: null
+      // Добавляем таймер и статистику
+      startTime: null,
+      mistakes: 0,
+      // Добавляем отслеживание статуса слов
+      wordStatus: {}, // { wordId: 'correct' | 'incorrect' | null }
+      checkTimer: null,
+      isDragging: false // Флаг для отслеживания перетаскивания
     }
   },
 
@@ -142,26 +103,6 @@ export default {
       return this.currentWords.filter(word =>
         !this.columnAssignments[word.id]
       )
-    },
-
-    allWordsPlaced() {
-      return this.currentWords.length > 0 &&
-        this.currentWords.every(word => this.columnAssignments[word.id])
-    },
-
-    buttonText() {
-      return '✅ Проверить'
-    },
-
-    buttonClass() {
-      if (!this.allWordsPlaced) {
-        return 'disabled'
-      }
-      return 'check'
-    },
-
-    percentage() {
-      return Math.round((this.completedItems.size / this.currentGameData.items.length) * 100)
     }
   },
 
@@ -171,19 +112,29 @@ export default {
 
   methods: {
     initializeGame() {
-      const missionName = this.route.params.missionName
+      const missionName = this.route.params.missionName || 'fruitsVegetables'
       this.currentGameData = sortingWordsData[missionName] || sortingWordsData.fruitsVegetables
 
       this.currentWords = [...this.currentGameData.items]
       this.columnAssignments = {}
       this.completedItems = new Set()
       this.columnRefs = {}
-      this.gamePhase = 'playing'
-      this.showHints = false
-      this.gameResults = null
+      this.wordStatus = {}
+
+      // Запускаем таймер
+      this.startTime = Date.now()
+      this.mistakes = 0
+      this.isDragging = false
+
+      // Очищаем предыдущий таймер
+      if (this.checkTimer) {
+        clearInterval(this.checkTimer)
+      }
 
       this.$nextTick(() => {
         this.initializeSortable()
+        // Запускаем периодическую проверку вместо вызова из onAdd
+        this.startPeriodicCheck()
       })
     },
 
@@ -191,18 +142,33 @@ export default {
       this.sortableInstances.forEach(instance => instance.destroy())
       this.sortableInstances = []
 
+      const sortableOptions = {
+        group: {
+          name: 'words',
+          pull: true,
+          put: true
+        },
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        onStart: () => {
+          this.isDragging = true
+        },
+        onEnd: () => {
+          this.isDragging = false
+        }
+      }
+
       if (this.$refs.wordsContainer) {
         const wordsSortable = new Sortable(this.$refs.wordsContainer, {
-          group: {
-            name: 'words',
-            pull: true,
-            put: true
-          },
+          ...sortableOptions,
           sort: false,
-          animation: 150,
           onAdd: (evt) => {
             const itemId = evt.item.getAttribute('data-id')
             delete this.columnAssignments[itemId]
+            // Сбрасываем статус при перемещении слова обратно в контейнер
+            this.wordStatus[itemId] = null
           }
         })
         this.sortableInstances.push(wordsSortable)
@@ -212,12 +178,7 @@ export default {
         const columnElement = this.columnRefs[column.id]
         if (columnElement) {
           const columnSortable = new Sortable(columnElement, {
-            group: {
-              name: 'words',
-              pull: true,
-              put: true
-            },
-            animation: 150,
+            ...sortableOptions,
             onAdd: (evt) => {
               const itemId = evt.item.getAttribute('data-id')
               this.columnAssignments[itemId] = column.id
@@ -228,84 +189,104 @@ export default {
       })
     },
 
+    startPeriodicCheck() {
+      // Проверяем статус слов каждые 500ms, но только если не перетаскиваем
+      this.checkTimer = setInterval(() => {
+        if (!this.isDragging) {
+          this.checkWordStatuses()
+        }
+      }, 500)
+    },
+
+    checkWordStatuses() {
+      // Проверяем все слова, которые размещены в колонках
+      this.currentWords.forEach(word => {
+        if (this.columnAssignments[word.id]) {
+          const currentColumn = this.columnAssignments[word.id]
+          const isCorrect = currentColumn === word.correctColumn
+
+          // Если статус еще не установлен или изменился
+          if (this.wordStatus[word.id] === null ||
+            (isCorrect && this.wordStatus[word.id] !== 'correct') ||
+            (!isCorrect && this.wordStatus[word.id] !== 'incorrect')) {
+
+            // Устанавливаем новый статус
+            this.wordStatus[word.id] = isCorrect ? 'correct' : 'incorrect'
+
+            // Если слово размещено неправильно - считаем ошибку
+            if (!isCorrect) {
+              this.mistakes++
+            }
+          }
+        } else {
+          // Слово не размещено - сбрасываем статус
+          this.wordStatus[word.id] = null
+        }
+      })
+    },
+
+    getWordCardClass(wordId) {
+      const status = this.wordStatus[wordId]
+      if (status === 'correct') {
+        return 'word-correct'
+      } else if (status === 'incorrect') {
+        return 'word-incorrect'
+      }
+      return ''
+    },
+
     getItemsInColumn(columnId) {
       return this.currentWords.filter(word =>
         this.columnAssignments[word.id] === columnId
       )
     },
 
-    toggleHints() {
-      this.showHints = !this.showHints
-    },
-
     checkAnswers() {
-      if (!this.allWordsPlaced) return
+      // Останавливаем периодическую проверку
+      if (this.checkTimer) {
+        clearInterval(this.checkTimer)
+      }
 
       let correctCount = 0
-      const newlyCompleted = new Set()
+      let currentMistakes = 0
 
+      // Финальная проверка всех слов
       this.currentWords.forEach(word => {
         if (this.columnAssignments[word.id] === word.correctColumn) {
           correctCount++
-          newlyCompleted.add(word.id)
+          this.completedItems.add(word.id)
+          // Подсвечиваем правильные слова
+          this.wordStatus[word.id] = 'correct'
+        } else if (this.columnAssignments[word.id]) {
+          // Слово размещено в неправильной колонке - считаем ошибку
+          currentMistakes++
+          // Подсвечиваем неправильные слова
+          this.wordStatus[word.id] = 'incorrect'
         }
       })
 
-      newlyCompleted.forEach(id => this.completedItems.add(id))
-
-      // Сохраняем результаты для страницы результатов
-      this.gameResults = {
-        missionName: this.route.params.missionName,
-        gameTitle: this.currentGameData.title,
-        totalWords: this.currentGameData.items.length,
-        correctAnswers: correctCount,
-        percentage: Math.round((correctCount / this.currentGameData.items.length) * 100),
-        timestamp: new Date().toISOString(),
-        items: this.currentWords.map(word => ({
-          id: word.id,
-          eng: word.eng,
-          ru: word.ru,
-          userColumn: this.columnAssignments[word.id],
-          correctColumn: word.correctColumn,
-          isCorrect: this.columnAssignments[word.id] === word.correctColumn
-        }))
+      // Добавляем новые ошибки к общему счетчику
+      if (currentMistakes > 0) {
+        this.mistakes += currentMistakes
       }
 
-      if (correctCount === this.currentWords.length) {
-
-        setTimeout(() => {
-          this.gamePhase = 'completed'
-          this.sendGameResults()
-        }, 1000)
-      } else {
-        alert(`Правильно: ${correctCount} из ${this.currentWords.length}. Попробуйте еще!`)
-      }
+      // Всегда отправляем результаты, просто с разным количеством ошибок
+      this.finishGame()
     },
 
-    sendGameResults() {
-      // Отправка результатов на сервер
-      console.log('📊 Результаты игры:', this.gameResults)
+    finishGame() {
+      const duration = Date.now() - this.startTime
 
-      // Пример отправки:
-      /*
-      this.$api.post('/game-results', this.gameResults)
-        .then(response => {
-          console.log('Результаты сохранены:', response)
-        })
-        .catch(error => {
-          console.error('Ошибка сохранения:', error)
-        })
-      */
-    },
+      // Сохраняем результаты точно так же как в вашей другой игре
+      this.gameStore.setLastGameResults(duration, this.mistakes)
+      this.gameStore.setGameName("WordSorting")
+      this.gameStore.setWordSet(this.route.params.missionName)
 
-    goToResults() {
-      // Переход на страницу результатов с передачей данных
-      this.$router.push({
-        name: 'GameResults',
+      // Переходим на leaderboard с теми же параметрами
+      this.router.push({
+        path: "/leader-board/",
         query: {
-          game: 'drag-and-sort',
-          mission: this.route.params.missionName,
-          results: JSON.stringify(this.gameResults)
+          missionName: this.route.params.missionName
         }
       })
     },
@@ -317,6 +298,9 @@ export default {
 
   beforeUnmount() {
     this.sortableInstances.forEach(instance => instance.destroy())
+    if (this.checkTimer) {
+      clearInterval(this.checkTimer)
+    }
   }
 }
 </script>
@@ -329,65 +313,9 @@ export default {
   font-family: 'Segoe UI', sans-serif;
 }
 
-.game-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.game-header h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
-
-.progress-info {
-  background: #f0f0f0;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  display: inline-block;
-}
-
 .instructions {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.1rem;
-}
-
-/* Стили для подсказок */
-.hints-container {
-  background: #e7f3ff;
-  border: 2px solid #b3d9ff;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 20px 0;
-}
-
-.hints-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #0066cc;
-}
-
-.hints-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 8px;
-}
-
-.hint-item {
-  padding: 5px 10px;
-  background: white;
-  border-radius: 5px;
-  font-size: 0.9rem;
-}
-
-.eng-word {
-  font-weight: bold;
-  color: #0066cc;
-}
-
-.ru-word {
-  color: #666;
 }
 
 .words-container {
@@ -410,18 +338,57 @@ export default {
   font-weight: 600;
   cursor: grab;
   user-select: none;
-  transition: all 0.2s ease;
+  text-align: center;
+  /* Убираем transition из основного класса */
 }
 
-.word-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.word-ru {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
 }
 
-.word-card.in-column {
-  background: #e9ecef;
-  border-color: #6c757d;
-  margin-bottom: 5px;
+/* Стили для правильных слов - добавляем transition только здесь */
+.word-correct {
+  background: linear-gradient(135deg, #4ade80, #22c55e) !important;
+  color: white !important;
+  border-color: #16a34a !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+  transition: all 0.5s ease !important; /* Transition только для подсвеченных карточек */
+}
+
+.word-correct .word-ru {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Стили для неправильных слов - добавляем transition только здесь */
+.word-incorrect {
+  background: linear-gradient(135deg, #f87171, #ef4444) !important;
+  color: white !important;
+  border-color: #dc2626 !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  transition: all 0.5s ease !important; /* Transition только для подсвеченных карточек */
+}
+
+.word-incorrect .word-ru {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Стили для Sortable.js */
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.sortable-chosen .word-card {
+  transition: none !important; /* Убираем transition во время перетаскивания */
+}
+
+.sortable-drag .word-card {
+  transform: rotate(5deg) !important;
+  z-index: 1000;
+  transition: none !important; /* Убираем transition во время перетаскивания */
 }
 
 .columns-container {
@@ -437,11 +404,6 @@ export default {
   border-radius: 10px;
   padding: 15px;
   min-height: 200px;
-  transition: border-color 0.3s ease;
-}
-
-.column:hover {
-  border-color: #007bff;
 }
 
 .column-header {
@@ -461,134 +423,14 @@ export default {
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
-  flex-wrap: wrap;
 }
 
 .control-button {
-  padding: 12px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  background: #007bff;
+  color: white;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 600;
-  min-width: 160px;
-}
-
-.control-button.check {
-  background: #28a745;
-  color: white;
-}
-
-.control-button.check:hover:not(:disabled) {
-  background: #218838;
-  transform: translateY(-2px);
-}
-
-.control-button.hint {
-  background: #ffc107;
-  color: #212529;
-}
-
-.control-button.hint:hover {
-  background: #e0a800;
-  transform: translateY(-2px);
-}
-
-.control-button.reset {
-  background: #6c757d;
-  color: white;
-}
-
-.control-button.reset:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
-}
-
-.control-button.results {
-  background: #17a2b8;
-  color: white;
-  font-size: 16px;
-  padding: 15px 25px;
-}
-
-.control-button.restart {
-  background: #6c757d;
-  color: white;
-  font-size: 16px;
-  padding: 15px 25px;
-}
-
-.control-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.control-button:disabled:hover {
-  transform: none;
-}
-
-/* Экран завершения */
-.completion-screen {
-  text-align: center;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 15px;
-  color: white;
-  margin: 20px 0;
-}
-
-.completion-content h3 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.completion-content p {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.completion-stats {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px 0;
-  display: inline-block;
-}
-
-.completion-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 25px;
-  flex-wrap: wrap;
-}
-
-/* Стили для SortableJS */
-.sortable-ghost {
-  opacity: 0.4;
-}
-
-.sortable-chosen {
-  background: #fff3cd;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .game-controls {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .control-button {
-    width: 100%;
-    max-width: 250px;
-  }
-
-  .completion-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
 }
 </style>
