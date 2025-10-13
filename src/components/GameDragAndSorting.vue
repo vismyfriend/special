@@ -1,7 +1,11 @@
 <template>
   <div class="drag-sort-game">
+    <div class="game-header">
+      <h2>{{ currentGameData.title }}</h2>
+    </div>
+
     <div class="instructions">
-      <p>Перетащите слова в правильные категории</p>
+      <p>{{ currentGameData.instructions }}</p>
     </div>
 
     <!-- Слова для перетаскивания -->
@@ -13,7 +17,7 @@
         :data-id="item.id"
         :class="getWordCardClass(item.id)"
       >
-        {{ item.eng }}
+        <div class="word-eng">{{ item.eng }}</div>
         <div class="word-ru">{{ item.ru }}</div>
       </div>
     </div>
@@ -25,7 +29,10 @@
         :key="column.id"
         class="column"
       >
-        <div class="column-header">{{ column.title }}</div>
+        <div class="column-header">
+          <span class="column-icon">📁</span>
+          {{ column.title }}
+        </div>
         <div
           :ref="el => { columnRefs[column.id] = el }"
           class="column-content"
@@ -37,19 +44,20 @@
             :data-id="item.id"
             :class="getWordCardClass(item.id)"
           >
-            {{ item.eng }}
+            <div class="word-eng">{{ item.eng }}</div>
             <div class="word-ru">{{ item.ru }}</div>
           </div>
         </div>
+
       </div>
     </div>
 
     <div class="game-controls">
-      <button @click="checkAnswers" class="control-button">
-        Проверить
+      <button @click="checkAnswers" class="control-button check">
+        ✅ Проверить ответы
       </button>
-      <button @click="resetGame" class="control-button">
-        Сбросить
+      <button @click="resetGame" class="control-button reset">
+        🔄 Начать заново
       </button>
     </div>
   </div>
@@ -88,13 +96,11 @@ export default {
       columnAssignments: {},
       completedItems: new Set(),
       columnRefs: {},
-      // Добавляем таймер и статистику
       startTime: null,
       mistakes: 0,
-      // Добавляем отслеживание статуса слов
-      wordStatus: {}, // { wordId: 'correct' | 'incorrect' | null }
+      wordStatus: {},
       checkTimer: null,
-      isDragging: false // Флаг для отслеживания перетаскивания
+      isDragging: false
     }
   },
 
@@ -121,19 +127,16 @@ export default {
       this.columnRefs = {}
       this.wordStatus = {}
 
-      // Запускаем таймер
       this.startTime = Date.now()
       this.mistakes = 0
       this.isDragging = false
 
-      // Очищаем предыдущий таймер
       if (this.checkTimer) {
         clearInterval(this.checkTimer)
       }
 
       this.$nextTick(() => {
         this.initializeSortable()
-        // Запускаем периодическую проверку вместо вызова из onAdd
         this.startPeriodicCheck()
       })
     },
@@ -142,16 +145,27 @@ export default {
       this.sortableInstances.forEach(instance => instance.destroy())
       this.sortableInstances = []
 
+      // ИСПОЛЬЗУЕМ ТЕ ЖЕ НАСТРОЙКИ КАК В РАБОЧЕМ КОМПОНЕНТЕ!
       const sortableOptions = {
         group: {
           name: 'words',
           pull: true,
           put: true
         },
-        animation: 150,
+        animation: 180,
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',
         dragClass: 'sortable-drag',
+
+        // КРИТИЧЕСКИ ВАЖНЫЕ НАСТРОЙКИ ДЛЯ МОБИЛЬНЫХ
+        forceFallback: true,
+        fallbackOnBody: true,
+        fallbackTolerance: 5,
+        fallbackOffset: { x: 0, y: -8 },
+
+        delay: 0,
+        delayOnTouchOnly: false,
+
         onStart: () => {
           this.isDragging = true
         },
@@ -167,7 +181,6 @@ export default {
           onAdd: (evt) => {
             const itemId = evt.item.getAttribute('data-id')
             delete this.columnAssignments[itemId]
-            // Сбрасываем статус при перемещении слова обратно в контейнер
             this.wordStatus[itemId] = null
           }
         })
@@ -190,7 +203,6 @@ export default {
     },
 
     startPeriodicCheck() {
-      // Проверяем статус слов каждые 500ms, но только если не перетаскиваем
       this.checkTimer = setInterval(() => {
         if (!this.isDragging) {
           this.checkWordStatuses()
@@ -199,27 +211,22 @@ export default {
     },
 
     checkWordStatuses() {
-      // Проверяем все слова, которые размещены в колонках
       this.currentWords.forEach(word => {
         if (this.columnAssignments[word.id]) {
           const currentColumn = this.columnAssignments[word.id]
           const isCorrect = currentColumn === word.correctColumn
 
-          // Если статус еще не установлен или изменился
           if (this.wordStatus[word.id] === null ||
             (isCorrect && this.wordStatus[word.id] !== 'correct') ||
             (!isCorrect && this.wordStatus[word.id] !== 'incorrect')) {
 
-            // Устанавливаем новый статус
             this.wordStatus[word.id] = isCorrect ? 'correct' : 'incorrect'
 
-            // Если слово размещено неправильно - считаем ошибку
             if (!isCorrect) {
               this.mistakes++
             }
           }
         } else {
-          // Слово не размещено - сбрасываем статус
           this.wordStatus[word.id] = null
         }
       })
@@ -242,7 +249,6 @@ export default {
     },
 
     checkAnswers() {
-      // Останавливаем периодическую проверку
       if (this.checkTimer) {
         clearInterval(this.checkTimer)
       }
@@ -250,39 +256,31 @@ export default {
       let correctCount = 0
       let currentMistakes = 0
 
-      // Финальная проверка всех слов
       this.currentWords.forEach(word => {
         if (this.columnAssignments[word.id] === word.correctColumn) {
           correctCount++
           this.completedItems.add(word.id)
-          // Подсвечиваем правильные слова
           this.wordStatus[word.id] = 'correct'
         } else if (this.columnAssignments[word.id]) {
-          // Слово размещено в неправильной колонке - считаем ошибку
           currentMistakes++
-          // Подсвечиваем неправильные слова
           this.wordStatus[word.id] = 'incorrect'
         }
       })
 
-      // Добавляем новые ошибки к общему счетчику
       if (currentMistakes > 0) {
         this.mistakes += currentMistakes
       }
 
-      // Всегда отправляем результаты, просто с разным количеством ошибок
       this.finishGame()
     },
 
     finishGame() {
       const duration = Date.now() - this.startTime
 
-      // Сохраняем результаты точно так же как в вашей другой игре
       this.gameStore.setLastGameResults(duration, this.mistakes)
       this.gameStore.setGameName("WordSorting")
       this.gameStore.setWordSet(this.route.params.missionName)
 
-      // Переходим на leaderboard с теми же параметрами
       this.router.push({
         path: "/leader-board/",
         query: {
@@ -308,129 +306,258 @@ export default {
 <style scoped>
 .drag-sort-game {
   max-width: 1000px;
-  margin: 20px auto;
-  padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+  margin: 30px auto;
+  padding: 30px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  user-select: none;
 }
+
+.game-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.game-header h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+}
+
+
 
 .instructions {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
 .words-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
-  margin: 20px 0;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  min-height: 80px;
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  min-height: 100px;
 }
 
 .word-card {
   background: white;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  padding: 10px 15px;
+  border: 2px solid #4ade80;
+  border-radius: 12px;
+  padding: 12px 18px;
   font-weight: 600;
   cursor: grab;
   user-select: none;
   text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  color: #1f2937;
+  min-width: 80px;
   /* Убираем transition из основного класса */
 }
 
-.word-ru {
-  font-size: 12px;
-  color: #666;
-  margin-top: 5px;
+.word-card:hover {
+  background: #4ade80;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(74, 222, 128, 0.35);
 }
 
-/* Стили для правильных слов - добавляем transition только здесь */
+.word-eng {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.word-ru {
+  font-size: 11px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.word-card:hover .word-ru {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Стили для правильных слов */
 .word-correct {
   background: linear-gradient(135deg, #4ade80, #22c55e) !important;
   color: white !important;
   border-color: #16a34a !important;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
-  transition: all 0.5s ease !important; /* Transition только для подсвеченных карточек */
+  box-shadow: 0 6px 16px rgba(74, 222, 128, 0.45);
+  transition: all 0.5s ease !important;
+  animation: pulse-green 2s ease-in-out infinite;
 }
 
 .word-correct .word-ru {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Стили для неправильных слов - добавляем transition только здесь */
+/* Стили для неправильных слов */
 .word-incorrect {
   background: linear-gradient(135deg, #f87171, #ef4444) !important;
   color: white !important;
   border-color: #dc2626 !important;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-  transition: all 0.5s ease !important; /* Transition только для подсвеченных карточек */
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.45);
+  transition: all 0.5s ease !important;
+  animation: pulse-red 2s ease-in-out infinite;
 }
 
 .word-incorrect .word-ru {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Стили для Sortable.js */
-.sortable-ghost {
-  opacity: 0.4;
+@keyframes pulse-green {
+  0%, 100% { transform: scale(1.05); }
+  50% { transform: scale(1.08); }
 }
 
-.sortable-chosen .word-card {
-  transition: none !important; /* Убираем transition во время перетаскивания */
-}
-
-.sortable-drag .word-card {
-  transform: rotate(5deg) !important;
-  z-index: 1000;
-  transition: none !important; /* Убираем transition во время перетаскивания */
+@keyframes pulse-red {
+  0%, 100% { transform: scale(1.05); }
+  50% { transform: scale(1.08); }
 }
 
 .columns-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 20px 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 25px 0;
 }
 
 .column {
-  background: #f8f9fa;
-  border: 2px dashed #dee2e6;
-  border-radius: 10px;
-  padding: 15px;
-  min-height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  min-height: 250px;
+  transition: border-color 0.3s ease;
+  position: relative;
+}
+
+.column:hover {
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .column-header {
   text-align: center;
   font-weight: bold;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.column-icon {
+  font-size: 1.2rem;
 }
 
 .column-content {
-  min-height: 150px;
+  min-height: 180px;
 }
+
 
 .game-controls {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 25px;
 }
 
 .control-button {
-  padding: 12px 24px;
+  padding: 14px 28px;
   border: none;
-  border-radius: 8px;
-  background: #007bff;
-  color: white;
+  border-radius: 12px;
+  font-size: 15px;
   cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 180px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
+.control-button.check {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+}
+
+.control-button.reset {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.control-button:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.control-button:active {
+  transform: scale(0.97);
+}
+
+/* Стили для Sortable.js - БЕЗ ИЗМЕНЕНИЙ */
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.sortable-chosen .word-card {
+  border-color: #fbbf24 !important;
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4) !important;
+  transform: scale(1.05) rotate(3deg);
+  transition: none !important;
+}
+
+.sortable-drag .word-card {
+  background: #fef3c7 !important;
+  color: black !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+  z-index: 1000;
+  transform: rotate(5deg) scale(1.1);
+  transition: none !important;
+  cursor: grabbing !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .drag-sort-game {
+    margin: 15px auto;
+    padding: 20px 15px;
+  }
+
+  .columns-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .game-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .control-button {
+    min-width: 200px;
+  }
+
+  .word-card {
+    padding: 10px 15px;
+    min-width: 70px;
+  }
 }
 </style>

@@ -38,7 +38,7 @@ const sortingWordsData = {
     ]
   },
   pronounsA00: {
-    title: "Домашние и Дикие Животные",
+    title: null,
     instructions: "Распределите животных по категориям",
     columns: [
       { id: 'articleA', title: 'A' },
