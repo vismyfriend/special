@@ -21,11 +21,12 @@
         </div>
 
         <div class="simple-buttons">
-          <button class="simple-btn try-again" @click="tryAgain">ещё разок ! я лучше могу</button>
-<!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
           <button class="simple-btn details-btn" @click="showDetailed = true">
-            всё, сдаюсь ▼
+            и так сойдёт
           </button>
+          <button class="simple-btn try-again" @click="tryAgain">хочу лучше !</button>
+<!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
+
         </div>
       </div>
     </div>
@@ -88,12 +89,12 @@
         >
           {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
         </button>
-        <button class="games-btn" @click="goToGames">все игры</button>
-        <button class="close-btn" @click="backToSameSet">следующее задание</button>
         <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
-        <button class="simple-view-btn" @click="showDetailed = false">
-          Simple View ▲
-        </button>
+        <button class="close-btn" @click="backToSameSet">Следующее задание</button>
+        <button class="games-btn" @click="goToGames">Другой набор слов</button>
+<!--        <button class="simple-view-btn" @click="showDetailed = false">-->
+<!--          Simple View ▲-->
+<!--        </button>-->
       </div>
 
       <!-- Таблица лидеров -->

@@ -35,7 +35,7 @@ const sortingWordsData = {
       { id: 4, eng: '🧅 onion', ru: '`анион - лучок', correctColumn: 'an' },
       { id: 5, eng: '⏰ hour', ru: '`Аур - час', correctColumn: 'an' },
       { id: 6, eng: '🎃 pumpkin', ru: '`пАмпкин - тыква', correctColumn: 'a' },
-      { id: 7, eng: '🎓 university', ru: 'Йюни`вёсити - университет', correctColumn: 'a' },
+      { id: 7, eng: '📱 iPhone', ru: '`Ай фоун', correctColumn: 'an' },
       { id: 8, eng: '🍌 banana', ru: 'бэ`нАнэ - банан', correctColumn: 'a' },
       { id: 9, eng: '🥒 cucumber', ru: '`кьЮкамбэ - огурчик', correctColumn: 'a' },
       { id: 10, eng: '🌙 Moon', ru: 'мун - луна', correctColumn: 'the' },

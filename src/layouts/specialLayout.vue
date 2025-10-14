@@ -230,7 +230,7 @@ onMounted(() => {
   }
   setTimeout(() => {
     isMenuCollapsed.value = true;
-  }, 2000); // 2 000 мс = 2 сек
+  }, 10000); // 10 000 мс = 10 сек
   window.__router = router;
   window.__modal = { close: closeModal };
 

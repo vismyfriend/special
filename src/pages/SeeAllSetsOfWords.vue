@@ -89,6 +89,29 @@
             </div>
           </div>
 
+
+
+
+
+
+          <div
+            class="v-card-choose tooltip-wrapper glassMorphism"
+            role="button"
+            @click="tapalka"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Разминка
+            <div class="custom-tooltip">
+              Произношение
+            </div>
+          </div>
+
+
+
+
           <!-- 5. Рандомные вопросы  -->
 
 
@@ -217,21 +240,6 @@
 
 
 
-
-          <div
-            class="v-card-choose tooltip-wrapper glassMorphism"
-            role="button"
-            @click="tapalka"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Разминка
-            <div class="custom-tooltip">
-              Произношение
-            </div>
-          </div>
 
 
           <!--Следующие 2 обычных наборов -->

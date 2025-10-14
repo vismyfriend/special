@@ -2,6 +2,16 @@ export const allGamesAndSetsOfWordsList =
   [
     {
       type: "hardcodedLink",
+      path: "/keypad",
+      missionVisibleName: "Ай Кью тест IQ",
+      missionDescription: "не все справляются...",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
       path: "/see-all-sets-of-words/pattern/find-pairs-easy",
       missionVisibleName: "Обезвредить бомбу",
       missionDescription: "Cut the wires",

@@ -24,12 +24,12 @@ const MillionaireData = {
       correctAnswer: "D",
     },
     {
-      text: " Сколько дверей в предложении : Он стоял у двери ?",
+      text: " Сколько дверей в предложении : Он стоял у ДВЕри ?",
       options: {
         A: "One door",
         B: "Two doors",
         C: "Many doors",
-        D: "двери - doors"
+        D: "ДВЕри - doors",
       },
       correctAnswer: "A",
     },
