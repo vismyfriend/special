@@ -120,6 +120,30 @@ const notebookHeight = ref(600);
 const customMessage = ref('');
 const homeworkWords = ref([]);
 
+
+
+// Массив случайных приветственных фраз
+const greetingPhrases = [
+  "Hello, my dear teacher!",
+  "Hi, Vincentinushka!",
+  "Hello, professor!",
+  "What'suuuuup, V!",
+  "Hey there, language master!",
+  "Zdarova Vinnie!",
+  "Hello, wise teacher!",
+  "Hi, amazing mentor!",
+  "Hey, Boss of English!",
+  "Greetings, word guru!",
+  "Hello, English sensei!",
+  "Yo, my buddy V!",
+  "I wish you a great day, my friend!",
+];
+
+// Функция для получения случайного приветствия
+const getRandomGreeting = () => {
+  const randomIndex = Math.floor(Math.random() * greetingPhrases.length);
+  return greetingPhrases[randomIndex];
+};
 // Вычисляем, есть ли дополнительные материалы
 const hasAdditionalMaterials = computed(() => {
   return currentGameData.value.length > 0;
@@ -194,6 +218,9 @@ const copyToClipboard = async (text) => {
 const openTelegramMessage = async () => {
   const username = 'vismyfriend';
 
+
+  // Получаем случайное приветствие
+  const randomGreeting = getRandomGreeting();
   // Формируем сообщение с домашним заданием
   let homeworkMessage = "";
 
@@ -202,10 +229,11 @@ const openTelegramMessage = async () => {
 
 
   // Добавляем текст сообщения только если оно заполнено студентом
+  // Добавляем случайное приветствие и текст сообщения
   if (customMessage.value.trim()) {
-    homeworkMessage += `Hi VVVVincent${exclamationMarks} \n\n I am not a lazy ass, and it is my message to you: \n"${customMessage.value.trim()}"\n\n`;
+    homeworkMessage += `${randomGreeting}${exclamationMarks} \n\nI am not a lazy ass, and it is my message to you: \n"${customMessage.value.trim()}"\n\n`;
   } else {
-    homeworkMessage += `Hi Vincentik${exclamationMarks}\n\n I am a little lazy today.\n And how do you feel?\n It is my homework: \n\n`;
+    homeworkMessage += `${randomGreeting}${exclamationMarks}\n\nI am a little lazy today.\nAnd how do you feel?\nIt is my homework: \n\n`;
   }
 
   homeworkMessage += "Words from homework:\n";
@@ -222,7 +250,7 @@ const openTelegramMessage = async () => {
   await copyToClipboard(homeworkMessage);
 
   // Показываем alert
-  alert("✅ Успешно скопированно!\n\nОтправляем училке... \n\n Если ваше сообщение не добавится автоматически, тогда:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱На телефоне: \nзажмите пальцем → Вставить");  // Открываем Telegram
+  alert("✅ Успешно скопированно!\nОтправляем училке... \n\n Если ваше сообщение не добавится автоматически, тогда:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱На телефоне: \nзажмите пальцем → Вставить");  // Открываем Telegram
 
   const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(homeworkMessage)}`;
   window.open(telegramUrl, '_blank');

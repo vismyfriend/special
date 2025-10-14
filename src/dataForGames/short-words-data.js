@@ -47,7 +47,7 @@ const shortWordsData = {
   // 4. Стать, становиться (о состоянии)
   { id: 16, eng: "it is getting dark", ru: "темнеет" },
   { id: 17, eng: "he is getting tired", ru: "он устаёт" },
-  { id: 18, eng: "Vincent is getting angry", ru: "Винсентик злится" },
+  { id: 18, eng: "Vincent is getting angry with me", ru: "Винсентик злится на меня" },
   { id: 19, eng: "I'm getting better", ru: "мне становится лучше" },
   { id: 20, eng: "I'm getting worse", ru: "мне становится хуже" },
   { id: 21, eng: "Don't get old", ru: "не старейте" },
@@ -72,6 +72,46 @@ const shortWordsData = {
   { id: 38, eng: "get away", ru: "уехать, сбежать" },
   { id: 40, eng: "get by", ru: "справляться, сводить концы с концами" }
   ],
+
+  verbTake: [
+    // 1. Брать
+    // 2. Принимать
+    { id: 7, eng: "is this place taken?", ru: "это место занято?" },
+    { id: 8, eng: "take advice", ru: "принимать совет" },
+    { id: 9, eng: "take medicine", ru: "принимать лекарство" },
+    { id: 7, eng: "take vitamins", ru: "принимать витамины" },
+    { id: 1, eng: "take my things", ru: "брать мои вещи" },
+    { id: 5, eng: "take what you need", ru: "бери что тебе нужно" },
+    { id: 10, eng: "who takes responsibility?", ru: "Кто берет ответственность?" },
+    { id: 11, eng: "it takes an hour", ru: "это займет час" },
+
+    // 3. Требоваться, занимать время
+    { id: 12, eng: "it takes patience", ru: "требуется терпение" },
+    { id: 15, eng: "it takes long", ru: "это займет долго" },
+    { id: 16, eng: "how much time does it take?", ru: "сколько времени это занимает?" },
+
+    // 4. Водить, сопровождать
+    { id: 18, eng: "take children to school", ru: "отводить детей в школу" },
+    { id: 19, eng: "take children from school", ru: "забирать детей из школы" },
+
+    // Популярные фразы
+    { id: 22, eng: "take a photo", ru: "сфотографировать" },
+    { id: 24, eng: "take a break", ru: "сделать перерыв" },
+    { id: 26, eng: "take care of yourself", ru: "заботься о себе" },
+    { id: 27, eng: "take it personally", ru: "воспринимать на личный счет" },
+    { id: 28, eng: "take seriously", ru: "воспринимать серьезно" },
+    { id: 29, eng: "take your time", ru: "не торопись" },
+    { id: 30, eng: "take a shower", ru: "принять душ" },
+    { id: 31, eng: "take notes", ru: "делать записи" },
+    { id: 32, eng: "take for granted", ru: "воспринимать как должное" },
+    { id: 33, eng: "take a seat", ru: "присаживаться" },
+    { id: 34, eng: "he takes after father", ru: "он весь в отца (вылитый отец)" },
+    { id: 35, eng: "take off", ru: "взлетать, снимать одежду" },
+    { id: 36, eng: "take up", ru: "начать заниматься, подбирать хобби" },
+    { id: 37, eng: "take somebody out", ru: "пригласить кого-то в ресторан" },
+    { id: 39, eng: "take over", ru: "взять под контроль" },
+  ],
+
 
   ImOnlyHumanSong: [
     { id: 1, eng: "foolish", ru: "глупый" },

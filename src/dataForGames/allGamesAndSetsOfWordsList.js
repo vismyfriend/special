@@ -421,6 +421,14 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbTake/print-all-words",
+      missionVisibleName: "значения take",
+      missionDescription: "глагол тЭйк",
+      id: 1001,
+      active: true,
+    },
 
 
 
