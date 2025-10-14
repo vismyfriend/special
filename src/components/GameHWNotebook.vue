@@ -165,8 +165,33 @@ const validateHomework = () => {
   // Можно добавить дополнительную логику валидации при необходимости
   console.log('Homework validation updated');
 };
+
+
+// Функция для копирования текста в буфер обмена
+const copyToClipboard = async (text) => {
+  try {
+    // Пробуем современный API
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } else {
+      // Старый метод для старых браузеров
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      return true;
+    }
+  } catch (error) {
+    console.error('Ошибка при копировании в буфер обмена:', error);
+    return false;
+  }
+};
+
 // Функция отправки в Telegram
-const openTelegramMessage = () => {
+const openTelegramMessage = async () => {
   const username = 'vismyfriend';
 
   // Формируем сообщение с домашним заданием
@@ -192,6 +217,12 @@ const openTelegramMessage = () => {
   homeworkWords.value.forEach((word, index) => {
     homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
   });
+
+  // Копируем в буфер обмена (без уведомлений)
+  await copyToClipboard(homeworkMessage);
+
+  // Показываем alert
+  alert("✅ Успешно скопированно!\n\nОтправляем училке... \n\n Если ваше сообщение не добавится автоматически, тогда:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱На телефоне: \nзажмите пальцем → Вставить");  // Открываем Telegram
 
   const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(homeworkMessage)}`;
   window.open(telegramUrl, '_blank');
@@ -228,6 +259,8 @@ const printNotebook = () => {
     }, 500);
   }, 100);
 };
+
+
 
 onMounted(() => {
   // Получаем данные урока

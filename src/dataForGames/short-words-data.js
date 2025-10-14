@@ -24,6 +24,55 @@ const shortWordsData = {
     { id: 8, eng: "beard", ru: "борода", hint: "/ БИЭРД /" },
   ],
 
+
+  verbGet: [
+  // 1. Получить, приобрести
+  { id: 2, eng: "get a present", ru: "получить подарок" },
+  { id: 3, eng: "get a message", ru: "получить сообщение" },
+  { id: 4, eng: "get money", ru: "получить деньги" },
+  { id: 5, eng: "get a good job", ru: "получить хорошую работу" },
+
+  // 2. Добраться, прибыть
+  { id: 7, eng: "get home", ru: "добраться домой" },
+  { id: 8, eng: "get to London", ru: "добраться до Лондона" },
+  { id: 9, eng: "get there", ru: "добраться туда" },
+  { id: 10, eng: "get back", ru: "вернуться" },
+
+  // 3. Понять
+  { id: 12, eng: "get the joke", ru: "понять шутку" },
+  { id: 13, eng: "get what I mean", ru: "понять что я имею в виду" },
+  { id: 14, eng: "She doesn't get it", ru: "она не врубается! (не понимает)" },
+  { id: 15, eng: "He gets the point", ru: "суть он улавливает" },
+
+  // 4. Стать, становиться (о состоянии)
+  { id: 16, eng: "it is getting dark", ru: "темнеет" },
+  { id: 17, eng: "he is getting tired", ru: "он устаёт" },
+  { id: 18, eng: "Vincent is getting angry", ru: "Винсентик злится" },
+  { id: 19, eng: "I'm getting better", ru: "мне становится лучше" },
+  { id: 20, eng: "I'm getting worse", ru: "мне становится хуже" },
+  { id: 21, eng: "Don't get old", ru: "не старейте" },
+  { id: 22, eng: "It got cold", ru: "прохолодало!" },
+  { id: 23, eng: "We got hungry", ru: "Мы проголодались" },
+
+  // Популярные фразовые глаголы с GET
+  { id: 24, eng: "get up", ru: "вставать, просыпаться" },
+  { id: 25, eng: "get out", ru: "проваливать, выходить" },
+    { id: 39, eng: "get in", ru: "войти, попасть внутрь" },
+    { id: 26, eng: "get dressed", ru: "одеваться" },
+  { id: 27, eng: "get ready", ru: "приготовиться" },
+  { id: 28, eng: "get together", ru: "собираться вместе" },
+  { id: 29, eng: "get along", ru: "ладить, уживаться" },
+  { id: 30, eng: "get to know", ru: "узнавать, познакомиться" },
+  { id: 31, eng: "get off", ru: "выходить (из транспорта)" },
+  { id: 32, eng: "get on", ru: "садиться (в транспорт)" },
+  { id: 33, eng: "get married", ru: "жениться/выходить замуж" },
+  { id: 34, eng: "get well", ru: "выздоравливать" },
+  { id: 35, eng: "get down", ru: "нагнуться, опускаться, приседать" },
+  { id: 37, eng: "get over", ru: "преодолеть, пережить" },
+  { id: 38, eng: "get away", ru: "уехать, сбежать" },
+  { id: 40, eng: "get by", ru: "справляться, сводить концы с концами" }
+  ],
+
   ImOnlyHumanSong: [
     { id: 1, eng: "foolish", ru: "глупый" },
     { id: 2, eng: "blind", ru: "слепой" },

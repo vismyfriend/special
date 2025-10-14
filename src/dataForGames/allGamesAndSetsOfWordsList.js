@@ -399,6 +399,33 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true,
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbGet/print-all-words",
+      missionVisibleName: "значения Get",
+      missionDescription: "глагол Гет",
+      id: 1001,
+      active: true,
+    },
+
+
+
+
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/popularIrregularVerbs/find-pairs-easy",
