@@ -28,27 +28,7 @@
       </div>
 
       <div id="options">
-        <label for="width">
-          width:
-          <input
-            type="number"
-            id="width"
-            v-model.number="width"
-            min="1"
-            max="32"
-          >
-        </label>
 
-        <label for="height">
-          height:
-          <input
-            type="number"
-            id="height"
-            v-model.number="height"
-            min="1"
-            max="32"
-          >
-        </label>
 
         <label for="tool">
           tool:
@@ -90,6 +70,40 @@
         <button @click="loadDemo('mushroom')">mushroom</button>
         <button @click="loadDemo('star')">star</button>
         <button @click="loadDemo('goomba')">goomba</button>
+      </div>
+      <!-- Вертикальные ползунки для размеров -->
+      <div class="slider-group">
+        <label for="width">width:</label>
+        <div class="slider-container">
+          <span class="slider-value">1</span>
+          <input
+            type="range"
+            id="width"
+            v-model.number="width"
+            min="1"
+            max="32"
+            orient="vertical"
+            class="vertical-slider"
+          >
+          <span class="slider-value">32</span>
+        </div>
+      </div>
+
+      <div class="slider-group">
+        <label for="height">height:</label>
+        <div class="slider-container">
+          <span class="slider-value">1</span>
+          <input
+            type="range"
+            id="height"
+            v-model.number="height"
+            min="1"
+            max="32"
+            orient="vertical"
+            class="vertical-slider"
+          >
+          <span class="slider-value">32</span>
+        </div>
       </div>
     </div>
   </div>
@@ -683,6 +697,89 @@ input[type="file"] {
     content: "Your screen is too small!";
     font-family: "Visitor", monospace;
     display: block !important;
+  }
+}
+
+/* Стили для вертикальных ползунков */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  height: 120px;
+}
+
+.slider-value {
+  font-size: 12px;
+  color: #666;
+  min-width: 20px;
+  text-align: center;
+}
+
+.vertical-slider {
+  -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
+  width: 20px;
+  height: 100px;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+/* Стили для Webkit браузеров */
+.vertical-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.vertical-slider::-webkit-slider-track {
+  width: 8px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.vertical-slider::-webkit-slider-runnable-track {
+  width: 8px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+/* Стили для Firefox */
+.vertical-slider::-moz-range-track {
+  width: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  border: none;
+}
+
+.vertical-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #333;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 773px) {
+  .slider-container {
+    height: 100px;
+  }
+
+  .vertical-slider {
+    height: 80px;
   }
 }
 </style>

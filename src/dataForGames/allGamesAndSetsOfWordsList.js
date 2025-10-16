@@ -129,7 +129,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Guess the year",
       id: 1001,
       active: true,
-      stars: '3',
+      gameIcon:'🕵️',
       category: "categoryExamplesPatterns"
     },
     {
@@ -139,8 +139,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Click the order",
       id: 1001,
       active: true,
+      gameIcon:'🕵️',
       category: "categoryExamplesPatterns"
-
     },
     {
       type: "hardcodedLink",
@@ -149,8 +149,18 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Рандомные вопросы",
       id: 1001,
       active: true,
-      category: "categoryExamplesPatterns"
-
+      category: "categoryExamplesPatterns",
+      gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink",
+      path: "/pixelart",
+      missionVisibleName: "Pixel Art",
+      missionDescription: "Рирсовалка по пикселям",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns",
+      gameIcon:'🕵️',
     },
     {
       type: "hardcodedLink",
@@ -159,8 +169,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Квизы аудирование",
       id: 1001,
       active: true,
+      gameIcon:'🕵️',
       category: "categoryExamplesPatterns"
-
     },
 
 
@@ -1096,6 +1106,14 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       stars: '3'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/ticketInspector/find-pairs-hard",
+      missionVisibleName: "Ticket inspector",
+      missionDescription: "Проводник контролер",
+      id: 1001,
+      active: true,
     },
     {
 

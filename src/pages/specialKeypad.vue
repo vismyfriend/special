@@ -282,18 +282,26 @@ export default {
       this.resetAllKeys();
 
       // Ждем немного перед началом анимации
-      await this.delay(800);
+      await this.delay(700);
 
       // Запускаем волну нажатий
+      const targetWord = 'vincent';
       const keyIds = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
 
+      // Анимация смены букв и волны нажатий
+
       for (let i = 0; i < keyIds.length; i++) {
+
+        // Меняем букву
+        this.keys[keyIds[i]].text = targetWord[i].toUpperCase();
+
+        // Анимируем нажатие
         this.pressKeyWithAnimation(keyIds[i]);
         await this.delay(100); // Интервал между нажатиями
       }
 
       // Ждем завершения анимации и переходим
-      await this.delay(500);
+      await this.delay(700);
       this.goToIntroPage();
     },
 

@@ -10,6 +10,21 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  ticketInspector: [
+    { id: 1, eng: "ticket inspector", ru: "контролёр", hint: "/ тИкет инспЭктор /" },
+    { id: 2, eng: "compartment", ru: "купе", hint: "/ ударение на А /" },
+    { id: 3, eng: "seat", ru: "сидение, сидячее место", hint: "/ сииит /" },
+    { id: 4, eng: "ticket", ru: "билет", hint: "/ тИкет /" },
+    { id: 5, eng: "famous person", ru: "известный человек", hint: "/ фЭймос пЁсн /" },
+    { id: 7, eng: "The Queen", ru: "королева Англии" },
+    { id: 8, eng: "too expensive", ru: "слишком дорого", hint: "/ тууу икспЭнсив /" },
+    { id: 9, eng: "travel", ru: "путешествовать" },
+    { id: 10, eng: "sell", ru: "продавать", hint: "/ сэл /" },
+    { id: 11, eng: "move", ru: "двигать", hint: "/ мууув /" },
+    { id: 12, eng: "sir", ru: "сЭр (не сИр, а сЁр)", hint: "/ сЁр /" },
+    { id: 13, eng: "leave", ru: "покидать", hint: "/ лииив /" },
+    { id: 14, eng: "passenger", ru: "пассажир", hint: "/ пЭсэнджэ /" }
+  ],
 
 
 
