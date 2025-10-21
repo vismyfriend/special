@@ -34,6 +34,245 @@ const MillionaireData = {
       correctAnswer: "A",
     },
   ],
+
+  ieltsIntroTest: [
+    {
+      text: "IELTS is pronounced:",
+      options: {
+        A: "Айелтс",
+        B: "Иелтс",
+        C: "Ай И Эл Ти Си",
+        D: "Эйелтс"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Should you shake hands with the examiner?",
+      options: {
+        A: "Yes",
+        B: "No (unless the examiner initiates the handshake)"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "How long does the speaking test take?",
+      options: {
+        A: "1-5 minutes",
+        B: "6-10 minutes",
+        C: "11-14 minutes",
+        D: "15-19 minutes"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "How many parts are there in the speaking test?",
+      options: {
+        A: "1",
+        B: "2",
+        C: "3",
+        D: "4"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "What happens in part 1 of the speaking test?",
+      options: {
+        A: "The examiner will ask you questions related to what you spoke about in the previous part.",
+        B: "The examiner will ask you questions about yourself.",
+        C: "You have to speak for 2 minutes on an unknown topic. You have 1 minute to prepare."
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "What happens in part 2 of the speaking test?",
+      options: {
+        A: "The examiner will ask you questions related to what you spoke about in the previous part.",
+        B: "The examiner will ask you questions about yourself.",
+        C: "You have to speak for 2 minutes on an unknown topic. You have 1 minute to prepare."
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "What happens in part 3 of the speaking test?",
+      options: {
+        A: "The examiner will ask you questions related to what you spoke about in the previous part.",
+        B: "The examiner will ask you questions about yourself.",
+        C: "You have to speak for 2 minutes on an unknown topic. You have 1 minute to prepare."
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Which of these are the most common topics in Part 1 of the speaking test?",
+      options: {
+        A: "Jewlerry, Sport, Science, Animals, Space",
+        B: "Politics, Geography, Language, Weapons, Football",
+        C: "Home, Hometown, Neighbourhood, Studies, Job"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "Which phrase will not give you any points if you use when you don't know the answer to a question?",
+      options: {
+        A: "I don't know. Next question please.",
+        B: "I don't know if I'm the right person to ask, but I'd say...",
+        C: "Hmm, tricky question. I'd say...",
+        D: "Hmm, I've never really considered that. I guess..."
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "What does REE stand for?",
+      options: {
+        A: "Reset, Enlighten, Exist",
+        B: "Respond, Elaborate, Example",
+        C: "Review, Elevate, Equate"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Which phrases can you use when you don't know the answer to a question?",
+      options: {
+        A: "Sorry, could you repeat the question?",
+        B: "What the hell did you just say?"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Which phrases can you use when you don't understand a specific word or phrase that the examiner said?",
+      options: {
+        A: "Sorry, what does ______ mean?",
+        B: "What on earth are you talking about?"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Speak clearly and make eye contact",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Elaborate on your answers",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Watch videos of real IELTS tests before you do your speaking test",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Spend a long time considering your answer",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Memorise your answers",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Decide whether you should \"do\" this or \"don't do\" this: Worry if the examiner interrupts you",
+      options: {
+        A: "Do",
+        B: "Don't do"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "In part 2, it is a good idea to...",
+      options: {
+        A: "tell the examiner everything you know about the topic.",
+        B: "tell a story.",
+        C: "ask the examiner questions.",
+        D: "ask for a new topic."
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "In part 2, what should you do if you are running out of things to say?",
+      options: {
+        A: "Start your story again.",
+        B: "Talk about the future.",
+        C: "Talk about a different topic."
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "In part 2, how long should you talk for?",
+      options: {
+        A: "For 1 minute.",
+        B: "Until the examiner asks you to stop.",
+        C: "Until you can't think of anything else to say."
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "What is a good way to practice part 2 alone?",
+      options: {
+        A: "Do the IELTS test over and over again until you get band 9.",
+        B: "Record yourself with your phone.",
+        C: "Talk to a teddybear."
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "When you practice for part 2,",
+      options: {
+        A: "only practice one topic before you do your test.",
+        B: "make sure to practice in the middle of the night.",
+        C: "record yourself doing the same topic multiple times and take time to learn new vocabulary that can help you to answer better."
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "In part 3, you answer questions...",
+      options: {
+        A: "about your opinions.",
+        B: "about your experiences.",
+        C: "about your parents."
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "What should you say at the end of the speaking test?",
+      options: {
+        A: "Can I have a hug?",
+        B: "Thank you very much",
+        C: "What score did I get?"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Should you ask for feedback at the end of the test?",
+      options: {
+        A: "Yes",
+        B: "No"
+      },
+      correctAnswer: "B"
+    },
+
+  ],
+
+
+
+
+
+
   pronounsA01: [
     {
       text: "My friend ___ not study well.",
@@ -188,7 +427,7 @@ const MillionaireData = {
   ],
   possessivePronounsA1: [
     {
-      text: "What bird can't fly?",
+      text: "What bird can't fly?1",
       questionPicture: new URL("../assets/images/birds.jpg", import.meta.url).href,
       audio: new URL('../assets/audio/b1-test-30-1.mp3', import.meta.url).href,
 
@@ -200,7 +439,7 @@ const MillionaireData = {
         F: "Seagul фыв ывфывфывфывфывфывфыв  ыфв фыв фы ",
         D: "Kiwi фыв фы вфы вф вфы фыв фыв "
       },
-      correctAnswer: "A",
+      correctAnswer: "D",
     },
     {
       text: "What bird can fly?",

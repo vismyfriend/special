@@ -21,7 +21,20 @@
         {{ Math.round(progressPercentage) }}%
       </div>
     </div>
-
+    <!-- Добавьте этот блок ПОД прогресс-баром -->
+    <div class="shuffle-control-container">
+      <label class="shuffle-toggle">
+        <input
+          type="checkbox"
+          v-model="shuffleEnabled"
+          @change="toggleShuffle"
+        >
+        <span class="toggle-slider"></span>
+        <span class="toggle-text">
+          {{ shuffleEnabled ? 'С подсказками' : 'Without hints' }}
+        </span>
+      </label>
+    </div>
     <!-- Вопрос -->
     <div class="question-container">
       <div class="question-card">
@@ -34,13 +47,13 @@
             @play="onAudioPlay"
             @ended="onAudioEnd"
           ></audio>
-          <button
-            v-if="!isAudioPlaying"
-            class="play-audio-button"
-            @click="playAudio"
-          >
-            🔊 Проиграть аудио
-          </button>
+<!--          <button-->
+<!--            v-if="!isAudioPlaying"-->
+<!--            class="play-audio-button"-->
+<!--            @click="playAudio"-->
+<!--          >-->
+<!--            🔊 Проиграть аудио-->
+<!--          </button>-->
         </div>
 
         <div class="question-text">{{ currentQuestion.text }}</div>
@@ -55,11 +68,14 @@
 
 
     <!-- Подсказки -->
-    <div class="hints-container">
+
+    <!-- Подсказки - ОБНОВЛЕННЫЙ БЛОК -->
+    <div class="hints-container" :class="{ compact: !shuffleEnabled }">
       <button
         class="hint-button fifty-fifty"
         @click="useFiftyFifty"
         :disabled="fiftyFiftyUsed || hintsDisabled"
+        :title="fiftyFiftyUsed ? 'Уже использовано' : 'Убрать 2 неправильных ответа'"
       >
         <div class="hint-icon">50/50</div>
         <div class="hint-text">fifty фИфти</div>
@@ -69,6 +85,7 @@
         class="hint-button ask-audience"
         @click="useAskAudience"
         :disabled="askAudienceUsed || hintsDisabled"
+        :title="askAudienceUsed ? 'Уже использовано' : 'Спросить мнение зала'"
       >
         <div class="hint-icon">👥</div>
         <div class="hint-text">Спросить зал</div>
@@ -78,11 +95,13 @@
         class="hint-button phone-friend"
         @click="usePhoneFriend"
         :disabled="phoneFriendUsed || hintsDisabled"
+        :title="phoneFriendUsed ? 'Уже использовано' : 'Позвонить другу'"
       >
         <div class="hint-icon">📞</div>
         <div class="hint-text">Звонок другу</div>
       </button>
     </div>
+
     <!-- Варианты ответов -->
     <div class="options-container">
       <div
@@ -227,6 +246,11 @@ const allQuestions = ref([]);
 const matchedPairs = ref(0);
 const mistakes = ref(0);
 let startTime = null;
+
+
+const shuffleEnabled = ref(true)
+const originalQuestions = ref([])
+
 
 // Прогресс
 const progressWidth = computed(() => `${progressPercentage.value}%`);
@@ -541,11 +565,13 @@ const shuffleOptions = (question) => {
   const newOptions = {};
   const newCorrectAnswerMap = {};
 
-  shuffledOptions.forEach(([oldKey, value], index) => {
-    const newKey = ['A', 'B', 'C', 'D'][index];
-    newOptions[newKey] = value;
 
-    // Запоминаем соответствие старых и новых ключей
+  // ✅ ДИНАМИЧЕСКОЕ СОЗДАНИЕ БУКВ ДЛЯ ЛЮБОГО КОЛИЧЕСТВА ОТВЕТОВ
+  const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; // Добавьте больше при необходимости
+
+  shuffledOptions.forEach(([oldKey, value], index) => {
+    const newKey = optionLetters[index] || `Option${index + 1}`; // fallback на случай очень большого количества
+    newOptions[newKey] = value;
     newCorrectAnswerMap[oldKey] = newKey;
   });
 
@@ -561,12 +587,12 @@ const shuffleOptions = (question) => {
 };
 const loadQuestion = async () => {
   // Сбрасываем подсказки для нового вопроса
-  fiftyFiftyUsed.value = false;
-  askAudienceUsed.value = false;
-  phoneFriendUsed.value = false;
-  fiftyFiftyOptions.value = [];
-  isAudioPlaying.value = false;
-  closeModals();
+  fiftyFiftyUsed.value = false
+  askAudienceUsed.value = false
+  phoneFriendUsed.value = false
+  fiftyFiftyOptions.value = []
+  isAudioPlaying.value = false
+  closeModals()
 
   // Завершение игры
   if (currentQuestionIndex.value >= allQuestions.value.length && failedQuestions.value.length === 0) {
@@ -702,22 +728,61 @@ const finishGame = () => {
 
 // Инициализация
 onMounted(() => {
-  currentMission.value = route.params.missionName;
+  currentMission.value = route.params.missionName
 
   // Загрузка данных из MillionaireData
-  const rawData = MillionaireData[currentMission.value] || [];
+  const rawData = MillionaireData[currentMission.value] || []
 
-  // ПЕРЕМЕШИВАЕМ ВСЕ ВОПРОСЫ ПРИ ЗАПУСКЕ
-  const shuffledQuestions = shuffleArray(rawData);
+  // Сохраняем оригинальные вопросы
+  originalQuestions.value = [...rawData]
 
-  // И ПЕРЕМЕШИВАЕМ ВАРИАНТЫ ОТВЕТОВ ДЛЯ КАЖДОГО ВОПРОСА
-  currentGameData.value = shuffledQuestions.map(question => shuffleOptions(question));
+  // Применяем начальную настройку перемешивания
+  if (shuffleEnabled.value) {
+    const shuffledQuestions = shuffleArray([...rawData])
+    currentGameData.value = shuffledQuestions.map(question => shuffleOptions(question))
+  } else {
+    // Оригинальный порядок без перемешивания
+    currentGameData.value = originalQuestions.value.map(question => ({
+      ...question,
+      // Сохраняем оригинальные варианты ответов
+      options: { ...question.options },
+      correctAnswer: question.correctAnswer
+    }))
+  }
 
-  allQuestions.value = [...currentGameData.value];
-  startTime = Date.now();
-  firstTryCorrect.value = Array(allQuestions.value.length).fill(null);
-  loadQuestion();
-});
+  allQuestions.value = [...currentGameData.value]
+  startTime = Date.now()
+  firstTryCorrect.value = Array(allQuestions.value.length).fill(null)
+  loadQuestion()
+})
+
+// Функция переключения перемешивания
+const toggleShuffle = () => {
+  if (shuffleEnabled.value) {
+    // Включить перемешивание
+    const shuffledQuestions = shuffleArray([...originalQuestions.value])
+    currentGameData.value = shuffledQuestions.map(question => shuffleOptions(question))
+  } else {
+    // Выключить перемешивание - оригинальный порядок
+    currentGameData.value = originalQuestions.value.map(question => ({
+      ...question,
+      options: { ...question.options },
+      correctAnswer: question.correctAnswer
+    }))
+  }
+
+  // Сброс игры с новым порядком вопросов
+  allQuestions.value = [...currentGameData.value]
+  currentQuestionIndex.value = 0
+  firstTryCorrect.value = Array(allQuestions.value.length).fill(null)
+  failedQuestions.value = []
+  matchedPairs.value = 0
+  mistakes.value = 0
+  progressPercentage.value = 0
+
+  loadQuestion()
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -1206,6 +1271,341 @@ onMounted(() => {
     audio {
       max-width: 100%;
     }
+  }
+}
+
+
+.shuffle-control-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.shuffle-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.toggle-slider {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #48bb78, #2f855a);
+
+  &::before {
+    transform: translateX(26px);
+  }
+}
+
+.toggle-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  min-width: 160px;
+  text-align: center;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .shuffle-toggle {
+    padding: 8px 12px;
+  }
+
+  .toggle-text {
+    font-size: 12px;
+    min-width: 140px;
+  }
+
+  .toggle-slider {
+    width: 40px;
+    height: 20px;
+
+    &::before {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+  }
+}
+
+/* Стили для подсказок - ОБНОВЛЕННЫЕ */
+.hints-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+
+  /* Компактный режим */
+  &.compact {
+    gap: 8px;
+    margin-bottom: 15px;
+
+    .hint-button {
+      min-width: 80px;
+      height: 15px; /* Фиксированная минимальная высота */
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+
+      /* Плавная анимация при наведении */
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        height: 50px; /* Раскрываем при наведении */
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+        .hint-icon,
+        .hint-text {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Для использованных подсказок - еще более компактно */
+      &:disabled {
+        height: 12px;
+        opacity: 0.3;
+
+        .hint-icon,
+        .hint-text {
+          opacity: 0;
+        }
+      }
+    }
+
+    .hint-icon {
+      font-size: 16px;
+      margin-bottom: 2px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .hint-text {
+      font-size: 9px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+.hint-button {
+  background: linear-gradient(135deg, #ffd89b, #19547b);
+  border: none;
+  border-radius: 15px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Индикатор использования */
+  &:disabled::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+  }
+}
+
+.hint-icon {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+.hint-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+/* Улучшенные стили для переключателя */
+.shuffle-control-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.shuffle-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.toggle-slider {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #48bb78, #2f855a);
+
+  &::before {
+    transform: translateX(26px);
+  }
+}
+
+.toggle-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .hints-container {
+    gap: 10px;
+
+    &.compact {
+      gap: 5px;
+
+      .hint-button {
+        min-width: 60px;
+        height: 12px;
+
+        &:hover:not(:disabled) {
+          height: 40px;
+        }
+
+        &:disabled {
+          height: 10px;
+        }
+      }
+
+      .hint-icon {
+        font-size: 14px;
+      }
+
+      .hint-text {
+        font-size: 8px;
+      }
+    }
+  }
+
+  .shuffle-toggle {
+    padding: 8px 12px;
+  }
+
+  .toggle-text {
+    font-size: 12px;
+    min-width: 120px;
+  }
+
+  .toggle-slider {
+    width: 40px;
+    height: 20px;
+
+    &::before {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  input:checked + .toggle-slider::before {
+    transform: translateX(20px);
   }
 }
 </style>

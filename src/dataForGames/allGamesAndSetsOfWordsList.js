@@ -50,6 +50,7 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'🕵️',
       category: "categoryExamplesPatterns"
     },
+
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/pattern/game-translate",
@@ -273,6 +274,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'📚'
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/ieltsIntroTest/millionaire",
+      missionVisibleName: "about IELTS",
+      missionDescription: "general questions",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
