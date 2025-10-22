@@ -242,6 +242,10 @@ const routes = [
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },
       {
+        path: '/preloader1',
+        component: () => import('src/pages/intros/preloader1.vue')
+      },
+      {
         path: '/notebook',
         component: () => import('src/pages/intros/notebookBlank.vue')
       },

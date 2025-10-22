@@ -1,5 +1,7 @@
 <template>
   <div class="keypad-container" :data-theme="theme" :data-platform="platform">
+    <DetectivePreloader v-if="showPreloader" />
+
     <main>
       <div class="keypad" :data-platform="platform" :data-theme="theme">
         <div class="keypad__base">
@@ -114,11 +116,25 @@ import aiBaseImage from '/src/assets/images/keyPad7.png'
 import keypadSingleImage from '/src/assets/images/keypad-single.png'
 import keySoundPress from '/src/assets/audio/keySoundPress.mp3'
 
+import DetectivePreloader from '/src/pages/intros/preloader1.vue'
+
+
 export default {
   name: 'AIKeypad',
 
+
+  components: {
+    DetectivePreloader
+  },
+
+
   data() {
     return {
+
+      showPreloader: true,
+      contentReady: false,
+
+
       isTouchDevice: false,
       lastActionTime: 0,
       platform: 'perplexity',
@@ -163,6 +179,9 @@ export default {
     this.generateCaptcha()
 
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
+    // Запускаем загрузку контента и управление прелоадером
+    this.initializeContent()
   },
 
   watch: {
@@ -185,6 +204,38 @@ export default {
         this.$router.push("/see-all-sets-of-words")
       }
     },
+    async initializeContent() {
+      // Параллельно загружаем контент и ждем минимум 3 секунды
+      await Promise.all([
+        this.preloadImages(),
+        new Promise(resolve => setTimeout(resolve, 3000))
+      ])
+
+      // Скрываем прелоадер и показываем контент
+      this.showPreloader = false
+      this.contentReady = true
+    },
+
+    async preloadImages() {
+      // Предзагрузка изображений клавиатуры
+      const loadImage = (src) => new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = resolve
+        img.onerror = reject
+        img.src = src
+      })
+
+      try {
+        await Promise.all([
+          loadImage(this.images.aiBase),
+          loadImage(this.images.keypadSingle)
+        ])
+      } catch (error) {
+        console.warn('Ошибка загрузки изображений:', error)
+      }
+    },
+
+
 
     initializeAudio() {
       this.clickAudio = new Audio(keySoundPress)

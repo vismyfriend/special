@@ -10,6 +10,19 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  englishPlus2WorkBookPage11presentSimple1: [
+  { id: 1, eng: "to music", ru: "My mom listens" },
+  { id: 2, eng: "my friends in the park", ru: "I meet" },
+  { id: 3, eng: "and write stories", ru: "Vincent vlogs" },
+  { id: 4, eng: "to the shop", ru: "Sally goes" },
+  { id: 5, eng: "musical instruments", ru: "Benny plays" },
+  { id: 6, eng: "nice pictures", ru: "They draw" },
+  { id: 7, eng: "watch TV", ru: "We never" },
+  { id: 8, eng: "is my mom's mother", ru: "My grandma" },
+  { id: 9, eng: "fish not often", ru: "We cook" },
+  { id: 10, eng: "goes to his office", ru: "Dad" },
+  ],
+
   ticketInspector: [
     { id: 1, eng: "ticket inspector", ru: "контролёр", hint: "/ тИкет инспЭктор /" },
     { id: 2, eng: "compartment", ru: "купе", hint: "/ ударение на А /" },
