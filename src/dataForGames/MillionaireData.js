@@ -50,7 +50,8 @@ const MillionaireData = {
       text: "Should you shake hands with the examiner?",
       options: {
         A: "Yes",
-        B: "No (unless the examiner initiates the handshake)"
+        C: "Better give them a high five",
+        B: "Unless the examiner initiates the handshake I shouldn't"
       },
       correctAnswer: "B"
     },
@@ -130,10 +131,11 @@ const MillionaireData = {
       correctAnswer: "B"
     },
     {
-      text: "Which phrases can you use when you don't know the answer to a question?",
+      text: "Which phrases can't you use when you don't know the answer to a question?",
       options: {
         A: "Sorry, could you repeat the question?",
-        B: "What the hell did you just say?"
+        B: "I can see your lips are moving but all I hear is bla-bla-bla",
+        C: "I do apologize, but didn't get that, will you say it again please?"
       },
       correctAnswer: "A"
     },
@@ -194,6 +196,16 @@ const MillionaireData = {
       correctAnswer: "B"
     },
     {
+      text: "Decide whether you should pray and ask the God to help you on the day of your exam",
+      options: {
+        A: "Why the hell not?",
+        B: "Thank God I am an atheist",
+        C: "I believe in myself and I should do everything that might help me.",
+        D: "Vincent is my only God! All hail Vincent!",
+      },
+      correctAnswer: "B"
+    },
+    {
       text: "In part 2, it is a good idea to...",
       options: {
         A: "tell the examiner everything you know about the topic.",
@@ -226,7 +238,8 @@ const MillionaireData = {
       options: {
         A: "Do the IELTS test over and over again until you get band 9.",
         B: "Record yourself with your phone.",
-        C: "Talk to a teddybear."
+        C: "Record yourself with your phone.",
+        D: "Go to the bar, get plastered, and talk to strangers"
       },
       correctAnswer: "B"
     },
@@ -266,6 +279,231 @@ const MillionaireData = {
       correctAnswer: "B"
     },
 
+  ],
+  с1TestMillionaire1: [
+
+    {
+      text: "In spite of ___ in the UK for a couple of months now, my brother still can’t speak the language",
+      options: {
+        A: "to live",
+        B: "live",
+        C: "living",
+        D: "lived"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ to drop you a line you when I get there, I promise",
+      options: {
+        A: "won’t forget",
+        B: "am not going to forget",
+        C: "am not forgetting",
+        D: "don’t forget"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "It’s a shame they ___ to that event. I would have loved to see them",
+      options: {
+        A: "haven’t invited",
+        B: "haven’t be invited",
+        C: "haven’t being invited",
+        D: "haven’t been invited",
+        E: "haven't an invitation"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "My younger sister ___ twins. Isn’t that a wonderful surprise?",
+      options: {
+        A: "expects",
+        B: "has expected",
+        C: "is expecting",
+        D: "will be expecting"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I love ___ newsfeed on Social Media Platforms: seeing my friends’ progress motivates me to shut down my laptop and pick up a book",
+      options: {
+        A: "нет артикля",
+        B: "a",
+        C: "an",
+        D: "the"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Oleg and Rachel from the book based on a TV-series '2 Broke girls' are two of my favorite characters ever ___",
+      options: {
+        A: "to write",
+        B: "writing",
+        C: "written",
+        D: "wrote"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "The team leader said that the strategy session ___ until the ___ week",
+      options: {
+        A: "has been postponed, next",
+        B: "is postponed, following",
+        C: "had been postponed, following",
+        D: "had been postponed, next"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "You ___ any food with you — there’s a perfectly good cafe right next to our meeting",
+      options: {
+        A: "mustn’t bring",
+        B: "needn’t have brought",
+        C: "ought to have brought",
+        D: "should have brought"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I wish I ___ that. I can see now I’ve upset you, sorry",
+      options: {
+        A: "didn’t say",
+        B: "wouldn’t say",
+        C: "hadn’t said",
+        D: "haven’t said"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "You can definitely benefit from a gap year. ___, there are some dangers involved, for example, getting sidetracked from your studies",
+      options: {
+        A: "in addition",
+        B: "nevertheless",
+        C: "furthermore",
+        D: "consequently"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "If he'd taken the medication as prescribed, he ___ sick in bed",
+      options: {
+        A: "wouldn't still be lying",
+        B: "won’t still be lying",
+        C: "wouldn’t have been still lying",
+        D: "wasn’t still be lying"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "My parents are very critical ___ the way we bring up our kids",
+      options: {
+        A: "about",
+        B: "on",
+        C: "over",
+        D: "of"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "There are rumours that either the tigers or the lion ___ from the zoo",
+      options: {
+        A: "are escaped",
+        B: "have escaped",
+        C: "has escaped",
+        D: "to have escaped"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "According to the World Economic Forum, plastic ___ fish in the World Ocean by 2050",
+      options: {
+        A: "will be outweighed",
+        B: "will have outweighed",
+        C: "would have outweigh",
+        D: "have outweighed"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "It still surprises me how tiktokers manage to have ___ thousands of followers",
+      options: {
+        A: "much",
+        B: "lot of",
+        C: "many",
+        D: "a lot of"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Stop putting the travel agent ___, it wasn’t her fault we missed our flight",
+      options: {
+        A: "down",
+        B: "off",
+        C: "up with",
+        D: "back"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "The injury is not serious. We’ll ___ you on your feet and running around in no time",
+      options: {
+        A: "let",
+        B: "force",
+        C: "have",
+        D: "make"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Under no circumstances ___ my hubby any money. He’ll waste everything on gambling",
+      options: {
+        A: "you should lend",
+        B: "do you lend",
+        C: "to lend",
+        D: "should you lend"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Vincent ___ you very ___",
+      options: {
+        A: "likes, much",
+        B: "like, a lot",
+        C: "likes, very",
+        D: "doesn't like, much "
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "If Vincent didn't ___ you so much, he ___ made this test for you a year ago",
+      options: {
+        A: "like, wouldn't have",
+        B: "liked, wouldn't",
+        C: "like, wouldn't",
+        D: "liked, wouldn't have",
+        E: "like, won't have",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I’ll ask the management ___ for another in-house employee",
+      options: {
+        A: "does our budget stretch",
+        B: "whether our budget stretches",
+        C: "our budget stretches",
+        D: "if stretches our budget"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "You wanna rent a party bus for the New Year's Eve celebration? That’s a(an) ___ splendid idea",
+      options: {
+        A: "highly",
+        B: "absolutely",
+        C: "very",
+        D: "enough"
+      },
+      correctAnswer: "B",
+    }
   ],
 
 

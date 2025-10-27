@@ -6,7 +6,6 @@
 
       <div class="q-pa-15 ">
         <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">
-<!--        <img src="../assets/images/special logo detective girl.png" alt="logo">-->
 
         <!-- Поле поиска -->
         <div class="search-container">
@@ -18,10 +17,7 @@
         </div>
 
         <!-- Используем filteredSets для отображения карточек -->
-
         <div class="v-cards-choose">
-
-
 
           <!-- 1. Создать свой набор (всегда первый) -->
           <div
@@ -38,10 +34,6 @@
               Click to see special content
             </div>
           </div>
-
-
-
-
 
           <!-- 1 display none, а дальше 2-3-4 - по порядку это 3 обычных набора -->
           <div
@@ -89,11 +81,6 @@
             </div>
           </div>
 
-
-
-
-
-
           <div
             class="v-card-choose tooltip-wrapper glassMorphism"
             role="button"
@@ -109,12 +96,7 @@
             </div>
           </div>
 
-
-
-
           <!-- 5. Рандомные вопросы  -->
-
-
           <div
             class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
@@ -130,23 +112,19 @@
             </div>
           </div>
 
-
-
-          <!-- КАТЕГОРИЯ Y EXAMPLES -->
-
-
+          <!-- КАТЕГОРИЯ EXAMPLES -->
           <div
-            v-if="categoryExamplesPatternsSets.length > 0"
+            v-if="shouldShowCategoryExamples"
             class="v-card-choose tooltip-wrapper categoryExamples"
             @click="togglecategoryExamplesPatterns"
             :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
               <span class="card-description">
-                examples ( {{ categoryExamplesPatternsSets.length }} )
+                examples ( {{ filteredCategoryExamplesSets.length }} )
               </span>
               <span class="card-icons">
                 <span class="expand-icon">{{ iscategoryExamplesPatternsExpanded ? '▼' : '▶' }}</span>
@@ -157,20 +135,20 @@
             </div>
           </div>
 
-          <!-- РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ YEXAMPLES -->
+          <!-- РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ EXAMPLES -->
           <div
-            v-if="iscategoryExamplesPatternsExpanded"
+            v-if="iscategoryExamplesPatternsExpanded && filteredCategoryExamplesSets.length > 0"
             class="category-sets-container categoryExamples-sets"
           >
             <div
-              v-for="currentSetOfWords in categoryExamplesPatternsSets"
+              v-for="currentSetOfWords in filteredCategoryExamplesSets"
               :key="currentSetOfWords.missionName"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
             >
               <div class="card-content">
                 <span class="card-description">
@@ -192,7 +170,6 @@
           </div>
 
           <!--Следующие 2 обычных наборов -->
-
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets.slice(3, 5)"
@@ -238,12 +215,7 @@
             </div>
           </div>
 
-
-
-
-
           <!--Следующие 2 обычных наборов -->
-
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets.slice(5, 8)"
@@ -289,7 +261,6 @@
             </div>
           </div>
 
-
           <!-- Змейка -->
           <div
             class="v-card-choose tooltip-wrapper glassMorphism3"
@@ -306,61 +277,56 @@
             </div>
           </div>
 
-
-
-
-
           <!-- Category Game Patterns -->
           <div
-            v-if="gamePatternsSets.length > 0"
+            v-if="shouldShowGamePatterns"
             class="v-card-choose tooltip-wrapper category-game-patterns"
             @click="toggleGamePatterns"
             :style="{
-    '--offset-x': '5px',
-    '--offset-y': '29.5px'
-  }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
-    <span class="card-description">
-      🎮 Games by Vincent ( {{ gamePatternsSets.length }} )
-    </span>
+              <span class="card-description">
+                🎮 Games by Vincent ( {{ filteredGamePatternsSets.length }} )
+              </span>
               <span class="card-icons">
-      <span class="expand-icon">{{ isGamePatternsExpanded ? '▼' : '▶' }}</span>
-    </span>
+                <span class="expand-icon">{{ isGamePatternsExpanded ? '▼' : '▶' }}</span>
+              </span>
             </div>
             <div class="custom-tooltip">
               Игры с паттернами
-
             </div>
           </div>
 
           <!-- Раскрытые наборы Game Patterns -->
           <div
-            v-if="isGamePatternsExpanded"
+            v-if="isGamePatternsExpanded && filteredGamePatternsSets.length > 0"
             class="category-sets-container category-game-patterns-sets"
           >
             <div
-              v-for="currentSetOfWords in gamePatternsSets"
+              v-for="currentSetOfWords in filteredGamePatternsSets"
               :key="currentSetOfWords.missionName"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
             >
               <div class="card-content">
-      <span class="card-description">
-        {{ currentSetOfWords.missionVisibleName }}
-      </span>
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
                 <span class="card-icons">
-        <span class="card-stars" v-if="currentSetOfWords.stars">
-          {{ getLevelStars(currentSetOfWords.stars) }}
-        </span>
-        <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-          {{ currentSetOfWords.gameIcon }}
-        </span>
-      </span>
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
               </div>
               <div class="custom-tooltip">
                 {{ currentSetOfWords.missionDescription }}
@@ -368,10 +334,7 @@
             </div>
           </div>
 
-
-
           <!--Следующие 2 обычных наборов -->
-
           <div
             class="v-card-choose tooltip-wrapper"
             v-for="currentSetOfWords in filteredSets.slice(8, 11)"
@@ -416,7 +379,6 @@
               </div>
             </div>
           </div>
-
 
           <!-- Все остальные обычные наборы -->
           <div
@@ -481,22 +443,19 @@
             </div>
           </div>
 
-
-
-
-          <!-- 2. КАТЕГОРИЯ ЧТЕНИЯ (если есть наборы с category: 'reading') -->
+          <!-- КАТЕГОРИЯ ЧТЕНИЯ -->
           <div
-            v-if="readingSets.length > 0"
+            v-if="shouldShowReadingCategory"
             class="v-card-choose tooltip-wrapper reading-category"
             @click="toggleReadingCategory"
             :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
               <span class="card-description">
-                 🚀 Интенсивы ( {{ readingSets.length }} )
+                 🚀 Интенсивы ( {{ filteredReadingSets.length }} )
               </span>
               <span class="card-icons">
                 <span class="expand-icon">{{ isReadingExpanded ? '▼' : '▶' }}</span>
@@ -507,20 +466,20 @@
             </div>
           </div>
 
-          <!-- 2.1. РАСКРЫТЫЕ НАБОРЫ ЧТЕНИЯ -->
+          <!-- РАСКРЫТЫЕ НАБОРЫ ЧТЕНИЯ -->
           <div
-            v-if="isReadingExpanded"
+            v-if="isReadingExpanded && filteredReadingSets.length > 0"
             class="reading-sets-container"
           >
             <div
-              v-for="currentSetOfWords in readingSets"
+              v-for="currentSetOfWords in filteredReadingSets"
               :key="currentSetOfWords.missionName"
               class="v-card-choose tooltip-wrapper reading-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
             >
               <div class="card-content">
                 <span class="card-description">
@@ -541,20 +500,19 @@
             </div>
           </div>
 
-
-
+          <!-- Category X -->
           <div
-            v-if="categoryXSets.length > 0"
+            v-if="shouldShowCategoryX"
             class="v-card-choose tooltip-wrapper category-x"
             @click="toggleCategoryX"
             :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
               <span class="card-description">
-                🔥 Категория X ( {{ categoryXSets.length }} )
+                🔥 Категория X ( {{ filteredCategoryXSets.length }} )
               </span>
               <span class="card-icons">
                 <span class="expand-icon">{{ isCategoryXExpanded ? '▼' : '▶' }}</span>
@@ -565,20 +523,20 @@
             </div>
           </div>
 
-          <!-- 5.1. РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ X -->
+          <!-- РАСКРЫТЫЕ НАБОРЫ КАТЕГОРИИ X -->
           <div
-            v-if="isCategoryXExpanded"
+            v-if="isCategoryXExpanded && filteredCategoryXSets.length > 0"
             class="category-sets-container category-x-sets"
           >
             <div
-              v-for="currentSetOfWords in categoryXSets"
+              v-for="currentSetOfWords in filteredCategoryXSets"
               :key="currentSetOfWords.missionName"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
             >
               <div class="card-content">
                 <span class="card-description">
@@ -599,25 +557,23 @@
             </div>
           </div>
 
-
-
           <!-- Category Chinese -->
           <div
-            v-if="chineseSets.length > 0"
+            v-if="shouldShowChinese"
             class="v-card-choose tooltip-wrapper category-chinese"
             @click="toggleChinese"
             :style="{
-    '--offset-x': '5px',
-    '--offset-y': '29.5px'
-  }"
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
           >
             <div class="card-content">
-    <span class="card-description">
-      🈷️ Китайский язык ( {{ chineseSets.length }} )
-    </span>
+              <span class="card-description">
+                🈷️ Китайский язык ( {{ filteredChineseSets.length }} )
+              </span>
               <span class="card-icons">
-      <span class="expand-icon">{{ isChineseExpanded ? '▼' : '▶' }}</span>
-    </span>
+                <span class="expand-icon">{{ isChineseExpanded ? '▼' : '▶' }}</span>
+              </span>
             </div>
             <div class="custom-tooltip">
               Изучение китайского языка
@@ -626,31 +582,31 @@
 
           <!-- Раскрытые наборы Chinese -->
           <div
-            v-if="isChineseExpanded"
+            v-if="isChineseExpanded && filteredChineseSets.length > 0"
             class="category-sets-container category-chinese-sets"
           >
             <div
-              v-for="currentSetOfWords in chineseSets"
+              v-for="currentSetOfWords in filteredChineseSets"
               :key="currentSetOfWords.missionName"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
-      '--offset-x': '5px',
-      '--offset-y': '29.5px'
-    }"
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
             >
               <div class="card-content">
-      <span class="card-description">
-        {{ currentSetOfWords.missionVisibleName }}
-      </span>
+                <span class="card-description">
+                  {{ currentSetOfWords.missionVisibleName }}
+                </span>
                 <span class="card-icons">
-        <span class="card-stars" v-if="currentSetOfWords.stars">
-          {{ getLevelStars(currentSetOfWords.stars) }}
-        </span>
-        <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-          {{ currentSetOfWords.gameIcon }}
-        </span>
-      </span>
+                  <span class="card-stars" v-if="currentSetOfWords.stars">
+                    {{ getLevelStars(currentSetOfWords.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
+                    {{ currentSetOfWords.gameIcon }}
+                  </span>
+                </span>
               </div>
               <div class="custom-tooltip">
                 {{ currentSetOfWords.missionDescription }}
@@ -658,15 +614,9 @@
             </div>
           </div>
 
-
-
-
         </div>
       </div>
     </div>
-
-
-
 
     <!-- Кастомное модальное окно для пароля -->
     <div v-if="passwordModal" class="password-modal-overlay">
@@ -701,20 +651,20 @@
   </div>
 </template>
 
+
 <script setup>
 import { useQuasar } from 'quasar';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
 const text = "choose \na \nmission";
-const speed = 150; // Скорость печати (мс)
-const introMessage = ref(null); // Добавляем ref для элемента
+const speed = 150;
+const introMessage = ref(null);
 const searchQuery = ref('');
 const router = useRouter()
 const $q = useQuasar()
-
 
 // Добавляем новые переменные для модального окна
 const passwordModal = ref(false);
@@ -729,7 +679,6 @@ const iscategoryExamplesPatternsExpanded = ref(false)
 const isGamePatternsExpanded = ref(false)
 const isChineseExpanded = ref(false)
 
-
 // для компактности кода проверяем наличие категорий у наборов
 const hasCategory = (set, categoryName) => {
   return set.category === categoryName ||
@@ -737,7 +686,6 @@ const hasCategory = (set, categoryName) => {
 }
 
 // Компьютеды для группировки
-// Все категории теперь используют единый подход
 const readingSets = computed(() => {
   return allGamesAndSetsOfWordsList.filter(set =>
     set.active && hasCategory(set, 'reading')
@@ -768,86 +716,19 @@ const chineseSets = computed(() => {
   )
 })
 
-
-
-
-// Функции переключения
-
-const toggleGamePatterns = () => {
-  isGamePatternsExpanded.value = !isGamePatternsExpanded.value
-}
-
-const toggleChinese = () => {
-  isChineseExpanded.value = !isChineseExpanded.value
-}
-
-const toggleReadingCategory = () => {
-  isReadingExpanded.value = !isReadingExpanded.value
-}
-
-const toggleCategoryX = () => {
-  isCategoryXExpanded.value = !isCategoryXExpanded.value
-}
-
-const togglecategoryExamplesPatterns = () => {
-  iscategoryExamplesPatternsExpanded.value = !iscategoryExamplesPatternsExpanded.value
-}
-
-
-
-
-
-
-const handlePasswordProtectedClick = (set) => {
-  if (!set.password) {
-    goToChosenGame(set);
-    return;
-  }
-
-  currentSetToUnlock.value = set;
-  passwordModal.value = true;
-};
-
-// Функции для работы с модальным окном
-const checkPassword = () => {
-  if (passwordInput.value === currentSetToUnlock.value.password) {
-    goToChosenGame(currentSetToUnlock.value);
-    closeModal();
-  } else {
-    shake.value = true;
-    passwordInput.value = '';
-  }
-};
-
-const closeModal = () => {
-  passwordModal.value = false;
-  passwordInput.value = '';
-  shake.value = false;
-};
-
-// Делаем список реактивным
-const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
-
-const showSpecialCardAlert = () => {
-  router.push('/create-special-set');
-};
-
-// Функция для получения пути к изображению
-const getImagePath = (imgName) => {
-  return new URL(`../assets/images/${imgName}`, import.meta.url).href;
-};
 // Улучшенная функция нормализации
 const normalizeString = (str) => {
   if (!str) return '';
   return str.toString().toLowerCase()
-    .normalize("NFD") // разбивает символы с диакритиками (например, é → e + ´)
-    .replace(/[\u0300-\u036f]/g, "") // удаляет диакритические знаки
-    .replace(/[^\wа-яё\/]/g, ''); // оставляет только буквы, цифры, _ и /
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\wа-яё\/]/g, '');
 };
 
-// Оптимизированная фильтрация
+// ОПТИМИЗИРОВАННАЯ ФИЛЬТРАЦИЯ С УЧЕТОМ КАТЕГОРИЙ
 const filteredSets = computed(() => {
-  const query = normalizeString(searchQuery.value).replace(/\//g, ''); // удаляем слэши из запроса
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+
   if (!query) {
     // Без поиска - показываем обычные наборы (без тех, что в категориях)
     return AllSetsOfWords.value.filter(set =>
@@ -893,6 +774,281 @@ const filteredSets = computed(() => {
   return result;
 });
 
+// НОВЫЕ КОМПЬЮТЕДЫ ДЛЯ УМНОГО СКРЫТИЯ КАТЕГОРИЙ
+const shouldShowReadingCategory = computed(() => {
+  if (!searchQuery.value) return readingSets.value.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = 'чтение reading'.includes(query) ||
+    'интенсивы'.includes(query);
+
+  const hasMatchingMissions = readingSets.value.some(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+
+  return categoryNameMatches || hasMatchingMissions;
+});
+
+const shouldShowCategoryX = computed(() => {
+  if (!searchQuery.value) return categoryXSets.value.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = 'категория x categoryx'.includes(query) ||
+    'секретные'.includes(query);
+
+  const hasMatchingMissions = categoryXSets.value.some(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+
+  return categoryNameMatches || hasMatchingMissions;
+});
+
+const shouldShowCategoryExamples = computed(() => {
+  if (!searchQuery.value) return categoryExamplesPatternsSets.value.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = 'examples примеры categoryexamplespatterns'.includes(query);
+
+  const hasMatchingMissions = categoryExamplesPatternsSets.value.some(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+
+  return categoryNameMatches || hasMatchingMissions;
+});
+
+const shouldShowGamePatterns = computed(() => {
+  if (!searchQuery.value) return gamePatternsSets.value.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = 'games gamepatterns игры'.includes(query) ||
+    'vincent'.includes(query);
+
+  const hasMatchingMissions = gamePatternsSets.value.some(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+
+  return categoryNameMatches || hasMatchingMissions;
+});
+
+const shouldShowChinese = computed(() => {
+  if (!searchQuery.value) return chineseSets.value.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = 'chinese китайский язык'.includes(query);
+
+  const hasMatchingMissions = chineseSets.value.some(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+
+  return categoryNameMatches || hasMatchingMissions;
+});
+
+// ФИЛЬТРОВАННЫЕ НАБОРЫ ДЛЯ КАЖДОЙ КАТЕГОРИИ (с учетом поиска)
+const filteredReadingSets = computed(() => {
+  if (!searchQuery.value) return readingSets.value;
+
+  const query = normalizeString(searchQuery.value);
+  return readingSets.value.filter(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+});
+
+const filteredCategoryXSets = computed(() => {
+  if (!searchQuery.value) return categoryXSets.value;
+
+  const query = normalizeString(searchQuery.value);
+  return categoryXSets.value.filter(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+});
+
+const filteredCategoryExamplesSets = computed(() => {
+  if (!searchQuery.value) return categoryExamplesPatternsSets.value;
+
+  const query = normalizeString(searchQuery.value);
+  return categoryExamplesPatternsSets.value.filter(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+});
+
+const filteredGamePatternsSets = computed(() => {
+  if (!searchQuery.value) return gamePatternsSets.value;
+
+  const query = normalizeString(searchQuery.value);
+  return gamePatternsSets.value.filter(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+});
+
+const filteredChineseSets = computed(() => {
+  if (!searchQuery.value) return chineseSets.value;
+
+  const query = normalizeString(searchQuery.value);
+  return chineseSets.value.filter(set => {
+    const searchFields = [
+      set.missionVisibleName,
+      set.missionDescription,
+      set.missionName
+    ];
+    return searchFields.some(field =>
+      normalizeString(field).includes(query)
+    );
+  });
+});
+
+// Функции переключения
+const toggleGamePatterns = () => {
+  if (searchQuery.value && !isGamePatternsExpanded.value) {
+    isGamePatternsExpanded.value = true;
+  } else {
+    isGamePatternsExpanded.value = !isGamePatternsExpanded.value;
+  }
+}
+
+const toggleChinese = () => {
+  if (searchQuery.value && !isChineseExpanded.value) {
+    isChineseExpanded.value = true;
+  } else {
+    isChineseExpanded.value = !isChineseExpanded.value;
+  }
+}
+
+const toggleReadingCategory = () => {
+  if (searchQuery.value && !isReadingExpanded.value) {
+    isReadingExpanded.value = true;
+  } else {
+    isReadingExpanded.value = !isReadingExpanded.value;
+  }
+}
+
+const toggleCategoryX = () => {
+  if (searchQuery.value && !isCategoryXExpanded.value) {
+    isCategoryXExpanded.value = true;
+  } else {
+    isCategoryXExpanded.value = !isCategoryXExpanded.value;
+  }
+}
+
+const togglecategoryExamplesPatterns = () => {
+  if (searchQuery.value && !iscategoryExamplesPatternsExpanded.value) {
+    iscategoryExamplesPatternsExpanded.value = true;
+  } else {
+    iscategoryExamplesPatternsExpanded.value = !iscategoryExamplesPatternsExpanded.value;
+  }
+}
+
+// Автоматически скрывать раскрытые категории при очистке поиска
+watch(searchQuery, (newQuery) => {
+  if (!newQuery) {
+    isReadingExpanded.value = false;
+    isCategoryXExpanded.value = false;
+    iscategoryExamplesPatternsExpanded.value = false;
+    isGamePatternsExpanded.value = false;
+    isChineseExpanded.value = false;
+  }
+});
+
+const handlePasswordProtectedClick = (set) => {
+  if (!set.password) {
+    goToChosenGame(set);
+    return;
+  }
+
+  currentSetToUnlock.value = set;
+  passwordModal.value = true;
+};
+
+// Функции для работы с модальным окном
+const checkPassword = () => {
+  if (passwordInput.value === currentSetToUnlock.value.password) {
+    goToChosenGame(currentSetToUnlock.value);
+    closeModal();
+  } else {
+    shake.value = true;
+    passwordInput.value = '';
+  }
+};
+
+const closeModal = () => {
+  passwordModal.value = false;
+  passwordInput.value = '';
+  shake.value = false;
+};
+
+// Делаем список реактивным
+const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
+
+const showSpecialCardAlert = () => {
+  router.push('/create-special-set');
+};
+
+// Функция для получения пути к изображению
+const getImagePath = (imgName) => {
+  return new URL(`../assets/images/${imgName}`, import.meta.url).href;
+};
 
 const goToChosenGame = (set) => {
   if (set.type === "hardcodedLink") {
@@ -905,6 +1061,7 @@ const goToChosenGame = (set) => {
     router.push(`/see-all-sets-of-words/${set.missionName}`);
   }
 }
+
 const getLevelStars = (stars) => {
   if (!stars) return '';
   const starCount = parseInt(stars);
@@ -933,21 +1090,17 @@ const playRandomSet = () => {
   goToChosenGame(randomSet);
 };
 
-const  playRandomQuestions = () => {
+const playRandomQuestions = () => {
   router.push('/phoneFramePattern');
-
 }
 
-
-const  playSnake = () => {
+const playSnake = () => {
   router.push('/gameSnakeCursor');
-
 }
-const  tapalka = () => {
+
+const tapalka = () => {
   router.push('/');
-
 }
-
 
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
@@ -965,11 +1118,8 @@ onMounted(() => {
   }
 
   typeWriter();
-
 });
-
 </script>
-
 <style lang="scss" scoped>
 /* ask как убрать белые края у блюра? я просто отдельную фотку загрузил, но это же мегабайты лишние*/
 .blur {

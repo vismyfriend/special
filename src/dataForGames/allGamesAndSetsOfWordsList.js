@@ -283,6 +283,14 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'🕵️',
+    },{
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/с1TestMillionaire1/millionaire",
+      missionVisibleName: "grammar c1 test 1",
+      missionDescription: "грамматика времена",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

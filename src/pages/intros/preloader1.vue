@@ -281,6 +281,7 @@ export default {
 
 <style scoped>
 .detective-preloader {
+  user-select: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -296,7 +297,7 @@ export default {
   transition: opacity 0.5s ease-out;
 
   /* ВАЖНО: Устанавливаем нормальный курсор */
-  cursor: default;
+  cursor: pointer;
 }
 
 /* Скрытый элемент, который занимает весь экран и сбрасывает курсор */
@@ -306,7 +307,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  cursor: default;
+  cursor: pointer;
   pointer-events: none; /* Чтобы не блокировать клики на прелоадер */
 }
 
@@ -314,13 +315,13 @@ export default {
 .magnifying-glass,
 .loading-text,
 .percentage-display {
-  cursor: default;
+  cursor: pointer;
 }
 
 /* Добавим красивый курсор при наведении на лупу */
 .magnifying-glass:hover {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-  cursor: default;
+  cursor: pointer;
 }
 
 /* Остальные стили без изменений */
