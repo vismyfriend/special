@@ -137,13 +137,15 @@ const MillionaireData = {
         B: "I can see your lips are moving but all I hear is bla-bla-bla",
         C: "I do apologize, but didn't get that, will you say it again please?"
       },
-      correctAnswer: "A"
+      correctAnswer: "B"
     },
     {
       text: "Which phrases can you use when you don't understand a specific word or phrase that the examiner said?",
       options: {
         A: "Sorry, what does ______ mean?",
-        B: "What on earth are you talking about?"
+        B: "I apologize, but I have no idea what that means",
+        C: "The word _____ doesn't ring any bell",
+        D: "What on earth are you talking about?"
       },
       correctAnswer: "A"
     },
@@ -200,10 +202,10 @@ const MillionaireData = {
       options: {
         A: "Why the hell not?",
         B: "Thank God I am an atheist",
-        C: "I believe in myself and I should do everything that might help me.",
-        D: "Vincent is my only God! All hail Vincent!",
+        C: "I should do everything that might help me.",
+        D: "Vincent is my only God! All pray to Vincent!",
       },
-      correctAnswer: "B"
+      correctAnswer: "C"
     },
     {
       text: "In part 2, it is a good idea to...",
@@ -266,6 +268,7 @@ const MillionaireData = {
       options: {
         A: "Can I have a hug?",
         B: "Thank you very much",
+        D: "So long, suckers!",
         C: "What score did I get?"
       },
       correctAnswer: "B"
@@ -324,7 +327,7 @@ const MillionaireData = {
       correctAnswer: "C",
     },
     {
-      text: "I love ___ newsfeed on Social Media Platforms: seeing my friends’ progress motivates me to shut down my laptop and pick up a book",
+      text: "I love ___ News on Social Media Platforms: seeing my friends’ progress motivates me to shut down my laptop and pick up a book",
       options: {
         A: "нет артикля",
         B: "a",
@@ -334,7 +337,7 @@ const MillionaireData = {
       correctAnswer: "D",
     },
     {
-      text: "Oleg and Rachel from the book based on a TV-series '2 Broke girls' are two of my favorite characters ever ___",
+      text: "Rome and Juliet are two of my favorite characters ever ___",
       options: {
         A: "to write",
         B: "writing",
@@ -384,7 +387,7 @@ const MillionaireData = {
       correctAnswer: "B",
     },
     {
-      text: "If he'd taken the medication as prescribed, he ___ sick in bed",
+      text: "If he'd taken the medication as prescribed, he ___ sick in bed now",
       options: {
         A: "wouldn't still be lying",
         B: "won’t still be lying",
@@ -392,6 +395,16 @@ const MillionaireData = {
         D: "wasn’t still be lying"
       },
       correctAnswer: "A",
+    },
+    {
+      text: "Let me tell you this again - If he'd taken the medication as prescribed, he ___ sick in bed all last week",
+      options: {
+        A: "wouldn't still be lying",
+        B: "won’t still be lying",
+        C: "wouldn’t have been lying",
+        D: "wasn’t still be lying"
+      },
+      correctAnswer: "C",
     },
     {
       text: "My parents are very critical ___ the way we bring up our kids",
@@ -429,7 +442,7 @@ const MillionaireData = {
         A: "much",
         B: "lot of",
         C: "many",
-        D: "a lot of"
+        D: "a lot"
       },
       correctAnswer: "C",
     },
@@ -464,7 +477,7 @@ const MillionaireData = {
       correctAnswer: "D",
     },
     {
-      text: "Vincent ___ you very ___",
+      text: "Vincent ___ his students and his agents very ___",
       options: {
         A: "likes, much",
         B: "like, a lot",
@@ -474,7 +487,7 @@ const MillionaireData = {
       correctAnswer: "A",
     },
     {
-      text: "If Vincent didn't ___ you so much, he ___ made this test for you a year ago",
+      text: "If Vincent didn't ___ me so much, he ___ made this test for me a year ago",
       options: {
         A: "like, wouldn't have",
         B: "liked, wouldn't",
