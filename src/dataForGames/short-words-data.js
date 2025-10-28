@@ -176,14 +176,14 @@ const shortWordsData = {
     { id: 3, eng: "ni he cha ma?", ru: "вы пьете чай?" },
 
   ],
-  halloweenCharacters26: [
+  halloweenCharacters30: [
     { id: 1, eng: "a ghost", ru: "Призрак" },
     { id: 2, eng: "a ghostbuster", ru: "Охотник на привидений" },
     { id: 3, eng: "a ghoul", ru: "Гуль" },
     { id: 4, eng: "a gremlin", ru: "Гремлин" },
     { id: 5, eng: "a hellhound", ru: "Адская гончая" },
-    { id: 6, eng: "a mermaid", ru: "Русалка" },
-    { id: 7, eng: "a monster", ru: "Монстр" },
+    { id: 6, eng: "an evil mermaid", ru: "Злобная русалка" },
+    { id: 7, eng: "an evil doll", ru: "Злобная кукла" },
     { id: 8, eng: "a mummy", ru: "Мумия" },
     { id: 9, eng: "a person with a chainsaw", ru: "Личность с бензопилой" },
     { id: 10, eng: "a skeleton", ru: "Скелет" },
@@ -196,13 +196,34 @@ const shortWordsData = {
     { id: 17, eng: "a doppelganger", ru: "Доппельгангер" },
     { id: 18, eng: "Baba Yaga", ru: "Баба-Яга" },
     { id: 19, eng: "Death (The Reaper)", ru: "Смерть (Жнец)" },
-    { id: 20, eng: "Frankenstein", ru: "Франкенштейна" },
+    { id: 20, eng: "Frankenstein's monster", ru: "Монстр Франкенштейна" },
     { id: 21, eng: "Ghost Rider", ru: "Призрачный всадник" },
     { id: 22, eng: "Harry Potter", ru: "Гарри Поттер" },
     { id: 23, eng: "Pennywise", ru: "Оно (Пеннивайз)" },
     { id: 24, eng: "Resident Evil", ru: "Обитель зла" },
     { id: 25, eng: "the devil", ru: "Дьявол" },
-    { id: 26, eng: "The Queen of Spades", ru: "Пиковая Дама" }
+    { id: 26, eng: "Gorgo Medusa", ru: "Медуза Горгона" },
+    { id: 27, eng: "The Queen of Spades", ru: "Пиковая Дама" }
+  ],
+  halloweenCharactersWeapons: [
+    { id: 1, eng: "a weapon", ru: "оружие" },
+    { id: 2, eng: "a crucifix", ru: "распятие" },
+    { id: 3, eng: "some garlic", ru: "немного чеснока" },
+    { id: 4, eng: "a silver sword", ru: "серебряный меч" },
+    { id: 5, eng: "silver bullets", ru: "серебряные пули" },
+    { id: 6, eng: "an axe", ru: "топор" },
+    { id: 7, eng: "a shotgun", ru: "дробовик" },
+    { id: 8, eng: "a chainsaw", ru: "бензопила" },
+    { id: 9, eng: "a mirror", ru: "зеркало" },
+    { id: 10, eng: "a needle in an egg", ru: "иголка в яйце" },
+    { id: 11, eng: "a machine gun", ru: "пулемёт" },
+    { id: 12, eng: "a bucket", ru: "ведро" },
+    { id: 13, eng: "a broom", ru: "метла/щетка" },
+    { id: 14, eng: "a magical spell", ru: "волшебное заклинание" },
+    { id: 15, eng: "a stake", ru: "кол" },
+    { id: 16, eng: "holy water", ru: "святая вода" },
+    { id: 17, eng: "sunlight", ru: "солнечный свет" },
+    { id: 18, eng: "a magical staff", ru: "магический посох" }
   ],
 
 
