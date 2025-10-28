@@ -1756,6 +1756,48 @@ const brainStormExercisesData = {
 
     ],
   },
+  halloweenCharacters30advanced: {
+    tasks: [
+      {
+        taskPicture: new URL("../assets/images/yesNoBecause.png", import.meta.url).href,
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Should pineapple be on pizza?",
+            translation: "Ананас должен быть на пицце?"
+          },
+          {
+            text: "Is it okay to wear socks with sandals?",
+            translation: "Нормально ли носить носки с сандалями?"
+          },
+          {
+            text: "Can you lick your elbow?",
+            translation: "Вы можете лизнуть свой локоть?"
+          },
+          {
+            text: "Do you talk to your pet?",
+            translation: "Вы разговариваете со своим питомцем?"
+          },
+          {
+            text: "Is it okay to eat pizza with a fork?",
+            translation: "Нормально ли есть пиццу вилкой?"
+          },
+          {
+            text: "Would you wear the same socks for 30 days for $100?",
+            translation: "Вы бы носили одни носки 30 дней за $100?"
+          },
+          {
+            text: "Do you believe in ghosts?",
+            translation: "Вы верите в привидений?"
+          },
+          {
+            text: "Do you sing in the shower?",
+            translation: "Вы поёте в душе?"
+          }
+        ]
+      },
+    ],
+  },
 
 
   yesNoBecause1: {

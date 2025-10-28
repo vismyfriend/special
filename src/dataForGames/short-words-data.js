@@ -220,10 +220,13 @@ const shortWordsData = {
     { id: 12, eng: "a bucket", ru: "ведро" },
     { id: 13, eng: "a broom", ru: "метла/щетка" },
     { id: 14, eng: "a magical spell", ru: "волшебное заклинание" },
-    { id: 15, eng: "a stake", ru: "кол" },
+    { id: 15, eng: "aspen stakes", ru: "осиновые колья" },
     { id: 16, eng: "holy water", ru: "святая вода" },
     { id: 17, eng: "sunlight", ru: "солнечный свет" },
-    { id: 18, eng: "a magical staff", ru: "магический посох" }
+    { id: 18, eng: "a flamethrower", ru: "огнемет" },
+    { id: 19, eng: "a baseball bat with nails", ru: "бейсбольная бита с гвоздями" },
+    { id: 20, eng: "a baseball bat with nails", ru: "бейсбольная бита с гвоздями" },
+    { id: 21, eng: "a bow and an arrow", ru: "лук и стрела" }
   ],
 
 

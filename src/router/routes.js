@@ -130,6 +130,10 @@ const routes = [
                 path: 'spell-ten',
                 component: () => import('components/GameSpellTen.vue')
               },
+              {
+                path: 'definitions-game',
+                component: () => import('components/GameDefinitions.vue')
+              },
 
               {
                 path: 'game-translate',

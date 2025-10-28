@@ -57,6 +57,7 @@ import shortPicturesData from "src/dataForGames/short-pictures-data";
 import dresserGameData from "src/dataForGames/dresserGameData";
 import songsData from "src/dataForGames/SongsData";
 import pdfPagesData from "src/dataForGames/pdfPagesData";
+import definitionsData from "src/dataForGames/definitions-data";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -165,6 +166,12 @@ const AllGames = ref([
     path: "deck-of-cards",
     gameData: questionsData,
     cardIcon: '🃏', // Добавлена иконка
+    active: true
+  },  {
+    id: 104,
+    name: "A deck of cards",
+    path: "deck-of-cards",
+    gameData: definitionsData,
     active: true
   },
  {

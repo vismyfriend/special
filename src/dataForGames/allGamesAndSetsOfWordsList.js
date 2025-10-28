@@ -1437,6 +1437,15 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/halloweenCharactersDefinitions/definitions-game",
+      missionVisibleName: "Halloween Definitions",
+      missionDescription: "Characters Advanced",
+      id: 1001,
+      active: true,
+      gameIcon:' 🗣'
+    },
+    {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
       missionVisibleName: "Протестировать fast",
       missionDescription: "Test quickly 111",
