@@ -176,6 +176,37 @@ const shortWordsData = {
     { id: 3, eng: "ni he cha ma?", ru: "вы пьете чай?" },
 
   ],
+  halloweenCharacters26: [
+    { id: 1, eng: "a ghost", ru: "Призрак" },
+    { id: 2, eng: "a ghostbuster", ru: "Охотник на привидений" },
+    { id: 3, eng: "a ghoul", ru: "Гуль" },
+    { id: 4, eng: "a gremlin", ru: "Гремлин" },
+    { id: 5, eng: "a hellhound", ru: "Адская гончая" },
+    { id: 6, eng: "a mermaid", ru: "Русалка" },
+    { id: 7, eng: "a monster", ru: "Монстр" },
+    { id: 8, eng: "a mummy", ru: "Мумия" },
+    { id: 9, eng: "a person with a chainsaw", ru: "Личность с бензопилой" },
+    { id: 10, eng: "a skeleton", ru: "Скелет" },
+    { id: 11, eng: "a vampire", ru: "Вампир" },
+    { id: 12, eng: "a werewolf", ru: "Оборотень" },
+    { id: 13, eng: "a witch", ru: "Ведьма" },
+    { id: 14, eng: "a zombie", ru: "Зомби" },
+    { id: 15, eng: "a bride's corpse", ru: "Труп невесты" },
+    { id: 16, eng: "a broom's corpse", ru: "Труп жениха" },
+    { id: 17, eng: "a doppelganger", ru: "Доппельгангер" },
+    { id: 18, eng: "Baba Yaga", ru: "Баба-Яга" },
+    { id: 19, eng: "Death (The Reaper)", ru: "Смерть (Жнец)" },
+    { id: 20, eng: "Frankenstein", ru: "Франкенштейна" },
+    { id: 21, eng: "Ghost Rider", ru: "Призрачный всадник" },
+    { id: 22, eng: "Harry Potter", ru: "Гарри Поттер" },
+    { id: 23, eng: "Pennywise", ru: "Оно (Пеннивайз)" },
+    { id: 24, eng: "Resident Evil", ru: "Обитель зла" },
+    { id: 25, eng: "the devil", ru: "Дьявол" },
+    { id: 26, eng: "The Queen of Spades", ru: "Пиковая Дама" }
+  ],
+
+
+
   WhatIsMyAgeAgainBlink182Song: [
       { id: 1, eng: "puddle", ru: "лужа" },
       { id: 2, eng: "clumsy", ru: "неуклюжий" },

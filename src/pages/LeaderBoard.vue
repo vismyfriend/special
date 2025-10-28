@@ -26,6 +26,7 @@
           </button>
           <button class="simple-btn try-again" @click="tryAgain">хочу лучше !</button>
 <!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
+          <button class="simple-btn next-mission" @click="seeAllWordsInSet">Увидеть все слова</button>
 
         </div>
       </div>
@@ -90,9 +91,11 @@
           {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
         </button>
         <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
-        <button class="close-btn" @click="backToSameSet">Следующее задание</button>
+        <button class="close-btn" @click="backToSameSet">Следующ. задание</button>
         <button class="games-btn" @click="goToGames">Другой набор слов</button>
-<!--        <button class="simple-view-btn" @click="showDetailed = false">-->
+        <button class="simple-btn next-mission" @click="seeAllWordsInSet">See all words</button>
+
+        <!--        <button class="simple-view-btn" @click="showDetailed = false">-->
 <!--          Simple View ▲-->
 <!--        </button>-->
       </div>
@@ -323,6 +326,14 @@ const getDisplayName = (fullName) => {
 const backToSameSet = () => {
   if (missionName.value) {
     router.push(`/see-all-sets-of-words/${missionName.value}`);
+  } else {
+    console.error("missionName is not available");
+    router.push("/see-all-sets-of-words/");
+  }
+};
+const seeAllWordsInSet = () => {
+  if (missionName.value) {
+    router.push(`/see-all-sets-of-words/${missionName.value}/print-all-words`);
   } else {
     console.error("missionName is not available");
     router.push("/see-all-sets-of-words/");

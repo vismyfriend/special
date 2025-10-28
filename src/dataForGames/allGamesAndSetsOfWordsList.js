@@ -1066,6 +1066,15 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/halloweenCharacters26/find-pairs-hard",
+      missionVisibleName: "26 Halloween Characters",
+      missionDescription: "26 хЭллоуин персонажей",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/idiomsPerfectMatch/find-pairs-hard",
       missionVisibleName: "Two peas in a pod",
       missionDescription: "идиомы 1 idioms 1",
