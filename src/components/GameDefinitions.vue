@@ -12,23 +12,36 @@
         v-for="(definition, index) in activeDefinitions"
         :key="`${definition.id}-${index}`"
       >
+        <!-- Кнопка-лампочка для переключения между переводом и попытками -->
+        <button
+          class="toggle-hint-btn"
+          @click="toggleHintView(index)"
+          :title="definition.showHintTranslation ? 'Показать попытки' : 'Показать перевод'"
+        >
+          {{ definition.showHintTranslation ? '💡' : '📝' }}
+        </button>
+
         <div class="definition-section">
           <h3>Definition:</h3>
           <p class="english-definition">{{ definition.engClean }}</p>
 
-          <!-- Кнопка для показа перевода -->
-          <button
-            class="show-translation-btn"
-            @click="toggleTranslation(index)"
-            v-if="!definition.showTranslation"
-          >
-            Показать перевод
-          </button>
-
-          <!-- Перевод (изначально скрыт) -->
-          <div class="translation" v-if="definition.showTranslation">
+          <!-- Блок с переводом -->
+          <div class="translation" v-if="definition.showHintTranslation">
             <p>{{ definition.ru }}</p>
+          </div>
 
+          <!-- Блок с обратной связью после неправильного ответа -->
+          <div class="feedback-section" v-if="!definition.showHintTranslation && definition.showFeedback">
+            <div class="attempt-feedback" v-if="definition.attempts < 3">
+              <p class="attempt-message">Ваши попытки: <strong>{{ definition.allAttempts.join(', ') }}</strong></p>
+              <p class="try-again">Попробуйте еще раз! Попытка {{ definition.attempts }} из 3</p>
+            </div>
+            <div class="correct-answer" v-else>
+              <p class="correct-answer-message">Правильный ответ: <strong>{{ definition.ans }}</strong></p>
+              <p class="attempts-history" v-if="definition.allAttempts.length > 0">
+                Ваши попытки: {{ definition.allAttempts.join(', ') }}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -48,7 +61,7 @@
           <button
             class="check-btn"
             @click="checkAnswer(index)"
-            :disabled="!definition.userAnswer?.trim() || definition.isCompleted"
+            :disabled="definition.isCompleted"
           >
             {{ definition.isCompleted ? '✓' : 'Проверить' }}
           </button>
@@ -71,13 +84,16 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const currentGameData = ref([]);
-const definitions = ref([]);
-const activeDefinitions = ref([]);
-const currentIndex = ref(0);
+// ========== РЕАКТИВНЫЕ ПЕРЕМЕННЫЕ ==========
+// Основные данные игры
+const currentGameData = ref([]); // Все данные из JSON
+const definitions = ref([]); // Все определения для текущей игры
+const activeDefinitions = ref([]); // Активные карточки (2 штуки)
+const currentIndex = ref(0); // Текущий индекс для подгрузки новых карточек
 
-// Вычисляемые свойства
+// ========== ВЫЧИСЛЯЕМЫЕ СВОЙСТВА ==========
 const remainingCards = computed(() => {
+  // Оставшиеся карточки = те, что еще не показаны + активные незавершенные
   const remainingFromDefinitions = Math.max(0, definitions.value.length - currentIndex.value);
   const remainingFromActive = activeDefinitions.value.filter(def => !def.isCompleted).length;
   return remainingFromDefinitions + remainingFromActive;
@@ -85,52 +101,68 @@ const remainingCards = computed(() => {
 
 const totalCards = computed(() => currentGameData.value.length);
 
-// Наблюдатель за завершением карточек
+// ========== НАБЛЮДАТЕЛИ ==========
+// Следим за активными карточками и заменяем завершенные новыми
 watch(activeDefinitions, (newActiveDefs) => {
   const completedCount = newActiveDefs.filter(def => def.isCompleted).length;
 
   if (completedCount > 0 && currentIndex.value < definitions.value.length) {
-    // Заменяем завершенные карточки новыми
     replaceCompletedCards();
   }
 }, { deep: true });
 
-// Функция для очистки текста от скобок с переводами
+// ========== ФУНКЦИИ ДЛЯ РАБОТЫ С ТЕКСТОМ ==========
+/**
+ * Очищает текст определения от скобок с переводами
+ * @param {string} text - исходный текст
+ * @returns {string} очищенный текст
+ */
 const cleanDefinitionText = (text) => {
   return text.replace(/\s*\([^)]*\)/g, '');
 };
 
-// Инициализация игры
+// ========== ОСНОВНЫЕ ФУНКЦИИ ИГРЫ ==========
+/**
+ * Инициализирует игру - загружает данные и настраивает начальное состояние
+ */
 const initializeGame = () => {
   const missionName = route.params.missionName;
   currentGameData.value = definitionsData[missionName] || [];
 
-  // Очищаем определения от скобок с переводами
+  // Подготавливаем все определения для игры
   definitions.value = currentGameData.value.map(el => ({
     id: el.id,
     eng: el.eng,
-    engClean: cleanDefinitionText(el.eng),
-    ru: el.ru,
-    ans: el.ans,
-    userAnswer: '',
-    showTranslation: false,
-    isCompleted: false,
-    isCorrect: false,
-    isIncorrect: false
+    engClean: cleanDefinitionText(el.eng), // Очищенный английский текст
+    ru: el.ru, // Русский перевод
+    ans: el.ans, // Правильный ответ
+    userAnswer: '', // Текущий ответ пользователя
+    showHintTranslation: false, // Показывать ли перевод (управляется кнопкой-лампочкой)
+    showFeedback: false, // Показывать ли блок с попытками
+    attempts: 0, // Количество неправильных попыток
+    allAttempts: [], // Массив всех введенных ответов
+    isCompleted: false, // Завершена ли карточка
+    isCorrect: false, // Правильный ли текущий ответ
+    isIncorrect: false // Неправильный ли текущий ответ
   }));
 
   currentIndex.value = 0;
   loadInitialCards();
 };
 
-// Загрузка начальных 2 карточек
+/**
+ * Загружает первые 2 карточки для начала игры
+ */
 const loadInitialCards = () => {
   const initialDefinitions = definitions.value.slice(currentIndex.value, currentIndex.value + 2);
 
   activeDefinitions.value = initialDefinitions.map(def => ({
     ...def,
     userAnswer: '',
-    showTranslation: false,
+    showHintTranslation: false,
+    showFeedback: false,
+    attempts: 0,
+    allAttempts: [],
     isCompleted: false,
     isCorrect: false,
     isIncorrect: false
@@ -139,7 +171,9 @@ const loadInitialCards = () => {
   currentIndex.value += initialDefinitions.length;
 };
 
-// Замена завершенных карточек новыми
+/**
+ * Заменяет завершенные карточки новыми из очереди
+ */
 const replaceCompletedCards = () => {
   const newActiveDefinitions = [...activeDefinitions.value];
   let hasReplacements = false;
@@ -151,7 +185,10 @@ const replaceCompletedCards = () => {
       newActiveDefinitions[i] = {
         ...nextDefinition,
         userAnswer: '',
-        showTranslation: false,
+        showHintTranslation: false,
+        showFeedback: false,
+        attempts: 0,
+        allAttempts: [],
         isCompleted: false,
         isCorrect: false,
         isIncorrect: false
@@ -167,43 +204,92 @@ const replaceCompletedCards = () => {
   }
 };
 
-// Переключение перевода
-const toggleTranslation = (index) => {
-  activeDefinitions.value[index].showTranslation = !activeDefinitions.value[index].showTranslation;
+/**
+ * Переключает между показом перевода и показом попыток
+ * @param {number} index - индекс карточки в activeDefinitions
+ */
+const toggleHintView = (index) => {
+  activeDefinitions.value[index].showHintTranslation = !activeDefinitions.value[index].showHintTranslation;
 };
 
-// Проверка ответа
+/**
+ * Проверяет ответ пользователя и обновляет состояние карточки
+ * @param {number} index - индекс карточки в activeDefinitions
+ */
 const checkAnswer = (index) => {
   const definition = activeDefinitions.value[index];
-  if (!definition.userAnswer.trim() || definition.isCompleted) return;
+
+  // Проверяем, не завершена ли уже карточка
+  if (definition.isCompleted) return;
+
+  // Если поле ввода пустое, считаем это неправильным ответом
+  if (!definition.userAnswer.trim()) {
+    definition.isCorrect = false;
+    definition.isIncorrect = true;
+    definition.showHintTranslation = false; // Скрываем перевод
+    definition.showFeedback = true; // Показываем блок с попытками
+    definition.attempts += 1;
+
+    // Сохраняем пустую попытку в историю (можно написать "пусто" или оставить пустую строку)
+    definition.allAttempts.push('(пусто)');
+
+    // Очищаем поле ввода
+    definition.userAnswer = '';
+
+    // Сбрасываем красную подсветку через 2 секунды
+    setTimeout(() => {
+      definition.isIncorrect = false;
+    }, 2000);
+
+    return; // Выходим из функции
+  }
 
   const isCorrect = isAnswerCorrect(definition.userAnswer, definition.ans);
 
   if (isCorrect) {
+    // Правильный ответ
     definition.isCorrect = true;
     definition.isIncorrect = false;
+    definition.showFeedback = false;
 
-    // Помечаем как завершенную через короткую задержку для визуального подтверждения
+    // Завершаем карточку через небольшую задержку
     setTimeout(() => {
       definition.isCompleted = true;
     }, 800);
   } else {
+    // Неправильный ответ
     definition.isCorrect = false;
     definition.isIncorrect = true;
+    definition.showHintTranslation = false; // Скрываем перевод
+    definition.showFeedback = true; // Показываем блок с попытками
+    definition.attempts += 1;
 
-    // Сбрасываем статус incorrect через 2 секунды
+    // Сохраняем текущую попытку в историю
+    definition.allAttempts.push(definition.userAnswer);
+
+    // Очищаем поле ввода для следующей попытки
+    definition.userAnswer = '';
+
+    // Сбрасываем красную подсветку через 2 секунды
     setTimeout(() => {
       definition.isIncorrect = false;
     }, 2000);
   }
 };
 
-// Перезапуск игры
+/**
+ * Перезапускает игру
+ */
 const restartGame = () => {
   initializeGame();
 };
 
-// Проверка правильности ответа
+// ========== ФУНКЦИИ ДЛЯ ПРОВЕРКИ ОТВЕТОВ ==========
+/**
+ * Нормализует ответ пользователя для сравнения
+ * @param {string} answer - ответ пользователя
+ * @returns {string} нормализованный ответ
+ */
 const normalizeAnswer = (answer) => {
   if (!answer || typeof answer !== 'string') return '';
 
@@ -232,9 +318,16 @@ const normalizeAnswer = (answer) => {
     .trim();
 };
 
+/**
+ * Проверяет, является ли опечатка допустимой
+ * @param {string} userWord - слово пользователя
+ * @param {string} correctWord - правильное слово
+ * @returns {boolean} true если опечатка допустима
+ */
 const isTypoCloseEnough = (userWord, correctWord) => {
   if (userWord === correctWord) return true;
 
+  // Слова, которые должны совпадать точно
   const strictWords = ['he','his','she','her','you','your','we','our','it','is','are','was','were','do','does','did','have','has','had','who','why'];
   const isShortWord = correctWord.length <= 3;
 
@@ -242,8 +335,10 @@ const isTypoCloseEnough = (userWord, correctWord) => {
     return false;
   }
 
+  // Допускаем разницу в длине не более 1 символа
   if (Math.abs(userWord.length - correctWord.length) > 1) return false;
 
+  // Проверяем количество ошибок (не более 1)
   let errors = 0;
   const maxLength = Math.max(userWord.length, correctWord.length);
 
@@ -259,12 +354,19 @@ const isTypoCloseEnough = (userWord, correctWord) => {
   return true;
 };
 
+/**
+ * Проверяет правильность ответа пользователя
+ * @param {string} userAnswer - ответ пользователя
+ * @param {string} correctAnswer - правильный ответ
+ * @returns {boolean} true если ответ правильный
+ */
 const isAnswerCorrect = (userAnswer, correctAnswer) => {
   const normalizedUser = normalizeAnswer(userAnswer);
   const normalizedCorrect = normalizeAnswer(correctAnswer);
 
   if (normalizedUser === normalizedCorrect) return true;
 
+  // Разбиваем на слова и проверяем каждое слово с учетом опечаток
   const userWords = normalizedUser.split(' ');
   const correctWords = normalizedCorrect.split(' ');
 
@@ -279,7 +381,8 @@ const isAnswerCorrect = (userAnswer, correctAnswer) => {
   return true;
 };
 
-// Инициализация при монтировании
+// ========== ИНИЦИАЛИЗАЦИЯ ==========
+// Запускаем игру при загрузке компонента
 onMounted(() => {
   initializeGame();
 });
@@ -313,6 +416,35 @@ onMounted(() => {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   animation: slideIn 0.5s ease;
+  position: relative; /* Для позиционирования кнопки-лампочки */
+}
+
+/* Кнопка-лампочка в правом верхнем углу */
+.toggle-hint-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background: #ffc107;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: scale(1.1);
+    background: #ffb300;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .definition-section {
@@ -336,21 +468,7 @@ onMounted(() => {
   }
 }
 
-.show-translation-btn {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: #5a6268;
-  }
-}
-
+/* Стили для блока с переводом */
 .translation {
   margin-top: 12px;
   padding: 12px;
@@ -363,6 +481,46 @@ onMounted(() => {
     color: #495057;
     line-height: 1.3;
     font-size: 13px;
+  }
+}
+
+/* Стили для блока с попытками и обратной связью */
+.feedback-section {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+  background: #fff3cd;
+
+  .attempt-feedback {
+    .attempt-message {
+      margin: 0 0 8px 0;
+      color: #856404;
+      font-size: 13px;
+    }
+
+    .try-again {
+      margin: 0;
+      color: #856404;
+      font-size: 12px;
+      font-style: italic;
+    }
+  }
+
+  .correct-answer {
+    .correct-answer-message {
+      margin: 0 0 8px 0;
+      color: #155724;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .attempts-history {
+      margin: 0;
+      color: #6c757d;
+      font-size: 12px;
+      font-style: italic;
+    }
   }
 }
 
@@ -390,12 +548,14 @@ onMounted(() => {
       cursor: not-allowed;
     }
 
+    /* Стили для правильного ответа */
     &.correct {
       border-color: #28a745;
       background-color: rgba(40, 167, 69, 0.1);
       box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
     }
 
+    /* Стили для неправильного ответа */
     &.incorrect {
       border-color: #dc3545;
       background-color: rgba(220, 53, 69, 0.1);
@@ -458,7 +618,7 @@ onMounted(() => {
   }
 }
 
-/* Анимации */
+/* Анимация появления карточек */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -470,7 +630,7 @@ onMounted(() => {
   }
 }
 
-/* Адаптивность */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
   .cards-grid {
     grid-template-columns: 1fr;
@@ -478,6 +638,12 @@ onMounted(() => {
 
   .game-container {
     padding: 10px;
+  }
+
+  .toggle-hint-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
   }
 }
 </style>
