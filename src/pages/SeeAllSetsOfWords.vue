@@ -9,11 +9,21 @@
 
         <!-- Поле поиска -->
         <div class="search-container">
-          <input
-            v-model="searchQuery"
-            placeholder="_ _ _ Введите название или листайте _ _ _"
-            class="search-input"
-          />
+          <div class="search-input-wrapper">
+            <input
+              v-model="searchQuery"
+              placeholder="_ _ _ Введи задание или листай 👇"
+              class="search-input"
+            />
+            <button
+              v-if="showPronunciationButton"
+              class="pronunciation-btn"
+              @click="handlePronunciationSearch"
+              title="Найти произношение в Google"
+            >
+              🎧
+            </button>
+          </div>
         </div>
 
         <!-- Используем filteredSets для отображения карточек -->
@@ -679,6 +689,51 @@ const iscategoryExamplesPatternsExpanded = ref(false)
 const isGamePatternsExpanded = ref(false)
 const isChineseExpanded = ref(false)
 
+
+
+// Вычисляемое свойство для показа кнопки
+const showPronunciationButton = computed(() => {
+  return searchQuery.value.trim().length > 2;
+});
+
+// Функция для поиска произношения
+const handlePronunciationSearch = () => {
+  const query = searchQuery.value.trim();
+
+  let searchTerm;
+
+
+    searchTerm = query;
+
+  openPronunciationSearch(searchTerm);
+  searchQuery.value = '';
+
+};
+
+const openPronunciationSearch = (term) => {
+  // Очищаем и нормализуем поисковый термин
+  const cleanTerm = term
+    .replace(/[^\w\sа-яё]/gi, '') // убираем специальные символы
+    .trim()
+    .replace(/\s+/g, '+'); // заменяем пробелы на + для URL
+
+  // Создаем URL для поиска произношения в Google
+  const googleSearchUrl = `https://www.google.com/search?q=how+to+pronounce+ ${cleanTerm}`;
+
+  // Открываем в новой вкладке
+  window.open(googleSearchUrl, '_blank');
+
+  // Показываем уведомление
+  $q.notify({
+    message: `Ищем произношение: ${term}`,
+    color: 'positive',
+    timeout: 2000,
+    position: 'top'
+  });
+};
+
+
+
 // для компактности кода проверяем наличие категорий у наборов
 const hasCategory = (set, categoryName) => {
   return set.category === categoryName ||
@@ -1130,10 +1185,16 @@ onMounted(() => {
   padding: 0 10px;
 }
 
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .search-input {
   scale: 1.1;
   width: 100%;
-  padding: 8px 15px;
+  padding: 8px 40px 8px 15px; /* добавляем правый отступ для кнопки */
   border-radius: 20px;
   border: 3px solid #000000;
   font-size: 15px;
@@ -1144,6 +1205,65 @@ onMounted(() => {
 
   /* Анимация дыхания */
   animation: breathe 4s ease-in-out infinite;
+}
+
+.pronunciation-btn {
+  position: absolute;
+  right: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: 2px solid #000000;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  /* Анимация появления */
+  animation: fadeInScale 0.3s ease;
+}
+
+.pronunciation-btn:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pronunciation-btn:active {
+  transform: scale(0.95);
+}
+
+/* Анимация появления кнопки */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Обновляем анимацию placeholder с учетом кнопки */
+.search-input:focus {
+  border-color: #6a6a6a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: none;
+  padding-right: 40px; /* сохраняем отступ при фокусе */
+}
+
+.search-input::placeholder {
+  font-style: italic;
+  font-family: Helvetica;
+  font-size: 11px;
+  color: #888;
+  opacity: 0.8;
+  animation: placeholderPulse 2s ease-in-out infinite;
 }
 
 .search-input:focus {

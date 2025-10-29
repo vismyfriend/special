@@ -3,14 +3,14 @@ const definitionsData = {
   halloweenCharactersDefinitions: [
     {
       id: 1,
-      eng: "This creature (создание, существо) is known for its insatiable (ненасытный) hunger for human flesh. It's typically reanimated (восставший) and mindless, often portrayed as emerging from a grave. Unlike a ghost, it has a physical body.",
+      eng: "This creature (/крИче/ создание, существо) is known for its insatiable(/инсЭйшэбл/ ненасытный) hunger for human flesh (плоть). It's typically brainless and it is presented as rising from a grave (могила). Unlike a ghost, it has a physical body.",
       ru: "Это существо известно своим ненасытным голодом к человеческой плоти. Обычно оно восставшее и безмозглое, часто его изображают выходящим из могилы. В отличие от призрака, у него есть физическое тело.",
       ans: "Zombie"
     },
     {
       id: 2,
-      eng: "This mythical being undergoes a transformation from a human into a fearsome, wolf-like creature(создание, существо) during a full moon. The change is often painful and involuntary (непроизвольный).",
-      ru: "Это мифическое существо претерпевает превращение из человека в свирепое, волкоподобное создание во время полнолуния. Перемена часто бывает болезненной и непроизвольной.",
+      eng: "This mythical character undergoes (претерпевает) a transformation from a human into a fearsome, animal-like creature(создание, существо) during a full moon. The change is often painful and involuntary (непроизвольный).",
+      ru: "Это мифическое существо претерпевает превращение из человека в свирепое, животноподобное создание во время полнолуния. Перемена часто бывает болезненной и непроизвольной.",
       ans: "Werewolf"
     },
     {
@@ -44,12 +44,6 @@ const definitionsData = {
       ans: "Pennywise"
     },
     {
-      id: 8,
-      eng: "This being is a demonic entity from folklore that takes the form of a beautiful woman to seduce men in their dreams, often feeding on their life force or energy.",
-      ru: "Это существо — демоническая сущность из фольклора, которая принимает форму прекрасной женщины, чтобы соблазнять мужчин в их снах, часто питаясь их жизненной силой или энергией.",
-      ans: "Succubus"
-    },
-    {
       id: 9,
       eng: "This creature(создание, существо) is a monstrous, three-headed dog from Greek mythology. It guards the entrance to the underworld to prevent the dead from leaving.",
       ru: "Это существо — чудовищный трёхглавый пёс из греческой мифологии. Он охраняет вход в подземный мир, чтобы мёртвые не могли выйти.",
@@ -69,7 +63,7 @@ const definitionsData = {
     },
     {
       id: 12,
-      eng: "This is a ghostly doppelgänger or double of a living person. Seeing one is considered a very bad omen (дурное предзнаменование), often a sign of impending (надвигающейся) illness or death.",
+      eng: "This is a ghostly shapeshifter or an evil clone of a living person. Seeing one is considered a very bad omen (дурное предзнаменование), often a sign of impending (надвигающейся) illness or death.",
       ru: "Это призрачный двойник живого человека. Считается, что увидеть его — очень дурное предзнаменование, часто знак надвигающейся болезни или смерти.",
       ans: "Doppelganger"
     },

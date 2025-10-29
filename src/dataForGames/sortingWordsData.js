@@ -117,8 +117,8 @@ const sortingWordsData = {
       { id: 22, eng: 'brought', ru: 'принес, принесенный', correctColumn: ['v2','v3']},
 
       { id: 23, eng: 'build', ru: 'строить', correctColumn: 'v1' },
-      { id: 24, eng: 'built', ru: 'построил, построенный', correctColumn: 'v2' },
-      { id: 25, eng: 'built', ru: 'построил, построенный', correctColumn: 'v3' },
+      { id: 24, eng: 'built', ru: 'построил, построенный', correctColumn: ['v2','v3'] },
+      { id: 25, eng: 'built', ru: 'построил, построенный', correctColumn: ['v2','v3'] },
 
       { id: 26, eng: 'buy', ru: 'покупать', correctColumn: 'v1' },
       { id: 27, eng: 'bought', ru: 'купил, купленный', correctColumn: ['v2','v3'] },
