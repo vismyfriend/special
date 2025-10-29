@@ -203,7 +203,8 @@ const shortWordsData = {
     { id: 24, eng: "Resident Evil", ru: "Обитель зла" },
     { id: 25, eng: "the devil", ru: "Дьявол" },
     { id: 26, eng: "Gorgo Medusa", ru: "Медуза Горгона" },
-    { id: 27, eng: "The Queen of Spades", ru: "Пиковая Дама" }
+    { id: 27, eng: "The Queen of Spades", ru: "Пиковая Дама" },
+    { id: 28, eng: "Immortal Kashei", ru: "Кощей бессмертный" },
   ],
   halloweenCharactersWeapons: [
     { id: 1, eng: "a weapon", ru: "оружие" },

@@ -81,7 +81,7 @@
                   <textarea
                     class="message-input"
                     v-model="customMessage"
-                    placeholder="Составьте для Ви что-нибудь из слов в списке, пусть тоже переводит (любое предложение)!"
+                    placeholder="Задай Винсенту какой-нибудь 1 или 2 вопроса используя слова из того списка"
                   ></textarea>
 
                   <button
@@ -154,11 +154,18 @@ const showHomeworkSection = computed(() => {
   return homeworkWords.value.length > 0;
 });
 
-// Валидность домашнего задания
+
+// Валидность домашнего задания + сообщение
 const isHomeworkValid = computed(() => {
-  return homeworkWords.value.every(word =>
-    word.userTranslation && word.userTranslation.trim() !== ''
+  const allWordsFilled = homeworkWords.value.every(word =>
+    word.userTranslation &&
+    word.userTranslation.trim() !== '' &&
+    word.userTranslation.trim().length >= 1
   );
+
+  const messageFilled = customMessage.value.trim().length >= 10; // минимум 10 символов для сообщения
+
+  return allWordsFilled && messageFilled;
 });
 
 // Количество использованных подсказок
@@ -743,7 +750,7 @@ onMounted(() => {
 }
 
 .message-input {
-  width: 280px;
+  width: 303px;
   min-height: 80px;
   border: 2px solid #ddd;
   border-radius: 4px;
