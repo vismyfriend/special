@@ -1152,7 +1152,7 @@ const playRandomQuestions = () => {
 }
 
 const playSnake = () => {
-  router.push('/gameSnakeCursor');
+  router.push('/gameSnakeWords');
 }
 
 const tapalka = () => {

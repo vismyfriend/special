@@ -330,6 +330,16 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚',
       category: "reading" // ← будет в этом наборе
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/psyPronunciation/game-translate",
+      missionVisibleName: "PSY произношение",
+      missionDescription: "Сай PSY pronunciation",
+      id: 1001,
+      active: true,
+      gameIcon:'📚',
+      category: "reading" // ← будет в этом наборе
+    },
 
 
 
@@ -1359,7 +1369,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/gameSnakeCursor",
+      path: "/gameSnakeWords",
       missionVisibleName: "Snake",
       missionDescription: "Змейка",
       id: 1001,
@@ -1401,6 +1411,22 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Набор Винсента 2025",
       id: 7,
       active: true,
+    },
+    {
+      missionName: "gameSnakeWords",
+      missionVisibleName: "новая змейка",
+      missionDescription: "новая змейка",
+      id: 7,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/halloween01/gameSnakeWords",
+      missionVisibleName: "новая змейка тест",
+      missionDescription: "новая змейка тест?",
+      id: 1001,
+      active: true,
+      gameIcon:' 🗣'
     },
     {
       missionName: "pattern",
@@ -1445,6 +1471,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:' 🗣'
     },
+
     {
       missionName: "testQuicklyData",   // обычный набор слов (много игр) не хардкод на одну игру
       missionVisibleName: "Протестировать fast",
@@ -1543,7 +1570,7 @@ export const AllGames =
       id: 1,
       name: "Snake",
       description: "змейка",
-      route: "/gameSnakeCursor",
+      route: "/gameSnakeWords",
       icon: "ApyGlassEmoji2.png"
     },
     {

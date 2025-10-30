@@ -10,6 +10,27 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+
+
+  psyPronunciation: [
+    { id: 1, eng: "psychic", ru: "экстрасенс, медиум, предсказатель", hint: "сАйкик" },
+    { id: 2, eng: "psycho", ru: "псих", hint: "сАйкоу" },
+    { id: 3, eng: "psychology", ru: "психология", hint: "сай кОлоджи" },
+    { id: 4, eng: "psychologist", ru: "психолог", hint: "сай кОлоджист" },
+    { id: 5, eng: "psychological", ru: "психологический", hint: "сАйко лОджикал" },
+    { id: 6, eng: "psychosis", ru: "психоз", hint: "сай кОУсис" },
+    { id: 7, eng: "psychopath", ru: "психопат", hint: "сАйко пэth" },
+    { id: 8, eng: "psychotherapy", ru: "психотерапия", hint: "сАйко thЭрапи" },
+    { id: 9, eng: "psychotherapist", ru: "психотерапевт", hint: "сАйко thЭрапист" },
+    { id: 10, eng: "psychiatrist", ru: "психиатр", hint: "сай кАЭтрист" },
+    { id: 11, eng: "psychiatry", ru: "психиатрия", hint: "сай кАЭтри" },
+    { id: 12, eng: "psychedelic", ru: "психоделический", hint: "сАйкэ дЭлик" },
+    { id: 13, eng: "psychometric", ru: "психометрический", hint: "сАйко мЭтрик" }
+  ],
+
+
+
+
   englishPlus2WorkBookPage11presentSimple1: [
   { id: 1, eng: "to music", ru: "My mom listens" },
   { id: 2, eng: "my friends in the park", ru: "I meet" },

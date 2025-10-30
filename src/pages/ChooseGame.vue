@@ -198,6 +198,14 @@ const AllGames = ref([
     cardIcon: '💰', // Добавлена иконка
     active: true
   },
+  {
+    id: 1005,
+    name: "Новая змейка",
+    path: "gameSnakeWords",
+    gameData: shortWordsData,
+    cardIcon: '💰', // Добавлена иконка
+    active: true
+  },
 
   // {
   //   id: 90,

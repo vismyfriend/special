@@ -286,6 +286,10 @@ const routes = [
             component: () => import('src/components/GamePrintAllWordsNotebook.vue')
           },
           {
+            path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
+            component: () => import('src/pages/GameSnakeShortWords.vue')
+          },
+          {
             path: '/pixelArt',
             component: () => import('pages/PixelArtEditor.vue')
           },
@@ -333,6 +337,14 @@ const routes = [
   {
     path: '/gameSnakeCursor',
     component: () => import('src/pages/gameSnakeCursor.vue')
+  },
+  {
+    path: '/gameSnakeWords',
+    component: () => import('src/pages/GameSnakeShortWords.vue')
+  },
+  {
+    path: '/gameSnakeForYandex',
+    component: () => import('src/pages/GameSnakeForYandex.vue')
   },
   {
     path: '/noLayoutPage2',
