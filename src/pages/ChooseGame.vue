@@ -169,8 +169,8 @@ const AllGames = ref([
     active: true
   },  {
     id: 104,
-    name: "A deck of cards",
-    path: "deck-of-cards",
+    name: "Definitions",
+    path: "definitions-game",
     gameData: definitionsData,
     active: true
   },

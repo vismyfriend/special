@@ -2,10 +2,12 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
-      <p class="bubble left" id="intro-message">Choose<br> a mission</p>
+<!--      <p class="bubble left" id="intro-message">Choose<br> a mission</p>-->
+      <p class="bubble left" id="intro-message">hAlloween<br> or <br> hElloween</p>
 
       <div class="q-pa-15 ">
-        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">
+<!--        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">-->
+        <img src="../assets/images/vampire.jpeg" alt="logo" class="border-radius50">
 
         <!-- Поле поиска -->
         <div class="search-container">

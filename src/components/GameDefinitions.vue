@@ -534,7 +534,7 @@ onMounted(() => {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 2px;
-  cursor: progress;
+  cursor: pointer;
   position: relative;
 
   &:hover::after {
