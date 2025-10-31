@@ -1,3 +1,5 @@
+
+
 export const allGamesAndSetsOfWordsList =
   [
     {
@@ -288,6 +290,15 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/с1TestMillionaire1/millionaire",
       missionVisibleName: "grammar c1 test 1",
       missionDescription: "грамматика времена",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/a2test1/millionaire",
+      missionVisibleName: "general grammar 1",
+      missionDescription: "общая грамматика 1",
       id: 1001,
       active: true,
       gameIcon:'🕵️',

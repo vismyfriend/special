@@ -518,7 +518,1387 @@ const MillionaireData = {
       correctAnswer: "B",
     }
   ],
-
+  a2test1: [
+    {
+      text: "Did Santa give you ___ nice presents?",
+      options: {
+        A: "some",
+        B: "any",
+        C: "anything",
+        D: "a"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He ___ shares his secrets with anyone",
+      options: {
+        A: "never",
+        B: "doesn't",
+        C: "will",
+        D: "has"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "We have ___ patience for this situation",
+      options: {
+        A: "few",
+        B: "little",
+        C: "any",
+        D: "many"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I promise I ___ call you tomorrow",
+      options: {
+        A: "will",
+        B: "am going to",
+        C: "have to",
+        D: "am to"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Money ___ so fast!",
+      options: {
+        A: "go",
+        B: "goes",
+        C: "has"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I've ___ finished my homework",
+      options: {
+        A: "yet",
+        B: "still",
+        C: "already"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "My brother ___ drive a car",
+      options: {
+        A: "can't",
+        B: "can't to",
+        C: "doesn't can to"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I ___ a bicycle",
+      options: {
+        A: "haven't",
+        B: "don't has",
+        C: "don't have"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "It ___ snows in Moscow",
+      options: {
+        A: "will",
+        B: "often",
+        C: "was"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "If they call, I ___ happy",
+      options: {
+        A: "will",
+        B: "am",
+        C: "will be"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ always my glasses!",
+      options: {
+        A: "lose",
+        B: "lost",
+        C: "am losing",
+        D: "have lost"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I enjoy ___ early",
+      options: {
+        A: "to",
+        B: "being"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Mathematics ___ difficult for me",
+      options: {
+        A: "are",
+        B: "is",
+        C: "-"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I ___ my arm. I can't write now",
+      options: {
+        A: "have broken",
+        B: "break",
+        C: "breaked"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "He didn't eat ___ bread",
+      options: {
+        A: "few",
+        B: "a few",
+        C: "much",
+        D: "many"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "My friends ___ started a business",
+      options: {
+        A: "has",
+        B: "have",
+        C: "did",
+        D: "were"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "She hasn't arrived ___",
+      options: {
+        A: "yet",
+        B: "still",
+        C: "already",
+        D: "just"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I need to ___ the shopping",
+      options: {
+        A: "make",
+        B: "have",
+        C: "do"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "We ___ that movie last week",
+      options: {
+        A: "saw",
+        B: "have seen",
+        C: "are seeing"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I'm busy. I ___ yet",
+      options: {
+        A: "haven't finished",
+        B: "didn't finish",
+        C: "don't finish"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "He decided to give up ___",
+      options: {
+        A: "to smoke",
+        B: "smoke",
+        C: "smoking"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "You have passed the exam, ___?",
+      options: {
+        A: "don't you",
+        B: "have you",
+        C: "haven't you",
+        D: "did you"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There ___ a cat and two dogs in the garden",
+      options: {
+        A: "are",
+        B: "is",
+        C: "some"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "You aren't tired, ___?",
+      options: {
+        A: "are you",
+        B: "aren't you",
+        C: "do you"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Are you coming with us? – Yes, I ___",
+      options: {
+        A: "do",
+        B: "was",
+        C: "am",
+        D: "did"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There's ___ milk in the fridge",
+      options: {
+        A: "a",
+        B: "some",
+        C: "any"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "How many languages ___?",
+      options: {
+        A: "are you speaking",
+        B: "you speak",
+        C: "speak you",
+        D: "do you speak"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "They became friends when they ___ at university",
+      options: {
+        A: "are",
+        B: "was",
+        C: "were",
+        D: "study"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "We don't want ___ to know about this",
+      options: {
+        A: "he",
+        B: "him",
+        C: "that he"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "___ in Paris",
+      options: {
+        A: "Rain falls",
+        B: "It rains",
+        C: "It raining"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "How ___ water do you drink every day?",
+      options: {
+        A: "many",
+        B: "much",
+        C: "is"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "There ___ some apples on the tree yesterday",
+      options: {
+        A: "was",
+        B: "were",
+        C: "are",
+        D: "is"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Will they join us? – No, they ___",
+      options: {
+        A: "won't",
+        B: "wouldn't",
+        C: "will"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Who are ___ students?",
+      options: {
+        A: "this",
+        B: "those",
+        C: "that"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "It's ___ news!",
+      options: {
+        A: "a wonderful",
+        B: "wonderful",
+        C: "the wonderful"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "As soon as he ___, we'll start",
+      options: {
+        A: "arrive",
+        B: "will arrive",
+        C: "arrives"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Her hair ___ brown",
+      options: {
+        A: "are",
+        B: "have",
+        C: "has",
+        D: "is"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "___ parents are very kind",
+      options: {
+        A: "they",
+        B: "them",
+        C: "their"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Now he ___ chocolate ice cream",
+      options: {
+        A: "is loving",
+        B: "loved",
+        C: "loves",
+        D: "love"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "She's going ___ school now",
+      options: {
+        A: "at",
+        B: "to",
+        C: "-",
+        D: "in"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "The train ___ in 10 minutes",
+      options: {
+        A: "leaves",
+        B: "will leaves",
+        C: "is leaving",
+        D: "leave"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "When ___ to the party?",
+      options: {
+        A: "has she come",
+        B: "she has come",
+        C: "did she come"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ hungry",
+      options: {
+        A: "amn't",
+        B: "am not",
+        C: "isn't"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Who ___ the keys to the car?",
+      options: {
+        A: "have",
+        B: "has"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Where ___?",
+      options: {
+        A: "she lives",
+        B: "does she live",
+        C: "does she lives"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I'm gonna ___ study now",
+      options: {
+        A: "at",
+        B: "to",
+        C: "-",
+        D: "in"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "If she ___ calls me tonight, I'll be happy",
+      options: {
+        A: "-",
+        B: "will",
+        C: "are",
+        D: "is"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "We will meet ___ Monday",
+      options: {
+        A: "in",
+        B: "on",
+        C: "at",
+        D: "-"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "___ open the window?",
+      options: {
+        A: "can you to",
+        B: "do you can",
+        C: "can you"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "They ___ understand",
+      options: {
+        A: "are",
+        B: "-"
+      },
+      correctAnswer: "B",
+    }
+  ],
+  a2test3repass3extra: [
+    {
+      text: "___ to the cinema.",
+      options: {
+        A: "We not often go",
+        B: "We don't go often",
+        C: "We don't often go",
+        D: "Often don't go we"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ staying home tonight.",
+      options: {
+        A: "am going to",
+        B: "will",
+        C: "am"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "If he ___ I will be angry.",
+      options: {
+        A: "doesn't come",
+        B: "don't come",
+        C: "willn't come",
+        D: "won't come"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What time ___?",
+      options: {
+        A: "has she come",
+        B: "she has come",
+        C: "did she come"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "She ___ swim.",
+      options: {
+        A: "can't",
+        B: "can't to",
+        C: "doesn't can to",
+        D: "doesn't can"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I ___ a dog.",
+      options: {
+        A: "haven't",
+        B: "don't has",
+        C: "don't have",
+        D: "have not"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "You ___ drive when you are tired.",
+      options: {
+        A: "shouldn't",
+        B: "don't have to",
+        C: "haven't to"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Were you here at 5 p.m.? No, I ___.",
+      options: {
+        A: "didn't",
+        B: "am not",
+        C: "wasn't",
+        D: "weren't"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "He stopped when he ___ me.",
+      options: {
+        A: "was seeing",
+        B: "saw",
+        C: "seen",
+        D: "have seen"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I never read ___ magazines.",
+      options: {
+        A: "woman's",
+        B: "women's",
+        C: "womens'"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What ___ do after school tomorrow?",
+      options: {
+        A: "are you going to",
+        B: "are you",
+        C: "do you",
+        D: "you"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "If you call me, I ___ there.",
+      options: {
+        A: "will",
+        B: "am",
+        C: "will be",
+        D: "be"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "A: Where's John? B: He's in the bathroom. He ___ a shower.",
+      options: {
+        A: "has",
+        B: "is having",
+        C: "is making",
+        D: "is doing"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Are you going to live with us? – Yes, I ___.",
+      options: {
+        A: "do",
+        B: "was",
+        C: "am",
+        D: "are"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Did you get ___ good books?",
+      options: {
+        A: "some",
+        B: "any",
+        C: "anything",
+        D: "a"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He ___ his keys!",
+      options: {
+        A: "always lose",
+        B: "always is losing",
+        C: "is always losing",
+        D: "is losing"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I'll see you ___ Monday.",
+      options: {
+        A: "in",
+        B: "on",
+        C: "at",
+        D: "to"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He's ___ good doctor.",
+      options: {
+        A: "a",
+        B: "an",
+        C: "the",
+        D: "-"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "She ___ to Toronto next Tuesday.",
+      options: {
+        A: "goes",
+        B: "will goes",
+        C: "is going",
+        D: "go"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "He'll be here ___ 7.30 a.m.",
+      options: {
+        A: "in",
+        B: "on",
+        C: "at",
+        D: "to"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There ___ a door and 2 windows in the room.",
+      options: {
+        A: "are",
+        B: "is",
+        C: "some"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He's crazy about ___ sports.",
+      options: {
+        A: "play",
+        B: "to play",
+        C: "playing",
+        D: "is playing"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "How many brothers and sisters ___?",
+      options: {
+        A: "are you having",
+        B: "you have",
+        C: "have you",
+        D: "do you have"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "She didn't drink ___ coffee.",
+      options: {
+        A: "few",
+        B: "a few",
+        C: "much",
+        D: "many"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There ___ some grapes there yesterday.",
+      options: {
+        A: "was",
+        B: "were",
+        C: "are",
+        D: "is"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I ___ silly",
+      options: {
+        A: "amn't",
+        B: "am not",
+        C: "both are correct"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He wants ___ us.",
+      options: {
+        A: "to see",
+        B: "seeing",
+        C: "to seeing",
+        D: "see"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I'm sure I ___ read it.",
+      options: {
+        A: "will",
+        B: "going to",
+        C: "has to",
+        D: "am"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "She ___ it 2 years ago.",
+      options: {
+        A: "have done",
+        B: "has done",
+        C: "is doing",
+        D: "did"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "I've ___ cut the cucumbers.",
+      options: {
+        A: "yet",
+        B: "still",
+        C: "already"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "It ___ snows in London.",
+      options: {
+        A: "will",
+        B: "never",
+        C: "was"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "My mom ___ baked a cake.",
+      options: {
+        A: "has",
+        B: "have",
+        C: "did",
+        D: "were"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Now she ___ him.",
+      options: {
+        A: "is hating",
+        B: "hated",
+        C: "hates",
+        D: "hate"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Oh, no! Look, what ___?",
+      options: {
+        A: "is he doing",
+        B: "does he do",
+        C: "is he do",
+        D: "he doing"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "She ___ talks to me.",
+      options: {
+        A: "never",
+        B: "is never",
+        C: "doesn't",
+        D: "doesn't never"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "They are meeting with the doctor ___.",
+      options: {
+        A: "yesterday",
+        B: "tonight",
+        C: "two hours ago",
+        D: "last day"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "She's only four but she ___.",
+      options: {
+        A: "cans read",
+        B: "can read",
+        C: "can reads",
+        D: "cans reads"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "That's ___ car.",
+      options: {
+        A: "Bob's",
+        B: "Bobs",
+        C: "Bobs'",
+        D: "Bob"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "We met when we ___ in France.",
+      options: {
+        A: "are",
+        B: "was",
+        C: "were",
+        D: "study"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "When I went into my office, he ___ for me.",
+      options: {
+        A: "has waited",
+        B: "waited",
+        C: "was waiting",
+        D: "were waiting"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Where ___?",
+      options: {
+        A: "was he",
+        B: "were he",
+        C: "did he be"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "This is ___ best cake I've ever had!",
+      options: {
+        A: "a",
+        B: "an",
+        C: "the",
+        D: "-"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "We haven't finished the task ___.",
+      options: {
+        A: "yet",
+        B: "ever",
+        C: "already",
+        D: "just"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What ___?",
+      options: {
+        A: "she wants",
+        B: "does she want",
+        C: "does she wants",
+        D: "is she want"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "He ___ today.",
+      options: {
+        A: "lates",
+        B: "is lating",
+        C: "is late",
+        D: "lated"
+      },
+      correctAnswer: "C",
+    }
+  ],
+  a2test1repass1extra: [
+    {
+      text: "Did you buy ___ good toys?",
+      options: {
+        A: "some",
+        B: "any",
+        C: "anything",
+        D: "a"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "She ___ talks to anyone",
+      options: {
+        A: "never",
+        B: "doesn't",
+        C: "will",
+        D: "has"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "We have ___ love in this world",
+      options: {
+        A: "few",
+        B: "little",
+        C: "any",
+        D: "many"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I promise I ___ read it",
+      options: {
+        A: "will",
+        B: "am going to",
+        C: "have to",
+        D: "am to"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Time ___ so quickly!",
+      options: {
+        A: "go",
+        B: "goes",
+        C: "has"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I've ___ eaten",
+      options: {
+        A: "yet",
+        B: "still",
+        C: "already"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "She ___ help me with anything",
+      options: {
+        A: "can't",
+        B: "can't to",
+        C: "doesn't can to"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I ___ a dog",
+      options: {
+        A: "haven't",
+        B: "don't has",
+        C: "don't have"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "It ___ rains in London",
+      options: {
+        A: "will",
+        B: "often",
+        C: "was"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "If you come I ___ there",
+      options: {
+        A: "will",
+        B: "am",
+        C: "will be"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ always my keys!",
+      options: {
+        A: "lose",
+        B: "lost",
+        C: "am losing",
+        D: "have lost"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I like ___ late",
+      options: {
+        A: "to",
+        B: "being"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "News ___ good today!",
+      options: {
+        A: "are",
+        B: "is",
+        C: "-"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I ___ my leg. I can't go now",
+      options: {
+        A: "have hurt",
+        B: "hurt",
+        C: "hurted"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "She didn't drink ___ coffee",
+      options: {
+        A: "few",
+        B: "a few",
+        C: "much",
+        D: "many"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Those people ___ organized a band",
+      options: {
+        A: "has",
+        B: "have",
+        C: "did",
+        D: "were"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I haven't come ___",
+      options: {
+        A: "yet",
+        B: "still",
+        C: "already",
+        D: "just"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I want to ___ some gardening",
+      options: {
+        A: "make",
+        B: "have",
+        C: "do"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ it 2 years ago",
+      options: {
+        A: "did",
+        B: "have done",
+        C: "am doing"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I'm sorry. I ___ yet",
+      options: {
+        A: "haven't finished",
+        B: "didn't finish",
+        C: "don't finish"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "I want to give up ___",
+      options: {
+        A: "to drink",
+        B: "drink",
+        C: "drinking"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "She has stopped the train, ___?",
+      options: {
+        A: "doesn't she",
+        B: "has she",
+        C: "hasn't she",
+        D: "did she"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There ___ a door and 2 windows there",
+      options: {
+        A: "are",
+        B: "is",
+        C: "some"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "It's not warm, ___?",
+      options: {
+        A: "is it",
+        B: "isn't it",
+        C: "does it"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Are you going there? – Yes, I ___",
+      options: {
+        A: "do",
+        B: "was",
+        C: "am",
+        D: "did"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "There's ___ paper on the table",
+      options: {
+        A: "a",
+        B: "some",
+        C: "any"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "How many brothers and sisters ___?",
+      options: {
+        A: "are you having",
+        B: "you have",
+        C: "have you",
+        D: "do you have"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "We met when we ___ in France",
+      options: {
+        A: "are",
+        B: "was",
+        C: "were",
+        D: "study"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I don't want ___ to leave me",
+      options: {
+        A: "she",
+        B: "her",
+        C: "that she"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "___ in London",
+      options: {
+        A: "Snow goes",
+        B: "It snows",
+        C: "It snowing"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "How ___ sugar do you eat a day?",
+      options: {
+        A: "many",
+        B: "much",
+        C: "is"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "There ___ some grapes there the day before yesterday",
+      options: {
+        A: "was",
+        B: "were",
+        C: "are",
+        D: "is"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Will you do it? – No, I ___",
+      options: {
+        A: "won't",
+        B: "wouldn't",
+        C: "will"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Who are ___ people?",
+      options: {
+        A: "this",
+        B: "those",
+        C: "that"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "It's ___ weather!",
+      options: {
+        A: "a terrible",
+        B: "terrible",
+        C: "the terrible"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "As soon as she ___, I'll do it",
+      options: {
+        A: "come",
+        B: "will come",
+        C: "comes"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "His eyes ___ blue",
+      options: {
+        A: "are",
+        B: "have",
+        C: "has",
+        D: "is"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "___ children are too noisy",
+      options: {
+        A: "they",
+        B: "them",
+        C: "their"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Now she ___ him",
+      options: {
+        A: "is hating",
+        B: "hated",
+        C: "hates",
+        D: "hate"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I'm going ___ home with you",
+      options: {
+        A: "at",
+        B: "to",
+        C: "-",
+        D: "in"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "She ___ soon",
+      options: {
+        A: "leaves",
+        B: "will leaves",
+        C: "is leaving",
+        D: "leave"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What time ___ today?",
+      options: {
+        A: "has she come",
+        B: "she has come",
+        C: "did she come"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ silly",
+      options: {
+        A: "amn't",
+        B: "am not",
+        C: "isn't"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Who ___ a shower with you?",
+      options: {
+        A: "have",
+        B: "has"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What ___?",
+      options: {
+        A: "she wants",
+        B: "does she want",
+        C: "does she wants"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "She's gonna ___ leave",
+      options: {
+        A: "at",
+        B: "to",
+        C: "-",
+        D: "in"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "If he ___ kisses me tomorrow, I'll kiss him",
+      options: {
+        A: "-",
+        B: "will",
+        C: "are",
+        D: "is"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "They will arrive ___ Sunday",
+      options: {
+        A: "in",
+        B: "on",
+        C: "at",
+        D: "-"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "___ help me?",
+      options: {
+        A: "can you to",
+        B: "do you can",
+        C: "can you"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "I ___ agree",
+      options: {
+        A: "am",
+        B: "-"
+      },
+      correctAnswer: "B",
+    }
+  ],
 
 
 

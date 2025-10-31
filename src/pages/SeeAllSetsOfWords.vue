@@ -3,7 +3,7 @@
   <div class="relative">
     <div id="phoneFrame">
 <!--      <p class="bubble left" id="intro-message">Choose<br> a mission</p>-->
-      <p class="bubble left" id="intro-message">hAlloween<br> or <br> hElloween</p>
+      <p class="bubble left" id="intro-message">vismyfriend<br> and <br> vismyteacher</p>
 
       <div class="q-pa-15 ">
 <!--        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">-->
@@ -671,7 +671,9 @@ import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
-const text = "choose \na \nmission";
+// const text = "choose \na \nmission";
+// const text = "Vincent \nis \nmy friend";
+const text = "Happy \nHalloween\nOksana";
 const speed = 150;
 const introMessage = ref(null);
 const searchQuery = ref('');

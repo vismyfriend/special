@@ -17,7 +17,7 @@
           <button class="menu-button" @click="showAboutGame">⚙️</button>
           <button class="menu-button" @click="otherGames">Задания</button>
           <button class="menu-button" @click="restartGame">Заново</button>
-          <button class="menu-button" @click="changeSet">Другой набор</button>
+          <button class="menu-button" @click="changeSet">Миссии</button>
 
           <!-- Кнопка с визуалом LegendaryMode -->
           <button class="menu-button legendary-button" @click="showLegendaryModal = true">
