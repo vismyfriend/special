@@ -7,7 +7,7 @@
 
       <div class="q-pa-15 ">
 <!--        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">-->
-        <img src="../assets/images/vampire.jpeg" alt="logo" class="border-radius50">
+        <img src="../assets/images/choose%20mission%20pic%20snowman.jpeg" alt="logo" class="border-radius50">
 
         <!-- Поле поиска -->
         <div class="search-container">
@@ -673,7 +673,7 @@ import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWo
 
 // const text = "choose \na \nmission";
 // const text = "Vincent \nis \nmy friend";
-const text = "Happy \nHalloween\nOksana";
+const text = "to Vincent\nfrom me\nHappy New Year";
 const speed = 150;
 const introMessage = ref(null);
 const searchQuery = ref('');

@@ -600,7 +600,8 @@ const MillionaireData = {
       options: {
         A: "will",
         B: "often",
-        C: "was"
+        C: "yesterday",
+        D: "was"
       },
       correctAnswer: "B",
     },
@@ -614,11 +615,11 @@ const MillionaireData = {
       correctAnswer: "C",
     },
     {
-      text: "I ___ always my glasses!",
+      text: "I always ___ my glasses!",
       options: {
         A: "lose",
         B: "lost",
-        C: "am losing",
+        C: "losing",
         D: "have lost"
       },
       correctAnswer: "A",

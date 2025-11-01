@@ -39,7 +39,8 @@
   <div class="image-container">
 <!--    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">-->
 <!--    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">-->
-    <img src="../assets/images/whereToClick.png" alt="greenButton" class="custom-image">
+    <img src="../assets/images/Character6.png" alt="greenButton" class="custom-image">
+<!--    <img src="../assets/images/whereToClick.png" alt="greenButton" class="custom-image">-->
 
 
 
@@ -105,7 +106,7 @@ const initialShowText = ref(true); // Новый флаг для первона�
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "Что дальше Vincent ? Куда нажимать ?";
+    : "Что дальше ? Куда нажимать ?";
 });
 
 const buttonColor = computed(() => {
@@ -232,7 +233,8 @@ const handleBubbleClick = () => {
 // const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
 // const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
 // const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
-const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
+// const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
+const welcomeWords = ["Oй","как","холодно!","it's","so cold","why?","Vincent","help me","please!","S.P.E.C.I.A.L.",];
 
 
 const allEnglishWords = [
@@ -371,13 +373,20 @@ html {
 
 .flying-word {
   position: fixed;
-  font-size: 25px;
+  font-size: 35px;
   font-weight: bold;
+  //text-shadow:
+  //  0 0 1px #fff,
+  //  0 0 10px #ffc73b,
+  //  0 0 10px #000000,
+  //  0 0 15px #ffc20d;
+  //color: #ffea00;
   text-shadow:
     0 0 1px #fff,
-    0 0 10px #ffc73b,
-    0 0 15px #ffc20d;
-  color: #ffea00;
+    0 0 10px #3bf8ff,
+    0 0 10px #000000,
+    0 0 15px #0debff;
+  color: #ffffff;
   /* color: #333; */
   pointer-events: none;
   z-index: 9999;
@@ -563,7 +572,7 @@ calc(var(--fadeStart) * 100%) {
   position: relative;
   width: 100%;
   max-width: 400px; /* подгони под нужный размер */
-  margin: 190px 0 auto auto;
+  margin: 140px 0 auto auto; /* подгони под нужный размер */
   z-index: 6;
 }
 

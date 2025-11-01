@@ -19,21 +19,31 @@
             <div class="words-section">
               <div class="section-title display-none">Секретная миссия : </div>
               <div class="lesson-title"></div>
-              <div class="words-list">
+              <div class="excel-style-table">
                 <div
-                  class="word-line"
+                  class="table-row"
                   v-for="(word, index) in currentGameData"
                   :key="word.id"
                 >
-                  <div class="word-content">
-                    <span class="english-word">{{ word.eng }}</span>
-                    <span class="hint" v-if="word.hint">{{ word.hint }}</span>
-                    <span class="translation">- {{ word.ru }}</span>
+                  <!-- Первая строка: английское слово + перевод -->
+                  <div class="first-row">
+                    <div class="english-cell">
+                      <span class="english-word">{{ word.eng }}</span>
+                    </div>
+                    <div class="translation-cell">
+                      <span class="translation-text">{{ word.ru }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Вторая строка: произношение (объединенная ячейка) -->
+                  <div class="second-row" v-if="word.hint">
+                    <div class="pronunciation-cell">
+                      <span class="hint">{{ word.hint }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- Дополнительные материалы -->
             <div class="materials-section" v-if="hasAdditionalMaterials">
               <div class="section-title"> Ох уж этот Vincent...</div>
@@ -47,7 +57,7 @@
 
             <!-- Секция домашнего задания -->
             <div class="homework-section " v-if="showHomeworkSection">
-<!--              <div class="section-title ">Cейчас напишу :</div>-->
+              <!--              <div class="section-title ">Cейчас напишу :</div>-->
               <div class="homework-content">
 
                 <div class="homework-words">
@@ -56,8 +66,7 @@
                       <span class="word-number">{{ index + 1 }}. </span>
                       <span class="word-to-translate">{{ word.ru }}</span>
                       <!-- Показываем кнопку подсказки только если подсказка еще не показана -->
-                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)">
-      🔍️ показать подсказку
+                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)"> 🔍️ подсказка
     </span>
                     </div>
 
@@ -463,8 +472,8 @@ onMounted(() => {
   //color: #7f8c8d;
   font-style: italic;
   line-height: 20px;
-  font-weight: bold;
   font-family: 'Arial', serif;
+
 }
 
 .translation {
@@ -716,7 +725,7 @@ onMounted(() => {
 
 .word-to-translate {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ff0000;
   font-size: 18px;
 }
 
@@ -812,7 +821,6 @@ onMounted(() => {
 
   .translation-input {
     margin-left: 20px;
-    font-size: 13px;
   }
 
   .word-to-translate {
@@ -842,6 +850,45 @@ onMounted(() => {
     margin-bottom: 15px;
   }
 }
+/* Только позиционирование - без оформления */
+.excel-style-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.first-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 20px;
+  align-items: center;
+}
+
+.second-row {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+}
+
+.english-cell {
+  grid-column: 1;
+}
+
+.translation-cell {
+  grid-column: 2;
+  color: #ff001e;
+}
+
+.pronunciation-cell {
+  flex: 1;
+  text-align: right;
+}
+
+/* Адаптивность для мобильных */
 
 .display-none {
   display: none;
