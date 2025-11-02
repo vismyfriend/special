@@ -2,11 +2,9 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
-<!--      <p class="bubble left" id="intro-message">Choose<br> a mission</p>-->
       <p class="bubble left" id="intro-message">vismyfriend<br> and <br> vismyteacher</p>
 
       <div class="q-pa-15 ">
-<!--        <img src="../assets/images/ancient_man.jpeg" alt="logo" class="border-radius50">-->
         <img src="../assets/images/choose%20mission%20pic%20snowman.jpeg" alt="logo" class="border-radius50">
 
         <!-- Поле поиска -->
@@ -28,7 +26,7 @@
           </div>
         </div>
 
-        <!-- Используем filteredSets для отображения карточек -->
+        <!-- Используем единый список -->
         <div class="v-cards-choose">
 
           <!-- 1. Создать свой набор (всегда первый) -->
@@ -47,50 +45,134 @@
             </div>
           </div>
 
-          <!-- 1 display none, а дальше 2-3-4 - по порядку это 3 обычных набора -->
+          <!-- Единый список subTasks и обычных наборов в правильном порядке -->
           <div
-            class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(0, 3)"
-            :key="currentSetOfWords.missionName"
+            v-for="missionItem in filteredOrderedMissions"
+            :key="getItemKey(missionItem)"
+          >
+            <!-- Если это subTasks -->
+            <div
+              v-if="isSubTasks(missionItem)"
+              class="subtasks-container"
+            >
+              <!-- Заголовок subTasks -->
+              <div
+                class="v-card-choose tooltip-wrapper subtasks-header"
+                :class="getSubTaskStyleClass(missionItem)"
+                @click="toggleSubTasks(missionItem)"
+                :style="{
+                  '--offset-x': '5px',
+                  '--offset-y': '29.5px'
+                }"
+              >
+                <div class="card-content">
+                  <span class="card-description">
+                    {{ missionItem.missionVisibleName }} ( {{ getActiveSubTasksCount(missionItem) }} )
+                  </span>
+                  <span class="card-icons">
+                    <span class="expand-icon">{{ isSubTasksExpanded(missionItem) ? '▼' : '▶' }}</span>
+                  </span>
+                </div>
+                <div class="custom-tooltip">
+                  {{ missionItem.missionDescription }}
+                </div>
+              </div>
+
+              <!-- Раскрытые подзадания -->
+              <div
+                v-if="isSubTasksExpanded(missionItem) && getActiveSubTasksCount(missionItem) > 0"
+                class="subtasks-sets-container"
+                :class="`subtasks-${getSubTaskStyleClass(missionItem)}`"
+              >
+                <div
+                  v-for="subTask in getActiveSubTasks(missionItem)"
+                  :key="getSubTaskItemKey(subTask)"
+                  class="v-card-choose tooltip-wrapper subtask-set"
+                  :class="`subtask-${getSubTaskStyleClass(missionItem)}`"
+                  @click="handleSubTaskClick(subTask)"
+                  :style="{
+                    '--offset-x': '5px',
+                    '--offset-y': '29.5px'
+                  }"
+                >
+                  <div class="card-content">
+                    <span class="card-description">
+                      {{ subTask.missionVisibleName }}
+                    </span>
+                    <span class="card-icons">
+                      <span class="card-stars" v-if="subTask.stars">
+                        {{ getLevelStars(subTask.stars) }}
+                      </span>
+                      <span class="game-icon" v-if="subTask.gameIcon">
+                        {{ subTask.gameIcon }}
+                      </span>
+                    </span>
+                  </div>
+                  <div class="custom-tooltip">
+                    {{ subTask.missionDescription }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Если это обычный набор -->
+            <div
+              v-else
+              class="v-card-choose tooltip-wrapper"
+              role="button"
+              @click="handlePasswordProtectedClick(missionItem)"
+              :style="{
+                '--offset-x': '5px',
+                '--offset-y': '29.5px'
+              }"
+            >
+              <div class="card-content">
+                <span class="card-description">
+                  {{ missionItem.missionVisibleName }}
+                </span>
+                <span class="card-icons">
+                  <span class="card-stars" v-if="missionItem.stars">
+                    {{ getLevelStars(missionItem.stars) }}
+                  </span>
+                  <span class="game-icon" v-if="missionItem.gameIcon">
+                    {{ missionItem.gameIcon }}
+                  </span>
+                  <img
+                    v-if="missionItem.gameImg"
+                    :src="getImagePath(missionItem.gameImg)"
+                    class="game-image"
+                    alt="game icon"
+                  >
+                </span>
+              </div>
+              <div class="custom-tooltip">
+                <div class="tooltip-content">
+                  <span class="mission-name">{{ missionItem.missionDescription }}</span>
+                  <span class="mission-icons">
+                    <span class="mission-stars" v-if="missionItem.stars">
+                      {{ getLevelStars(missionItem.stars) }}
+                    </span>
+                    <span class="game-icon" v-if="missionItem.gameIcon">
+                      {{ missionItem.gameIcon }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Специальные карточки -->
+          <div
+            class="v-card-choose tooltip-wrapper random-set"
             role="button"
-            @click="handlePasswordProtectedClick(currentSetOfWords)"
+            @click="playRandomSet"
             :style="{
               '--offset-x': '5px',
               '--offset-y': '29.5px'
             }"
           >
-            <div class="card-content">
-              <span class="card-description">
-                {{ currentSetOfWords.missionVisibleName }}
-              </span>
-              <span class="card-icons">
-                <span class="card-stars" v-if="currentSetOfWords.stars">
-                  {{ getLevelStars(currentSetOfWords.stars) }}
-                </span>
-                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                  {{ currentSetOfWords.gameIcon }}
-                </span>
-                <img
-                  v-if="currentSetOfWords.gameImg"
-                  :src="getImagePath(currentSetOfWords.gameImg)"
-                  class="game-image"
-                  alt="game icon"
-                >
-              </span>
-            </div>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
-                <span class="mission-icons">
-                  <span class="mission-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
-              </div>
-            </div>
+            Случайный набор слов 🎲
+            <div class="custom-tooltip">Random Set</div>
           </div>
 
           <div
@@ -108,7 +190,7 @@
             </div>
           </div>
 
-          <!-- 5. Рандомные вопросы  -->
+          <!-- Рандомные вопросы -->
           <div
             class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
@@ -154,7 +236,7 @@
           >
             <div
               v-for="currentSetOfWords in filteredCategoryExamplesSets"
-              :key="currentSetOfWords.missionName"
+              :key="getItemKey(currentSetOfWords)"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
@@ -177,98 +259,6 @@
               </div>
               <div class="custom-tooltip">
                 {{ currentSetOfWords.missionDescription }}
-              </div>
-            </div>
-          </div>
-
-          <!--Следующие 2 обычных наборов -->
-          <div
-            class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(3, 5)"
-            :key="currentSetOfWords.missionName"
-            role="button"
-            @click="handlePasswordProtectedClick(currentSetOfWords)"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            <div class="card-content">
-              <span class="card-description">
-                {{ currentSetOfWords.missionVisibleName }}
-              </span>
-              <span class="card-icons">
-                <span class="card-stars" v-if="currentSetOfWords.stars">
-                  {{ getLevelStars(currentSetOfWords.stars) }}
-                </span>
-                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                  {{ currentSetOfWords.gameIcon }}
-                </span>
-                <img
-                  v-if="currentSetOfWords.gameImg"
-                  :src="getImagePath(currentSetOfWords.gameImg)"
-                  class="game-image"
-                  alt="game icon"
-                >
-              </span>
-            </div>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
-                <span class="mission-icons">
-                  <span class="mission-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!--Следующие 2 обычных наборов -->
-          <div
-            class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(5, 8)"
-            :key="currentSetOfWords.missionName"
-            role="button"
-            @click="handlePasswordProtectedClick(currentSetOfWords)"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            <div class="card-content">
-              <span class="card-description">
-                {{ currentSetOfWords.missionVisibleName }}
-              </span>
-              <span class="card-icons">
-                <span class="card-stars" v-if="currentSetOfWords.stars">
-                  {{ getLevelStars(currentSetOfWords.stars) }}
-                </span>
-                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                  {{ currentSetOfWords.gameIcon }}
-                </span>
-                <img
-                  v-if="currentSetOfWords.gameImg"
-                  :src="getImagePath(currentSetOfWords.gameImg)"
-                  class="game-image"
-                  alt="game icon"
-                >
-              </span>
-            </div>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
-                <span class="mission-icons">
-                  <span class="mission-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
               </div>
             </div>
           </div>
@@ -319,7 +309,7 @@
           >
             <div
               v-for="currentSetOfWords in filteredGamePatternsSets"
-              :key="currentSetOfWords.missionName"
+              :key="getItemKey(currentSetOfWords)"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
@@ -343,115 +333,6 @@
               <div class="custom-tooltip">
                 {{ currentSetOfWords.missionDescription }}
               </div>
-            </div>
-          </div>
-
-          <!--Следующие 2 обычных наборов -->
-          <div
-            class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(8, 11)"
-            :key="currentSetOfWords.missionName"
-            role="button"
-            @click="handlePasswordProtectedClick(currentSetOfWords)"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            <div class="card-content">
-              <span class="card-description">
-                {{ currentSetOfWords.missionVisibleName }}
-              </span>
-              <span class="card-icons">
-                <span class="card-stars" v-if="currentSetOfWords.stars">
-                  {{ getLevelStars(currentSetOfWords.stars) }}
-                </span>
-                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                  {{ currentSetOfWords.gameIcon }}
-                </span>
-                <img
-                  v-if="currentSetOfWords.gameImg"
-                  :src="getImagePath(currentSetOfWords.gameImg)"
-                  class="game-image"
-                  alt="game icon"
-                >
-              </span>
-            </div>
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
-                <span class="mission-icons">
-                  <span class="mission-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Все остальные обычные наборы -->
-          <div
-            class="v-card-choose tooltip-wrapper"
-            v-for="currentSetOfWords in filteredSets.slice(11)"
-            :key="currentSetOfWords.missionName"
-            role="button"
-            @click="handlePasswordProtectedClick(currentSetOfWords)"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            <div class="card-content">
-              <span class="card-description">
-                {{ currentSetOfWords.missionVisibleName }}
-              </span>
-              <span class="card-icons">
-                <span class="card-stars" v-if="currentSetOfWords.stars">
-                  {{ getLevelStars(currentSetOfWords.stars) }}
-                </span>
-                <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                  {{ currentSetOfWords.gameIcon }}
-                </span>
-                <img
-                  v-if="currentSetOfWords.gameImg"
-                  :src="getImagePath(currentSetOfWords.gameImg)"
-                  class="game-image"
-                  alt="game icon"
-                >
-              </span>
-            </div>
-
-            <div class="custom-tooltip">
-              <div class="tooltip-content">
-                <span class="mission-name">{{ currentSetOfWords.missionDescription }}</span>
-                <span class="mission-icons">
-                  <span class="mission-stars" v-if="currentSetOfWords.stars">
-                    {{ getLevelStars(currentSetOfWords.stars) }}
-                  </span>
-                  <span class="game-icon" v-if="currentSetOfWords.gameIcon">
-                    {{ currentSetOfWords.gameIcon }}
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 7. Остальные специальные карточки -->
-          <div
-            class="v-card-choose tooltip-wrapper random-set"
-            role="button"
-            @click="playRandomSet"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Случайный набор слов 🎲
-            <div class="custom-tooltip">
-              Random Set
             </div>
           </div>
 
@@ -485,7 +366,7 @@
           >
             <div
               v-for="currentSetOfWords in filteredReadingSets"
-              :key="currentSetOfWords.missionName"
+              :key="getItemKey(currentSetOfWords)"
               class="v-card-choose tooltip-wrapper reading-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
@@ -542,7 +423,7 @@
           >
             <div
               v-for="currentSetOfWords in filteredCategoryXSets"
-              :key="currentSetOfWords.missionName"
+              :key="getItemKey(currentSetOfWords)"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
@@ -599,7 +480,7 @@
           >
             <div
               v-for="currentSetOfWords in filteredChineseSets"
-              :key="currentSetOfWords.missionName"
+              :key="getItemKey(currentSetOfWords)"
               class="v-card-choose tooltip-wrapper category-set"
               @click="handlePasswordProtectedClick(currentSetOfWords)"
               :style="{
@@ -662,8 +543,6 @@
     </div>
   </div>
 </template>
-
-
 <script setup>
 import { useQuasar } from 'quasar';
 import { ref, computed, watch } from 'vue';
@@ -671,111 +550,256 @@ import { useRouter } from 'vue-router';
 import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
-// const text = "choose \na \nmission";
-// const text = "Vincent \nis \nmy friend";
-const text = "to Vincent\nfrom me\nHappy New Year";
-const speed = 150;
-const introMessage = ref(null);
-const searchQuery = ref('');
-const router = useRouter()
-const $q = useQuasar()
+// Константы
+const ANIMATION_TEXT = "to Vincent\nfrom me\nHappy New Year";
+const ANIMATION_SPEED = 150;
 
-// Добавляем новые переменные для модального окна
+// Composables
+const $q = useQuasar();
+const router = useRouter();
+
+// Reactive состояния
+const searchQuery = ref('');
 const passwordModal = ref(false);
 const passwordInput = ref('');
 const currentSetToUnlock = ref(null);
 const shake = ref(false);
+const expandedSubTasks = ref(new Set());
 
-/// Категории
-const isReadingExpanded = ref(false)
-const isCategoryXExpanded = ref(false)
-const iscategoryExamplesPatternsExpanded = ref(false)
-const isGamePatternsExpanded = ref(false)
-const isChineseExpanded = ref(false)
+// Состояния категорий
+const categoryStates = ref({
+  reading: false,
+  categoryX: false,
+  categoryExamplesPatterns: false,
+  gamePatterns: false,
+  chinese: false
+});
 
+// Computed свойства для доступа к состояниям категорий (для совместимости с шаблоном)
+const isReadingExpanded = computed(() => categoryStates.value.reading);
+const isCategoryXExpanded = computed(() => categoryStates.value.categoryX);
+const iscategoryExamplesPatternsExpanded = computed(() => categoryStates.value.categoryExamplesPatterns);
+const isGamePatternsExpanded = computed(() => categoryStates.value.gamePatterns);
+const isChineseExpanded = computed(() => categoryStates.value.chinese);
 
+// Реактивный список наборов
+const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
 
-// Вычисляемое свойство для показа кнопки
+// Computed свойства
 const showPronunciationButton = computed(() => {
   return searchQuery.value.trim().length > 2;
 });
 
-// Функция для поиска произношения
-const handlePronunciationSearch = () => {
-  const query = searchQuery.value.trim();
+// Категории наборов
+const readingSets = computed(() => filterByCategory('reading'));
+const categoryXSets = computed(() => filterByCategory('categoryX'));
+const categoryExamplesPatternsSets = computed(() => filterByCategory('categoryExamplesPatterns'));
+const gamePatternsSets = computed(() => filterByCategory('gamePatterns'));
+const chineseSets = computed(() => filterByCategory('chinese'));
+const subTasksSets = computed(() => getSubTasksSets());
 
-  let searchTerm;
+// Фильтрованные наборы с учетом поиска
+const filteredReadingSets = computed(() => filterSetsBySearch(readingSets.value));
+const filteredCategoryXSets = computed(() => filterSetsBySearch(categoryXSets.value));
+const filteredCategoryExamplesSets = computed(() => filterSetsBySearch(categoryExamplesPatternsSets.value));
+const filteredGamePatternsSets = computed(() => filterSetsBySearch(gamePatternsSets.value));
+const filteredChineseSets = computed(() => filterSetsBySearch(chineseSets.value));
 
+// Умное отображение категорий
+const shouldShowReadingCategory = computed(() => shouldShowCategory('reading', readingSets.value, ['чтение reading', 'интенсивы']));
+const shouldShowCategoryX = computed(() => shouldShowCategory('categoryX', categoryXSets.value, ['категория x categoryx', 'секретные']));
+const shouldShowCategoryExamples = computed(() => shouldShowCategory('categoryExamplesPatterns', categoryExamplesPatternsSets.value, ['examples примеры categoryexamplespatterns']));
+const shouldShowGamePatterns = computed(() => shouldShowCategory('gamePatterns', gamePatternsSets.value, ['games gamepatterns игры', 'vincent']));
+const shouldShowChinese = computed(() => shouldShowCategory('chinese', chineseSets.value, ['chinese китайский язык']));
 
-    searchTerm = query;
+// Основной список миссий (без категорийных наборов)
+const orderedMissionList = computed(() => {
+  const excludedCategories = ['reading', 'categoryX', 'categoryExamplesPatterns', 'gamePatterns', 'chinese'];
 
-  openPronunciationSearch(searchTerm);
-  searchQuery.value = '';
+  return AllSetsOfWords.value.filter(item =>
+    item.active &&
+    (item.type === "subTasks" ||
+      !excludedCategories.some(category => hasCategory(item, category)))
+  );
+});
 
-};
+// ИСПРАВЛЕННЫЙ ПОИСК - УЧИТЫВАЕМ ДУБЛИРУЮЩИЕСЯ ID
+const filteredOrderedMissions = computed(() => {
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
 
-const openPronunciationSearch = (term) => {
-  // Очищаем и нормализуем поисковый термин
-  const cleanTerm = term
-    .replace(/[^\w\sа-яё]/gi, '') // убираем специальные символы
-    .trim()
-    .replace(/\s+/g, '+'); // заменяем пробелы на + для URL
+  if (!query) {
+    return orderedMissionList.value;
+  }
 
-  // Создаем URL для поиска произношения в Google
-  const googleSearchUrl = `https://www.google.com/search?q=how+to+pronounce+ ${cleanTerm}`;
+  const seen = new Set();
+  const result = [];
 
-  // Открываем в новой вкладке
-  window.open(googleSearchUrl, '_blank');
+  // Функция для создания уникального ключа с учетом всех полей
+  const getUniqueKey = (item) => {
+    // Используем все уникальные поля для создания ключа
+    const keyParts = [
+      item.missionName || '',
+      item.missionVisibleName || '',
+      item.missionDescription || '',
+      item.path || '',
+    ].filter(part => part !== '');
 
-  // Показываем уведомление
-  $q.notify({
-    message: `Ищем произношение: ${term}`,
-    color: 'positive',
-    timeout: 2000,
-    position: 'top'
+    // Если ключ все еще не уникален, добавляем индекс
+    const baseKey = keyParts.join('_');
+    return baseKey || `fallback_${Math.random().toString(36).substr(2, 9)}`;
+  };
+
+  // Поиск в обычных наборах и subTasks
+  orderedMissionList.value.forEach((item, index) => {
+    if (!item.active) return;
+
+    const uniqueKey = getUniqueKey(item);
+
+    // Проверяем, не добавили ли мы уже этот элемент
+    if (seen.has(uniqueKey)) {
+      console.warn('Duplicate item skipped:', item.missionVisibleName);
+      return;
+    }
+
+    // УНИВЕРСАЛЬНЫЙ ПОИСК ПО ВСЕМ ПОЛЯМ
+    const matches = universalSearch(item, query);
+
+    if (matches) {
+      seen.add(uniqueKey);
+      // Добавляем элемент с уникальным ключом
+      result.push({
+        ...item,
+        _uniqueKey: uniqueKey // Добавляем уникальный ключ в элемент
+      });
+    }
   });
+
+  return result;
+});
+
+// Функция для генерации ключа в шаблоне - ИСПРАВЛЕННАЯ
+const getItemKey = (item) => {
+  // Используем сохраненный уникальный ключ или генерируем новый
+  if (item._uniqueKey) {
+    return item._uniqueKey;
+  }
+
+  // Резервный вариант
+  const keyParts = [
+    item.type || '',
+    item.missionName || '',
+    item.missionVisibleName || '',
+    item.missionDescription || '',
+    item.path || '',
+    item.url || ''
+  ].filter(part => part !== '');
+
+  return keyParts.join('_') || `key_${Math.random().toString(36).substr(2, 9)}`;
 };
 
+// Функция для генерации ключей для элементов внутри subTasks
+const getSubTaskItemKey = (subTask) => {
+  const keyParts = [
+    subTask.type || '',
+    subTask.missionName || '',
+    subTask.missionVisibleName || '',
+    subTask.missionDescription || '',
+    subTask.path || '',
+    subTask.url || ''
+  ].filter(part => part !== '');
 
+  return keyParts.join('_') || `subtask_${Math.random().toString(36).substr(2, 9)}`;
+};
 
-// для компактности кода проверяем наличие категорий у наборов
-const hasCategory = (set, categoryName) => {
-  return set.category === categoryName ||
-    (Array.isArray(set.category) && set.category.includes(categoryName))
-}
+// УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПОИСКА - УЛУЧШЕННАЯ
+const universalSearch = (item, query) => {
+  if (!query) return true;
 
-// Компьютеды для группировки
-const readingSets = computed(() => {
-  return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'reading')
-  )
-})
+  // Все поля для поиска
+  const searchFields = [
+    item.missionVisibleName,
+    item.missionDescription,
+    item.missionName,
+    item.type,
+    item.path,
+    item.url,
+    item.category ? (Array.isArray(item.category) ? item.category.join(' ') : item.category) : '',
+    item.style,
+    item.gameIcon,
+    item.gameImg,
+    item.stars?.toString(),
+    item.password,
+    item.target
+  ].filter(Boolean);
 
-const categoryXSets = computed(() => {
-  return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'categoryX')
-  )
-})
+  // Поиск в основных полях
+  const mainFieldsMatch = searchFields.some(field =>
+    field && normalizeString(field).includes(query)
+  );
 
-const categoryExamplesPatternsSets = computed(() => {
-  return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'categoryExamplesPatterns')
-  )
-})
+  if (mainFieldsMatch) return true;
 
-const gamePatternsSets = computed(() => {
-  return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'gamePatterns')
-  )
-})
+  // Поиск в subTasks (если это subTasks)
+  if (isSubTasks(item) && item.subTasks) {
+    const subTaskMatch = item.subTasks.some(subTask => {
+      if (!subTask.active) return false;
 
-const chineseSets = computed(() => {
-  return allGamesAndSetsOfWordsList.filter(set =>
-    set.active && hasCategory(set, 'chinese')
-  )
-})
+      const subTaskSearchFields = [
+        subTask.missionVisibleName,
+        subTask.missionDescription,
+        subTask.missionName,
+        subTask.type,
+        subTask.style,
+        subTask.gameIcon
+      ].filter(Boolean);
 
-// Улучшенная функция нормализации
+      return subTaskSearchFields.some(field =>
+        field && normalizeString(field).includes(query)
+      );
+    });
+
+    if (subTaskMatch) return true;
+  }
+
+  return false;
+};
+
+// Вспомогательные функции
+const filterByCategory = (categoryName) => {
+  return AllSetsOfWords.value.filter(set =>
+    set.active && hasCategory(set, categoryName)
+  );
+};
+
+const getSubTasksSets = () => {
+  return AllSetsOfWords.value.filter(set =>
+    set.active && set.type === "subTasks"
+  );
+};
+
+const filterSetsBySearch = (sets) => {
+  if (!searchQuery.value) return sets;
+
+  const query = normalizeString(searchQuery.value);
+  return sets.filter(set => universalSearch(set, query));
+};
+
+const shouldShowCategory = (categoryKey, categorySets, searchTerms) => {
+  if (!searchQuery.value) return categorySets.length > 0;
+
+  const query = normalizeString(searchQuery.value);
+  const categoryNameMatches = searchTerms.some(term =>
+    term.includes(query)
+  );
+
+  const hasMatchingMissions = categorySets.some(set =>
+    universalSearch(set, query)
+  );
+
+  return categoryNameMatches || hasMatchingMissions;
+};
+
+// Утилиты
 const normalizeString = (str) => {
   if (!str) return '';
   return str.toString().toLowerCase()
@@ -784,305 +808,122 @@ const normalizeString = (str) => {
     .replace(/[^\wа-яё\/]/g, '');
 };
 
-// ОПТИМИЗИРОВАННАЯ ФИЛЬТРАЦИЯ С УЧЕТОМ КАТЕГОРИЙ
-const filteredSets = computed(() => {
-  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+const hasCategory = (set, categoryName) => {
+  if (set.type === "subTasks") return false;
+  return set.category === categoryName ||
+    (Array.isArray(set.category) && set.category.includes(categoryName));
+};
 
-  if (!query) {
-    // Без поиска - показываем обычные наборы (без тех, что в категориях)
-    return AllSetsOfWords.value.filter(set =>
-      set.active &&
-      !hasCategory(set, 'reading') &&
-      !hasCategory(set, 'categoryX') &&
-      !hasCategory(set, 'categoryExamplesPatterns') &&
-      !hasCategory(set, 'gamePatterns') &&
-      !hasCategory(set, 'chinese')
-    );
-  }
+const isSubTasks = (set) => {
+  return set.type === "subTasks" && Array.isArray(set.subTasks);
+};
 
-  // С поиском - используем Set для устранения дубликатов
-  const seen = new Set();
-  const result = [];
-
-  AllSetsOfWords.value.forEach(set => {
-    if (!set.active) return;
-
-    const missionId = set.missionName || set.missionVisibleName;
-    if (seen.has(missionId)) return;
-
-    // Нормализуем все поля для поиска
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName,
-      set.path,
-      set.url,
-      set.category ? (Array.isArray(set.category) ? set.category.join(' ') : set.category) : ''
-    ].filter(Boolean);
-
-    const matchesSearch = searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-
-    if (matchesSearch) {
-      seen.add(missionId);
-      result.push(set);
-    }
-  });
-
-  return result;
-});
-
-// НОВЫЕ КОМПЬЮТЕДЫ ДЛЯ УМНОГО СКРЫТИЯ КАТЕГОРИЙ
-const shouldShowReadingCategory = computed(() => {
-  if (!searchQuery.value) return readingSets.value.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = 'чтение reading'.includes(query) ||
-    'интенсивы'.includes(query);
-
-  const hasMatchingMissions = readingSets.value.some(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-
-  return categoryNameMatches || hasMatchingMissions;
-});
-
-const shouldShowCategoryX = computed(() => {
-  if (!searchQuery.value) return categoryXSets.value.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = 'категория x categoryx'.includes(query) ||
-    'секретные'.includes(query);
-
-  const hasMatchingMissions = categoryXSets.value.some(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-
-  return categoryNameMatches || hasMatchingMissions;
-});
-
-const shouldShowCategoryExamples = computed(() => {
-  if (!searchQuery.value) return categoryExamplesPatternsSets.value.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = 'examples примеры categoryexamplespatterns'.includes(query);
-
-  const hasMatchingMissions = categoryExamplesPatternsSets.value.some(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-
-  return categoryNameMatches || hasMatchingMissions;
-});
-
-const shouldShowGamePatterns = computed(() => {
-  if (!searchQuery.value) return gamePatternsSets.value.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = 'games gamepatterns игры'.includes(query) ||
-    'vincent'.includes(query);
-
-  const hasMatchingMissions = gamePatternsSets.value.some(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-
-  return categoryNameMatches || hasMatchingMissions;
-});
-
-const shouldShowChinese = computed(() => {
-  if (!searchQuery.value) return chineseSets.value.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = 'chinese китайский язык'.includes(query);
-
-  const hasMatchingMissions = chineseSets.value.some(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-
-  return categoryNameMatches || hasMatchingMissions;
-});
-
-// ФИЛЬТРОВАННЫЕ НАБОРЫ ДЛЯ КАЖДОЙ КАТЕГОРИИ (с учетом поиска)
-const filteredReadingSets = computed(() => {
-  if (!searchQuery.value) return readingSets.value;
-
-  const query = normalizeString(searchQuery.value);
-  return readingSets.value.filter(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-});
-
-const filteredCategoryXSets = computed(() => {
-  if (!searchQuery.value) return categoryXSets.value;
-
-  const query = normalizeString(searchQuery.value);
-  return categoryXSets.value.filter(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-});
-
-const filteredCategoryExamplesSets = computed(() => {
-  if (!searchQuery.value) return categoryExamplesPatternsSets.value;
-
-  const query = normalizeString(searchQuery.value);
-  return categoryExamplesPatternsSets.value.filter(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-});
-
-const filteredGamePatternsSets = computed(() => {
-  if (!searchQuery.value) return gamePatternsSets.value;
-
-  const query = normalizeString(searchQuery.value);
-  return gamePatternsSets.value.filter(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-});
-
-const filteredChineseSets = computed(() => {
-  if (!searchQuery.value) return chineseSets.value;
-
-  const query = normalizeString(searchQuery.value);
-  return chineseSets.value.filter(set => {
-    const searchFields = [
-      set.missionVisibleName,
-      set.missionDescription,
-      set.missionName
-    ];
-    return searchFields.some(field =>
-      normalizeString(field).includes(query)
-    );
-  });
-});
-
-// Функции переключения
-const toggleGamePatterns = () => {
-  if (searchQuery.value && !isGamePatternsExpanded.value) {
-    isGamePatternsExpanded.value = true;
-  } else {
-    isGamePatternsExpanded.value = !isGamePatternsExpanded.value;
-  }
-}
-
-const toggleChinese = () => {
-  if (searchQuery.value && !isChineseExpanded.value) {
-    isChineseExpanded.value = true;
-  } else {
-    isChineseExpanded.value = !isChineseExpanded.value;
-  }
-}
-
-const toggleReadingCategory = () => {
-  if (searchQuery.value && !isReadingExpanded.value) {
-    isReadingExpanded.value = true;
-  } else {
-    isReadingExpanded.value = !isReadingExpanded.value;
-  }
-}
-
-const toggleCategoryX = () => {
-  if (searchQuery.value && !isCategoryXExpanded.value) {
-    isCategoryXExpanded.value = true;
-  } else {
-    isCategoryXExpanded.value = !isCategoryXExpanded.value;
-  }
-}
-
-const togglecategoryExamplesPatterns = () => {
-  if (searchQuery.value && !iscategoryExamplesPatternsExpanded.value) {
-    iscategoryExamplesPatternsExpanded.value = true;
-  } else {
-    iscategoryExamplesPatternsExpanded.value = !iscategoryExamplesPatternsExpanded.value;
-  }
-}
-
-// Автоматически скрывать раскрытые категории при очистке поиска
-watch(searchQuery, (newQuery) => {
-  if (!newQuery) {
-    isReadingExpanded.value = false;
-    isCategoryXExpanded.value = false;
-    iscategoryExamplesPatternsExpanded.value = false;
-    isGamePatternsExpanded.value = false;
-    isChineseExpanded.value = false;
-  }
-});
-
+// Функции навигации
 const handlePasswordProtectedClick = (set) => {
   if (!set.password) {
     goToChosenGame(set);
     return;
   }
-
   currentSetToUnlock.value = set;
   passwordModal.value = true;
 };
 
-// Функции для работы с модальным окном
+const goToChosenGame = (set) => {
+  if (set.type === "hardcodedLink") {
+    router.push(set.path);
+  } else if (set.type === "externalLink") {
+    window.open(set.url, set.target || '_blank');
+  } else {
+    router.push(`/see-all-sets-of-words/${set.missionName}`);
+  }
+};
+
+// Функции поиска произношения
+const handlePronunciationSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+
+  openPronunciationSearch(query);
+  searchQuery.value = '';
+};
+
+const openPronunciationSearch = (term) => {
+  const cleanTerm = term
+    .replace(/[^\w\sа-яё]/gi, '')
+    .trim()
+    .replace(/\s+/g, '+');
+
+  const googleSearchUrl = `https://www.google.com/search?q=how+to+pronounce+ ${cleanTerm}`;
+  window.open(googleSearchUrl, '_blank');
+
+  $q.notify({
+    message: `Ищем произношение: ${term}`,
+    color: 'positive',
+    timeout: 2000,
+    position: 'top'
+  });
+};
+
+// Функции для subTasks - ИСПРАВЛЕННЫЕ
+const getSubTaskStyleClass = (subTaskSet) => {
+  return subTaskSet.style || 'default';
+};
+
+// ИСПРАВЛЕНА логика раскрытия subTasks - используем уникальные ключи
+const isSubTasksExpanded = (subTaskSet) => {
+  const uniqueKey = getSubTaskUniqueKey(subTaskSet);
+  return expandedSubTasks.value.has(uniqueKey);
+};
+
+const toggleSubTasks = (subTaskSet) => {
+  const uniqueKey = getSubTaskUniqueKey(subTaskSet);
+  if (expandedSubTasks.value.has(uniqueKey)) {
+    expandedSubTasks.value.delete(uniqueKey);
+  } else {
+    expandedSubTasks.value.add(uniqueKey);
+  }
+};
+
+// Функция для создания уникального ключа для subTasks
+const getSubTaskUniqueKey = (subTaskSet) => {
+  return `${subTaskSet.id}_${subTaskSet.missionVisibleName}_${subTaskSet.missionDescription}`;
+};
+
+const getActiveSubTasks = (subTaskSet) => {
+  return (subTaskSet.subTasks || []).filter(task => task.active);
+};
+
+const getActiveSubTasksCount = (subTaskSet) => {
+  return getActiveSubTasks(subTaskSet).length;
+};
+
+const handleSubTaskClick = (subTask) => {
+  if (subTask.password) {
+    currentSetToUnlock.value = subTask;
+    passwordModal.value = true;
+  } else {
+    goToChosenGame(subTask);
+  }
+};
+
+// Функции переключения категорий
+const toggleCategory = (category) => {
+  if (searchQuery.value && !categoryStates.value[category]) {
+    categoryStates.value[category] = true;
+  } else {
+    categoryStates.value[category] = !categoryStates.value[category];
+  }
+};
+
+const toggleReadingCategory = () => toggleCategory('reading');
+const toggleCategoryX = () => toggleCategory('categoryX');
+const togglecategoryExamplesPatterns = () => toggleCategory('categoryExamplesPatterns');
+const toggleGamePatterns = () => toggleCategory('gamePatterns');
+const toggleChinese = () => toggleCategory('chinese');
+
+// Функции модального окна
 const checkPassword = () => {
-  if (passwordInput.value === currentSetToUnlock.value.password) {
+  if (passwordInput.value === currentSetToUnlock.value?.password) {
     goToChosenGame(currentSetToUnlock.value);
     closeModal();
   } else {
@@ -1097,39 +938,13 @@ const closeModal = () => {
   shake.value = false;
 };
 
-// Делаем список реактивным
-const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
-
+// Игровые функции
 const showSpecialCardAlert = () => {
   router.push('/create-special-set');
 };
 
-// Функция для получения пути к изображению
-const getImagePath = (imgName) => {
-  return new URL(`../assets/images/${imgName}`, import.meta.url).href;
-};
-
-const goToChosenGame = (set) => {
-  if (set.type === "hardcodedLink") {
-    router.push(set.path);
-  } else if (set.type === "externalLink") {
-    // Для внешних ссылок
-    window.open(set.url, set.target || '_blank');
-  } else {
-    // Для обычных наборов
-    router.push(`/see-all-sets-of-words/${set.missionName}`);
-  }
-}
-
-const getLevelStars = (stars) => {
-  if (!stars) return '';
-  const starCount = parseInt(stars);
-  return '⭐'.repeat(starCount);
-};
-
 const playRandomSet = () => {
-  // Фильтруем наборы, исключая специальные (create-special-set и другие, если нужно)
-  const availableSets = filteredSets.value.filter(set =>
+  const availableSets = filteredOrderedMissions.value.filter(set =>
     !set.type && set.active && set.missionName !== 'create-special-set'
   );
 
@@ -1141,26 +956,26 @@ const playRandomSet = () => {
     return;
   }
 
-  // Выбираем случайный набор
   const randomIndex = Math.floor(Math.random() * availableSets.length);
-  const randomSet = availableSets[randomIndex];
-
-  // Переходим к случайному набору
-  goToChosenGame(randomSet);
+  goToChosenGame(availableSets[randomIndex]);
 };
 
-const playRandomQuestions = () => {
-  router.push('/phoneFramePattern');
-}
+const playRandomQuestions = () => router.push('/phoneFramePattern');
+const playSnake = () => router.push('/gameSnakeWords');
+const tapalka = () => router.push('/');
 
-const playSnake = () => {
-  router.push('/gameSnakeWords');
-}
+// Вспомогательные функции
+const getImagePath = (imgName) => {
+  return new URL(`../assets/images/${imgName}`, import.meta.url).href;
+};
 
-const tapalka = () => {
-  router.push('/');
-}
+const getLevelStars = (stars) => {
+  if (!stars) return '';
+  const starCount = parseInt(stars);
+  return '⭐'.repeat(starCount);
+};
 
+// Анимация
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
   if (!introMessage) return;
@@ -1169,18 +984,28 @@ onMounted(() => {
   let i = 0;
 
   function typeWriter() {
-    if (i < text.length) {
-      introMessage.textContent += text[i] === "\n" ? "\n" : text[i];
+    if (i < ANIMATION_TEXT.length) {
+      introMessage.textContent += ANIMATION_TEXT[i] === "\n" ? "\n" : ANIMATION_TEXT[i];
       i++;
-      setTimeout(typeWriter, speed);
+      setTimeout(typeWriter, ANIMATION_SPEED);
     }
   }
 
   typeWriter();
 });
+
+// Watchers
+watch(searchQuery, (newQuery) => {
+  if (!newQuery) {
+    // Сбрасываем все состояния категорий при очистке поиска
+    Object.keys(categoryStates.value).forEach(key => {
+      categoryStates.value[key] = false;
+    });
+  }
+});
 </script>
+
 <style lang="scss" scoped>
-/* ask как убрать белые края у блюра? я просто отдельную фотку загрузил, но это же мегабайты лишние*/
 .blur {
   filter: blur(5px);
 }
@@ -1198,7 +1023,7 @@ onMounted(() => {
 .search-input {
   scale: 1.1;
   width: 100%;
-  padding: 8px 40px 8px 15px; /* добавляем правый отступ для кнопки */
+  padding: 8px 40px 8px 15px;
   border-radius: 20px;
   border: 3px solid #000000;
   font-size: 15px;
@@ -1206,8 +1031,6 @@ onMounted(() => {
   outline: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-
-  /* Анимация дыхания */
   animation: breathe 4s ease-in-out infinite;
 }
 
@@ -1226,8 +1049,6 @@ onMounted(() => {
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-  /* Анимация появления */
   animation: fadeInScale 0.3s ease;
 }
 
@@ -1241,7 +1062,6 @@ onMounted(() => {
   transform: scale(0.95);
 }
 
-/* Анимация появления кнопки */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -1253,12 +1073,11 @@ onMounted(() => {
   }
 }
 
-/* Обновляем анимацию placeholder с учетом кнопки */
 .search-input:focus {
   border-color: #6a6a6a;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   animation: none;
-  padding-right: 40px; /* сохраняем отступ при фокусе */
+  padding-right: 40px;
 }
 
 .search-input::placeholder {
@@ -1267,23 +1086,6 @@ onMounted(() => {
   font-size: 11px;
   color: #888;
   opacity: 0.8;
-  animation: placeholderPulse 2s ease-in-out infinite;
-}
-
-.search-input:focus {
-  border-color: #6a6a6a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  animation: none; /* Останавливаем анимацию при фокусе */
-}
-
-.search-input::placeholder {
-  font-style: italic;
-  font-family: Helvetica;
-
-  font-size: 11px;
-  color: #888;
-  opacity: 0.8;
-  /* Анимация мерцания placeholder */
   animation: placeholderPulse 2s ease-in-out infinite;
 }
 
@@ -1313,84 +1115,63 @@ onMounted(() => {
   z-index: -1;
   right: 0;
   bottom: 0;
-
 }
-
-
-/*
-.phoneFrame{
-  position: absolute;
-  height: 100%;
-  z-index: -1;
-}
-*/
 
 .v-cards-choose {
   display: flex;
-  flex-wrap: wrap;
-  /* Позволяет карточкам переходить на новую строку */
-
-
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
 }
 
 .v-card-choose {
   background-color: #f9f9f9;
-  /* Цвет фона карточки */
   border: 1px solid #ddd;
-  /* Цвет границы */
   border-radius: 20px;
-  /* Закругление углов */
   padding: 5px 20px;
-  /* Внутренние отступы */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Тень */
   cursor: none;
-  /* Указатель мыши при наведении */
   transition: transform 0.2s, box-shadow 0.2s;
-  /* Плавный переход при наведении */
-  margin: 1.5px;
+  margin: 0;
   user-select: none;
   width: 100%;
-
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
+
 .q-btn {
   cursor: none;
-
 }
+
 .v-card-choose:hover {
   transform: scale(1.05);
-  /* Увеличение карточки при наведении */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  /* Увеличенная тень при наведении */
   user-select: none;
-
 }
-
 
 .card-content {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* выравнивание по вертикали */
+  align-items: center;
   width: 100%;
 }
 
 .card-description {
   text-align: left;
   margin-right: 10px;
-  flex-grow: 1; /* позволяет описанию занимать всё доступное пространство */
+  flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; /* предотвращаем перенос текста */
+  white-space: nowrap;
 }
 
 .card-stars {
   text-align: right;
   white-space: nowrap;
-  flex-shrink: 0; /* предотвращает сжатие звёзд */
+  flex-shrink: 0;
 }
 
 .closeThisPage {
-
   display: block;
   margin: 0 auto;
 }
@@ -1399,100 +1180,93 @@ onMounted(() => {
   border-radius: 50px;
   margin-bottom: -15px;
 }
+
 #phoneFrame {
-  position: relative; // Устанавливает элемент относительно его нормального положения
-  height: 655px; // Высота элемента
-  width: 310px; // Ширина элемента
+  position: relative;
+  height: 655px;
+  width: 310px;
   background:
-    linear-gradient( // Фоновый градиент
-      to top, // Направление градиента
-      #fff -250%, // Белый цвет
-      #000000 150% // Черный цвет
+    linear-gradient(
+        to top,
+        #fff -250%,
+        #000000 150%
     );
-  margin: 5px auto; // Отступы сверху и снизу, центрирование по горизонтали
+  margin: 5px auto;
   margin-top: 10px;
-  border-radius: 2em; // Скругление углов
-  border: solid 5px #6a6a6a; // Рамка вокруг элемента
-  box-shadow: // Тени для элемента
-    inset 0 0 2px 7px #000, // Внутренняя тень
-    inset 0 0 3px 7px #000, // Внутренняя тень
-    0 0 30px 10px rgba(0, 0, 0, 0.6), // Внешняя тень
-    0 150px 200px -80px #000; // Внешняя тень
-  overflow: auto; // Обрезка содержимого, если оно выходит за пределы элемента
+  border-radius: 2em;
+  border: solid 5px #6a6a6a;
+  box-shadow:
+    inset 0 0 2px 7px #000,
+    inset 0 0 3px 7px #000,
+    0 0 30px 10px rgba(0, 0, 0, 0.6),
+    0 150px 200px -80px #000;
+  overflow: auto;
 
- // Стилизация полосы прокрутки
- &::-webkit-scrollbar {
-  width: 8px; // Ширина полосы прокрутки
-}
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
 
-&::-webkit-scrollbar-track {
-  background: transparent; // Цвет фона полосы прокрутки
-}
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-&::-webkit-scrollbar-thumb {
-  background: gray; // Цвет ползунка
-  border-radius: 10px; // Скругление углов ползунка
-}
+  &::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 10px;
+  }
 
-&::-webkit-scrollbar-thumb:hover {
-  background: darkgray; // Цвет ползунка при наведении
-}
+  &::-webkit-scrollbar-thumb:hover {
+    background: darkgray;
+  }
 
   &::before {
-    // Псевдоэлемент перед элементом
-    text-align: center; // Выравнивание текста по центру
-    word-spacing: 6em; // Промежуток между словами
-    color: #fff; // Цвет текста
-    font-family: helvetica; // Шрифт
-    font-size: .7em; // Размер шрифта
-    display: block; // Отображение как блочный элемент
-    height: 240px; // Высота псевдоэлемента
-    width: 240px; // Ширина псевдоэлемента
-    position: absolute; // Абсолютное позиционирование
-    margin: 30px; // Отступы
+    text-align: center;
+    word-spacing: 6em;
+    color: #fff;
+    font-family: helvetica;
+    font-size: .7em;
+    display: block;
+    height: 240px;
+    width: 240px;
+    position: absolute;
+    margin: 30px;
   }
 }
 
 .bubble {
-  // Класс bubble
-  text-align: center; // Выравнивание текста по центру
-  user-select: none; // Запрет на выделение текста
-  font-family: "Permanent Marker"; // Шрифт
-  font-size: 17px; // Размер шрифта
-  display: inline-block; // Отображение как строчно-блочный элемент
-  position: absolute; // Абсолютное позиционирование
-  padding: 30px 40px; // Внутренние отступы
-  border-radius: 10px; // Скругление углов
-  border: 3px solid black; // Рамка вокруг элемента
-  background: white; // Фоновый цвет
-  clear: both; // Очищение флоатов
+  text-align: center;
+  user-select: none;
+  font-family: "Permanent Marker";
+  font-size: 17px;
+  display: inline-block;
+  position: absolute;
+  padding: 30px 40px;
+  border-radius: 10px;
+  border: 3px solid black;
+  background: white;
+  clear: both;
   line-height: 16px;
-
-  padding: 16px 17px; // Внутренние отступы (переопределение предыдущих)
+  padding: 16px 17px;
 
   &:before {
-    // Псевдоэлемент перед элементом bubble
-    content: ''; // Пустое содержимое
-    position: absolute; // Абсолютное позиционирование
-    bottom: -50px; // Позиция снизу
-    height: 50px; // Высота псевдоэлемента
-    width: 90px; // Ширина псевдоэлемента
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    height: 50px;
+    width: 90px;
   }
 
   &.left {
-    // Состояние, когда bubble имеет класс left
-    float: left; // Обтекание слева
-    margin: 25px 1px 62px 176px; // Отступы
+    float: left;
+    margin: 25px 1px 62px 176px;
 
     &:before {
-      // Псевдоэлемент перед элементом bubble с классом left
-      border-radius: 0 0 100%; // Скругление углов
-      box-shadow: // Тени для псевдоэлемента
+      border-radius: 0 0 100%;
+      box-shadow:
         -2px -2px 0 0 #000 inset,
         -23px 0 0 0 #fff inset,
         -25px -2px 0 0 #000 inset;
-      left: 0; // Позиция слева
-      /* ask - в инспекторе если в это месте добавить margin-right: 15px то стрелка двигается, а если тут в стилях дописать, то в инспекторе не отображается эта строчка*/
+      left: 0;
     }
   }
 
@@ -1507,7 +1281,6 @@ onMounted(() => {
         23px 0 0 0 #fff inset,
         25px -2px 0 0 #000 inset;
       right: 0;
-
     }
   }
 
@@ -1565,14 +1338,12 @@ onMounted(() => {
         transform: skew(-45deg);
         left: 50px;
         box-shadow:
-          //0 0 0 7px white,
           0 -3px 0 5px white,
           0 0 0 5px white,
           0 8px 0 5px white,
           8px 8px 0 5px white,
           16px 8px 0 5px white,
           24px 8px 0 5px white,
-
           0 0 0 8px black,
           0 8px 0 8px black,
           8px 8px 0 8px black,
@@ -1620,18 +1391,18 @@ onMounted(() => {
       }
     }
   }
-
 }
+
 .tooltip-wrapper {
   position: relative;
   display: inline-block;
 }
+
 .custom-tooltip {
   position: absolute;
-  left: 0; // ← ПРИЖАТ К ЛЕВОМУ КРАЮ
+  left: 0;
   transform: translate(var(--offset-x, 0px), var(--offset-y, -10px));
   bottom: 100%;
-
   background-color: #222;
   color: #fff;
   padding: 2px 12px;
@@ -1642,7 +1413,6 @@ onMounted(() => {
   pointer-events: none;
   transition: opacity 0.2s ease;
   z-index: 100;
-  //max-width: 300px;
   text-align: left;
   width: 100%;
 }
@@ -1651,11 +1421,51 @@ onMounted(() => {
   opacity: 1;
 }
 
-
 .tooltip-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+/* Специальные карточки одинаковой ширины */
+.create-special-set,
+.random-set,
+.glassMorphism,
+.randomQuestions,
+.glassMorphism3,
+.categoryExamples,
+.category-game-patterns,
+.reading-category,
+.category-x,
+.category-chinese {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Контейнеры категорий */
+.category-sets-container,
+.reading-sets-container,
+.subtasks-sets-container {
+  width: 100%;
+  margin: 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Элементы внутри контейнеров категорий */
+.category-set,
+.reading-set,
+.subtask-set {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-left: 0 !important;
+}
+
+/* Для subTasks добавляем небольшой отступ слева для визуальной иерархии */
+.subtasks-sets-container .subtask-set {
+  margin-left: 10px !important;
+  width: calc(100% - 10px) !important;
 }
 
 /* Стили для Category Game Patterns */
@@ -1670,8 +1480,6 @@ onMounted(() => {
   .category-set {
     background: rgba(255, 154, 0, 0.1);
     border-left: 3px solid #ff9a00;
-    margin-left: 10px;
-    width: calc(100% - 10px);
 
     &:hover {
       background: rgba(255, 154, 0, 0.2);
@@ -1691,8 +1499,6 @@ onMounted(() => {
   .category-set {
     background: rgba(213, 0, 0, 0.1);
     border-left: 3px solid #d50000;
-    margin-left: 10px;
-    width: calc(100% - 10px);
 
     &:hover {
       background: rgba(213, 0, 0, 0.2);
@@ -1714,21 +1520,15 @@ onMounted(() => {
 }
 
 .reading-sets-container {
-  width: 100%;
-  margin: 5px 0;
-
   .reading-set {
     background: rgba(102, 126, 234, 0.1);
     border-left: 3px solid #667eea;
-    margin-left: 10px;
-    width: calc(100% - 10px);
 
     &:hover {
       background: rgba(102, 126, 234, 0.2);
     }
   }
 }
-
 
 /* Стили для категории X */
 .category-x {
@@ -1747,8 +1547,6 @@ onMounted(() => {
   .category-set {
     background: rgba(255, 107, 107, 0.1);
     border-left: 3px solid #ff6b6b;
-    margin-left: 10px;
-    width: calc(100% - 10px);
 
     &:hover {
       background: rgba(255, 107, 107, 0.2);
@@ -1756,7 +1554,7 @@ onMounted(() => {
   }
 }
 
-/* Стили для категории Y */
+/* Стили для категории Examples */
 .categoryExamples {
   background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%);
   color: white;
@@ -1773,8 +1571,6 @@ onMounted(() => {
   .category-set {
     background: rgb(107 177 255);
     border-left: 3px solid #00d2d3;
-    margin-left: 10px;
-    width: calc(100% - 10px);
 
     &:hover {
       background: rgba(0, 210, 211, 0.2);
@@ -1782,24 +1578,15 @@ onMounted(() => {
   }
 }
 
-/* Общие стили для контейнеров категорий */
-.category-sets-container {
-  width: 100%;
-  margin: 5px 0;
-}
-
-
 .mission-name {
   text-align: left;
-  margin-right: 10px; /* небольшой отступ между названием и звёздами */
+  margin-right: 10px;
 }
 
 .mission-stars {
   text-align: right;
-  white-space: nowrap; /* чтобы звёзды не переносились */
+  white-space: nowrap;
 }
-
-
 
 .glassMorphism {
   position: relative;
@@ -1808,8 +1595,6 @@ onMounted(() => {
   padding: 5px 20px;
   border-radius: 20px;
   color: white;
-
-  /* Глассморфизм */
   background: rgba(255, 107, 53, 0.25);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1818,13 +1603,11 @@ onMounted(() => {
     0 8px 32px rgba(255, 107, 53, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     inset 0 -2px 8px rgba(0, 0, 0, 0.2);
-
   transition: all 0.3s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   cursor: none;
 }
 
-/* Эффект пузырьков */
 .glassMorphism::before {
   content: "";
   position: absolute;
@@ -1844,7 +1627,6 @@ onMounted(() => {
   animation: shine 3s infinite ease-in-out;
 }
 
-/* Анимированные пузырьки */
 .glassMorphism::after {
   content: "";
   position: absolute;
@@ -1880,13 +1662,9 @@ onMounted(() => {
   transform: translateY(1px) scale(0.98);
 }
 
-
-
-
-
 .create-special-set {
   display: none;
-  position: relative; /* для псевдоэлемента */
+  position: relative;
   overflow: hidden;
   margin: 1.5px;
   padding: 5px 20px;
@@ -1897,14 +1675,13 @@ onMounted(() => {
   transition: all 0.2s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   cursor: none;
-  //font-size: 16px;
 }
 
 .create-special-set::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;  /* стартуем слева за пределами */
+  left: -75%;
   width: 50%;
   height: 100%;
   background: linear-gradient(
@@ -1920,7 +1697,7 @@ onMounted(() => {
 }
 
 .random-set {
-  position: relative; /* для псевдоэлемента */
+  position: relative;
   overflow: hidden;
   margin: 1.5px;
   padding: 5px 20px;
@@ -1931,20 +1708,17 @@ onMounted(() => {
   transition: all 0.2s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   cursor: none;
-  //font-size: 16px;
 }
 
 .randomQuestions {
   background: linear-gradient(to top, #594eef, #6f75f1);
-
 }
-
 
 .random-set::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;  /* стартуем слева за пределами */
+  left: -75%;
   width: 50%;
   height: 100%;
   background: linear-gradient(
@@ -1991,7 +1765,7 @@ onMounted(() => {
   font-size: 1em;
   line-height: 1;
 }
-/* Добавляем новые стили для картинок */
+
 .card-description {
   display: flex;
   align-items: center;
@@ -2004,6 +1778,7 @@ onMounted(() => {
   object-fit: contain;
   flex-shrink: 0;
 }
+
 .password-modal-overlay {
   position: fixed;
   top: 0;
@@ -2131,7 +1906,6 @@ onMounted(() => {
   }
 }
 
-/* Анимация тряски */
 @keyframes shake {
   10%, 90% { transform: translate3d(-1px, 0, 0); }
   20%, 80% { transform: translate3d(2px, 0, 0); }
@@ -2146,8 +1920,6 @@ onMounted(() => {
   padding: 5px 20px;
   border-radius: 20px;
   color: white;
-
-  /* Глассморфизм */
   background: rgba(110, 255, 53, 0.25);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -2156,13 +1928,11 @@ onMounted(() => {
     0 8px 32px rgba(255, 107, 53, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     inset 0 -2px 8px rgba(0, 0, 0, 0.2);
-
   transition: all 0.3s ease;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   cursor: none;
 }
 
-/* Бликовый эффект */
 .glassMorphism3::before {
   content: "";
   position: absolute;
@@ -2182,7 +1952,6 @@ onMounted(() => {
   animation: shine 3s infinite ease-in-out;
 }
 
-/* Геометрические фигуры - квадраты и крестики */
 .glassMorphism3::after {
   content: "";
   position: absolute;
@@ -2191,52 +1960,167 @@ onMounted(() => {
   top: 0;
   left: 0;
   background-image:
-    /* Квадраты */
     linear-gradient(45deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
     linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-      /* Крестики */
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-
-  background-size:
-    15px 15px, /* Размер квадратов */
-    15px 15px, /* Размер квадратов */
-    20px 20px, /* Размер крестиков */
-    20px 20px; /* Размер крестиков */
-
-  background-position:
-    0 0,       /* Квадраты */
-    8px 8px,   /* Смещение квадратов */
-    0 0,       /* Крестики */
-    10px 10px; /* Смещение крестиков */
-
+  background-size: 15px 15px, 15px 15px, 20px 20px, 20px 20px;
+  background-position: 0 0, 8px 8px, 0 0, 10px 10px;
   animation: geometricFloat 20s infinite linear;
   pointer-events: none;
   opacity: 0.4;
 }
 
-/* Анимация движения геометрических фигур */
 @keyframes geometricFloat {
   0% {
-    background-position:
-      0px 0px,
-      8px 8px,
-      0px 0px,
-      10px 10px;
+    background-position: 0px 0px, 8px 8px, 0px 0px, 10px 10px;
   }
   100% {
-    background-position:
-      100px 100px,
-      108px 108px,
-      200px 200px,
-      210px 210px;
+    background-position: 100px 100px, 108px 108px, 200px 200px, 210px 210px;
+  }
+}
+
+/* Стили для subTasks */
+.subtasks-header {
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  color: white;
+  border: 2px solid #8e44ad;
+  font-weight: bold;
+}
+
+.subtask-set {
+  background: rgba(142, 68, 173, 0.1);
+  border-left: 3px solid #8e44ad;
+
+  &:hover {
+    background: rgba(142, 68, 173, 0.2);
+  }
+}
+
+/* Стиль для интенсивных курсов */
+.subtasks-header.intensive {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  border: 2px solid #ff4757;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.subtasks-intensive .subtask-set {
+  background: rgba(255, 107, 107, 0.1);
+  border-left: 3px solid #ff6b6b;
+
+  &:hover {
+    background: rgba(255, 107, 107, 0.2);
+  }
+}
+
+/* Стиль для премиум контента */
+.subtasks-header.premium {
+  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+  border: 2px solid #daa520;
+  color: #000;
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.subtasks-premium .subtask-set {
+  background: rgba(255, 215, 0, 0.1);
+  border-left: 3px solid #ffd700;
+
+  &:hover {
+    background: rgba(255, 215, 0, 0.2);
+  }
+}
+
+/* Стиль для грамматики */
+.subtasks-header.grammar {
+  background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+  border: 2px solid #00b894;
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.subtasks-grammar .subtask-set {
+  background: rgba(0, 184, 148, 0.1);
+  border-left: 3px solid #00b894;
+
+  &:hover {
+    background: rgba(0, 184, 148, 0.2);
+  }
+}
+
+/* Стиль для разговорной практики */
+.subtasks-header.speaking {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  border: 2px solid #74b9ff;
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.subtasks-speaking .subtask-set {
+  background: rgba(116, 185, 255, 0.1);
+  border-left: 3px solid #74b9ff;
+
+  &:hover {
+    background: rgba(116, 185, 255, 0.2);
+  }
+}
+
+/* Стиль для игровых заданий */
+.subtasks-header.gaming {
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  border: 2px solid #a29bfe;
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+.subtasks-gaming .subtask-set {
+  background: rgba(162, 155, 254, 0.1);
+  border-left: 3px solid #a29bfe;
+
+  &:hover {
+    background: rgba(162, 155, 254, 0.2);
   }
 }
 
 
 
-
 </style>
-
 
 

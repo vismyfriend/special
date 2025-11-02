@@ -2,6 +2,9 @@
 
 export const allGamesAndSetsOfWordsList =
   [
+
+
+
     {
       type: "hardcodedLink",
       path: "/keypad",
@@ -203,6 +206,114 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'🙊',
     },
     {
+      type: "subTasks",
+      missionVisibleName: "Языки",
+      missionDescription: "Изучение разных языков",
+      id: "subtasks-languages",
+      style: "premium",
+      active: true,
+      subTasks: [
+        {
+          type: "subCategory",
+          missionVisibleName: "Французский",
+          missionDescription: "Игры на французском",
+          id: "french-category",
+          style: "language",
+          subTasks: [
+            {
+              type: "hardcodedLink",
+              path: "/see-all-sets-of-words/french-basics/find-pairs-easy",
+              missionVisibleName: "Французские пары",
+              missionDescription: "Basic French pairs",
+              id: 3001,
+              active: true,
+              gameIcon:'🇫🇷'
+            },
+            {
+              missionName: "frenchVocabulary",
+              missionVisibleName: "Французские слова",
+              missionDescription: "French vocabulary game",
+              id: 3002,
+              active: true,
+              gameIcon:'📚'
+            }
+          ]
+        },
+        {
+          type: "subCategory",
+          missionVisibleName: "Испанский",
+          missionDescription: "Игры на испанском",
+          id: "spanish-category",
+          style: "language",
+          subTasks: [
+            {
+              type: "hardcodedLink",
+              path: "/see-all-sets-of-words/spanish-basics/find-pairs-easy",
+              missionVisibleName: "Испанские пары",
+              missionDescription: "Basic Spanish pairs",
+              id: 3003,
+              active: true,
+              gameIcon:'🇪🇸'
+            }
+          ]
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/general-language-game/game-translate",
+          missionVisibleName: "Общие языковые игры",
+          missionDescription: "Общие задания по языкам",
+          id: 3004,
+          active: true,
+          gameIcon:'🌍'
+        }
+      ]
+    },
+    {
+      type: "subTasks",
+      missionVisibleName: "Подзадания уровень A1",
+      missionDescription: "Subtasks Level A1",
+      id: "subtasks-a1",
+      style: "premium", // ← добавляем поле для стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+          missionVisibleName: "ХУ ИЗ ХУ подкатегория",
+          missionDescription: "можно удалить позже",
+          id: 1001,
+          active: true,
+          gameIcon:'🙊',
+        },
+        {
+          missionName: "pronounsA00",
+          missionVisibleName: "Местоимения A1",
+          missionDescription: "Основные местоимения",
+          id: 1001,
+          active: true,
+          gameIcon: '🙊'
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
+          missionVisibleName: "Притяжательные ",
+          missionDescription: "Possessive pronouns",
+          id: 1002,
+          active: true,
+          gameIcon: '🙉'
+        },
+        {
+          missionName: "questionWords1",
+          missionVisibleName: "Вопросительные слова A1",
+          missionDescription: "Basic question words",
+          id: 1003,
+          active: true,
+          gameIcon: '❓'
+        }
+      ]
+    },
+
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
       missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
@@ -220,6 +331,52 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'🙈',
     },
+    {
+      type: "subTasks",
+      missionVisibleName: "Подзадания уровень 2",
+      missionDescription: "Subtasks Level 2",
+      id: "subtasks-a1",
+      style: "grammar", // ← добавляем поле для стиля
+      active: true,
+      subTasks: [
+
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+          missionVisibleName: "ХУ ИЗ ХУ подкатегория",
+          missionDescription: "можно удалить позже",
+          id: 1001,
+          active: true,
+          gameIcon:'🙊',
+        },
+        {
+          missionName: "pronounsA00",
+          missionVisibleName: "Местоимения A1",
+          missionDescription: "Основные местоимения",
+          id: 1001,
+          active: true,
+          gameIcon: '🙊'
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
+          missionVisibleName: "Притяжательные ",
+          missionDescription: "Possessive pronouns",
+          id: 1002,
+          active: true,
+          gameIcon: '🙉'
+        },
+        {
+          missionName: "questionWords1",
+          missionVisibleName: "Вопросительные слова A1",
+          missionDescription: "Basic question words",
+          id: 1003,
+          active: true,
+          gameIcon: '❓'
+        }
+      ]
+    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-hard",
