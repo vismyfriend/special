@@ -2,390 +2,258 @@
 
 export const allGamesAndSetsOfWordsList =
   [
-
-
-
-    {
-      type: "hardcodedLink",
-      path: "/keypad",
-      missionVisibleName: "Ай Кью тест IQ",
-      missionDescription: "не все справляются...",
+      {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+      missionVisibleName: "Начать с самого начала",
+      missionDescription: "Start from the beginning",
       id: 1001,
       active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
+      gameIcon:'1️⃣'
     },
     {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/find-pairs-easy",
-      missionVisibleName: "Обезвредить бомбу",
-      missionDescription: "Cut the wires",
-      id: 1001,
+      type: "subTasks",
+      missionVisibleName: "Extra information",
+      missionDescription: "Дополнительные материалы",
+      id: "subtasks-newSub",
+      style: "glassMorphism", // Это ключевое значение для применения стиля
       active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/word-order-sortable",
-      missionVisibleName: "Правильный порядок",
-      missionDescription: "Word order",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/find-pairs-hard",
-      missionVisibleName: "Соединить пары",
-      missionDescription: "Connect the wires",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/millionaire",
-      missionVisibleName: "Кто станет миллионером",
-      missionDescription: "who wants to be rich?",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/game-translate",
-      missionVisibleName: "Подскажи первую букву",
-      missionDescription: "Give me a hint",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/sorting",
-      missionVisibleName: "Сортировка",
-      missionDescription: "sort it out",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/print-all-words",
-      missionVisibleName: "Тетрадь",
-      missionDescription: "Notebook",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/spelling",
-      missionVisibleName: "Напечатай 1 слово",
-      missionDescription: "Type a word",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/tag-questions-game",
-      missionVisibleName: "Напечатай предложение",
-      missionDescription: "Type a sentence",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/spell-ten",
-      missionVisibleName: "Напечатай 10 слов",
-      missionDescription: "Type a word",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
+      subTasks: [
+        {
+        type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+        url: "https://drive.google.com/drive/u/0/recent",
+        target: '_blank', // Открывать в новой вкладке
+        missionVisibleName: "Google документы",
+        missionDescription: "Secret information",
+        id: 1002,
+        active: true,
+        gameImg: "wiresPic.png",
+        gameIcon:'📚'
+      },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/sounds",
+          missionVisibleName: "Все звуки английского",
+          missionDescription: "фонетика",
+          id: 1001,
+          active: true,
+          gameIcon:'🗣️',
+        },
+        {
+          type: "externalLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          url: "https://youtube.com/@vismyfriend?sub_confirmation=1.",
+          missionVisibleName: "Ютюб Винсента",
+          missionDescription: "My YouTube channel",
+          id: 1001,
+          active: true,
+          gameIcon:'🍿',
+        },
+        {
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://ororo.tv",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Films in English",
+          missionDescription: "Movies in English",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'🎬'
+        },{
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://perchance.org/ai-text-to-image-generator",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Ai image generator",
+          missionDescription: "ИИ генератор картинок",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'🎨'
+        },
+      ]
     },
 
     {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/songILoveMyLife/songs",
-      missionVisibleName: "Аудио задания",
-      missionDescription: "Singing a song",
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/possessivePronounsA00/find-pairs-hard",
+      missionVisibleName: "Х.З. whose ? ХУЗ ? Это чьё ? ",
+      missionDescription: "притяжательные слова",
       id: 1001,
       active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/yearGuesser",
-      missionVisibleName: "Отгадай год",
-      missionDescription: "Guess the year",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/pattern/pnqw",
-      missionVisibleName: "Нажимай по порядку",
-      missionDescription: "Click the order",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-    {
-      type: "hardcodedLink",
-      path: "/phoneFramePattern",
-      missionVisibleName: "Случайные вопросы",
-      missionDescription: "Рандомные вопросы",
-      id: 1001,
-      active: true,
-      category: "categoryExamplesPatterns",
-      gameIcon:'🕵️',
-    },
-    {
-      type: "hardcodedLink",
-      path: "/pixelart",
-      missionVisibleName: "Pixel Art",
-      missionDescription: "Рирсовалка по пикселям",
-      id: 1001,
-      active: true,
-      category: "categoryExamplesPatterns",
-      gameIcon:'🕵️',
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/checkersQuiz/brainStorm",
-      missionVisibleName: "Квиз разный",
-      missionDescription: "Квизы аудирование",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-      category: "categoryExamplesPatterns"
-    },
-
-
-
-
-
-
-    {
-      type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-      url: "https://yahoo.com",
-      target: '_blank', // Открывать в новой вкладке
-      missionVisibleName: "Написать в Telegram",
-      missionDescription: "Свяжитесь со мной в Telegram",
-      id: 1002,
-      active: false,
-      stars: '1',
-      gameImg: "wiresPic.png",
-      gameIcon:'📚'
+      gameIcon: '🙉'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "ХУ ИЗ ХУ ? Who is who",
-      missionDescription: "местоимения",
+      path: "/see-all-sets-of-words/familyRelativesA00/find-pairs-hard",
+      missionVisibleName: "Х.У. who ? ХУ ?  Это кто ? ",
+      missionDescription: "близкие родственники",
       id: 1001,
       active: true,
       gameIcon:'🙊',
     },
     {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/possessivePronounsA01/find-pairs-hard",
+      missionVisibleName: "УОТ what ? ВОТ ? Что бл%н ? ",
+      missionDescription: "what is it?",
+      id: 1001,
+      active: true,
+      gameIcon: '🙉'
+    },
+    {
       type: "subTasks",
-      missionVisibleName: "Языки",
-      missionDescription: "Изучение разных языков",
-      id: "subtasks-languages",
-      style: "premium",
+      missionVisibleName: "Случайные вопросы",
+      missionDescription: "Random questions",
+      id: "subtasks-newSub",
+      style: "premium", // Это ключевое значение для применения стиля
       active: true,
       subTasks: [
         {
-          type: "subCategory",
-          missionVisibleName: "Французский",
-          missionDescription: "Игры на французском",
-          id: "french-category",
-          style: "language",
-          subTasks: [
-            {
-              type: "hardcodedLink",
-              path: "/see-all-sets-of-words/french-basics/find-pairs-easy",
-              missionVisibleName: "Французские пары",
-              missionDescription: "Basic French pairs",
-              id: 3001,
-              active: true,
-              gameIcon:'🇫🇷'
-            },
-            {
-              missionName: "frenchVocabulary",
-              missionVisibleName: "Французские слова",
-              missionDescription: "French vocabulary game",
-              id: 3002,
-              active: true,
-              gameIcon:'📚'
-            }
-          ]
+          type: "hardcodedLink",
+          path: "/phoneFramePattern",
+          missionVisibleName: "На все темы",
+          missionDescription: "random questions speaking",
+          id: 1001,
+          active: true,
+          stars: 3
         },
         {
-          type: "subCategory",
-          missionVisibleName: "Испанский",
-          missionDescription: "Игры на испанском",
-          id: "spanish-category",
-          style: "language",
-          subTasks: [
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Как задавать вопросы?",
+          missionDescription: "вопросительные слова",
+          id: "under-subtasks-special",
+          style: "speaking", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
             {
-              type: "hardcodedLink",
-              path: "/see-all-sets-of-words/spanish-basics/find-pairs-easy",
-              missionVisibleName: "Испанские пары",
-              missionDescription: "Basic Spanish pairs",
-              id: 3003,
+              missionName: "questionWords1",
+              missionVisibleName: "Миссия - 6",
+              missionDescription: "Вопросительные слова 1",
+              id: 7,
               active: true,
-              gameIcon:'🇪🇸'
-            }
+              gameIcon:'❓'
+            },
+
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
+              missionVisibleName: "Миссия - 7",
+              missionDescription: "QW1 speaking",
+              id: 1001,
+              active: true,
+              gameIcon:' 🗣❓'
+            },
+            {
+              missionName: "questionWords2",
+              missionVisibleName: "Миссия - 8",
+              missionDescription: "Вопросит. слова 2",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+            },
+            {
+              missionName: "questionWords3",
+              missionVisibleName: "Миссия - 9",
+              missionDescription: "Вопросит. слова 3",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+
+            },
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
+              missionVisibleName: "Список вопросит. слов",
+              missionDescription: "All question words",
+              id: 1001,
+              active: true,
+            },
+
           ]
         },
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/general-language-game/game-translate",
-          missionVisibleName: "Общие языковые игры",
-          missionDescription: "Общие задания по языкам",
-          id: 3004,
+          path: "/phoneFramePattern",
+          missionVisibleName: "Узнать свой уровень",
+          missionDescription: "What is my level of English?",
+          id: 1001,
           active: true,
-          gameIcon:'🌍'
-        }
+        },
       ]
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/",
+      missionVisibleName: "Разминка произношения",
+      missionDescription: "Pronunciation warm up",
+      id: 1001,
+      active: true,
+      stars: '1'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/digits/gameSnakeWords",
+      missionVisibleName: "Snake and snack (уровень 1)",
+      missionDescription: "Змейка и перекус (уровень 1)",
+      id: 1001,
+      active: true,
+      gameIcon:'🐍'
+    },
+    {
       type: "subTasks",
-      missionVisibleName: "Подзадания уровень A1",
-      missionDescription: "Subtasks Level A1",
+      missionVisibleName: "Артикли",
+      missionDescription: "Articles",
       id: "subtasks-a1",
       style: "premium", // ← добавляем поле для стиля
       active: true,
       subTasks: [
         {
           type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-          missionVisibleName: "ХУ ИЗ ХУ подкатегория",
-          missionDescription: "можно удалить позже",
+          path: "/see-all-sets-of-words/sortingArticlesA/sorting",
+          missionVisibleName: "Арткль - A - э",
+          missionDescription: "Article - A",
           id: 1001,
           active: true,
-          gameIcon:'🙊',
-        },
-        {
-          missionName: "pronounsA00",
-          missionVisibleName: "Местоимения A1",
-          missionDescription: "Основные местоимения",
+        },{
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesAn/sorting",
+          missionVisibleName: "Арткль - An - эн",
+          missionDescription: "Article - An",
           id: 1001,
           active: true,
-          gameIcon: '🙊'
         },
         {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
-          missionVisibleName: "Притяжательные ",
-          missionDescription: "Possessive pronouns",
-          id: 1002,
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesThe/sorting",
+          missionVisibleName: "Арткль - The - дэ",
+          missionDescription: "Article - The",
+          id: 1001,
           active: true,
-          gameIcon: '🙉'
         },
-        {
-          missionName: "questionWords1",
-          missionVisibleName: "Вопросительные слова A1",
-          missionDescription: "Basic question words",
-          id: 1003,
-          active: true,
-          gameIcon: '❓'
-        }
-      ]
-    },
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
-      missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
-      missionDescription: "Артикли",
-      id: 1001,
-      active: true,
-      gameIcon:'🙉',
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/yoSoyGrutIamGrut/word-order-sortable",
-      missionVisibleName: "Я ЕСТЬ ГРУТ",
-      missionDescription: "To be - быть",
-      id: 1001,
-      active: true,
-      gameIcon:'🙈',
-    },
-    {
-      type: "subTasks",
-      missionVisibleName: "Подзадания уровень 2",
-      missionDescription: "Subtasks Level 2",
-      id: "subtasks-a1",
-      style: "grammar", // ← добавляем поле для стиля
-      active: true,
-      subTasks: [
 
         {
           type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-          missionVisibleName: "ХУ ИЗ ХУ подкатегория",
-          missionDescription: "можно удалить позже",
+          path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
+          missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
+          missionDescription: "Артикли",
           id: 1001,
           active: true,
-          gameIcon:'🙊',
+          gameIcon:'🙉',
         },
-        {
-          missionName: "pronounsA00",
-          missionVisibleName: "Местоимения A1",
-          missionDescription: "Основные местоимения",
-          id: 1001,
-          active: true,
-          gameIcon: '🙊'
-        },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/possessivePronounsA1/find-pairs-hard",
-          missionVisibleName: "Притяжательные ",
-          missionDescription: "Possessive pronouns",
-          id: 1002,
-          active: true,
-          gameIcon: '🙉'
-        },
-        {
-          missionName: "questionWords1",
-          missionVisibleName: "Вопросительные слова A1",
-          missionDescription: "Basic question words",
-          id: 1003,
-          active: true,
-          gameIcon: '❓'
-        }
       ]
     },
 
     {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronounsA00/find-pairs-hard",
-      missionVisibleName: "Миссия - 001",
-      missionDescription: "Самое начало",
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/ieltsIntroTest/millionaire",
+      missionVisibleName: "about IELTS",
+      missionDescription: "general questions",
       id: 1001,
       active: true,
-      gameIcon:'🧩'
+      gameIcon:'🕵️',
     },
+
+
+
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -434,15 +302,8 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'📚'
     },
+
     {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/ieltsIntroTest/millionaire",
-      missionVisibleName: "about IELTS",
-      missionDescription: "general questions",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-    },{
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/с1TestMillionaire1/millionaire",
       missionVisibleName: "grammar c1 test 1",
@@ -548,48 +409,28 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'📝'
     },
-    {
-      missionName: "questionWords1",
-      missionVisibleName: "Миссия - 6",
-      missionDescription: "Вопросительные слова 1",
-      id: 7,
-      active: true,
-      gameIcon:'❓'
-    },
+
+
 
     {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
-      missionVisibleName: "Миссия - 7",
-      missionDescription: "QW1 speaking",
-      id: 1001,
+      type: "subTasks",
+      missionVisibleName: "База - порядок слов",
+      missionDescription: "Word order",
+      id: "subtasks-a1",
+      style: "grammar", // ← добавляем поле для стиля
       active: true,
-      gameIcon:' 🗣❓'
-    },
-    {
-      missionName: "questionWords2",
-      missionVisibleName: "Миссия - 8",
-      missionDescription: "Вопросит. слова 2",
-      id: 7,
-      active: true,
-      gameIcon:'❓'
-    },
-    {
-      missionName: "questionWords3",
-      missionVisibleName: "Миссия - 9",
-      missionDescription: "Вопросит. слова 3",
-      id: 7,
-      active: true,
-      gameIcon:'❓'
+      subTasks: [
 
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
-      missionVisibleName: "Список вопросительных слов",
-      missionDescription: "All question words",
-      id: 1001,
-      active: true,
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/yoSoyGrutIamGrut/word-order-sortable",
+          missionVisibleName: "Я ЕСТЬ ГРУТ",
+          missionDescription: "To be - быть",
+          id: 1001,
+          active: true,
+          gameIcon:'🙈',
+        },
+      ]
     },
     {
       missionName: "digits",
@@ -1535,15 +1376,7 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚',
 
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/gameSnakeWords",
-      missionVisibleName: "Snake",
-      missionDescription: "Змейка",
-      id: 1001,
-      active: true,
-      gameIcon:'📚'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/readingIntensive4/brainStorm",
@@ -1651,6 +1484,194 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'📚',
       password:'test',
     },
+
+
+
+
+
+
+
+    {
+      type: "hardcodedLink",
+      path: "/keypad",
+      missionVisibleName: "Ай Кью тест IQ",
+      missionDescription: "не все справляются...",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/find-pairs-easy",
+      missionVisibleName: "Обезвредить бомбу",
+      missionDescription: "Cut the wires",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/word-order-sortable",
+      missionVisibleName: "Правильный порядок",
+      missionDescription: "Word order",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/find-pairs-hard",
+      missionVisibleName: "Соединить пары",
+      missionDescription: "Connect the wires",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/millionaire",
+      missionVisibleName: "Кто станет миллионером",
+      missionDescription: "who wants to be rich?",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/game-translate",
+      missionVisibleName: "Подскажи первую букву",
+      missionDescription: "Give me a hint",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/sorting",
+      missionVisibleName: "Сортировка",
+      missionDescription: "sort it out",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/print-all-words",
+      missionVisibleName: "Тетрадь",
+      missionDescription: "Notebook",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/spelling",
+      missionVisibleName: "Напечатай 1 слово",
+      missionDescription: "Type a word",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/tag-questions-game",
+      missionVisibleName: "Напечатай предложение",
+      missionDescription: "Type a sentence",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/spell-ten",
+      missionVisibleName: "Напечатай 10 слов",
+      missionDescription: "Type a word",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/songILoveMyLife/songs",
+      missionVisibleName: "Аудио задания",
+      missionDescription: "Singing a song",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/yearGuesser",
+      missionVisibleName: "Отгадай год",
+      missionDescription: "Guess the year",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/pattern/pnqw",
+      missionVisibleName: "Нажимай по порядку",
+      missionDescription: "Click the order",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/phoneFramePattern",
+      missionVisibleName: "Случайные вопросы",
+      missionDescription: "Рандомные вопросы",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns",
+      gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink",
+      path: "/pixelart",
+      missionVisibleName: "Pixel Art",
+      missionDescription: "Рирсовалка по пикселям",
+      id: 1001,
+      active: true,
+      category: "categoryExamplesPatterns",
+      gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/checkersQuiz/brainStorm",
+      missionVisibleName: "Квиз разный",
+      missionDescription: "Квизы аудирование",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+      category: "categoryExamplesPatterns"
+    },
+
+
+
+
+
+
+
+
 
   ]
 

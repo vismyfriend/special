@@ -61,7 +61,10 @@ const routes = [
                 path: 'pnqw',
                 component: () => import('components/GamePNQW.vue')
               },
-
+              {
+                path: '/create-special-set',
+                component: () => import('src/components/CreateSpecialSet.vue'),
+              },
               {
                 path: 'find-pairs-hard',
                 component: () => import('src/components/GameFindPairsHard.vue')
@@ -166,10 +169,7 @@ const routes = [
         path: '/a-new-page',
         component: () => import('src/pages/visAnewPage.vue')
       },
-      {
-        path: '/create-special-set',
-        component: () => import('src/components/CreateSpecialSet.vue'),
-      },
+
       {
         path: '/games',
         component: () => import('pages/SeeAllGames.vue'),

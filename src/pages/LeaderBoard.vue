@@ -11,7 +11,7 @@
         <div class="simple-stats">
           <div class="stat-item">
             <span class="stat-label">My time is:</span>
-            <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}s</span>
+            <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
           </div>
 <!--          <div class="stat-item">-->
 <!--            <span class="stat-label">mistakes :</span>-->
@@ -24,9 +24,9 @@
           <button class="simple-btn details-btn" @click="showDetailed = true">
             и так сойдёт
           </button>
-          <button class="simple-btn try-again" @click="tryAgain">хочу лучше !</button>
+          <button class="simple-btn try-again" @click="tryAgain">ещё разок !</button>
 <!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
-          <button class="simple-btn next-mission" @click="seeAllWordsInSet">Увидеть все слова</button>
+<!--          <button class="simple-btn next-mission" @click="seeAllWordsInSet">Увидеть все слова</button>-->
 
         </div>
       </div>

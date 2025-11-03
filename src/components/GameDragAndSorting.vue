@@ -217,7 +217,10 @@ export default {
         },
         onEnd: () => {
           this.isDragging = false
+
         }
+
+
       }
 
       if (this.$refs.wordsContainer) {
@@ -229,6 +232,7 @@ export default {
             delete this.columnAssignments[itemId]
             this.wordStatus[itemId] = null
             this.countedMistakes.delete(itemId)
+
           }
         })
         this.sortableInstances.push(wordsSortable)

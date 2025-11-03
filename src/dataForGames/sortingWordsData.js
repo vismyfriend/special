@@ -46,6 +46,76 @@ const sortingWordsData = {
     ]
   },
 
+
+  sortingArticlesA: {
+    columns: [
+      { id: 'a', title: 'Когда предмет ОДИН перед ним произносим звук Э это артикль A' },
+      { id: '-', title: 'Не говорим Э если предметов несколько. Не один значит не нужен А ' },
+    ],
+    items: [
+      { id: 1, eng: '🚗 car', ru: 'машина', correctColumn: 'a' },
+      { id: 2, eng: '🚗🚗 cars', ru: 'машины', correctColumn: '-' },
+      { id: 3, eng: '🐶 dog', ru: 'собака', correctColumn: 'a' },
+      { id: 4, eng: '🐶🐶🐶 dogs', ru: 'собаки', correctColumn: '-' },
+      { id: 5, eng: '🏠 house', ru: 'дом', correctColumn: 'a' },
+      { id: 6, eng: '📚 books', ru: 'книги', correctColumn: '-' },
+      { id: 7, eng: '✏️ pencil', ru: 'карандаш', correctColumn: 'a' },
+      { id: 8, eng: '🧒 people', ru: 'люди', correctColumn: '-' },
+      { id: 9, eng: '🍎 red apple', ru: 'красное яблоко', correctColumn: 'a' }, // Важно: "red" начинается с согласного
+      { id: 10, eng: '🍌 fruit', ru: 'фрукт', correctColumn: 'a' },
+      { id: 11, eng: '🍌🍎 fruits', ru: 'фрукты', correctColumn: '-' },
+      { id: 12, eng: '🎸 guitar', ru: 'гитара', correctColumn: 'a' },
+      { id: 13, eng: '🐱 cats', ru: 'коты', correctColumn: '-' },
+      { id: 14, eng: '🐱 cat', ru: 'кот', correctColumn: 'a' },
+
+
+    ]
+  },
+  sortingArticlesAn: {
+    columns: [
+      { id: 'an', title: 'An - говорим перед предметами если они с гласноо звука начинаются' },
+      { id: '-', title: 'Не говорим ЭН если предметов несколько. Не один значит не нужен АN ' },
+    ],
+    items: [
+      { id: 1, eng: '🚗 old car', ru: 'старая тачка', correctColumn: 'an' },
+      { id: 2, eng: '🚗🚗 old cars', ru: 'старые машины', correctColumn: '-' },
+      { id: 3, eng: '🐶 angry dog', ru: 'злая собака', correctColumn: 'an' },
+      { id: 4, eng: '🐶🐶🐶 angry dogs', ru: 'злые собаки', correctColumn: '-' },
+      { id: 5, eng: '🏠 apartment', ru: 'апартаменты, квартира', correctColumn: 'an' },
+      { id: 6, eng: '📚 amazing book', ru: 'удивительная книга', correctColumn: 'an' },
+      { id: 7, eng: '✏️✏️ pencils', ru: 'карандашы', correctColumn: '-' },
+      { id: 8, eng: '🧒 ugly man', ru: 'уродливый мужик', correctColumn: 'an' },
+      { id: 9, eng: '🍌🍌 yellow bananas', ru: 'желтые бананы', correctColumn: '-' },
+      { id: 10, eng: '🍌🍎 fruits', ru: 'фрукты', correctColumn: '-' },
+
+
+
+
+    ]
+  },
+  sortingArticlesThe: {
+    columns: [
+      { id: 'a', title: 'Когда предмет ОДИН перед ним произносим звук Э это артикль A' },
+      { id: 'the', title: '--- The --- говорим ДЭ перед всеми уникальными предметами' }
+    ],
+    items: [
+      { id: 1, eng: '🌐 internet', ru: '`интернет', correctColumn: 'the' },
+      { id: 2, eng: '🐘 big elephant', ru: 'большой слон', correctColumn: 'a' },
+      { id: 3, eng: '🍊 mandarin', ru: 'мандаринка', correctColumn: 'a' },
+      { id: 4, eng: '🎃 pumpkin', ru: '`пАмпкин - тыква', correctColumn: 'a' },
+      { id: 5, eng: '👑 Queen of England', ru: '`Дэ квин - королева', correctColumn: 'the' },
+      { id: 6, eng: '🍌 banana', ru: 'банан', correctColumn: 'a' },
+      { id: 7, eng: '⭐ best', ru: 'самый лучший', correctColumn: 'the' },
+      { id: 8, eng: '🌙 Moon', ru: 'мун - луна', correctColumn: 'the' },
+      { id: 9, eng: '💡 lamp', ru: 'лампочка', correctColumn: 'a' },
+      { id: 10, eng: '🌎 Earth', ru: 'земля (уникальная)', correctColumn: 'the' },
+      { id: 11, eng: '🌊 Pacific ocean', ru: 'тихий океан', correctColumn: 'the' },
+      { id: 12, eng: '🏙️ city center', ru: 'центр города', correctColumn: 'the' },
+      { id: 13, eng: '🧒 president of USA', ru: 'президент ов Ю ЭС ЭЙ', correctColumn: 'the' },
+
+    ]
+  },
+
   articlesAnNoA: {
     title: "Артикли A/An",
     instructions: "Перетащите слова в колонки с правильными артиклями",

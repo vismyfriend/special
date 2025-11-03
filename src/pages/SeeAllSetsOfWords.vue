@@ -12,9 +12,17 @@
           <div class="search-input-wrapper">
             <input
               v-model="searchQuery"
-              placeholder="_ _ _ Введи задание или листай 👇"
+              placeholder="🔎 введи название миссии"
               class="search-input"
             />
+            <button
+              v-if="showPronunciationButton"
+              class="pronunciation-btn youglish-btn"
+              @click="handleYouglishSearch"
+              title="Найти произношение на Youglish"
+            >
+              🍿
+            </button>
             <button
               v-if="showPronunciationButton"
               class="pronunciation-btn"
@@ -29,7 +37,7 @@
         <!-- Используем единый список -->
         <div class="v-cards-choose">
 
-          <!-- 1. Создать свой набор (всегда первый) -->
+          <!-- Создать свой набор (всегда первый) -->
           <div
             class="v-card-choose tooltip-wrapper create-special-set"
             role="button"
@@ -41,7 +49,7 @@
           >
             Создать свой S.P.E.C.I.A.L. набор
             <div class="custom-tooltip">
-              Click to see special content
+              Vincent works hard for you
             </div>
           </div>
 
@@ -70,7 +78,7 @@
                     {{ missionItem.missionVisibleName }} ( {{ getActiveSubTasksCount(missionItem) }} )
                   </span>
                   <span class="card-icons">
-                    <span class="expand-icon">{{ isSubTasksExpanded(missionItem) ? '▼' : '▶' }}</span>
+                    <span class="expand-icon">{{ isSubTasksExpanded(missionItem) ? '' : '' }}</span>
                   </span>
                 </div>
                 <div class="custom-tooltip">
@@ -85,35 +93,104 @@
                 :class="`subtasks-${getSubTaskStyleClass(missionItem)}`"
               >
                 <div
-                  v-for="subTask in getActiveSubTasks(missionItem)"
+                  v-for="subTask in getFilteredSubTasks(missionItem)"
                   :key="getSubTaskItemKey(subTask)"
-                  class="v-card-choose tooltip-wrapper subtask-set"
-                  :class="`subtask-${getSubTaskStyleClass(missionItem)}`"
-                  @click="handleSubTaskClick(subTask)"
-                  :style="{
-                    '--offset-x': '5px',
-                    '--offset-y': '29.5px'
-                  }"
                 >
-                  <div class="card-content">
-                    <span class="card-description">
-                      {{ subTask.missionVisibleName }}
-                    </span>
-                    <span class="card-icons">
-                      <span class="card-stars" v-if="subTask.stars">
-                        {{ getLevelStars(subTask.stars) }}
-                      </span>
-                      <span class="game-icon" v-if="subTask.gameIcon">
-                        {{ subTask.gameIcon }}
-                      </span>
-                    </span>
+                  <!-- Если это underSubTasks -->
+                  <div
+                    v-if="isUnderSubTasks(subTask)"
+                    class="undersubtasks-container"
+                  >
+                    <!-- Заголовок underSubTasks -->
+                    <div
+                      class="v-card-choose tooltip-wrapper undersubtasks-header"
+                      :class="`undersubtask-${getSubTaskStyleClass(missionItem)}`"
+                      @click="toggleUnderSubTasks(subTask)"
+                      :style="{
+          '--offset-x': '5px',
+          '--offset-y': '29.5px'
+        }"
+                    >
+                      <div class="card-content">
+          <span class="card-description">
+            {{ subTask.missionVisibleName }} ( {{ getActiveUnderSubTasksCount(subTask) }} )
+          </span>
+                        <span class="card-icons">
+            <span class="expand-icon">{{ isUnderSubTasksExpanded(subTask) ? '' : '' }}</span>
+          </span>
+                      </div>
+                      <div class="custom-tooltip">
+                        {{ subTask.missionDescription }}
+                      </div>
+                    </div>
+
+                    <!-- Раскрытые underSubTasks -->
+                    <div
+                      v-if="isUnderSubTasksExpanded(subTask) && getActiveUnderSubTasksCount(subTask) > 0"
+                      class="undersubtasks-sets-container"
+                      :class="`undersubtasks-${getSubTaskStyleClass(missionItem)}`"
+                    >
+                      <div
+                        v-for="underSubTask in getFilteredUnderSubTasks(subTask)"
+                        :key="getSubTaskItemKey(underSubTask)"
+                        class="v-card-choose tooltip-wrapper undersubtask-set"
+                        :class="`undersubtask-${getSubTaskStyleClass(missionItem)}`"
+                        @click="handleUnderSubTaskClick(underSubTask)"
+                        :style="{
+      '--offset-x': '5px',
+      '--offset-y': '29.5px'
+    }"
+                      >
+                        <div class="card-content">
+            <span class="card-description">
+              {{ underSubTask.missionVisibleName }}
+            </span>
+                          <span class="card-icons">
+              <span class="card-stars" v-if="underSubTask.stars">
+                {{ getLevelStars(underSubTask.stars) }}
+              </span>
+              <span class="game-icon" v-if="underSubTask.gameIcon">
+                {{ underSubTask.gameIcon }}
+              </span>
+            </span>
+                        </div>
+                        <div class="custom-tooltip">
+                          {{ underSubTask.missionDescription }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="custom-tooltip">
-                    {{ subTask.missionDescription }}
+
+                  <!-- Если это обычный подтаск -->
+                  <div
+                    v-else
+                    class="v-card-choose tooltip-wrapper subtask-set"
+                    :class="`subtask-${getSubTaskStyleClass(missionItem)}`"
+                    @click="handleSubTaskClick(subTask)"
+                    :style="{
+        '--offset-x': '5px',
+        '--offset-y': '29.5px'
+      }"
+                  >
+                    <div class="card-content">
+        <span class="card-description">
+          {{ subTask.missionVisibleName }}
+        </span>
+                      <span class="card-icons">
+          <span class="card-stars" v-if="subTask.stars">
+            {{ getLevelStars(subTask.stars) }}
+          </span>
+          <span class="game-icon" v-if="subTask.gameIcon">
+            {{ subTask.gameIcon }}
+          </span>
+        </span>
+                    </div>
+                    <div class="custom-tooltip">
+                      {{ subTask.missionDescription }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div>            </div>
 
             <!-- Если это обычный набор -->
             <div
@@ -565,6 +642,7 @@ const passwordInput = ref('');
 const currentSetToUnlock = ref(null);
 const shake = ref(false);
 const expandedSubTasks = ref(new Set());
+const expandedUnderSubTasks = ref(new Set());
 
 // Состояния категорий
 const categoryStates = ref({
@@ -624,6 +702,7 @@ const orderedMissionList = computed(() => {
 });
 
 // ИСПРАВЛЕННЫЙ ПОИСК - УЧИТЫВАЕМ ДУБЛИРУЮЩИЕСЯ ID
+// ИСПРАВЛЕННЫЙ ПОИСК - показываем только релевантные элементы
 const filteredOrderedMissions = computed(() => {
   const query = normalizeString(searchQuery.value).replace(/\//g, '');
 
@@ -631,52 +710,62 @@ const filteredOrderedMissions = computed(() => {
     return orderedMissionList.value;
   }
 
-  const seen = new Set();
   const result = [];
+  const seen = new Set();
 
-  // Функция для создания уникального ключа с учетом всех полей
-  const getUniqueKey = (item) => {
-    // Используем все уникальные поля для создания ключа
-    const keyParts = [
-      item.missionName || '',
-      item.missionVisibleName || '',
-      item.missionDescription || '',
-      item.path || '',
-    ].filter(part => part !== '');
-
-    // Если ключ все еще не уникален, добавляем индекс
-    const baseKey = keyParts.join('_');
-    return baseKey || `fallback_${Math.random().toString(36).substr(2, 9)}`;
+  // Функция для проверки совпадения элемента
+  const itemMatches = (item) => {
+    return item.active && universalSearch(item, query);
   };
 
-  // Поиск в обычных наборах и subTasks
-  orderedMissionList.value.forEach((item, index) => {
-    if (!item.active) return;
+  // Функция для рекурсивного поиска
+  const searchItems = (items, parentSubTask = null, parentUnderSubTask = null) => {
+    items.forEach(item => {
+      if (!item.active) return;
 
-    const uniqueKey = getUniqueKey(item);
+      const key = getItemKey(item);
+      if (seen.has(key)) return;
 
-    // Проверяем, не добавили ли мы уже этот элемент
-    if (seen.has(uniqueKey)) {
-      console.warn('Duplicate item skipped:', item.missionVisibleName);
-      return;
-    }
+      // Проверяем совпадение
+      const matches = itemMatches(item);
 
-    // УНИВЕРСАЛЬНЫЙ ПОИСК ПО ВСЕМ ПОЛЯМ
-    const matches = universalSearch(item, query);
+      // Если элемент совпадает или является родителем совпадающего элемента
+      if (matches) {
+        // Добавляем родителей если они есть
+        if (parentUnderSubTask && !seen.has(getItemKey(parentUnderSubTask))) {
+          seen.add(getItemKey(parentUnderSubTask));
+          result.push(parentUnderSubTask);
+        }
+        if (parentSubTask && !seen.has(getItemKey(parentSubTask))) {
+          seen.add(getItemKey(parentSubTask));
+          result.push(parentSubTask);
+        }
 
-    if (matches) {
-      seen.add(uniqueKey);
-      // Добавляем элемент с уникальным ключом
-      result.push({
-        ...item,
-        _uniqueKey: uniqueKey // Добавляем уникальный ключ в элемент
-      });
-    }
-  });
+        // Добавляем сам элемент
+        seen.add(key);
+        result.push(item);
+      }
+
+      // Рекурсивно проверяем subTasks
+      if (isSubTasks(item) && item.subTasks) {
+        item.subTasks.forEach(subTask => {
+          if (isUnderSubTasks(subTask)) {
+            // Для underSubTasks передаем оба родителя
+            searchItems(subTask.underSubTasks || [], item, subTask);
+          } else {
+            // Для обычных subTasks передаем только subTask родителя
+            searchItems([subTask], item, null);
+          }
+        });
+      }
+    });
+  };
+
+  // Запускаем поиск
+  searchItems(orderedMissionList.value);
 
   return result;
 });
-
 // Функция для генерации ключа в шаблоне - ИСПРАВЛЕННАЯ
 const getItemKey = (item) => {
   // Используем сохраненный уникальный ключ или генерируем новый
@@ -711,7 +800,7 @@ const getSubTaskItemKey = (subTask) => {
   return keyParts.join('_') || `subtask_${Math.random().toString(36).substr(2, 9)}`;
 };
 
-// УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПОИСКА - УЛУЧШЕННАЯ
+// УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПОИСКА
 const universalSearch = (item, query) => {
   if (!query) return true;
 
@@ -761,6 +850,37 @@ const universalSearch = (item, query) => {
     if (subTaskMatch) return true;
   }
 
+  // Поиск в underSubTasks
+  if (item.type === "subTasks" && item.subTasks) {
+    const underSubTaskMatch = item.subTasks.some(subTask => {
+      if (!subTask.active) return false;
+
+      // Если это underSubTasks, ищем в его подзадачах
+      if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
+        return subTask.underSubTasks.some(underSubTask => {
+          if (!underSubTask.active) return false;
+
+          const underSubTaskSearchFields = [
+            underSubTask.missionVisibleName,
+            underSubTask.missionDescription,
+            underSubTask.missionName,
+            underSubTask.type,
+            underSubTask.style,
+            underSubTask.gameIcon
+          ].filter(Boolean);
+
+          return underSubTaskSearchFields.some(field =>
+            field && normalizeString(field).includes(query)
+          );
+        });
+      }
+
+      return false;
+    });
+
+    if (underSubTaskMatch) return true;
+  }
+
   return false;
 };
 
@@ -799,6 +919,46 @@ const shouldShowCategory = (categoryKey, categorySets, searchTerms) => {
   return categoryNameMatches || hasMatchingMissions;
 };
 
+// Функция для фильтрации подзадач внутри subTasks
+const getFilteredSubTasks = (subTaskSet) => {
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+
+  if (!query) {
+    return getActiveSubTasks(subTaskSet);
+  }
+
+  return getActiveSubTasks(subTaskSet).filter(subTask => {
+    // Если это underSubTasks, фильтруем его подзадачи
+    if (isUnderSubTasks(subTask)) {
+      const filteredUnderSubTasks = getActiveUnderSubTasks(subTask).filter(underSubTask =>
+        universalSearch(underSubTask, query)
+      );
+      // Показываем underSubTasks только если есть совпадения внутри
+      return filteredUnderSubTasks.length > 0 || universalSearch(subTask, query);
+    }
+
+    // Для обычных подзадач проверяем совпадение
+    return universalSearch(subTask, query);
+  });
+};
+
+// Функция для фильтрации внутри underSubTasks
+const getFilteredUnderSubTasks = (underSubTaskSet) => {
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+
+  if (!query) {
+    return getActiveUnderSubTasks(underSubTaskSet);
+  }
+
+  return getActiveUnderSubTasks(underSubTaskSet).filter(underSubTask =>
+    universalSearch(underSubTask, query)
+  );
+};
+
+
+
+
+
 // Утилиты
 const normalizeString = (str) => {
   if (!str) return '';
@@ -816,6 +976,10 @@ const hasCategory = (set, categoryName) => {
 
 const isSubTasks = (set) => {
   return set.type === "subTasks" && Array.isArray(set.subTasks);
+};
+
+const isUnderSubTasks = (item) => {
+  return item.type === "underSubTasks" && Array.isArray(item.underSubTasks);
 };
 
 // Функции навигации
@@ -864,15 +1028,46 @@ const openPronunciationSearch = (term) => {
   });
 };
 
-// Функции для subTasks - ИСПРАВЛЕННЫЕ
+
+const openYouglishSearch = (term) => {
+  const cleanTerm = term
+    .replace(/[^\w\sа-яё]/gi, '')
+    .trim()
+    .replace(/\s+/g, '%20');
+
+  const youglishUrl = `https://youglish.com/pronounce/${cleanTerm}/english`;
+  window.open(youglishUrl, '_blank');
+
+  $q.notify({
+    message: `Ищем произношение на Youglish: ${term}`,
+    color: 'primary',
+    timeout: 2000,
+    position: 'top'
+  });
+};
+// Функция для поиска на Youglish
+const handleYouglishSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+
+  openYouglishSearch(query);
+  searchQuery.value = '';
+};
+
+// Функции для subTasks
 const getSubTaskStyleClass = (subTaskSet) => {
   return subTaskSet.style || 'default';
 };
 
-// ИСПРАВЛЕНА логика раскрытия subTasks - используем уникальные ключи
+// Логика раскрытия subTasks
 const isSubTasksExpanded = (subTaskSet) => {
   const uniqueKey = getSubTaskUniqueKey(subTaskSet);
   return expandedSubTasks.value.has(uniqueKey);
+};
+
+const isUnderSubTasksExpanded = (underSubTaskSet) => {
+  const uniqueKey = getUnderSubTaskUniqueKey(underSubTaskSet);
+  return expandedUnderSubTasks.value.has(uniqueKey);
 };
 
 const toggleSubTasks = (subTaskSet) => {
@@ -884,9 +1079,22 @@ const toggleSubTasks = (subTaskSet) => {
   }
 };
 
+const toggleUnderSubTasks = (underSubTaskSet) => {
+  const uniqueKey = getUnderSubTaskUniqueKey(underSubTaskSet);
+  if (expandedUnderSubTasks.value.has(uniqueKey)) {
+    expandedUnderSubTasks.value.delete(uniqueKey);
+  } else {
+    expandedUnderSubTasks.value.add(uniqueKey);
+  }
+};
+
 // Функция для создания уникального ключа для subTasks
 const getSubTaskUniqueKey = (subTaskSet) => {
   return `${subTaskSet.id}_${subTaskSet.missionVisibleName}_${subTaskSet.missionDescription}`;
+};
+
+const getUnderSubTaskUniqueKey = (underSubTaskSet) => {
+  return `under_${underSubTaskSet.id}_${underSubTaskSet.missionVisibleName}`;
 };
 
 const getActiveSubTasks = (subTaskSet) => {
@@ -897,6 +1105,14 @@ const getActiveSubTasksCount = (subTaskSet) => {
   return getActiveSubTasks(subTaskSet).length;
 };
 
+const getActiveUnderSubTasks = (underSubTaskSet) => {
+  return (underSubTaskSet.underSubTasks || []).filter(task => task.active);
+};
+
+const getActiveUnderSubTasksCount = (underSubTaskSet) => {
+  return getActiveUnderSubTasks(underSubTaskSet).length;
+};
+
 const handleSubTaskClick = (subTask) => {
   if (subTask.password) {
     currentSetToUnlock.value = subTask;
@@ -904,6 +1120,70 @@ const handleSubTaskClick = (subTask) => {
   } else {
     goToChosenGame(subTask);
   }
+};
+
+const handleUnderSubTaskClick = (underSubTask) => {
+  if (underSubTask.password) {
+    currentSetToUnlock.value = underSubTask;
+    passwordModal.value = true;
+  } else {
+    goToChosenGame(underSubTask);
+  }
+};
+
+// Функция для автоматического раскрытия родительских категорий при поиске
+const autoExpandParentCategories = (query) => {
+  if (!query) return;
+
+  // Временные Set для новых раскрытий
+  const subTasksToExpand = new Set();
+  const underSubTasksToExpand = new Set();
+
+  // Проходим по всем subTasks
+  orderedMissionList.value.forEach(item => {
+    if (isSubTasks(item) && item.subTasks) {
+
+      // Проверяем каждый subTask на наличие совпадений
+      item.subTasks.forEach(subTask => {
+        let shouldExpand = false;
+
+        // Проверяем обычные подзадачи
+        if (!isUnderSubTasks(subTask)) {
+          if (universalSearch(subTask, query)) {
+            shouldExpand = true;
+          }
+        }
+
+        // Проверяем underSubTasks и их содержимое
+        if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
+          // Проверяем сам underSubTasks заголовок
+          if (universalSearch(subTask, query)) {
+            shouldExpand = true;
+          }
+
+          // Проверяем элементы внутри underSubTasks
+          const hasUnderSubTaskMatch = subTask.underSubTasks.some(underSubTask =>
+            universalSearch(underSubTask, query)
+          );
+
+          if (hasUnderSubTaskMatch) {
+            shouldExpand = true;
+            // Раскрываем underSubTask
+            underSubTasksToExpand.add(getUnderSubTaskUniqueKey(subTask));
+          }
+        }
+
+        // Если нашли совпадения - раскрываем родительский subTask
+        if (shouldExpand) {
+          subTasksToExpand.add(getSubTaskUniqueKey(item));
+        }
+      });
+    }
+  });
+
+  // Применяем раскрытия
+  subTasksToExpand.forEach(key => expandedSubTasks.value.add(key));
+  underSubTasksToExpand.forEach(key => expandedUnderSubTasks.value.add(key));
 };
 
 // Функции переключения категорий
@@ -997,14 +1277,21 @@ onMounted(() => {
 // Watchers
 watch(searchQuery, (newQuery) => {
   if (!newQuery) {
-    // Сбрасываем все состояния категорий при очистке поиска
+    // Сбрасываем все состояния при очистке поиска
+    expandedSubTasks.value.clear();
+    expandedUnderSubTasks.value.clear();
     Object.keys(categoryStates.value).forEach(key => {
       categoryStates.value[key] = false;
     });
+    return;
   }
+
+  const query = normalizeString(newQuery).replace(/\//g, '');
+
+  // Вызываем функцию автоматического раскрытия
+  autoExpandParentCategories(query);
 });
 </script>
-
 <style lang="scss" scoped>
 .blur {
   filter: blur(5px);
@@ -1023,7 +1310,7 @@ watch(searchQuery, (newQuery) => {
 .search-input {
   scale: 1.1;
   width: 100%;
-  padding: 8px 40px 8px 15px;
+  padding: 8px 80px 8px 15px; /* Увеличиваем правый padding для двух кнопок */
   border-radius: 20px;
   border: 3px solid #000000;
   font-size: 15px;
@@ -1052,14 +1339,26 @@ watch(searchQuery, (newQuery) => {
   animation: fadeInScale 0.3s ease;
 }
 
+.youglish-btn {
+  right: 45px; /* Сдвигаем вторую кнопку левее */
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
 .pronunciation-btn:hover {
   transform: scale(1.1);
-  background: linear-gradient(135deg, #764ba2, #667eea);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 .pronunciation-btn:active {
   transform: scale(0.95);
+}
+
+.pronunciation-btn:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+.youglish-btn:hover {
+  background: linear-gradient(135deg, #ee5a24, #ff6b6b);
 }
 
 @keyframes fadeInScale {
@@ -1447,10 +1746,8 @@ watch(searchQuery, (newQuery) => {
 .reading-sets-container,
 .subtasks-sets-container {
   width: 100%;
-  margin: 2px 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 /* Элементы внутри контейнеров категорий */
@@ -1587,6 +1884,9 @@ watch(searchQuery, (newQuery) => {
   text-align: right;
   white-space: nowrap;
 }
+
+
+
 
 .glassMorphism {
   position: relative;
@@ -2119,6 +2419,361 @@ watch(searchQuery, (newQuery) => {
   }
 }
 
+/* Стиль Лава Лампа - ИСПРАВЛЕННЫЙ с работающими анимациями */
+.subtasks-header.lavaLamp {
+  background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #1a237e 100%);
+  color: #fff;
+  border: 2px solid #3949ab;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 20px rgba(26, 35, 126, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  z-index: 1;
+}
+
+/* Анимированные пузыри для заголовка - ФИКСИРОВАННЫЕ */
+.subtasks-header.lavaLamp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(255, 64, 129, 0.6) 8px, transparent 0),
+    radial-gradient(circle at 80% 10%, rgba(255, 64, 129, 0.5) 15px, transparent 0),
+    radial-gradient(circle at 40% 20%, rgba(255, 64, 129, 0.7) 10px, transparent 0),
+    radial-gradient(circle at 65% 65%, rgba(255, 64, 129, 0.6) 12px, transparent 0),
+    radial-gradient(circle at 15% 35%, rgba(255, 64, 129, 0.5) 9px, transparent 0);
+  animation: lavaBubbleMove 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Контейнер для подзаданий в стиле лава лампы */
+.subtasks-lavaLamp {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+  border-radius: 15px;
+  padding: 3px;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.3),
+    0 5px 15px rgba(13, 71, 161, 0.4);
+}
+
+/* Движущиеся пузыри в контейнере */
+.subtasks-lavaLamp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255, 105, 180, 0.4) 12px, transparent 0),
+    radial-gradient(circle at 90% 80%, rgba(255, 20, 147, 0.3) 18px, transparent 0),
+    radial-gradient(circle at 30% 70%, rgba(255, 64, 129, 0.5) 10px, transparent 0),
+    radial-gradient(circle at 70% 30%, rgba(255, 105, 180, 0.4) 15px, transparent 0),
+    radial-gradient(circle at 50% 50%, rgba(255, 64, 129, 0.3) 8px, transparent 0),
+    radial-gradient(circle at 25% 40%, rgba(255, 20, 147, 0.4) 14px, transparent 0),
+    radial-gradient(circle at 75% 60%, rgba(255, 64, 129, 0.5) 11px, transparent 0);
+  animation: lavaContainerBubbles 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Отдельные подзадания */
+.subtask-lavaLamp {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 4px solid #ff4081;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/* Маленькие пузыри в отдельных карточках */
+.subtask-lavaLamp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  animation: cardShine 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.subtask-lavaLamp:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px) scale(1.02);
+  border-left: 4px solid #ff79b0;
+  box-shadow:
+    0 4px 15px rgba(255, 64, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.subtask-lavaLamp:hover::before {
+  animation: cardShine 1.5s ease-in-out infinite;
+}
+
+/* АНИМАЦИИ - ПЕРЕПИСАННЫЕ ДЛЯ РАБОТЫ */
+
+/* Движение пузырей в заголовке */
+@keyframes lavaBubbleMove {
+  0%, 100% {
+    background-position:
+      0% 0%,
+      100% 100%,
+      50% 50%,
+      75% 25%,
+      25% 75%;
+    opacity: 0.8;
+  }
+  25% {
+    background-position:
+      25% 25%,
+      75% 75%,
+      100% 100%,
+      50% 50%,
+      0% 0%;
+    opacity: 1;
+  }
+  50% {
+    background-position:
+      50% 50%,
+      25% 25%,
+      75% 75%,
+      100% 100%,
+      0% 0%;
+    opacity: 0.8;
+  }
+  75% {
+    background-position:
+      75% 75%,
+      50% 50%,
+      25% 25%,
+      0% 0%,
+      100% 100%;
+    opacity: 1;
+  }
+}
+
+/* Движение пузырей в контейнере */
+@keyframes lavaContainerBubbles {
+  0% {
+    background-position:
+      0% 0%,
+      100% 100%,
+      50% 50%,
+      75% 25%,
+      25% 75%,
+      10% 90%,
+      90% 10%;
+    transform: scale(1);
+  }
+  33% {
+    background-position:
+      33% 33%,
+      67% 67%,
+      83% 17%,
+      17% 83%,
+      50% 50%,
+      25% 75%,
+      75% 25%;
+    transform: scale(1.02);
+  }
+  66% {
+    background-position:
+      66% 66%,
+      33% 33%,
+      17% 83%,
+      83% 17%,
+      75% 25%,
+      50% 50%,
+      25% 75%;
+    transform: scale(0.98);
+  }
+  100% {
+    background-position:
+      100% 100%,
+      0% 0%,
+      25% 75%,
+      75% 25%,
+      100% 0%,
+      0% 100%,
+      50% 50%;
+    transform: scale(1);
+  }
+}
+
+/* Блеск на карточках */
+@keyframes cardShine {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+
+/* Стили для underSubTasks */
+.undersubtasks-header {
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #09ff00;
+
+  margin: 3px 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.undersubtasks-sets-container {
+  width: 100%;
+  margin: 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.undersubtask-set {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #09ff00;
+  margin-left: 25px !important;
+  width: calc(100% - 25px) !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+  }
+}
+
+/* Специфичные стили для разных типов underSubTasks */
+.undersubtask-speaking {
+  border-left-color: #74b9ff;
+
+  &:hover {
+    border-left-color: #0984e3;
+  }
+}
+
+.undersubtask-premium {
+  border-left-color: #ffd700;
+
+  &:hover {
+    border-left-color: #ffa500;
+  }
+}
+
+.undersubtask-grammar {
+  border-left-color: #00b894;
+
+  &:hover {
+    border-left-color: #00a085;
+  }
+}
+
+.undersubtask-lavaLamp {
+  border-left-color: #ff4081;
+
+  &:hover {
+    border-left-color: #ff79b0;
+  }
+}
+
+/* Пульсация при клике */
+.subtask-lavaLamp:active {
+  animation: lavaPulse 0.4s ease;
+}
+
+@keyframes lavaPulse {
+  0% {
+    transform: translateX(5px) scale(1.02);
+    box-shadow:
+      0 0 0 0 rgba(255, 64, 129, 0.7),
+      0 4px 15px rgba(255, 64, 129, 0.3);
+  }
+  50% {
+    transform: translateX(5px) scale(1.05);
+    box-shadow:
+      0 0 0 8px rgba(255, 64, 129, 0.3),
+      0 6px 20px rgba(255, 64, 129, 0.4);
+  }
+  100% {
+    transform: translateX(5px) scale(1.02);
+    box-shadow:
+      0 0 0 0 rgba(255, 64, 129, 0),
+      0 4px 15px rgba(255, 64, 129, 0.3);
+  }
+}
+
+/* Дополнительная анимация плавающих пузырей */
+@keyframes floatBubble {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px) translateX(10px);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-15px) translateX(-5px);
+    opacity: 0.9;
+  }
+}
+
+/* Добавляем отдельные плавающие элементы */
+.subtasks-header.lavaLamp::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(255, 64, 129, 0.8), transparent);
+  border-radius: 50%;
+  top: 10%;
+  left: 15%;
+  animation: floatBubble 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.subtasks-lavaLamp::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, rgba(255, 105, 180, 0.6), transparent);
+  border-radius: 50%;
+  bottom: 20%;
+  right: 10%;
+  animation: floatBubble 8s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 1;
+}
 
 
 </style>
