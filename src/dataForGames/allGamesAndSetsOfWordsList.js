@@ -2,15 +2,7 @@
 
 export const allGamesAndSetsOfWordsList =
   [
-      {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
-      missionVisibleName: "Начать с самого начала",
-      missionDescription: "Start from the beginning",
-      id: 1001,
-      active: true,
-      gameIcon:'1️⃣'
-    },
+
     {
       type: "subTasks",
       missionVisibleName: "Extra information",
@@ -20,16 +12,16 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       subTasks: [
         {
-        type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-        url: "https://drive.google.com/drive/u/0/recent",
-        target: '_blank', // Открывать в новой вкладке
-        missionVisibleName: "Google документы",
-        missionDescription: "Secret information",
-        id: 1002,
-        active: true,
-        gameImg: "wiresPic.png",
-        gameIcon:'📚'
-      },
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://drive.google.com/drive/u/0/recent",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Google документы",
+          missionDescription: "Secret information",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'📚'
+        },
         {
           type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
           path: "/sounds",
@@ -71,7 +63,16 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
+      missionVisibleName: "Начать с самого начала",
+      missionDescription: "Start from the beginning",
+      id: 1001,
+      active: true,
+      gameIcon:'1️⃣'
 
+    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA00/find-pairs-hard",
@@ -126,7 +127,7 @@ export const allGamesAndSetsOfWordsList =
           underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
             {
               missionName: "questionWords1",
-              missionVisibleName: "Миссия - 6",
+              missionVisibleName: "Миссия - вопросы 1",
               missionDescription: "Вопросительные слова 1",
               id: 7,
               active: true,
@@ -136,7 +137,7 @@ export const allGamesAndSetsOfWordsList =
             {
               type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
               path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
-              missionVisibleName: "Миссия - 7",
+              missionVisibleName: "Миссия - вопросы 2",
               missionDescription: "QW1 speaking",
               id: 1001,
               active: true,
@@ -144,16 +145,16 @@ export const allGamesAndSetsOfWordsList =
             },
             {
               missionName: "questionWords2",
-              missionVisibleName: "Миссия - 8",
-              missionDescription: "Вопросит. слова 2",
+              missionVisibleName: "Миссия - вопросы 3",
+              missionDescription: "Вопросит. слова 3",
               id: 7,
               active: true,
               gameIcon:'❓'
             },
             {
               missionName: "questionWords3",
-              missionVisibleName: "Миссия - 9",
-              missionDescription: "Вопросит. слова 3",
+              missionVisibleName: "Миссия - вопросы 4",
+              missionDescription: "Вопросит. слова 4",
               id: 7,
               active: true,
               gameIcon:'❓'
@@ -191,7 +192,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/digits/gameSnakeWords",
+      path: "/see-all-sets-of-words/devModeNumbers/gameSnakeWords",
       missionVisibleName: "Snake and snack (уровень 1)",
       missionDescription: "Змейка и перекус (уровень 1)",
       id: 1001,
@@ -764,6 +765,97 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
+
+
+
+    {
+      type: "subTasks",
+      missionVisibleName: "Домашки",
+      missionDescription: "HW H/W homework",
+      id: "subtasks-newSub",
+      style: "gaming", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words",
+          missionVisibleName: "В разработке",
+          missionDescription: "В разработке hw",
+          id: 1001,
+          active: true,
+          stars: 2
+        },
+        {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Письменные домашки",
+          missionDescription: "В разработке",
+          id: "under-subtasks-special",
+          style: "premium", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+                       {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/",
+              missionVisibleName: "В разработке 1",
+              missionDescription: "В разработке 2 hw",
+              id: 1001,
+              active: true,
+
+            },
+
+
+          ]
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words",
+          missionVisibleName: "В разработке hw",
+          missionDescription: "В разработке",
+          id: 1001,
+          active: true,
+          stars: 1
+        },
+      ]
+    },
+    {
+      type: "subTasks",
+      missionVisibleName: "Tests",
+      missionDescription: "Тесты",
+      id: "subtasks-newSub",
+      style: "gaming", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+                {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Big tests",
+          missionDescription: "Большие тесты",
+          id: "under-subtasks-special",
+          style: "premium", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              type: "hardcodedLink",
+              path: "/see-all-sets-of-words/testA2EzF1/millionaire",
+              missionVisibleName: "A2 big grammar test",
+              missionDescription: "Грамматика",
+              id: 1001,
+              active: true,
+              gameIcon: "👓",
+            },
+          ]
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words",
+          missionVisibleName: "В разработке hw",
+          missionDescription: "В разработке",
+          id: 1001,
+          active: true,
+          stars: 1
+        },
+      ]
+    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/hardCodedLinkUP0/find-pairs-hard",

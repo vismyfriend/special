@@ -988,86 +988,106 @@ const MillionaireData = {
       correctAnswer: "B",
     }
   ],
-  a2test3repass3extra: [
+  testA2EzF1: [
     {
       text: "___ to the cinema.",
       options: {
-        A: "We not often go",
-        B: "We don't go often",
-        C: "We don't often go",
-        D: "Often don't go we"
-      },
-      correctAnswer: "C",
-    },
-    {
-      text: "I ___ staying home tonight.",
-      options: {
-        A: "am going to",
-        B: "will",
-        C: "am"
+        E: "We go never",
+        D: "We not often go",
+        C: "We don't go often",
+        B: "We don't often go",
+        A: "Often don't go we"
       },
       correctAnswer: "B",
     },
     {
-      text: "If he ___ I will be angry.",
+      text: "I ___ staying at my sister's tonight.",
       options: {
-        A: "doesn't come",
+        A: "am going to",
+        B: "will",
+        С: "gonna",
+        D: "am"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "If a student ___ the teacher will be angry.",
+      options: {
+        A: "not coming",
+        E: "doesn't come",
         B: "don't come",
-        C: "willn't come",
+        C: "will nt come",
         D: "won't come"
       },
-      correctAnswer: "A",
+      correctAnswer: "E",
     },
     {
       text: "What time ___?",
       options: {
-        A: "has she come",
-        B: "she has come",
-        C: "did she come"
+        A: "have you come",
+        B: "did you came",
+        C: "did you come",
+        D: "you come"
       },
       correctAnswer: "C",
+    },
+    {
+      text: "What time ___?",
+      options: {
+        A: "did he come",
+        B: "has he come",
+        C: "did he came",
+        D: "he come",
+        E: "he has come",
+        F: "has he came"
+      },
+      correctAnswer: "A",
     },
     {
       text: "She ___ swim.",
       options: {
-        A: "can't",
+        A: "cans",
+        E: "can't",
         B: "can't to",
         C: "doesn't can to",
         D: "doesn't can"
       },
-      correctAnswer: "A",
+      correctAnswer: "E",
     },
     {
-      text: "I ___ a dog.",
+      text: "I ___ 40 cats!!!",
       options: {
         A: "haven't",
         B: "don't has",
-        C: "don't have",
-        D: "have not"
+        C: "doesn't have",
+        D: "don't have",
+        E: "have not"
       },
-      correctAnswer: "C",
+      correctAnswer: "D",
     },
     {
       text: "You ___ drive when you are tired.",
       options: {
-        A: "shouldn't",
-        B: "don't have to",
-        C: "haven't to"
+        D: "shouldn't",
+        C: "don't have to",
+        B: "don't must",
+        A: "haven't to"
       },
-      correctAnswer: "A",
+      correctAnswer: "D",
     },
     {
-      text: "Were you here at 5 p.m.? No, I ___.",
+      text: "Were you there at 8 o'clock? Probably, I ___.",
       options: {
         A: "didn't",
-        B: "am not",
-        C: "wasn't",
-        D: "weren't"
+        B: "won't",
+        C: "am not",
+        D: "wasn't",
+        E: "weren't"
       },
-      correctAnswer: "C",
+      correctAnswer: "D",
     },
     {
-      text: "He stopped when he ___ me.",
+      text: "She stopped when she ___ me.",
       options: {
         A: "was seeing",
         B: "saw",
@@ -1077,23 +1097,25 @@ const MillionaireData = {
       correctAnswer: "B",
     },
     {
-      text: "I never read ___ magazines.",
+      text: "What?! No! He never reads ___ magazines.",
       options: {
         A: "woman's",
-        B: "women's",
-        C: "womens'"
+        B: "for woman",
+        C: "women's",
+        D: "womens'"
       },
-      correctAnswer: "B",
+      correctAnswer: "C",
     },
     {
       text: "What ___ do after school tomorrow?",
       options: {
-        A: "are you going to",
+        A: "are you going",
+        E: "are you gonna",
         B: "are you",
         C: "do you",
         D: "you"
       },
-      correctAnswer: "A",
+      correctAnswer: "E",
     },
     {
       text: "If you call me, I ___ there.",
@@ -1106,11 +1128,12 @@ const MillionaireData = {
       correctAnswer: "C",
     },
     {
-      text: "A: Where's John? B: He's in the bathroom. He ___ a shower.",
+      text: "A: Where's Vincent? B: He's upstairs. He ___ a shower.",
       options: {
         A: "has",
         B: "is having",
         C: "is making",
+        E: "takes",
         D: "is doing"
       },
       correctAnswer: "B",
@@ -1136,24 +1159,37 @@ const MillionaireData = {
       correctAnswer: "B",
     },
     {
-      text: "He ___ his keys!",
+      text: "That woman ___ keys to her car!",
       options: {
         A: "always lose",
-        B: "always is losing",
+        B: "always losing",
         C: "is always losing",
+        E: "is always losting",
         D: "is losing"
       },
       correctAnswer: "C",
     },
     {
-      text: "I'll see you ___ Monday.",
+      text: "I'll see you ___ Tuesday not ___ Thursday.",
+      options: {
+        A: "in, in",
+        B: "on, on",
+        C: "at, at",
+        D: "the, the",
+        E: "to, to"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "I'll see you ___ next Monday.",
       options: {
         A: "in",
         B: "on",
         C: "at",
-        D: "to"
+        D: " - ",
+        E: "to"
       },
-      correctAnswer: "B",
+      correctAnswer: "D",
     },
     {
       text: "He's ___ good doctor.",
@@ -1166,17 +1202,28 @@ const MillionaireData = {
       correctAnswer: "A",
     },
     {
-      text: "She ___ to Toronto next Tuesday.",
+      text: "She's ___ best doctor in town.",
       options: {
-        A: "goes",
-        B: "will goes",
-        C: "is going",
-        D: "go"
+        A: "a",
+        B: "an",
+        C: "the",
+        D: "-"
       },
       correctAnswer: "C",
     },
     {
-      text: "He'll be here ___ 7.30 a.m.",
+      text: "She ___ to Texas next Tuesday or maybe this Thursday.",
+      options: {
+        A: "goes",
+        B: "will goes",
+        C: "is going",
+        D: "is gonna",
+        E: "go"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "He'll be here ___ 7.30 sharp (ровно)",
       options: {
         A: "in",
         B: "on",
@@ -1186,16 +1233,17 @@ const MillionaireData = {
       correctAnswer: "C",
     },
     {
-      text: "There ___ a door and 2 windows in the room.",
+      text: "There ___ a dog and 3 cats in the apartments.",
       options: {
         A: "are",
         B: "is",
-        C: "some"
+        C: "no",
+        D: "some"
       },
       correctAnswer: "B",
     },
     {
-      text: "He's crazy about ___ sports.",
+      text: "He's crazy about ___ basketball.",
       options: {
         A: "play",
         B: "to play",
@@ -1225,7 +1273,7 @@ const MillionaireData = {
       correctAnswer: "C",
     },
     {
-      text: "There ___ some grapes there yesterday.",
+      text: "There ___ some oranges on the table yesterday.",
       options: {
         A: "was",
         B: "were",
@@ -1238,13 +1286,14 @@ const MillionaireData = {
       text: "I ___ silly",
       options: {
         A: "amn't",
-        B: "am not",
-        C: "both are correct"
+        B: "a",
+        C: "am not",
+        D: "all answers are correct"
       },
-      correctAnswer: "B",
+      correctAnswer: "C",
     },
     {
-      text: "He wants ___ us.",
+      text: "She wants ___ us tonight.",
       options: {
         A: "to see",
         B: "seeing",
@@ -1254,7 +1303,7 @@ const MillionaireData = {
       correctAnswer: "A",
     },
     {
-      text: "I'm sure I ___ read it.",
+      text: "I'm sure I ___ read it as soon as possible.",
       options: {
         A: "will",
         B: "going to",
@@ -1262,6 +1311,17 @@ const MillionaireData = {
         D: "am"
       },
       correctAnswer: "A",
+    },
+    {
+      text: "I ___ to read this book soon.",
+      options: {
+        A: "will be",
+        B: "am going",
+        C: "am gonna",
+        D: "need",
+        E: "am"
+      },
+      correctAnswer: "B",
     },
     {
       text: "She ___ it 2 years ago.",
@@ -1274,25 +1334,37 @@ const MillionaireData = {
       correctAnswer: "D",
     },
     {
-      text: "I've ___ cut the cucumbers.",
+      text: "I've ___ cut the cucumbers (кЬЮкамбэрз, не кукумберз;).",
       options: {
         A: "yet",
         B: "still",
-        C: "already"
+        C: "not",
+        D: "already"
       },
-      correctAnswer: "C",
+      correctAnswer: "D",
     },
     {
-      text: "It ___ snows in London.",
+      text: "It ___ snows in Madrid (Spain).",
       options: {
         A: "will",
         B: "never",
-        C: "was"
+        C: "doesn't",
+        D: "was"
       },
       correctAnswer: "B",
     },
     {
-      text: "My mom ___ baked a cake.",
+      text: "It ___ rains in Moscow.",
+      options: {
+        A: "will",
+        B: "yesterday",
+        C: "often",
+        D: "gonna"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "My boss ___ baked a cake for everybody .",
       options: {
         A: "has",
         B: "have",
@@ -1342,7 +1414,7 @@ const MillionaireData = {
       correctAnswer: "B",
     },
     {
-      text: "She's only four but she ___.",
+      text: "She's only three and a half years old but she ___.",
       options: {
         A: "cans read",
         B: "can read",
@@ -1354,25 +1426,27 @@ const MillionaireData = {
     {
       text: "That's ___ car.",
       options: {
-        A: "Bob's",
-        B: "Bobs",
-        C: "Bobs'",
-        D: "Bob"
+        A: "Matt's",
+        B: "Matts",
+        C: "not him, it is my",
+        D: "Matt'",
+        E: "Matt"
       },
       correctAnswer: "A",
     },
     {
-      text: "We met when we ___ in France.",
+      text: "We met when we ___ in London.",
       options: {
         A: "are",
         B: "was",
         C: "were",
-        D: "study"
+        D: "study",
+        E: "studying"
       },
       correctAnswer: "C",
     },
     {
-      text: "When I went into my office, he ___ for me.",
+      text: "When I went into my office, the surprise ___ for me.",
       options: {
         A: "has waited",
         B: "waited",
@@ -1386,7 +1460,8 @@ const MillionaireData = {
       options: {
         A: "was he",
         B: "were he",
-        C: "did he be"
+        C: "was being he",
+        D: "did he be"
       },
       correctAnswer: "A",
     },

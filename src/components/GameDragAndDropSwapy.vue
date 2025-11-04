@@ -2,9 +2,6 @@
   <div class="drag-game">
     <div class="game-header">
       <h2>🧩 Перетяни правильный слова порядок в</h2>
-      <div class="progress-info">
-        {{ completedSentences.size }} / {{ currentGameData.length }}
-      </div>
     </div>
 
     <div ref="container" class="sentence-container">
@@ -28,7 +25,17 @@
       </div>
     </div>
 
+    <!-- Обновленный блок с переводом/произнесением -->
+    <div class="translation-container" v-if="shouldShowTranslation">
+      <div class="translation-text" :class="{ 'speak-prompt': isSpeakPrompt }">
+        {{ displayTranslation }}
+      </div>
+    </div>
+
     <div class="game-controls">
+      <div class="progress-info">
+        {{ completedSentences.size }} / {{ currentGameData.length }}
+      </div>
       <button @click="handleControlButton" class="control-button" :class="buttonClass">
         {{ buttonText }}
       </button>
@@ -72,6 +79,7 @@ export default {
       gamePhase: 'first-round',
       startTime: null,
       mistakes: 0,
+      currentTranslation: '',
       totalAttempts: 0
     }
   },
@@ -83,11 +91,25 @@ export default {
       return userSentence === correctSentence
     },
 
+    // Добавляем computed свойство для определения что показывать
+    displayTranslation() {
+      if (this.isCurrentSentenceCompleted) {
+        return "Скажи это бегло по-английски вслух, тренируй произношение 🎤"
+      }
+      return this.currentTranslation || "Скажи это бегло по-английски вслух, тренируй произношение 🎤"
+    },
+
+    // Добавляем computed свойство для определения показывать ли блок
+    shouldShowTranslation() {
+      // Показываем если есть перевод ИЛИ если предложение собрано
+      return this.currentTranslation || this.isCurrentSentenceCompleted
+    },
+
     buttonText() {
       if (this.gamePhase === 'completed') {
         return '🎉 Завершить игру'
       }
-      return this.isCurrentSentenceCompleted ? '🔄 Следующее' : '⏭️ Пропустить пока что'
+      return this.isCurrentSentenceCompleted ? '🔄 Следующее' : '⏭️ пропустить пока'
     },
 
     buttonClass() {
@@ -99,7 +121,10 @@ export default {
 
     allSentencesCompleted() {
       return this.completedSentences.size === this.currentGameData.length
-    }
+    },
+    isSpeakPrompt() {
+      return this.isCurrentSentenceCompleted || !this.currentTranslation
+    },
   },
 
   mounted() {
@@ -111,13 +136,14 @@ export default {
       const missionName = this.route.params.missionName
       this.currentGameData = shortSentencesWordOrderData[missionName] || []
 
-      this.sentences = this.currentGameData.map(item => item.eng)
+      // Сохраняем полные объекты с переводами
+      this.sentences = this.currentGameData
 
-      // Перемешиваем предложения
+      // Перемешиваем предложения (полные объекты)
       this.shuffledSentences = this.shuffleArray([...this.sentences])
 
       this.completedSentences = new Set()
-      this.remainingSentences = [...this.shuffledSentences.keys()] // Используем перемешанные индексы
+      this.remainingSentences = [...this.shuffledSentences.keys()]
       this.gamePhase = 'first-round'
       this.currentSentenceIndex = 0
 
@@ -128,7 +154,6 @@ export default {
       this.loadSentence()
     },
 
-    // Функция для перемешивания массива
     shuffleArray(array) {
       const shuffled = [...array]
       for (let i = shuffled.length - 1; i > 0; i--) {
@@ -160,19 +185,23 @@ export default {
         return
       }
 
-      // Берем текст из перемешанного массива
-      const text = this.shuffledSentences[sentenceIndex]?.trim()
+      // Получаем полный объект предложения
+      const sentenceObj = this.shuffledSentences[sentenceIndex]
 
-      if (!text) {
-        console.error('No text found for sentence index:', sentenceIndex)
+      if (!sentenceObj || !sentenceObj.eng) {
+        console.error('No sentence object found for index:', sentenceIndex)
         this.prepareRemainingSentences()
         return
       }
 
+      const text = sentenceObj.eng.trim()
+
+      // Устанавливаем перевод текущего предложения
+      this.currentTranslation = sentenceObj.ru || ''
+
       const words = this.splitSentence(text)
 
       this.originalOrder = words.map(word => ({ id: this.uuid(), word }))
-
       this.currentWords = [...this.originalOrder].sort(() => Math.random() - 0.5)
 
       if (this.currentWords[0].word === this.originalOrder[0].word) {
@@ -393,10 +422,11 @@ export default {
 
 .progress-info {
   background: rgba(255, 255, 255, 0.15);
-  padding: 10px 20px;
+  padding: 20px 5px;
+  margin-right: 5px;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 14px;
   display: inline-block;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -409,7 +439,8 @@ export default {
   gap: 6px;
   justify-content: center;
   align-items: center;
-  margin: 35px 0;
+  align-content: center;
+  margin: 5px 0;
   padding: 5px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
@@ -575,5 +606,59 @@ export default {
 @keyframes celebrate {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
+}
+
+.translation-container {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeIn 0.5s ease-in;
+  margin: 10px 0;
+}
+
+.translation-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 20px;
+}
+
+/* Анимация пульсации для всех сообщений в translation-text */
+.translation-text {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+.translation-text.speak-prompt {
+  animation: pulse-glow 2s ease-in-out infinite;
+  color: #00ff22;
+  text-shadow: 0 0 10px rgba(254, 243, 199, 0.5);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

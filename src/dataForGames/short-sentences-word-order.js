@@ -9,6 +9,7 @@ const shortSentencesWordOrderData = {
     { eng: "he is Vincent .", ru: "Он - Винсент"},
     { eng: "Groot is very stupid .", ru: "Грут очень туп"},
     { eng: "she is a girl .", ru: "Она - девочка"},
+    { eng: "c u c u m b e r", ru: "ударение на звук КЬЮ и в английском слове < огурец > нет звука У"},
     { eng: "We are special agents .", ru: ""},
     { eng: "They are stupid monkeys .", ru: ""},
     { eng: "I am a detective .", ru: ""},
