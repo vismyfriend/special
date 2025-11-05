@@ -64,13 +64,13 @@
             </div>
           </div>
         </div>
-      <button
-        v-if="!isMotionSupported && isIOS"
-        @click="initMotionControls"
-        class="enable-tilt-btn"
-      >
-        Нажмите сюда -> разрешить наклоны
-      </button>
+<!--      <button-->
+<!--        v-if="!isMotionSupported && isIOS"-->
+<!--        @click="initMotionControls"-->
+<!--        class="enable-tilt-btn"-->
+<!--      >-->
+<!--        Нажмите сюда -> разрешить наклоны-->
+<!--      </button>-->
     </div>
 
 </template>
