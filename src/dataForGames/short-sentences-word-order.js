@@ -5,6 +5,11 @@ const shortSentencesWordOrderData = {
     { eng: "Do I love English?", ru: "Я люблю английский?"},
     { eng: "Why do I love English?", ru: "Почему я люблю английский"},
   ],
+  irregularVerbsSortingB: [
+    { eng: "break broke broken", ru: "ломаю сломал сломанный"},
+    { eng: "do did done", ru: "делаю сделал сделанный"},
+    { eng: "buy bought bought", ru: "покупаю куил купленный"},
+  ],
   yoSoyGrutIamGrut: [
     { eng: "he is Vincent .", ru: "Он - Винсент"},
     { eng: "Groot is very stupid .", ru: "Грут очень туп"},
@@ -20,6 +25,19 @@ const shortSentencesWordOrderData = {
     { eng: "the internet is slow .", ru: ""},
     { eng: "it is an elephant .", ru: ""},
     { eng: "60 minutes is an hour.", ru: ""},
+
+  ],
+  relativesWordOrder00: [
+    { eng: "their uncle is lazy", ru: "Их дядя ленивый"},
+    { eng: "it is not my problem", ru: "Это не моя проблема"},
+    { eng: "she is somebody's aunt", ru: "Она чья-то тётя"},
+    { eng: "it is mother's friend's son", ru: "Это сын маминой подруги"},
+    { eng: "I like my grandpa and grandma", ru: "Мне нравятся мои дедуля и бабуля"},
+    { eng: "How are you today ?", ru: "Как вы чувствуете себя сегодня?"},
+    { eng: "Whose phone is it ?", ru: "Чей это телефон?"},
+    { eng: "Who is it ?", ru: "Кто это?"},
+    { eng: "Whose problem is it ?", ru: "Чья это проблема?"},
+
 
   ],
   pattern: [

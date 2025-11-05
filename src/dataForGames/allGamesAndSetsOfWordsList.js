@@ -80,12 +80,22 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "притяжательные слова",
       id: 1001,
       active: true,
-      gameIcon: '🙉'
+      gameIcon: '🙈'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/toBeAmIsAre00/sorting",
+      missionVisibleName: "Х.А.У. how ? Как ?",
+      missionDescription: "to be и порядок слов",
+      id: 1001,
+      active: true,
+      gameIcon: '🙉'
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/familyRelativesA00/find-pairs-hard",
-      missionVisibleName: "Х.У. who ? ХУ ?  Это кто ? ",
+      missionVisibleName: "Х.У. who ? ХУ ? кто ? ",
       missionDescription: "близкие родственники",
       id: 1001,
       active: true,
@@ -93,13 +103,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/possessivePronounsA01/find-pairs-hard",
+      path: "/see-all-sets-of-words/relativesWordOrder00/word-order-sortable",
       missionVisibleName: "УОТ what ? ВОТ ? Что бл%н ? ",
       missionDescription: "what is it?",
       id: 1001,
       active: true,
-      gameIcon: '🙉'
+      gameIcon: '🐶'
     },
+
     {
       type: "subTasks",
       missionVisibleName: "Случайные вопросы",
@@ -190,15 +201,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '1'
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/devModeNumbers/gameSnakeWords",
-      missionVisibleName: "Snake and snack (уровень 1)",
-      missionDescription: "Змейка и перекус (уровень 1)",
-      id: 1001,
-      active: true,
-      gameIcon:'🐍'
-    },
+
     {
       type: "subTasks",
       missionVisibleName: "Артикли",
@@ -242,7 +245,15 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
-
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/devModeNumbers/gameSnakeWords",
+      missionVisibleName: "Snake and snack (уровень 1)",
+      missionDescription: "Змейка и перекус (уровень 1)",
+      id: 1001,
+      active: true,
+      gameIcon:'🐍'
+    },
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/ieltsIntroTest/millionaire",
@@ -381,6 +392,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'3️⃣'
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/possessivePronounsA01/find-pairs-hard",
+      missionVisibleName: "Притяжаетльные местоимения",
+      missionDescription: "mom's friend's son",
+      id: 1001,
+      active: true,
+      gameIcon: '🐶'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

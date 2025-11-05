@@ -40,8 +40,28 @@ const sortingWordsData = {
       { id: 9, eng: '🥒 cucumber', ru: '`кьЮкамбэ - огурчик', correctColumn: 'a' },
       { id: 10, eng: '🌙 Moon', ru: 'мун - луна', correctColumn: 'the' },
       { id: 11, eng: '💡 idea', ru: 'ай`дИа - идея', correctColumn: 'an' },
-
-
+    ]
+  },
+  toBeAmIsAre00: {
+    columns: [
+      { id: 'am', title: 'I' },
+      { id: 'is', title: 'He, She, It' },
+      { id: 'are', title: 'You, We, They' }
+    ],
+    items: [
+      { id: 1, eng: 'am not lazy', ru: 'я не ленивый', correctColumn: 'am' },
+      { id: 2, eng: 'is your friend', ru: 'он ваш друг', correctColumn: 'is' },
+      { id: 3, eng: 'are clever', ru: '`они умные', correctColumn: 'are' },
+      { id: 4, eng: 'are my sisters', ru: 'они мои сёстры', correctColumn: 'are' },
+      { id: 5, eng: 'am your friend', ru: 'я твой друг', correctColumn: 'am' },
+      { id: 6, eng: "am clever", ru: 'я умный', correctColumn: 'am' },
+      { id: 7, eng: "are your friends", ru: 'твои друзья', correctColumn: 'are' },
+      { id: 8, eng: "is my teacher", ru: 'он мой учитель', correctColumn: 'is' },
+      { id: 9, eng: "is not lazy", ru: 'она не ленивая', correctColumn: 'is' },
+      { id: 10, eng: "are not lazy", ru: 'не ленивые', correctColumn: 'are' },
+      { id: 11, eng: "am special", ru: 'особенный', correctColumn: 'am' },
+      { id: 12, eng: "are special", ru: 'особенная', correctColumn: 'are' },
+      { id: 13, eng: "is special", ru: 'особенные', correctColumn: 'is' },
 
     ]
   },
