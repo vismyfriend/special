@@ -116,7 +116,7 @@ const toggleTranslation = () => {
   showTranslation.value = true;
   translationTimeout = setTimeout(() => {
     showTranslation.value = false;
-  }, 3000);
+  }, 8000);
 };
 
 
@@ -469,7 +469,7 @@ onMounted(() => {
 
 .word {
     font-weight: bold; /* Выделение русского слова */
-  font-size: 30px;
+  font-size: 20px;
   line-height: 0.9;
 }
 .word::after {
@@ -483,7 +483,7 @@ onMounted(() => {
 .translation {
     font-style: italic; /* Курсив для перевода */
     color: #555; /* Более светлый цвет для перевода */
-  font-size: 30px;
+  font-size: 20px;
   line-height: 0.9;
 
 

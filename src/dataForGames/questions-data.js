@@ -9,6 +9,21 @@ const questionsData = {
 
 
   ],
+  introLessonQuestionsSmallTalk1: [
+    { id: 1, eng: "What city are you from?", ru: "Из какого вы города? - I am from New-York"},
+    { id: 2, eng: "What is your father's name?", ru: "Как зовут вашего отца? - My father's name is Andrew"},
+    { id: 4, eng: "What is your favorite color?", ru: "Какой твой любимый цвет? - My favorite color is blue."},
+    { id: 5, eng: "How old are you?", ru: "Сколько тебе лет? - I am always 18"},
+    { id: 6, eng: "Do you have brothers or sisters?", ru: "У тебя есть братья или сестры? - I (don't) have" },
+    { id: 7, eng: "Do you like cats or dogs more?", ru: "Ты больше любишь кошек или собак? - I like dogs more."},
+    { id: 8, eng: "What is your job?", ru: "Какая твоя работа? - I help people practice English."},
+    { id: 9, eng: "What is your favorite months of the year?", ru: "Какой твой любимый месяц в году? - I think February, cuz ..." },
+    { id: 10, eng: "What is your favorite drink?", ru: "Какой твой любимый напиток? - I think water or vodka with orange juice, because I am an alcoholic! (It's a joke)" },
+    { id: 11, eng: "What time is it on your clock now?", ru: "Сколько сейчас времени у тебя на часах? - It is 20:12 now /твЭнти твЭлв/ 8:12 pm"},
+    { id: 12, eng: "How is the weather today?", ru: "Какая сегодня погода? - It is (not) very cold / hot today, about 15 degrees (below zero)"},
+    { id: 13, eng: "What films do you like to watch?", ru: "Какие фильмы ты любишь смотреть? - I like comedies / action / fantasy / historical / animations / anime"},
+    { id: 14, eng: "What did you do yesterday?", ru: "Что ты делал вчера? - I worked and met my friends and we went to a bar yesterday."}
+  ],
     introSetAlias: [
       // Цвета
       { id: 1, eng: "red", ru: "красный", hint: "/ рэд /" },

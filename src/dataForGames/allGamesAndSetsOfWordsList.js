@@ -183,6 +183,26 @@ export const allGamesAndSetsOfWordsList =
           ]
         },
         {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Смол Токс",
+          missionDescription: "Повседневные беседы",
+          id: "under-subtasks-special",
+          style: "speaking", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/introLessonQuestionsSmallTalk1/deck-of-cards",
+              missionVisibleName: "Small talk 1",
+              missionDescription: "What's your favorite",
+              id: 1001,
+              active: true,
+              stars: '1'
+            },
+
+          ]
+        },
+        {
           type: "hardcodedLink",
           path: "/phoneFramePattern",
           missionVisibleName: "Узнать свой уровень",
@@ -1450,6 +1470,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       stars: '2'
     },
+
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
