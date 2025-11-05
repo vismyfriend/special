@@ -290,79 +290,79 @@ const handleKeyDown = (event) => {
 // };
 
 // ===== УПРАВЛЕНИЕ НАКЛОНОМ =====
-
-// Таймер защиты от слишком частых наклонов
-let lastTiltTime = 0;
-// Флаг для отслеживания, вернулся ли телефон в нейтральную зону
-let canTriggerForward = true;
-let canTriggerBackward = true;
-const TILT_COOLDOWN_MS = 1000; // Задержка между действиями
-const handleOrientation = (event) => {
-  const { beta } = event;
-  const now = Date.now();
-
-  const TILT_DOWN_THRESHOLD = 125;
-  const TILT_UP_THRESHOLD = 30;
-  const NEUTRAL_ZONE = 90;
-
-  // Вернулись в нейтральную зону → можно снова активировать
-  if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
-    canTriggerBackward = true;
-  }
-
-  if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
-    canTriggerForward = true;
-  }
-
-  if (
-    beta > TILT_DOWN_THRESHOLD &&
-    now - lastTiltTime > TILT_COOLDOWN_MS &&
-    canTriggerForward
-  ) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    loadQuestion();
-    lastTiltTime = now;
-    canTriggerForward = false;
-  } else if (
-    beta < TILT_UP_THRESHOLD &&
-    now - lastTiltTime > TILT_COOLDOWN_MS &&
-    canTriggerBackward
-  ) {
-    if (navigator.vibrate) navigator.vibrate(30);
-    undoLastRemoval();
-    lastTiltTime = now;
-    canTriggerBackward = false;
-  }
-};
-
-
-// Разрешение на использование датчиков (для iOS)
-const initMotionControls = () => {
-  if (window.DeviceOrientationEvent) {
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      DeviceOrientationEvent.requestPermission()
-        .then(permissionState => {
-          if (permissionState === 'granted') {
-            window.addEventListener('deviceorientation', handleOrientation);
-            isMotionSupported.value = true;
-          }
-        })
-        .catch(console.error);
-    } else {
-      // Для Android
-      window.addEventListener('deviceorientation', handleOrientation);
-      isMotionSupported.value = true;
-    }
-  }
-};
-
+//
+// // Таймер защиты от слишком частых наклонов
+// let lastTiltTime = 0;
+// // Флаг для отслеживания, вернулся ли телефон в нейтральную зону
+// let canTriggerForward = true;
+// let canTriggerBackward = true;
+// const TILT_COOLDOWN_MS = 1000; // Задержка между действиями
+// const handleOrientation = (event) => {
+//   const { beta } = event;
+//   const now = Date.now();
+//
+//   const TILT_DOWN_THRESHOLD = 125;
+//   const TILT_UP_THRESHOLD = 30;
+//   const NEUTRAL_ZONE = 90;
+//
+//   // Вернулись в нейтральную зону → можно снова активировать
+//   if (beta > TILT_UP_THRESHOLD && beta < NEUTRAL_ZONE) {
+//     canTriggerBackward = true;
+//   }
+//
+//   if (beta < TILT_DOWN_THRESHOLD && beta > NEUTRAL_ZONE) {
+//     canTriggerForward = true;
+//   }
+//
+//   if (
+//     beta > TILT_DOWN_THRESHOLD &&
+//     now - lastTiltTime > TILT_COOLDOWN_MS &&
+//     canTriggerForward
+//   ) {
+//     if (navigator.vibrate) navigator.vibrate(30);
+//     loadQuestion();
+//     lastTiltTime = now;
+//     canTriggerForward = false;
+//   } else if (
+//     beta < TILT_UP_THRESHOLD &&
+//     now - lastTiltTime > TILT_COOLDOWN_MS &&
+//     canTriggerBackward
+//   ) {
+//     if (navigator.vibrate) navigator.vibrate(30);
+//     undoLastRemoval();
+//     lastTiltTime = now;
+//     canTriggerBackward = false;
+//   }
+// };
+//
+//
+// // Разрешение на использование датчиков (для iOS)
+// const initMotionControls = () => {
+//   if (window.DeviceOrientationEvent) {
+//     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+//       DeviceOrientationEvent.requestPermission()
+//         .then(permissionState => {
+//           if (permissionState === 'granted') {
+//             window.addEventListener('deviceorientation', handleOrientation);
+//             isMotionSupported.value = true;
+//           }
+//         })
+//         .catch(console.error);
+//     } else {
+//       // Для Android
+//       window.addEventListener('deviceorientation', handleOrientation);
+//       isMotionSupported.value = true;
+//     }
+//   }
+// };
+//
 
 
 // Отписка при уходе со страницы
 onUnmounted(() => {
   clearInterval(timer.value);
   timer.value = null;
-  window.removeEventListener('deviceorientation', handleOrientation);
+  // window.removeEventListener('deviceorientation', handleOrientation);
   window.removeEventListener('keydown', handleKeyDown); // ← добавлено
 
 });
@@ -383,7 +383,7 @@ onMounted(() => {
 
 
   // Активируем управление наклоном
-  initMotionControls();
+  // initMotionControls();
   window.addEventListener('keydown', handleKeyDown); // ← добавлено
 
 });
