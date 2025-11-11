@@ -1113,6 +1113,22 @@ whatISitVideoMission: [
     { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
     { id: 10, eng: "zero", ru: "ноль", hint: "/ оу или зироу /" }
   ],
+  phrasesWhenPeoplePlay1: [
+    { id: 1, eng: "Wanna play?", ru: "Хочешь сыграть?", hint: "/ уОна плэй /" },
+    { id: 2, eng: "Want a challenge?", ru: "Хочешь испытание?", hint: "/ уОнт э челендж /" },
+    { id: 3, eng: "I dare you to jump", ru: "На спор сможешь прыгнуть", hint: "/ ай дЭэ ю ту/" },
+    { id: 4, eng: "Let's see who's gonna win or lose", ru: "Посмотрим, кто выиграет, а кто проиграет", hint: "" },
+    { id: 5, eng: "You got this", ru: "Ты справишься", hint: "" },
+    { id: 6, eng: "Here we go", ru: "а вот и мы", hint: "хИэ уи гОу" },
+    { id: 7, eng: "Come on", ru: "Давай", hint: "кАм он" },
+    { id: 8, eng: "You can do it", ru: "Ты можешь это сделать", hint: "" },
+    { id: 9, eng: "Nice", ru: "Отлично", hint: "" },
+    { id: 10, eng: "Alright alright", ru: "Норм, норм, все в порядке", hint: "" },
+    { id: 11, eng: "You messed it", ru: "Ты закосячил", hint: "" },
+    { id: 12, eng: "I beat you", ru: "Я тебя победил", hint: "" },
+    { id: 13, eng: "I've won, you've lost", ru: "Я выиграл, ты проиграл", hint: "айв уан юв лост" },
+    { id: 14, eng: "In your face", ru: "Так тебе и надо", hint: "" }
+  ],
 
 
   alphabetData: [

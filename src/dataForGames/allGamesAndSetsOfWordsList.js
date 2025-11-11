@@ -306,6 +306,14 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'🧨'
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/phrasesWhenPeoplePlay1/find-pairs-easy",
+      missionVisibleName: "Phrases when people play",
+      missionDescription: "Полезные фразы в игре",
+      id: 1001,
+      active: true,
+    },
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

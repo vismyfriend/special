@@ -25,7 +25,6 @@ const shortSentencesWordOrderData = {
     { eng: "the internet is slow .", ru: ""},
     { eng: "it is an elephant .", ru: ""},
     { eng: "60 minutes is an hour.", ru: ""},
-
   ],
   relativesWordOrder00: [
     { eng: "their uncle is lazy", ru: "Их дядя ленивый"},
