@@ -319,7 +319,44 @@ const sortingWordsData = {
       { id: 99, eng: 'knew', ru: 'знал', correctColumn: 'v2' },
       { id: 100, eng: 'known', ru: 'известный', correctColumn: 'v3' }
     ]
-  }
+  },
+  sortVerbsNVS: {
+    columns: [
+      { id: 'v1', title: 'настоящее' },
+      { id: 'v2', title: 'прошлое' },
+      { id: 'v3', title: 'обалденное' }
+    ],
+    items: [
+
+      { id: 101, eng: 'say СЭЙ', ru: 'сказать или произнести', correctColumn: 'v1'},
+      { id: 102, eng: 'said СЭД', ru: 'сказал или произнес', correctColumn: ['v2','v3'] },
+      { id: 103, eng: 'said СЭД ', ru: 'сказал или произнес', correctColumn: ['v2','v3'] },
+
+      { id: 98, eng: 'know НОУ', ru: 'знать', correctColumn: 'v1' },
+      { id: 99, eng: 'knew НЮ', ru: 'знал', correctColumn: 'v2' },
+      { id: 100, eng: 'known НОУН', ru: 'известный', correctColumn: 'v3' },
+
+      { id: 4, eng: 'see СИ', ru: 'видеть', correctColumn: 'v1' },
+      { id: 5, eng: 'saw СО', ru: 'видел', correctColumn: 'v2' },
+      { id: 6, eng: 'seen СИН', ru: 'увидел', correctColumn: 'v3' },
+
+      // sell - продал
+      { id: 7, eng: 'sell', ru: 'продавать', correctColumn: 'v1' },
+      { id: 8, eng: 'sold', ru: 'продал продано', correctColumn: ['v2','v3'] },
+      { id: 9, eng: 'sold', ru: 'продал продано', correctColumn: ['v2','v3'] },
+
+      // send - отправил
+      { id: 10, eng: 'send Д', ru: 'отправлять', correctColumn: 'v1' },
+      { id: 11, eng: 'sent Т', ru: 'отправил отправленный', correctColumn: ['v2','v3'] },
+      { id: 12, eng: 'sent Т', ru: 'отправил отправленный', correctColumn: ['v2','v3'] },
+
+      // shake - тряс
+      { id: 13, eng: 'shake', ru: 'трясти', correctColumn: 'v1' },
+      { id: 14, eng: 'shook', ru: 'тряс', correctColumn: 'v2' },
+      { id: 15, eng: 'shaken', ru: 'встряхнутый', correctColumn: 'v3' },
+    ]
+  },
+
 
 }
 export default sortingWordsData

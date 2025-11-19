@@ -61,7 +61,27 @@ export const allGamesAndSetsOfWordsList =
           gameImg: "wiresPic.png",
           gameIcon:'🎨'
         },
+        {
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://vismyfriend.github.io/2.5_D_game_1/",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "2.5D Copybook Game",
+          missionDescription: "Notebook Game 2.5Д",
+          id: 1002,
+          active: true,
+        },
       ]
+    },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/sortVerbsNVS/sorting",
+      missionVisibleName: "Naughty verbs S",
+      missionDescription: "Неправильные глаголы S ",
+      id: 1001,
+      active: true,
+      gameIcon:'📁',
+
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
