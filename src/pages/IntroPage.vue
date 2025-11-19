@@ -1,7 +1,9 @@
-
-
-
 <template>
+
+  <div class="background-gradient"></div>
+
+
+
   <!-- Примеры с полным управлением позицией хвостика -->
   <!--  <p class="chat-bubble" data-tail="top" style="&#45;&#45;tail-x: 70%; &#45;&#45;tail-y: 20%">-->
   <!--    Хвостик сверху<br>смещён вправо и вниз-->
@@ -53,7 +55,7 @@
       ref="buttonRef"
       class="positioned-button"
 
-    >Cliсk here</button>
+    >Tap here</button>
     <!--    <div class="counter">Вы увидели: <span>{{ counter }}</span></div>-->
 
     <Teleport to="body">
@@ -97,7 +99,7 @@ const router = useRouter();
 
 // Объявляем переменные
 // const currentTapSymbol = '⚡'; // Здесь можно менять символ
-const currentTapSymbol = '☃️❄️'; // Здесь можно менять символ
+const currentTapSymbol = '❄️'; // Здесь можно менять символ
 // const currentTapSymbol = '🎃'; // Здесь можно менять символ
 const counter = ref(0);
 const sessionStartCounter = ref(0);
@@ -113,7 +115,7 @@ const buttonLabel = computed(() => {
 const buttonColor = computed(() => {
   return sessionCounter.value >= 23
     ? "blue"
-    : "green";
+    : "grey";
 });
 
 const dynamicMessage = computed(() => {
@@ -138,7 +140,7 @@ const backToIntroPage = () => {
     handleBubbleClick();
     // Задержка перед переходом
     setTimeout(() => {
-      router.push("/see-all-sets-of-words/");
+      router.push("/keypad");
     }, 500); // пол секунды – чтобы успело показаться сообщение
   } else {
     infoMessage.value = dynamicMessage.value;
@@ -244,6 +246,7 @@ const allEnglishWords = [
   ...shortWordsData.devModeNumbersFast.map(item => item.eng),
   ...shortWordsData.devModeNumbers.map(item => item.eng),
   ...shortWordsData.devmode1.map(item => item.eng),
+  ...shortWordsData.mostCommonRegularVerbs.map(item => item.eng),
   ...shortWordsData.digits.map(item => item.eng),
   ...shortWordsData.irregularVerbsB1.map(item => item.eng),
   ...shortWordsData.halloween01.map(item => item.eng),
@@ -440,7 +443,8 @@ calc(var(--fadeStart) * 100%) {
   width: 215px;
   height: 215px;
   cursor: none;
-  margin: 20px 0;
+  margin: 40px 0;
+  /* margin: 20px 0; центрируем кнопку */
   padding: 50px;
   transition: transform 0.1s, opacity 0.1s;
   user-select: none;
@@ -581,6 +585,7 @@ calc(var(--fadeStart) * 100%) {
   width: 100%;
   display: block;
   border-radius: 20px;
+  margin-bottom: -1px;
 
 }
 
@@ -646,7 +651,7 @@ calc(var(--fadeStart) * 100%) {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
+  //background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
   z-index: 5;
 }
 .q-mb-sm {
@@ -700,5 +705,15 @@ calc(var(--fadeStart) * 100%) {
   50% {
     transform: scale(1.03); /* можно увеличить до 1.05, если хочется активнее */
   }
+}
+
+.background-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
+  z-index: -1; /* чтобы фон был позади всего контента */
 }
 </style>

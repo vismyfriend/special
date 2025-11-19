@@ -4,7 +4,8 @@ const routes = [
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
       { path: '',
-        component: () => import('pages/IntroPage.vue') },
+        component: () => import('pages/IntroPage.vue')
+      },
 
       {
         path: '/see-all-sets-of-words',
