@@ -84,6 +84,13 @@ export const allGamesAndSetsOfWordsList =
 
     },
     {
+      missionName: "ForgettingCurveB1",
+      missionVisibleName: "Forgetting curve 1",
+      missionDescription: "Кривая забывания 1",
+      id: 7,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
       missionVisibleName: "Начать с самого начала",
@@ -515,6 +522,7 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true,
     },
+
 
 
 

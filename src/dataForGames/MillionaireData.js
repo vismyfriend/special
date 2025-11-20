@@ -988,6 +988,156 @@ const MillionaireData = {
       correctAnswer: "B",
     }
   ],
+  ForgettingCurveB1: [
+    {
+      text: "What does the Forgetting Curve show?",
+      options: {
+        A: "How to forget things",
+        B: "How fast people forget information",
+        C: "How not to forget things",
+        E: "This curve shows everything",
+        D: "How memory works during sleep"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Who created the Forgetting Curve?",
+      options: {
+        A: "Sigmund Freud",
+        B: "Albert Einstein",
+        E: "Vincent Special",
+        C: "Hermann Ebbinghaus",
+        D: "Carl Jung"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "According to the Forgetting Curve, when do we forget the fastest?",
+      options: {
+        A: "Right after learning",
+        B: "Two weeks later",
+        C: "After one month",
+        E: "What? I forgot the question",
+        D: "At night"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "How much information can people forget after one hour, if they do not review it?",
+      options: {
+        A: "Somewhere between 25% and 35%",
+        B: "More than 80%",
+        F: "Less than 20%",
+        C: "About 50%",
+        E: "I forget NOTHING!",
+        D: "from 90 to 100%"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "What helps us forget less?",
+      options: {
+        A: "Studying in a team",
+        B: "Reading out loud",
+        C: "Repeating information",
+        E: "Messages from Vincent",
+        F: "Writing in a notebook",
+        G: "Crying in a toilet alone",
+        D: "Using devices"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "What kind of repetition works best?",
+      options: {
+        A: "Repeating all info at once",
+        B: "Repeating some info every 2-3 hours",
+        C: "Repeating everything once a day",
+        E: "Repeating when we have time",
+        D: "Repeating random information"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "What happens to memory after we review information?",
+      options: {
+        A: "We start to forget faster",
+        B: "We start to forget slower",
+        C: "Nothing changes",
+        E: "I don't understand anything",
+        D: "The information disappears"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "Why do people forget information quickly?",
+      options: {
+        A: "Cuz they don't review it",
+        E: "Cuz teachers are bad",
+        B: "Cuz people sleep too much",
+        C: "Cuz the brain deletes boring stuff",
+        D: "Because my mama says so"
+      },
+      correctAnswer: "A"
+    },
+    {
+      text: "What is Active Recall?",
+      options: {
+        A: "Reading the text again out loud",
+        B: "Listening to the teacher and choosing the answers",
+        C: "Practicing without looking at the answers",
+        E: "Какой нафиг эктив, я даже что такое recall не помню",
+        D: "Highlighting the text and important parts"
+      },
+      correctAnswer: "C"
+    },
+    {
+      text: "What happens if you never review what you learned?",
+      options: {
+        A: "You remember everything anyway",
+        B: "You forget most of it in a few days",
+        C: "You improve your memory",
+        E: "Vincent starts to cry and kicks your ass",
+        D: "You feel that you are silly and stupid"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "How can students fight the Forgetting Curve?",
+      options: {
+        A: "Study, study, study, study until they die",
+        B: "Use spaced repetition and active recall",
+        C: "Read without stopping",
+        E: "Buy agun and shoot the f... curve!",
+        D: "Study in a noisy place"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "What helps memory stay strong for a long time?",
+      options: {
+        A: "Stress",
+        B: "Good sleep and regular review",
+        F: "Drugs, love and rock'n'roll",
+        C: "Eating food with sugar",
+        E: "Vodka with bears behind the garages",
+        D: "Studying at night only"
+      },
+      correctAnswer: "B"
+    },
+    {
+      text: "After several spaced repetitions, what happens to the Forgetting Curve?",
+      options: {
+        A: "It becomes almost flat (плоской)",
+        B: "It becomes very steep (крутой)",
+        C: "It disappears (исчезает)",
+        E: "It gets fatter (жирнеет)",
+        D: "It becomes shorter (короче)"
+      },
+      correctAnswer: "A"
+    }
+  ]
+  ,
   testA2EzF1: [
     {
       text: "___ to the cinema.",
