@@ -1484,6 +1484,8 @@ watch(searchQuery, (newQuery) => {
   position: relative;
   height: 655px;
   width: 310px;
+  right: 15px;
+
   background:
     linear-gradient(
         to top,

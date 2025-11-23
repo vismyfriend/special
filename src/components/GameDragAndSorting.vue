@@ -117,8 +117,37 @@ export default {
       return this.currentWords.filter(word =>
         !this.columnAssignments[word.id]
       )
+    },
+
+    // Новое computed свойство для поиска дубликатов
+    duplicateWordsInColumns() {
+      const duplicates = new Set()
+
+      // Проходим по всем колонкам
+      this.currentGameData.columns.forEach(column => {
+        const itemsInColumn = this.getItemsInColumn(column.id)
+
+        // Группируем слова по их eng значению
+        const wordGroups = {}
+        itemsInColumn.forEach(item => {
+          if (!wordGroups[item.eng]) {
+            wordGroups[item.eng] = []
+          }
+          wordGroups[item.eng].push(item.id)
+        })
+
+        // Находим дубликаты (слова с одинаковым eng в одной колонке)
+        Object.values(wordGroups).forEach(wordIds => {
+          if (wordIds.length > 1) {
+            wordIds.forEach(id => duplicates.add(id))
+          }
+        })
+      })
+
+      return duplicates
     }
   },
+
 
   mounted() {
     this.initializeGame()
@@ -182,6 +211,11 @@ export default {
     },
 
     getHintClass(wordId) {
+      // Если слово уже в колонке - всегда показываем подсказку
+      if (this.columnAssignments[wordId]) {
+        return ''
+      }
+
       // Если подсказки скрыты глобально И это слово не во временных подсказках
       if (this.hintsHidden && !this.temporaryHints.has(wordId)) {
         return 'blurred'
@@ -297,18 +331,23 @@ export default {
             ? word.correctColumn.includes(currentColumn)
             : word.correctColumn === currentColumn
 
+          // Проверяем, является ли слово дубликатом
+          const isDuplicate = this.duplicateWordsInColumns.has(word.id)
+
+          // Если слово дубликат, считаем его неправильным
+          const finalStatus = isDuplicate ? 'incorrect' : (isCorrect ? 'correct' : 'incorrect')
+
           if (this.wordStatus[word.id] === null ||
-            (isCorrect && this.wordStatus[word.id] !== 'correct') ||
-            (!isCorrect && this.wordStatus[word.id] !== 'incorrect')) {
+            (finalStatus !== this.wordStatus[word.id])) {
 
-            this.wordStatus[word.id] = isCorrect ? 'correct' : 'incorrect'
+            this.wordStatus[word.id] = finalStatus
 
-            if (!isCorrect && !this.countedMistakes.has(word.id)) {
+            if (finalStatus === 'incorrect' && !this.countedMistakes.has(word.id)) {
               this.mistakes++
               this.countedMistakes.add(word.id)
             }
 
-            if (isCorrect && this.countedMistakes.has(word.id)) {
+            if (finalStatus === 'correct' && this.countedMistakes.has(word.id)) {
               this.countedMistakes.delete(word.id)
             }
           }
@@ -321,11 +360,19 @@ export default {
 
     getWordCardClass(wordId) {
       const status = this.wordStatus[wordId]
+
+      // Сначала проверяем дубликаты (оранжевый приоритетнее)
+      if (this.duplicateWordsInColumns.has(wordId)) {
+        return 'word-duplicate'
+      }
+
+      // Затем обычную проверку правильности
       if (status === 'correct') {
         return 'word-correct'
       } else if (status === 'incorrect') {
         return 'word-incorrect'
       }
+
       return ''
     },
 
@@ -694,6 +741,26 @@ export default {
     padding: 10px 20px;
     font-size: 13px;
   }
+}
+
+
+.word-duplicate {
+  background: linear-gradient(135deg, #fb923c, #f97316) !important;
+  color: white !important;
+  border-color: #ea580c !important;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(251, 146, 60, 0.45);
+  transition: all 0.5s ease !important;
+  animation: pulse-orange 2s ease-in-out infinite;
+}
+
+.word-duplicate .word-ru {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+@keyframes pulse-orange {
+  0%, 100% { transform: scale(1.05); }
+  50% { transform: scale(1.08); }
 }
 
 @media (max-width: 480px) {

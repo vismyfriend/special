@@ -1,97 +1,128 @@
 <template>
-    <div>
 
+<!--  http://192.168.0.43:9000/special/  для просмотра с телефона-->
+  <div>
+    <div
+      v-if="showOverlay"
+      class="overlay"
+    ></div>
 
-      <div
-        v-if="showOverlay"
-        class="overlay"
-      ></div>
+    <!-- Сворачиваемое меню -->
+    <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
+      <div class="top-menu-bar">
+        <button class="menu-button" @click="showAboutGame">⚙️</button>
+        <button class="menu-button" @click="otherGames">Задания</button>
+        <button class="menu-button" @click="restartGame">Заново</button>
+        <button class="menu-button" @click="changeSet">Миссии</button>
 
-
-      <!-- Сворачиваемое меню -->
-
-
-
-      <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
-        <div class="top-menu-bar">
-          <button class="menu-button" @click="showAboutGame">⚙️</button>
-          <button class="menu-button" @click="otherGames">Задания</button>
-          <button class="menu-button" @click="restartGame">Заново</button>
-          <button class="menu-button" @click="changeSet">Миссии</button>
-
-          <!-- Кнопка с визуалом LegendaryMode -->
-          <button class="menu-button legendary-button" @click="showLegendaryModal = true">
+        <!-- Кнопка с визуалом LegendaryMode -->
+        <button class="menu-button legendary-button" @click="showLegendaryModal = true">
             <span class="legendary-visual">
               <span class="flame">🔥</span>
               <span class="days-counter">{{ legendaryDays }}</span>
             </span>
-          </button>
+        </button>
 
-          <!-- Кнопка свернуть/развернуть -->
-          <button class="collapse-button">
-            {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
-          </button>
-        </div>
+        <!-- Кнопка свернуть/развернуть -->
+        <button class="collapse-button">
+          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
+        </button>
       </div>
-
-
-      <!-- Модальное окно LegendaryMode с передачей пропсов -->
-      <div v-if="showLegendaryModal" class="legendary-modal-overlay" @click.self="showLegendaryModal = false">
-        <div class="legendary-modal-content">
-          <LegendaryMode
-            :current-days="legendaryDays"
-            @update-days="updateLegendaryDays"
-          />
-          <button @click="showLegendaryModal = false" class="close-legendary-modal">Закрыть</button>
-        </div>
-      </div>
-
-      <!-- Модалка с сообщением -->
-      <div v-if="showModal" class="modal-overlay">
-        <div class="modal-content">
-          <p v-html="modalMessage"></p>
-          <button @click="closeModal">закрыть</button>
-        </div>
-      </div>
-
-        <router-view />
-        <button class="infoButton" @click="showInstructions"></button>
-
-
-        <div v-if="isInstructionsVisible" class="overlay" @click="hideInstructions">
-            <div class="instructions">
-                <h3>what do u wanna do?</h3>
-              <q-btn class="q-mb-sm zoomIn" label="Попробовать ещё раз  " push color="green" @click="$router.go(0)" >
-                    <span class="star-icons">
-                        <q-icon name="star" color="yellow" />
-                        <q-icon name="star" color="yellow" />
-                        <q-icon name="star" color="yellow" />
-                        <q-icon name="star" color="yellow" />
-                        <q-icon name="star" color="yellow" />
-                    </span>
-                </q-btn>
-                <q-btn class="q-mb-sm zoomIn" icon="search" label="Другой набор слов" push color="primary" @click="backToAllSets" />
-
-                <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="QUIT S.P.E.C.I.A.L App"
-                stack glossy color="purple" @click="backToIntroPage" />
-              <!-- Кнопка показывается только если есть missionName -->
-              <q-btn
-                v-if="hasMissionName"
-                push
-                color="brown-5"
-                @click="backToSameSet"
-                label="Этот же набор, другое задание"
-              >
-                🔎
-              </q-btn>
-
-            </div>
-        </div>
     </div>
+
+    <!-- Модальное окно LegendaryMode с передачей пропсов -->
+    <div v-if="showLegendaryModal" class="legendary-modal-overlay" @click.self="showLegendaryModal = false">
+      <div class="legendary-modal-content">
+        <LegendaryMode
+          :current-days="legendaryDays"
+          @update-days="updateLegendaryDays"
+        />
+        <button @click="showLegendaryModal = false" class="close-legendary-modal">Закрыть</button>
+      </div>
+    </div>
+
+    <!-- Модалка с сообщением -->
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal-content">
+        <p v-html="modalMessage"></p>
+        <button @click="closeModal">закрыть</button>
+      </div>
+    </div>
+
+    <!-- Модальное окно игрального кубика -->
+    <div v-if="showDiceModal" class="dice-modal-overlay" @click.self="closeDiceModal">
+      <div class="dice-modal-content">
+        <!-- Кнопка закрытия -->
+        <button class="dice-close-button" @click="closeDiceModal">×</button>
+
+        <!-- Контент кубика -->
+        <div class="dice-container">
+          <div
+            class="dice-roll-area"
+            @click="rollDice"
+            :class="{ rolling: isRolling }"
+          >
+            <div class="dice-text">
+              {{ isRolling ? 'I am rolling the dice..' : 'Roll the dice' }}
+              <!-- Добавляем псевдо-линию и перевод -->
+              <div class="translation-line">
+                <span class="translation-text">бросить кубик</span>
+              </div>
+            </div>
+
+            <!-- Отображение текущего числа во время броска -->
+            <div v-if="isRolling && currentDiceNumber !== null" class="dice-number-rolling">
+              {{ currentDiceNumber }}
+            </div>
+
+            <!-- Результат -->
+            <div v-if="showResult" class="dice-result">
+              <div class="result-number">{{ diceResult }}</div>
+              <div class="result-text">Выпало:</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <router-view />
+
+    <!-- Контейнер для кнопок справа -->
+    <div class="right-buttons-container">
+      <button class="infoButton" @click="showInstructions"></button>
+      <button class="diceButton" @click="showDiceModal = true"></button>
+    </div>
+
+    <div v-if="isInstructionsVisible" class="overlay" @click="hideInstructions">
+      <div class="instructions">
+        <h3>what do u wanna do?</h3>
+        <q-btn class="q-mb-sm zoomIn" label="Попробовать ещё раз  " push color="green" @click="$router.go(0)" >
+                  <span class="star-icons">
+                      <q-icon name="star" color="yellow" />
+                      <q-icon name="star" color="yellow" />
+                      <q-icon name="star" color="yellow" />
+                      <q-icon name="star" color="yellow" />
+                      <q-icon name="star" color="yellow" />
+                  </span>
+        </q-btn>
+        <q-btn class="q-mb-sm zoomIn" icon="search" label="Другой набор слов" push color="primary" @click="backToAllSets" />
+
+        <q-btn class="q-mb-sm zoomIn" icon="fingerprint" label="QUIT S.P.E.C.I.A.L App"
+               stack glossy color="purple" @click="backToIntroPage" />
+        <!-- Кнопка показывается только если есть missionName -->
+        <q-btn
+          v-if="hasMissionName"
+          push
+          color="brown-5"
+          @click="backToSameSet"
+          label="Этот же набор, другое задание"
+        >
+          🔎
+        </q-btn>
+      </div>
+    </div>
+  </div>
 </template>
-
-
-
 
 <script setup>
 import {computed, inject, onMounted, ref} from 'vue';
@@ -106,39 +137,91 @@ const modalMessage = ref('');
 const isMenuCollapsed = ref(false);
 const showLegendaryModal = ref(false);
 const showOverlay = ref(true);
-
+const showDiceModal = ref(false);
+const isRolling = ref(false);
+const currentDiceNumber = ref(null);
+const showResult = ref(false);
+const diceResult = ref(1);
 
 // Инициализируем legendaryDays с начальным значением 1
 const legendaryDays = ref(1);
+
 // Принимаем обновленное значение из LegendaryMode
 const updateLegendaryDays = (days) => {
   legendaryDays.value = days;
 };
 
-// Методы для меню
+// Методы для игрального кубика
+const closeDiceModal = () => {
+  showDiceModal.value = false;
+  resetDice();
+};
+
+const resetDice = () => {
+  isRolling.value = false;
+  currentDiceNumber.value = null;
+  showResult.value = false;
+  diceResult.value = 1;
+};
+
+const rollDice = async () => {
+  if (isRolling.value) return;
+
+  isRolling.value = true;
+  showResult.value = false;
+  currentDiceNumber.value = null;
+
+  // Фаза 1: Быстрая смена цифр (1 секунда)
+  const fastPhaseDuration = 1000; // 1 секунда быстрой смены
+  const fastInterval = 80; // очень быстро - 80ms между сменами
+
+  let fastPhaseStart = Date.now();
+
+  while (Date.now() - fastPhaseStart < fastPhaseDuration) {
+    currentDiceNumber.value = Math.floor(Math.random() * 6) + 1;
+    await new Promise(resolve => setTimeout(resolve, fastInterval));
+  }
+
+  // Фаза 2: Постепенное замедление (2 секунды)
+  const slowPhaseDuration = 2000; // 2 секунды замедления
+  const slowPhaseStart = Date.now();
+
+  // Начальный интервал для замедления (быстрый)
+  let currentInterval = 100;
+  // Конечный интервал (медленный)
+  const finalInterval = 400;
+
+  while (Date.now() - slowPhaseStart < slowPhaseDuration) {
+    currentDiceNumber.value = Math.floor(Math.random() * 6) + 1;
+
+    // Увеличиваем интервал постепенно
+    const progress = (Date.now() - slowPhaseStart) / slowPhaseDuration;
+    currentInterval = 100 + (progress * (finalInterval - 100));
+
+    await new Promise(resolve => setTimeout(resolve, currentInterval));
+  }
+
+  // Финальная цифра
+  diceResult.value = Math.floor(Math.random() * 6) + 1;
+  currentDiceNumber.value = diceResult.value;
+  showResult.value = true;
 
 
+    isRolling.value = false;
+
+};
+
+
+// Остальные методы остаются без изменений
 const showAboutGame = () => {
   openModal(`
     <div style="text-align: center;">
       <p>Подробнее про <br>S.P.E.C.I.A.L.<br>и vismyfriend</p>
-
       <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-
-
-        <!-- Кнопка "Обновления" (внутренний переход) -->
         <button onclick="window.__router.push('/v-is-my-friend/'); window.__modal.close()"
            style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Vismyfriend
         </button>
-
-        <!-- Кнопка "Об авторах" (внешняя ссылка) -->
-<!--        <a href="https://vismyfriend.itch.io/clicker-test"-->
-<!--           target="_blank"-->
-<!--           style="padding: 8px 16px; background: #4CAF50; color: white; border-radius: 4px; text-decoration: none;">-->
-<!--          Who is Vincent?-->
-<!--        </a>-->
-
         <button onclick="window.__router.push('/landing/'); window.__modal.close()"
            style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
           my site
@@ -149,7 +232,7 @@ const showAboutGame = () => {
 };
 
 const restartGame = () => {
-  router.go(0); // Аналог нажатия кнопки "Обновить" в браузере
+  router.go(0);
 };
 
 const changeSet = () => {
@@ -164,7 +247,6 @@ const otherGames = () => {
   }
 };
 
-
 const openModal = (message) => {
   modalMessage.value = message;
   showModal.value = true;
@@ -174,19 +256,13 @@ const closeModal = () => {
   showModal.value = false;
 };
 
-
-
 const isInstructionsVisible = ref(false);
 
-
-// На страницу с играми этого же набора
 const backToSameSet = () => {
   if (hasMissionName.value) {
     router.push(`/see-all-sets-of-words/${route.params.missionName}`);
   } else {
     console.error("missionName is undefined");
-    // Кнопка не должна отображаться, если missionName не определён,
-    // поэтому этот код выполнится только если что-то пошло не так
     router.push("/see-all-sets-of-words/");
   }
 }
@@ -195,16 +271,9 @@ const backToAllSets = () => {
   router.push("/see-all-sets-of-words/");
 }
 
-// Вычисляемое свойство для проверки наличия missionName
 const hasMissionName = computed(() => {
   return !!route.params.missionName;
 });
-// на предидущую страницу
-// const goBack = () => {
-//   router.go(-1)
-//   //   router.push("/")
-// }
-
 
 const backToIntroPage = () => {
   router.push("/");
@@ -218,103 +287,109 @@ const hideInstructions = () => {
   isInstructionsVisible.value = false;
 }
 
-
-
-
-// Через 10 сек сворачиваем меню (однократно)
 onMounted(() => {
-  // Загружаем из localStorage при старте
   const savedStreak = localStorage.getItem('legendaryStreak');
   if (savedStreak) {
     legendaryDays.value = parseInt(savedStreak) || 1;
   }
   setTimeout(() => {
     isMenuCollapsed.value = true;
-  }, 10000); // 10 000 мс = 10 сек
+  }, 10000);
   window.__router = router;
   window.__modal = { close: closeModal };
-
 });
 </script>
 
-
 <style lang="scss" scoped>
-
 .star-icons {
-    display: inline-flex; /* Используйте inline-flex для размещения иконок в строку */
-    gap: 1px; /* Расстояние между звездами */
-    align-items: center; /* Центрирование иконок по вертикали */
-    margin-right: 5px; /* Отступ между звездами и текстом кнопки */
-  }
+  display: inline-flex;
+  gap: 1px;
+  align-items: center;
+  margin-right: 5px;
+}
 
-  .q-btn {
-    display: flex; /* Используйте flex для кнопки */
-    align-items: center; /* Центрирование содержимого кнопки по вертикали */
-  }
+.q-btn {
+  display: flex;
+  align-items: center;
+}
 
 .closeThisPage {
-    display: block;
-    margin: 0 auto;
-
-    border-radius: 30px;
-    background-color: transparent;
+  display: block;
+  margin: 0 auto;
+  border-radius: 30px;
+  background-color: transparent;
 }
+
 .goToMissions {
-    color: green;
-    border-radius: 50px;
-  }
-
-  .goBackPage {
-    color: green;
-    border-radius: 50px;
-  }
-.infoButton {
-    position: absolute;
-    top: 20px;
-    right: -50px;
-    width: 50px; // Установите ширину кнопки
-    height: 50px; // Установите высоту кнопки
-    background-image: url('../assets/images/ApyGlassEmoji2.png'); // Укажите путь к вашему изображению
-    background-size: cover; // Обеспечьте, чтобы изображение заполнило кнопку
-    background-position: center; // Центрируйте изображение
-    background-color: transparent;
-    border: none; // Уберите рамку
-    border-radius: 50%; // Круглая форма
-    cursor: pointer; // Курсор при наведении
-    transition: transform 0.3s, box-shadow 0.3s; // Плавный эффект при наведении
-    display: none
+  color: green;
+  border-radius: 50px;
 }
 
-.infoButton:hover {
-    transform: scale(1.1); // Увеличение при наведении
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Тень при наведении
+.goBackPage {
+  color: green;
+  border-radius: 50px;
+}
+
+/* Контейнер для кнопок справа */
+.right-buttons-container {
+  position: absolute;
+  top: 20px;
+  right: -35px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999;
+}
+
+.infoButton, .diceButton {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.infoButton {
+  background-image: url('../assets/images/ApyGlassEmoji2.png');
+  display: none;
+}
+
+.diceButton {
+  background-image: url('../assets/images/dice-image.png'); /* Путь к вашему изображению кубика */
+}
+
+.infoButton:hover, .diceButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8); // Затемнение
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; // Убедитесь, что затемнение выше других элементов
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .instructions {
-    background: white;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-
+  background: white;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
 }
-
 
 /* Стили меню */
 .top-menu-wrapper {
@@ -326,10 +401,8 @@ onMounted(() => {
   transition: all 0.3s ease;
   overflow: visible;
   height: auto;
-  pointer-events: auto; /* Включаем события мыши */
-
+  pointer-events: auto;
 }
-
 
 .top-menu-bar {
   display: flex;
@@ -343,15 +416,12 @@ onMounted(() => {
   transform: translateY(0);
   transition: all 0.3s ease;
   position: relative;
-  pointer-events: auto; /* Включаем события мыши */
-
+  pointer-events: auto;
 }
 
 .collapsed .top-menu-bar {
   transform: translateY(-80%);
-
 }
-
 
 .collapse-button {
   position: absolute;
@@ -397,22 +467,16 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
-
 /* Свернутое состояние */
 .top-menu-wrapper.collapsed .top-menu-bar {
   transform: translateY(-80%);
-  pointer-events: none; /* Блокируем события мыши */
-
-
+  pointer-events: none;
 }
 
-/* Ховер-эффект */
 .top-menu-wrapper.collapsed:hover .top-menu-bar {
   transform: translateY(0);
   pointer-events: auto;
-
 }
-
 
 /* Адаптивные стили */
 @media (max-width: 768px) {
@@ -433,7 +497,18 @@ onMounted(() => {
     width: 70px;
     font-size: 10px;
   }
+
+  .right-buttons-container {
+    top: 10px;
+    right: -10px;
+  }
+
+  .infoButton, .diceButton {
+    width: 40px;
+    height: 40px;
+  }
 }
+
 /* Стили модального окна */
 .modal-overlay {
   position: fixed;
@@ -472,10 +547,200 @@ onMounted(() => {
   pointer-events: none;
 }
 
-// В секции style
+/* Стили для игрального кубика */
+.dice-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+.dice-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 350px;
+  height: 350px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dice-close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.dice-close-button:hover {
+  background-color: #f0f0f0;
+}
+
+.dice-container {
+  margin-top: 20px;
+}
+
+.dice-roll-area {
+  padding: 30px 20px;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dice-roll-area:hover {
+  border-color: #4CAF50;
+  background-color: #f9f9f9;
+}
+
+.dice-roll-area.rolling {
+  border-color: #FF9800;
+  background-color: #FFF3E0;
+  animation: shake 0.5s ease-in-out;
+}
+.dice-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  min-height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Стили для перевода */
+.translation-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.translation-line::before,
+.translation-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.translation-text {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/* Скрываем перевод во время броска и при результате */
+.dice-roll-area.rolling .translation-line,
+.dice-result ~ .translation-line {
+  display: none;
+}
+
+.countdown {
+  font-size: 48px;
+  font-weight: bold;
+  color: #FF9800;
+  animation: pulse 0.5s infinite alternate;
+}
+
+.dice-result {
+  text-align: center;
+}
+
+
+
+.result-text {
+  font-size: 18px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Стили для игрального кубика */
+.dice-number-rolling {
+  font-size: 64px;
+  font-weight: bold;
+  color: #FF9800;
+  animation: numberFlash 0.1s ease;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes numberFlash {
+  0% { opacity: 0.7; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.8; transform: scale(1); }
+}
+
+.dice-roll-area.rolling .dice-number-rolling {
+  animation: numberFlash 0.08s ease infinite;
+}
+
+/* Остальные стили остаются без изменений */
+.dice-roll-area.rolling {
+  border-color: #FF9800;
+  background-color: #FFF3E0;
+  animation: shake 0.8s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-5px) rotate(-2deg); }
+  50% { transform: translateX(5px) rotate(2deg); }
+  75% { transform: translateX(-3px) rotate(-1deg); }
+}
+
+.result-number {
+  font-size: 72px;
+  font-weight: bold;
+  color: #4CAF50;
+  animation: bounce 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-10px);}
+  60% {transform: translateY(-5px);}
+}
+
+/* Стили LegendaryMode */
 .legendary-button {
   position: relative;
-  padding-left: 40px !important; // Делаем место для иконки
+  padding-left: 40px !important;
 }
 
 .legendary-visual {
@@ -508,7 +773,6 @@ onMounted(() => {
   75% { opacity: 0.7; }
 }
 
-// Стили модального окна (как в предыдущем примере)
 .legendary-modal-overlay {
   position: fixed;
   top: 0;
@@ -551,7 +815,9 @@ onMounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
 }
+
+
 </style>

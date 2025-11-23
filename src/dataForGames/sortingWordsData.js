@@ -330,7 +330,7 @@ const sortingWordsData = {
 
       { id: 101, eng: 'say СЭЙ', ru: 'сказать или произнести', correctColumn: 'v1'},
       { id: 102, eng: 'said СЭД', ru: 'сказал или произнес', correctColumn: ['v2','v3'] },
-      { id: 103, eng: 'said СЭД ', ru: 'сказал или произнес', correctColumn: ['v2','v3'] },
+      { id: 103, eng: 'said СЭД', ru: 'сказал или произнес', correctColumn: ['v2','v3'] },
 
       { id: 98, eng: 'know НОУ', ru: 'знать', correctColumn: 'v1' },
       { id: 99, eng: 'knew НЮ', ru: 'знал', correctColumn: 'v2' },

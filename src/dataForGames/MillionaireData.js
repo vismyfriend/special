@@ -1050,13 +1050,13 @@ const MillionaireData = {
     {
       text: "What kind of repetition works best?",
       options: {
-        A: "Repeating all info at once",
+        A: "Repeating from time to time",
         B: "Repeating some info every 2-3 hours",
         C: "Repeating everything once a day",
         E: "Repeating when we have time",
         D: "Repeating random information"
       },
-      correctAnswer: "B"
+      correctAnswer: "C"
     },
     {
       text: "What happens to memory after we review information?",
@@ -1108,7 +1108,7 @@ const MillionaireData = {
         A: "Study, study, study, study until they die",
         B: "Use spaced repetition and active recall",
         C: "Read without stopping",
-        E: "Buy agun and shoot the f... curve!",
+        E: "Buy a gun and shoot the f... curve!",
         D: "Study in a noisy place"
       },
       correctAnswer: "B"
