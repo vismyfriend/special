@@ -143,13 +143,89 @@ const currentDiceNumber = ref(null);
 const showResult = ref(false);
 const diceResult = ref(1);
 
-// Инициализируем legendaryDays с начальным значением 1
+// -------------------------
+// УПРОЩЕННЫЙ ТРЕКЕР ПОСЕЩЕНИЙ
+// -------------------------
+
 const legendaryDays = ref(1);
 
-// Принимаем обновленное значение из LegendaryMode
-const updateLegendaryDays = (days) => {
-  legendaryDays.value = days;
-};
+// Функция для получения сегодняшней даты в формате YYYY-MM-DD
+function getTodayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// Функция проверки и обновления streak
+function updateStreak() {
+  const today = getTodayISO();
+
+  // Загружаем сохраненные данные
+  const lastVisit = localStorage.getItem('lastVisitDate');
+  const currentStreak = parseInt(localStorage.getItem('currentStreak')) || 1;
+  const allVisits = JSON.parse(localStorage.getItem('allVisits') || '[]');
+
+  // Если сегодня уже отмечали - ничего не делаем
+  if (lastVisit === today) {
+    legendaryDays.value = currentStreak;
+    return;
+  }
+
+  // Проверяем разницу в днях
+  if (lastVisit) {
+    const lastDate = new Date(lastVisit);
+    const todayDate = new Date(today);
+    const diffTime = todayDate - lastDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+      // Посещение подряд - увеличиваем streak
+      legendaryDays.value = currentStreak + 1;
+    } else if (diffDays > 1) {
+      // Пропущен день - сбрасываем streak
+      legendaryDays.value = 1;
+    }
+  } else {
+    // Первое посещение
+    legendaryDays.value = 1;
+  }
+
+  // Сохраняем обновленные данные
+  localStorage.setItem('lastVisitDate', today);
+  localStorage.setItem('currentStreak', legendaryDays.value.toString());
+
+  // Добавляем сегодняшний день в историю посещений (если его еще нет)
+  if (!allVisits.includes(today)) {
+    allVisits.push(today);
+    localStorage.setItem('allVisits', JSON.stringify(allVisits));
+  }
+
+  console.log('Streak updated:', {
+    today,
+    lastVisit,
+    newStreak: legendaryDays.value,
+    allVisits: allVisits.length
+  });
+}
+
+// Функция для получения всех дат посещений
+function getAllVisitDates() {
+  return JSON.parse(localStorage.getItem('allVisits') || '[]');
+}
+
+// Функция для очистки старых записей (старше 365 дней)
+function cleanupOldVisits() {
+  const allVisits = getAllVisitDates();
+  const today = new Date();
+  const oneYearAgo = new Date();
+  oneYearAgo.setDate(oneYearAgo.getDate() - 365);
+
+  const filteredVisits = allVisits.filter(dateStr => {
+    const date = new Date(dateStr);
+    return date >= oneYearAgo;
+  });
+
+  localStorage.setItem('allVisits', JSON.stringify(filteredVisits));
+  return filteredVisits;
+}
 
 // Методы для игрального кубика
 const closeDiceModal = () => {
@@ -288,16 +364,15 @@ const hideInstructions = () => {
 }
 
 onMounted(() => {
-  const savedStreak = localStorage.getItem('legendaryStreak');
-  if (savedStreak) {
-    legendaryDays.value = parseInt(savedStreak) || 1;
-  }
-  setTimeout(() => {
-    isMenuCollapsed.value = true;
-  }, 10000);
-  window.__router = router;
-  window.__modal = { close: closeModal };
+  // Инициализируем трекер при загрузке
+  updateStreak();
+  cleanupOldVisits();
+
+  // Для отладки
+  console.log('Current streak:', legendaryDays.value);
+  console.log('All visits:', getAllVisitDates());
 });
+
 </script>
 
 <style lang="scss" scoped>

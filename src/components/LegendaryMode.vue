@@ -1,6 +1,5 @@
 <template>
   <div class="legendary-mode-content">
-    <!-- Заголовок модального окна -->
     <div class="modal-header">
       <h2>🔥 Legendary Mode</h2>
     </div>
@@ -8,12 +7,28 @@
     <!-- Блок с текущей серией -->
     <div class="streak-info">
       <div class="current-streak">
-        <span class="streak-number">{{ legendaryStreak }}</span>
+        <span class="streak-number">{{ currentStreak }}</span>
         <span class="streak-text">дней подряд</span>
       </div>
       <p class="streak-description">
         {{ getStreakDescription() }}
       </p>
+    </div>
+
+    <!-- Статистика -->
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-number">{{ totalVisits }}</span>
+        <span class="stat-label">всего посещений</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ currentStreak }}</span>
+        <span class="stat-label">текущая серия</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ bestStreak }}</span>
+        <span class="stat-label">рекорд</span>
+      </div>
     </div>
 
     <!-- Календарь посещений -->
@@ -53,52 +68,71 @@
       <p>{{ getMotivationalText() }}</p>
     </div>
 
-
+    <!-- Кнопки для разработки -->
     <div v-if="isDevMode" class="dev-controls">
       <button @click="forceAddDay" class="dev-button">[DEV] +1 день</button>
       <button @click="forceSkipDay" class="dev-button">[DEV] Пропустить день</button>
       <button @click="forceReset" class="dev-button">[DEV] Сбросить</button>
     </div>
-
   </div>
 </template>
 
 <script setup>
-
 import { ref, computed, onMounted, watch } from 'vue';
 
+const props = defineProps({
+  currentDays: {
+    type: Number,
+    default: 1
+  }
+});
 
-// Добавляем в начало скрипта
-const isDevMode = import.meta.env.DEV; // Кнопки будут видны только в режиме разработки
+const isDevMode = import.meta.env.DEV;
 
-// Методы для тестирования
-const forceAddDay = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+// Основные данные
+const currentStreak = ref(props.currentDays);
+const totalVisits = ref(0);
+const bestStreak = ref(0);
+const visitDates = ref([]);
+const currentYear = new Date().getFullYear();
+const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-  // Эмулируем посещение на следующий день
-  const newDate = new Date(lastVisitDate.value || today);
-  newDate.setDate(newDate.getDate() + 1);
+// Загрузка данных
+function loadTrackerData() {
+  try {
+    // Текущий streak передается через props
+    currentStreak.value = props.currentDays;
 
-  lastVisitDate.value = newDate;
-  updateStreakValue(legendaryStreak.value + 1);
-  visitDates.value.push(newDate.toISOString());
-};
+    // Загружаем остальные данные
+    const savedVisits = localStorage.getItem('allVisits');
+    const savedBestStreak = localStorage.getItem('bestStreak');
 
-const forceReset = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    if (savedVisits) {
+      visitDates.value = JSON.parse(savedVisits);
+      totalVisits.value = visitDates.value.length;
+    }
 
-  lastVisitDate.value = today;
-  updateStreakValue(1);
-  visitDates.value = [today.toISOString()]; // Полностью очищаем массив посещений
-  updateStreakValue(1);
-};
+    if (savedBestStreak) {
+      bestStreak.value = parseInt(savedBestStreak);
+    }
 
-// Новая функция генерации дней календаря
-const generateCalendarDays = () => {
+    // Обновляем лучший streak если текущий больше
+    if (currentStreak.value > bestStreak.value) {
+      bestStreak.value = currentStreak.value;
+      localStorage.setItem('bestStreak', bestStreak.value.toString());
+    }
+
+  } catch (e) {
+    console.error('Error loading tracker data:', e);
+  }
+}
+
+// Генерация календаря
+function generateCalendarDays() {
   const today = new Date();
   const currentMonth = today.getMonth();
+  const currentDate = today.getDate();
+
   const firstDay = new Date(currentYear, currentMonth, 1);
   const lastDay = new Date(currentYear, currentMonth + 1, 0);
 
@@ -114,148 +148,75 @@ const generateCalendarDays = () => {
 
   // Дни месяца
   for (let i = 1; i <= lastDay.getDate(); i++) {
-    const currentDate = new Date(currentYear, currentMonth, i);
-    const isToday = i === today.getDate();
-    const isFuture = currentDate > today;
-    const isActive = visitDates.value.some(dateStr => {
-      const visitDate = new Date(dateStr);
-      return visitDate.getDate() === i &&
-        visitDate.getMonth() === currentMonth &&
-        visitDate.getFullYear() === currentYear;
-    });
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    const isToday = i === currentDate;
+    const isFuture = i > currentDate;
+    const isActive = visitDates.value.includes(dateStr);
 
-    days.push({ date: i, isActive, isToday, isFuture });
+    days.push({
+      date: i,
+      isActive,
+      isToday,
+      isFuture
+    });
   }
 
   return days;
+}
+
+// Методы для тестирования
+const forceAddDay = () => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const yesterdayStr = yesterday.toISOString().slice(0, 10);
+  const todayStr = today.toISOString().slice(0, 10);
+
+  // Эмулируем вчерашнее посещение
+  if (!visitDates.value.includes(yesterdayStr)) {
+    visitDates.value.push(yesterdayStr);
+  }
+
+  // Увеличиваем streak
+  currentStreak.value += 1;
+  totalVisits.value = visitDates.value.length;
+
+  // Сохраняем
+  localStorage.setItem('allVisits', JSON.stringify(visitDates.value));
+  localStorage.setItem('currentStreak', currentStreak.value.toString());
+
+  alert(`День добавлен! Текущая серия: ${currentStreak.value} дней`);
 };
+
 const forceSkipDay = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // Эмулируем пропуск дня (устанавливаем последнее посещение как "позавчера")
-  const newDate = new Date(lastVisitDate.value || today);
-  newDate.setDate(newDate.getDate() + 1); // +1 дня = пропуск одного дня
-
-  lastVisitDate.value = newDate;
-  updateStreakValue(1); // Сбрасываем счетчик до 1
-  visitDates.value.push(today.toISOString()); // Добавляем текущий день
-
-  alert(`Пропущен день! Счетчик сброшен. Последнее посещение: ${newDate.toLocaleDateString()}`);
+  // Сбрасываем streak до 1
+  currentStreak.value = 1;
+  localStorage.setItem('currentStreak', '1');
+  alert('Серия сброшена!');
 };
 
+const forceReset = () => {
+  // Полный сброс
+  currentStreak.value = 1;
+  visitDates.value = [];
+  totalVisits.value = 0;
+  bestStreak.value = 0;
 
+  localStorage.setItem('currentStreak', '1');
+  localStorage.setItem('allVisits', '[]');
+  localStorage.setItem('bestStreak', '0');
+  localStorage.removeItem('lastVisitDate');
 
-const props = defineProps({
-  currentDays: {
-    type: Number,
-    default: 1
-  }
-});
-
-const emit = defineEmits(['update-days']);
-
-// Основные данные
-const legendaryStreak = ref(props.currentDays);
-const lastVisitDate = ref(null);
-const visitDates = ref([]);
-const currentYear = new Date().getFullYear();
-const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-
-// Обновление значения с синхронизацией
-const updateStreakValue = (newValue) => {
-  legendaryStreak.value = newValue;
-  emit('update-days', newValue);
-  saveLegendaryData();
+  alert('Все данные сброшены!');
 };
 
-// Инициализация
-onMounted(() => {
-  loadLegendaryData();
-  checkStreak();
-});
-
-// Проверка и обновление серии
-const checkStreak = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  if (!lastVisitDate.value) {
-    initFirstVisit(today);
-    return;
-  }
-
-  const lastVisit = new Date(lastVisitDate.value);
-  lastVisit.setHours(0, 0, 0, 0);
-  const daysDiff = Math.floor((today - lastVisit) / (86400000));
-
-  if (daysDiff === 0) return;
-
-  if (daysDiff === 1) {
-    // Продолжение серии
-    updateStreakValue(legendaryStreak.value + 1);
-    visitDates.value.push(today.toISOString());
-    lastVisitDate.value = today;
-  } else if (daysDiff > 1) {
-    // Сброс серии
-    updateStreakValue(1);
-    visitDates.value.push(today.toISOString());
-    lastVisitDate.value = today;
-  }
-};
-
-// 4. Методы для работы с localStorage
-const loadLegendaryData = () => {
-  try {
-    const savedStreak = localStorage.getItem('legendaryStreak');
-    const savedLastVisit = localStorage.getItem('lastVisitDate');
-    const savedVisitDates = localStorage.getItem('visitDates');
-
-    if (savedStreak) legendaryStreak.value = parseInt(savedStreak) || 1;
-    if (savedLastVisit) lastVisitDate.value = new Date(savedLastVisit);
-    if (savedVisitDates) visitDates.value = JSON.parse(savedVisitDates);
-
-    console.log('Data loaded from localStorage:', {
-      streak: legendaryStreak.value,
-      lastVisit: lastVisitDate.value,
-      visits: visitDates.value.length
-    });
-  } catch (e) {
-    console.error('Error loading legendary data:', e);
-    // Восстанавливаем значения по умолчанию при ошибке
-    legendaryStreak.value = 1;
-    lastVisitDate.value = new Date();
-    visitDates.value = [new Date().toISOString()];
-  }
-};
-
-const saveLegendaryData = () => {
-  try {
-    localStorage.setItem('legendaryStreak', legendaryStreak.value.toString());
-    localStorage.setItem('lastVisitDate', new Date().toISOString());
-    localStorage.setItem('visitDates', JSON.stringify(visitDates.value));
-    console.log('Data saved to localStorage');
-  } catch (e) {
-    console.error('Error saving legendary data:', e);
-  }
-};
-
-
-const initFirstVisit = (today) => {
-  console.log('First visit detected');
-  lastVisitDate.value = today;
-  legendaryStreak.value = 1;
-  visitDates.value = [today.toISOString()];
-  saveLegendaryData();
-};
-
-
-// 6. Вспомогательные методы
+// Вспомогательные методы
 const getStreakDescription = () => {
-  if (legendaryStreak.value === 1) return 'Начни свой легендарный путь!';
-  if (legendaryStreak.value < 7) return 'Отличное начало! Продолжай в том же духе!';
-  if (legendaryStreak.value < 30) return 'Неделя за неделей - ты становишься сильнее!';
-  if (legendaryStreak.value < 100) return 'Месяц за месяцем - ты настоящий герой!';
+  if (currentStreak.value === 1) return 'Начни свой легендарный путь!';
+  if (currentStreak.value < 7) return 'Отличное начало! Продолжай в том же духе!';
+  if (currentStreak.value < 30) return 'Неделя за неделей - ты становишься сильнее!';
+  if (currentStreak.value < 100) return 'Месяц за месяцем - ты настоящий герой!';
   return 'Ты легенда! Продолжай свой путь!';
 };
 
@@ -277,8 +238,20 @@ const getCurrentMonthName = () => {
   ];
   return months[new Date().getMonth()];
 };
+
+// Computed
 const calendarDays = computed(generateCalendarDays);
 
+// Хуки
+onMounted(() => {
+  loadTrackerData();
+});
+
+// Следим за изменением props
+watch(() => props.currentDays, (newVal) => {
+  currentStreak.value = newVal;
+  loadTrackerData();
+});
 </script>
 
 <style scoped>
@@ -326,6 +299,35 @@ const calendarDays = computed(generateCalendarDays);
   font-size: 16px;
   color: #333;
   margin: 0;
+}
+
+/* Статистика */
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 25px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff6b35;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
 }
 
 .calendar-container {
@@ -426,17 +428,7 @@ const calendarDays = computed(generateCalendarDays);
   font-style: italic;
 }
 
-@media (max-width: 768px) {
-  .streak-number {
-    font-size: 36px;
-  }
-
-  .calendar-day {
-    font-size: 12px;
-  }
-}
-
-/* dev-кнопки display flex - отобразить */
+/* Стили для dev-кнопок */
 .dev-controls {
   display: none;
   gap: 8px;
@@ -461,7 +453,33 @@ const calendarDays = computed(generateCalendarDays);
   background: #d0d0d0;
 }
 
-.dev-button:nth-child(1) { background: #e8f5e9; } /* +1 день - зеленый */
-.dev-button:nth-child(2) { background: #fff8e1; } /* Пропустить - желтый */
-.dev-button:nth-child(3) { background: #ffebee; } /* Сбросить - красный */
+.dev-button:nth-child(1) { background: #e8f5e9; }
+.dev-button:nth-child(2) { background: #fff8e1; }
+.dev-button:nth-child(3) { background: #ffebee; }
+
+@media (max-width: 768px) {
+  .streak-number {
+    font-size: 36px;
+  }
+
+  .calendar-day {
+    font-size: 12px;
+  }
+
+  .stats-container {
+    padding: 10px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .dev-controls {
+    flex-direction: column;
+  }
+}
 </style>
