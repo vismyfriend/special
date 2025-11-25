@@ -1012,7 +1012,7 @@ const MillionaireData = {
       correctAnswer: "C"
     },
     {
-      text: "According to the Forgetting Curve, when do we forget the fastest?",
+      text: "According to the Forgetting Curve, when do we start to forget information?",
       options: {
         A: "Right after learning",
         B: "Two weeks later",
@@ -1023,7 +1023,7 @@ const MillionaireData = {
       correctAnswer: "A"
     },
     {
-      text: "How much information can people forget after one hour, if they do not review it?",
+      text: "How much information can people forget in one day, if they do not review it?",
       options: {
         A: "Somewhere between 25% and 35%",
         B: "More than 80%",
@@ -1072,13 +1072,13 @@ const MillionaireData = {
     {
       text: "Why do people forget information quickly?",
       options: {
-        A: "Cuz they don't review it",
+        A: "Cuz they are stupid",
         E: "Cuz teachers are bad",
         B: "Cuz people sleep too much",
         C: "Cuz the brain deletes boring stuff",
         D: "Because my mama says so"
       },
-      correctAnswer: "A"
+      correctAnswer: "C"
     },
     {
       text: "What is Active Recall?",
@@ -1103,7 +1103,7 @@ const MillionaireData = {
       correctAnswer: "B"
     },
     {
-      text: "How can students fight the Forgetting Curve?",
+      text: "How can students fight (побороть) the Forgetting Curve?",
       options: {
         A: "Study, study, study, study until they die",
         B: "Use spaced repetition and active recall",
@@ -1126,7 +1126,7 @@ const MillionaireData = {
       correctAnswer: "B"
     },
     {
-      text: "After several spaced repetitions, what happens to the Forgetting Curve?",
+      text: "After several spaced repetitions (после нескольких интервальных повторений), what happens to the Forgetting Curve?",
       options: {
         A: "It becomes almost flat (плоской)",
         B: "It becomes very steep (крутой)",
