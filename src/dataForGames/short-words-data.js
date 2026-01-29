@@ -958,6 +958,30 @@ whatISitVideoMission: [
     { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
 
   ],
+
+  phoneEnglish1: [
+    { id: 1, eng: "a wallpaper", ru: "обои", hint: "/ вОлпэйпэр /" },
+    { id: 2, eng: "a case", ru: "чехол", hint: "/ кэйс /" },
+    { id: 3, eng: "a protection glass", ru: "защитное стекло", hint: "/ протЭкшн глАс /" },
+    { id: 4, eng: "a picture of a mountain", ru: "изображение горы", hint: "/ пИкчэр оф э мАунтин /" },
+    { id: 5, eng: "it is locked", ru: "оно заблокировано", hint: "/ ит из лОкд /" },
+    { id: 6, eng: "unlocked", ru: "разблокировано", hint: "/ анлОкд /" },
+    { id: 7, eng: "a quick access", ru: "быстрый доступ", hint: "/ квик Эксез /" },
+    { id: 8, eng: "a flashlight", ru: "фонарик", hint: "/ флЭшлайт /" },
+    { id: 9, eng: "also", ru: "также", hint: "/ Олсоу /" },
+    { id: 10, eng: "an operator", ru: "оператор", hint: "/ эн Оупирэйтэр /" },
+    { id: 11, eng: "a charger", ru: "зарядное устройство", hint: "/ чАрджер /" },
+    { id: 12, eng: "percent", ru: "процент", hint: "/ пёрсЭнт /" },
+    { id: 13, eng: "etc.", ru: "и так далее (etcetera)", hint: "/ итсЭтэрэ /" },
+    { id: 14, eng: "dictionaries", ru: "словари", hint: "/ дИкшэнэриз /" },
+    { id: 15, eng: "different", ru: "разный", hint: "/ дИфрэнт /" },
+    { id: 16, eng: "applications", ru: "приложения", hint: "/ эликЭйшнз /" },
+    { id: 17, eng: "volume", ru: "громкость", hint: "/ вОл юм /" },
+    { id: 18, eng: "here it is", ru: "а вот и оно", hint: "/ хИэ ит из /" },
+    { id: 19, eng: "here we are", ru: "а вот и мы", hint: "/ хИэ ви а /" },
+    { id: 20, eng: "cracks on screen", ru: "трещины на экране", hint: "/ крэкс он скрин /" }
+  ],
+
   randomSet: [
 
     // Вопросительные слова

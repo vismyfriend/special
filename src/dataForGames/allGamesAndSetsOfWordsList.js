@@ -91,6 +91,13 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "phoneEnglish1",
+      missionVisibleName: "Phone in English 1",
+      missionDescription: "Телефон на английском 1",
+      id: 7,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronounsA00/find-pairs-easy",
       missionVisibleName: "Начать с самого начала",

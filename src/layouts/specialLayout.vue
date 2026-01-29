@@ -294,17 +294,30 @@ const showAboutGame = () => {
     <div style="text-align: center;">
       <p>Подробнее про <br>S.P.E.C.I.A.L.<br>и vismyfriend</p>
       <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
-        <button onclick="window.__router.push('/v-is-my-friend/'); window.__modal.close()"
+        <button id="vismyfriend-btn"
            style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Vismyfriend
         </button>
-        <button onclick="window.__router.push('/landing/'); window.__modal.close()"
+        <button id="mysite-btn"
            style="padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
           my site
         </button>
       </div>
     </div>
   `);
+
+  // Добавляем обработчики после отрисовки модального окна
+  setTimeout(() => {
+    document.getElementById('vismyfriend-btn')?.addEventListener('click', () => {
+      router.push('/v-is-my-friend/');
+      closeModal();
+    });
+
+    document.getElementById('mysite-btn')?.addEventListener('click', () => {
+      router.push('/landing/');
+      closeModal();
+    });
+  }, 100);
 };
 
 const restartGame = () => {

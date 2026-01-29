@@ -1081,13 +1081,13 @@ const MillionaireData = {
       correctAnswer: "C"
     },
     {
-      text: "What is Active Recall?",
+      text: "What is Active Recall Method? (что называется методом Активного Вспоминания)",
       options: {
         A: "Reading the text again out loud",
         B: "Listening to the teacher and choosing the answers",
         C: "Practicing without looking at the answers",
         E: "Какой нафиг эктив, я даже что такое recall не помню",
-        D: "Highlighting the text and important parts"
+        D: "Highlighting (выделение) the text and important parts (важных частей)"
       },
       correctAnswer: "C"
     },

@@ -257,9 +257,14 @@ const routes = [
       {
         path: '/notebook1',
         component: () => import('src/pages/intros/notebook1.vue')
-      },  {
+      },
+      {
         path: '/keypad',
         component: () => import('src/pages/specialKeypad.vue')
+      },
+      {
+        path: '/grammarDrill',
+        component: () => import('src/components/GameGrammarDrilling.vue')
       },
       {
         path: '/examplePage',
