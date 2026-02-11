@@ -5,14 +5,14 @@
       <p class="bubble left" id="intro-message">vismyfriend<br> and <br> vismyteacher</p>
 
       <div class="q-pa-15 ">
-        <img src="../assets/images/choose%20mission%20pic%20snowman.jpeg" alt="logo" class="border-radius50">
+        <img src="../assets/images/chooseMissionGirlOnBooks.png" alt="logo" class="border-radius50">
 
         <!-- Поле поиска -->
         <div class="search-container">
           <div class="search-input-wrapper">
             <input
               v-model="searchQuery"
-              placeholder="🔎 введи название миссии"
+              placeholder="🔎 вводи название миссии или листай"
               class="search-input"
             />
             <button
@@ -628,7 +628,8 @@ import { onMounted } from "vue";
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
 // Константы
-const ANIMATION_TEXT = "to Vincent\nfrom me\nHappy New Year";
+// const ANIMATION_TEXT = "to Vincent\nfrom me\nHappy New Year";
+const ANIMATION_TEXT = "What mission?";
 const ANIMATION_SPEED = 150;
 
 // Composables
@@ -1310,7 +1311,7 @@ watch(searchQuery, (newQuery) => {
 .search-input {
   scale: 1.1;
   width: 100%;
-  padding: 8px 80px 8px 15px; /* Увеличиваем правый padding для двух кнопок */
+  padding: 8px 8px 8px 15px; /* Увеличиваем правый padding для двух кнопок */
   border-radius: 20px;
   border: 3px solid #000000;
   font-size: 15px;
@@ -1877,6 +1878,7 @@ watch(searchQuery, (newQuery) => {
   }
 }
 
+
 .mission-name {
   text-align: left;
   margin-right: 10px;
@@ -2291,13 +2293,22 @@ watch(searchQuery, (newQuery) => {
 }
 
 .subtask-set {
-  background: rgba(142, 68, 173, 0.1);
-  border-left: 3px solid #8e44ad;
+  //background: rgba(142, 68, 173, 0.1);
+  background-color: #f9f9f9;
+  //border-left: 3px solid #8e44ad;
+  border-left: 8px solid rgba(0, 0, 0, 0.82);
 
   &:hover {
     background: rgba(142, 68, 173, 0.2);
   }
 }
+
+
+
+
+
+
+
 
 /* Стиль для интенсивных курсов */
 .subtasks-header.intensive {
@@ -2328,6 +2339,22 @@ watch(searchQuery, (newQuery) => {
 .subtasks-header.premium {
   background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
   border: 2px solid #daa520;
+  color: #000;
+
+  &::before {
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+/* Стиль для greenish контента */
+.subtasks-header.greenish {
+  background: linear-gradient(135deg, #88ff06 0%, #0bd506 100%);
+  border: 2px solid rgba(21, 193, 1, 0.6);
   color: #000;
 
   &::before {
@@ -2420,6 +2447,9 @@ watch(searchQuery, (newQuery) => {
     background: rgba(162, 155, 254, 0.2);
   }
 }
+
+
+
 
 /* Стиль Лава Лампа - ИСПРАВЛЕННЫЙ с работающими анимациями */
 .subtasks-header.lavaLamp {
@@ -2777,7 +2807,46 @@ watch(searchQuery, (newQuery) => {
   z-index: 1;
 }
 
+/* ==================== СТИЛИ ДЛЯ UNDERSUBTASK-SET ==================== */
+.undersubtask-premium {
+  border-left-color: #ffd700 !important;
+  background: rgba(255, 215, 0, 0.05);
+}
 
+.undersubtask-greenish {
+  border-left-color: #88ff06 !important;
+  background: rgba(68, 255, 6, 0.99);
+}
+
+.undersubtask-grammar {
+  border-left-color: #00b894 !important;
+  background: rgba(0, 184, 148, 0.05);
+}
+
+.undersubtask-speaking {
+  border-left-color: #74b9ff !important;
+  background: rgba(116, 185, 255, 0.05);
+}
+
+.undersubtask-gaming {
+  border-left-color: #a29bfe !important;
+  background: rgba(162, 155, 254, 0.05);
+}
+
+.undersubtask-lavaLamp {
+  border-left-color: #ff4081 !important;
+  background: rgba(255, 64, 129, 0.05);
+}
+
+.undersubtask-intensive {
+  border-left-color: #ff6b6b !important;
+  background: rgba(255, 107, 107, 0.05);
+}
+
+.undersubtask-glassMorphism {
+  border-left-color: #ff6b35 !important;
+  background: rgba(255, 107, 53, 0.05);
+}
 </style>
 
 

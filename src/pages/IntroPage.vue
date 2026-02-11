@@ -41,7 +41,8 @@
   <div class="image-container">
 <!--    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">-->
 <!--    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">-->
-    <img src="../assets/images/Character6.png" alt="greenButton" class="custom-image">
+<!--    <img src="../assets/images/Character6.png" alt="greenButton" class="custom-image">-->
+    <img src="../assets/images/RedDoor1.png" alt="RedDoor1" class="custom-image">
 <!--    <img src="../assets/images/whereToClick.png" alt="greenButton" class="custom-image">-->
 
 
@@ -55,7 +56,7 @@
       ref="buttonRef"
       class="positioned-button"
 
-    >Tap here</button>
+    >?!</button>
     <!--    <div class="counter">Вы увидели: <span>{{ counter }}</span></div>-->
 
     <Teleport to="body">
@@ -85,6 +86,36 @@
     v-if="showOverlay"
     class="overlay"
   ></div>
+  <!-- МОДАЛКА ДЛЯ ДЕСКТОПА: предупреждение об автопереводе -->
+  <Teleport to="body">
+    <div v-if="showTranslationWarning" class="translation-warning-overlay">
+      <div class="translation-warning-modal">
+        <div class="warning-icon">🌐</div>
+        <h2>Автоперевод страницы?</h2>
+        <p>Для эффективного изучения английского нужно <br> отключить автоматический перевод страницы.</p>
+
+        <!-- Свернутая инструкция с фиолетовой кнопкой -->
+        <div v-if="!showInstructions" class="compact-section">
+          <button class="purple-button" @click="toggleInstructions">
+            A как отключить?
+          </button>
+          <p class="warning-small">Инструкция - всего два клика</p>
+
+        </div>
+
+        <!-- Развернутая инструкция -->
+        <div v-else class="warning-instructions">
+          <p><strong>Google Chrome:</strong> Нажмите на иконку перевода 🔤 в адресной строке и выберите "Перевести страницу" → "Никогда не переводить этот сайт"</p>
+          <p><strong>Яндекс.Браузер:</strong> Нажмите на иконку перевода 🌐 в адресной строке и отключите "Переводить страницы автоматически"</p>
+          <p><strong>Safari:</strong> Правый клик → "Перевести" → "Отключить автоперевод"</p>
+        </div>
+
+        <button class="warning-button" @click="dismissTranslationWarning">
+          Ok, Vincent!
+        </button>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -94,12 +125,78 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { useRouter } from 'vue-router';
 import questionsData from "src/dataForGames/questions-data";
 
+import knockSound from '/src/assets/audio/knockOnDoorSound.mp3';
+
+
+// Состояние для отображения инструкции
+const showInstructions = ref(false);
+
+// Функция для сворачивания/разворачивания инструкции
+const toggleInstructions = () => {
+  showInstructions.value = !showInstructions.value;
+};
+
 const router = useRouter();
 
+// Определение типа устройства
+const isMobile = ref(false);
+const showTranslationWarning = ref(false);
+
+// Функция определения мобильного устройства
+const checkDevice = () => {
+  // Проверяем по user-agent
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
+
+  // Дополнительная проверка по ширине экрана
+  const isMobileWidth = window.innerWidth <= 768;
+
+  isMobile.value = isMobileDevice || isMobileWidth;
+
+  // Показываем предупреждение ТОЛЬКО если это НЕ мобильное устройство
+  showTranslationWarning.value = !isMobile.value;
+
+  console.log('📱 Мобильное устройство?', isMobile.value, 'Показывать предупреждение?', showTranslationWarning.value);
+};
+
+// Закрыть предупреждение
+const dismissTranslationWarning = () => {
+  showTranslationWarning.value = false;
+
+  // Сохраняем в localStorage, чтобы не показывать снова в этой сессии
+  sessionStorage.setItem('translationWarningDismissed', 'true');
+};
+
+// 1. ОДИН предзагруженный экземпляр
+const masterKnock = ref(null);
+
+// 2. Функция предзагрузки (вызвать один раз)
+const preloadKnock = () => {
+  masterKnock.value = new Audio(knockSound);
+  masterKnock.value.preload = 'auto';
+  masterKnock.value.volume = 0.6;
+  masterKnock.value.load(); // принудительная загрузка
+};
+
+// 3. Функция воспроизведения (мгновенно!)
+const playDoorKnock = () => {
+  if (masterKnock.value) {
+    // КЛЮЧЕВОЙ МОМЕНТ: клонируем уже загруженный звук
+    const knock = masterKnock.value.cloneNode();
+    knock.volume = 0.6;
+    knock.play().catch(() => {});
+  } else {
+    // Запасной вариант
+    const knock = new Audio(knockSound);
+    knock.volume = 0.6;
+    knock.play().catch(() => {});
+  }
+};
 
 // Объявляем переменные
 // const currentTapSymbol = '⚡'; // Здесь можно менять символ
-const currentTapSymbol = '❄️'; // Здесь можно менять символ
+// const currentTapSymbol = '❄️'; // Здесь можно менять символ
+const currentTapSymbol = '✊'; // Здесь можно менять символ
 // const currentTapSymbol = '🎃'; // Здесь можно менять символ
 const counter = ref(0);
 const sessionStartCounter = ref(0);
@@ -109,13 +206,13 @@ const initialShowText = ref(true); // Новый флаг для первона�
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "Что дальше ? Куда нажимать ?";
+    : "help me Vincent ! Куда нажимать ?";
 });
 
 const buttonColor = computed(() => {
   return sessionCounter.value >= 23
     ? "blue"
-    : "grey";
+    : "red";
 });
 
 const dynamicMessage = computed(() => {
@@ -129,8 +226,9 @@ const dynamicMessage = computed(() => {
   } else {
     return `Разомни память и произношение<br> <b>pronunciation </b> / пронАн си эйшн /<br>
 <br><br>
-    1) нажми "Tap here" ${remaining} times - раз(а)<br>
-    2) <b>читай вслух</b> вылетающие слова<br>
+<!--    1) нажми "Tap here" ${remaining} times - раз(а)<br>-->
+    1) Стучи в дверь ✊ ${remaining}<br>
+    2) читай <b>вслух </b> слова<br>
     `;
   }
 });
@@ -237,7 +335,7 @@ const handleBubbleClick = () => {
 // const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
 // const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
 // const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
-const welcomeWords = ["Oй","как","холодно!","it's","so cold","why?","Vincent","help me","please!","S.P.E.C.I.A.L.",];
+const welcomeWords = ["читай","вслух","читай вслух","it's","so cold","why?","Vincent","help me","please!","S.P.E.C.I.A.L.",];
 
 
 const allEnglishWords = [
@@ -281,6 +379,15 @@ const userLocalStorageName = ref('');
 // Инициализация при монтировании
 onMounted(() => {
   loadCounter();
+  preloadKnock();
+  checkDevice(); // <-- ПРОВЕРЯЕМ УСТРОЙСТВО И ПОКАЗЫВАЕМ ПРЕДУПРЕЖДЕНИЕ
+
+  // Проверяем, не закрывали ли уже предупреждение в этой сессии
+  const warningDismissed = sessionStorage.getItem('translationWarningDismissed');
+  if (warningDismissed === 'true') {
+    showTranslationWarning.value = false;
+  }
+
   userLocalStorageName.value = localStorage.getItem('agentName') || 'nonameYet';
 console.log("Name in local storage : " + userLocalStorageName.value);
   const meta = document.createElement('meta');
@@ -308,6 +415,7 @@ const handleTap = (e) => {
 
   counter.value++;
   saveCounter();
+  playDoorKnock();
 
 
   // Выбираем слово - сначала из welcomeWords, потом из общего списка
@@ -385,11 +493,17 @@ html {
   //  0 0 10px #000000,
   //  0 0 15px #ffc20d;
   //color: #ffea00;
+  //text-shadow:
+  //  0 0 1px #fff,
+  //  0 0 10px #3bf8ff,
+  //  0 0 10px #000000,
+  //  0 0 15px #0debff;
+  //color: #ffffff;
   text-shadow:
     0 0 1px #fff,
-    0 0 10px #3bf8ff,
+    0 0 10px #ff951a,
     0 0 10px #000000,
-    0 0 15px #0debff;
+    0 0 15px #e35114;
   color: #ffffff;
   /* color: #333; */
   pointer-events: none;
@@ -441,9 +555,11 @@ calc(var(--fadeStart) * 100%) {
   font-size: 30px;
   font-weight: bold;
   width: 215px;
-  height: 215px;
+  //height: 215px;
+  height: 340px;
   cursor: none;
-  margin: 40px 0;
+  margin: 0;
+  //margin: 40px 0;
   /* margin: 20px 0; центрируем кнопку */
   padding: 50px;
   transition: transform 0.1s, opacity 0.1s;
@@ -715,5 +831,224 @@ calc(var(--fadeStart) * 100%) {
   height: 100%;
   background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
   z-index: -1; /* чтобы фон был позади всего контента */
+}
+
+/* СТИЛИ ДЛЯ ПРЕДУПРЕЖДЕНИЯ ОБ АВТОПЕРЕВОДЕ (ТОЛЬКО ДЕСКТОП) */
+.translation-warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: fadeIn 0.3s ease;
+}
+
+.translation-warning-modal {
+  background: #1a1a1a;
+  color: white;
+  padding: 40px;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 40px rgba(76, 175, 80, 0.3);
+  animation: slideIn 0.4s ease;
+}
+
+.warning-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+.translation-warning-modal h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.translation-warning-modal p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+}
+
+.warning-instructions {
+  text-align: left;
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 16px;
+  margin: 25px 0;
+  border-left: 6px solid #4CAF50;
+}
+
+.warning-instructions p {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.warning-instructions p:last-child {
+  margin-bottom: 0;
+}
+
+.warning-instructions strong {
+  color: #4CAF50;
+}
+
+.warning-button {
+  background: linear-gradient(45deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  margin: 20px 0 15px;
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.warning-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #45a049, #4CAF50);
+  box-shadow: 0 6px 25px rgba(76, 175, 80, 0.6);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.warning-button:active {
+  transform: scale(0.98);
+}
+
+.warning-small {
+  font-size: 14px !important;
+  color: #999 !important;
+  margin-top: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Скрываем на мобильных устройствах */
+@media (max-width: 768px) {
+  .translation-warning-overlay {
+    display: none !important;
+  }
+}
+/* ФИКС КУРСОРА ДЛЯ МОДАЛКИ */
+.translation-warning-overlay,
+.translation-warning-modal,
+.warning-button,
+.warning-button * {
+  cursor: pointer !important;
+}
+
+.translation-warning-modal p,
+.translation-warning-modal h2,
+.translation-warning-modal .warning-icon,
+.translation-warning-modal .warning-small {
+  cursor: default;
+}
+
+/* Убеждаемся что модалка и всё в ней имеет нормальный курсор */
+.translation-warning-overlay {
+  cursor: default;
+}
+
+.warning-button {
+  cursor: pointer !important;
+}
+/* СТИЛИ ДЛЯ СВЕРНУТОЙ ИНСТРУКЦИИ И ФИОЛЕТОВОЙ КНОПКИ */
+.compact-section {
+  margin: 20px 0;
+}
+
+.purple-button {
+  background: linear-gradient(45deg, #9c27b0, #7b1fa2);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+  cursor: pointer !important;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.purple-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #ab47bc, #8e24aa);
+  box-shadow: 0 6px 25px rgba(156, 39, 176, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.purple-button:active {
+  transform: scale(0.98);
+}
+
+/* Обновляем отступы для модалки */
+.translation-warning-modal {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Размещаем кнопки друг под другом */
+.warning-button {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 350px;
+}
+
+/* Анимация появления инструкции */
+.warning-instructions {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Обновляем фикс курсора для новой кнопки */
+.purple-button,
+.purple-button * {
+  cursor: pointer !important;
 }
 </style>

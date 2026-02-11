@@ -975,11 +975,13 @@ whatISitVideoMission: [
     { id: 13, eng: "etc.", ru: "и так далее (etcetera)", hint: "/ итсЭтэрэ /" },
     { id: 14, eng: "dictionaries", ru: "словари", hint: "/ дИкшэнэриз /" },
     { id: 15, eng: "different", ru: "разный", hint: "/ дИфрэнт /" },
-    { id: 16, eng: "applications", ru: "приложения", hint: "/ эликЭйшнз /" },
+    { id: 16, eng: "applications", ru: "приложения", hint: "/ эпликЭйшнз /" },
     { id: 17, eng: "volume", ru: "громкость", hint: "/ вОл юм /" },
     { id: 18, eng: "here it is", ru: "а вот и оно", hint: "/ хИэ ит из /" },
     { id: 19, eng: "here we are", ru: "а вот и мы", hint: "/ хИэ ви а /" },
-    { id: 20, eng: "cracks on screen", ru: "трещины на экране", hint: "/ крэкс он скрин /" }
+    { id: 20, eng: "cracks on screen", ru: "трещины на экране", hint: "/ крэкс он скрин /" },
+    { id: 21, eng: "apply", ru: "применить", hint: "/ эплАй /" }
+
   ],
 
   randomSet: [
@@ -1047,7 +1049,42 @@ whatISitVideoMission: [
 
   ],
 
+  digits09: [
+    { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
+    { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
+    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
+    { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
+    { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
+    { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
+    { id: 7, eng: "seven", ru: "семь", hint: "/ сэвэн /" },
+    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+    { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
+    { id: 10, eng: "zero", ru: "ноль", hint: "/ зИро /" },
+    ],
 
+  numbers10to1000: [
+
+        { id: 10, eng: "ten", ru: "десять", hint: "/ тэн /" },
+        { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ илЭвэн /" },
+        { id: 12, eng: "twelve", ru: "двенадцать", hint: "/ туэлв /" },
+        { id: 13, eng: "thirteen", ru: "тринадцать", hint: "/ THётиииин /" },
+        { id: 14, eng: "fourteen", ru: "четырнадцать", hint: "/ фортиИИН /" },
+        { id: 15, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтиИИН /" },
+        { id: 16, eng: "sixteen", ru: "шестнадцать", hint: "/ сыкстиИИН /" },
+        { id: 17, eng: "seventeen", ru: "семнадцать", hint: "/ сэвэнтиИИН /" },
+        { id: 18, eng: "eighteen", ru: "восемнадцать", hint: "/ эйтиИИН /" },
+        { id: 19, eng: "nineteen", ru: "девятнадцать", hint: "/ найнтиИИН /" },
+        { id: 20, eng: "twenty", ru: "двадцать", hint: "/ твэнти /" },
+        { id: 24, eng: "thirty", ru: "тридцать", hint: "/  THёрти /" },
+        { id: 25, eng: "forty", ru: "сорок", hint: "/ форти /" },
+        { id: 26, eng: "fifty", ru: "пятьдесят", hint: "/ фИфти /" },
+        { id: 27, eng: "eighty", ru: "восемьдесят", hint: "/ эйти /" },
+        { id: 28, eng: "ninety", ru: "девяносто", hint: "/ нАйнти /" },
+        { id: 29, eng: "hundred", ru: "сто", hint: "/ хАНДред /" },
+        { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+        { id: 31, eng: "million", ru: "миллион", hint: "/ мИлион /" },
+        { id: 32, eng: "billion", ru: "миллиард", hint: "/ бИлион /" }
+    ],
     devModeNumbers: [
         { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
         { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
@@ -1223,6 +1260,83 @@ whatISitVideoMission: [
     { id: 25, eng: "Yy", ru: "уай", hint: "/ уай /" },
     { id: 26, eng: "Zz", ru: "зи/зэд", hint: "/ зи или zэд /" }
   ],
+  letters26: [
+    { id: 1, eng: "a", ru: "эй", hint: "/ эй /" },
+    { id: 2, eng: "b", ru: "би", hint: "/ би /" },
+    { id: 3, eng: "c", ru: "си", hint: "/ си /" },
+    { id: 4, eng: "d", ru: "ди", hint: "/ ди /" },
+    { id: 5, eng: "e", ru: "и", hint: "/ и /" },
+    { id: 6, eng: "f", ru: "эф", hint: "/ эф /" },
+    { id: 7, eng: "g", ru: "джи", hint: "/ джи /" },
+    { id: 8, eng: "h", ru: "эйч", hint: "/ эйч /" },
+    { id: 9, eng: "i", ru: "ай", hint: "/ ай /" },
+    { id: 10, eng: "j", ru: "джэй", hint: "/ джэй /" },
+    { id: 11, eng: "k", ru: "кей", hint: "/ кей /" },
+    { id: 12, eng: "l", ru: "эл", hint: "/ эл /" },
+    { id: 13, eng: "m", ru: "эм", hint: "/ эм /" },
+    { id: 14, eng: "n", ru: "эн", hint: "/ эн /" },
+    { id: 15, eng: "o", ru: "оу", hint: "/ оу /" },
+    { id: 16, eng: "p", ru: "пи", hint: "/ пи /" },
+    { id: 17, eng: "q", ru: "кью", hint: "/ кью /" },
+    { id: 18, eng: "r", ru: "ар", hint: "/ ар /" },
+    { id: 19, eng: "s", ru: "эс", hint: "/ эс /" },
+    { id: 20, eng: "t", ru: "ти", hint: "/ ти /" },
+    { id: 21, eng: "u", ru: "ю", hint: "/ ю /" },
+    { id: 22, eng: "v", ru: "ви", hint: "/ ви /" },
+    { id: 23, eng: "w", ru: "дабл ю", hint: "/ дабл-ю /" },
+    { id: 24, eng: "x", ru: "экс", hint: "/ экс /" },
+    { id: 25, eng: "y", ru: "уай", hint: "/ уай /" },
+    { id: 26, eng: "z", ru: "зи", hint: "/ зи или zэд /" }
+  ],
+  letters62: [
+    { id: 1, eng: "A a", ru: "эй" },
+    { id: 2, eng: "B b", ru: "би" },
+    { id: 3, eng: "C c", ru: "си" },
+    { id: 4, eng: "D d", ru: "ди" },
+    { id: 5, eng: "E e", ru: "и" },
+    { id: 6, eng: "F f", ru: "эф" },
+    { id: 7, eng: "G g", ru: "джи" },
+    { id: 8, eng: "H h", ru: "эйч" },
+    { id: 9, eng: "I i", ru: "ай" },
+    { id: 10, eng: "J j", ru: "джэй" },
+    { id: 11, eng: "K k", ru: "кей" },
+    { id: 12, eng: "L l", ru: "эл" },
+    { id: 13, eng: "M m", ru: "эм" },
+    { id: 14, eng: "N n", ru: "эн" },
+    { id: 15, eng: "O o", ru: "оу" },
+    { id: 16, eng: "P p", ru: "пи" },
+    { id: 17, eng: "Q q", ru: "кью" },
+    { id: 18, eng: "R r", ru: "ар" },
+    { id: 19, eng: "S s", ru: "эс" },
+    { id: 20, eng: "T t", ru: "ти" },
+    { id: 21, eng: "U u", ru: "ю" },
+    { id: 22, eng: "V v", ru: "ви" },
+    { id: 23, eng: "W w", ru: "дабл-ю" },
+    { id: 24, eng: "X x", ru: "экс" },
+    { id: 25, eng: "Y y", ru: "уай" },
+    { id: 26, eng: "Z z", ru: "зи/зэд" }
+  ],
+  emails: [
+    { id: 1, eng: ".", ru: "дот/поинт", hint: "точка" },
+    { id: 2, eng: "@", ru: "эт", hint: "собака" },
+    { id: 3, eng: "_", ru: "Андэ скор", hint: "подчеркивание" },
+    { id: 4, eng: "#", ru: "хэш/шарп", hint: "решетка" },
+    { id: 5, eng: "/", ru: "слэш", hint: "косая черта" },
+    { id: 6, eng: "www", ru: "ворлд вайд вэб", hint: "три дабл ю" },
+    { id: 7, eng: "www.special-agents.usa", ru: "прочитай вслух по буквам" },
+    { id: 8, eng: "+", ru: "плас", hint: "плюс" },
+    { id: 9, eng: "!", ru: "эксклаймейшн", hint: "восклицательный" },
+    { id: 10, eng: "%", ru: "пёр сЭнт", hint: "процент" },
+    { id: 11, eng: "&", ru: "энд", hint: "и" },
+    { id: 12, eng: "*", ru: "Эстерикс", hint: "звездочка" },
+    { id: 13, eng: "?", ru: "кУЭсчен", hint: "вопрос" },
+    { id: 14, eng: "-", ru: "мАйнэс", hint: "минус" },
+
+
+
+  ],
+
+
   clothes: [
 
       { id: 1, eng: "hat", ru: "шляпа", hint: "/ хЭт /", EnglishLevel: "A" },

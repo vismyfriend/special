@@ -72,13 +72,23 @@
       </div>
     </main>
 
-    <!-- БЛОК КАПЧИ -->
-    <div class="captcha-container" :class="captcha.status">
-      <div class="captcha-message">
-        {{ captcha.message }}
+    <!-- БЛОК КАПЧИ - исправленный, теперь кликабельный! -->
+    <div
+      class="captcha-container"
+      :class="captcha.status"
+      @click="playTargetLetterSound"
+    >
+      <!-- КРУЖОК С УХОМ - кликабельный указатель -->
+      <div class="captcha-ear-icon" @click.stop="playTargetLetterSound">
+        <span class="ear-emoji">👂</span>
+        <span class="ear-tooltip">нажми, чтобы услышать букву</span>
       </div>
+
+      <div class="captcha-message" v-html="captcha.message"></div>
+
       <div v-if="captcha.status === 'failed'" class="captcha-retry"></div>
     </div>
+
 
     <!-- Контролы для настройки -->
     <div class="controls">
@@ -116,36 +126,51 @@ import aiBaseImage from '/src/assets/images/keyPad7.png'
 import keypadSingleImage from '/src/assets/images/keypad-single.png'
 import keySoundPress from '/src/assets/audio/keySoundPress.mp3'
 
-import DetectivePreloader from '/src/pages/intros/preloader1.vue'
+import audioS from '/src/assets/audio/letters/S.mp3'
+import audioP from '/src/assets/audio/letters/P.mp3'
+import audioE from '/src/assets/audio/letters/E.mp3'
+import audioC from '/src/assets/audio/letters/C.mp3'
+import audioI from '/src/assets/audio/letters/i.mp3'
+import audioA from '/src/assets/audio/letters/A.mp3'
+import audioL from '/src/assets/audio/letters/L.mp3'
 
+import DetectivePreloader from '/src/pages/intros/preloader1.vue'
 
 export default {
   name: 'AIKeypad',
-
 
   components: {
     DetectivePreloader
   },
 
-
+  // ==================== DATA ====================
   data() {
     return {
-
+      // ----- Прелоадер -----
       showPreloader: true,
       contentReady: false,
+      audioPreloaded: false,
 
-
+      // ----- Технические флаги -----
       isTouchDevice: false,
       lastActionTime: 0,
+      blockKeyRelease: false,
+
+      // ----- Настройки -----
       platform: 'perplexity',
       theme: 'dark',
       muted: false,
+
+      // ----- Капча -----
       captcha: {
         message: '',
         status: 'waiting',
         targetKey: '',
         targetKeyName: ''
       },
+      oneKeyPressCount: 0, // Секретный счетчик
+
+      // ----- Клавиши -----
       keys: {
         one: { pressed: false, travel: 26 },
         two: { pressed: false, travel: 26, text: 'S' },
@@ -156,15 +181,20 @@ export default {
         seven: { pressed: false, travel: 18, text: 'A' },
         eight: { pressed: false, travel: 18, text: 'L' }
       },
+
+      // ----- Аудио -----
       clickAudio: null,
+      letterAudios: {},
+
+      // ----- Изображения -----
       images: {
         aiBase: aiBaseImage,
         keypadSingle: keypadSingleImage
-      },
-      blockKeyRelease: false
+      }
     }
   },
 
+  // ==================== COMPUTED ====================
   computed: {
     otherKeys() {
       const { one, ...others } = this.keys
@@ -172,18 +202,7 @@ export default {
     }
   },
 
-  mounted() {
-    this.initializeAudio()
-    this.setupKeyListeners()
-    this.updateDocumentTheme()
-    this.generateCaptcha()
-
-    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-
-    // Запускаем загрузку контента и управление прелоадером
-    this.initializeContent()
-  },
-
+  // ==================== WATCH ====================
   watch: {
     theme() {
       this.updateDocumentTheme()
@@ -192,56 +211,174 @@ export default {
       this.updateDocumentTheme()
     },
     muted(newVal) {
-      if (this.clickAudio) {
-        this.clickAudio.muted = newVal
-      }
+      if (this.clickAudio) this.clickAudio.muted = newVal
+      Object.values(this.letterAudios).forEach(audio => {
+        if (audio) audio.muted = newVal
+      })
     }
   },
 
-  methods: {
-    goToIntroPage() {
-      if (this.$router) {
-        this.$router.push("/see-all-sets-of-words")
+  // ==================== LIFECYCLE ====================
+  mounted() {
+    this.initializeAudio()
+    this.initializeContent()
+    this.setupKeyListeners()
+    this.updateDocumentTheme()
+    this.generateCaptcha()
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown)
+    window.removeEventListener('keyup', this.handleKeyUp)
+
+    if (this.clickAudio) {
+      this.clickAudio.pause()
+      this.clickAudio.src = ''
+    }
+    Object.values(this.letterAudios).forEach(audio => {
+      if (audio) {
+        audio.pause()
+        audio.src = ''
       }
-    },
+    })
+  },
+
+  // ==================== METHODS ====================
+  methods: {
+    // ---------- 1. УПРАВЛЕНИЕ ЗАГРУЗКОЙ ----------
     async initializeContent() {
-      // Параллельно загружаем контент и ждем минимум 3 секунды
       await Promise.all([
         this.preloadImages(),
-        new Promise(resolve => setTimeout(resolve, 3000))
+        this.preloadAudio(),
+        new Promise(resolve => setTimeout(resolve, 2000))
       ])
-
-      // Скрываем прелоадер и показываем контент
+      this.initializeLetterAudios()
       this.showPreloader = false
       this.contentReady = true
+      this.audioPreloaded = true
+      console.log('✨ Весь контент загружен и готов к работе!')
     },
 
     async preloadImages() {
-      // Предзагрузка изображений клавиатуры
       const loadImage = (src) => new Promise((resolve, reject) => {
         const img = new Image()
         img.onload = resolve
         img.onerror = reject
         img.src = src
       })
-
       try {
         await Promise.all([
           loadImage(this.images.aiBase),
           loadImage(this.images.keypadSingle)
         ])
+        console.log('✅ Изображения загружены')
       } catch (error) {
-        console.warn('Ошибка загрузки изображений:', error)
+        console.warn('⚠️ Ошибка загрузки изображений:', error)
       }
     },
 
+    async preloadAudio() {
+      const audioFiles = [
+        keySoundPress,
+        audioS, audioP, audioE, audioC, audioI, audioA, audioL
+      ]
+      const loadAudio = (src) => new Promise((resolve, reject) => {
+        const audio = new Audio()
+        audio.addEventListener('canplaythrough', () => {
+          console.log(`  ✅ ${src.split('/').pop()}`)
+          resolve(src)
+        }, { once: true })
+        audio.addEventListener('error', (e) => {
+          console.warn(`  ❌ ${src.split('/').pop()} - ошибка загрузки`)
+          reject(e)
+        }, { once: true })
+        audio.preload = 'auto'
+        audio.src = src
+        audio.load()
+      })
+      try {
+        console.log('🎵 Начинаем предзагрузку аудио:')
+        await Promise.all(audioFiles.map(src => loadAudio(src)))
+        console.log('🎵 ВСЕ аудиофайлы успешно предзагружены!')
+      } catch (error) {
+        console.warn('⚠️ Некоторые аудиофайлы не загрузились:', error)
+      }
+    },
 
+    createOptimizedAudio(src) {
+      const audio = new Audio()
+      audio.src = src
+      audio.preload = 'auto'
+      audio.volume = 1.0
+      audio.load()
+      return audio
+    },
 
+    // ---------- 2. ИНИЦИАЛИЗАЦИЯ АУДИО ----------
     initializeAudio() {
-      this.clickAudio = new Audio(keySoundPress)
+      this.clickAudio = this.createOptimizedAudio(keySoundPress)
       this.clickAudio.muted = this.muted
     },
 
+    initializeLetterAudios() {
+      this.letterAudios = {
+        s: this.createOptimizedAudio(audioS),
+        p: this.createOptimizedAudio(audioP),
+        e: this.createOptimizedAudio(audioE),
+        c: this.createOptimizedAudio(audioC),
+        i: this.createOptimizedAudio(audioI),
+        a: this.createOptimizedAudio(audioA),
+        l: this.createOptimizedAudio(audioL)
+      }
+      Object.values(this.letterAudios).forEach(audio => {
+        if (audio) audio.muted = this.muted
+      })
+      console.log('🎤 Аудиообъекты букв готовы к воспроизведению')
+    },
+
+    // ---------- 3. ВОСПРОИЗВЕДЕНИЕ ЗВУКОВ ----------
+    playTargetLetterSound() {
+      if (this.captcha.status === 'waiting' && this.captcha.targetKey) {
+        const audio = this.letterAudios[this.captcha.targetKey]
+        if (audio && !this.muted) {
+          audio.currentTime = 0
+          const playPromise = audio.play()
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.warn(`⚠️ Ошибка воспроизведения буквы ${this.captcha.targetKey}:`, error)
+              if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
+                setTimeout(() => {
+                  this.letterAudios[this.captcha.targetKey] = this.createOptimizedAudio(
+                    this.getAudioSrcByKey(this.captcha.targetKey)
+                  )
+                }, 100)
+              }
+            })
+          }
+        }
+      }
+    },
+
+    getAudioSrcByKey(key) {
+      const map = {
+        s: audioS, p: audioP, e: audioE, c: audioC,
+        i: audioI, a: audioA, l: audioL
+      }
+      return map[key]
+    },
+
+    playClickSound() {
+      if (!this.muted && this.clickAudio) {
+        this.clickAudio.currentTime = 0
+        const playPromise = this.clickAudio.play()
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {})
+        }
+      }
+    },
+
+    // ---------- 4. ОБРАБОТЧИКИ КЛАВИШ ----------
     setupKeyListeners() {
       window.addEventListener('keydown', this.handleKeyDown)
       window.addEventListener('keyup', this.handleKeyUp)
@@ -260,17 +397,9 @@ export default {
 
     handleKeyDown(event) {
       const keyMap = {
-        'Meta': 'one',
-        'Tab': 'two',
-        's': 'two',
-        'p': 'three',
-        'e': 'four',
-        'c': 'five',
-        'i': 'six',
-        'a': 'seven',
-        'l': 'eight'
+        'Meta': 'one', 'Tab': 'two', 's': 'two', 'p': 'three',
+        'e': 'four', 'c': 'five', 'i': 'six', 'a': 'seven', 'l': 'eight'
       }
-
       const keyId = keyMap[event.key.toLowerCase()]
       if (keyId && !this.keys[keyId].pressed) {
         this.pressKey(keyId)
@@ -279,23 +408,152 @@ export default {
 
     handleKeyUp(event) {
       const keyMap = {
-        'Meta': 'one',
-        'Tab': 'two',
-        'c': 'three',
-        'v': 'four',
-        'Escape': 'five',
-        'a': 'six',
-        'b': 'seven',
-        'd': 'eight'
+        'Meta': 'one', 'Tab': 'two', 'c': 'three', 'v': 'four',
+        'Escape': 'five', 'a': 'six', 'b': 'seven', 'd': 'eight'
       }
-
       const keyId = keyMap[event.key]
       if (keyId) {
         this.releaseKey(keyId)
       }
     },
 
+    pressKey(keyId, event) {
+      const now = Date.now()
+      if (now - this.lastActionTime < 300) return
+      this.lastActionTime = now
+      if (this.keys[keyId].pressed) return
+
+      this.keys[keyId].pressed = true
+      this.playClickSound()
+
+      if (event && this.isTouchDevice) event.preventDefault()
+
+      requestAnimationFrame(() => {
+        if (keyId === 'one') {
+          this.cyclePlatformAndTheme()
+        } else {
+          this.checkCaptcha(keyId)
+        }
+      })
+    },
+
+    releaseKey(keyId) {
+      if (!this.blockKeyRelease) {
+        this.keys[keyId].pressed = false
+      }
+    },
+
+    // ---------- 5. ЛОГИКА КАПЧИ ----------
+    generateCaptcha() {
+      const availableKeys = [
+        { key: 's', name: 'эс' }, { key: 'p', name: 'пи' },
+        { key: 'e', name: 'и' }, { key: 'c', name: 'си' },
+        { key: 'i', name: 'ай' }, { key: 'a', name: 'эй' },
+        { key: 'l', name: 'эл' }
+      ]
+
+      let availableWithoutCurrent = availableKeys
+      if (this.captcha.targetKey) {
+        availableWithoutCurrent = availableKeys.filter(
+          item => item.key !== this.captcha.targetKey
+        )
+      }
+
+      const pool = availableWithoutCurrent.length > 0
+        ? availableWithoutCurrent
+        : availableKeys
+
+      const randomKey = pool[Math.floor(Math.random() * pool.length)]
+
+      this.captcha.targetKey = randomKey.key
+      this.captcha.targetKeyName = randomKey.name
+      this.captcha.message = `нажми <u>сюда</u> и услышь, чего делать дальше`
+      this.captcha.status = 'waiting'
+
+      console.log(`🎮 Новое задание: буква ${randomKey.key} (${randomKey.name})`)
+    },
+
+    checkCaptcha(keyId) {
+      if (this.captcha.status !== 'waiting') return
+
+      const pressedKey = this.keys[keyId].text.toLowerCase()
+
+      if (pressedKey === this.captcha.targetKey) {
+        this.captcha.status = 'success'
+        this.captcha.message = '✅ тест IQ пройден !'
+        this.blockKeyRelease = false
+        console.log('🎉 Правильно! Запускаем анимацию успеха')
+        this.playSuccessAnimation()
+      } else {
+        this.captcha.status = 'failed'
+        this.captcha.message = '❌ недостаточный IQ ... <br> попробуйте снова'
+        this.blockKeyRelease = true
+        this.keys[keyId].pressed = true
+
+        console.log(`❌ Неправильно: нажата ${pressedKey}, ожидалась ${this.captcha.targetKey}`)
+
+        setTimeout(() => {
+          this.blockKeyRelease = false
+          this.keys[keyId].pressed = false
+          this.generateCaptcha()
+        }, 3000)
+      }
+    },
+
+    // ---------- 6. АНИМАЦИЯ УСПЕХА ----------
+    async playSuccessAnimation() {
+      this.resetAllKeys()
+      await this.delay(700)
+
+      const targetWord = 'vincent'
+      const keyIds = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight']
+
+      for (let i = 0; i < keyIds.length; i++) {
+        this.keys[keyIds[i]].text = targetWord[i].toUpperCase()
+        this.pressKeyWithAnimation(keyIds[i])
+        await this.delay(100)
+      }
+
+      await this.delay(700)
+      this.goToIntroPage()
+    },
+
+    resetAllKeys() {
+      Object.keys(this.keys).forEach(keyId => {
+        this.keys[keyId].pressed = false
+      })
+    },
+
+    pressKeyWithAnimation(keyId) {
+      this.keys[keyId].pressed = true
+      this.playClickSound()
+      setTimeout(() => {
+        this.keys[keyId].pressed = false
+      }, 200)
+    },
+
+    delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    },
+
+    // ---------- 7. СЕКРЕТНАЯ МЕХАНИКА (КЛАВИША ONE) ----------
     cyclePlatformAndTheme() {
+      this.oneKeyPressCount++
+      console.log(`🔄 Нажатие #${this.oneKeyPressCount} на клавишу ONE`)
+
+      if (this.oneKeyPressCount >= 7) {
+        console.log('🎯 СЕКРЕТКА: 7 нажатий! Автоматическое прохождение капчи')
+        this.oneKeyPressCount = 0
+
+        if (this.captcha.status === 'waiting') {
+          this.captcha.status = 'success'
+          this.captcha.message = '✅ тест IQ пройден !<br> ( секретный способ )'
+          this.blockKeyRelease = false
+          console.log('🎉 Секретное прохождение! Запускаем анимацию успеха')
+          this.playSuccessAnimation()
+        }
+      }
+
       const platforms = ['macos', 'gemini', 'claude', 'perplexity', 'newplatform']
       const themes = ['dark', 'light', 'system']
 
@@ -308,159 +566,29 @@ export default {
       this.updateDocumentTheme()
     },
 
-    generateCaptcha() {
-      const availableKeys = [
-        { key: 's', name: 'эс' },
-        { key: 'p', name: 'пи' },
-        { key: 'e', name: 'и' },
-        { key: 'c', name: 'си' },
-        { key: 'i', name: 'ай' },
-        { key: 'a', name: 'эй' },
-        { key: 'l', name: 'эл' }
-      ]
-
-      const randomKey = availableKeys[Math.floor(Math.random() * availableKeys.length)]
-
-      this.captcha.targetKey = randomKey.key
-      this.captcha.targetKeyName = randomKey.name
-      this.captcha.message = `Нажми букву [ ${randomKey.name.toUpperCase()} ]`
-      this.captcha.status = 'waiting'
+    resetOneKeyCounter() {
+      this.oneKeyPressCount = 0
+      console.log('🔄 Счетчик клавиши ONE сброшен')
     },
 
-
-    async playSuccessAnimation() {
-      // Сбрасываем все кнопки в исходное положение
-      this.resetAllKeys();
-
-      // Ждем немного перед началом анимации
-      await this.delay(700);
-
-      // Запускаем волну нажатий
-      const targetWord = 'vincent';
-      const keyIds = ['two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
-
-      // Анимация смены букв и волны нажатий
-
-      for (let i = 0; i < keyIds.length; i++) {
-
-        // Меняем букву
-        this.keys[keyIds[i]].text = targetWord[i].toUpperCase();
-
-        // Анимируем нажатие
-        this.pressKeyWithAnimation(keyIds[i]);
-        await this.delay(100); // Интервал между нажатиями
-      }
-
-      // Ждем завершения анимации и переходим
-      await this.delay(700);
-      this.goToIntroPage();
-    },
-
-    resetAllKeys() {
-      Object.keys(this.keys).forEach(keyId => {
-        this.keys[keyId].pressed = false;
-      });
-    },
-
-    pressKeyWithAnimation(keyId) {
-      // Нажимаем кнопку
-      this.keys[keyId].pressed = true;
-      this.playClickSound();
-
-      // Автоматически отпускаем через короткое время
-      setTimeout(() => {
-        this.keys[keyId].pressed = false;
-      }, 200);
-    },
-
-    delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    },
-
-    checkCaptcha(keyId) {
-      if (this.captcha.status !== 'waiting') return
-
-      const pressedKey = this.keys[keyId].text.toLowerCase()
-
-      if (pressedKey === this.captcha.targetKey) {
-        this.captcha.status = 'success'
-        this.captcha.message = '✅ тест IQ пройден !'
-        this.blockKeyRelease = false
-
-        // Заменяем простой setTimeout на красивую анимацию
-        this.playSuccessAnimation();
-      } else {
-        this.captcha.status = 'failed'
-        this.captcha.message = '❌ недостаточный IQ ...'
-        this.blockKeyRelease = true
-        this.keys[keyId].pressed = true
-
-        setTimeout(() => {
-          this.blockKeyRelease = false
-          this.keys[keyId].pressed = false
-          this.generateCaptcha()
-        }, 3000)
-      }
-    },
-
-    pressKey(keyId, event) {
-      const now = Date.now()
-      if (now - this.lastActionTime < 300) return
-      this.lastActionTime = now
-
-      if (this.keys[keyId].pressed) return
-
-      this.keys[keyId].pressed = true
-      this.playClickSound()
-
-      if (event && this.isTouchDevice) {
-        event.preventDefault()
-      }
-
-      requestAnimationFrame(() => {
-        if (keyId === 'one') {
-          this.cyclePlatformAndTheme()
-        } else {
-          this.checkCaptcha(keyId)
-        }
-      })
-    },
-
-    playClickSound() {
-      if (!this.muted && this.clickAudio) {
-        this.clickAudio.currentTime = 0
-        const playPromise = this.clickAudio.play()
-
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            // Игнорируем ошибки на мобильных
-          })
-        }
-      }
-    },
-
-    releaseKey(keyId) {
-      if (!this.blockKeyRelease) {
-        this.keys[keyId].pressed = false
-      }
-    },
-
+    // ---------- 8. ВСПОМОГАТЕЛЬНЫЕ ----------
     updateDocumentTheme() {
       document.documentElement.dataset.theme = this.theme
       document.documentElement.dataset.platform = this.platform
-    }
-  },
+    },
 
-  beforeUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown)
-    window.removeEventListener('keyup', this.handleKeyUp)
+    goToIntroPage() {
+      this.resetOneKeyCounter()
+      if (this.$router) {
+        this.$router.push("/see-all-sets-of-words")
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-
-/* ОСНОВНЫЕ СТИЛИ КОМПОНЕНТА */
+/* ==================== 1. ОСНОВНЫЕ СТИЛИ КОМПОНЕНТА ==================== */
 .keypad-container {
   display: flex;
   flex-direction: column;
@@ -475,17 +603,15 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
-  /* Явно задаем цвета вместо light-dark() */
   background: var(--keypad-bg, #fff);
   color: var(--keypad-color, #333);
 }
 
-/* Фон только для этого компонента */
+/* Фон с сеткой */
 .keypad-container::before {
   --size: 45px;
-  --line-light: color-mix(in hsl, #333, transparent 1%); /* Уменьшил прозрачность */
-  --line-dark: color-mix(in hsl, #fff, transparent 50%);  /* Уменьшил прозрачность */
+  --line-light: color-mix(in hsl, #333, transparent 1%);
+  --line-dark: color-mix(in hsl, #fff, transparent 50%);
   content: '';
   position: absolute;
   top: 0;
@@ -500,26 +626,22 @@ export default {
   z-index: -1;
 }
 
-/* Темная тема */
+/* ==================== 2. ТЕМИЗАЦИЯ ==================== */
 .keypad-container[data-theme='dark'] {
   --keypad-bg: #000;
   --keypad-color: #fff;
   --keypad-line: var(--line-dark);
 }
-
 .keypad-container[data-theme='light'] {
   --keypad-bg: #fff;
   --keypad-color: #333;
   --keypad-line: var(--line-light);
 }
-
-/* Системная тема - используем медиа-запрос */
 .keypad-container[data-theme='system'] {
   --keypad-bg: #fff;
   --keypad-color: #333;
   --keypad-line: var(--line-light);
 }
-
 @media (prefers-color-scheme: dark) {
   .keypad-container[data-theme='system'] {
     --keypad-bg: #000;
@@ -528,94 +650,7 @@ export default {
   }
 }
 
-/* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ КАПЧИ */
-.captcha-container {
-  text-align: center;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
-  max-width: 400px;
-  margin: 0 auto;
-
-  /* Явные цвета для светлой и темной тем */
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-}
-
-.keypad-container[data-theme='dark'] .captcha-container,
-.keypad-container[data-theme='system'] .captcha-container {
-  background: rgba(0, 0, 0, 0.9);
-  color: #fff;
-}
-
-.captcha-container.waiting {
-  border-color: #666;
-}
-
-.keypad-container[data-theme='dark'] .captcha-container.waiting,
-.keypad-container[data-theme='system'] .captcha-container.waiting {
-  border-color: #999;
-}
-
-.captcha-container.success {
-  border-color: #4CAF50;
-  background: rgba(76, 175, 80, 0.1);
-}
-
-.keypad-container[data-theme='dark'] .captcha-container.success,
-.keypad-container[data-theme='system'] .captcha-container.success {
-  background: rgba(76, 175, 80, 0.2);
-}
-
-.captcha-container.failed {
-  border-color: #f44336;
-  background: rgba(244, 67, 54, 0.1);
-}
-
-.keypad-container[data-theme='dark'] .captcha-container.failed,
-.keypad-container[data-theme='system'] .captcha-container.failed {
-  background: rgba(244, 67, 54, 0.2);
-}
-
-.captcha-message {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-family: Special_f1;
-  color: inherit; /* Наследует цвет от родителя */
-}
-
-.captcha-retry {
-  font-size: 0.9rem;
-  font-style: italic;
-  color: #666;
-}
-
-.keypad-container[data-theme='dark'] .captcha-retry,
-.keypad-container[data-theme='system'] .captcha-retry {
-  color: #999;
-}
-
-/* Остальные стили без изменений */
-.controls {
-  display: none;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.control-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.control-group label {
-  font-weight: bold;
-}
-
+/* ==================== 3. КЛАВИАТУРА ==================== */
 .keypad {
   position: relative;
   aspect-ratio: 400 / 310;
@@ -630,34 +665,25 @@ export default {
   scale: 1;
 }
 
-.key {
-  transform-style: preserve-3d;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
+.keypad__base {
+  position: absolute;
+  bottom: 0;
+  width: 110%;
 }
-
-.key[data-pressed="true"] .key__content,
-.key:active .key__content {
-  translate: 0 calc(var(--travel, 20) * 1%);
-}
-
-.key__content {
-  width: 100%;
-  display: inline-block;
-  height: 100%;
-  transition: translate 0.12s ease-out;
-  container-type: inline-size;
-}
-
+.keypad__base img,
 .key img {
-  filter: hue-rotate(calc(var(--hue, 0) * 1deg))
-  saturate(var(--saturate, 1))
-  brightness(var(--brightness, 1));
+  width: 100%;
 }
 
+.keypad__single {
+  position: absolute;
+  width: 21%;
+  height: 24%;
+  clip-path: polygon(
+    0 0, 54% 0, 89% 24%, 100% 70%,
+    54% 100%, 46% 100%, 0 69%, 12% 23%, 47% 0%
+  );
+}
 .keypad__single img {
   --brightness: 2;
   --saturate: 0;
@@ -669,116 +695,39 @@ export default {
   translate: -50% 1%;
 }
 
-[data-platform='newplatform'] #one img {
-  --hue: 120;
-  --brightness: 0.8;
-  --saturate: 1.0;
-}
+/* Позиции клавиш */
+#one { left: 2.43%; bottom: 72.2%; }
+#two { left: 14.43%; bottom: 63.17%; }
+#three { left: 26.43%; bottom: 54.14%; }
+#four { left: 38.43%; bottom: 45.11%; }
+#five { left: 50.43%; bottom: 36.08%; }
+#six { left: 62.43%; bottom: 27.05%; }
+#seven { left: 74.43%; bottom: 18.02%; }
+#eight { left: 86.4%; bottom: 9%; }
 
-[data-platform='newplatform'] #one .key__text {
-  color: #fff;
+/* Стили клавиш */
+.key {
+  transform-style: preserve-3d;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
 }
-
-[data-platform='newplatform'] [data-key='newplatform'] {
-  display: grid;
+.key__content {
+  width: 100%;
+  display: inline-block;
+  height: 100%;
+  transition: translate 0.12s ease-out;
+  container-type: inline-size;
 }
-
-[data-platform='gemini'] #one img {
-  --brightness: 1.4;
-  --saturate: 0.4;
-  --hue: 330;
+.key[data-pressed="true"] .key__content,
+.key:active .key__content {
+  translate: 0 calc(var(--travel, 20) * 1%);
 }
-
-[data-platform='claude'] #one img {
-  --brightness: 0.6;
-  --saturate: 0;
+.key img {
+  filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(var(--saturate, 1)) brightness(var(--brightness, 1));
 }
-
-[data-platform='perplexity'] #one img {
-  --hue: 280;
-  --brightness: 0.8;
-  --saturate: 1.2;
-}
-
-[data-platform='macos'] #one img {
-  --saturate: 0;
-  --brightness: 0.6;
-}
-
-[data-platform='gemini'] #one .key__text {
-  color: hsl(214, 81%, 100%);
-}
-
-[data-platform='claude'] #one .key__text {
-  color: #d97757;
-}
-
-[data-platform='perplexity'] #one .key__text {
-  color: #fff;
-}
-
-[data-platform='macos'] #one .key__text {
-  color: #fff;
-  font-size: 22cqi;
-}
-
-#one {
-  left: 2.43%;
-  bottom: 72.2%;
-}
-
-#two {
-  left: 14.43%;
-  bottom: 63.17%;
-}
-
-#three {
-  left: 26.43%;
-  bottom: 54.14%;
-}
-
-#four {
-  left: 38.43%;
-  bottom: 45.11%;
-}
-
-#five {
-  left: 50.43%;
-  bottom: 36.08%;
-}
-
-#six {
-  left: 62.43%;
-  bottom: 27.05%;
-}
-
-#seven {
-  left: 74.43%;
-  bottom: 18.02%;
-}
-
-#eight {
-  left: 86.4%;
-  bottom: 9%;
-}
-
-.keypad__single {
-  position: absolute;
-  width: 21%;
-  height: 24%;
-  clip-path: polygon(
-    0 0,
-    54% 0,
-    89% 24%,
-    100% 70%,
-    54% 100%,
-    46% 100%,
-    0 69%,
-    12% 23%,
-    47% 0%
-  );
-}
-
 .key__text {
   width: 52%;
   height: 62%;
@@ -794,83 +743,269 @@ export default {
   display: grid;
   place-items: center;
 }
-
-.keypad__base {
-  position: absolute;
-  bottom: 0;
-  width: 110%;
+.key[data-pressed="true"].locked {
+  pointer-events: none;
+  opacity: 0.7;
 }
 
-.keypad__base img,
-.key img {
-  width: 100%;
-}
-
+/* ==================== 4. ПЛАТФОРМЫ (КЛАВИША ONE) ==================== */
 [data-key] {
   display: none;
   position: absolute;
   inset: 0;
   place-items: center;
 }
-
-[data-key] svg {
-  width: 50%;
-}
+[data-key] svg { width: 50%; }
 
 [data-platform='macos'] [data-key='macos'],
 [data-platform='perplexity'] [data-key='perplexity'],
 [data-platform='claude'] [data-key='claude'],
-[data-platform='gemini'] [data-key='gemini'] {
+[data-platform='gemini'] [data-key='gemini'],
+[data-platform='newplatform'] [data-key='newplatform'] {
   display: grid;
 }
 
-.key[data-pressed="true"].locked {
-  pointer-events: none;
-  opacity: 0.7;
+[data-platform='newplatform'] #one img { --hue: 120; --brightness: 0.8; --saturate: 1.0; }
+[data-platform='newplatform'] #one .key__text { color: #fff; }
+
+[data-platform='gemini'] #one img { --brightness: 1.4; --saturate: 0.4; --hue: 330; }
+[data-platform='gemini'] #one .key__text { color: hsl(214, 81%, 100%); }
+
+[data-platform='claude'] #one img { --brightness: 0.6; --saturate: 0; }
+[data-platform='claude'] #one .key__text { color: #d97757; }
+
+[data-platform='perplexity'] #one img { --hue: 280; --brightness: 0.8; --saturate: 1.2; }
+[data-platform='perplexity'] #one .key__text { color: #fff; }
+
+[data-platform='macos'] #one img { --saturate: 0; --brightness: 0.6; }
+[data-platform='macos'] #one .key__text { color: #fff; font-size: 22cqi; }
+
+/* ==================== 5. КАПЧА ==================== */
+.captcha-container {
+  position: relative;
+  text-align: center;
+  padding: 1rem 1rem;
+  margin: 40px 10px 0;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  max-width: 400px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
 }
 
-
-/* Анимация для волны нажатий */
-.key[data-pressed="true"] .key__content {
-  translate: 0 calc(var(--travel, 20) * 1%);
-  transition: translate 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.keypad-container[data-theme='dark'] .captcha-container,
+.keypad-container[data-theme='system'] .captcha-container {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
 }
 
-/* Специальная анимация для успешного прохождения */
-.key.success-animation[data-pressed="true"] .key__content {
-  translate: 0 calc(var(--travel, 20) * 1%);
-  transition: translate 0.1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Эффект свечения для анимации */
-@keyframes keyGlow {
-  0%, 100% {
-    filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(var(--saturate, 1)) brightness(var(--brightness, 1));
-  }
-  50% {
-    filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(calc(var(--saturate, 1) * 1.3)) brightness(calc(var(--brightness, 1) * 1.4));
-  }
-}
-
-.key.success-animation[data-pressed="true"] img {
-  animation: keyGlow 0.2s ease-in-out;
-}
-
-/* Анимация для сообщения об успехе */
+/* Статусы капчи */
+.captcha-container.waiting { border-color: #666; }
 .captcha-container.success {
   border-color: #4CAF50;
   background: rgba(76, 175, 80, 0.1);
   animation: successPulse 2s ease-in-out;
 }
+.captcha-container.failed {
+  border-color: #f44336;
+  background: rgba(244, 67, 54, 0.1);
+}
 
+.keypad-container[data-theme='dark'] .captcha-container.waiting,
+.keypad-container[data-theme='system'] .captcha-container.waiting { border-color: #999; }
+.keypad-container[data-theme='dark'] .captcha-container.success,
+.keypad-container[data-theme='system'] .captcha-container.success { background: rgba(76, 175, 80, 0.2); }
+.keypad-container[data-theme='dark'] .captcha-container.failed,
+.keypad-container[data-theme='system'] .captcha-container.failed { background: rgba(244, 67, 54, 0.2); }
+
+/* Текст капчи */
+.captcha-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: Special_f1;
+  color: inherit;
+}
+.captcha-retry {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+}
+.keypad-container[data-theme='dark'] .captcha-retry,
+.keypad-container[data-theme='system'] .captcha-retry { color: #999; }
+
+/* Пульсация капчи */
+.captcha-container.waiting {
+  animation: softPulse 2.5s ease-in-out infinite;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+.keypad-container[data-theme='dark'] .captcha-container.waiting,
+.keypad-container[data-theme='system'] .captcha-container.waiting {
+  animation: softPulseDark 2.5s ease-in-out infinite;
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+/* ==================== 6. УХО ==================== */
+.captcha-ear-icon {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(76, 175, 80, 0.2);
+  border: 2px solid rgba(76, 175, 80, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  animation: earPulse 2s ease-in-out infinite;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+}
+
+.keypad-container[data-theme='dark'] .captcha-ear-icon {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.9);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+}
+
+.ear-emoji {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* Тултип */
+.ear-tooltip {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  font-weight: normal;
+}
+
+.keypad-container[data-theme='dark'] .ear-tooltip {
+  background: rgba(255,255,255,0.9);
+  color: #333;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.captcha-ear-icon:hover .ear-tooltip {
+  opacity: 1;
+  visibility: visible;
+  bottom: -40px;
+}
+
+/* Эффект нажатия - УБИРАЕМ ПОЛНОСТЬЮ, чтобы ухо работало как капча */
+.captcha-ear-icon:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* ==================== 7. АНИМАЦИИ ==================== */
+@keyframes keyGlow {
+  0%, 100% { filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(var(--saturate, 1)) brightness(var(--brightness, 1)); }
+  50% { filter: hue-rotate(calc(var(--hue, 0) * 1deg)) saturate(calc(var(--saturate, 1) * 1.3)) brightness(calc(var(--brightness, 1) * 1.4)); }
+}
 @keyframes successPulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(76, 175, 80, 0.4);
-  }
-  50% {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(76, 175, 80, 0.4); }
+  50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(76, 175, 80, 0.6); }
+}
+@keyframes softPulse {
+  0% { transform: scale(1); border-color: rgba(76, 175, 80, 0.3); box-shadow: 0 0 0px rgba(76, 175, 80, 0); }
+  50% { transform: scale(1.02); border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
+  100% { transform: scale(1); border-color: rgba(76, 175, 80, 0.3); box-shadow: 0 0 0px rgba(76, 175, 80, 0); }
+}
+@keyframes softPulseDark {
+  0% { transform: scale(1); border-color: rgba(76, 175, 80, 0.5); box-shadow: 0 0 0px rgba(76, 175, 80, 0); }
+  50% { transform: scale(1.02); border-color: rgba(76, 175, 80, 1); box-shadow: 0 0 25px rgba(76, 175, 80, 0.7); }
+  100% { transform: scale(1); border-color: rgba(76, 175, 80, 0.5); box-shadow: 0 0 0px rgba(76, 175, 80, 0); }
+}
+@keyframes earPulse {
+  0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 15px rgba(76, 175, 80, 0.3); }
+  50% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 25px rgba(76, 175, 80, 0.6); }
+  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 15px rgba(76, 175, 80, 0.3); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.key.success-animation[data-pressed="true"] img {
+  animation: keyGlow 0.2s ease-in-out;
+}
+.key[data-pressed="true"] .key__content {
+  translate: 0 calc(var(--travel, 20) * 1%);
+  transition: translate 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.key.success-animation[data-pressed="true"] .key__content {
+  translate: 0 calc(var(--travel, 20) * 1%);
+  transition: translate 0.1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ==================== 8. МЕДИА-ЗАПРОСЫ ==================== */
+/* Hover эффекты для десктопа */
+@media (hover: hover) {
+  .captcha-container.waiting:hover {
+    animation: none;
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+    border-color: #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+  }
+  .keypad-container[data-theme='dark'] .captcha-container.waiting:hover,
+  .keypad-container[data-theme='system'] .captcha-container.waiting:hover {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
   }
 }
+
+/* Мобильные устройства */
+@media (hover: none) {
+  .captcha-container.waiting:hover { transform: none; }
+  .captcha-container.waiting {
+    animation: softPulse 2s ease-in-out infinite;
+  }
+  .keypad-container[data-theme='dark'] .captcha-container.waiting,
+  .keypad-container[data-theme='system'] .captcha-container.waiting {
+    animation: softPulseDark 2s ease-in-out infinite;
+  }
+  .captcha-container.waiting:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  .ear-tooltip { display: none; }
+  .captcha-ear-icon {
+    width: 60px;
+    height: 60px;
+    top: -45px;
+  }
+  .ear-emoji { font-size: 32px; }
+}
+
+/* ==================== 9. КОНТРОЛЫ (СКРЫТЫ) ==================== */
+.controls { display: none; }
+.control-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.control-group label { font-weight: bold; }
+
 </style>

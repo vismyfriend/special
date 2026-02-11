@@ -74,6 +74,173 @@ export const allGamesAndSetsOfWordsList =
     },
 
     {
+      type: "subTasks",
+      missionVisibleName: "Начать с самого начала",
+      missionDescription: "Start from the beginning",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "Цифры",
+          missionDescription: "Digits - диджитс",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/letters26/game-translate",
+          missionVisibleName: "Произношение",
+          missionDescription: "про нан си эйшн",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/letters62/find-pairs-easy",
+          missionVisibleName: "Буквы",
+          missionDescription: "Letters - лЭттэрз",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/numbers10to1000/game-translate",
+          missionVisibleName: "Числа",
+          missionDescription: "Numbers - намбэрз",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/emails/find-pairs-hard",
+          missionVisibleName: "И-мЭйл",
+          missionDescription: "E-mail почта",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/plates/deck-of-cards/",
+          missionVisibleName: "Номера машин",
+          missionDescription: "Plates - плЭйтс",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/plates/deck-of-cards/",
+          missionVisibleName: "Калькулятор",
+          missionDescription: "calculator - кэлкулЭйтэ",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/plates/deck-of-cards/",
+          missionVisibleName: "Экзамен 1",
+          missionDescription: "Exam 1 - эгzЭм уан",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+
+        {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Цифры",
+          missionDescription: "Digits - диджитс",
+          id: "under-subtasks-special",
+          style: "greenish", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              missionName: "questionWords1",
+              missionVisibleName: "Миссия - вопросы 1",
+              missionDescription: "Вопросительные слова 1",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+            },
+
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
+              missionVisibleName: "Миссия - вопросы 2",
+              missionDescription: "QW1 speaking",
+              id: 1001,
+              active: true,
+              gameIcon:' 🗣❓'
+            },
+            {
+              missionName: "questionWords2",
+              missionVisibleName: "Миссия - вопросы 3",
+              missionDescription: "Вопросит. слова 3",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+            },
+            {
+              missionName: "questionWords3",
+              missionVisibleName: "Миссия - вопросы 4",
+              missionDescription: "Вопросит. слова 4",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+
+            },
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
+              missionVisibleName: "Список вопросит. слов",
+              missionDescription: "All question words",
+              id: 1001,
+              active: true,
+            },
+
+          ]
+        },
+        {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Смол Токс",
+          missionDescription: "Повседневные беседы",
+          id: "under-subtasks-special",
+          style: "speaking", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/introLessonQuestionsSmallTalk1/deck-of-cards",
+              missionVisibleName: "Small talk 1",
+              missionDescription: "What's your favorite",
+              id: 1001,
+              active: true,
+              stars: '1'
+            },
+
+          ]
+        },
+        {
+          type: "hardcodedLink",
+          path: "/phoneFramePattern",
+          missionVisibleName: "Узнать свой уровень",
+          missionDescription: "What is my level of English?",
+          id: 1001,
+          active: true,
+        },
+      ]
+    },
+
+
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/sortVerbsNVS/sorting",
       missionVisibleName: "Naughty verbs S",
@@ -144,6 +311,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon: '🐶'
     },
+
 
     {
       type: "subTasks",
@@ -246,6 +414,10 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+
+
+
+    ///// ------
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/",
