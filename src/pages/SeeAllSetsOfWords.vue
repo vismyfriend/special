@@ -14,6 +14,8 @@
               v-model="searchQuery"
               placeholder="🔎 вводи название миссии или листай"
               class="search-input"
+              @focus="focusSearch"
+
             />
             <button
               v-if="showPronunciationButton"
@@ -623,29 +625,86 @@
 <script setup>
 import { useQuasar } from 'quasar';
 import { ref, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { onMounted } from "vue";
+import { onMounted, onBeforeUnmount } from 'vue';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
 
-// Константы
-// const ANIMATION_TEXT = "to Vincent\nfrom me\nHappy New Year";
+// ==================== КОНСТАНТЫ ====================
 const ANIMATION_TEXT = "What mission?";
 const ANIMATION_SPEED = 150;
 
-// Composables
+// ==================== COMPOSABLES ====================
 const $q = useQuasar();
 const router = useRouter();
 
-// Reactive состояния
-const searchQuery = ref('');
-const passwordModal = ref(false);
-const passwordInput = ref('');
-const currentSetToUnlock = ref(null);
-const shake = ref(false);
-const expandedSubTasks = ref(new Set());
-const expandedUnderSubTasks = ref(new Set());
+// ==================== БАЗОВЫЕ СОСТОЯНИЯ ====================
+const searchQuery = ref('');                    // Поисковый запрос
+const passwordModal = ref(false);              // Модалка пароля
+const passwordInput = ref('');                // Ввод пароля
+const currentSetToUnlock = ref(null);         // Текущий набор для разблокировки
+const shake = ref(false);                    // Анимация тряски
+const savedScrollPosition = ref(0);          // Сохраненная позиция скролла
 
-// Состояния категорий
+// ==================== СОСТОЯНИЯ РАСКРЫТИЙ ====================
+// 👤 ПОЛЬЗОВАТЕЛЬСКИЕ - сохраняются в localStorage
+const userExpandedSubTasks = ref(new Set());
+const userExpandedUnderSubTasks = ref(new Set());
+
+// 🔍 ПОИСКОВЫЕ - временные, сбрасываются при очистке поиска
+const searchExpandedSubTasks = ref(new Set());
+const searchExpandedUnderSubTasks = ref(new Set());
+
+// 🎯 ИТОГОВЫЕ COMPUTED - переключаются в зависимости от наличия поиска
+const expandedSubTasks = computed({
+  get: () => searchQuery.value?.trim()
+    ? searchExpandedSubTasks.value
+    : userExpandedSubTasks.value,
+  set: (value) => {
+    if (searchQuery.value?.trim()) {
+      searchExpandedSubTasks.value = value;
+    } else {
+      userExpandedSubTasks.value = value;
+    }
+  }
+});
+
+const expandedUnderSubTasks = computed({
+  get: () => searchQuery.value?.trim()
+    ? searchExpandedUnderSubTasks.value
+    : userExpandedUnderSubTasks.value,
+  set: (value) => {
+    if (searchQuery.value?.trim()) {
+      searchExpandedUnderSubTasks.value = value;
+    } else {
+      userExpandedUnderSubTasks.value = value;
+    }
+  }
+});
+
+
+// ==================== Нажатие на поиск - СКРОЛЛ К ВЕРХУ ====================
+const focusSearch = () => {
+  // Для iOS нужно больше времени из-за анимации клавиатуры
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  setTimeout(() => {
+    const phoneFrame = document.getElementById('phoneFrame');
+    if (phoneFrame) {
+      // Пробуем оба метода для надежности
+      try {
+        phoneFrame.scrollTo({
+          top: 0,
+          behavior: isIOS ? 'auto' : 'smooth' // На iOS smooth ломается
+        });
+      } catch(e) {
+        // Fallback для старых браузеров
+        phoneFrame.scrollTop = 0;
+      }
+    }
+  }, isIOS ? 350 : 50); // На iOS ждем дольше (350ms)
+};
+
+// ==================== СОСТОЯНИЯ КАТЕГОРИЙ ====================
 const categoryStates = ref({
   reading: false,
   categoryX: false,
@@ -654,20 +713,18 @@ const categoryStates = ref({
   chinese: false
 });
 
-// Computed свойства для доступа к состояниям категорий (для совместимости с шаблоном)
+// Computed для шаблона
 const isReadingExpanded = computed(() => categoryStates.value.reading);
 const isCategoryXExpanded = computed(() => categoryStates.value.categoryX);
 const iscategoryExamplesPatternsExpanded = computed(() => categoryStates.value.categoryExamplesPatterns);
 const isGamePatternsExpanded = computed(() => categoryStates.value.gamePatterns);
 const isChineseExpanded = computed(() => categoryStates.value.chinese);
 
-// Реактивный список наборов
+// ==================== ДАННЫЕ ====================
 const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
 
-// Computed свойства
-const showPronunciationButton = computed(() => {
-  return searchQuery.value.trim().length > 2;
-});
+// ==================== COMPUTED - ПОИСК И ФИЛЬТРАЦИЯ ====================
+const showPronunciationButton = computed(() => searchQuery.value.trim().length > 2);
 
 // Категории наборов
 const readingSets = computed(() => filterByCategory('reading'));
@@ -675,9 +732,8 @@ const categoryXSets = computed(() => filterByCategory('categoryX'));
 const categoryExamplesPatternsSets = computed(() => filterByCategory('categoryExamplesPatterns'));
 const gamePatternsSets = computed(() => filterByCategory('gamePatterns'));
 const chineseSets = computed(() => filterByCategory('chinese'));
-const subTasksSets = computed(() => getSubTasksSets());
 
-// Фильтрованные наборы с учетом поиска
+// Фильтрованные по поиску
 const filteredReadingSets = computed(() => filterSetsBySearch(readingSets.value));
 const filteredCategoryXSets = computed(() => filterSetsBySearch(categoryXSets.value));
 const filteredCategoryExamplesSets = computed(() => filterSetsBySearch(categoryExamplesPatternsSets.value));
@@ -685,16 +741,20 @@ const filteredGamePatternsSets = computed(() => filterSetsBySearch(gamePatternsS
 const filteredChineseSets = computed(() => filterSetsBySearch(chineseSets.value));
 
 // Умное отображение категорий
-const shouldShowReadingCategory = computed(() => shouldShowCategory('reading', readingSets.value, ['чтение reading', 'интенсивы']));
-const shouldShowCategoryX = computed(() => shouldShowCategory('categoryX', categoryXSets.value, ['категория x categoryx', 'секретные']));
-const shouldShowCategoryExamples = computed(() => shouldShowCategory('categoryExamplesPatterns', categoryExamplesPatternsSets.value, ['examples примеры categoryexamplespatterns']));
-const shouldShowGamePatterns = computed(() => shouldShowCategory('gamePatterns', gamePatternsSets.value, ['games gamepatterns игры', 'vincent']));
-const shouldShowChinese = computed(() => shouldShowCategory('chinese', chineseSets.value, ['chinese китайский язык']));
+const shouldShowReadingCategory = computed(() =>
+  shouldShowCategory('reading', readingSets.value, ['чтение reading', 'интенсивы']));
+const shouldShowCategoryX = computed(() =>
+  shouldShowCategory('categoryX', categoryXSets.value, ['категория x categoryx', 'секретные']));
+const shouldShowCategoryExamples = computed(() =>
+  shouldShowCategory('categoryExamplesPatterns', categoryExamplesPatternsSets.value, ['examples примеры categoryexamplespatterns']));
+const shouldShowGamePatterns = computed(() =>
+  shouldShowCategory('gamePatterns', gamePatternsSets.value, ['games gamepatterns игры', 'vincent']));
+const shouldShowChinese = computed(() =>
+  shouldShowCategory('chinese', chineseSets.value, ['chinese китайский язык']));
 
-// Основной список миссий (без категорийных наборов)
+// Основной список миссий (без категорий)
 const orderedMissionList = computed(() => {
   const excludedCategories = ['reading', 'categoryX', 'categoryExamplesPatterns', 'gamePatterns', 'chinese'];
-
   return AllSetsOfWords.value.filter(item =>
     item.active &&
     (item.type === "subTasks" ||
@@ -702,37 +762,23 @@ const orderedMissionList = computed(() => {
   );
 });
 
-// ИСПРАВЛЕННЫЙ ПОИСК - УЧИТЫВАЕМ ДУБЛИРУЮЩИЕСЯ ID
-// ИСПРАВЛЕННЫЙ ПОИСК - показываем только релевантные элементы
+// ФИЛЬТРОВАННЫЙ СПИСОК С УЧЕТОМ ПОИСКА
 const filteredOrderedMissions = computed(() => {
   const query = normalizeString(searchQuery.value).replace(/\//g, '');
-
-  if (!query) {
-    return orderedMissionList.value;
-  }
+  if (!query) return orderedMissionList.value;
 
   const result = [];
   const seen = new Set();
 
-  // Функция для проверки совпадения элемента
-  const itemMatches = (item) => {
-    return item.active && universalSearch(item, query);
-  };
+  const itemMatches = (item) => item.active && universalSearch(item, query);
 
-  // Функция для рекурсивного поиска
   const searchItems = (items, parentSubTask = null, parentUnderSubTask = null) => {
     items.forEach(item => {
       if (!item.active) return;
-
       const key = getItemKey(item);
       if (seen.has(key)) return;
 
-      // Проверяем совпадение
-      const matches = itemMatches(item);
-
-      // Если элемент совпадает или является родителем совпадающего элемента
-      if (matches) {
-        // Добавляем родителей если они есть
+      if (itemMatches(item)) {
         if (parentUnderSubTask && !seen.has(getItemKey(parentUnderSubTask))) {
           seen.add(getItemKey(parentUnderSubTask));
           result.push(parentUnderSubTask);
@@ -741,20 +787,15 @@ const filteredOrderedMissions = computed(() => {
           seen.add(getItemKey(parentSubTask));
           result.push(parentSubTask);
         }
-
-        // Добавляем сам элемент
         seen.add(key);
         result.push(item);
       }
 
-      // Рекурсивно проверяем subTasks
       if (isSubTasks(item) && item.subTasks) {
         item.subTasks.forEach(subTask => {
           if (isUnderSubTasks(subTask)) {
-            // Для underSubTasks передаем оба родителя
             searchItems(subTask.underSubTasks || [], item, subTask);
           } else {
-            // Для обычных subTasks передаем только subTask родителя
             searchItems([subTask], item, null);
           }
         });
@@ -762,211 +803,42 @@ const filteredOrderedMissions = computed(() => {
     });
   };
 
-  // Запускаем поиск
   searchItems(orderedMissionList.value);
-
   return result;
 });
-// Функция для генерации ключа в шаблоне - ИСПРАВЛЕННАЯ
-const getItemKey = (item) => {
-  // Используем сохраненный уникальный ключ или генерируем новый
-  if (item._uniqueKey) {
-    return item._uniqueKey;
-  }
 
-  // Резервный вариант
-  const keyParts = [
-    item.type || '',
-    item.missionName || '',
-    item.missionVisibleName || '',
-    item.missionDescription || '',
-    item.path || '',
-    item.url || ''
-  ].filter(part => part !== '');
-
-  return keyParts.join('_') || `key_${Math.random().toString(36).substr(2, 9)}`;
-};
-
-// Функция для генерации ключей для элементов внутри subTasks
-const getSubTaskItemKey = (subTask) => {
-  const keyParts = [
-    subTask.type || '',
-    subTask.missionName || '',
-    subTask.missionVisibleName || '',
-    subTask.missionDescription || '',
-    subTask.path || '',
-    subTask.url || ''
-  ].filter(part => part !== '');
-
-  return keyParts.join('_') || `subtask_${Math.random().toString(36).substr(2, 9)}`;
-};
-
-// УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ПОИСКА
-const universalSearch = (item, query) => {
-  if (!query) return true;
-
-  // Все поля для поиска
-  const searchFields = [
-    item.missionVisibleName,
-    item.missionDescription,
-    item.missionName,
-    item.type,
-    item.path,
-    item.url,
-    item.category ? (Array.isArray(item.category) ? item.category.join(' ') : item.category) : '',
-    item.style,
-    item.gameIcon,
-    item.gameImg,
-    item.stars?.toString(),
-    item.password,
-    item.target
-  ].filter(Boolean);
-
-  // Поиск в основных полях
-  const mainFieldsMatch = searchFields.some(field =>
-    field && normalizeString(field).includes(query)
-  );
-
-  if (mainFieldsMatch) return true;
-
-  // Поиск в subTasks (если это subTasks)
-  if (isSubTasks(item) && item.subTasks) {
-    const subTaskMatch = item.subTasks.some(subTask => {
-      if (!subTask.active) return false;
-
-      const subTaskSearchFields = [
-        subTask.missionVisibleName,
-        subTask.missionDescription,
-        subTask.missionName,
-        subTask.type,
-        subTask.style,
-        subTask.gameIcon
-      ].filter(Boolean);
-
-      return subTaskSearchFields.some(field =>
-        field && normalizeString(field).includes(query)
-      );
-    });
-
-    if (subTaskMatch) return true;
-  }
-
-  // Поиск в underSubTasks
-  if (item.type === "subTasks" && item.subTasks) {
-    const underSubTaskMatch = item.subTasks.some(subTask => {
-      if (!subTask.active) return false;
-
-      // Если это underSubTasks, ищем в его подзадачах
-      if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
-        return subTask.underSubTasks.some(underSubTask => {
-          if (!underSubTask.active) return false;
-
-          const underSubTaskSearchFields = [
-            underSubTask.missionVisibleName,
-            underSubTask.missionDescription,
-            underSubTask.missionName,
-            underSubTask.type,
-            underSubTask.style,
-            underSubTask.gameIcon
-          ].filter(Boolean);
-
-          return underSubTaskSearchFields.some(field =>
-            field && normalizeString(field).includes(query)
-          );
-        });
-      }
-
-      return false;
-    });
-
-    if (underSubTaskMatch) return true;
-  }
-
-  return false;
-};
-
-// Вспомогательные функции
-const filterByCategory = (categoryName) => {
-  return AllSetsOfWords.value.filter(set =>
-    set.active && hasCategory(set, categoryName)
-  );
-};
-
-const getSubTasksSets = () => {
-  return AllSetsOfWords.value.filter(set =>
-    set.active && set.type === "subTasks"
-  );
-};
-
-const filterSetsBySearch = (sets) => {
-  if (!searchQuery.value) return sets;
-
-  const query = normalizeString(searchQuery.value);
-  return sets.filter(set => universalSearch(set, query));
-};
-
-const shouldShowCategory = (categoryKey, categorySets, searchTerms) => {
-  if (!searchQuery.value) return categorySets.length > 0;
-
-  const query = normalizeString(searchQuery.value);
-  const categoryNameMatches = searchTerms.some(term =>
-    term.includes(query)
-  );
-
-  const hasMatchingMissions = categorySets.some(set =>
-    universalSearch(set, query)
-  );
-
-  return categoryNameMatches || hasMatchingMissions;
-};
-
-// Функция для фильтрации подзадач внутри subTasks
-const getFilteredSubTasks = (subTaskSet) => {
-  const query = normalizeString(searchQuery.value).replace(/\//g, '');
-
-  if (!query) {
-    return getActiveSubTasks(subTaskSet);
-  }
-
-  return getActiveSubTasks(subTaskSet).filter(subTask => {
-    // Если это underSubTasks, фильтруем его подзадачи
-    if (isUnderSubTasks(subTask)) {
-      const filteredUnderSubTasks = getActiveUnderSubTasks(subTask).filter(underSubTask =>
-        universalSearch(underSubTask, query)
-      );
-      // Показываем underSubTasks только если есть совпадения внутри
-      return filteredUnderSubTasks.length > 0 || universalSearch(subTask, query);
-    }
-
-    // Для обычных подзадач проверяем совпадение
-    return universalSearch(subTask, query);
-  });
-};
-
-// Функция для фильтрации внутри underSubTasks
-const getFilteredUnderSubTasks = (underSubTaskSet) => {
-  const query = normalizeString(searchQuery.value).replace(/\//g, '');
-
-  if (!query) {
-    return getActiveUnderSubTasks(underSubTaskSet);
-  }
-
-  return getActiveUnderSubTasks(underSubTaskSet).filter(underSubTask =>
-    universalSearch(underSubTask, query)
-  );
-};
-
-
-
-
-
-// Утилиты
+// ==================== УТИЛИТЫ ====================
 const normalizeString = (str) => {
   if (!str) return '';
   return str.toString().toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^\wа-яё\/]/g, '');
+};
+
+const getItemKey = (item) => {
+  if (item._uniqueKey) return item._uniqueKey;
+  const keyParts = [
+    item.type || '', item.missionName || '', item.missionVisibleName || '',
+    item.missionDescription || '', item.path || '', item.url || ''
+  ].filter(part => part !== '');
+  return keyParts.join('_') || `key_${Math.random().toString(36).substr(2, 9)}`;
+};
+
+const getSubTaskItemKey = (subTask) => {
+  const keyParts = [
+    subTask.type || '', subTask.missionName || '', subTask.missionVisibleName || '',
+    subTask.missionDescription || '', subTask.path || '', subTask.url || ''
+  ].filter(part => part !== '');
+  return keyParts.join('_') || `subtask_${Math.random().toString(36).substr(2, 9)}`;
+};
+
+const getSubTaskUniqueKey = (subTaskSet) => {
+  return `${subTaskSet.id}_${subTaskSet.missionVisibleName}_${subTaskSet.missionDescription}`;
+};
+
+const getUnderSubTaskUniqueKey = (underSubTaskSet) => {
+  return `under_${underSubTaskSet.id}_${underSubTaskSet.missionVisibleName}`;
 };
 
 const hasCategory = (set, categoryName) => {
@@ -983,121 +855,102 @@ const isUnderSubTasks = (item) => {
   return item.type === "underSubTasks" && Array.isArray(item.underSubTasks);
 };
 
-// Функции навигации
-const handlePasswordProtectedClick = (set) => {
-  if (!set.password) {
-    goToChosenGame(set);
-    return;
-  }
-  currentSetToUnlock.value = set;
-  passwordModal.value = true;
-};
-
-const goToChosenGame = (set) => {
-  if (set.type === "hardcodedLink") {
-    router.push(set.path);
-  } else if (set.type === "externalLink") {
-    window.open(set.url, set.target || '_blank');
-  } else {
-    router.push(`/see-all-sets-of-words/${set.missionName}`);
-  }
-};
-
-// Функции поиска произношения
-const handlePronunciationSearch = () => {
-  const query = searchQuery.value.trim();
-  if (!query) return;
-
-  openPronunciationSearch(query);
-  searchQuery.value = '';
-};
-
-const openPronunciationSearch = (term) => {
-  const cleanTerm = term
-    .replace(/[^\w\sа-яё]/gi, '')
-    .trim()
-    .replace(/\s+/g, '+');
-
-  const googleSearchUrl = `https://www.google.com/search?q=how+to+pronounce+ ${cleanTerm}`;
-  window.open(googleSearchUrl, '_blank');
-
-  $q.notify({
-    message: `Ищем произношение: ${term}`,
-    color: 'positive',
-    timeout: 2000,
-    position: 'top'
-  });
-};
-
-
-const openYouglishSearch = (term) => {
-  const cleanTerm = term
-    .replace(/[^\w\sа-яё]/gi, '')
-    .trim()
-    .replace(/\s+/g, '%20');
-
-  const youglishUrl = `https://youglish.com/pronounce/${cleanTerm}/english`;
-  window.open(youglishUrl, '_blank');
-
-  $q.notify({
-    message: `Ищем произношение на Youglish: ${term}`,
-    color: 'primary',
-    timeout: 2000,
-    position: 'top'
-  });
-};
-// Функция для поиска на Youglish
-const handleYouglishSearch = () => {
-  const query = searchQuery.value.trim();
-  if (!query) return;
-
-  openYouglishSearch(query);
-  searchQuery.value = '';
-};
-
-// Функции для subTasks
 const getSubTaskStyleClass = (subTaskSet) => {
   return subTaskSet.style || 'default';
 };
 
-// Логика раскрытия subTasks
-const isSubTasksExpanded = (subTaskSet) => {
-  const uniqueKey = getSubTaskUniqueKey(subTaskSet);
-  return expandedSubTasks.value.has(uniqueKey);
-};
+// ==================== УНИВЕРСАЛЬНЫЙ ПОИСК ====================
+const universalSearch = (item, query) => {
+  if (!query) return true;
 
-const isUnderSubTasksExpanded = (underSubTaskSet) => {
-  const uniqueKey = getUnderSubTaskUniqueKey(underSubTaskSet);
-  return expandedUnderSubTasks.value.has(uniqueKey);
-};
+  const searchFields = [
+    item.missionVisibleName, item.missionDescription, item.missionName,
+    item.type, item.path, item.url,
+    item.category ? (Array.isArray(item.category) ? item.category.join(' ') : item.category) : '',
+    item.style, item.gameIcon, item.gameImg,
+    item.stars?.toString(), item.password, item.target
+  ].filter(Boolean);
 
-const toggleSubTasks = (subTaskSet) => {
-  const uniqueKey = getSubTaskUniqueKey(subTaskSet);
-  if (expandedSubTasks.value.has(uniqueKey)) {
-    expandedSubTasks.value.delete(uniqueKey);
-  } else {
-    expandedSubTasks.value.add(uniqueKey);
+  if (searchFields.some(field => field && normalizeString(field).includes(query))) return true;
+
+  if (isSubTasks(item) && item.subTasks) {
+    if (item.subTasks.some(subTask => {
+      if (!subTask.active) return false;
+      const subTaskFields = [
+        subTask.missionVisibleName, subTask.missionDescription,
+        subTask.missionName, subTask.type, subTask.style, subTask.gameIcon
+      ].filter(Boolean);
+      return subTaskFields.some(field => field && normalizeString(field).includes(query));
+    })) return true;
   }
-};
 
-const toggleUnderSubTasks = (underSubTaskSet) => {
-  const uniqueKey = getUnderSubTaskUniqueKey(underSubTaskSet);
-  if (expandedUnderSubTasks.value.has(uniqueKey)) {
-    expandedUnderSubTasks.value.delete(uniqueKey);
-  } else {
-    expandedUnderSubTasks.value.add(uniqueKey);
+  if (item.type === "subTasks" && item.subTasks) {
+    if (item.subTasks.some(subTask => {
+      if (!subTask.active || !isUnderSubTasks(subTask) || !subTask.underSubTasks) return false;
+      return subTask.underSubTasks.some(underSubTask => {
+        if (!underSubTask.active) return false;
+        const underSubTaskFields = [
+          underSubTask.missionVisibleName, underSubTask.missionDescription,
+          underSubTask.missionName, underSubTask.type, underSubTask.style, underSubTask.gameIcon
+        ].filter(Boolean);
+        return underSubTaskFields.some(field => field && normalizeString(field).includes(query));
+      });
+    })) return true;
   }
+
+  return false;
 };
 
-// Функция для создания уникального ключа для subTasks
-const getSubTaskUniqueKey = (subTaskSet) => {
-  return `${subTaskSet.id}_${subTaskSet.missionVisibleName}_${subTaskSet.missionDescription}`;
+// ==================== ФИЛЬТРЫ ====================
+const filterByCategory = (categoryName) => {
+  return AllSetsOfWords.value.filter(set =>
+    set.active && hasCategory(set, categoryName)
+  );
 };
 
-const getUnderSubTaskUniqueKey = (underSubTaskSet) => {
-  return `under_${underSubTaskSet.id}_${underSubTaskSet.missionVisibleName}`;
+const getSubTasksSets = () => {
+  return AllSetsOfWords.value.filter(set =>
+    set.active && set.type === "subTasks"
+  );
 };
 
+const filterSetsBySearch = (sets) => {
+  if (!searchQuery.value) return sets;
+  const query = normalizeString(searchQuery.value);
+  return sets.filter(set => universalSearch(set, query));
+};
+
+const shouldShowCategory = (categoryKey, categorySets, searchTerms) => {
+  if (!searchQuery.value) return categorySets.length > 0;
+  const query = normalizeString(searchQuery.value);
+  return searchTerms.some(term => term.includes(query)) ||
+    categorySets.some(set => universalSearch(set, query));
+};
+
+const getFilteredSubTasks = (subTaskSet) => {
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+  if (!query) return getActiveSubTasks(subTaskSet);
+
+  return getActiveSubTasks(subTaskSet).filter(subTask => {
+    if (isUnderSubTasks(subTask)) {
+      const filteredUnder = getActiveUnderSubTasks(subTask).filter(underSubTask =>
+        universalSearch(underSubTask, query)
+      );
+      return filteredUnder.length > 0 || universalSearch(subTask, query);
+    }
+    return universalSearch(subTask, query);
+  });
+};
+
+const getFilteredUnderSubTasks = (underSubTaskSet) => {
+  const query = normalizeString(searchQuery.value).replace(/\//g, '');
+  if (!query) return getActiveUnderSubTasks(underSubTaskSet);
+  return getActiveUnderSubTasks(underSubTaskSet).filter(underSubTask =>
+    universalSearch(underSubTask, query)
+  );
+};
+
+// ==================== ACTIVE COUNTS ====================
 const getActiveSubTasks = (subTaskSet) => {
   return (subTaskSet.subTasks || []).filter(task => task.active);
 };
@@ -1114,67 +967,97 @@ const getActiveUnderSubTasksCount = (underSubTaskSet) => {
   return getActiveUnderSubTasks(underSubTaskSet).length;
 };
 
-const handleSubTaskClick = (subTask) => {
-  if (subTask.password) {
-    currentSetToUnlock.value = subTask;
-    passwordModal.value = true;
-  } else {
-    goToChosenGame(subTask);
+// ==================== LOCALSTORAGE - СОХРАНЕНИЕ СОСТОЯНИЙ ====================
+const saveUserExpandedState = () => {
+  try {
+    const expandedArray = Array.from(userExpandedSubTasks.value);
+    localStorage.setItem('userExpandedSubTasks', JSON.stringify(expandedArray));
+
+    const expandedUnderArray = Array.from(userExpandedUnderSubTasks.value);
+    localStorage.setItem('userExpandedUnderSubTasks', JSON.stringify(expandedUnderArray));
+
+    console.log('💾 Сохранено раскрытий:', {
+      subTasks: expandedArray.length,
+      underSubTasks: expandedUnderArray.length
+    });
+  } catch (e) {
+    console.error('Ошибка сохранения:', e);
   }
 };
 
-const handleUnderSubTaskClick = (underSubTask) => {
-  if (underSubTask.password) {
-    currentSetToUnlock.value = underSubTask;
-    passwordModal.value = true;
-  } else {
-    goToChosenGame(underSubTask);
+const restoreUserExpandedState = () => {
+  try {
+    const savedExpanded = localStorage.getItem('userExpandedSubTasks');
+    if (savedExpanded) {
+      userExpandedSubTasks.value = new Set(JSON.parse(savedExpanded));
+    }
+
+    const savedUnderExpanded = localStorage.getItem('userExpandedUnderSubTasks');
+    if (savedUnderExpanded) {
+      userExpandedUnderSubTasks.value = new Set(JSON.parse(savedUnderExpanded));
+    }
+  } catch (e) {
+    console.error('Ошибка восстановления:', e);
+    userExpandedSubTasks.value = new Set();
+    userExpandedUnderSubTasks.value = new Set();
   }
 };
 
-// Функция для автоматического раскрытия родительских категорий при поиске
-const autoExpandParentCategories = (query) => {
+// ==================== SCROLL - СОХРАНЕНИЕ ПОЗИЦИИ ====================
+const getScrollKey = () => {
+  const userId = localStorage.getItem('userId') || 'default';
+  return `scroll_${userId}_missions`;
+};
+
+const saveScrollPosition = () => {
+  const phoneFrame = document.getElementById('phoneFrame');
+  if (phoneFrame) {
+    const position = phoneFrame.scrollTop;
+    savedScrollPosition.value = position;
+    localStorage.setItem(getScrollKey(), position.toString());
+  }
+};
+
+const restoreScrollPosition = () => {
+  const position = savedScrollPosition.value || localStorage.getItem(getScrollKey());
+  if (position) {
+    setTimeout(() => {
+      const phoneFrame = document.getElementById('phoneFrame');
+      if (phoneFrame) {
+        phoneFrame.scrollTo({ top: Number(position), behavior: 'instant' });
+      }
+    }, 100);
+  }
+};
+
+// ==================== ПОИСК - АВТОРАСКРЫТИЕ ====================
+const autoExpandParentCategoriesForSearch = (query) => {
   if (!query) return;
 
-  // Временные Set для новых раскрытий
+  searchExpandedSubTasks.value.clear();
+  searchExpandedUnderSubTasks.value.clear();
+
   const subTasksToExpand = new Set();
   const underSubTasksToExpand = new Set();
 
-  // Проходим по всем subTasks
   orderedMissionList.value.forEach(item => {
     if (isSubTasks(item) && item.subTasks) {
-
-      // Проверяем каждый subTask на наличие совпадений
       item.subTasks.forEach(subTask => {
         let shouldExpand = false;
 
-        // Проверяем обычные подзадачи
-        if (!isUnderSubTasks(subTask)) {
-          if (universalSearch(subTask, query)) {
-            shouldExpand = true;
-          }
+        if (!isUnderSubTasks(subTask) && universalSearch(subTask, query)) {
+          shouldExpand = true;
         }
 
-        // Проверяем underSubTasks и их содержимое
         if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
-          // Проверяем сам underSubTasks заголовок
-          if (universalSearch(subTask, query)) {
-            shouldExpand = true;
-          }
+          if (universalSearch(subTask, query)) shouldExpand = true;
 
-          // Проверяем элементы внутри underSubTasks
-          const hasUnderSubTaskMatch = subTask.underSubTasks.some(underSubTask =>
-            universalSearch(underSubTask, query)
-          );
-
-          if (hasUnderSubTaskMatch) {
+          if (subTask.underSubTasks.some(under => universalSearch(under, query))) {
             shouldExpand = true;
-            // Раскрываем underSubTask
             underSubTasksToExpand.add(getUnderSubTaskUniqueKey(subTask));
           }
         }
 
-        // Если нашли совпадения - раскрываем родительский subTask
         if (shouldExpand) {
           subTasksToExpand.add(getSubTaskUniqueKey(item));
         }
@@ -1182,12 +1065,50 @@ const autoExpandParentCategories = (query) => {
     }
   });
 
-  // Применяем раскрытия
-  subTasksToExpand.forEach(key => expandedSubTasks.value.add(key));
-  underSubTasksToExpand.forEach(key => expandedUnderSubTasks.value.add(key));
+  subTasksToExpand.forEach(key => searchExpandedSubTasks.value.add(key));
+  underSubTasksToExpand.forEach(key => searchExpandedUnderSubTasks.value.add(key));
 };
 
-// Функции переключения категорий
+// ==================== ЛОГИКА РАСКРЫТИЯ ====================
+const isSubTasksExpanded = (subTaskSet) => {
+  return expandedSubTasks.value.has(getSubTaskUniqueKey(subTaskSet));
+};
+
+const isUnderSubTasksExpanded = (underSubTaskSet) => {
+  return expandedUnderSubTasks.value.has(getUnderSubTaskUniqueKey(underSubTaskSet));
+};
+
+const toggleSubTasks = (subTaskSet) => {
+  const key = getSubTaskUniqueKey(subTaskSet);
+
+  if (searchQuery.value?.trim()) {
+    searchExpandedSubTasks.value.has(key)
+      ? searchExpandedSubTasks.value.delete(key)
+      : searchExpandedSubTasks.value.add(key);
+  } else {
+    userExpandedSubTasks.value.has(key)
+      ? userExpandedSubTasks.value.delete(key)
+      : userExpandedSubTasks.value.add(key);
+    saveUserExpandedState();
+  }
+};
+
+const toggleUnderSubTasks = (underSubTaskSet) => {
+  const key = getUnderSubTaskUniqueKey(underSubTaskSet);
+
+  if (searchQuery.value?.trim()) {
+    searchExpandedUnderSubTasks.value.has(key)
+      ? searchExpandedUnderSubTasks.value.delete(key)
+      : searchExpandedUnderSubTasks.value.add(key);
+  } else {
+    userExpandedUnderSubTasks.value.has(key)
+      ? userExpandedUnderSubTasks.value.delete(key)
+      : userExpandedUnderSubTasks.value.add(key);
+    saveUserExpandedState();
+  }
+};
+
+// ==================== КАТЕГОРИИ - ПЕРЕКЛЮЧЕНИЕ ====================
 const toggleCategory = (category) => {
   if (searchQuery.value && !categoryStates.value[category]) {
     categoryStates.value[category] = true;
@@ -1202,7 +1123,111 @@ const togglecategoryExamplesPatterns = () => toggleCategory('categoryExamplesPat
 const toggleGamePatterns = () => toggleCategory('gamePatterns');
 const toggleChinese = () => toggleCategory('chinese');
 
-// Функции модального окна
+// ==================== НАВИГАЦИЯ ====================
+const goToChosenGame = (set) => {
+  saveScrollPosition();
+  saveUserExpandedState();
+
+  if (set.type === "hardcodedLink") {
+    router.push(set.path);
+  } else if (set.type === "externalLink") {
+    window.open(set.url, set.target || '_blank');
+  } else {
+    router.push(`/see-all-sets-of-words/${set.missionName}`);
+  }
+};
+
+const handlePasswordProtectedClick = (set) => {
+  if (!set.password) {
+    goToChosenGame(set);
+    return;
+  }
+  currentSetToUnlock.value = set;
+  passwordModal.value = true;
+};
+
+const handleSubTaskClick = (subTask) => {
+  subTask.password
+    ? (currentSetToUnlock.value = subTask, passwordModal.value = true)
+    : goToChosenGame(subTask);
+};
+
+const handleUnderSubTaskClick = (underSubTask) => {
+  underSubTask.password
+    ? (currentSetToUnlock.value = underSubTask, passwordModal.value = true)
+    : goToChosenGame(underSubTask);
+};
+
+// ==================== ИГРОВЫЕ ФУНКЦИИ ====================
+const showSpecialCardAlert = () => {
+  saveScrollPosition();
+  saveUserExpandedState();
+  router.push('/create-special-set');
+};
+
+const playRandomSet = () => {
+  saveScrollPosition();
+  saveUserExpandedState();
+
+  const availableSets = filteredOrderedMissions.value.filter(set =>
+    !set.type && set.active && set.missionName !== 'create-special-set'
+  );
+
+  if (availableSets.length === 0) {
+    $q.notify({ message: 'Нет доступных наборов', color: 'negative' });
+    return;
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableSets.length);
+  goToChosenGame(availableSets[randomIndex]);
+};
+
+const playRandomQuestions = () => {
+  saveScrollPosition();
+  saveUserExpandedState();
+  router.push('/phoneFramePattern');
+};
+
+const playSnake = () => {
+  saveScrollPosition();
+  saveUserExpandedState();
+  router.push('/gameSnakeWords');
+};
+
+const tapalka = () => {
+  saveScrollPosition();
+  saveUserExpandedState();
+  router.push('/');
+};
+
+// ==================== ПРОИЗНОШЕНИЕ ====================
+const handlePronunciationSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+  openPronunciationSearch(query);
+  searchQuery.value = '';
+};
+
+const handleYouglishSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+  openYouglishSearch(query);
+  searchQuery.value = '';
+};
+
+const openPronunciationSearch = (term) => {
+  const cleanTerm = term.replace(/[^\w\sа-яё]/gi, '').trim().replace(/\s+/g, '+');
+  window.open(`https://www.google.com/search?q=how+to+pronounce+${cleanTerm}`, '_blank');
+  $q.notify({ message: `Ищем произношение: ${term}`, color: 'positive', timeout: 2000 });
+};
+
+const openYouglishSearch = (term) => {
+  const cleanTerm = term.replace(/[^\w\sа-яё]/gi, '').trim().replace(/\s+/g, '%20');
+  window.open(`https://youglish.com/pronounce/${cleanTerm}/english`, '_blank');
+  $q.notify({ message: `Youglish: ${term}`, color: 'primary', timeout: 2000 });
+};
+
+// ==================== МОДАЛКА ПАРОЛЯ ====================
 const checkPassword = () => {
   if (passwordInput.value === currentSetToUnlock.value?.password) {
     goToChosenGame(currentSetToUnlock.value);
@@ -1219,88 +1244,95 @@ const closeModal = () => {
   shake.value = false;
 };
 
-// Игровые функции
-const showSpecialCardAlert = () => {
-  router.push('/create-special-set');
-};
-
-const playRandomSet = () => {
-  const availableSets = filteredOrderedMissions.value.filter(set =>
-    !set.type && set.active && set.missionName !== 'create-special-set'
-  );
-
-  if (availableSets.length === 0) {
-    $q.notify({
-      message: 'Нет доступных наборов для случайного выбора',
-      color: 'negative'
-    });
-    return;
-  }
-
-  const randomIndex = Math.floor(Math.random() * availableSets.length);
-  goToChosenGame(availableSets[randomIndex]);
-};
-
-const playRandomQuestions = () => router.push('/phoneFramePattern');
-const playSnake = () => router.push('/gameSnakeWords');
-const tapalka = () => router.push('/');
-
-// Вспомогательные функции
+// ==================== ВСПОМОГАТЕЛЬНЫЕ ====================
 const getImagePath = (imgName) => {
   return new URL(`../assets/images/${imgName}`, import.meta.url).href;
 };
 
 const getLevelStars = (stars) => {
   if (!stars) return '';
-  const starCount = parseInt(stars);
-  return '⭐'.repeat(starCount);
+  return '⭐'.repeat(parseInt(stars));
 };
 
-// Анимация
-onMounted(() => {
-  const introMessage = document.getElementById("intro-message");
-  if (!introMessage) return;
-
-  introMessage.textContent = "";
-  let i = 0;
-
-  function typeWriter() {
-    if (i < ANIMATION_TEXT.length) {
-      introMessage.textContent += ANIMATION_TEXT[i] === "\n" ? "\n" : ANIMATION_TEXT[i];
-      i++;
-      setTimeout(typeWriter, ANIMATION_SPEED);
-    }
-  }
-
-  typeWriter();
-});
-
-// Watchers
+// ==================== WATCHERS ====================
 watch(searchQuery, (newQuery) => {
-  if (!newQuery) {
-    // Сбрасываем все состояния при очистке поиска
-    expandedSubTasks.value.clear();
-    expandedUnderSubTasks.value.clear();
+  if (!newQuery?.trim()) {
+    searchExpandedSubTasks.value.clear();
+    searchExpandedUnderSubTasks.value.clear();
+
     Object.keys(categoryStates.value).forEach(key => {
       categoryStates.value[key] = false;
     });
     return;
   }
 
-  const query = normalizeString(newQuery).replace(/\//g, '');
-
-  // Вызываем функцию автоматического раскрытия
-  autoExpandParentCategories(query);
+  autoExpandParentCategoriesForSearch(normalizeString(newQuery).replace(/\//g, ''));
 });
+
+// ==================== LIFECYCLE HOOKS ====================
+onMounted(() => {
+  restoreUserExpandedState();
+  restoreScrollPosition();
+
+  // Анимация текста
+  const introMessage = document.getElementById("intro-message");
+  if (introMessage) {
+    introMessage.textContent = "";
+    let i = 0;
+    const typeWriter = () => {
+      if (i < ANIMATION_TEXT.length) {
+        introMessage.textContent += ANIMATION_TEXT[i] === "\n" ? "\n" : ANIMATION_TEXT[i];
+        i++;
+        setTimeout(typeWriter, ANIMATION_SPEED);
+      }
+    };
+    typeWriter();
+  }
+});
+
+onBeforeUnmount(() => {
+  saveScrollPosition();
+  saveUserExpandedState();
+});
+
+onBeforeRouteLeave((to, from, next) => {
+  saveScrollPosition();
+  saveUserExpandedState();
+  next();
+});
+
 </script>
+
 <style lang="scss" scoped>
 .blur {
   filter: blur(5px);
 }
+/* ==================== STICKY SEARCH ==================== */
 .search-container {
   margin: 0 0 10px 0;
   padding: 0 10px;
+
+  /* 🎯 STICKY - главное */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+
+
+  /* ✨ Красивое прилипание */
+  border-radius: 25px;
+  margin-top: -5px;
+  padding-top: 15px;
+  padding-bottom: 5px;
+
+  /* 📦 Тень, чтобы отделить от контента */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  /* 🚀 Анимация появления */
+  transition: box-shadow 0.3s ease;
 }
+
+
 
 .search-input-wrapper {
   position: relative;
@@ -1311,7 +1343,7 @@ watch(searchQuery, (newQuery) => {
 .search-input {
   scale: 1.1;
   width: 100%;
-  padding: 8px 8px 8px 15px; /* Увеличиваем правый padding для двух кнопок */
+  padding: 8px 8px 8px 15px;
   border-radius: 20px;
   border: 3px solid #000000;
   font-size: 15px;
@@ -1320,6 +1352,11 @@ watch(searchQuery, (newQuery) => {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   animation: breathe 4s ease-in-out infinite;
+
+  /* 🟡 ЖЕЛТОЕ СВЕЧЕНИЕ - РАВНОМЕРНО СО ВСЕХ СТОРОН */
+  box-shadow:
+    0 0 20px 5px rgba(0, 0, 0, 0.7),    /* Основное желтое свечение */
+    0 2px 5px rgba(0, 0, 0, 0.1);            /* Легкая тень для глубины */
 }
 
 .pronunciation-btn {

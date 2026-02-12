@@ -222,27 +222,34 @@ const shuffleTest = (tasks, seed) => {
     const shuffledQuestions = seededShuffle([...task.questions], seed + 'questions')
 
     const processedQuestions = shuffledQuestions.map(question => {
-      const correctValue = question.options[question.correctAnswer]
       const optionsEntries = seededShuffle(
         Object.entries(question.options),
         seed + 'options' + question.text
       )
 
       const newOptions = {}
-      let newCorrectKey = 'A'
+      const oldToNewKeyMap = {} // Маппинг старых ключей на новые
 
       optionsEntries.forEach(([oldKey, value], index) => {
         const newKey = String.fromCharCode(65 + index)
         newOptions[newKey] = value
-        if (oldKey === question.correctAnswer) {
-          newCorrectKey = newKey
-        }
+        oldToNewKeyMap[oldKey] = newKey
       })
+
+      // Обрабатываем correctAnswer - может быть строкой или массивом
+      let newCorrectAnswer
+      if (Array.isArray(question.correctAnswer)) {
+        // Если массив, преобразуем каждый элемент
+        newCorrectAnswer = question.correctAnswer.map(oldKey => oldToNewKeyMap[oldKey])
+      } else {
+        // Если строка, преобразуем один ключ
+        newCorrectAnswer = oldToNewKeyMap[question.correctAnswer]
+      }
 
       return {
         ...question,
         options: newOptions,
-        correctAnswer: newCorrectKey
+        correctAnswer: newCorrectAnswer
       }
     })
 
@@ -314,13 +321,7 @@ const toggleExplanation = (taskIndex, questionIndex) => {
     !expandedExplanations.value[taskIndex][questionIndex]
 }
 
-// Добавленная функция для определения класса кнопки Explain
-const getExplainButtonClass = (taskIndex, questionIndex, correctAnswer) => {
-  if (!checkedTasks.value[taskIndex]) return ''
 
-  const isCorrect = answers.value[taskIndex][questionIndex] === correctAnswer
-  return isCorrect ? 'explain-correct' : 'explain-incorrect'
-}
 
 const getGrade = (percentage) => {
   if (percentage === 100) return { letter: 'A+', class: 'grade-Aplus' }
@@ -358,8 +359,19 @@ const checkAnswers = (taskIndex) => {
   let correctCount = 0
 
   task.questions.forEach((q, qi) => {
-    if (answers.value[taskIndex][qi] === q.correctAnswer) {
-      correctCount++
+    const userAnswer = answers.value[taskIndex][qi]
+
+    // Проверяем, является ли correctAnswer массивом
+    if (Array.isArray(q.correctAnswer)) {
+      // Если массив, проверяем что ответ пользователя есть в массиве допустимых ответов
+      if (q.correctAnswer.includes(userAnswer)) {
+        correctCount++
+      }
+    } else {
+      // Если строка, проверяем точное совпадение
+      if (userAnswer === q.correctAnswer) {
+        correctCount++
+      }
     }
   })
 
@@ -372,7 +384,12 @@ const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => 
 
   const selected = answers.value[taskIndex][questionIndex]
 
-  if (optionValue === correctAnswer) {
+  // Преобразуем optionValue ("true"/"false") в булево значение если нужно
+  const isCorrectAnswer = Array.isArray(correctAnswer)
+    ? correctAnswer.includes(optionValue)
+    : optionValue === correctAnswer
+
+  if (isCorrectAnswer) {
     return selected === optionValue ? 'correct-selected' : 'correct-not-selected'
   } else if (selected === optionValue) {
     return 'incorrect-selected'
@@ -384,13 +401,27 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
   if (!checkedTasks.value[taskIndex]) return ''
 
   const selected = answers.value[taskIndex][questionIndex]
+  const isCorrectAnswer = Array.isArray(correctAnswer)
+    ? correctAnswer.includes(optionValue)
+    : optionValue === correctAnswer
 
-  if (optionValue === correctAnswer) {
+  if (isCorrectAnswer) {
     return selected === optionValue ? 'option-correct-selected' : 'option-correct-not-selected'
   } else if (selected === optionValue) {
     return 'option-incorrect-selected'
   }
   return ''
+}
+
+const getExplainButtonClass = (taskIndex, questionIndex, correctAnswer) => {
+  if (!checkedTasks.value[taskIndex]) return ''
+
+  const userAnswer = answers.value[taskIndex][questionIndex]
+  const isCorrect = Array.isArray(correctAnswer)
+    ? correctAnswer.includes(userAnswer)
+    : userAnswer === correctAnswer
+
+  return isCorrect ? 'explain-correct' : 'explain-incorrect'
 }
 
 const rainbowColors = [

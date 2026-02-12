@@ -667,7 +667,6 @@ const parseUsefulWords = (wordsString) => {
 };
 
 const checkAnswers = (taskIndex) => {
-
   const task = exerciseData.value.tasks[taskIndex];
   if (task.taskID === 'discussion_task') {
     return; // Не проверяем discussion task
@@ -704,6 +703,23 @@ const checkAnswers = (taskIndex) => {
           }
           totalQuestions++;
         });
+      } else if (task.taskID === 'multiple_choice') {
+        // Новая проверка для multiple_choice с поддержкой массива правильных ответов
+        const userAnswer = answers.value[taskIndex][qi];
+
+        // Проверяем, является ли correctAnswer массивом
+        if (Array.isArray(q.correctAnswer)) {
+          // Если массив - проверяем, есть ли ответ пользователя в массиве
+          if (q.correctAnswer.includes(userAnswer)) {
+            correctCount++;
+          }
+        } else {
+          // Если строка - проверяем на равенство
+          if (userAnswer === q.correctAnswer) {
+            correctCount++;
+          }
+        }
+        totalQuestions++;
       } else {
         // Стандартная строгая проверка для других типов заданий
         if (answers.value[taskIndex][qi] === q.correctAnswer) {
@@ -718,7 +734,6 @@ const checkAnswers = (taskIndex) => {
 
   taskScores.value[taskIndex] = percentage;
 };
-
 
 const toggleDiscussionQuestion = (taskIndex, questionIndex) => {
   if (!discussionChecked.value[taskIndex]) return;
@@ -743,7 +758,12 @@ const getRadioClass = (taskIndex, questionIndex, optionValue, correctAnswer) => 
 
   const selected = answers.value[taskIndex][questionIndex];
 
-  if (optionValue === correctAnswer) {
+  // Проверяем, является ли correctAnswer массивом
+  const isCorrect = Array.isArray(correctAnswer)
+    ? correctAnswer.includes(optionValue)
+    : optionValue === correctAnswer;
+
+  if (isCorrect) {
     return selected === optionValue ? 'correct-selected' : 'correct-not-selected';
   } else if (selected === optionValue) {
     return 'incorrect-selected';
@@ -756,7 +776,12 @@ const getOptionClass = (taskIndex, questionIndex, optionValue, correctAnswer) =>
 
   const selected = answers.value[taskIndex][questionIndex]
 
-  if (optionValue === correctAnswer) {
+  // Проверяем, является ли correctAnswer массивом
+  const isCorrect = Array.isArray(correctAnswer)
+    ? correctAnswer.includes(optionValue)
+    : optionValue === correctAnswer;
+
+  if (isCorrect) {
     return selected === optionValue ? 'option-correct-selected' : 'option-correct-not-selected'
   } else if (selected === optionValue) {
     return 'option-incorrect-selected'

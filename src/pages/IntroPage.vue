@@ -97,7 +97,7 @@
         <!-- Свернутая инструкция с фиолетовой кнопкой -->
         <div v-if="!showInstructions" class="compact-section">
           <button class="purple-button" @click="toggleInstructions">
-            A как отключить?
+            A как отключить? Vincent?
           </button>
           <p class="warning-small">Инструкция - всего два клика</p>
 
@@ -108,10 +108,11 @@
           <p><strong>Google Chrome:</strong> Нажмите на иконку перевода 🔤 в адресной строке и выберите "Перевести страницу" → "Никогда не переводить этот сайт"</p>
           <p><strong>Яндекс.Браузер:</strong> Нажмите на иконку перевода 🌐 в адресной строке и отключите "Переводить страницы автоматически"</p>
           <p><strong>Safari:</strong> Правый клик → "Перевести" → "Отключить автоперевод"</p>
+          <p><strongY>Проверка -></strongY> справа должно быть на английском<strongY> -> Checking</strongY> </p>
         </div>
 
         <button class="warning-button" @click="dismissTranslationWarning">
-          Ok, Vincent!
+          Ok, у меня отключено!
         </button>
       </div>
     </div>
@@ -206,7 +207,7 @@ const initialShowText = ref(true); // Новый флаг для первона�
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 20
     ? "Super! Разминка окончена, жми сюда"
-    : "help me Vincent ! Куда нажимать ?";
+    : "Нажми сюда , click here , клик хИэ";
 });
 
 const buttonColor = computed(() => {
@@ -903,6 +904,9 @@ calc(var(--fadeStart) * 100%) {
 
 .warning-instructions strong {
   color: #4CAF50;
+}.warning-instructions strongY {
+  color: #ffc400;
+  font-weight: bold;
 }
 
 .warning-button {

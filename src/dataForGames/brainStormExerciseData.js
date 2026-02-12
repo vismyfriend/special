@@ -2213,6 +2213,188 @@ const brainStormExercisesData = {
       },
     ],
   },
+  levelCheck: {
+    mainDescription: "",
+    tasks: [
+      {
+        taskDescription: "спэшл таск фор спэшл эйджэнст",
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "Как переводится слово -> special ?",
+            options: {
+              A: "я не знаю как",
+              B: "особенный",
+              C: "специальный",
+              D: "специи",
+              E: "скидка",
+            },
+            correctAnswer: ["B","C"]
+          },
+          {
+            text: "Ответь себе честно - тебе лично нравится вообще английский?",
+            options: {
+              A: "ну так себе",
+              B: "I likes",
+              C: "I not like",
+              D: "Не нравится, но надо",
+              E: "Мне нравится",
+              F: "причем здесь это вообще...",
+              G: "Ой всё, до свидания",
+            },
+            correctAnswer: ["A","D","E"]
+          },
+        ]
+      },
+      {
+        taskDescription: "Внимательность и произношение :",
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "Как произносится -> special ?",
+            options: {
+              A: "СПЕЦИАЛ",
+              B: "СПЕСИАЛ",
+              C: "СПЕКАЛ",
+              D: "СПЭШЛ",
+              E: "я не знаю как",
+            },
+            correctAnswer: ["D",]
+          },
+        ]
+      },
+      {
+        taskDescription: "Без перевода - читай, везде звук /Э/",
+        taskID: "grid_table",
+        taskPicture: new URL("../assets/images/A sound.jpeg", import.meta.url).href,
+        tableData: {
+          headers: ["", "читается", "пишется"],
+          rows: [
+            { cells: ["могу, умею, банка", "/ кЭн /", "CAN"], editable: [false, false, false] },
+            { cells: ["кот, кошка, котик", "/ кЭт /", "CAT"], editable: [false, false, false] },
+            { cells: ["такси в Британии", "/ кЭб /", "CAB"], editable: [false, false, false] },
+            { cells: ["кепка", "/ кЭп /", "CAP"], editable: [false, false, false] },
+            { cells: ["шляпа, шапка", "/ хЭт /", "HAT"], editable: [false, false, false] },
+            { cells: ["мужчина, человек", "/ мЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["грустный, печальный", "/ сЭд /", "SAD"], editable: [false, false, false] },
+            { cells: ["приятель в Британии", "/ лЭд /", "LAD"], editable: [false, false, false] },
+            { cells: ["кровать, постель","/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["имя мужское Теодор", "/ тЭд /", "TED"], editable: [false, false, false] },
+            { cells: ["светодиод", "/ лЭД /", "LED"], editable: [false, false, false] },
+            { cells: ["позволять, разрешать", "/ лЭт /", "LET"], editable: [false, false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Даже если хочетя читать А, читай везде /Э/",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["могу, умею, банка", "CAN"], editable: [false, false] },
+            { cells: ["кот, кошка, котик", "CAT"], editable: [false, false] },
+            { cells: ["такси в Британии", "CAB"], editable: [false, false] },
+            { cells: ["кепка", "CAP"], editable: [false, false] },
+            { cells: ["шляпа, шапка", "HAT"], editable: [false, false] },
+            { cells: ["мужчина, человек", "MAN"], editable: [false, false] },
+            { cells: ["грустный, печальный", "SAD"], editable: [false, false] },
+            { cells: ["приятель в Британии", "LAD"], editable: [false, false] },
+            { cells: ["кровать, постель", "BED"], editable: [false, false] },
+            { cells: ["имя мужское Теодор", "TED"], editable: [false, false] },
+            { cells: ["светодиод", "LED"], editable: [false, false] },
+            { cells: ["позволять, разрешать", "LET"], editable: [false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "уверенно читай - ты сможешь!",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["летучая мышь, бита", "BAT"], editable: [false, false] },
+            { cells: ["толстый, жирный", "FAT"], editable: [false, false] },
+            { cells: ["коврик для йоги, мат", "MAT"], editable: [false, false] },
+            { cells: ["крыса", "RAT"], editable: [false, false] },
+            { cells: ["красный цвет", "RED"], editable: [false, false] },
+            { cells: ["устанавливать, настраивать", "SET"], editable: [false, false] },
+            { cells: ["встретил", "MET"], editable: [false, false] },
+            { cells: ["могу", "CAN"], editable: [false, false] },
+            { cells: ["не могу", "CAN`T"], editable: [false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Обрати внимание - короткий звук Э или длинный ЭЭЭ",
+        taskID: "grid_table",
+        tableData: {
+          headers: ["", "произношение"],
+          rows: [
+            { cells: ["мужчина один", "/ мЭЭЭн /", "MAN"], editable: [false, false, false] },
+            { cells: ["мужчин много", "/ мЭн /", "MEN"], editable: [false, false, false] },
+            { cells: ["плохой", "/ бЭЭЭд /", "BAD"], editable: [false, false, false] },
+            { cells: ["кровать", "/ бЭд /", "BED"], editable: [false, false, false] },
+            { cells: ["плохая кровать","/ бЭЭЭд бЭд/", "BAD BED"], editable: [false, false, false] },
+            { cells: ["плохие мужчины","/ бЭЭЭд мЭн/", "BAD MEN"], editable: [false, false, false] },
+            { cells: ["плохой мужик","/ бЭЭЭд мЭЭЭн/", "BAD MAN"], editable: [false, false, false] },
+
+          ]
+        }
+      },
+      {
+        taskDescription: "Проверим вашу память",
+        taskID: "grid_table",
+        taskPicture: new URL("../assets/images/A_sound_long.jpeg", import.meta.url).href,
+
+        tableData: {
+          headers: ["", "читай вслух"],
+          rows: [
+            { cells: ["мужик", "MAN"], editable: [ false, false] },
+            { cells: ["мужики", "MEN"], editable: [ false, false] },
+            { cells: ["плохой", "BAD"], editable: [ false, false] },
+            { cells: ["постель", "BED"], editable: [ false, false] },
+            { cells: ["некачественная постель","BAD BED"], editable: [ false, false] },
+            { cells: ["плохие мужчины","BAD MEN"], editable: [ false, false] },
+            { cells: ["один плохой мужик","BAD MAN"], editable: [ false, false] },
+          ]
+        }
+      },
+      {
+        taskDescription: "Write in English",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "Напиши по-английски"],
+          rows: [
+            { cells: ["Плохая кровать", ""],
+              editable: [ false, true ],
+              correctAnswers: {
+                cells: [null, "bad bed"],
+                almostCorrect: {
+                  1: ["a bad bed"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["1 мужчинА", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "man"],
+                almostCorrect: {
+                  1: ["a man","1 man","one man"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["мужчины", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "men"],
+              }},
+          ],
+        }
+      },
+    ],
+  },
 
   ieltsListening1: {
     mainDescription: "IELTS listening",
@@ -9038,10 +9220,11 @@ const brainStormExercisesData = {
               A: "with",
               B: "by",
               C: "for",
-              D: "in"
+              D: "b y",
+              E: "in"
             },
-            correctAnswer: "B",
-            explanation: "The correct preposition for means of transport is 'by'."
+            correctAnswer: ["B","D"],
+            explanation: "Когда говоришь каким транспортом добираешься, то используй предлог 'by' Попробуй составить несколько своих примеров про родственников и друзей - кто как добирается до работы? Кто на такси? Кто на автобусе."
           },
           {
             text: "Are you going to the party? – Yes, I ____",

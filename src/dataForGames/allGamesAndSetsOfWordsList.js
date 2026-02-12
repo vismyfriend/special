@@ -72,6 +72,15 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/levelCheck/brainstorm",
+      missionVisibleName: "Определить свой уровень",
+      missionDescription: "СПЭШЛ проверка уровня",
+      id: 1001,
+      active: true,
+      gameIcon:'',
+    },
 
     {
       type: "subTasks",
@@ -238,6 +247,7 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+
 
 
     {
