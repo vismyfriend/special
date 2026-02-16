@@ -498,7 +498,187 @@ const brainStormExercisesData = {
     ],
   },
 
+  patternNEWCODEtest: {
+    mainDescription: "V-IS-MY-DEBUGGER",
+    tasks: [
 
+      {
+        taskID: "student_input",
+        questions: [
+          {
+            text: "what were you doing yesterday? _",
+            correctAnswer: "anyIsOk",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "what were you doing yesterday? __",
+            correctAnswer: "library",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "what were you doing yesterday? ___",
+            correctAnswer: "library",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "what were you doing yesterday? ____",
+            correctAnswer: "library",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "what were you doing yesterday? ____",
+            correctAnswer: "library",
+            almostCorrectAnswers: ["laibreri", "librery", "libreri"]
+          },
+          {
+            text: "B) Go straight on. Go past the traffic lights. You'll see a shop ___. Go past that and it’s on the right next to the shop.",
+            correctAnswer: "on the right",
+            almostCorrectAnswers: null
+          },
+          {
+            text: 'C) ___ on. Go past the traffic lights and go straight on until you get to the roundabout. At the roundabout turn left. Go past the theatre. It’s the building next to the theatre, opposite the hospital',
+            correctAnswer: "go straight",
+            almostCorrectAnswers: ["go straight on"]
+          },
+          {
+            text: 'D) Go straight on. Go past the traffic lights and ___ right on to King’s Road. Go past the bookshop. It’s the building next to the bookshop opposite the café.',
+
+            correctAnswer: "take the second",
+            almostCorrectAnswers: ["take"]
+          },
+
+        ]
+      },
+
+      {
+        taskDescription: "Послушайте и ответьте",
+        taskID: "true_false",
+        usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
+        audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'текст к этому заданию отсутствует пока что, но Винсент работает над тем, чтобы он появился',
+        questions: [
+          {
+            text: "1. Vincent is a nice teacherka",
+            correctAnswer: "true"
+          },
+          {
+            text: "2. This audio is about this photo",
+            correctAnswer: "false"
+          },
+          {
+            text: "3. This audio is about this photo",
+            correctAnswer: "false"
+          },
+        ]
+      },
+      {
+        taskDescription: "спэшл таск фор спэшл эйджэнтс",
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "1Как переводится слово -> special ?",
+            options: {
+              A: "я не знаю как",
+              B: "особенный",
+              C: "специальный",
+              D: "специи",
+              E: "скидка",
+            },
+            correctAnswer: ["B","C"],
+            explanation: "спэшл - особенный, особый или специальный"
+
+          },
+          {
+            text: "1Ответь себе честно - тебе лично нравится вообще английский?",
+            options: {
+              A: "ну так себе",
+              B: "I likes",
+              C: "I not like",
+              D: "Не нравится, но надо",
+              E: "Мне нравится",
+              F: "причем здесь это вообще...",
+              G: "Ой всё, до свидания",
+            },
+            correctAnswer: ["A","D","E"]
+          },
+          {
+            text: "Как переводится слово -> special ?",
+            options: {
+              A: "я не знаю как",
+              B: "1особенный",
+              C: "специальный",
+              D: "специи",
+              E: "скидка",
+            },
+            correctAnswer: ["B","C"],
+            explanation: "спэшл - особенный, особый или специальный"
+
+          },
+          {
+            text: "Ответь себе честно - тебе лично нравится вообще английский?",
+            options: {
+              A: "1ну так себе",
+              B: "I likes",
+              C: "I not like",
+              D: "Не нравится, но надо",
+              E: "Мне нравится",
+              F: "причем здесь это вообще...",
+              G: "Ой всё, до свидания",
+            },
+            correctAnswer: ["A","D","E"]
+          },
+          {
+            text: "Как переводится слово -> special ?",
+            options: {
+              A: "я не знаю как",
+              B: "особенный",
+              C: "специальный",
+              D: "специи",
+              E: "скидка",
+            },
+            correctAnswer: ["B","C"],
+            explanation: "спэшл - особенный, особый или специальный"
+
+          },
+          {
+            text: "Ответь себе честно - тебе лично нравится вообще английский?",
+            options: {
+              A: "ну так себе",
+              B: "I likes",
+              C: "I not like",
+              D: "Не нравится, но надо",
+              E: "Мне нравится",
+              F: "причем здесь это вообще...",
+              G: "Ой всё, до свидания",
+            },
+            correctAnswer: ["A","D","E"]
+          },
+        ]
+      },
+      {
+        taskDescription: "Внимательность и произношение :",
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "Как произносится -> special ?",
+            options: {
+              A: "СПЕЦИАЛ",
+              B: "СПЕСИАЛ",
+              C: "СПЕКАЛ",
+              D: "СПЭШЛ",
+              E: "я не знаю как",
+            },
+            correctAnswer: ["D",]
+          },
+        ]
+      },
+
+
+    ],
+  },
 
   pattern_true_false: {
     mainDescription: "V-IS-MY-DEBUGGER",
@@ -2214,7 +2394,7 @@ const brainStormExercisesData = {
     ],
   },
   levelCheck: {
-    mainDescription: "",
+    mainDescription: "Совет : читайте всё вслух",
     tasks: [
       {
         taskDescription: "спэшл таск фор спэшл эйджэнст",
@@ -2228,9 +2408,11 @@ const brainStormExercisesData = {
               B: "особенный",
               C: "специальный",
               D: "специи",
-              E: "скидка",
+              E: "я даже прочитать не знаю как",
+              F: "скидка",
             },
-            correctAnswer: ["B","C"]
+            correctAnswer: ["B","C"],
+            explanation: "Если чего-то не знаете - пробуйте догадаться. Ошибаться можно! Методом проб и ошибок на практике всё узнаете и запомните."
           },
           {
             text: "Ответь себе честно - тебе лично нравится вообще английский?",
@@ -2243,14 +2425,15 @@ const brainStormExercisesData = {
               F: "причем здесь это вообще...",
               G: "Ой всё, до свидания",
             },
-            correctAnswer: ["A","D","E"]
+            correctAnswer: ["A","D","E"],
+            explanation: "Если не нравится, значит вы ещё с Винсентом не занимались, у него дар влюблять в иностранные языки, я серьезно! \n \n утверждение: I like \n отрицание : I don't like."
+
           },
         ]
       },
       {
         taskDescription: "Внимательность и произношение :",
         taskID: "multiple_choice",
-        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
         questions: [
           {
             text: "Как произносится -> special ?",
@@ -2258,13 +2441,50 @@ const brainStormExercisesData = {
               A: "СПЕЦИАЛ",
               B: "СПЕСИАЛ",
               C: "СПЕКАЛ",
-              D: "СПЭШЛ",
-              E: "я не знаю как",
+              D: "ШПЕЦЫЛ",
+              E: "СПЭШЛ",
+              F: "я не знаю как",
             },
-            correctAnswer: ["D",]
+            correctAnswer: ["E",],
+            explanation: "/ спЭшл / и никак иначе"
+
+          },
+          {
+            text: "Как произносится -> agent ?",
+            options: {
+              A: "агент",
+              B: "эгент",
+              C: "эйгент",
+              D: "эйджэнт",
+              E: "меня поймут при любом произношении",
+            },
+            correctAnswer: ["D",],
+            explanation: "ударенией на первый слог / ЭЙджэнт / \n\n все остальные варианты - это максимально плохой и непонятный уровень английского"
+
           },
         ]
       },
+      {
+        taskDescription: "Включить аудио и вписать что услышали:",
+        taskID: "student_input",
+        audio: new URL('../assets/audio/Ielts_listening_1.mp3', import.meta.url).href,
+        textScript: 'Слушайте несколько раз, слушайте пока не услышите, тренируйтесь, практикуйтесь, вы справитесь! You are special. Yes yes yes.\n' +
+          '\n' +
+          'Ошибки в написании слов не так уж важны, если вы правильно произносите слова вслух. Никто же не видит как вы пишите слова ;-) \n\n Мой личный опыт: многими лингвистами и полиглотами доказано, что изучение правописания поднимает эффективность запоминания слов и фраз. \n\n Поэтому рекомендую сразу учиться правильно пЕсАтть слава лангискйие ;-) и завести себе блокнотик или записки в телефоне\n' +
+          '\n',
+           questions: [
+          {
+            text: "Hello, how are you? - I am __",
+            correctAnswer: "fine",
+          },
+          {
+            text: "His name is ____ and he is a nice teacher.",
+            correctAnswer: "Vincent",
+          },
+
+        ]
+      },
+
       {
         taskDescription: "Без перевода - читай, везде звук /Э/",
         taskID: "grid_table",
