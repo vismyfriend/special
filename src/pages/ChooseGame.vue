@@ -48,8 +48,8 @@ import storiesAndWordsData from 'src/dataForGames/storiesData';
 import scrambledData from 'src/dataForGames/scrambled-data';
 import homeworkLinksData from 'src/dataForGames/homework-links-data';
 import hwData from 'src/dataForGames/hw-data';
-import brainStormExercisesData from "src/dataForGames/brainStormExerciseData";
-import TestsAndExamsData from "src/dataForGames/TestsAndExamsData";
+import gameTestsNoSeedNoShuffleData from "src/dataForGames/GameTestsNoSeedNoShuffleData";
+import GameTestsSeedData from "src/dataForGames/GameTestsSeedData";
 import NewFuturisticStyleData from "src/dataForGames/NewFuturisticStyle";
 import MillionaireData from "src/dataForGames/MillionaireData";
 import pnqwData from "src/dataForGames/pnqw";
@@ -140,7 +140,7 @@ const AllGames = ref([
     id: 180,
     name: "Brainstorm",
     path: "brainstorm",
-    gameData: brainStormExercisesData,
+    gameData: gameTestsNoSeedNoShuffleData,
     cardIcon: '🧠', // Добавлена иконка
     active: true,
   },
@@ -156,7 +156,7 @@ const AllGames = ref([
     id: 182,
     name: "Tests",
     path: "tests-and-exams",
-    gameData: TestsAndExamsData,
+    gameData: GameTestsSeedData,
     cardIcon: '📝', // Добавлена иконка
     active: true,
   },

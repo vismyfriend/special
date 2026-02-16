@@ -44,7 +44,7 @@ const routes = [
 
               {
                 path: 'brainStorm',
-                component: () => import('components/BrainStormExercises.vue')
+                component: () => import('components/GameTestsNoSeedNoShuffle.vue')
               },
               {
                 path: 'songs',
@@ -52,7 +52,7 @@ const routes = [
               },
               {
                 path: 'tests-and-exams',
-                component: () => import('components/GameTestsAndExams.vue')
+                component: () => import('components/GameTestsSeed.vue')
               },
               {
                 path: 'tag-questions-game',
