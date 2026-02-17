@@ -294,6 +294,111 @@ const gameTestsNoSeedNoShuffleData = {
     ],
 
   },
+  smallTalkTaxi1: {
+    mainDescription: "Cars, Taxi, Driving",
+    tasks: [
+      {
+        taskDescription: "Вопросы могут повторятся, отвечай и задавай несколько раз 👇 Задай вопрос и отметь его",
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Are you a driver? Do you drive safely?",
+            translation: "Ты водишь машину? Ты водишь аккуратно? \n (Yes, I drive / No, I don't have a car / I try to drive safely)",
+          },
+          {
+            text: "Some people say that men drive better and more safely than women. What do you think about it? Who is a safer driver: a man or a woman?",
+            translation: "Кто безопаснее за рулём: мужчина или женщина? \n (I think women drive safer / Men are more confident / It depends on the person)",
+          },
+          {
+            text: "Do you prefer driving in silence or with music?",
+            translation: "Ты предпочитаешь ездить в тишине или с музыкой? \n (I prefer music / I like silence / It depends on my mood)",
+          },
+          {
+            text: "How often do you order a taxi?",
+            translation: "Как часто ты заказываешь такси? \n (Every day / Once a week / Rarely / Only when I'm late)",
+          },
+          {
+            text: "What app do you use to order a taxi?",
+            translation: "Каким приложением ты пользуешься? \n (I use Uber / Yandex Taxi / Bolt / Local app)",
+          },
+          {
+            text: "How much does a taxi from your home to downtown cost?",
+            translation: "Сколько стоит такси от дома до центра? \n (it costs about $20 / It's cheap )",
+          },
+          {
+            text: "Do you start a small talk with the driver? Or does the driver starts it usually?",
+            translation: "Ты иногда болтаешь с водителем? \n (Yes, if the driver is friendly / No, I prefer silence / Sometimes)",
+          },
+          {
+            text: "Do you give star ratings in taxi apps?",
+            translation: "Ты ставишь оценки в приложении такси? \n (Always / Only if the ride was bad / Only if it was perfect)",
+          },
+          {
+            text: "Describe a 5-star taxi ride for you.",
+            translation: "Опиши идеальную поездку на 5 звёзд. \n (Clean car, nice driver, good music, arrives on time)",
+          },
+          {
+            text: "What makes a good driver? What makes a bad driver?",
+            translation: "Что делает водителя хорошим? А плохим? \n (Good driver is calm and careful / Bad driver is aggressive and distracted)",
+          },
+          {
+            text: "What was your longest ride in a taxi?",
+            translation: "Самая долгая поездка на такси? \n (About 2 hours / From the airport to home / Across the city)",
+          },
+
+        ]
+      }
+    ]
+  },
+  smallTalkTaxi2: {
+    mainDescription: "Cars, Taxi, Driving",
+    tasks: [
+      {
+        taskDescription: "Вопросы могут повторятся, отвечай и задавай несколько раз 👇 Задай вопрос и отметь его",
+        taskID: "discussion_task",
+        questions: [
+          {
+            text: "Have you ever had a funny, stupid or maybe emotional situation in a taxi?",
+            translation: "Была смешная, нелепая или эмоциональная ситуация в такси? \n (Yes, the driver told jokes / No, nothing funny / My first kiss was in a taxi)",
+          },
+          {
+            text: "Have you ever had a scary situation in a taxi?",
+            translation: "А страшная ситуация была? \n (The driver was too fast / Almost had an accident / No, never)",
+          },
+          {
+            text: "What would you do if you didn't like the driver's music?",
+            translation: "Что сделаешь, если не нравится музыка водителя? \n (Say nothing / Politely ask to change / Use my headphones)",
+          },
+          {
+            text: "Would you try a self-driving taxi car?",
+            translation: "Хочешь попробовать такси без водителя? \n (Yes, it sounds exciting / No, I'm scared / Maybe)",
+          },
+          {
+            text: "If you were an animal in a cartoon, and all animals could drive cars, what animal would you be?",
+            translation: "Если бы вы были в мултике животным за рулем, то каким? \n (A cool cat / A slow turtle / A fast rabbit)",
+          },
+          {
+            text: "Do you know some important unwritten rule of driving in your city/country that visitors might not know? (For example: speed limit +20 km/h is okay, or other local habits)",
+            translation: "Знаешь неписаные правила вождения? \n (You can speed a little / Always let buses go first / Honking is rude)",
+          },
+          {
+            text: "Do you prefer automatic transmission or manual transmission in a car? (Answer even if you don’t have a car)",
+            translation: "Автомат или механика? \n (Automatic is easier / Manual gives more control / I can drive both)",
+          },
+          {
+            text: "When did you see a car accident last time?",
+            translation: "Когда последний раз видели аварию? \n (Yesterday / A week ago / Never)",
+          },
+          {
+            text: "Have you ever been in a car accident? Has anyone of your friends been in a car accident?",
+            translation: "Ты или друзья попадали в аварию? \n (Yes, a small one / No, thank God / My friend had an accident)",
+          }
+
+        ]
+      }
+    ]
+  },
+
 
   debug: {
     mainDescription: "mainDescription",

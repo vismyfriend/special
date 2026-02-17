@@ -19,20 +19,28 @@
         <div class="deck-of-cards">
           <div class="wordCard" @click="toggleTranslation" >
                 <div class="card-content">
-                    <div class="card-text">
-                        <div class="word">{{ currentWord.eng }}</div>
-                             <div class="translation"
-                                  :class="{ blurred: !showTranslation && !currentWord.isIntro }"
-                               >{{ currentWord.ru }}
-                              </div>
-                    </div>
+                  <div class="card-text">
+                    <!-- ИСПРАВЛЕНО: используем computed для отображения в зависимости от languageMode -->
+                    <div class="word">{{ displayWord }}</div>
+                    <div class="translation"
+                         :class="{ blurred: !showTranslation && !currentWord.isIntro }"
+                    >{{ displayTranslation }}</div>
+                  </div>
                 </div>
           </div>
 
-          <div class="timer-block" @click="startTimer" role="button">
-  <span class="timer-text">
-    {{ timeLeft > 0 ? `${timeLeft} seconds` : 'Start' }}
-  </span>
+          <!-- НОВАЯ КНОПКА: переключатель языка -->
+          <div class="language-switcher-container">
+            <button
+              class="lang-switcher-btn"
+              @click="toggleLanguage"
+              :class="{ 'lang-switcher-active': languageMode === 'ru' }"
+            >
+              {{ languageMode === 'en' ? 'EN' : 'RU' }}
+            </button>
+            <div class="timer-block" @click="startTimer" role="button">
+              <span class="timer-text">{{ timeLeft > 0 ? `${timeLeft} seconds` : 'Start' }}</span>
+            </div>
           </div>
 
           <div class="remaining-cards" ref="remainingCardsContainer">
@@ -91,8 +99,30 @@ const currentGameData = ref([]);
 const currentWord = ref(null);
 let shuffledData = []; // Перемешанные карточки, стек
 const removedWords = ref([]); // Удалённые карточки, для отмены (undo)
-
+// НОВОЕ: счетчик переведенных карточек
+const cardsTranslated = ref(0)
 const isMotionSupported = ref(false); // Показывать кнопку разрешения
+
+
+
+// НОВОЕ: режим отображения языка
+const languageMode = ref('en') // 'en' или 'ru'
+
+// НОВОЕ: переключение языка
+const toggleLanguage = () => {
+  languageMode.value = languageMode.value === 'en' ? 'ru' : 'en'
+}
+
+// НОВОЕ: вычисляемые поля для отображения
+const displayWord = computed(() => {
+  if (!currentWord.value) return ''
+  return languageMode.value === 'en' ? currentWord.value.eng : currentWord.value.ru
+})
+
+const displayTranslation = computed(() => {
+  if (!currentWord.value) return ''
+  return languageMode.value === 'en' ? currentWord.value.ru : currentWord.value.eng
+})
 
 const showModal = ref(false);
 const modalMessage = ref('');
@@ -143,8 +173,11 @@ const startTimer = () => {
     timer.value = null;
     timeLeft.value = 0;
     isTimerRunning.value = false;
+    cardsTranslated.value = 0; // НОВОЕ: сбрасываем счетчик
+
     return;
   }
+  cardsTranslated.value = 0; // НОВОЕ: сбрасываем счетчик при старте
 
   loadQuestion();
   timeLeft.value = 77;
@@ -160,7 +193,9 @@ const startTimer = () => {
       timer.value = null;
       isTimerRunning.value = false;
       timeLeft.value = 0;
-      openModal("⏰ Время вышло!\nПереход хода к следующему игроку.");
+      openModal(`⏰ Время вышло!\nПереход хода к следующему игроку.\n\nВы перевели ${cardsTranslated.value} карточек ✨`);
+      cardsTranslated.value = 0; // НОВОЕ: сбрасываем после показа
+
     }
   }, 1000);
 };
@@ -174,6 +209,11 @@ let isLoading = false;
 const loadQuestion = async () => {
   if (isLoading) return; // если уже идет загрузка, ничего не делаем
   isLoading = true;
+
+  // НОВОЕ: увеличиваем счетчик, если это не инструкция и не первая карта
+  if (currentWord.value && !currentWord.value.isIntro) {
+    cardsTranslated.value++
+  }
 
   if (shuffledData.length === 1) {
     finishGame();
@@ -219,7 +259,9 @@ const undoLastRemoval = () => {
 
 // Конец игры
 const finishGame = () => {
-  openModal("Игра окончена! Вы просмотрели все слова.");
+  // ИСПРАВЛЕНО: добавляем счетчик в сообщение
+  openModal(`Игра окончена! Вы просмотрели все слова.\n\nВсего переведено: ${cardsTranslated.value} карточек 🎯`);
+  cardsTranslated.value = 0; // НОВОЕ: сбрасываем счетчик
 };
 
 // Считаем, какие карты ещё остались
@@ -579,31 +621,72 @@ onMounted(() => {
   transition: filter 0.2s ease;
 }
 
-.timer-block {
+.language-switcher-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 260px;
-  height: 80px;
   margin: 10px 0;
-  background-color: rgba(0, 0, 0, 0.12); // полупрозрачный фон
-  border: 1px solid rgba(106, 106, 106, 0.73); // как у wordCard
+}
+
+.lang-switcher-btn {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(76, 175, 80, 0);
+  color: white;
+  border: 1px solid rgba(106, 106, 106, 0.73);
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.lang-switcher-btn:hover {
+  transform: scale(1.05);
+  background-color: rgba(106, 106, 106, 0.73);
+}
+
+.lang-switcher-btn.lang-switcher-active {
+  background-color: #4096d3;
+}
+
+.lang-switcher-btn.lang-switcher-active:hover {
+  background-color: rgba(106, 106, 106, 0.73);
+}
+
+// Обновляем timer-block для работы в flex контейнере
+.timer-block {
+  width: 190px; // 260px - 60px - 10px gap
+  height: 60px;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(106, 106, 106, 0.73);
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // чтобы визуально сочеталось с картами
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease;
+  flex: 1;
+}
+
+.timer-text {
+  font-size: 20px; // немного уменьшил
+  font-weight: bold;
+  color: #dddddd;
+  user-select: none;
 }
 
 .timer-block:hover {
   transform: scale(1.03);
 }
 
-.timer-text {
-  font-size: 30px;
-  font-weight: bold;
-  color: #dddddd;
-  user-select: none;
-}
+
 .modal-overlay {
   position: fixed;
   top: 0;

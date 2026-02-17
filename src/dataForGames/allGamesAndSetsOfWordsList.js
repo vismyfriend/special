@@ -255,6 +255,22 @@ export const allGamesAndSetsOfWordsList =
           active: true,
 
         },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/smallTalkTaxi1/brainstorm",
+          missionVisibleName: "Такси 1",
+          missionDescription: "Taxi 1",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/smallTalkTaxi2/brainstorm",
+          missionVisibleName: "Taxi 2",
+          missionDescription: "Такси 2",
+          id: 1001,
+          active: true,
+        },
       ]
     },
 
@@ -292,6 +308,50 @@ export const allGamesAndSetsOfWordsList =
           path: "/see-all-sets-of-words/sortVerbsIntro/sorting",
           missionVisibleName: "Понятное объяснение",
           missionDescription: "Неправильные глаголы",
+          id: 1001,
+          active: true,
+        },
+      ]
+    },
+    {
+      type: "subTasks",
+      missionVisibleName: "Колода карт",
+      missionDescription: "Deck of cards",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
+          missionVisibleName: "легкие слова",
+          missionDescription: "колода цвета, еда, животные...",
+          id: 1001,
+          active: true,
+        },
+      ]
+    },
+ {
+      type: "subTasks",
+      missionVisibleName: "Вопросы и ответы",
+      missionDescription: "Questions and answers",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/who1/print-all-words",
+          missionVisibleName: "Кто делает это? (вопросы)",
+          missionDescription: "Who does it?",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/funnyCharacters/deck-of-cards",
+          missionVisibleName: "Кто делает это? (ответы)",
+          missionDescription: "Somebody does it",
           id: 1001,
           active: true,
         },
@@ -1314,7 +1374,7 @@ export const allGamesAndSetsOfWordsList =
       active: true
     },
     {
-      missionName: "whoAnswers1",
+      missionName: "funnyCharacters",
       missionVisibleName: "Who answers part 1",
       missionDescription: "Ответы на Who ч.1",
       id: 7,
