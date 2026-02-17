@@ -48,7 +48,7 @@ const questionsData = {
   ],
 
   introLessonQuestionsSmallTalk1: [
-    { id: 1, eng: "What city are you from?", ru: "Из какого вы города? - I am from New-York"},
+    { id: 1, eng: "What city are you from?", ru: "Из какого вы города? \n (I am from New-York)"},
     { id: 2, eng: "What is your father's name?", ru: "Как зовут вашего отца? - My father's name is Andrew"},
     { id: 4, eng: "What is your favorite color?", ru: "Какой твой любимый цвет? - My favorite color is blue."},
     { id: 5, eng: "How old are you?", ru: "Сколько тебе лет? - I am always 18"},

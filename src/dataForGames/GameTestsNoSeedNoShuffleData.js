@@ -1,6 +1,300 @@
 
 const gameTestsNoSeedNoShuffleData = {
 
+  checkMyLevel001: {
+    mainDescription: "Совет : читайте всё вслух",
+    tasks: [
+      {
+        taskDescription: "спэшл таскс фор спэшл эйджэнтс",
+        taskID: "multiple_choice",
+        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
+        questions: [
+          {
+            text: "Как переводится слово > special ?",
+            options: {
+              A: "я не знаю как",
+              B: "особенный",
+              C: "специальный",
+              D: "специи",
+              E: "я даже прочитать не знаю как",
+              F: "скидка",
+            },
+            correctAnswer: ["B","C"],
+            explanation: "Если чего-то не знаете - пробуйте догадаться. Ошибаться можно! Методом проб и ошибок на практике всё узнаете и запомните."
+          },
+          {
+            text: "Ответь себе честно - тебе лично нравится вообще английский?",
+            options: {
+              A: "ну так себе",
+              B: "I likes",
+              C: "I not like",
+              D: "Не нравится, но надо",
+              E: "Мне нравится",
+              F: "причем здесь это вообще...",
+              G: "Ой всё, до свидания",
+            },
+            correctAnswer: ["A","D","E"],
+            explanation: "Если не нравится, значит вы ещё с Винсентом не занимались, у него дар влюблять в иностранные языки, я серьезно! \n \n утверждение: I like \n отрицание : I don't like."
+
+          },
+        ]
+      },
+      {
+        taskDescription: "Внимательность и произношение :",
+        taskID: "multiple_choice",
+        questions: [
+          {
+            text: "Как произносится -> special ?",
+            options: {
+              A: "СПЕЦИАЛ",
+              B: "СПЕСИАЛ",
+              C: "СПЕКАЛ",
+              D: "ШПЕЦЫЛ",
+              E: "СПЭШЛ",
+              F: "я не знаю как",
+            },
+            correctAnswer: ["E",],
+            explanation: "/ спЭшл / и никак иначе"
+
+          },
+          {
+            text: "Как произносится -> agent ?",
+            options: {
+              A: "агент",
+              B: "эгент",
+              C: "эйгент",
+              D: "эйджэнт",
+              E: "меня поймут при любом произношении",
+            },
+            correctAnswer: ["D",],
+            explanation: "ударенией на первый слог / ЭЙджэнт / \n\n все остальные варианты - это максимально плохой и непонятный уровень английского"
+
+          },
+        ]
+      },
+      {
+        taskDescription: "Выбери правильный ответ",
+        audio: null,
+        taskID: "drop_down_text",
+        textScript: 'Ну а какие подсказки в этом задании вы хотите? Тут только ответы могу показать сразу, готовы к спойлерам? \n\n Всё же вроде очевидно: \n\nlater - позже \nlate - поздно \n\neasy - легко \nsimple - просто',
+        questions: [
+          {
+            text: "Сейчас поздно (now late, now later, я Х3 вообще, не знаю, it's later now, it's late now*)",
+          },
+          {
+            text: "Это просто (в душе не знаю, not hard, it is ease, it is easy, it is simple*)",
+          },
+
+
+        ]
+      },
+      {
+        taskDescription: "Включить аудио и вписать что услышали:",
+        taskID: "student_input",
+        audio: new URL('../assets/audio/songs/hello_how_are_you.mp3', import.meta.url).href,
+        textScript: 'Ответы в самом низу, а это подзказка : \n\n Слушайте несколько раз, слушайте пока не услышите, тренируйтесь, практикуйтесь, вы справитесь! You are special. Yes yes yes.\n' +
+          '\n' +
+          'Ошибки в написании слов - не страшно, если вы правильно произносите слова вслух. Никто же не видит как вы пишите слова ;-) \n\n Мой личный опыт: многими лингвистами и полиглотами доказано, что изучение правописания поднимает эффективность запоминания слов и фраз. \n\n Поэтому рекомендую сразу учиться правильно пЕсАтть слава лангискйие ;-) и завести себе блокнотик или записки в телефоне\n' +
+          '\nhow are you - как дела?\ngood - хорошо\ngreat - великолепно\nI am wonderful - я замечательно\ntired - устал\nhungry - голодный\nnot so good - не так уж хорошо',
+        questions: [
+          {
+            text: "Hello, hello, hello ___ ?",
+            correctAnswer: "how are you",
+          },{
+            text: "I am  __ ?",
+            correctAnswer: "good",
+          },{
+            text: "I am __ ?",
+            correctAnswer: "great",
+          },{
+            text: "__ wonderful",
+            correctAnswer: "I am",
+          },{
+            text: "I'm ___",
+            correctAnswer: "tired",
+          },{
+            text: "I'm ___",
+            correctAnswer: "hungry",
+          },{
+            text: "I'm ___ good",
+            correctAnswer: "not so",
+          },
+
+
+        ]
+      },
+      {
+        taskDescription: "Write in English",
+        taskID: "grid_table",
+        taskPicture: null,
+        tableData: {
+          headers: ["", "Напиши по-английски"],
+          rows: [
+            { cells: ["У меня есть телефон", ""],
+              editable: [ false, true ],
+              correctAnswers: {
+                cells: [null, "I have a phone"],
+                almostCorrect: {
+                  1: ["I have phone"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            { cells: ["У меня нет бургера", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "I don't have a burger"],
+                almostCorrect: {
+                  1: ["I don't have burger"], // Индекс поля (начиная с 0)
+                }
+              }},
+            { cells: ["Я устал(а)", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "I am tired"],
+              }
+            },
+            { cells: ["Она голодная", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "She is hungry"],
+              }},
+            { cells: ["слова УСТАЛ и ГОЛОДЕН", " <- были в прошлом задании ;)"], editable: [ false, false],
+
+            },
+            { cells: ["Мы - особые агенты", ""], editable: [ false, true],
+              correctAnswers: {
+                cells: [null, "We are special agents"],
+                almostCorrect: {
+                  1: ["I don't have burger"], // Индекс поля (начиная с 0)
+                }
+              }},
+          ],
+        }
+      },
+      {
+        taskDescription: "",
+        taskID: "true_false",
+        taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
+        textScript: 'У вас всё получится, записывайтесь на занятие и составим индивидуальный курс и план действий по достижению желаемого уровня английского\n\nНапишите мне в телеграм: \n"Хочу на урок" \nи я вам отвечу. Не БОТ, а лично я:\nживой, неповторимый, скромный Винсент \n\n@vismyfriend\n#vismyfriend',
+        questions: [
+          {
+            text: "Этот тест для совсем новичков",
+            correctAnswer: "true"
+          },
+          {
+            text: "Я готов(а) улучшать свои результаты",
+            correctAnswer: "true"
+          },
+          {
+            text: "Я - ленивая за#ница! Признаюсь!",
+            correctAnswer: "false"
+          },
+          {
+            text: "Хочу на бесплатное занятие с Винсентом, живьём пообщаться",
+            correctAnswer: "true"
+          },
+          {
+            text: "У меня мечта, необходимость и цель: разговаривать на Инглише. Я хочу!",
+            correctAnswer: "true"
+          },
+
+        ]
+      },
+      {
+        taskDescription: "Что делать дальше?",
+        taskID: "discussion_task",
+        usefulWords: null,
+        audio: null,
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "Choose missions, join classes",
+            translation: "Выбирай миссии, записывайся на занятия",
+          },
+          {
+            text: "Practice English several times a week",
+            translation: "Практикуй английский несколько раз в неделю",
+          },
+          {
+            text: "Send a message to Vincent's telegram: \n @vismyfriend `Hi, I want a lesson`",
+            translation: "Отправь сообщение Винсенту в телеграм: @vismyfriend \n `Привет, хочу на урок`",
+          },
+          {
+            text: "Если вы сделали все задания этого теста без ошибок - ваш уровень выше\n ( A1 ) Более подробные и серьезные тесты в разделе: \n Миссии -> Big Tests",
+            translation: "(A0 - никогда не учили английский)\n(A1 - когда-то учили Инглиш)\n(B1 - понимаю, путаю времена)\n(B2 - нужна практика разговорная)\n(C1 - говорю как носитель)\n(С2 - вы училка и божество)\n",
+          },
+
+        ]
+      },
+
+
+    ],
+
+  },
+  smallTalk001: {
+    mainDescription: "",
+    tasks: [
+      {
+        taskDescription: "Вопросы могут повторятся, отвечай и задавай несколько раз 👇 Задай вопрос и отметь его",
+        taskID: "discussion_task",
+          questions: [
+            {
+              text: "What city are you from?",
+              translation: "Из какого вы города? \n (I am from New-York)",
+            },
+            {
+              text: "What is your father's name?",
+              translation: "Как зовут вашего отца? \n (His name is Andrew)",
+            },
+            {
+              text: "What is your mother's name?",
+              translation: "Как зовут вашу маму? \n (Her name is Audrey)",
+            },
+            {
+              text: "What is your favorite color?",
+              translation: "Какой твой любимый цвет? \n (My favorite color is blue)",
+            },
+            {
+              text: "How old are you?",
+              translation: "Сколько тебе лет? \n (I am 18 / I am 25)",
+            },
+                        {
+              text: "What is your job?",
+              translation: "Какая твоя работа? \n (I am a student / I am a teacher / I work in the office",
+            },
+            {
+              text: "What is your favorite day?",
+              translation: "Какой твой любимый день? \n (I like all days / Friday is my favorite / My favorite day is Friday)",
+            },
+            {
+              text: "What are your favorite drinks?",
+              translation: "Какой твой любимый напиток? \n (I like water / Fanta is my favorite / My favorite drink is orange juice)",
+            },
+            {
+              text: "What time is it on your clock now?",
+              translation: "Сколько сейчас времени у тебя на часах? \n (It is 3 PM = It's 3 o'clock = It's 15 )",
+            },
+            {
+              text: "How is the weather today?",
+              translation: "Какая сегодня погода? \n (It is sunny / Weather is good / It is not cold / rainy / snowy / windy / Temperature is about 20 degrees)",
+            },
+            {
+              text: "What are your 3 favorite films?",
+              translation: "Какие твои 3 любимых фильма? \n (Shrek / Изгой / Terminator)",
+            },
+            {
+              text: "Can you tell your phone in English?",
+              translation: "Сможешь на английском свой номер телефона продиктовать? \n(I cannot / I can 89041113793)",
+            },
+
+
+
+        ]
+      },
+
+
+    ],
+
+  },
+
   debug: {
     mainDescription: "mainDescription",
     tasks: [
@@ -30,7 +324,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
   pattern: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
@@ -497,7 +790,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
   patternNEWCODEtest: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
@@ -679,7 +971,6 @@ const gameTestsNoSeedNoShuffleData = {
 
     ],
   },
-
   pattern_true_false: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
@@ -964,8 +1255,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
-
   listening_introductory2_i5: {
     mainDescription: "Fishing with wife 'i5'",
     tasks: [
@@ -1287,11 +1576,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
-
-
-
-
   listening_b1_test_30p1: {
     mainDescription: "B1 listening 30p1",
     tasks: [
@@ -1432,7 +1716,177 @@ const gameTestsNoSeedNoShuffleData = {
     ]
   },
 
-
+  lifeInThe80s: {
+    mainDescription: "Послушать и выбрать правильные ответы",
+    tasks: [
+      {
+        taskDescription: "Todd and Rachel are talking about the 1980 and how it is different from life now",
+        taskID: "drop_down_text",
+        usefulWords: 'teens - teenagers (подростки), generation - поколение, in advance - заранее, obviously - очевидно, so much different - на столько сильно разная',
+        audio: new URL('../assets/audio/storiesListening/LifeInThe80sB1.mp3', import.meta.url).href,
+        questions: [
+          {
+            text: "Todd: Rachel, did you grow up in (France, Zimbabwe, USA, New Zealand*) ?\n" +
+              "\n" +
+              "Rachel: Yes. I did.\n" +
+              "\n" +
+              "Todd: Nice. I grew up in the States - USA. And I (think, thought*, hope) we would talk about how life is so much different for teens today than it was for our generation.\n" +
+              "\n" +
+              "Rachel: Okay. I think we can do that.\n" +
+              "\n" +
+              "Todd: Obviously the first thing is that when we were young, we didn't have (laptops, computers, smart phones*) and things like that. We didn't have the internet, actually.\n" +
+              "\n" +
+              "Rachel: We didn't have internet. We didn't have email.\n" +
+              "\n" +
+              "Todd: Yeah. I remember if you wanted to meet a friend, you would have to plan it way (for, at, in*, by) advance.\n" +
+              "\n" +
+              "Rachel: Yes.\n" +
+              "\n" +
+              "Todd: You would have to wait by the phone. Remember that, waiting by the phone. You couldn't go outside because if you were waiting for the call, you had to wait at your house (until*, before, after, when) you got the call, and then...\n" +
+              "\n" +
+              "Rachel: We didn't even have an answering machine at my house.\n" +
+              "\n" +
+              "Todd: Wow, my gosh. That's really (stupid, awesome, old school*).\n" +
+              "\n" +
+              "Rachel: We used to have to wait by the phone.\n" +
+              "\n" +
+              "Todd: Yeah.\n" +
+              "\n" +
+              "Rachel: I used to (spend*, spending) every afternoon after school on the phone with my friends. After we got home from school, we would call each other, and discuss the day's events I suppose.\n" +
+              "\n" +
+              "Todd: Yeah, you had so much to share. That's true. I think...\n" +
+              "\n" +
+              "Rachel: So, my teens these days, they come home from school, they get on their phone, and they text all their friends.\n" +
+              "\n" +
+              "Todd: Right. And they do it all day, like it's constant. (Always chatter, Constant chatting, Constant chatter*, Не понимаю я!).\n" +
+              "\n\n\n\n",
+              // "Слушаем до этого момента.\n" +
+              // "\n" +
+              // "Слушаем до этого момента.\n" +
+              // "\n" +
+              // "Дальше не нужно.\n" +
+              // "\n" +
+              // "\n\n\n\n" +
+              // "Rachel: Yeah.\n" +
+              // "\n" +
+              // "Todd: I think maybe that's why I'm not so much into texting. It's just too much work. I like to build up the mystery of not knowing what somebody did for a while.\n" +
+              // "\n" +
+              // "Rachel: Mm, yeah. But I was thinking about it recently, and I think that it was similar because we used to telephone a lot. But then we did have to wait a long time before finding the news.\n" +
+              // "\n" +
+              // "Todd: True. Yeah, I read once about how a lot of the movie plots from the '60s, '70s, and '80s wouldn't work today because of cell phones.\n" +
+              // "\n" +
+              // "Rachel: Yes.\n" +
+              // "\n" +
+              // "Todd: Because a lot of the story line...\n" +
+              // "\n" +
+              // "Rachel: ...are about missed communications and...\n" +
+              // "\n" +
+              // "Todd: Right, right. Yeah.\n" +
+              // "\n" +
+              // "Rachel: Yes. And somebody arrived and somebody else didn't.\n" +
+              // "\n" +
+              // "Todd: Another one I think that's really obvious is bottled water. When I grew up, there was no such thing as bottled water. You had to get water from a faucet, right?\n" +
+              // "\n" +
+              // "Rachel: Yes, or a tap.\n" +
+              // "\n" +
+              // "Todd: Yeah, and I think I remember when they first started coming out with bottled water. I think I was about 14 or 15.\n" +
+              // "\n" +
+              // "Rachel: It was a bit later in New Zealand, I think.\n" +
+              // "\n" +
+              // "Todd: Yeah. That was crazy. I mean, do you remember what it was like when people were first drinking bottled water, how strange it seemed at the time? Everyone was like, \"Why don't you get it from the tap?\"\n" +
+              // "\n" +
+              // "Rachel: Well, it's very clean in New Zealand, so the tap water was clean. So, there was really no reason.\n" +
+              // "\n" +
+              // "Todd: Yeah, if you come from a temperate climate, it was never a problem, right? Because you just ... I'm from a temperate climate as well, and so the water doesn't really have problems with bacteria or things like that. It's always clean. It used to be clean. In New Zealand, it's probably still clean.\n" +
+              // "\n" +
+              // "Rachel: The rivers used to be clean, but they're not so clean now.\n" +
+              // "\n" +
+              // "Todd: Oh really? Even in New Zealand?\n" +
+              // "\n" +
+              // "Rachel: Problems, yeah.\n" +
+              // "\n" +
+              // "Todd: Oh, really. Shocking.\n" +
+              // "\n" +
+              // "Rachel: Mm, it's a bit sad.\n" +
+              // "\n" +
+              // "Todd: Yeah. How about other things that we used to do when we were kids. One thing is, I think compared to kids today, is we used to spend a lot of time outside.\n" +
+              // "\n" +
+              // "Rachel: Yes.\n" +
+              // "\n" +
+              // "Todd: Actually, our parents would not allow you to stay inside. You had to go outside.\n" +
+              // "\n" +
+              // "Rachel: You had to go outside.\n" +
+              // "\n" +
+              // "Todd: Right?\n" +
+              // "\n" +
+              // "Rachel: It's the opposite today.\n" +
+              // "\n" +
+              // "Todd: Yeah.\n" +
+              // "\n" +
+              // "Rachel: They tend to make them stay inside, won't let them go outside.\n" +
+              // "\n" +
+              // "Todd: Why is that? What's the rationale for why they should stay inside?\n" +
+              // "\n" +
+              // "Rachel: Safety.\n" +
+              // "\n" +
+              // "Todd: Safety?\n" +
+              // "\n" +
+              // "Rachel: Mm.\n" +
+              // "\n" +
+              // "Todd: Yeah.\n" +
+              // "\n" +
+              // "Rachel: We didn't used to hear about all of the kidnappings and abuse in the media, so people weren't afraid of it.\n" +
+              // "\n" +
+              // "Todd: Right. Yeah. And the crazy thing is I think...\n" +
+              // "\n" +
+              // "Rachel: You hear about it now.\n" +
+              // "\n" +
+              // "Todd: It's actually safer now, right? They say...\n" +
+              // "\n" +
+              // "Rachel: Yeah, it's safer now.\n" +
+              // "\n" +
+              // "Todd: Even in the states, where they hear about this, I think statistics say that it's actually safer that it was before, but the perception is there.\n" +
+              // "\n" +
+              // "Rachel: Although that could be because the children are all inside.\n" +
+              // "\n" +
+              // "Todd: That's true. Yeah.\n" +
+              // "\n" +
+              // "Rachel: That's a difficult one to figure out. But I don't think it's that unsafe to play outside. I think it's better for kids socially, for their bodies, for their development to play outside if they can.\n" +
+              // "\n" +
+              // "Todd: I agree. I totally agree. Kids definitely should be outside. And kids should be bored. I think that's one of the things that kids miss out on is boredom.\n" +
+              // "\n" +
+              // "Rachel: They're never bored now. They've always got a screen to look at.\n" +
+              // "\n" +
+              // "Todd: Right. So, obviously when we were young, you had nothing to do, so you had to go outside and find something.\n" +
+              // "\n" +
+              // "Rachel: Climb a tree.\n" +
+              // "\n" +
+              // "Todd: Yeah. Exactly. Oh, that's so fun.\n" +
+              // "\n" +
+              // "Rachel: I thought of something. We used to have video watching parties.\n" +
+              // "\n" +
+              // "Rachel: Oh, yeah.\n" +
+              // "\n" +
+              // "Rachel: Because only one person in 10 had a video machine.\n" +
+              // "\n" +
+              // "Todd: Right.\n" +
+              // "\n" +
+              // "Rachel: We would all go to the video store together, and argue over which videos to watch, and choose some horror movies and some comedies. And then go to one person's house, and all watch them altogether.\n" +
+              // "\n" +
+              // "Todd: I do remember that. Yeah. It was a big thing.\n" +
+              // "\n" +
+              // "Rachel: No Netflix binging, but yeah, having a video party at someone's house was a big deal.\n" +
+              // "\n" +
+              // "Todd: And I think movies were a much bigger deal back then because we didn't have screen time. There was no such thing as screen time. You had your TV, but that was not the same thing. Your parents wouldn't let you watch that much TV anyway. And so a movie was a big deal.\n" +
+              // "\n" +
+              // "Rachel: It was more of a big deal. You didn't just watch it on Netflix when you were bored.\n" +
+              // "\n" +
+              // "Todd: Yeah, but a kid these days, it's just they're on their screen all the time. It's just more digital pixels. Yeah, different times.",
+          },
+        ]
+      },
+    ],
+  },
 
   readingIntensive1: {
     mainDescription: null,
@@ -1978,8 +2432,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
-
   yesNoBecause1: {
     tasks: [
       {
@@ -2373,7 +2825,6 @@ const gameTestsNoSeedNoShuffleData = {
       }
     ]
   },
-
   directionsA2: {
     mainDescription: "Послушай и выбери правильный ответ",
     tasks: [
@@ -2393,171 +2844,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-  levelCheck: {
-    mainDescription: "Совет : читайте всё вслух",
-    tasks: [
-      {
-        taskDescription: "спэшл таскс фор спэшл эйджэнтс",
-        taskID: "multiple_choice",
-        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
-        questions: [
-          {
-            text: "Как переводится слово -> special ?",
-            options: {
-              A: "я не знаю как",
-              B: "особенный",
-              C: "специальный",
-              D: "специи",
-              E: "я даже прочитать не знаю как",
-              F: "скидка",
-            },
-            correctAnswer: ["B","C"],
-            explanation: "Если чего-то не знаете - пробуйте догадаться. Ошибаться можно! Методом проб и ошибок на практике всё узнаете и запомните."
-          },
-          {
-            text: "Ответь себе честно - тебе лично нравится вообще английский?",
-            options: {
-              A: "ну так себе",
-              B: "I likes",
-              C: "I not like",
-              D: "Не нравится, но надо",
-              E: "Мне нравится",
-              F: "причем здесь это вообще...",
-              G: "Ой всё, до свидания",
-            },
-            correctAnswer: ["A","D","E"],
-            explanation: "Если не нравится, значит вы ещё с Винсентом не занимались, у него дар влюблять в иностранные языки, я серьезно! \n \n утверждение: I like \n отрицание : I don't like."
-
-          },
-        ]
-      },
-      {
-        taskDescription: "Внимательность и произношение :",
-        taskID: "multiple_choice",
-        questions: [
-          {
-            text: "Как произносится -> special ?",
-            options: {
-              A: "СПЕЦИАЛ",
-              B: "СПЕСИАЛ",
-              C: "СПЕКАЛ",
-              D: "ШПЕЦЫЛ",
-              E: "СПЭШЛ",
-              F: "я не знаю как",
-            },
-            correctAnswer: ["E",],
-            explanation: "/ спЭшл / и никак иначе"
-
-          },
-          {
-            text: "Как произносится -> agent ?",
-            options: {
-              A: "агент",
-              B: "эгент",
-              C: "эйгент",
-              D: "эйджэнт",
-              E: "меня поймут при любом произношении",
-            },
-            correctAnswer: ["D",],
-            explanation: "ударенией на первый слог / ЭЙджэнт / \n\n все остальные варианты - это максимально плохой и непонятный уровень английского"
-
-          },
-        ]
-      },
-      {
-        taskDescription: "Выбери правильный ответ",
-        audio: null,
-        taskID: "drop_down_text",
-        textScript: 'Ну а какие подсказки в этом задании вы хотите? Тут только ответы могу показать сразу, готовы к спойлерам? \n\n Всё же вроде очевидно: \n\nlater - позже \nlate - поздно \n\neasy - легко \nsimple - просто',
-        questions: [
-          {
-            text: "Сейчас поздно (now late, now later, я Х3 вообще, не знаю, it's later now, it's late now*)",
-          },
-          {
-            text: "Это просто (в душе не знаю, not hard, it is ease, it is easy, it is simple*)",
-          },
-
-
-        ]
-      },
-      {
-        taskDescription: "Включить аудио и вписать что услышали:",
-        taskID: "student_input",
-        audio: new URL('../assets/audio/songs/hello_how_are_you.mp3', import.meta.url).href,
-        textScript: 'Ответы в самом низу, а это подзказка : \n\n Слушайте несколько раз, слушайте пока не услышите, тренируйтесь, практикуйтесь, вы справитесь! You are special. Yes yes yes.\n' +
-          '\n' +
-          'Ошибки в написании слов - не страшно, если вы правильно произносите слова вслух. Никто же не видит как вы пишите слова ;-) \n\n Мой личный опыт: многими лингвистами и полиглотами доказано, что изучение правописания поднимает эффективность запоминания слов и фраз. \n\n Поэтому рекомендую сразу учиться правильно пЕсАтть слава лангискйие ;-) и завести себе блокнотик или записки в телефоне\n' +
-          '\nhow are you - как дела?\ngood - хорошо\ngreat - великолепно\nI am wonderful - я замечательно\ntired - устал\nhungry - голодный\nnot so good - не так уж хорошо',
-           questions: [
-          {
-            text: "Hello, hello, hello ___ ?",
-            correctAnswer: "how are you",
-          },{
-            text: "I am  __ ?",
-            correctAnswer: "good",
-          },{
-            text: "I am __ ?",
-            correctAnswer: "great",
-          },{
-            text: "__ wonderful",
-            correctAnswer: "I am",
-          },{
-            text: "I'm ___",
-            correctAnswer: "tired",
-          },{
-            text: "I'm ___",
-            correctAnswer: "hungry",
-          },{
-            text: "I'm ___ good",
-            correctAnswer: "not so",
-          },
-
-
-        ]
-      },
-
-
-      {
-        taskDescription: "Write in English",
-        taskID: "grid_table",
-        taskPicture: null,
-        tableData: {
-          headers: ["", "Напиши по-английски"],
-          rows: [
-            { cells: ["У меня есть телефон", ""],
-              editable: [ false, true ],
-              correctAnswers: {
-                cells: [null, "I have a phone"],
-                almostCorrect: {
-                  1: ["I have phone"], // Индекс поля (начиная с 0)
-                }
-              }
-              },
-            { cells: ["У меня нет бургера", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I don't have a burger"],
-                almostCorrect: {
-                  1: ["I don't have burger"], // Индекс поля (начиная с 0)
-                }
-              }},
-            { cells: ["Я устал", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I am tired"],
-              }
-              },
-            { cells: ["Я голодная", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I am hungry"],
-              }},
-            { cells: ["слова УСТАЛ и ГОЛОДЕН", "<-были в прошлом задании ;)"], editable: [ false, false],
-
-            },
-          ],
-        }
-      },
-    ],
-  },
-
   ieltsListening1: {
     mainDescription: "IELTS listening",
     tasks: [
@@ -2646,7 +2932,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
   WhatIsMyLevel: {
     mainDescription: "СПЭШЛ проверка уровня",
     tasks: [
@@ -3695,8 +3980,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
-
   irregularVerbsGridNaughtyVerbsGrid: {
     mainDescription: "Naughty Verbs",
     tasks: [
@@ -3862,7 +4145,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-
   grid_table_IrregularVerbs_b_part_1_ru: {
     mainDescription: "Irregular Verbs 'B' part 1",
     tasks: [
@@ -4180,7 +4462,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
   grid_table_IrregularVerbs_b_gaps: {
     mainDescription: "Irregular Verbs 'B'",
     tasks: [
@@ -4925,7 +5206,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
   grid_table_IrregularVerbs_f_gaps: {
     mainDescription: "Irregular Verbs 'F'",
     tasks: [
@@ -6400,7 +6680,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
   grid_table_IrregularVerbs_s_gaps: {
     mainDescription: "Irregular Verbs 'S'",
     tasks: [
@@ -7027,8 +7306,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
-
   grid_table_IrregularVerbs_X4_ru: {
     mainDescription: "Irregular Verbs '?'",
     tasks: [
@@ -7047,8 +7324,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
-
   grid_table_IrregularVerbs_all_ru: {
     mainDescription: "Irregular Verbs 'All'",
     tasks: [
@@ -8156,13 +8431,6 @@ const gameTestsNoSeedNoShuffleData = {
       }
     ]
   },
-
-
-
-
-
-
-
   grid_table_IV_c: {
     mainDescription: "Irregular Verbs 'B'",
     tasks: [
@@ -8310,7 +8578,6 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-
   grid_table_AV_all: {
     mainDescription: "Заполните таблицу недостающими данными",
     tasks: [

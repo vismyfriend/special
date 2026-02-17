@@ -336,7 +336,7 @@ const handleBubbleClick = () => {
 // const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
 // const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
 // const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
-const welcomeWords = ["читай","вслух","читай вслух","it's","so cold","why?","Vincent","help me","please!","S.P.E.C.I.A.L.",];
+const welcomeWords = ["читай","вслух","произноси","всё","вслуууух!","Hello","hi","Vincent","I","am","a","special","agent","I am not","a","lazy","ass","VINCEEENT!"];
 
 
 const allEnglishWords = [

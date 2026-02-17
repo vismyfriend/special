@@ -309,7 +309,7 @@
                   class="translation-toggle"
                   @click.stop="toggleDiscussionTranslation(index, qi)"
                 >
-                  <template v-if="!showTranslation[index]?.[qi]">Показать перевод</template>
+                  <template v-if="!showTranslation[index]?.[qi]">Показать перевод (или пример)</template>
                   <template v-else>
                     <span class="translation-text">{{ q.translation }}</span>
                   </template>
@@ -1862,7 +1862,7 @@ input[type="radio"]:checked + .radio-custom::after {
 
 .task-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   margin-bottom: 10px;
   gap: 10px;

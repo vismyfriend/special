@@ -320,6 +320,48 @@ const sortingWordsData = {
       { id: 100, eng: 'known', ru: 'известный', correctColumn: 'v3' }
     ]
   },
+  sortVerbsIntro: {
+    columns: [
+      { id: 'v1', title: 'делать (обычно) делаю ' },
+      { id: 'v2', title: 'делал (прошлое) сделал ' },
+      { id: 'v3', title: 'какой (новости) сделанный' }
+    ],
+    items: [
+      { id: 11, eng: 'bite', ru: 'кусать', correctColumn: 'v1' },
+      { id: 12, eng: 'bit', ru: 'укусил', correctColumn: 'v2' },
+      { id: 13, eng: 'bitten', ru: 'укушенный', correctColumn: 'v3' },
+
+      { id: 17, eng: 'break', ru: 'ломать', correctColumn: 'v1' },
+      { id: 18, eng: 'broke', ru: 'сломал', correctColumn: 'v2' },
+      { id: 19, eng: 'broken', ru: 'сломанный', correctColumn: 'v3' },
+
+      { id: 32, eng: 'choose', ru: 'выбирать', correctColumn: 'v1' },
+      { id: 33, eng: 'chose', ru: 'выбрал', correctColumn: 'v2' },
+      { id: 34, eng: 'chosen', ru: 'выбранный', correctColumn: 'v3' },
+
+      { id: 41, eng: 'do', ru: 'делать', correctColumn: 'v1' },
+      { id: 42, eng: 'did', ru: 'сделал', correctColumn: 'v2' },
+      { id: 43, eng: 'done', ru: 'сделанный', correctColumn: 'v3' },
+
+      { id: 50, eng: 'eat', ru: 'есть', correctColumn: 'v1' },
+      { id: 51, eng: 'ate', ru: 'ел', correctColumn: 'v2' },
+      { id: 52, eng: 'eaten', ru: 'съеденный', correctColumn: 'v3' },
+
+      { id: 53, eng: 'fall', ru: 'падать', correctColumn: 'v1' },
+      { id: 54, eng: 'fell', ru: 'упал', correctColumn: 'v2' },
+      { id: 55, eng: 'fallen', ru: 'упавший', correctColumn: 'v3' },
+
+      { id: 65, eng: 'forget', ru: 'забывать', correctColumn: 'v1' },
+      { id: 66, eng: 'forgot', ru: 'забыл', correctColumn: 'v2' },
+      { id: 67, eng: 'forgotten', ru: 'забытый', correctColumn: 'v3' },
+
+      { id: 68, eng: 'freeze', ru: 'замораживать', correctColumn: 'v1' },
+      { id: 69, eng: 'froze', ru: 'заморозил', correctColumn: 'v2' },
+      { id: 70, eng: 'frozen', ru: 'замороженный', correctColumn: 'v3' },
+
+    ]
+  },
+
   sortVerbsNVS: {
     columns: [
       { id: 'v1', title: 'настоящее' },

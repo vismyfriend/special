@@ -73,15 +73,14 @@ export const allGamesAndSetsOfWordsList =
       ]
     },
     {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/levelCheck/brainstorm",
       missionVisibleName: "Определить свой уровень",
       missionDescription: "СПЭШЛ проверка уровня",
-      id: 1001,
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
+      // id: 1001,
       active: true,
       gameIcon:'',
     },
-
     {
       type: "subTasks",
       missionVisibleName: "Начать с самого начала",
@@ -101,12 +100,30 @@ export const allGamesAndSetsOfWordsList =
         },
         {
           type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/print-all-words",
+          missionVisibleName: "Первая домашка",
+          missionDescription: "Homework №1",
+          id: 1001,
+          active: true,
+          stars: 4
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/gameSnakeWords",
+          missionVisibleName: "Я смогу !",
+          missionDescription: "Змейка с цифрами",
+          id: 1001,
+          active: true,
+          stars: 2
+        },
+        {
+          type: "hardcodedLink",
           path: "/see-all-sets-of-words/letters26/game-translate",
           missionVisibleName: "Произношение",
           missionDescription: "про нан си эйшн",
           id: 1001,
           active: true,
-          stars: 3
+          stars: 1
         },
         {
           type: "hardcodedLink",
@@ -115,7 +132,7 @@ export const allGamesAndSetsOfWordsList =
           missionDescription: "Letters - лЭттэрз",
           id: 1001,
           active: true,
-          stars: 3
+          stars: 2
         },
         {
           type: "hardcodedLink",
@@ -145,109 +162,141 @@ export const allGamesAndSetsOfWordsList =
           stars: 3
         },
         {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/plates/deck-of-cards/",
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://vismyfriend.github.io/VueFirstStart/",
+          target: '_blank', // Открывать в новой вкладке
           missionVisibleName: "Калькулятор",
           missionDescription: "calculator - кэлкулЭйтэ",
           id: 1001,
           active: true,
-          stars: 3
+          stars: 1
         },
         {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/plates/deck-of-cards/",
-          missionVisibleName: "Экзамен 1",
-          missionDescription: "Exam 1 - эгzЭм уан",
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://vismyfriend.github.io/VueFirstStart/",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Экзамен №2",
+          missionDescription: "Exam 2 - эгzЭм ту",
           id: 1001,
           active: true,
-          stars: 3
+          stars: 5
         },
+      ]
+    },
 
+    {
+      missionVisibleName: "Разминка",
+      missionDescription: "Warm up",
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/",
+      active: true,
+      gameIcon:'🏠',
+      // id: 1001,
+
+    },
+    {
+      type: "subTasks",
+      missionVisibleName: "Артикли",
+      missionDescription: "Articles",
+      id: "subtasks-a1",
+      style: "premium", // ← добавляем поле для стиля
+      active: true,
+      subTasks: [
         {
-          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
-          missionVisibleName: "Цифры",
-          missionDescription: "Digits - диджитс",
-          id: "under-subtasks-special",
-          style: "greenish", // стиль для вложенных подзаданий
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesA/sorting",
+          missionVisibleName: "Артикль - A - э",
+          missionDescription: "Артикли - A",
+          id: 1001,
           active: true,
-          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
-            {
-              missionName: "questionWords1",
-              missionVisibleName: "Миссия - вопросы 1",
-              missionDescription: "Вопросительные слова 1",
-              id: 7,
-              active: true,
-              gameIcon:'❓'
-            },
-
-            {
-              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-              path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
-              missionVisibleName: "Миссия - вопросы 2",
-              missionDescription: "QW1 speaking",
-              id: 1001,
-              active: true,
-              gameIcon:' 🗣❓'
-            },
-            {
-              missionName: "questionWords2",
-              missionVisibleName: "Миссия - вопросы 3",
-              missionDescription: "Вопросит. слова 3",
-              id: 7,
-              active: true,
-              gameIcon:'❓'
-            },
-            {
-              missionName: "questionWords3",
-              missionVisibleName: "Миссия - вопросы 4",
-              missionDescription: "Вопросит. слова 4",
-              id: 7,
-              active: true,
-              gameIcon:'❓'
-
-            },
-            {
-              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-              path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
-              missionVisibleName: "Список вопросит. слов",
-              missionDescription: "All question words",
-              id: 1001,
-              active: true,
-            },
-
-          ]
         },
         {
-          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
-          missionVisibleName: "Смол Токс",
-          missionDescription: "Повседневные беседы",
-          id: "under-subtasks-special",
-          style: "speaking", // стиль для вложенных подзаданий
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesAn/sorting",
+          missionVisibleName: "Артикль - An - эн",
+          missionDescription: "Артикли - An",
+          id: 1001,
           active: true,
-          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
-            {
-              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-              path: "/see-all-sets-of-words/introLessonQuestionsSmallTalk1/deck-of-cards",
-              missionVisibleName: "Small talk 1",
-              missionDescription: "What's your favorite",
-              id: 1001,
-              active: true,
-              stars: '1'
-            },
-
-          ]
         },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesThe/sorting",
+          missionVisibleName: "Артикль - The - дэ",
+          missionDescription: "Артикли - The",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
+          missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
+          missionDescription: "Артикли",
+          id: 1001,
+          active: true,
+          gameIcon:'🙉',
+        },
+      ]
+    },
+
+    {
+      type: "subTasks",
+      missionVisibleName: "Small talks",
+      missionDescription: "Короткие разговоры",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
         {
           type: "hardcodedLink",
-          path: "/phoneFramePattern",
-          missionVisibleName: "Узнать свой уровень",
-          missionDescription: "What is my level of English?",
+          path: "/see-all-sets-of-words/smallTalk001/brainstorm",
+          missionVisibleName: "Самая простая беседа",
+          missionDescription: "The simplest talk",
+          id: 1001,
+          active: true,
+
+        },
+      ]
+    },
+
+    {
+      type: "subTasks",
+      missionVisibleName: "Аудирование",
+      missionDescription: "Listening",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/lifeInThe80s/brainstorm",
+          missionVisibleName: "life in the 80's (B1)",
+          missionDescription: "lifeInThe80s",
+          id: 1001,
+          active: true,
+
+        },
+      ]
+    },
+
+
+    {
+      type: "subTasks",
+      missionVisibleName: "Неправильные глаголы",
+      missionDescription: "Irregular Verbs",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsIntro/sorting",
+          missionVisibleName: "Понятное объяснение",
+          missionDescription: "Неправильные глаголы",
           id: 1001,
           active: true,
         },
       ]
     },
-
 
 
     {
@@ -428,59 +477,8 @@ export const allGamesAndSetsOfWordsList =
 
 
     ///// ------
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/",
-      missionVisibleName: "Разминка произношения",
-      missionDescription: "Pronunciation warm up",
-      id: 1001,
-      active: true,
-      stars: '1'
-    },
 
-    {
-      type: "subTasks",
-      missionVisibleName: "Артикли",
-      missionDescription: "Articles",
-      id: "subtasks-a1",
-      style: "premium", // ← добавляем поле для стиля
-      active: true,
-      subTasks: [
-        {
-          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/sortingArticlesA/sorting",
-          missionVisibleName: "Арткль - A - э",
-          missionDescription: "Article - A",
-          id: 1001,
-          active: true,
-        },{
-          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/sortingArticlesAn/sorting",
-          missionVisibleName: "Арткль - An - эн",
-          missionDescription: "Article - An",
-          id: 1001,
-          active: true,
-        },
-        {
-          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/sortingArticlesThe/sorting",
-          missionVisibleName: "Арткль - The - дэ",
-          missionDescription: "Article - The",
-          id: 1001,
-          active: true,
-        },
 
-        {
-          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/see-all-sets-of-words/sortingArticlesTheAnA/sorting",
-          missionVisibleName: "ЭЭ, ДЭ, ЭН ? A The An",
-          missionDescription: "Артикли",
-          id: 1001,
-          active: true,
-          gameIcon:'🙉',
-        },
-      ]
-    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/devModeNumbers/gameSnakeWords",
@@ -1031,6 +1029,99 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
 
+
+    {
+      type: "subTasks",
+      missionVisibleName: "Винсент проверь это копии",
+      missionDescription: "Винсент проверь это копии",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Цифры",
+          missionDescription: "Digits - диджитс",
+          id: "under-subtasks-special",
+          style: "greenish", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              missionName: "questionWords1",
+              missionVisibleName: "Миссия - вопросы 1",
+              missionDescription: "Вопросительные слова 1",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+            },
+
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/hardCoded_questionWords1/game-translate",
+              missionVisibleName: "Миссия - вопросы 2",
+              missionDescription: "QW1 speaking",
+              id: 1001,
+              active: true,
+              gameIcon:' 🗣❓'
+            },
+            {
+              missionName: "questionWords2",
+              missionVisibleName: "Миссия - вопросы 3",
+              missionDescription: "Вопросит. слова 3",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+            },
+            {
+              missionName: "questionWords3",
+              missionVisibleName: "Миссия - вопросы 4",
+              missionDescription: "Вопросит. слова 4",
+              id: 7,
+              active: true,
+              gameIcon:'❓'
+
+            },
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/questionWordsAll/print-all-words",
+              missionVisibleName: "Список вопросит. слов",
+              missionDescription: "All question words",
+              id: 1001,
+              active: true,
+            },
+
+          ]
+        },
+        {
+          type: "underSubTasks", // ← НОВЫЙ ТИП для вложенных подзаданий
+          missionVisibleName: "Смол Токс",
+          missionDescription: "Повседневные беседы",
+          id: "under-subtasks-special",
+          style: "speaking", // стиль для вложенных подзаданий
+          active: true,
+          underSubTasks: [ // ← НОВОЕ ПОЛЕ для вложенных подзаданий
+            {
+              type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+              path: "/see-all-sets-of-words/introLessonQuestionsSmallTalk1/deck-of-cards",
+              missionVisibleName: "Small talk 1",
+              missionDescription: "What's your favorite",
+              id: 1001,
+              active: true,
+              stars: '1'
+            },
+
+          ]
+        },
+        {
+          type: "hardcodedLink",
+          path: "/phoneFramePattern",
+          missionVisibleName: "Узнать свой уровень",
+          missionDescription: "What is my level of English?",
+          id: 1001,
+          active: true,
+        },
+      ]
+    },
 
 
     {

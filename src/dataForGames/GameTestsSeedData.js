@@ -48,7 +48,6 @@ const GameTestsSeedData = {
 
     ]
   },
-
   patternNEWCODEtest: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
@@ -230,172 +229,6 @@ const GameTestsSeedData = {
 
     ],
   },
-
-  levelCheck: {
-    mainDescription: "Совет : читайте всё вслух",
-    tasks: [
-      {
-        taskDescription: "спэшл таскс фор спэшл эйджэнтс",
-        taskID: "multiple_choice",
-        taskPicture: new URL("../assets/images/thinkAboutItTPNG.jpg", import.meta.url).href,
-        questions: [
-          {
-            text: "Как переводится слово -> special ?",
-            options: {
-              A: "я не знаю как",
-              B: "особенный",
-              C: "специальный",
-              D: "специи",
-              E: "я даже прочитать не знаю как",
-              F: "скидка",
-            },
-            correctAnswer: ["B","C"],
-            explanation: "Если чего-то не знаете - пробуйте догадаться. Ошибаться можно! Методом проб и ошибок на практике всё узнаете и запомните."
-          },
-          {
-            text: "Ответь себе честно - тебе лично нравится вообще английский?",
-            options: {
-              A: "ну так себе",
-              B: "I likes",
-              C: "I not like",
-              D: "Не нравится, но надо",
-              E: "Мне нравится",
-              F: "причем здесь это вообще...",
-              G: "Ой всё, до свидания",
-            },
-            correctAnswer: ["A","D","E"],
-            explanation: "Если не нравится, значит вы ещё с Винсентом не занимались, у него дар влюблять в иностранные языки, я серьезно! \n \n утверждение: I like \n отрицание : I don't like."
-
-          },
-        ]
-      },
-      {
-        taskDescription: "Внимательность и произношение :",
-        taskID: "multiple_choice",
-        questions: [
-          {
-            text: "Как произносится -> special ?",
-            options: {
-              A: "СПЕЦИАЛ",
-              B: "СПЕСИАЛ",
-              C: "СПЕКАЛ",
-              D: "ШПЕЦЫЛ",
-              E: "СПЭШЛ",
-              F: "я не знаю как",
-            },
-            correctAnswer: ["E",],
-            explanation: "/ спЭшл / и никак иначе"
-
-          },
-          {
-            text: "Как произносится -> agent ?",
-            options: {
-              A: "агент",
-              B: "эгент",
-              C: "эйгент",
-              D: "эйджэнт",
-              E: "меня поймут при любом произношении",
-            },
-            correctAnswer: ["D",],
-            explanation: "ударенией на первый слог / ЭЙджэнт / \n\n все остальные варианты - это максимально плохой и непонятный уровень английского"
-
-          },
-        ]
-      },
-      {
-        taskDescription: "Выбери правильный ответ",
-        audio: null,
-        taskID: "drop_down_text",
-        textScript: 'Ну а какие подсказки в этом задании вы хотите? Тут только ответы могу показать сразу, готовы к спойлерам? \n\n Всё же вроде очевидно: \n\nlater - позже \nlate - поздно \n\neasy - легко \nsimple - просто',
-        questions: [
-          {
-            text: "Сейчас поздно (now late, now later, я Х3 вообще, не знаю, it's later now, it's late now*)",
-          },
-          {
-            text: "Это просто (в душе не знаю, not hard, it is ease, it is easy, it is simple*)",
-          },
-
-
-        ]
-      },
-      {
-        taskDescription: "Включить аудио и вписать что услышали:",
-        taskID: "student_input",
-        audio: new URL('../assets/audio/songs/hello_how_are_you.mp3', import.meta.url).href,
-        textScript: 'Ответы в самом низу, а это подзказка : \n\n Слушайте несколько раз, слушайте пока не услышите, тренируйтесь, практикуйтесь, вы справитесь! You are special. Yes yes yes.\n' +
-          '\n' +
-          'Ошибки в написании слов - не страшно, если вы правильно произносите слова вслух. Никто же не видит как вы пишите слова ;-) \n\n Мой личный опыт: многими лингвистами и полиглотами доказано, что изучение правописания поднимает эффективность запоминания слов и фраз. \n\n Поэтому рекомендую сразу учиться правильно пЕсАтть слава лангискйие ;-) и завести себе блокнотик или записки в телефоне\n' +
-          '\nhow are you - как дела?\ngood - хорошо\ngreat - великолепно\nI am wonderful - я замечательно\ntired - устал\nhungry - голодный\nnot so good - не так уж хорошо',
-        questions: [
-          {
-            text: "Hello, hello, hello ___ ?",
-            correctAnswer: "how are you",
-          },{
-            text: "I am  __ ?",
-            correctAnswer: "good",
-          },{
-            text: "I am __ ?",
-            correctAnswer: "great",
-          },{
-            text: "__ wonderful",
-            correctAnswer: "I am",
-          },{
-            text: "I'm ___",
-            correctAnswer: "tired",
-          },{
-            text: "I'm ___",
-            correctAnswer: "hungry",
-          },{
-            text: "I'm ___ good",
-            correctAnswer: "not so",
-          },
-
-
-        ]
-      },
-
-
-      {
-        taskDescription: "Write in English",
-        taskID: "grid_table",
-        taskPicture: null,
-        tableData: {
-          headers: ["", "Напиши по-английски"],
-          rows: [
-            { cells: ["У меня есть телефон", ""],
-              editable: [ false, true ],
-              correctAnswers: {
-                cells: [null, "I have a phone"],
-                almostCorrect: {
-                  1: ["I have phone"], // Индекс поля (начиная с 0)
-                }
-              }
-            },
-            { cells: ["У меня нет бургера", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I don't have a burger"],
-                almostCorrect: {
-                  1: ["I don't have burger"], // Индекс поля (начиная с 0)
-                }
-              }},
-            { cells: ["Я устал", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I am tired"],
-              }
-            },
-            { cells: ["Я голодная", ""], editable: [ false, true],
-              correctAnswers: {
-                cells: [null, "I am hungry"],
-              }},
-            { cells: ["слова УСТАЛ и ГОЛОДЕН", "<-были в прошлом задании ;)"], editable: [ false, false],
-
-            },
-          ],
-        }
-      },
-    ],
-  },
-
   testPattern: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
@@ -1813,9 +1646,6 @@ const GameTestsSeedData = {
 
     ]
   },
-
-
-
 }
 
 export default GameTestsSeedData
