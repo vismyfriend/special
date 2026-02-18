@@ -2,10 +2,10 @@
 
 export const allGamesAndSetsOfWordsList =
   [
-
+    // extra information
     {
-      type: "subTasks",
       missionVisibleName: "Extra information",
+      type: "subTasks",
       missionDescription: "Дополнительные материалы",
       id: "subtasks-newSub",
       style: "glassMorphism", // Это ключевое значение для применения стиля
@@ -72,6 +72,7 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+    // определить уровень
     {
       missionVisibleName: "Определить свой уровень",
       missionDescription: "СПЭШЛ проверка уровня",
@@ -81,6 +82,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'',
     },
+    // начать с самого начала
     {
       type: "subTasks",
       missionVisibleName: "Начать с самого начала",
@@ -194,6 +196,7 @@ export const allGamesAndSetsOfWordsList =
       // id: 1001,
 
     },
+    // артикли
     {
       type: "subTasks",
       missionVisibleName: "Артикли",
@@ -235,9 +238,25 @@ export const allGamesAndSetsOfWordsList =
           active: true,
           gameIcon:'🙉',
         },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/ArticlesAll/game-translate",
+          missionVisibleName: "Много примеров",
+          missionDescription: "примеры на артикли",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/ArticlesOrNo/game-translate",
+          missionVisibleName: "Экзамен по артиклям",
+          missionDescription: "Экзамен начальный уровень",
+          id: 1001,
+          active: true,
+        },
       ]
     },
-
+    // смол толкс
     {
       type: "subTasks",
       missionVisibleName: "Small talks",
@@ -273,7 +292,7 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
-
+    // аудирование
     {
       type: "subTasks",
       missionVisibleName: "Аудирование",
@@ -293,8 +312,7 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
-
-
+    // неправильные глаголы
     {
       type: "subTasks",
       missionVisibleName: "Неправильные глаголы",
@@ -305,14 +323,60 @@ export const allGamesAndSetsOfWordsList =
       subTasks: [
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/sortVerbsIntro/sorting",
+          path: "/see-all-sets-of-words/sortVerbsIntro101/sorting",
+          missionVisibleName: "Для чайников",
+          missionDescription: "Irregular verbs 101",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsIntro1/sorting",
           missionVisibleName: "Понятное объяснение",
           missionDescription: "Неправильные глаголы",
           id: 1001,
           active: true,
+          stars: 2
+
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsIntro2/sorting",
+          missionVisibleName: "Понятные примеры",
+          missionDescription: "Неправильные глаголы",
+          id: 1001,
+          active: true,
+          stars: 1
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsToBe3Forms/sorting",
+          missionVisibleName: "Неправильный глагол To Be",
+          missionDescription: "Naughty Verb To Be",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsToBe3FormsExamples/sorting",
+          missionVisibleName: "Irregular verb To Be - примеры",
+          missionDescription: "Naughty Verb To Be examples",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/sortVerbsNVS/sorting",
+          missionVisibleName: "Naughty verbs S",
+          missionDescription: "Неправильные глаголы S ",
+          id: 1001,
+          active: true,
+          gameIcon:'📁',
         },
       ]
     },
+    // колода карт
     {
       type: "subTasks",
       missionVisibleName: "Колода карт",
@@ -322,16 +386,17 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       subTasks: [
         {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
           missionVisibleName: "легкие слова",
           missionDescription: "колода цвета, еда, животные...",
-          id: 1001,
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/introSetAlias/deck-of-cards",
+          // id: 1001,
           active: true,
         },
       ]
     },
- {
+    // Вопросы и ответы
+    {
       type: "subTasks",
       missionVisibleName: "Вопросы и ответы",
       missionDescription: "Questions and answers",
@@ -341,7 +406,7 @@ export const allGamesAndSetsOfWordsList =
       subTasks: [
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/who1/print-all-words",
+          path: "/see-all-sets-of-words/whoDoesIt1/print-all-words",
           missionVisibleName: "Кто делает это? (вопросы)",
           missionDescription: "Who does it?",
           id: 1001,
@@ -359,16 +424,7 @@ export const allGamesAndSetsOfWordsList =
     },
 
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/sortVerbsNVS/sorting",
-      missionVisibleName: "Naughty verbs S",
-      missionDescription: "Неправильные глаголы S ",
-      id: 1001,
-      active: true,
-      gameIcon:'📁',
 
-    },
     {
       missionName: "ForgettingCurveB1",
       missionVisibleName: "Forgetting curve 1",
@@ -1367,7 +1423,7 @@ export const allGamesAndSetsOfWordsList =
 
 
     {
-      missionName: "who1",
+      missionName: "whoDoesIt1",
       missionVisibleName: "Who questions part 1",
       missionDescription: "Вопросы КТО, КОГО ч.1",
       id: 7,

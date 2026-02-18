@@ -342,6 +342,9 @@ const welcomeWords = ["читай","вслух","произноси","всё","�
 const allEnglishWords = [
   "Good Job", "Great", "Tap again","hamster",
   "apple", "banana", "cherry", "date", "elderberry",
+  ...shortWordsData.whoDoesIt1.map(item => item.eng),
+  ...shortWordsData.ArticlesAll.map(item => item.eng),
+
   ...shortWordsData.devModeNumbersFast.map(item => item.eng),
   ...shortWordsData.devModeNumbers.map(item => item.eng),
   ...shortWordsData.devmode1.map(item => item.eng),

@@ -763,6 +763,7 @@ const orderedMissionList = computed(() => {
 });
 
 // ФИЛЬТРОВАННЫЙ СПИСОК С УЧЕТОМ ПОИСКА
+// ФИЛЬТРОВАННЫЙ СПИСОК С УЧЕТОМ ПОИСКА
 const filteredOrderedMissions = computed(() => {
   const query = normalizeString(searchQuery.value).replace(/\//g, '');
   if (!query) return orderedMissionList.value;
@@ -770,42 +771,77 @@ const filteredOrderedMissions = computed(() => {
   const result = [];
   const seen = new Set();
 
-  const itemMatches = (item) => item.active && universalSearch(item, query);
+  const processItem = (item, parentSubTask = null, parentUnderSubTask = null) => {
+    if (!item.active) return;
 
-  const searchItems = (items, parentSubTask = null, parentUnderSubTask = null) => {
-    items.forEach(item => {
-      if (!item.active) return;
-      const key = getItemKey(item);
-      if (seen.has(key)) return;
+    const key = getItemKey(item);
+    if (seen.has(key)) return;
 
-      if (itemMatches(item)) {
-        if (parentUnderSubTask && !seen.has(getItemKey(parentUnderSubTask))) {
-          seen.add(getItemKey(parentUnderSubTask));
-          result.push(parentUnderSubTask);
-        }
-        if (parentSubTask && !seen.has(getItemKey(parentSubTask))) {
-          seen.add(getItemKey(parentSubTask));
-          result.push(parentSubTask);
-        }
-        seen.add(key);
-        result.push(item);
+    // Проверяем, соответствует ли элемент поиску
+    const itemMatches = universalSearch(item, query);
+
+    // Проверяем, есть ли совпадение в родительской категории
+    const parentMatches = parentSubTask && universalSearch(parentSubTask, query);
+    const grandParentMatches = parentUnderSubTask && universalSearch(parentUnderSubTask, query);
+
+    // Добавляем элемент, если:
+    // 1. Он сам соответствует поиску, ИЛИ
+    // 2. Его родитель соответствует поиску (для subTasks)
+    // 3. Его "дедушка" соответствует поиску (для underSubTasks)
+    if (itemMatches || parentMatches || grandParentMatches) {
+      // Добавляем родительские элементы, если их еще нет
+      if (parentUnderSubTask && !seen.has(getItemKey(parentUnderSubTask))) {
+        seen.add(getItemKey(parentUnderSubTask));
+        result.push(parentUnderSubTask);
+      }
+      if (parentSubTask && !seen.has(getItemKey(parentSubTask))) {
+        seen.add(getItemKey(parentSubTask));
+        result.push(parentSubTask);
       }
 
-      if (isSubTasks(item) && item.subTasks) {
-        item.subTasks.forEach(subTask => {
-          if (isUnderSubTasks(subTask)) {
-            searchItems(subTask.underSubTasks || [], item, subTask);
-          } else {
-            searchItems([subTask], item, null);
-          }
-        });
-      }
-    });
+      seen.add(key);
+      result.push(item);
+    }
+
+    // Рекурсивно обрабатываем дочерние элементы
+    if (isSubTasks(item) && item.subTasks) {
+      item.subTasks.forEach(subTask => {
+        if (isUnderSubTasks(subTask)) {
+          processItem(subTask, item, null);
+          subTask.underSubTasks?.forEach(under => {
+            processItem(under, item, subTask);
+          });
+        } else {
+          processItem(subTask, item, null);
+        }
+      });
+    } else if (isUnderSubTasks(item) && item.underSubTasks) {
+      item.underSubTasks.forEach(under => {
+        processItem(under, parentSubTask, item);
+      });
+    }
   };
 
-  searchItems(orderedMissionList.value);
-  return result;
+  orderedMissionList.value.forEach(item => processItem(item));
+
+  // Убираем дубликаты, сохраняя порядок
+  return [...new Map(result.map(item => [getItemKey(item), item])).values()];
 });
+
+// Проверка, есть ли у родительского элемента совпадение с поиском
+const hasParentMatch = (item, parentSubTask, parentUnderSubTask, query) => {
+  if (!query) return false;
+
+  if (parentUnderSubTask && universalSearch(parentUnderSubTask, query)) {
+    return true;
+  }
+
+  if (parentSubTask && universalSearch(parentSubTask, query)) {
+    return true;
+  }
+
+  return false;
+};
 
 // ==================== УТИЛИТЫ ====================
 const normalizeString = (str) => {
@@ -860,47 +896,76 @@ const getSubTaskStyleClass = (subTaskSet) => {
 };
 
 // ==================== УНИВЕРСАЛЬНЫЙ ПОИСК ====================
-const universalSearch = (item, query) => {
+// ==================== УНИВЕРСАЛЬНЫЙ ПОИСК ====================
+const universalSearch = (item, query, checkChildrenOnly = false) => {
   if (!query) return true;
 
-  const searchFields = [
-    item.missionVisibleName, item.missionDescription, item.missionName,
-    item.type, item.path, item.url,
-    item.category ? (Array.isArray(item.category) ? item.category.join(' ') : item.category) : '',
-    item.style, item.gameIcon, item.gameImg,
-    item.stars?.toString(), item.password, item.target
-  ].filter(Boolean);
+  // Поиск в полях самого элемента (если не ищем только в детях)
+  if (!checkChildrenOnly) {
+    const searchFields = [
+      item.missionVisibleName, item.missionDescription, item.missionName,
+      item.type, item.path, item.url,
+      item.category ? (Array.isArray(item.category) ? item.category.join(' ') : item.category) : '',
+      item.style, item.gameIcon, item.gameImg,
+      item.stars?.toString(), item.password, item.target
+    ].filter(Boolean);
 
-  if (searchFields.some(field => field && normalizeString(field).includes(query))) return true;
+    if (searchFields.some(field => field && normalizeString(field).includes(query))) {
+      return true;
+    }
+  }
 
+  // Поиск в подзадачах (subTasks)
   if (isSubTasks(item) && item.subTasks) {
-    if (item.subTasks.some(subTask => {
+    // Проверяем, есть ли совпадение в названиях подзадач
+    const hasMatchingSubTask = item.subTasks.some(subTask => {
       if (!subTask.active) return false;
+
+      // Проверяем саму подзадачу
       const subTaskFields = [
         subTask.missionVisibleName, subTask.missionDescription,
         subTask.missionName, subTask.type, subTask.style, subTask.gameIcon
       ].filter(Boolean);
-      return subTaskFields.some(field => field && normalizeString(field).includes(query));
-    })) return true;
+
+      if (subTaskFields.some(field => field && normalizeString(field).includes(query))) {
+        return true;
+      }
+
+      // Проверяем underSubTasks внутри подзадачи
+      if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
+        return subTask.underSubTasks.some(underSubTask => {
+          if (!underSubTask.active) return false;
+          const underSubTaskFields = [
+            underSubTask.missionVisibleName, underSubTask.missionDescription,
+            underSubTask.missionName, underSubTask.type, underSubTask.style,
+            underSubTask.gameIcon
+          ].filter(Boolean);
+          return underSubTaskFields.some(field => field && normalizeString(field).includes(query));
+        });
+      }
+
+      return false;
+    });
+
+    if (hasMatchingSubTask) {
+      return true;
+    }
   }
 
-  if (item.type === "subTasks" && item.subTasks) {
-    if (item.subTasks.some(subTask => {
-      if (!subTask.active || !isUnderSubTasks(subTask) || !subTask.underSubTasks) return false;
-      return subTask.underSubTasks.some(underSubTask => {
-        if (!underSubTask.active) return false;
-        const underSubTaskFields = [
-          underSubTask.missionVisibleName, underSubTask.missionDescription,
-          underSubTask.missionName, underSubTask.type, underSubTask.style, underSubTask.gameIcon
-        ].filter(Boolean);
-        return underSubTaskFields.some(field => field && normalizeString(field).includes(query));
-      });
-    })) return true;
+  // Поиск в underSubTasks напрямую
+  if (isUnderSubTasks(item) && item.underSubTasks) {
+    return item.underSubTasks.some(underSubTask => {
+      if (!underSubTask.active) return false;
+      const underSubTaskFields = [
+        underSubTask.missionVisibleName, underSubTask.missionDescription,
+        underSubTask.missionName, underSubTask.type, underSubTask.style, underSubTask.gameIcon
+      ].filter(Boolean);
+      return underSubTaskFields.some(field => field && normalizeString(field).includes(query));
+    });
   }
 
   return false;
 };
-
 // ==================== ФИЛЬТРЫ ====================
 const filterByCategory = (categoryName) => {
   return AllSetsOfWords.value.filter(set =>
@@ -1031,6 +1096,7 @@ const restoreScrollPosition = () => {
 };
 
 // ==================== ПОИСК - АВТОРАСКРЫТИЕ ====================
+// ==================== ПОИСК - АВТОРАСКРЫТИЕ ====================
 const autoExpandParentCategoriesForSearch = (query) => {
   if (!query) return;
 
@@ -1042,33 +1108,48 @@ const autoExpandParentCategoriesForSearch = (query) => {
 
   orderedMissionList.value.forEach(item => {
     if (isSubTasks(item) && item.subTasks) {
-      item.subTasks.forEach(subTask => {
-        let shouldExpand = false;
+      let shouldExpandParent = false;
 
-        if (!isUnderSubTasks(subTask) && universalSearch(subTask, query)) {
-          shouldExpand = true;
+      // Проверяем сам родительский элемент
+      if (universalSearch(item, query, true)) {
+        shouldExpandParent = true;
+      }
+
+      // Проверяем подзадачи
+      item.subTasks.forEach(subTask => {
+        if (!subTask.active) return;
+
+        // Проверяем подзадачу
+        if (universalSearch(subTask, query)) {
+          shouldExpandParent = true;
         }
 
+        // Проверяем underSubTasks
         if (isUnderSubTasks(subTask) && subTask.underSubTasks) {
-          if (universalSearch(subTask, query)) shouldExpand = true;
-
-          if (subTask.underSubTasks.some(under => universalSearch(under, query))) {
-            shouldExpand = true;
+          if (universalSearch(subTask, query)) {
+            shouldExpandParent = true;
             underSubTasksToExpand.add(getUnderSubTaskUniqueKey(subTask));
           }
-        }
 
-        if (shouldExpand) {
-          subTasksToExpand.add(getSubTaskUniqueKey(item));
+          // Проверяем каждый underSubTask
+          subTask.underSubTasks.forEach(under => {
+            if (under.active && universalSearch(under, query)) {
+              shouldExpandParent = true;
+              underSubTasksToExpand.add(getUnderSubTaskUniqueKey(subTask));
+            }
+          });
         }
       });
+
+      if (shouldExpandParent) {
+        subTasksToExpand.add(getSubTaskUniqueKey(item));
+      }
     }
   });
 
   subTasksToExpand.forEach(key => searchExpandedSubTasks.value.add(key));
   underSubTasksToExpand.forEach(key => searchExpandedUnderSubTasks.value.add(key));
 };
-
 // ==================== ЛОГИКА РАСКРЫТИЯ ====================
 const isSubTasksExpanded = (subTaskSet) => {
   return expandedSubTasks.value.has(getSubTaskUniqueKey(subTaskSet));

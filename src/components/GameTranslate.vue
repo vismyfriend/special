@@ -4,7 +4,31 @@
     <!-- Модалка с сообщением -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
-        <p>{{ modalMessage }}</p>
+        <p v-html="modalMessage"></p>
+
+        <!-- Поля ввода для сложных слов (появляются только в финальной модалке) -->
+        <div v-if="showWordInputs" class="word-inputs">
+          <input
+            v-model="difficultWord1"
+            type="text"
+            placeholder="Впиши слово или фразу"
+            class="word-input"
+          >
+          <input
+            v-model="difficultWord2"
+            type="text"
+            placeholder="Впиши слово или фразу"
+            class="word-input"
+          >
+<!--          <input-->
+<!--            v-model="difficultWord3"-->
+<!--            type="text"-->
+<!--            placeholder="Впиши слово или фразу"-->
+<!--            class="word-input"-->
+<!--          >-->
+
+        </div>
+
         <button @click="closeModal">OK</button>
       </div>
     </div>
@@ -16,40 +40,47 @@
       <!-- Центральный блок с карточкой -->
       <div class="main-content">
         <!-- Карточка со словом -->
-        <div class="word-card" @click="toggleTranslation">
-          <div class="word" ref="wordText">{{ currentWord.eng }}</div>
+        <div class="word-card" @click="toggleGameMode">
+          <div class="word" ref="wordText">{{ displayWord }}</div>
           <!-- Блок с произношением -->
-          <div v-if="currentWord.hint" class="pronunciation-hint">
-            {{ currentWord.hint }}
+          <div v-if="currentHint" class="pronunciation-hint">
+            {{ currentHint }}
           </div>
         </div>
-        <!--        <p class="hint-info">Нажми на букву, чтобы увидеть подсказку</p>-->
 
         <!-- Блок с подсказками-буквами -->
         <div class="hint-container">
-          <div
-            class="hint-box"
-            v-for="(letter, index) in currentWord.ru.split('')"
-            :key="index"
-            @click="revealLetter(index)"
-            :class="{ revealed: revealedLetters[index] }"
-          >
-            {{ revealedLetters[index] ? letter : '?' }}
-          </div>
+          <template v-for="(word, wordIndex) in wordsArray" :key="wordIndex">
+            <div
+              class="word-group"
+              :data-length="word.length > 9 ? 'many' : 'normal'"
+            >
+              <div
+                v-for="(letter, letterIndex) in word.split('')"
+                :key="`${wordIndex}-${letterIndex}`"
+                class="hint-box"
+                :class="{ revealed: isLetterRevealed(wordIndex, letterIndex) }"
+                @click="revealLetter(wordIndex, letterIndex)"
+              >
+                {{ isLetterRevealed(wordIndex, letterIndex) ? letter : '?' }}
+              </div>
+            </div>
+          </template>
         </div>
       </div>
 
       <!-- Кнопка вперед -->
-      <button class="nav-button next-button" @click="handleNext">›</button>
+      <button
+        class="nav-button next-button"
+        @click="handleNextWithReveal"
+        :disabled="isWaitingForNext"
+      >›</button>
     </div>
-
-    <!-- Кнопка пропуска внизу -->
-    <!--    <button class="skip-button" @click="handleSkip">⏭ Пропустить</button>-->
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
@@ -64,17 +95,59 @@ const currentWord = ref({});
 // Модалки
 const showModal = ref(false);
 const modalMessage = ref('');
-const isShowingTranslation = ref(false); // Добавляем состояние для отслеживания языка
+const showWordInputs = ref(false); // Показывать ли поля ввода
+
+// Поля для сложных слов
+const difficultWord1 = ref('');
+const difficultWord2 = ref('');
+const difficultWord3 = ref('');
 
 // Управление
 const nextCount = ref(0);
 const skipCount = ref(0);
 
-// Подсказки с буквами
+// Глобальный режим игры (true - показываем русский, false - показываем английский)
+const gameMode = ref(false);
+
+// Подсказки с буквами - теперь храним как массив для каждого слова
 const revealedLetters = ref([]);
 
+// Состояние для задержки перед следующим словом
+const isWaitingForNext = ref(false);
+const nextTimeout = ref(null);
 
 const wordText = ref(null);
+
+// Вычисляемые поля для отображения
+const displayWord = computed(() => {
+  return gameMode.value ? currentWord.value.ru : currentWord.value.eng;
+});
+
+const displayRu = computed(() => {
+  return gameMode.value ? currentWord.value.eng : currentWord.value.ru;
+});
+
+// Разбиваем текст на массив слов
+const wordsArray = computed(() => {
+  return displayRu.value ? displayRu.value.split(' ') : [];
+});
+
+const currentHint = computed(() => {
+  // Показываем подсказку только когда отображается английское слово
+  return !gameMode.value ? currentWord.value.hint : '';
+});
+
+// Проверяем, открыта ли буква
+const isLetterRevealed = (wordIndex, letterIndex) => {
+  return revealedLetters.value[wordIndex]?.[letterIndex] || false;
+};
+
+// Функция для открытия всех букв
+const revealAllHintBoxes = () => {
+  revealedLetters.value = wordsArray.value.map(word =>
+    Array(word.length).fill(true)
+  );
+};
 
 const fitText = () => {
   nextTick(() => {
@@ -83,9 +156,8 @@ const fitText = () => {
 
     if (!container || !textEl) return;
 
-    // Сохраняем оригинальные значения для десктопа
     const isMobile = window.innerWidth <= 600;
-    let fontSize = isMobile ? 36 : 58; // На десктопе всегда стартуем с 58px
+    let fontSize = isMobile ? 36 : 58;
     const lineHeight = isMobile ? 0.85 : 0.8;
     const padding = isMobile ? 5 : 10;
 
@@ -93,7 +165,6 @@ const fitText = () => {
     textEl.style.lineHeight = lineHeight;
     textEl.style.padding = `${padding}px`;
 
-    // Логика уменьшения сработает ТОЛЬКО если текст не помещается
     while (
       (textEl.scrollWidth > container.clientWidth ||
         textEl.scrollHeight > container.clientHeight) &&
@@ -102,18 +173,70 @@ const fitText = () => {
       fontSize -= 1;
       textEl.style.fontSize = `${fontSize}px`;
 
-      // Дополнительная оптимизация ТОЛЬКО для мобильных
       if (isMobile && fontSize < 24) {
-        fontSize -= 0.5; // Более плавное уменьшение
+        fontSize -= 0.5;
       }
     }
   });
 };
 
+// Функция для получения случайных слов из данных
+const getRandomWords = (count) => {
+  const allWords = [...currentGameData.value];
+  const shuffled = shuffle([...allWords]);
+  return shuffled.slice(0, count).map(word => word.eng);
+};
 
-const handleNext = () => {
-  nextCount.value += 1;
-  loadNextWord();
+// Обновленная функция открытия модалки
+const openFinalModal = () => {
+  showWordInputs.value = true;
+  difficultWord1.value = '';
+  difficultWord2.value = '';
+  difficultWord3.value = '';
+  modalMessage.value = 'Какие слова были сложными?<br>🎉<br>What words were difficult?';
+  showModal.value = true;
+};
+
+// Обновленная функция закрытия модалки
+const closeModal = () => {
+  // Проверяем, были ли введены слова
+  const hasUserInput = difficultWord1.value.trim() || difficultWord2.value.trim() || difficultWord3.value.trim();
+
+  if (hasUserInput) {
+    // Если пользователь что-то ввел
+    modalMessage.value = 'Good job <br>💪<br> special agent!';
+  } else {
+    // Если поля пустые, заполняем случайными словами
+    const randomWords = getRandomWords(3);
+    difficultWord1.value = randomWords[0];
+    difficultWord2.value = randomWords[1];
+    difficultWord3.value = randomWords[2];
+
+    modalMessage.value = 'Многим вот эти кажутся сложными<br>📚<br>these seem difficult to many';
+  }
+
+  // Показываем обновленное сообщение еще на секунду, потом закрываем
+  setTimeout(() => {
+    showModal.value = false;
+    showWordInputs.value = false;
+  }, 7000);
+};
+
+const handleNextWithReveal = () => {
+  if (isWaitingForNext.value) return;
+  revealAllHintBoxes();
+  isWaitingForNext.value = true;
+
+  if (nextTimeout.value) {
+    clearTimeout(nextTimeout.value);
+  }
+
+  nextTimeout.value = setTimeout(() => {
+    nextCount.value += 1;
+    loadNextWord();
+    isWaitingForNext.value = false;
+    nextTimeout.value = null;
+  }, 700);
 };
 
 const handleSkip = () => {
@@ -122,47 +245,36 @@ const handleSkip = () => {
 };
 
 const handleBack = () => {
+  if (isWaitingForNext.value) return;
   undoLastWord();
 };
-
-
 
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
 const loadNextWord = () => {
   if (shuffledData.value.length === 0) {
-    openModal('🎉 Вы просмотрели все слова!');
+    openFinalModal();
     return;
   }
-  if (currentWord.value && !currentWord.value.isIntro) {
+
+  if (currentWord.value && Object.keys(currentWord.value).length > 0) {
     removedWords.value.push({
-      ...currentWord.value,
-      isShowingTranslation: isShowingTranslation.value // Сохраняем состояние языка
+      ...currentWord.value
     });
   }
-  currentWord.value = shuffledData.value.pop();
 
-  // Если предыдущее слово было показано на русском, переворачиваем новое слово
-  if (isShowingTranslation.value) {
-    const tempWord = currentWord.value.eng;
-    const tempTranslation = currentWord.value.ru;
-    const tempHint = currentWord.value.hint;
-    currentWord.value.eng = tempTranslation;
-    currentWord.value.ru = tempWord;
-    // Для русского слова скрываем произношение
-    currentWord.value.hint = '';
-  }
-
+  currentWord.value = { ...shuffledData.value.pop() };
   resetRevealedLetters();
   fitText();
-
 };
 
 const undoLastWord = () => {
   if (removedWords.value.length === 0) return;
-  if (currentWord.value) {
-    shuffledData.value.push(currentWord.value);
+
+  if (currentWord.value && Object.keys(currentWord.value).length > 0) {
+    shuffledData.value.push({ ...currentWord.value });
   }
+
   const lastWord = removedWords.value.pop();
   currentWord.value = {
     eng: lastWord.eng,
@@ -170,67 +282,26 @@ const undoLastWord = () => {
     hint: lastWord.hint
   };
 
-  // Восстанавливаем состояние языка
-  if (lastWord.isShowingTranslation) {
-    const tempWord = currentWord.value.eng;
-    const tempTranslation = currentWord.value.ru;
-    currentWord.value.eng = tempTranslation;
-    currentWord.value.ru = tempWord;
-    // Для русского слова скрываем произношение
-    currentWord.value.hint = '';
-    isShowingTranslation.value = true;
-  } else {
-    isShowingTranslation.value = false;
-  }
-
   resetRevealedLetters();
+  fitText();
 };
 
-const toggleTranslation = () => {
-  // Меняем местами слово и перевод
-  const tempWord = currentWord.value.eng;
-  const tempTranslation = currentWord.value.ru;
-
-  currentWord.value.eng = tempTranslation;
-  currentWord.value.ru = tempWord;
-
-  // Переключаем состояние языка
-  isShowingTranslation.value = !isShowingTranslation.value;
-
-  // Если показываем английское слово - показываем произношение, если русское - скрываем
-  if (isShowingTranslation.value) {
-    // Сейчас показываем русское слово, скрываем произношение
-    currentWord.value.hint = '';
-  } else {
-    // Сейчас показываем английское слово, восстанавливаем произношение
-    const originalWord = removedWords.value.find(w => w.eng === currentWord.value.ru) ||
-      shuffledData.value.find(w => w.eng === currentWord.value.ru);
-    if (originalWord) {
-      currentWord.value.hint = originalWord.hint;
-    }
-  }
-
-  // Сбрасываем открытые буквы
+const toggleGameMode = () => {
+  gameMode.value = !gameMode.value;
   resetRevealedLetters();
+  fitText();
 };
 
-const revealLetter = (index) => {
-  revealedLetters.value[index] = true;
+const revealLetter = (wordIndex, letterIndex) => {
+  if (revealedLetters.value[wordIndex]) {
+    revealedLetters.value[wordIndex][letterIndex] = true;
+  }
 };
 
 const resetRevealedLetters = () => {
-  if (currentWord.value.ru) {
-    revealedLetters.value = Array(currentWord.value.ru.length).fill(false);
-  }
-};
-
-const openModal = (message) => {
-  modalMessage.value = message;
-  showModal.value = true;
-};
-
-const closeModal = () => {
-  showModal.value = false;
+  revealedLetters.value = wordsArray.value.map(word =>
+    Array(word.length).fill(false)
+  );
 };
 
 // Добавляем предотвращение зума
@@ -241,11 +312,13 @@ const preventZoom = (e) => {
   }
 };
 
-watch(() => currentWord.value.eng, () => {
-  fitText();
+// Следим за изменением отображаемого слова
+watch([displayWord, displayRu], () => {
+  nextTick(() => {
+    fitText();
+    resetRevealedLetters();
+  });
 });
-
-
 
 onMounted(() => {
   fitText();
@@ -254,29 +327,33 @@ onMounted(() => {
   const missionName = route.params.missionName;
   currentGameData.value = shortWordsData[missionName] || [];
   shuffledData.value = shuffle([...currentGameData.value]);
-  currentWord.value = {
-    eng: 'Листай и переводи',
-    ru: 'подсказки',
-    isIntro: true,
-  };
-  resetRevealedLetters();
 
-  // Добавляем обработчики для предотвращения зума
+  if (shuffledData.value.length > 0) {
+    currentWord.value = { ...shuffledData.value.pop() };
+    gameMode.value = false;
+    resetRevealedLetters();
+  }
+
   document.addEventListener('dblclick', preventZoom);
   document.addEventListener('touchstart', preventZoom, { passive: false });
 
-  // Добавляем meta-тег для viewport (предотвращение зума)
   const meta = document.createElement('meta');
   meta.name = 'viewport';
   meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
   document.head.appendChild(meta);
-
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', fitText);
+  document.removeEventListener('dblclick', preventZoom);
+  document.removeEventListener('touchstart', preventZoom);
+
+  if (nextTimeout.value) {
+    clearTimeout(nextTimeout.value);
+  }
 });
 </script>
+
 
 <style scoped>
 /* Добавляем глобальные стили для предотвращения зума */
@@ -302,8 +379,7 @@ html {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 20px;
   z-index: 100;
-  touch-action: manipulation; /* для предотвращения зума*/
-
+  touch-action: manipulation;
 }
 
 .game-content-wrapper {
@@ -320,13 +396,13 @@ html {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  width: 500px; /* Фиксированная ширина центрального блока */
+  width: 500px;
 }
 
 /* Фиксированные стили карточки слова */
 .word-card {
-  width: 500px; /* Фиксированная ширина */
-  height: 200px; /* Фиксированная высота */
+  width: 500px;
+  height: 200px;
   border-radius: 16px;
   padding: 20px;
   background: linear-gradient(145deg, #ffffff 0%, #e6e9f0 100%);
@@ -338,10 +414,9 @@ html {
   cursor: none;
   transition: all 0.3s ease;
   border: none;
-  overflow: hidden; /* Обрезаем длинные слова */
-  -webkit-tap-highlight-color: transparent; /* для предотвращения зума*/
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
   position: relative;
-
 }
 
 .word {
@@ -350,7 +425,6 @@ html {
   color: #2c3e50;
   text-align: center;
   user-select: none;
-  /* word-break: break-word;  Перенос длинных слов */
   white-space: normal;
   word-break: normal;
   overflow-wrap: normal;
@@ -370,7 +444,7 @@ html {
   padding: 4px 12px;
 }
 
-/* Добавляем пунктирную линию с помощью псевдоэлемента */
+/* Добавляем пунктирную линию */
 .pronunciation-hint::before {
   content: "";
   position: absolute;
@@ -379,76 +453,85 @@ html {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg,
-  transparent 0%,
-  transparent 10%,
-  #bdc3c7 10%,
-  #bdc3c7 20%,
-  transparent 20%,
-  transparent 30%,
-  #bdc3c7 30%,
-  #bdc3c7 40%,
-  transparent 40%,
-  transparent 50%,
-  #bdc3c7 50%,
-  #bdc3c7 60%,
-  transparent 60%,
-  transparent 70%,
-  #bdc3c7 70%,
-  #bdc3c7 80%,
-  transparent 80%,
-  transparent 90%,
-  #bdc3c7 90%,
-  #bdc3c7 100%);
+  transparent 0%, transparent 10%, #bdc3c7 10%, #bdc3c7 20%,
+  transparent 20%, transparent 30%, #bdc3c7 30%, #bdc3c7 40%,
+  transparent 40%, transparent 50%, #bdc3c7 50%, #bdc3c7 60%,
+  transparent 60%, transparent 70%, #bdc3c7 70%, #bdc3c7 80%,
+  transparent 80%, transparent 90%, #bdc3c7 90%, #bdc3c7 100%);
   opacity: 0.7;
 }
 
-/* Адаптивные подсказки */
+/* Блок с подсказками */
 .hint-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0;
   width: 100%;
   padding: 0 10px;
-  height: 120px;
+  min-height: 120px;
 }
 
+/* Группа букв одного слова */
+.word-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: 8px;
+  /* Адаптивная ширина для длинных слов */
+  max-width: 100%;
+}
+
+
+
+/* Буква-подсказка с адаптивным размером */
 .hint-box {
-  /* Размер будет адаптироваться автоматически */
-  min-width: 18px;
+  /* Используем flex-basis для более гибкого управления */
+  flex: 1 1 auto;
+  min-width: 30px; /* Уменьшили минимальную ширину */
+  width: auto; /* Автоматическая ширина */
   height: 40px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: none;
-  font-size: 20px;
+  font-size: clamp(14px, 3vw, 20px); /* Адаптивный размер шрифта */
   font-weight: 600;
   transition: all 0.3s ease;
   background: linear-gradient(145deg, #e0e5ec 0%, #ffffff 100%);
   box-shadow: 5px 5px 10px #b8b9be, -5px -5px 10px #ffffff;
   color: #7f8c8d;
-  flex-grow: 1; /* Растягиваемся по доступному месту */
-  max-width: 60px; /* Максимальный размер */
   -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  /* Добавляем отступы для длинных букв (например, Щ) */
+  padding: 0 2px;
+}
 
+/* Для очень длинных слов делаем буквы еще меньше */
+.word-group[data-length="many"] .hint-box {
+  min-width: 25px;
+  font-size: clamp(12px, 2.5vw, 16px);
 }
 
 .hint-box.revealed {
   background: linear-gradient(145deg, #a5ffd6 0%, #79b4a9 100%);
+  background: transparent;
   color: #2c3e50;
-  font-size: 28px;
-
+  font-size: clamp(16px, 4vw, 28px); /* Адаптивный размер для открытых букв */
+  box-shadow: none;
 }
 
 .hint-box:hover {
   transform: scale(1.05);
 }
 
-/* Фиксированные стили кнопок навигации */
+/* Кнопки навигации */
 .nav-button {
-  width: 60px; /* Фиксированная ширина */
-  height: 300px; /* Фиксированная высота */
+  width: 60px;
+  height: 300px;
   border-radius: 16px;
   border: none;
   background: linear-gradient(145deg, #ffffff 0%, #e6e9f0 100%);
@@ -463,8 +546,6 @@ html {
   transition: all 0.3s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-
-
 }
 
 .nav-button:hover {
@@ -513,7 +594,6 @@ html {
   cursor: none;
   transition: all 0.3s ease;
   -webkit-tap-highlight-color: transparent;
-
 }
 
 .modal-content button:hover {
@@ -551,32 +631,65 @@ html {
   .nav-button {
     width: 100%;
     height: 60px;
-    order: 1; /* Перемещаем кнопки вниз на мобильных */
+    order: 1;
+  }
+
+  .hint-container {
+    min-height: 100px;
+  }
+
+  .word-group {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 6px;
+    gap: 6px;
   }
 
   .hint-box {
-    min-width: 35px;
+    min-width: 20px; /* Еще меньше для мобильных */
     height: 35px;
-    font-size: 18px;
+    font-size: clamp(10px, 3.5vw, 18px);
+  }
+
+  .hint-box.revealed {
+    font-size: clamp(10px, 3.5vw, 24px);
+  }
+
+  /* Для очень длинных слов на мобильных */
+  .word-group[data-length="many"] .hint-box {
+    min-width: 16px;
+    font-size: clamp(10px, 3vw, 14px);
   }
 }
 
-.skip-button {
-  margin-top: 30px;
-  padding: 12px 25px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(145deg, #ff9a9e 0%, #fad0c4 100%);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(250, 208, 196, 0.4);
+/* Добавляем стили для полей ввода */
+.word-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-.skip-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(250, 208, 196, 0.6);
+.word-input {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #e0e5ec;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #f5f7fa;
+}
+
+.word-input:focus {
+  outline: none;
+  border-color: #4facfe;
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 600px) {
+  .word-input {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }
 </style>

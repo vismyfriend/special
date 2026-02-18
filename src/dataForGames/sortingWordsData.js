@@ -320,7 +320,35 @@ const sortingWordsData = {
       { id: 100, eng: 'known', ru: 'известный', correctColumn: 'v3' }
     ]
   },
-  sortVerbsIntro: {
+  sortVerbsIntro101: {
+    columns: [
+      { id: 'v1', title: 'делать (обычно) делаю ' },
+      { id: 'v2', title: 'делал (прошлое) сделал ' },
+      { id: 'v3', title: 'какой (новости) сделанный' }
+    ],
+    items: [
+      { id: 17, eng: 'break - брЭЙк', ru: 'ломать', correctColumn: 'v1' },
+      { id: 18, eng: 'broke - броУк', ru: 'сломал', correctColumn: 'v2' },
+      { id: 19, eng: 'broken- броУкэн', ru: 'сломанный', correctColumn: 'v3' },
+
+      { id: 32, eng: 'choose - чуз', ru: 'выбирать', correctColumn: 'v1' },
+      { id: 33, eng: 'chose - чоУз', ru: 'выбрал', correctColumn: 'v2' },
+      { id: 34, eng: 'chosen - чоузЭн', ru: 'выбранный', correctColumn: 'v3' },
+
+      { id: 41, eng: 'do - ду', ru: 'делать', correctColumn: 'v1' },
+      { id: 42, eng: 'did - дид', ru: 'сделал', correctColumn: 'v2' },
+      { id: 43, eng: 'done - дан', ru: 'сделанный', correctColumn: 'v3' },
+
+      { id: 50, eng: 'eat - ит', ru: 'есть', correctColumn: 'v1' },
+      { id: 51, eng: 'ate - эЙт', ru: 'ел, съел', correctColumn: 'v2' },
+      { id: 52, eng: 'eaten - Итэн', ru: 'съеденный', correctColumn: 'v3' },
+
+      { id: 65, eng: 'forget - фогЕт', ru: 'забывать', correctColumn: 'v1' },
+      { id: 66, eng: 'forgot - фогОт', ru: 'забыл', correctColumn: 'v2' },
+      { id: 67, eng: 'forgotten - фогОтэн', ru: 'забытый', correctColumn: 'v3' },
+    ]
+  },
+  sortVerbsIntro1: {
     columns: [
       { id: 'v1', title: 'делать (обычно) делаю ' },
       { id: 'v2', title: 'делал (прошлое) сделал ' },
@@ -358,6 +386,87 @@ const sortingWordsData = {
       { id: 68, eng: 'freeze', ru: 'замораживать', correctColumn: 'v1' },
       { id: 69, eng: 'froze', ru: 'заморозил', correctColumn: 'v2' },
       { id: 70, eng: 'frozen', ru: 'замороженный', correctColumn: 'v3' },
+
+    ]
+  },
+  sortVerbsIntro2: {
+    columns: [
+      { id: 'v1', title: 'делать, делаю (обычно) иногда ' },
+      { id: 'v2', title: 'делал, сделал (прошлое) когда-то ' },
+      { id: 'v3', title: 'чего натворил! (новости) только что' }
+    ],
+    items: [
+
+      { id: 17, eng: 'people break rules', ru: 'люди нарушают правила', correctColumn: 'v1' },
+      { id: 18, eng: 'people broke rules', ru: 'люди нарушили правила', correctColumn: 'v2' },
+      { id: 19, eng: 'people have broken rules', ru: 'ЛЮДИ НАРУШИЛИ ПРАВИЛА!!!', correctColumn: 'v3' },
+
+      { id: 32, eng: 'they choose you', ru: 'они выбирают тебя', correctColumn: 'v1' },
+      { id: 33, eng: 'they chose you', ru: 'они выбрали тебя', correctColumn: 'v2' },
+      { id: 34, eng: 'they have chosen you', ru: 'ОНИ ВЫБРАЛИ ТЕБЯ!!!', correctColumn: 'v3' },
+
+      { id: 41, eng: 'He does it', ru: 'он делает это', correctColumn: 'v1' },
+      { id: 42, eng: 'He did it', ru: 'он сделал это', correctColumn: 'v2' },
+      { id: 43, eng: 'He has done it', ru: 'ОН СДЕЛАЛ ЭТОЙ!!!', correctColumn: 'v3' },
+
+      { id: 50, eng: 'we eat veggies', ru: 'мы едим овощи', correctColumn: 'v1' },
+      { id: 51, eng: 'we ate veggies', ru: 'мы поели овощи', correctColumn: 'v2' },
+      { id: 52, eng: 'we have eaten', ru: 'МЫ ПОЕЛИ УЖЕ!!!', correctColumn: 'v3' },
+
+      { id: 53, eng: 'I fall sometimes', ru: 'я иногда падаю', correctColumn: 'v1' },
+      { id: 54, eng: 'I fell yesterday', ru: 'я вчера упал(а)', correctColumn: 'v2' },
+      { id: 55, eng: 'I have fallen ', ru: 'Я УПААААЛ(А) !!!', correctColumn: 'v3' },
+
+      { id: 65, eng: 'I forget words', ru: 'я забываю слова', correctColumn: 'v1' },
+      { id: 66, eng: 'I forgot words', ru: 'забыл', correctColumn: 'v2' },
+      { id: 67, eng: 'I`ve forgotten all words', ru: 'Я ЗАБЫЛ ВСЕ СЛОВА!!!', correctColumn: 'v3' },
+    ]
+  },
+  sortVerbsToBe3Forms: {
+    columns: [
+      { id: 'v1', title: 'настоящее (Present) являться, находиться, быть' },
+      { id: 'v2', title: 'прошедшее (Past) время находился, находились, был, были' },
+      { id: 'v3', title: 'обалденное (Perfect) уже бывал или только что побывал' }
+    ],
+    items: [
+      { id: 1, eng: 'be', ru: '(am, is, are)', correctColumn: 'v1' },
+      { id: 2, eng: 'am, is, are', ru: 'быть', correctColumn: 'v1' },
+      { id: 3, eng: 'was, were', ru: 'был(и)', correctColumn: 'v2' },
+      { id: 4, eng: 'was', ru: 'был, была, было', correctColumn: 'v2' },
+      { id: 8, eng: 'were', ru: 'были', correctColumn: 'v2' },
+      { id: 15, eng: 'been', ru: '(по)бывал!!!', correctColumn: 'v3' },
+
+    ]
+  },
+  sortVerbsToBe3FormsExamples: {
+    columns: [
+      { id: 'v1', title: 'настоящее (Present) являться, находиться, быть' },
+      { id: 'v2', title: 'прошедшее (Past) время находился, находились, был, были' },
+      { id: 'v3', title: 'обалденное (Perfect) уже бывал или только что побывал' }
+    ],
+    items: [
+      { id: 1, eng: 'be', ru: '(am, is, are)', correctColumn: 'v1' },
+      { id: 2, eng: 'am, is, are', ru: 'быть', correctColumn: 'v1' },
+      { id: 3, eng: 'was, were', ru: 'был(и)', correctColumn: 'v2' },
+      { id: 4, eng: 'was', ru: 'был, была, было', correctColumn: 'v2' },
+      { id: 5, eng: 'I was home', ru: 'я был дома', correctColumn: 'v2' },
+      { id: 6, eng: 'It was ok', ru: 'это было норм', correctColumn: 'v2' },
+      { id: 7, eng: 'Home was big', ru: 'дом был большой', correctColumn: 'v2' },
+      { id: 8, eng: 'were', ru: 'были', correctColumn: 'v2' },
+      { id: 9, eng: 'We were there', ru: 'мы были там', correctColumn: 'v2' },
+      { id: 10, eng: 'They were there', ru: 'они были там', correctColumn: 'v2' },
+      { id: 11, eng: 'You were there', ru: 'вы были там', correctColumn: 'v2' },
+      { id: 12, eng: 'I am here', ru: 'я здесь', correctColumn: 'v1' },
+      { id: 13, eng: 'She is here', ru: 'она здесь', correctColumn: 'v1' },
+      { id: 14, eng: 'it`s there', ru: 'это там', correctColumn: 'v1' },
+      { id: 15, eng: 'been', ru: '(по)бывал!!!', correctColumn: 'v3' },
+      { id: 16, eng: 'I have been here', ru: 'я бывал здесь уже!', correctColumn: 'v3' },
+      { id: 17, eng: 'He has been here', ru: 'он бывал здесь уже!', correctColumn: 'v3' },
+      { id: 18, eng: 'She has been here', ru: 'ОНА ПОБЫВАЛА ЗДЕСЬ УЖЕ!!!', correctColumn: 'v3' },
+      { id: 19, eng: 'it has been there', ru: 'ЭТО БЫЛО ТАМ!!!', correctColumn: 'v3' },
+      { id: 20, eng: 'I was', ru: 'я был', correctColumn: 'v2' },
+      { id: 21, eng: 'Ты = вы', ru: 'you were', correctColumn: 'v2' },
+
 
     ]
   },
