@@ -328,17 +328,35 @@ export const allGamesAndSetsOfWordsList =
           missionDescription: "Irregular verbs 101",
           id: 1001,
           active: true,
-          stars: 3
+          stars: 5
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsIntro1012/sorting",
+          missionVisibleName: "Для ударников",
+          missionDescription: "Irregular verbs 102",
+          id: 1001,
+          active: true,
+          stars: 4
         },
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/sortVerbsIntro1/sorting",
-          missionVisibleName: "Понятное объяснение",
+          missionVisibleName: "Для отличников",
           missionDescription: "Неправильные глаголы",
           id: 1001,
           active: true,
-          stars: 2
+          stars: 3
 
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/sortVerbsForYou/sorting",
+          missionVisibleName: "Для тебя",
+          missionDescription: "For you",
+          id: 1001,
+          active: true,
+          stars: 2
         },
         {
           type: "hardcodedLink",

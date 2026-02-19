@@ -348,6 +348,38 @@ const sortingWordsData = {
       { id: 67, eng: 'forgotten - фогОтэн', ru: 'забытый', correctColumn: 'v3' },
     ]
   },
+  sortVerbsIntro1012: {
+    columns: [
+      { id: 'v1', title: 'делать (обычно) делаю ' },
+      { id: 'v2', title: 'делал (прошлое) сделал ' },
+      { id: 'v3', title: 'какой (новости) сделанный' }
+    ],
+    items: [
+      { id: 1, eng: 'I break my brain', ru: 'я ломаю свой мозг', correctColumn: 'v1' },
+      { id: 2, eng: 'I broke my brain', ru: 'я сломал свой мозг', correctColumn: 'v2' },
+      { id: 3, eng: 'he broke his brain', ru: 'он сломал свой мозг', correctColumn: 'v2' },
+      { id: 18, eng: 'he breaks his brain', ru: 'он ломает свой мозг', correctColumn: 'v2' },
+      { id: 19, eng: 'Brain is broken', ru: 'мозг сломан', correctColumn: 'v3' },
+
+      { id: 32, eng: 'You choose it', ru: 'ты выбираешь это', correctColumn: 'v1' },
+      { id: 33, eng: 'You chose it', ru: 'ты выбрал это', correctColumn: 'v2' },
+      { id: 34, eng: 'You are chosen', ru: 'ты избранный', correctColumn: 'v3' },
+      { id: 35, eng: 'It is chosen', ru: 'это выбрано', correctColumn: 'v3' },
+
+      { id: 41, eng: 'We do homework', ru: 'мы делаем д/з', correctColumn: 'v1' },
+      { id: 42, eng: 'We did homework', ru: 'мы сделали д/з', correctColumn: 'v2' },
+      { id: 43, eng: 'Homework is done', ru: 'домашка сделана', correctColumn: 'v3' },
+      { id: 44, eng: 'She does homework', ru: 'она делает домаху', correctColumn: 'v1' },
+
+      { id: 50, eng: 'He eats', ru: 'он ест', correctColumn: 'v1' },
+      { id: 51, eng: 'He ate - эЙт', ru: 'он поел', correctColumn: 'v2' },
+      { id: 52, eng: 'He is eaten - Итэн', ru: 'ЕГО СЪЕЛИ!', correctColumn: 'v3' },
+
+      { id: 65, eng: 'they forget - фогЕт', ru: 'они забывают', correctColumn: 'v1' },
+      { id: 66, eng: 'they forgot - фогОт', ru: 'они забыли', correctColumn: 'v2' },
+      { id: 67, eng: 'they are forgotten - фогОтэн', ru: 'о них забыли (они - забытые)', correctColumn: 'v3' },
+    ]
+  },
   sortVerbsIntro1: {
     columns: [
       { id: 'v1', title: 'делать (обычно) делаю ' },
@@ -407,7 +439,7 @@ const sortingWordsData = {
 
       { id: 41, eng: 'He does it', ru: 'он делает это', correctColumn: 'v1' },
       { id: 42, eng: 'He did it', ru: 'он сделал это', correctColumn: 'v2' },
-      { id: 43, eng: 'He has done it', ru: 'ОН СДЕЛАЛ ЭТОЙ!!!', correctColumn: 'v3' },
+      { id: 43, eng: 'He has done it', ru: 'ОН СДЕЛАЛ ЭТО!!!', correctColumn: 'v3' },
 
       { id: 50, eng: 'we eat veggies', ru: 'мы едим овощи', correctColumn: 'v1' },
       { id: 51, eng: 'we ate veggies', ru: 'мы поели овощи', correctColumn: 'v2' },
@@ -420,6 +452,30 @@ const sortingWordsData = {
       { id: 65, eng: 'I forget words', ru: 'я забываю слова', correctColumn: 'v1' },
       { id: 66, eng: 'I forgot words', ru: 'забыл', correctColumn: 'v2' },
       { id: 67, eng: 'I`ve forgotten all words', ru: 'Я ЗАБЫЛ ВСЕ СЛОВА!!!', correctColumn: 'v3' },
+    ]
+  },
+  sortVerbsForYou: {
+    columns: [
+      { id: 'v1', title: 'делать, делаю (обычно) иногда ' },
+      { id: 'v2', title: 'делал, сделал (прошлое) когда-то ' },
+      { id: 'v3', title: 'чего натворил! (новости) только что' }
+    ],
+    items: [
+
+      { id: 17, eng: 'I do it for you', ru: 'делаю для тебя', correctColumn: 'v1' },
+      { id: 18, eng: 'I did it for you', ru: 'сделал для тебя', correctColumn: 'v2' },
+      { id: 19, eng: 'I have done it', ru: 'Я СДЕЛАЛ ЭТО!!!', correctColumn: 'v3' },
+
+      { id: 32, eng: 'He does it for you', ru: 'он делает для тебя', correctColumn: 'v1' },
+      { id: 33, eng: 'He did it for you', ru: 'он сделал для тебя', correctColumn: 'v2' },
+      { id: 34, eng: 'He has done it', ru: 'ОН СДЕЛАЛ ЭТО!!!', correctColumn: 'v3' },
+
+      { id: 41, eng: 'We buy food for you', ru: 'мы покупаем тебе еду', correctColumn: 'v1' },
+      { id: 42, eng: 'We bought food for you', ru: 'мы купили тебе еды', correctColumn: 'v2' },
+      { id: 43, eng: 'We have bought food for you', ru: 'МЫ КУПИЛИ ТЕБЕ ЕДЫ!!!', correctColumn: 'v3' },
+      { id: 44, eng: 'Food is bought for you', ru: 'еда куплена для тебя', correctColumn: 'v3' },
+      { id: 45, eng: 'It is done for you', ru: 'это сделано для тебя', correctColumn: 'v3' },
+
     ]
   },
   sortVerbsToBe3Forms: {
@@ -465,7 +521,9 @@ const sortingWordsData = {
       { id: 18, eng: 'She has been here', ru: 'ОНА ПОБЫВАЛА ЗДЕСЬ УЖЕ!!!', correctColumn: 'v3' },
       { id: 19, eng: 'it has been there', ru: 'ЭТО БЫЛО ТАМ!!!', correctColumn: 'v3' },
       { id: 20, eng: 'I was', ru: 'я был', correctColumn: 'v2' },
-      { id: 21, eng: 'Ты = вы', ru: 'you were', correctColumn: 'v2' },
+      { id: 21, eng: 'Ты был', ru: 'you were', correctColumn: 'v2' },
+      { id: 22, eng: 'Вы были', ru: 'you were', correctColumn: 'v2' },
+      { id: 23, eng: 'You were', ru: 'Ты = Вы', correctColumn: 'v2' },
 
 
     ]

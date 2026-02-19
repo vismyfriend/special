@@ -89,7 +89,7 @@ const gameTestsNoSeedNoShuffleData = {
         ]
       },
       {
-        taskDescription: "Включить аудио и вписать что услышали:",
+        taskDescription: "Включить аудио и вписать слова пропущенные... Ну а если не умеете писать (бывает и такое) попробуйте хотя бы! Пофиг на ошибки, это и есть практика",
         taskID: "student_input",
         audio: new URL('../assets/audio/songs/hello_how_are_you.mp3', import.meta.url).href,
         textScript: 'Ответы в самом низу, а это подзказка : \n\n Слушайте несколько раз, слушайте пока не услышите, тренируйтесь, практикуйтесь, вы справитесь! You are special. Yes yes yes.\n' +
@@ -175,7 +175,7 @@ const gameTestsNoSeedNoShuffleData = {
         textScript: 'У вас всё получится, записывайтесь на занятие и составим индивидуальный курс и план действий по достижению желаемого уровня английского\n\nНапишите мне в телеграм: \n"Хочу на урок" \nи я вам отвечу. Не БОТ, а лично я:\nживой, неповторимый, скромный Винсент \n\n@vismyfriend\n#vismyfriend',
         questions: [
           {
-            text: "Этот тест для совсем новичков",
+            text: "Этот тест легкий, он для новичков",
             correctAnswer: "true"
           },
           {
@@ -187,7 +187,7 @@ const gameTestsNoSeedNoShuffleData = {
             correctAnswer: "false"
           },
           {
-            text: "Хочу на бесплатное занятие с Винсентом, живьём пообщаться",
+            text: "Хочу на занятия с Винсентом, он прикольный, вроде бы...",
             correctAnswer: "true"
           },
           {
