@@ -358,7 +358,7 @@ const sortingWordsData = {
       { id: 1, eng: 'I break my brain', ru: 'я ломаю свой мозг', correctColumn: 'v1' },
       { id: 2, eng: 'I broke my brain', ru: 'я сломал свой мозг', correctColumn: 'v2' },
       { id: 3, eng: 'he broke his brain', ru: 'он сломал свой мозг', correctColumn: 'v2' },
-      { id: 18, eng: 'he breaks his brain', ru: 'он ломает свой мозг', correctColumn: 'v2' },
+      { id: 18, eng: 'he breaks his brain', ru: 'он ломает свой мозг', correctColumn: 'v1' },
       { id: 19, eng: 'Brain is broken', ru: 'мозг сломан', correctColumn: 'v3' },
 
       { id: 32, eng: 'You choose it', ru: 'ты выбираешь это', correctColumn: 'v1' },

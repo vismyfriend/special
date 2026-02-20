@@ -247,6 +247,19 @@ const routes = [
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },
       {
+        path: '/rain',
+        component: () => import('src/pages/intros/rain.vue')
+      },
+      {
+        path: '/testing',
+        component: () => import('src/pages/intros/testing.vue')
+      },
+      {
+        path: '/weather',
+        component: () => import('src/pages/intros/specialWeather.vue')
+      },
+
+      {
         path: '/preloader1',
         component: () => import('src/pages/intros/preloader1.vue')
       },
