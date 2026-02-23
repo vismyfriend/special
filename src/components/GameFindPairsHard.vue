@@ -283,7 +283,7 @@ onMounted(() => {
 .hint {
   font-size: 15px;
   color: #666;
-  line-height: 0.5;       // делает текст компактнее по вертикали
+  line-height: 0.6;       // делает текст компактнее по вертикали
   padding: 4px 0;
 
 }

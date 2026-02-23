@@ -22,7 +22,7 @@
 
         <div class="simple-buttons">
           <button class="simple-btn details-btn" @click="showDetailed = true">
-            и так сойдёт
+            ☝ произнёс вслух? -yes?<br> доволен результатом?
           </button>
           <button class="simple-btn try-again" @click="tryAgain">ещё разок !</button>
 <!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
@@ -176,8 +176,8 @@ const showDetailed = ref(false); // Управление отображение�
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
   { agent: "Проблема с сервером", time: "000.00", mistakes: 0 },
-  { agent: "результаты агентов", time: "1234.5", mistakes: 6 },
-  { agent: "можно увидеть позже", time: "999999", mistakes: 999 },
+  { agent: "результаты других", time: "789.10", mistakes: 11 },
+  { agent: "можно увидеть позже", time: "1234.5", mistakes: 112 },
 
 
 ];

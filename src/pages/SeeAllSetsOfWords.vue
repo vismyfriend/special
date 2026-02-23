@@ -15,7 +15,6 @@
               placeholder="🔎 вводи название миссии или листай"
               class="search-input"
               @focus="focusSearch"
-
             />
             <button
               v-if="showPronunciationButton"
@@ -32,6 +31,20 @@
               title="Найти произношение в Google"
             >
               🎧
+            </button>
+
+          </div>
+
+          <!-- КНОПКИ УРОВНЕЙ - вставить сюда -->
+          <div class="level-buttons-container">
+            <button
+              v-for="level in levels"
+              :key="level.id"
+              class="level-btn"
+              :class="{ 'active': currentLevel === level.id }"
+              @click="setLevel(level.id)"
+            >
+              {{ level.label }}
             </button>
           </div>
         </div>
@@ -599,7 +612,7 @@
         </div>
 
         <div class="password-modal-body">
-          <p>Этот набор защищен паролем</p>
+          <p>Спросите у Винсента ПАРОЛЬ</p>
 
           <div class="password-input-wrapper">
             <input
@@ -614,7 +627,7 @@
             </button>
           </div>
 
-          <p class="hint">Подсказка: спросите у Винсента</p>
+          <p class="hint">Подсказка: give me a hint</p>
         </div>
 
         <button class="close-modal" @click="closeModal">✕</button>
@@ -704,6 +717,38 @@ const focusSearch = () => {
   }, isIOS ? 350 : 50); // На iOS ждем дольше (350ms)
 };
 
+
+// ==================== УРОВНИ (LVL) ====================
+const currentLevel = ref('lvl1');
+
+const levels = [
+  { id: 'lvl1', label: '1' },
+  { id: 'lvl2', label: '2' },
+  { id: 'lvl3', label: '3' },
+  { id: 'lvl4', label: '4' },
+  { id: 'lvl5', label: '5' },
+  { id: 'lvl6', label: '6' },
+  { id: 'lvl7', label: '7' }
+];
+
+const setLevel = (levelId) => {
+  currentLevel.value = levelId;
+  localStorage.setItem('userLevel', levelId);
+};
+
+// Проверка, соответствует ли элемент выбранному уровню
+const matchesLevel = (item) => {
+  if (!item.lvl) {
+    return currentLevel.value === 'lvl1';
+  }
+
+  if (Array.isArray(item.lvl)) {
+    return item.lvl.includes(currentLevel.value);
+  }
+
+  return item.lvl === currentLevel.value;
+};
+
 // ==================== СОСТОЯНИЯ КАТЕГОРИЙ ====================
 const categoryStates = ref({
   reading: false,
@@ -752,11 +797,12 @@ const shouldShowGamePatterns = computed(() =>
 const shouldShowChinese = computed(() =>
   shouldShowCategory('chinese', chineseSets.value, ['chinese китайский язык']));
 
-// Основной список миссий (без категорий)
+// Основной список миссий (без категорий) с учетом уровня
 const orderedMissionList = computed(() => {
   const excludedCategories = ['reading', 'categoryX', 'categoryExamplesPatterns', 'gamePatterns', 'chinese'];
   return AllSetsOfWords.value.filter(item =>
     item.active &&
+    matchesLevel(item) && // Добавили проверку уровня
     (item.type === "subTasks" ||
       !excludedCategories.some(category => hasCategory(item, category)))
   );
@@ -773,6 +819,9 @@ const filteredOrderedMissions = computed(() => {
 
   const processItem = (item, parentSubTask = null, parentUnderSubTask = null) => {
     if (!item.active) return;
+// Добавляем проверку уровня
+    if (!matchesLevel(item)) return;
+
 
     const key = getItemKey(item);
     if (seen.has(key)) return;
@@ -1355,6 +1404,11 @@ onMounted(() => {
   restoreUserExpandedState();
   restoreScrollPosition();
 
+  // Восстанавливаем выбранный уровень
+  const savedLevel = localStorage.getItem('userLevel');
+  if (savedLevel) {
+    currentLevel.value = savedLevel;
+  }
   // Анимация текста
   const introMessage = document.getElementById("intro-message");
   if (introMessage) {
@@ -2964,6 +3018,32 @@ onBeforeRouteLeave((to, from, next) => {
 .undersubtask-glassMorphism {
   border-left-color: #ff6b35 !important;
   background: rgba(255, 107, 53, 0.05);
+}
+
+/* Простые стили для кнопок уровней */
+.level-buttons-container {
+  display: flex;
+  gap: 5px;
+  margin: 5px 0 10px 0;
+  padding: 0 10px;
+}
+
+.level-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: 2px solid #000;
+  border-radius: 20px;
+  background: #f0f0f0;
+  font-family: Special_f1;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.level-btn.active {
+  background: #4CAF50;
+  color: white;
+  border-color: #45a049;
 }
 </style>
 

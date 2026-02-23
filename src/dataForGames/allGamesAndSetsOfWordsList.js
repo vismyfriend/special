@@ -10,6 +10,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "glassMorphism", // Это ключевое значение для применения стиля
       active: true,
+      lvl: ["lvl1", "lvl2"],
       subTasks: [
         {
           type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
@@ -185,6 +186,72 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+    // 365 days of English
+    {
+      type: "subTasks",
+      missionVisibleName: "365 days of English",
+      missionDescription: "Английский каждый день",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      lvl: ["lvl2"],
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "January 1",
+          missionDescription: "Январь 1",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "February 23",
+          missionDescription: "23 февраля",
+          id: 1001,
+          active: true,
+        },
+      ]
+    },
+
+
+    // это новая секция, наборы слов которые отображаются только на вкладке lvl.2'
+    {
+      type: "subTasks",
+      missionVisibleName: "Доп. информация",
+      missionDescription: "Extra information 3",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      lvl: ["lvl7", "lvl3"],
+
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "тестовые задания",
+          missionDescription: "тестовые задания",
+          id: 1001,
+          active: true,
+          stars: 3,
+          password:'test',
+
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/print-all-words",
+          missionVisibleName: "тестовые задания",
+          missionDescription: "тестовые задания",
+          id: 1001,
+          active: true,
+          stars: 4,
+          password:'test',
+
+        },
+      ]
+    },
+
 
     {
       missionVisibleName: "Разминка",
@@ -618,6 +685,15 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/devModeNumbers/gameSnakeWords",
       missionVisibleName: "Snake and snack (уровень 1)",
       missionDescription: "Змейка и перекус (уровень 1)",
+      id: 1001,
+      active: true,
+      gameIcon:'🐍'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/emoji/find-pairs-hard",
+      missionVisibleName: "Эмодзи иконки и значки)",
+      missionDescription: "Emoji icons)",
       id: 1001,
       active: true,
       gameIcon:'🐍'
