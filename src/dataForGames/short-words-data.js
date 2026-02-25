@@ -377,17 +377,17 @@ const shortWordsData = {
   ],
   emoji: [
     // Чувства и эмоции (Feelings & Emotions)
-    { id: 1, eng: "👉👈", ru: "Shy", hint: "робкий застенчивый скромный" },
-    { id: 2, eng: "😊", ru: "Happy", hint: "счастливый" },
-    { id: 3, eng: "😂", ru: "Funny", hint: "смешной" },
-    { id: 4, eng: "😍", ru: "Favourite", hint: "любимый" },
-    { id: 5, eng: "😢", ru: "Sad", hint: "грустный" },
-    { id: 6, eng: "😡", ru: "Angry", hint: "злой сердитый" },
-    { id: 7, eng: "😱", ru: "Shocked", hint: "шокирован" },
-    { id: 8, eng: "🤔", ru: "Confused", hint: "в замешательстве" },
-    { id: 9, eng: "😴", ru: "Tired", hint: "уставший" },
-    { id: 10, eng: "🤮", ru: "Disgusting", hint: "отвратительный" },
-    { id: 11, eng: "😎", ru: "Awesome", hint: "обалденный" },
+    { id: 1, eng: "👉👈", ru: "Shy произносится ШАЙ", hint: "застенчивый скромный" },
+    { id: 2, eng: "😊", ru: "Happy произносится ХЭППИ", hint: "счастливый" },
+    { id: 3, eng: "😂", ru: "Funny произносится ФАННИ", hint: "смешной" },
+    { id: 4, eng: "😍", ru: "Favourite произноситс ФЭЙВОРИТ", hint: "любимый" },
+    { id: 5, eng: "😢", ru: "Sad произносится СЭД", hint: "грустный" },
+    { id: 6, eng: "😡", ru: "Angry произносится ЭНГРИ", hint: "злой сердитый" },
+    { id: 7, eng: "😱", ru: "Shocked произносится ШОКД", hint: "шокирован" },
+    { id: 8, eng: "🤔", ru: "Confused произносится КОНФЬЮСД", hint: "в замешательстве" },
+    { id: 9, eng: "😴", ru: "Tired произносится ТАЙД", hint: "уставший" },
+    { id: 10, eng: "🤮", ru: "Disgusting произносится ДИСГАСТИН", hint: "отвратительный" },
+    { id: 11, eng: "😎", ru: "Awesome произносится ОСМ", hint: "обалденный" },
     //
     // // Еда и напитки (Food & Drinks)
     // { id: 13, eng: "🍕", ru: "Pizza", hint: "пицца" },

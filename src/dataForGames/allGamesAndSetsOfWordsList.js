@@ -2,6 +2,178 @@
 
 export const allGamesAndSetsOfWordsList =
   [
+    //первая страница первый раздел
+    {
+      type: "subTasks",
+      missionVisibleName: "Нажми сюда и выбери :",
+      missionDescription: "твой уровень :",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "уровень ?",
+          missionDescription: "не знаю свой уровень",
+          id: 1001,
+          active: true,
+          gameIcon: "🤷‍♂️"
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "Никогда не учили",
+          missionDescription: "знаю нессколько слов",
+          id: 1001,
+          active: true,
+        },
+
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "Как собака - понимаю, но...",
+          missionDescription: "dog level - не говорю",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "не говорю...",
+          missionDescription: "понимаю, путаю времена",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "Стесняюсь разговаривать",
+          missionDescription: "вдруг неправильно скажу",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "Не стесняюсь! Но путаюсь",
+          missionDescription: "предлоги, артикли, времена",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "У меня примерно вот такой:",
+          missionDescription: "что-то между этими :",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "A",
+          missionDescription: "Новичок",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "A 1",
+          missionDescription: "Beginner",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "A 1.5",
+          missionDescription: "Elementary",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "A 2",
+          missionDescription: "Upper Elementary",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "B",
+          missionDescription: "Pre-Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "B 0.5",
+          missionDescription: "Low-Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "B 1",
+          missionDescription: "Semi-Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "B 1.5",
+          missionDescription: "Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "B 2",
+          missionDescription: "Upper Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "C",
+          missionDescription: "Great Upper Intermediate",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "C 1",
+          missionDescription: "Advanced",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "C 2",
+          missionDescription: "Proficiency",
+          id: 1001,
+          active: true,
+        },{
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "C 4 TNT",
+          missionDescription: "GRAMMAR NAZI",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/game-translate",
+          missionVisibleName: "У меня особый случай...",
+          missionDescription: "Нестандартная ситуация",
+          id: 1001,
+          active: true,
+        },
+
+      ]
+    },
+    // определить уровень
+
     // extra information
     {
       missionVisibleName: "Extra information",
@@ -10,7 +182,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "glassMorphism", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl1", "lvl2"],
+      lvl: ["lvl2"],
       subTasks: [
         {
           type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
@@ -83,11 +255,30 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       gameIcon:'',
     },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/emoji/find-pairs-easy",
+      missionVisibleName: "Миссия 1",
+      missionDescription: "Обезвредить бомбу",
+      id: 1001,
+      active: true,
+    },
+    {
+      missionVisibleName: "Разминка",
+      missionDescription: "Warm up",
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/",
+      active: true,
+      gameIcon:'🏠',
+      // id: 1001,
+
+    },
+
     // начать с самого начала
     {
       type: "subTasks",
-      missionVisibleName: "Начать с самого начала",
-      missionDescription: "Start from the beginning",
+      missionVisibleName: "Миссия 2",
+      missionDescription: "Начать с самого начала",
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
@@ -253,16 +444,7 @@ export const allGamesAndSetsOfWordsList =
     },
 
 
-    {
-      missionVisibleName: "Разминка",
-      missionDescription: "Warm up",
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/",
-      active: true,
-      gameIcon:'🏠',
-      // id: 1001,
 
-    },
     // артикли
     {
       type: "subTasks",

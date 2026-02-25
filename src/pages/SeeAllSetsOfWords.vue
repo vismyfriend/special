@@ -90,10 +90,13 @@
               >
                 <div class="card-content">
                   <span class="card-description">
-                    {{ missionItem.missionVisibleName }} ( {{ getActiveSubTasksCount(missionItem) }} )
+                    {{ missionItem.missionVisibleName }}
+<!--                    ( {{ getActiveSubTasksCount(missionItem) }} )-->
                   </span>
                   <span class="card-icons">
-                    <span class="expand-icon">{{ isSubTasksExpanded(missionItem) ? '' : '' }}</span>
+                    <span class="expand-icon">
+                      {{ isSubTasksExpanded(missionItem) ?
+                      '▼' : '◄' }}</span>
                   </span>
                 </div>
                 <div class="custom-tooltip">
@@ -727,8 +730,8 @@ const levels = [
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '4' },
   { id: 'lvl5', label: '5' },
-  { id: 'lvl6', label: '6' },
-  { id: 'lvl7', label: '7' }
+  // { id: 'lvl6', label: '6' },
+  // { id: 'lvl7', label: '7' }
 ];
 
 const setLevel = (levelId) => {
