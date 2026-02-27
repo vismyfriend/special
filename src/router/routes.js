@@ -243,6 +243,10 @@ const routes = [
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
       {
+        path: '/myLife',
+        component: () => import('src/pages/MyLifeJournal.vue')
+      },
+      {
         path: '/neat',
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },
@@ -254,6 +258,7 @@ const routes = [
         path: '/testing',
         component: () => import('src/pages/intros/testing.vue')
       },
+
       {
         path: '/weather',
         component: () => import('src/pages/intros/specialWeather.vue')
