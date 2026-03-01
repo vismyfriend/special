@@ -10,11 +10,11 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/Bender.jpeg', // заглушка
+            src: new URL("/assets/images/Bender.jpeg", import.meta.url).href,
             caption: 'Узнали мем?',
           },
           {
-            src: 'src/assets/images/aifaceswap-output (2) copy.png', // заглушка
+            src: new URL("/assets/images/aifaceswap-output (2) copy.png", import.meta.url).href,
             caption: 'V is my AI - нейронка конечно! Мне кажется даже похож немного',
           },
 
