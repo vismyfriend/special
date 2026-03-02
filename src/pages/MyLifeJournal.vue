@@ -1199,47 +1199,214 @@ function highlightText(text, query) {
 //   return text.replace(regex, '<mark class="search-highlight">$1</mark>');
 // }
 
+
+// ========== ФУНКЦИИ ПОИСКА С ХРАНЕНИЕМ ПОЗИЦИЙ ==========
+
+// Добавим новый ref для хранения позиций
+const searchPositions = ref([]);
+
+
 function collectSearchMatches() {
   nextTick(() => {
+    // Убираем старые выделения
     document.querySelectorAll('.search-highlight').forEach(el => {
       el.classList.remove('current-match');
     });
+
+    // Собираем все подсвеченные элементы
     const highlights = document.querySelectorAll('.search-highlight');
     searchResults.value = Array.from(highlights);
     searchMatchCount.value = highlights.length;
+
+    // Сохраняем позиции каждого совпадения
+    searchPositions.value = [];
+
+    console.log('🔍 ПОИСК: Найдено совпадений:', searchMatchCount.value);
+    console.log('📊 ПОЗИЦИИ СОВПАДЕНИЙ:');
+
+    highlights.forEach((el, idx) => {
+      // Получаем позицию элемента
+      const rect = el.getBoundingClientRect();
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const absoluteTop = rect.top + scrollY;
+
+      // Находим пост
+      const postCard = el.closest('.post-card');
+      const postId = postCard?.id;
+      const postTitle = postCard?.querySelector('.post-title')?.textContent;
+
+      // Сохраняем позицию
+      searchPositions.value.push({
+        index: idx,
+        top: absoluteTop,
+        element: el, // пока оставляем ссылку на элемент, но будем использовать позицию
+        text: el.textContent.substring(0, 30) + (el.textContent.length > 30 ? '...' : ''),
+        postTitle: postTitle || 'без названия',
+        postId: postId
+      });
+
+      // Выводим в консоль
+      console.log(`  ${idx + 1}. "${el.textContent.substring(0, 30)}..."`);
+      console.log(`     Пост: ${postTitle || 'без названия'}`);
+      console.log(`     Позиция Y: ${Math.round(absoluteTop)}px от верха страницы`);
+      console.log(`     Отступ от верха окна: ${Math.round(rect.top)}px`);
+      console.log(`     -----`);
+    });
+
     currentMatchIndex.value = highlights.length > 0 ? 0 : -1;
+
     if (highlights.length > 0) {
       highlights[0].classList.add('current-match');
-      highlights[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Используем позицию для скролла
+      const targetPosition = searchPositions.value[0].top - window.innerHeight / 3; // Центрируем с отступом
+
+      console.log(`🎯 ТЕКУЩЕЕ СОВПАДЕНИЕ #1:`);
+      console.log(`   Текст: "${highlights[0].textContent.substring(0, 30)}..."`);
+      console.log(`   Скроллим к позиции: ${Math.round(targetPosition)}px`);
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
     }
   });
 }
 
+
+function scrollToMatch(index) {
+  if (index < 0 || index >= searchPositions.value.length) return;
+
+  const match = searchPositions.value[index];
+
+  // Вычисляем позицию для скролла (центрируем с отступом)
+  const targetPosition = match.top - window.innerHeight / 3;
+
+  console.log(`📍 СКРОЛЛ К СОВПАДЕНИЮ #${index + 1}:`);
+  console.log(`   Текст: "${match.text}"`);
+  console.log(`   Пост: ${match.postTitle}`);
+  console.log(`   Целевая позиция: ${Math.round(targetPosition)}px`);
+  console.log(`   Исходная позиция элемента: ${Math.round(match.top)}px`);
+
+  // Пробуем найти элемент, чтобы подсветить его
+  const element = document.querySelector(`.search-highlight[data-search-index="${index}"]`) ||
+    searchResults.value[index];
+
+  if (element) {
+    // Убираем подсветку со всех
+    document.querySelectorAll('.search-highlight').forEach(el => {
+      el.classList.remove('current-match');
+    });
+    // Подсвечиваем текущий
+    element.classList.add('current-match');
+
+    // Добавляем data-атрибут для надежности
+    element.setAttribute('data-search-index', index);
+  }
+
+  // Скроллим по сохраненной позиции
+  window.scrollTo({
+    top: targetPosition,
+    behavior: 'smooth'
+  });
+
+  // Проверяем результат через небольшую задержку
+  setTimeout(() => {
+    const currentScroll = window.scrollY;
+    const diff = Math.abs(currentScroll - targetPosition);
+    console.log(`   Результат: текущий скролл ${Math.round(currentScroll)}px (отклонение ${Math.round(diff)}px)`);
+
+    if (diff > 100) {
+      console.warn(`   ⚠️ Отклонение больше 100px - возможно скролл не сработал как ожидалось`);
+    }
+  }, 500);
+}
+
 function nextMatch() {
   handleNavClick(() => {
-    if (searchResults.value.length === 0) return;
-    searchResults.value[currentMatchIndex.value]?.classList.remove('current-match');
-    let newIndex = (currentMatchIndex.value + 1) % searchResults.value.length;
+    if (searchPositions.value.length === 0) {
+      console.log('⚠️ Нет результатов поиска для навигации');
+      return;
+    }
+
+    console.log('⬇️ ПЕРЕХОД К СЛЕДУЮЩЕМУ СОВПАДЕНИЮ');
+    console.log(`   Было: индекс ${currentMatchIndex.value + 1}/${searchMatchCount.value}`);
+
+    // Вычисляем новый индекс
+    let newIndex = (currentMatchIndex.value + 1) % searchPositions.value.length;
     currentMatchIndex.value = newIndex;
-    const currentElement = searchResults.value[newIndex];
-    currentElement.classList.add('current-match');
-    currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Скроллим к новой позиции
+    scrollToMatch(newIndex);
   });
 }
 
 function previousMatch() {
   handleNavClick(() => {
-    if (searchResults.value.length === 0) return;
-    searchResults.value[currentMatchIndex.value]?.classList.remove('current-match');
+    if (searchPositions.value.length === 0) {
+      console.log('⚠️ Нет результатов поиска для навигации');
+      return;
+    }
+
+    console.log('⬆️ ПЕРЕХОД К ПРЕДЫДУЩЕМУ СОВПАДЕНИЮ');
+    console.log(`   Было: индекс ${currentMatchIndex.value + 1}/${searchMatchCount.value}`);
+
+    // Вычисляем новый индекс
     let newIndex = currentMatchIndex.value - 1;
-    if (newIndex < 0) newIndex = searchResults.value.length - 1;
+    if (newIndex < 0) newIndex = searchPositions.value.length - 1;
     currentMatchIndex.value = newIndex;
-    const currentElement = searchResults.value[newIndex];
-    currentElement.classList.add('current-match');
-    currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Скроллим к новой позиции
+    scrollToMatch(newIndex);
   });
 }
 
+// Функция для обновления позиций (нужно вызывать при изменении контента)
+function refreshSearchPositions() {
+  if (searchQuery.value && searchPositions.value.length > 0) {
+    console.log('🔄 Обновление позиций поиска...');
+
+    // Находим все текущие элементы подсветки
+    const currentHighlights = document.querySelectorAll('.search-highlight');
+
+    // Обновляем позиции
+    searchPositions.value = searchPositions.value.map((pos, idx) => {
+      const element = currentHighlights[idx];
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const scrollY = window.scrollY;
+        return {
+          ...pos,
+          top: rect.top + scrollY,
+          element: element
+        };
+      }
+      return pos;
+    });
+
+    console.log('✅ Позиции обновлены');
+  }
+}
+
+// Добавим watch для displayedPosts чтобы обновлять позиции
+watch(displayedPosts, () => {
+  if (searchQuery.value) {
+    nextTick(() => {
+      refreshSearchPositions();
+    });
+  }
+}, { deep: true });
+
+// Также обновляем позиции при скролле (опционально, можно закомментировать если много логов)
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+  if (searchQuery.value) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      refreshSearchPositions();
+    }, 500);
+  }
+});
 function performSearch() {
   if (!searchQuery.value.trim()) {
     searchResults.value = [];

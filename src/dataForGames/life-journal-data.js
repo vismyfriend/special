@@ -14,14 +14,9 @@ export const lifeJournalPosts = [
             caption: 'Узнали мем?',
           },
           {
-            src: new URL('src/assets/images/aifaceswap-output (2) copy.png', import.meta.url).href,
+            src: new URL('../assets/images/aifaceswap-output (2) copy.png', import.meta.url).href,
             caption: 'V is my AI - нейронка конечно! Мне кажется даже похож немного',
           },
-          {
-            src: 'src/assets/images/aifaceswap-output (2) copy.png', // заглушка
-            caption: 'V is my AI - нейронка конечно! Мне кажется даже похож немного',
-          },
-
         ]
       }
     ]
@@ -41,10 +36,10 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/IMG_6776 (1).jpg', // заглушка
+            src: new URL("../assets/images/IMG_6776 (1).jpg", import.meta.url).href,
             caption: 'Why is it so cold? \n почему же так холоднооо?"',
           },{
-            src: 'src/assets/images/IMG_6809 (1).jpeg', // заглушка
+            src: new URL("../assets/images/IMG_6809 (1).jpeg", import.meta.url).href,
             caption: 'Цены в объявлениях прям "кусались"',
           },
         ]
@@ -67,7 +62,7 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/2149937913 (1).jpg', // заглушка
+            src: new URL("../assets/images/2149937913 (1).jpg", import.meta.url).href,
             caption: 'Примерно так я представлял себе газончик',
           },
         ]
@@ -93,11 +88,11 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/IMG_6803 (1).jpeg', // заглушка
+            src: new URL("../assets/images/IMG_6803 (1).jpeg", import.meta.url).href,
             caption: 'Скриншот объявления. Цена 348 500 ₽. Сразу подумал: "Развод?"',
           },
           {
-            src: 'src/assets/images/photo_2026-02-26 14.59.37 (1).jpeg', // заглушка
+            src: new URL("../assets/images/photo_2026-02-26 14.59.37 (1).jpeg", import.meta.url).href,
             caption: 'ввел кадастровый номер участка чату GPT и попросил, чтобы он проверил по картам и ландшафту какой дом можно построить на этом участке',
           }
         ]
@@ -127,7 +122,7 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/IMG_6976 (1).jpeg', // заглушка
+            src: new URL("../assets/images/IMG_6976 (1).jpeg", import.meta.url).href,
             caption: 'Участок в день осмотра. Забора уже нет, всё в снегу',
           },
 
@@ -145,7 +140,7 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/IMG_6873 (1).jpg',
+            src: new URL("../assets/images/IMG_6873 (1).jpg", import.meta.url).href,
             caption: 'Вот тут конечно красивые домики по Байкальскому тракту',
           },
 
@@ -176,11 +171,11 @@ export const lifeJournalPosts = [
         type: 'gallery',
         items: [
           {
-            src: 'src/assets/images/IMG_6792 (1).png',
+            src: new URL("../assets/images/IMG_6792 (1).png", import.meta.url).href,
             caption: 'Тут я начал волноваться...',
           },
           {
-            src: 'src/assets/images/IMG_6797 (1).png',
+            src: new URL("../assets/images/IMG_6797 (1).png", import.meta.url).href,
             caption: 'Но потом меня част GPT успокоил, объяснив, что это ограничения не серьезные и их може быть и нет уже, в выписке будет точная информация сказал мне ИИ',
           },
         ]
