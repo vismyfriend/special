@@ -15,6 +15,20 @@
               "{{ currentMission }}"
             </div>
 
+            <!-- Чекбокс перемешивания в стиле тетради -->
+            <div class="shuffle-control">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  v-model="shuffleEnabled"
+                  @change="handleShuffleChange"
+                  class="checkbox-input"
+                >
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">включить перемешивание (обнови страницу)</span>
+              </label>
+            </div>
+
             <!-- Слова и фразы -->
             <div class="words-section">
               <div class="section-title display-none">Секретная миссия : </div>
@@ -22,7 +36,7 @@
               <div class="excel-style-table">
                 <div
                   class="table-row"
-                  v-for="(word, index) in currentGameData"
+                  v-for="(word, index) in displayedWords"
                   :key="word.id"
                 >
                   <!-- Первая строка: английское слово + перевод -->
@@ -116,7 +130,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
@@ -129,6 +143,34 @@ const notebookHeight = ref(600);
 const customMessage = ref('');
 const homeworkWords = ref([]);
 
+// Состояние для перемешивания
+const shuffleEnabled = ref(false);
+// Оригинальные данные (несортированные)
+const originalGameData = ref([]);
+// Отображаемые данные (могут быть перемешаны)
+const displayedWords = ref([]);
+
+
+// Функция перемешивания массива (алгоритм Фишера-Йетса)
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Обработчик изменения чекбокса
+const handleShuffleChange = () => {
+  if (shuffleEnabled.value) {
+    // Если включено перемешивание - перемешиваем
+    displayedWords.value = shuffleArray(originalGameData.value);
+  } else {
+    // Если выключено - возвращаем оригинальный порядок
+    displayedWords.value = [...originalGameData.value];
+  }
+};
 
 
 // Массив случайных приветственных фраз
@@ -311,6 +353,12 @@ onMounted(() => {
   currentMission.value = route.params.missionName || 'Текущий урок';
   currentGameData.value = shortWordsData[currentMission.value] || [];
 
+
+  // Сохраняем оригинальные данные
+  originalGameData.value = [...currentGameData.value];
+  // Инициализируем отображаемые данные
+  displayedWords.value = [...currentGameData.value];
+
   // Выбираем слова для домашнего задания
   homeworkWords.value = selectHomeworkWords();
 
@@ -319,6 +367,8 @@ onMounted(() => {
     notebookHeight.value = calculateContentHeight();
   }, 100);
 });
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -890,7 +940,113 @@ onMounted(() => {
 
 /* Адаптивность для мобильных */
 
+
+
+// Добавляем новые стили для заголовка и чекбокса
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.shuffle-control {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border: 1px solid #1e5799;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+
+  /* Имитация клетки тетради */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      linear-gradient(90deg,
+        rgba(224, 232, 232, 0.3) 0%,
+        rgba(224, 232, 232, 0.3) 1px,
+        transparent 1px),
+      linear-gradient(0deg,
+        rgba(224, 232, 232, 0.3) 0%,
+        rgba(224, 232, 232, 0.3) 1px,
+        transparent 1px);
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+}
+
+.checkbox-input:checked + .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #1e5799;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.checkbox-text {
+  color: #2c3e50;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .checkbox-text {
+    font-size: 12px;
+  }
+}
+
+/* Стили для печати */
+@media print {
+  .shuffle-control {
+    display: none !important;
+  }
+}
 .display-none {
   display: none;
 }
+
 </style>

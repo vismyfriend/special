@@ -76,8 +76,8 @@
       <div class="posts-counter glass" :class="{ 'dark-glass': isDarkMode }" v-if="displayedPosts.length">
 <!--        {{ displayedPosts.length }}-->
         {{ filteredPosts.length }}
-<!--        {{ pluralize(displayedPosts.length, 'запись', 'записи', 'записей') }}-->
-        {{ pluralize(displayedPosts.length, 'воспоминание', 'воспоминания', 'воспоминаний') }}
+        {{ pluralize(displayedPosts.length, 'запись', 'записи', 'записей') }}
+<!--        {{ pluralize(displayedPosts.length, 'воспоминание', 'воспоминания', 'воспоминаний') }}-->
 <!--        <span v-if="filteredPosts.length > displayedPosts.length" class="posts-total">-->
 <!--    из {{ filteredPosts.length }}-->
 <!--  </span>-->
@@ -124,18 +124,12 @@
               <p v-if="item.type === 'text'" class="content-text">
                 <span v-html="highlightText(item.value, searchQuery)"></span>
               </p>
-              <!-- Одиночное изображение (ленивая загрузка) -->
-              <LazyImage
-                v-if="item.type === 'image'"
-                :src="item.value"
-                :caption="item.caption"
-                :isDarkMode="isDarkMode"
-              />
 
               <!-- Галерея -->
               <PhotoGallery
-                v-if="item.type === 'gallery'"
-                :photos="item.items"
+                v-if="item.type === 'gallery' || item.type === 'image'"
+                :photos="item.type === 'image' ? [{ src: item.value, caption: item.caption }] : item.items"
+                :isDarkMode="isDarkMode"
               />
 
               <!-- Одиночное аудио (ленивая загрузка) -->
@@ -342,7 +336,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { lifeJournalPosts } from '../dataForGames/life-journal-data';
 import PhotoGallery from './MyLifeJournalPhotoGallery.vue';
 
-import LazyImage from './LazyImage.vue';
 import LazyAudio from './LazyAudio.vue';
 
 // В начале файла, после импортов добавь тестовые комментарии
@@ -1179,7 +1172,7 @@ function highlightText(text, query) {
     switch(part.type) {
       case 'spoiler':
         // Добавляем data-атрибут для идентификации и onclick атрибут
-        return `<span class="spoiler" data-spoiler-id="${part.id}" onclick="this.classList.toggle('revealed'); console.log('🎯 Клик по спойлеру:', '${part.content}');">${content}</span>`;
+        return `<span class="spoiler" data-spoiler-id="${part.id}" onclick="this.classList.toggle('revealed');">${content}</span>`;
       case 'crossed':
         return `<span class="crossed-text">${content}</span>`;
       case 'bold':
@@ -1221,8 +1214,6 @@ function collectSearchMatches() {
     // Сохраняем позиции каждого совпадения
     searchPositions.value = [];
 
-    console.log('🔍 ПОИСК: Найдено совпадений:', searchMatchCount.value);
-    console.log('📊 ПОЗИЦИИ СОВПАДЕНИЙ:');
 
     highlights.forEach((el, idx) => {
       // Получаем позицию элемента
@@ -1245,12 +1236,7 @@ function collectSearchMatches() {
         postId: postId
       });
 
-      // Выводим в консоль
-      console.log(`  ${idx + 1}. "${el.textContent.substring(0, 30)}..."`);
-      console.log(`     Пост: ${postTitle || 'без названия'}`);
-      console.log(`     Позиция Y: ${Math.round(absoluteTop)}px от верха страницы`);
-      console.log(`     Отступ от верха окна: ${Math.round(rect.top)}px`);
-      console.log(`     -----`);
+
     });
 
     currentMatchIndex.value = highlights.length > 0 ? 0 : -1;
@@ -1261,9 +1247,6 @@ function collectSearchMatches() {
       // Используем позицию для скролла
       const targetPosition = searchPositions.value[0].top - window.innerHeight / 3; // Центрируем с отступом
 
-      console.log(`🎯 ТЕКУЩЕЕ СОВПАДЕНИЕ #1:`);
-      console.log(`   Текст: "${highlights[0].textContent.substring(0, 30)}..."`);
-      console.log(`   Скроллим к позиции: ${Math.round(targetPosition)}px`);
 
       window.scrollTo({
         top: targetPosition,
@@ -1282,11 +1265,6 @@ function scrollToMatch(index) {
   // Вычисляем позицию для скролла (центрируем с отступом)
   const targetPosition = match.top - window.innerHeight / 3;
 
-  console.log(`📍 СКРОЛЛ К СОВПАДЕНИЮ #${index + 1}:`);
-  console.log(`   Текст: "${match.text}"`);
-  console.log(`   Пост: ${match.postTitle}`);
-  console.log(`   Целевая позиция: ${Math.round(targetPosition)}px`);
-  console.log(`   Исходная позиция элемента: ${Math.round(match.top)}px`);
 
   // Пробуем найти элемент, чтобы подсветить его
   const element = document.querySelector(`.search-highlight[data-search-index="${index}"]`) ||
@@ -1314,7 +1292,6 @@ function scrollToMatch(index) {
   setTimeout(() => {
     const currentScroll = window.scrollY;
     const diff = Math.abs(currentScroll - targetPosition);
-    console.log(`   Результат: текущий скролл ${Math.round(currentScroll)}px (отклонение ${Math.round(diff)}px)`);
 
     if (diff > 100) {
       console.warn(`   ⚠️ Отклонение больше 100px - возможно скролл не сработал как ожидалось`);
@@ -1325,12 +1302,9 @@ function scrollToMatch(index) {
 function nextMatch() {
   handleNavClick(() => {
     if (searchPositions.value.length === 0) {
-      console.log('⚠️ Нет результатов поиска для навигации');
       return;
     }
 
-    console.log('⬇️ ПЕРЕХОД К СЛЕДУЮЩЕМУ СОВПАДЕНИЮ');
-    console.log(`   Было: индекс ${currentMatchIndex.value + 1}/${searchMatchCount.value}`);
 
     // Вычисляем новый индекс
     let newIndex = (currentMatchIndex.value + 1) % searchPositions.value.length;
@@ -1348,9 +1322,6 @@ function previousMatch() {
       return;
     }
 
-    console.log('⬆️ ПЕРЕХОД К ПРЕДЫДУЩЕМУ СОВПАДЕНИЮ');
-    console.log(`   Было: индекс ${currentMatchIndex.value + 1}/${searchMatchCount.value}`);
-
     // Вычисляем новый индекс
     let newIndex = currentMatchIndex.value - 1;
     if (newIndex < 0) newIndex = searchPositions.value.length - 1;
@@ -1364,7 +1335,6 @@ function previousMatch() {
 // Функция для обновления позиций (нужно вызывать при изменении контента)
 function refreshSearchPositions() {
   if (searchQuery.value && searchPositions.value.length > 0) {
-    console.log('🔄 Обновление позиций поиска...');
 
     // Находим все текущие элементы подсветки
     const currentHighlights = document.querySelectorAll('.search-highlight');
@@ -1384,7 +1354,6 @@ function refreshSearchPositions() {
       return pos;
     });
 
-    console.log('✅ Позиции обновлены');
   }
 }
 
@@ -1568,13 +1537,7 @@ const currentPostTitle = computed(() => {
   return 'нет поста';
 });
 
-// Логируем изменение фокуса
-// watch(currentPostIndex, (newVal, oldVal) => {
-//   if (newVal !== oldVal) {
-//     console.log(`🎯 Фокус: ${oldVal} → ${newVal}`,
-//       displayedPosts.value[newVal]?.title);
-//   }
-// });
+
 
 
 
@@ -1773,7 +1736,6 @@ onMounted(() => {
         &:focus {
           background: rgba(255, 255, 255, 0.25);
           border-color: rgba(255, 255, 255, 0.6);
-          width: 280px;
         }
 
         .dark-theme & {

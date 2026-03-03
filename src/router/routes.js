@@ -144,6 +144,10 @@ const routes = [
                 component: () => import('src/components/GameTranslate.vue')
               },
               {
+                path: '4sentences',
+                component: () => import('components/Game4Sentences.vue')
+              },
+              {
                 path: 'gamePics',
                 component: () => import('src/components/GamePictures.vue')
               },
