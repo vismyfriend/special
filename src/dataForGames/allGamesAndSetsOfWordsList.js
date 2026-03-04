@@ -5,15 +5,15 @@ export const allGamesAndSetsOfWordsList =
     //первая страница первый раздел
     {
       type: "subTasks",
-      missionVisibleName: "Нажми сюда и выбери :",
-      missionDescription: "твой уровень :",
+      missionVisibleName: "Определить свой уровень :",
+      missionDescription: "мой уровень :",
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
       subTasks: [
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/digits09/game-translate",
+          path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
           missionVisibleName: "уровень ?",
           missionDescription: "не знаю свой уровень",
           id: 1001,
@@ -22,13 +22,12 @@ export const allGamesAndSetsOfWordsList =
         },
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/digits09/game-translate",
+          path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
           missionVisibleName: "Никогда не учили",
           missionDescription: "знаю нессколько слов",
           id: 1001,
           active: true,
         },
-
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/digits09/game-translate",
@@ -173,7 +172,22 @@ export const allGamesAndSetsOfWordsList =
       ]
     },
     // определить уровень
-
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/find-pairs-easy",
+      missionVisibleName: "Миссия 1 обезвредить бомбу",
+      missionDescription: "Первое занятие",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/print-all-words",
+      missionVisibleName: "Фразы с первого занятия",
+      missionDescription: "Первое занятие",
+      id: 1001,
+      active: true,
+    },
     // extra information
     {
       missionVisibleName: "Extra information",
@@ -247,19 +261,10 @@ export const allGamesAndSetsOfWordsList =
     },
     // определить уровень
     {
-      missionVisibleName: "Определить свой уровень",
-      missionDescription: "СПЭШЛ проверка уровня",
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
-      // id: 1001,
-      active: true,
-      gameIcon:'',
-    },
-    {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/emoji/find-pairs-easy",
-      missionVisibleName: "Миссия 1",
-      missionDescription: "Обезвредить бомбу",
+      path: "/see-all-sets-of-words/emoji/find-pairs-hard",
+      missionVisibleName: "Миссия 2 соединить пары",
+      missionDescription: "Mission 2 connect pairs",
       id: 1001,
       active: true,
     },
@@ -277,7 +282,7 @@ export const allGamesAndSetsOfWordsList =
     // начать с самого начала
     {
       type: "subTasks",
-      missionVisibleName: "Миссия 2",
+      missionVisibleName: "Миссия 3",
       missionDescription: "Начать с самого начала",
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
@@ -324,6 +329,15 @@ export const allGamesAndSetsOfWordsList =
           path: "/see-all-sets-of-words/letters62/find-pairs-easy",
           missionVisibleName: "Буквы",
           missionDescription: "Letters - лЭттэрз",
+          id: 1001,
+          active: true,
+          stars: 2
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/letters62/print-all-words",
+          missionVisibleName: "Английский алфавит",
+          missionDescription: "English alphabet",
           id: 1001,
           active: true,
           stars: 2
@@ -392,6 +406,22 @@ export const allGamesAndSetsOfWordsList =
           path: "/see-all-sets-of-words/digits09/game-translate",
           missionVisibleName: "January 1",
           missionDescription: "Январь 1",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/slotMachineIrregularVerbsAllC2/slotMachine",
+          missionVisibleName: "Слот Машина Все глаголы",
+          missionDescription: "C2 All Irregular Verbs ",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/irregularVerbsAtest/slotMachine",
+          missionVisibleName: "Слот Машина A",
+          missionDescription: "Слот Машина A",
           id: 1001,
           active: true,
         },
@@ -1164,11 +1194,12 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/irregularVerbsB1/find-pairs-hard",
-      missionVisibleName: "Naughty Verbs B1 - 66",
+      missionVisibleName: "Naughty Verbs B1 - 67",
       missionDescription: "Непослушные Verbs B1",
       id: 1001,
       active: true,
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/irregularVerbs250C2/find-pairs-easy",

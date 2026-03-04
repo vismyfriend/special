@@ -79,6 +79,10 @@ const routes = [
                 component: () => import('src/components/GameMillionaire.vue')
               },
               {
+                path: 'slotMachine',
+                component: () => import('src/components/GameSlotMachine.vue')
+              },
+              {
                 path: 'sorting',
                 component: () => import('src/components/GameDragAndSorting.vue')
               },

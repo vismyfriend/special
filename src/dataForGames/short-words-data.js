@@ -1617,6 +1617,20 @@ whatISitVideoMission: [
 
 
   ],
+
+  freeIntroLesson0: [
+    { id: 1, eng: "memory", ru: "память, воспоминание", hint: "/ мЭмори /" },
+    { id: 2, eng: "I remember", ru: "Я помню", hint: "/ ай ри мЭм бэ /" },
+    { id: 3, eng: "I don't remember", ru: "Я не помню", hint: "/ ай донт ри мЭм бэ /" },
+    { id: 4, eng: "phrase", ru: "фраза, выражение", hint: "/ фрЭЙз /" },
+    { id: 5, eng: "special", ru: "особенный, специальный", hint: "/ спЭшл /" },
+    { id: 6, eng: "agent", ru: "агент", hint: "/ Эй джент /" },
+    { id: 7, eng: "by the way", ru: "кстати", hint: "/ бай дэ уэй /" },
+    { id: 8, eng: "can you hear me?", ru: "меня слышно?", hint: "/ кЭн Ю хИЭ ми /" },
+    { id: 9, eng: "I can't recall", ru: "Я не могу вспомнить", hint: "/ ай кЭнт рикОл /" },
+    { id: 10, eng: "remind me please", ru: "Напомните мне пожалуйста", hint: "/  римАйнд ми плиз /" },
+
+  ],
     devmode1: [
         {
             id: 1,
@@ -2095,15 +2109,16 @@ whatISitVideoMission: [
     { id: 136, eng: "steal, stole, stolen", ru: "красть" },
     { id: 148, eng: "swim, swam, swum", ru: "плавать" },
     { id: 150, eng: "take, took, taken", ru: "брать" },
-    { id: 151, eng: "teach, taught, taught", ru: "обычать, преподавать" },
+    { id: 151, eng: "teach, taught, taught", ru: "обучать, преподавать" },
     { id: 153, eng: "tell, told, told", ru: "рассказывать" },
     { id: 154, eng: "think, thought, thought", ru: "думать" },
     { id: 156, eng: "throw, threw, thrown", ru: "бросать" },
     { id: 159, eng: "understand, understood, understood", ru: "понимать" },
-    { id: 162, eng: "wake, woke, woken", ru: "просыпаться" },
-    { id: 163, eng: "wear, wore, worn", ru: "носить (одежду)" },
+    { id: 162, eng: "wake up, woke up, woken up", ru: "просыпаться" },
+    { id: 163, eng: "wear, wore, worn", ru: "надевать, носить" },
     { id: 168, eng: "win, won, won", ru: "выигрывать" },
     { id: 174, eng: "write, wrote, written", ru: "писать" },
+    { id: 175, eng: "hide, hid, hidden", ru: "прятать" },
   ],
   irregularVerbs250C2: [
     { id: 1, eng: "abide, abode, abode", ru: "соблюдать, следовать, обитать" },
