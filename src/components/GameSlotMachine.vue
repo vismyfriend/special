@@ -48,7 +48,7 @@
     </div>
 
     <!-- Информация о совпадениях и выигрыше -->
-    <div class="matches-info">
+    <div class="matches-info" :class="{ 'visible': hasSpunOnce }">
       <div class="match-badges">
         <div class="match-badge" :class="{ active: matchTypes.v1v2 }">
           <span class="match-icon">①→②</span>
@@ -78,7 +78,7 @@
     </div>
 
     <!-- Таблица всех глаголов -->
-    <div class="verbs-table" v-if="verbsData.length > 0">
+    <div class="verbs-table" :class="{ 'visible': hasSpunTwice }" v-if="verbsData.length > 0">
       <div class="table-body" ref="tableBodyRef">
         <div
           v-for="(verb, index) in verbsData"
@@ -174,6 +174,10 @@ const spinCount = ref(0);
 const winAmount = ref(0);
 const spinningStates = ref([false, false, false]);
 const tableBodyRef = ref(null);
+// Добавь после других состояний
+const hasSpunOnce = ref(false);
+const hasSpunTwice = ref(false);
+
 
 // Типы совпадений
 const matchTypes = ref({
@@ -322,6 +326,14 @@ const spinButtonText = computed(() => {
 // Функция вращения
 const spin = () => {
   if (isAnySpinning.value || balance.value < 3 || !verbsData.value.length) return;
+
+  // При первом спине показываем таблицу и информацию
+  // Логика поэтапного появления
+  if (!hasSpunOnce.value) {
+    hasSpunOnce.value = true; // После первого спина показываем matches-info
+  } else if (!hasSpunTwice.value) {
+    hasSpunTwice.value = true; // После второго спина показываем verbs-table
+  }
 
   balance.value -= 3;
   if (spinTimeout) clearTimeout(spinTimeout);
@@ -755,6 +767,10 @@ onMounted(() => {
 .matches-info {
   margin-bottom: 10px;
   position: relative;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+
 }
 
 .match-badges {
@@ -938,8 +954,18 @@ onMounted(() => {
   max-height: 230px;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+
 }
 
+/* Классы для показа элементов */
+.matches-info.visible,
+.verbs-table.visible {
+  opacity: 1;
+
+}
 
 
 .table-body {
