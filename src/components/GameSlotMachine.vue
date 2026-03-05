@@ -3,10 +3,13 @@
     <!-- Компактный заголовок с балансом -->
     <div class="slot-header">
       <div class="header-left">
-        <button class="back-btn" @click="goBack">←</button>
-        <h2 class="game-title">🎰 IRREGULAR VERBS</h2>
+<!--        <button class="back-btn" @click="goBack">←</button>-->
+        <h2 class="game-title">🎰  <s>IRREGULAR</s> LUCKY VERBS</h2>
       </div>
-      <div class="balance-container" :class="{ 'balance-low': balance < 100 }">
+      <div class="balance-container"
+           :class="{ 'balance-low': balance < 40 }"
+           @click="openSecretModal"
+           style="cursor: pointer">
         <span class="balance-icon">💰</span>
         <span class="balance-value">${{ balance }}</span>
       </div>
@@ -146,6 +149,65 @@
       <span class="spin-text">{{ spinButtonText }}</span>
       <span class="spin-cost">$3</span>
     </button>
+
+    <!-- Модальное окно с заданием -->
+    <div v-if="showTaskModal" class="task-modal-overlay" @click.self="showTaskModal = false">
+      <div class="task-modal">
+        <div class="task-modal-header">
+          <span class="task-emoji">🎯</span>
+          <h3>SPECIAL TASK</h3>
+          <button class="task-close" @click="closeTask">✕</button>
+        </div>
+        <div class="task-modal-body">
+          <p class="task-text">{{ currentTask?.text }}</p>
+          <div class="task-timer">⏱️ 10 seconds</div>
+        </div>
+        <div class="task-modal-footer">
+          <button class="task-done-btn" @click="completeTask">
+            <span class="btn-text">✓ I'VE DONE IT!</span>
+            <span class="btn-reward">+$10</span>
+          </button>
+          <button class="task-skip-btn" @click="skipTask">
+            <span class="btn-text">✗ I DON'T WANT TO</span>
+            <span class="btn-reward">$0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секретная модалка с вводом форм глагола -->
+    <div v-if="showSecretModal" class="task-modal-overlay" @click.self="showSecretModal = false">
+      <div class="task-modal secret-modal">
+        <div class="task-modal-header">
+          <span class="task-emoji">🤫</span>
+          <h3>NEED MONEY ?</h3>
+          <button class="task-close" @click="showSecretModal = false">✕</button>
+        </div>
+        <div class="task-modal-body">
+          <p class="task-text">Введи все 3 формы глагола:</p>
+          <p class="secret-verb">{{ secretVerb?.ru }}</p>
+          <input
+            v-model="userInput"
+            type="text"
+            class="secret-input"
+            placeholder="например: eat ate eaten"
+            @keyup.enter="checkSecretAnswer"
+          />
+          <p v-if="secretMessage" class="secret-message">{{ secretMessage }}</p>
+        </div>
+        <div class="task-modal-footer">
+          <button class="task-skip-btn" @click="showSecretModal = false">
+            <span class="btn-text">✗ I forgot</span>
+            <span class="btn-reward">$0</span>
+          </button>
+          <button class="task-done-btn" @click="checkSecretAnswer">
+            <span class="btn-text">✓ is it correct?</span>
+            <span class="btn-reward">+$55</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -169,7 +231,7 @@ const currentGameData = ref(null);
 const verbsData = ref([]);
 
 // Состояния
-const balance = ref(112);
+const balance = ref(50);
 const spinCount = ref(0);
 const winAmount = ref(0);
 const spinningStates = ref([false, false, false]);
@@ -177,6 +239,71 @@ const tableBodyRef = ref(null);
 // Добавь после других состояний
 const hasSpunOnce = ref(false);
 const hasSpunTwice = ref(false);
+
+
+const showSecretModal = ref(false);
+const secretVerb = ref(null);
+const userInput = ref('');
+const secretMessage = ref('');
+
+const openSecretModal = () => {
+  // Выбираем случайный глагол из данных
+  const randomIndex = Math.floor(Math.random() * verbsData.value.length);
+  secretVerb.value = verbsData.value[randomIndex];
+  userInput.value = '';
+  secretMessage.value = '';
+  showSecretModal.value = true;
+};
+
+const checkSecretAnswer = () => {
+  if (!secretVerb.value) return;
+
+  // Очищаем и нормализуем ввод
+  const answer = userInput.value.toLowerCase().trim();
+
+  // Формируем правильный ответ в зависимости от форм глагола
+  const correctAnswer = `${secretVerb.value.v1} ${secretVerb.value.v2} ${secretVerb.value.v3}`.toLowerCase();
+
+  if (answer === correctAnswer) {
+    // Правильный ответ
+    balance.value += 55;
+    winAmount.value = 55;
+    secretMessage.value = '✓ PERFECT! +$55';
+    setTimeout(() => {
+      showSecretModal.value = false;
+      winAmount.value = 0;
+    }, 1500);
+  } else {
+    // Неправильный ответ
+    secretMessage.value = '✗ Try again!';
+    userInput.value = '';
+  }
+};
+
+// Добавь после других состояний
+const taskMessages = ref([
+  { text: 'Скажи любое предложение со словом \n {word}', type: 'sentence' },
+  { text: 'Составь ОТРИЦАНИЕ со словом \n {word}', type: 'negative' },
+  { text: 'Сделай 5 приседаний, разомнись! 🦘', type: 'exercise' },
+  { text: 'Наклони голову влево и вправо, разомни шею! 💪', type: 'exercise' },
+  { text: 'Придумай вопрос со словом \n {word}', type: 'question' },
+  { text: 'Назови все 3 формы глагола \n {word}', type: 'forms' },
+  { text: 'Отправь Винсенту скриншот, пусть знает, что ты сейчас английский тренируешь! Он порадуется и похвалит тебя', type: 'special' },
+  { text: 'Постучи пальцем по столу столько раз, сколько букв в слове \n {word}', type: 'tap' },
+  { text: 'Поморгай быстро 10 раз 👀 \n разомни глаза', type: 'blink' },
+  { text: 'Напиши пальцем в воздухе \n {word}', type: 'air' },
+  { text: 'Придумай смешное предложение с \n {word} 😄', type: 'funny' },
+  { text: 'Скажи громко вслух: \n "I love my teacherka!"', type: 'affirmation' },
+  { text: 'Произнеси номер своего телефона на английском каждую цифру', type: 'phone' },
+  { text: 'Сможешь произнести по буквам \n {word}', type: 'spell' },
+  { text: 'Сделай глубокий вдох и выдох 3 раза 🧘 Разомнись, чтобы не уснуть', type: 'breathe' },
+  { text: 'Напиши пальцем на столе слово \n {word}', type: 'write' }
+]);
+
+const currentTask = ref(null);
+const showTaskModal = ref(false);
+const consecutiveLosses = ref(0); // Счетчик проигрышей подряд
+const lastWinAmount = ref(0); // Для отслеживания выигрышей
 
 
 // Типы совпадений
@@ -206,6 +333,75 @@ const isAnySpinning = computed(() => {
   return spinningStates.value.some(state => state === true);
 });
 
+
+
+const showRandomTask = () => {
+  const randomIndex = Math.floor(Math.random() * taskMessages.value.length);
+  let task = { ...taskMessages.value[randomIndex] };
+
+  if (task.text.includes('{word}') && verbsData.value.length > 0) {
+    const randomVerb = verbsData.value[Math.floor(Math.random() * verbsData.value.length)];
+    const randomForm = ['v1', 'v2', 'v3'][Math.floor(Math.random() * 3)];
+    const word = randomVerb[randomForm] || randomVerb.v1;
+
+    // Добавляем информацию о форме глагола
+    const formLabel = {
+      'v1': 'V1 - иногда',
+      'v2': 'V2 - год назад',
+      'v3': 'V3 - новость!!!'
+    };
+
+    task.text = task.text.replace('{word}', `${word} (${formLabel[randomForm]})`);
+    task.verb = randomVerb;
+    task.form = randomForm;
+  }
+
+  currentTask.value = task;
+  showTaskModal.value = true;
+
+  setTimeout(() => {
+    if (showTaskModal.value) {
+      skipTask();
+    }
+  }, 10000);
+};
+// Новая функция для выполнения задания
+const completeTask = () => {
+  showTaskModal.value = false;
+  // Даем бонус +$5
+  balance.value += 5;
+  winAmount.value = 5;
+  setTimeout(() => {
+    winAmount.value = 0;
+  }, 2000);
+};
+
+// Новая функция для пропуска задания
+const skipTask = () => {
+  showTaskModal.value = false;
+  // Ничего не даем
+};
+
+// Обновленная функция закрытия (крестик)
+const closeTask = () => {
+  showTaskModal.value = false;
+};
+
+// Обновленная checkAndShowTask без логов
+const checkAndShowTask = () => {
+  // Первый раз после 13 вращений
+  if (spinCount.value === 13 && !showTaskModal.value) {
+    showRandomTask();
+    return;
+  }
+
+  // Если 8 раз подряд нет выигрыша
+  if (consecutiveLosses.value >= 8 && !showTaskModal.value && spinCount.value > 13) {
+    showRandomTask();
+    consecutiveLosses.value = 0;
+    return;
+  }
+};
 // Подсветка совпавших барабанов
 const matchHighlights = computed(() => {
   const highlights = [false, false, false];
@@ -327,12 +523,11 @@ const spinButtonText = computed(() => {
 const spin = () => {
   if (isAnySpinning.value || balance.value < 3 || !verbsData.value.length) return;
 
-  // При первом спине показываем таблицу и информацию
   // Логика поэтапного появления
   if (!hasSpunOnce.value) {
-    hasSpunOnce.value = true; // После первого спина показываем matches-info
+    hasSpunOnce.value = true;
   } else if (!hasSpunTwice.value) {
-    hasSpunTwice.value = true; // После второго спина показываем verbs-table
+    hasSpunTwice.value = true;
   }
 
   balance.value -= 3;
@@ -415,6 +610,19 @@ const spin = () => {
           if (index === 2) {
             const win = checkMatchesAndCalculateWin();
             updateBalanceWithWin(win);
+
+            // Отслеживаем проигрыши
+            if (win === 0) {
+              consecutiveLosses.value++;
+              lastWinAmount.value = 0;
+            } else {
+              consecutiveLosses.value = 0;
+              lastWinAmount.value = win;
+            }
+
+            // Проверяем, нужно ли показать задание
+            checkAndShowTask();
+
             scrollToV2();
           }
         }, delay);
@@ -422,7 +630,6 @@ const spin = () => {
     }
   }, 60);
 };
-
 // Навигация назад
 const goBack = () => {
   if (spinTimeout) clearTimeout(spinTimeout);
@@ -556,6 +763,7 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 0 #b8860b;
+  margin-right: 25px;
 }
 
 .balance-container.balance-low {
@@ -578,7 +786,7 @@ onMounted(() => {
   font-weight: bold;
   color: #ffd700;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-  min-width: 60px;
+  min-width: 40px;
   text-align: right;
 }
 
@@ -716,7 +924,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 10px;
+  line-height: 12px;
 }
 
 .reel-content {
@@ -1064,5 +1272,229 @@ onMounted(() => {
     padding: 4px 2px;
     font-size: 12px;
   }
+}
+
+/* Task Modal */
+.task-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.task-modal {
+  background: linear-gradient(145deg, #2a3a4a, #1a2a3a);
+  border: 3px solid #ffd700;
+  border-radius: 28px;
+  padding: 10px;
+  max-width: 350px;
+  width: 90%;
+  box-shadow: 0 10px 0 #b8860b, 0 20px 30px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+.task-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ffd700;
+}
+
+.task-emoji {
+  font-size: 24px;
+}
+
+.task-modal-header h3 {
+  color: #ffd700;
+  font-size: 16px;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.task-close {
+  background: none;
+  border: none;
+  color: #ffd700;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.task-close:hover {
+  transform: scale(1.2);
+}
+
+.task-modal-body {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.task-text {
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  white-space: pre-line; /* Сохраняет переносы строк из текста */
+
+}
+
+.task-timer {
+  color: #aaa;
+  font-size: 12px;
+}
+.task-modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.task-done-btn, .task-skip-btn {
+  border: none;
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.05s linear;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.task-done-btn {
+  background: linear-gradient(145deg, #4caf50, #2e7d32);
+  box-shadow: 0 4px 0 #1b5e20;
+  color: white;
+}
+
+.task-done-btn:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.task-skip-btn {
+  background: linear-gradient(145deg, #f44336, #c62828);
+  box-shadow: 0 4px 0 #8b0000;
+  color: white;
+}
+
+.task-skip-btn:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.btn-text {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.btn-reward {
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Эффект блика на балансе */
+.balance-container {
+  background: linear-gradient(145deg, #2a3a4a, #1a2a3a);
+  border: 2px solid #ffd700;
+  border-radius: 30px;
+  padding: 6px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 0 #b8860b;
+  margin-right: 25px;
+  position: relative;
+  overflow: hidden; /* Важно для эффекта блика */
+}
+
+/* Эффект блика */
+.balance-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.3),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+/* Секретная модалка */
+.secret-modal {
+  border-color: #ff69b4;
+  box-shadow: 0 10px 0 #c71585, 0 20px 30px rgba(0, 0, 0, 0.5);
+}
+
+.secret-verb {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 10px 0;
+  text-transform: lowercase;
+}
+
+.secret-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: 2px solid #ffd700;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  margin: 10px 0;
+  outline: none;
+}
+
+.secret-input:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+.secret-message {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #ffd700;
 }
 </style>

@@ -1,5 +1,411 @@
 
 export const gameSlotMachineData = {
+  slotMachineIrregularVerbsB1: {
+    verbsData: [
+      {
+        v1: 'be', v1Pron: 'би', v1ru: 'быть',
+        v2: 'was/were', v2Pron: 'воз/вё', v2ru: 'был/были',
+        v3: 'been', v3Pron: 'бин', v3ru: 'побывавший',
+        ru: 'быть'
+      },
+      {
+        v1: 'become', v1Pron: 'бикам', v1ru: 'становиться',
+        v2: 'became', v2Pron: 'бикЕЙм', v2ru: 'стал',
+        v3: 'become', v3Pron: 'бикАм', v3ru: 'ставший',
+        ru: 'становиться'
+      },
+      {
+        v1: 'begin', v1Pron: 'бигин', v1ru: 'начинать',
+        v2: 'began', v2Pron: 'бигЭн', v2ru: 'начал',
+        v3: 'begun', v3Pron: 'бигАн', v3ru: 'начавший',
+        ru: 'начинать'
+      },
+      {
+        v1: 'bite', v1Pron: 'байт', v1ru: 'кусать',
+        v2: 'bit', v2Pron: 'бит', v2ru: 'укусил',
+        v3: 'bitten', v3Pron: 'битн', v3ru: 'укушенный',
+        ru: 'кусать'
+      },
+      {
+        v1: 'blow', v1Pron: 'блоу', v1ru: 'дуть',
+        v2: 'blew', v2Pron: 'блу:', v2ru: 'дул',
+        v3: 'blown', v3Pron: 'блоун', v3ru: 'надутый',
+        ru: 'дуть'
+      },
+      {
+        v1: 'break', v1Pron: 'брэйк', v1ru: 'ломать',
+        v2: 'broke', v2Pron: 'броук', v2ru: 'сломал',
+        v3: 'broken', v3Pron: 'броукэн', v3ru: 'сломанный',
+        ru: 'ломать'
+      },
+      {
+        v1: 'bring', v1Pron: 'брин', v1ru: 'приносить',
+        v2: 'brought', v2Pron: 'брот', v2ru: 'принёс',
+        v3: 'brought', v3Pron: 'брот', v3ru: 'принесённый',
+        ru: 'приносить'
+      },
+      {
+        v1: 'build', v1Pron: 'билд', v1ru: 'строить',
+        v2: 'built', v2Pron: 'билт', v2ru: 'построил',
+        v3: 'built', v3Pron: 'билт', v3ru: 'построенный',
+        ru: 'строить'
+      },
+      {
+        v1: 'buy', v1Pron: 'бай', v1ru: 'покупать',
+        v2: 'bought', v2Pron: 'бот', v2ru: 'купил',
+        v3: 'bought', v3Pron: 'бот', v3ru: 'купленный',
+        ru: 'покупать'
+      },
+      {
+        v1: 'catch', v1Pron: 'кэч', v1ru: 'ловить',
+        v2: 'caught', v2Pron: 'кот', v2ru: 'поймал',
+        v3: 'caught', v3Pron: 'кот', v3ru: 'пойманный',
+        ru: 'ловить'
+      },
+      {
+        v1: 'choose', v1Pron: 'чу:з', v1ru: 'выбирать',
+        v2: 'chose', v2Pron: 'чоуз', v2ru: 'выбрал',
+        v3: 'chosen', v3Pron: 'чоузэн', v3ru: 'избранный',
+        ru: 'выбирать'
+      },
+      {
+        v1: 'come', v1Pron: 'кам', v1ru: 'приходить',
+        v2: 'came', v2Pron: 'кэйм', v2ru: 'пришёл',
+        v3: 'come', v3Pron: 'кам', v3ru: 'пришедший',
+        ru: 'приходить'
+      },
+      {
+        v1: 'cut', v1Pron: 'кат', v1ru: 'резать',
+        v2: 'cut', v2Pron: 'кат', v2ru: 'порезал',
+        v3: 'cut', v3Pron: 'кат', v3ru: 'резанный',
+        ru: 'резать'
+      },
+      {
+        v1: 'do', v1Pron: 'ду:', v1ru: 'делать',
+        v2: 'did', v2Pron: 'дид', v2ru: 'сделал',
+        v3: 'done', v3Pron: 'дан', v3ru: 'сделанный',
+        ru: 'делать'
+      },
+      {
+        v1: 'drink', v1Pron: 'дринк', v1ru: 'пить',
+        v2: 'drank', v2Pron: 'дрэнк', v2ru: 'выпил',
+        v3: 'drunk', v3Pron: 'дранк', v3ru: 'выпитый',
+        ru: 'пить'
+      },
+      {
+        v1: 'drive', v1Pron: 'драйв', v1ru: 'водить',
+        v2: 'drove', v2Pron: 'дроув', v2ru: 'водил',
+        v3: 'driven', v3Pron: 'дривэн', v3ru: 'управляемый',
+        ru: 'водить'
+      },
+      {
+        v1: 'eat', v1Pron: 'и:т', v1ru: 'кушать',
+        v2: 'ate', v2Pron: 'эйт', v2ru: 'съел',
+        v3: 'eaten', v3Pron: 'и:тэн', v3ru: 'съеденный',
+        ru: 'кушать'
+      },
+      {
+        v1: 'fall', v1Pron: 'фол', v1ru: 'падать',
+        v2: 'fell', v2Pron: 'фэл', v2ru: 'упал',
+        v3: 'fallen', v3Pron: 'фолэн', v3ru: 'упавший',
+        ru: 'падать'
+      },
+      {
+        v1: 'feel', v1Pron: 'фи:л', v1ru: 'чувствовать',
+        v2: 'felt', v2Pron: 'фэлт', v2ru: 'почувствовал',
+        v3: 'felt', v3Pron: 'фэлт', v3ru: 'ощущаемый',
+        ru: 'чувствовать'
+      },
+      {
+        v1: 'find', v1Pron: 'файнд', v1ru: 'находить',
+        v2: 'found', v2Pron: 'фаунд', v2ru: 'нашел',
+        v3: 'found', v3Pron: 'фаунд', v3ru: 'найденный',
+        ru: 'находить'
+      },
+      {
+        v1: 'fly', v1Pron: 'флай', v1ru: 'летать',
+        v2: 'flew', v2Pron: 'флу:', v2ru: 'полетел',
+        v3: 'flown', v3Pron: 'флоун', v3ru: 'пролетевший',
+        ru: 'летать'
+      },
+      {
+        v1: 'forget', v1Pron: 'форгэт', v1ru: 'забывать',
+        v2: 'forgot', v2Pron: 'форгот', v2ru: 'забыл',
+        v3: 'forgotten', v3Pron: 'форготэн', v3ru: 'забытый',
+        ru: 'забывать'
+      },
+      {
+        v1: 'freeze', v1Pron: 'фри:з', v1ru: 'замораживать',
+        v2: 'froze', v2Pron: 'фроуз', v2ru: 'заморозил',
+        v3: 'frozen', v3Pron: 'фроузэн', v3ru: 'замороженный',
+        ru: 'замораживать'
+      },
+      {
+        v1: 'get', v1Pron: 'гэт', v1ru: 'получать',
+        v2: 'got', v2Pron: 'гот', v2ru: 'получил',
+        v3: 'got', v3Pron: 'гот', v3ru: 'полученный',
+        ru: 'получать'
+      },
+      {
+        v1: 'give', v1Pron: 'гив', v1ru: 'давать',
+        v2: 'gave', v2Pron: 'гэйв', v2ru: 'дал',
+        v3: 'given', v3Pron: 'гивэн', v3ru: 'отданный',
+        ru: 'давать'
+      },
+      {
+        v1: 'go', v1Pron: 'гоу', v1ru: 'идти',
+        v2: 'went', v2Pron: 'уэнт', v2ru: 'пошёл',
+        v3: 'gone', v3Pron: 'гон', v3ru: 'ушедший',
+        ru: 'идти'
+      },
+      {
+        v1: 'grow', v1Pron: 'гроу', v1ru: 'расти',
+        v2: 'grew', v2Pron: 'гру:', v2ru: 'вырос',
+        v3: 'grown', v3Pron: 'гроун', v3ru: 'выросший',
+        ru: 'расти'
+      },
+      {
+        v1: 'have', v1Pron: 'хэв', v1ru: 'иметь',
+        v2: 'had', v2Pron: 'хэд', v2ru: 'имел',
+        v3: 'had', v3Pron: 'хэд', v3ru: 'имевшийся',
+        ru: 'иметь'
+      },
+      {
+        v1: 'hear', v1Pron: 'хиа', v1ru: 'слышать',
+        v2: 'heard', v2Pron: 'хё:д', v2ru: 'слышал',
+        v3: 'heard', v3Pron: 'хё:д', v3ru: 'услышанный',
+        ru: 'слышать'
+      },
+      {
+        v1: 'hit', v1Pron: 'хит', v1ru: 'ударять',
+        v2: 'hit', v2Pron: 'хит', v2ru: 'ударил',
+        v3: 'hit', v3Pron: 'хит', v3ru: 'ударенный',
+        ru: 'ударять'
+      },
+      {
+        v1: 'hold', v1Pron: 'хоулд', v1ru: 'держать',
+        v2: 'held', v2Pron: 'хэлд', v2ru: 'держал',
+        v3: 'held', v3Pron: 'хэлд', v3ru: 'удержанный',
+        ru: 'держать'
+      },
+      {
+        v1: 'hurt', v1Pron: 'хё:т', v1ru: 'причинять боль',
+        v2: 'hurt', v2Pron: 'хё:т', v2ru: 'причинил боль',
+        v3: 'hurt', v3Pron: 'хё:т', v3ru: 'раненый',
+        ru: 'причинять боль'
+      },
+      {
+        v1: 'know', v1Pron: 'ноу', v1ru: 'знать',
+        v2: 'knew', v2Pron: 'нью:', v2ru: 'знал',
+        v3: 'known', v3Pron: 'ноун', v3ru: 'известный',
+        ru: 'знать'
+      },
+      {
+        v1: 'leave', v1Pron: 'ли:в', v1ru: 'оставлять',
+        v2: 'left', v2Pron: 'лэфт', v2ru: 'оставил',
+        v3: 'left', v3Pron: 'лэфт', v3ru: 'оставленный',
+        ru: 'оставлять'
+      },
+      {
+        v1: 'let', v1Pron: 'лэт', v1ru: 'позволять',
+        v2: 'let', v2Pron: 'лэт', v2ru: 'позволил',
+        v3: 'let', v3Pron: 'лэт', v3ru: 'позволено',
+        ru: 'позволять'
+      },
+      {
+        v1: 'lose', v1Pron: 'лу:з', v1ru: 'терять',
+        v2: 'lost', v2Pron: 'лост', v2ru: 'потерял',
+        v3: 'lost', v3Pron: 'лост', v3ru: 'потерянный',
+        ru: 'терять'
+      },
+      {
+        v1: 'make', v1Pron: 'мэйк', v1ru: 'делать',
+        v2: 'made', v2Pron: 'мэйд', v2ru: 'делал',
+        v3: 'made', v3Pron: 'мэйд', v3ru: 'сделанный',
+        ru: 'делать'
+      },
+      {
+        v1: 'meet', v1Pron: 'ми:т', v1ru: 'встречать',
+        v2: 'met', v2Pron: 'мэт', v2ru: 'встретил',
+        v3: 'met', v3Pron: 'мэт', v3ru: 'встреченный',
+        ru: 'встречать'
+      },
+      {
+        v1: 'pay', v1Pron: 'пэй', v1ru: 'платить',
+        v2: 'paid', v2Pron: 'пэйд', v2ru: 'заплатил',
+        v3: 'paid', v3Pron: 'пэйд', v3ru: 'оплаченный',
+        ru: 'платить'
+      },
+      {
+        v1: 'put', v1Pron: 'пут', v1ru: 'класть',
+        v2: 'put', v2Pron: 'пут', v2ru: 'положил',
+        v3: 'put', v3Pron: 'пут', v3ru: 'положенный',
+        ru: 'класть'
+      },
+      {
+        v1: 'read', v1Pron: 'рид', v1ru: 'читать',
+        v2: 'read', v2Pron: 'рэд', v2ru: 'прочитал',
+        v3: 'read', v3Pron: 'рэд', v3ru: 'прочитанный',
+        ru: 'читать'
+      },
+      {
+        v1: 'run', v1Pron: 'ран', v1ru: 'бежать',
+        v2: 'ran', v2Pron: 'рэн', v2ru: 'пробежал',
+        v3: 'run', v3Pron: 'ран', v3ru: 'пробежавший',
+        ru: 'бежать'
+      },
+      {
+        v1: 'say', v1Pron: 'сэй', v1ru: 'произнести',
+        v2: 'said', v2Pron: 'сэд', v2ru: 'произнёс',
+        v3: 'said', v3Pron: 'сэд', v3ru: 'произнесён',
+        ru: 'сказать'
+      },
+      {
+        v1: 'see', v1Pron: 'си:', v1ru: 'увидеть',
+        v2: 'saw', v2Pron: 'со:', v2ru: 'увидел',
+        v3: 'seen', v3Pron: 'си:н', v3ru: 'увиденный',
+        ru: 'увидеть'
+      },
+      {
+        v1: 'sell', v1Pron: 'сэл', v1ru: 'продавать',
+        v2: 'sold', v2Pron: 'соулд', v2ru: 'продал',
+        v3: 'sold', v3Pron: 'соулд', v3ru: 'проданный',
+        ru: 'продавать'
+      },
+      {
+        v1: 'send', v1Pron: 'сэнд', v1ru: 'отправлять',
+        v2: 'sent', v2Pron: 'сэнт', v2ru: 'отправил',
+        v3: 'sent', v3Pron: 'сэнт', v3ru: 'отправленный',
+        ru: 'отправлять'
+      },
+      {
+        v1: 'shake', v1Pron: 'шэйк', v1ru: 'трясти',
+        v2: 'shook', v2Pron: 'шук', v2ru: 'тряс',
+        v3: 'shaken', v3Pron: 'шэйкэн', v3ru: 'потрясённый',
+        ru: 'трясти'
+      },
+      {
+        v1: 'shoot', v1Pron: 'шу:т', v1ru: 'стрелять',
+        v2: 'shot', v2Pron: 'шот', v2ru: 'стрелял',
+        v3: 'shot', v3Pron: 'шот', v3ru: 'подстреленный',
+        ru: 'стрелять'
+      },
+      {
+        v1: 'sing', v1Pron: 'син', v1ru: 'петь',
+        v2: 'sang', v2Pron: 'сэн', v2ru: 'спел',
+        v3: 'sung', v3Pron: 'сан', v3ru: 'спетый',
+        ru: 'петь'
+      },
+      {
+        v1: 'sit', v1Pron: 'сит', v1ru: 'сидеть',
+        v2: 'sat', v2Pron: 'сэт', v2ru: 'сел',
+        v3: 'sat', v3Pron: 'сэт', v3ru: 'посаженный',
+        ru: 'сидеть'
+      },
+      {
+        v1: 'sleep', v1Pron: 'сли:п', v1ru: 'спать',
+        v2: 'slept', v2Pron: 'слэпт', v2ru: 'спал',
+        v3: 'slept', v3Pron: 'слэпт', v3ru: 'проспавший',
+        ru: 'спать'
+      },
+      {
+        v1: 'speak', v1Pron: 'спи:к', v1ru: 'разговаривать',
+        v2: 'spoke', v2Pron: 'споук', v2ru: 'разговаривал',
+        v3: 'spoken', v3Pron: 'споукэн', v3ru: 'разговорный',
+        ru: 'разговаривать'
+      },
+      {
+        v1: 'spend', v1Pron: 'спэнд', v1ru: 'тратить',
+        v2: 'spent', v2Pron: 'спэнт', v2ru: 'потратил',
+        v3: 'spent', v3Pron: 'спэнт', v3ru: 'потраченный',
+        ru: 'тратить'
+      },
+      {
+        v1: 'stand', v1Pron: 'стэнд', v1ru: 'стоять',
+        v2: 'stood', v2Pron: 'стул', v2ru: 'встал',
+        v3: 'stood', v3Pron: 'стул', v3ru: 'поставленный',
+        ru: 'стоять'
+      },
+      {
+        v1: 'steal', v1Pron: 'стил', v1ru: 'красть',
+        v2: 'stole', v2Pron: 'стоул', v2ru: 'украл',
+        v3: 'stolen', v3Pron: 'стоулэн', v3ru: 'украденный',
+        ru: 'красть, воровать'
+      },
+      {
+        v1: 'swim', v1Pron: 'суим', v1ru: 'плавать',
+        v2: 'swam', v2Pron: 'суэм', v2ru: 'плавал',
+        v3: 'swum', v3Pron: 'суам', v3ru: 'проплытый',
+        ru: 'плавать'
+      },
+      {
+        v1: 'take', v1Pron: 'тэйк', v1ru: 'брать',
+        v2: 'took', v2Pron: 'тук', v2ru: 'брал',
+        v3: 'taken', v3Pron: 'тэйкн', v3ru: 'взятый',
+        ru: 'брать'
+      },
+      {
+        v1: 'teach', v1Pron: 'тич', v1ru: 'преподавать',
+        v2: 'taught', v2Pron: 'тот', v2ru: 'обучил',
+        v3: 'taught', v3Pron: 'тот', v3ru: 'обученный',
+        ru: 'обучать, преподавать'
+      },
+      {
+        v1: 'tell', v1Pron: 'тэл', v1ru: 'рассказывать',
+        v2: 'told', v2Pron: 'тоулд', v2ru: 'рассказал',
+        v3: 'told', v3Pron: 'тоулд', v3ru: 'рассказанный',
+        ru: 'говорить, рассказывать'
+      },
+      {
+        v1: 'think', v1Pron: 'th ынк', v1ru: 'думать',
+        v2: 'thought', v2Pron: 'th от', v2ru: 'думал',
+        v3: 'thought', v3Pron: 'th от', v3ru: 'обдуманный',
+        ru: 'думать'
+      },
+      {
+        v1: 'throw', v1Pron: 'th роу', v1ru: 'бросать',
+        v2: 'threw', v2Pron: 'th ру', v2ru: 'бросил',
+        v3: 'thrown', v3Pron: 'th роун', v3ru: 'брошенный',
+        ru: 'бросать, швырять'
+      },
+      {
+        v1: 'understand', v1Pron: 'андэ стэнд', v1ru: 'понимать',
+        v2: 'understood', v2Pron: 'андэ студ', v2ru: 'понял',
+        v3: 'understood', v3Pron: 'андэ студ', v3ru: 'понятый',
+        ru: 'понимать'
+      },
+      {
+        v1: 'wake up', v1Pron: 'уэйк ап', v1ru: 'будить',
+        v2: 'woke up', v2Pron: 'уоук ап', v2ru: 'разбудил',
+        v3: 'woken up', v3Pron: 'уоукн ап', v3ru: 'разбуженный',
+        ru: 'просыпаться, будить'
+      },
+      {
+        v1: 'wear', v1Pron: 'уэар', v1ru: 'надевать',
+        v2: 'wore', v2Pron: 'уо', v2ru: 'надел',
+        v3: 'worn', v3Pron: 'уорн', v3ru: 'надетый',
+        ru: 'надевать, носить'
+      },
+      {
+        v1: 'win', v1Pron: 'уин', v1ru: 'выигрывать',
+        v2: 'won', v2Pron: 'уан', v2ru: 'выиграл',
+        v3: 'won', v3Pron: 'уан', v3ru: 'выигранный',
+        ru: 'выигрывать, побеждать'
+      },
+      {
+        v1: 'write', v1Pron: 'райт', v1ru: 'писать',
+        v2: 'wrote', v2Pron: 'роут', v2ru: 'написал',
+        v3: 'written', v3Pron: 'ритэн', v3ru: 'написанный',
+        ru: 'писать'
+      },
+      {
+        v1: 'hide', v1Pron: 'хайд', v1ru: 'прятать',
+        v2: 'hid', v2Pron: 'хид', v2ru: 'прятал',
+        v3: 'hidden', v3Pron: 'хидн', v3ru: 'спрятанный',
+        ru: 'прятать'
+      }
+    ]
+  },
   slotMachineIrregularVerbsAllC2: {
     verbsData: [
       {

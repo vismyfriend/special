@@ -671,6 +671,15 @@ export const allGamesAndSetsOfWordsList =
           active: true,
           gameIcon:'📁',
         },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/slotMachineIrregularVerbsB1/slotMachine",
+          missionVisibleName: "Lucky Irregular Verbs",
+          missionDescription: "Неправильные глаголы B1 ",
+          id: 1001,
+          active: true,
+          gameIcon:'📁',
+        },
       ]
     },
     // колода карт
