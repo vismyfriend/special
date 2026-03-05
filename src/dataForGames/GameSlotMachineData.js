@@ -2098,26 +2098,4 @@ export const gameSlotMachineData = {
       }
     ]
     },
-  slotMachineWordOrderTest: {
-    verbsData: [
-      {
-        v1: 'I', v1Pron: 'ай', v1ru: 'Я',
-        v2: 'am', v2Pron: 'эм', v2ru: '-',
-        v3: 'special', v3Pron: 'спэшл', v3ru: 'особенный',
-        ru: 'я особенный'
-      },
-      {
-        v1: 'arise', v1Pron: 'эрайз', v1ru: 'возникать',
-        v2: 'arose', v2Pron: 'эроуз', v2ru: 'возникал',
-        v3: 'arisen', v3Pron: 'эризэн', v3ru: 'возникший',
-        ru: 'возникать'
-      },
-      {
-        v1: 'awake', v1Pron: 'эуэйк', v1ru: 'просыпаться',
-        v2: 'awoke', v2Pron: 'эуоук', v2ru: 'просыпался',
-        v3: 'awoken', v3Pron: 'эуоукэн', v3ru: 'проснувшийся',
-        ru: 'просыпаться'
-      },
-    ]
-    },
   };

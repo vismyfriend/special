@@ -282,8 +282,8 @@ export const allGamesAndSetsOfWordsList =
     // начать с самого начала
     {
       type: "subTasks",
-      missionVisibleName: "Миссия 3",
-      missionDescription: "Начать с самого начала",
+      missionVisibleName: "Начать с самого начала",
+      missionDescription: "Start from the beginning",
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
