@@ -3,10 +3,14 @@
 const shortWordsData = {
 
   testQuicklyData: [
-    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/" },
-    { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
-    { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
-    { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
+    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/",
+      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href},
+    { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+
+    },
+    { id: 3, eng: "capital", ru: "Столица", hint: "/ кЭпитал /" },
+    { id: 4, eng: "Special agent", ru: "Особенный", hint: "/ спЭшл /" },
   ],
 
   ArticlesAll: [

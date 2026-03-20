@@ -433,6 +433,14 @@ export const allGamesAndSetsOfWordsList =
           id: 1001,
           active: true,
         },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/testQuicklyData/spell-it",
+          missionVisibleName: "new spelling game",
+          missionDescription: "20 марта",
+          id: 1001,
+          active: true,
+        },
       ]
     },
 

@@ -75,6 +75,10 @@ const routes = [
                 component: () => import('src/components/GameFindPairsWires.vue')
               },
               {
+                path: 'spell-it',
+                component: () => import('src/components/GameSpellingAgent.vue')
+              },
+              {
                 path: 'millionaire',
                 component: () => import('src/components/GameMillionaire.vue')
               },
