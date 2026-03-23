@@ -11,12 +11,15 @@ const shortWordsData = {
 
   dev: [
     { id: 1, eng: "Cucumber", ru: "Огурец", hint: "/кьЮ кам бэр/",
-      audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href},
+      audio: new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href},
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/",
       pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
 
     },
-    { id: 3, eng: "capital", ru: "Столица", hint: "/ кЭпитал /" },
+    { id: 3, eng: "capital", ru: "Столица", hint: "/ кЭпитал /",
+      audio: new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
     { id: 4, eng: "Special agent", ru: "Особенный", hint: "/ спЭшл /" },
   ],
 

@@ -206,6 +206,13 @@ const AllGames = ref([
     cardIcon: '💰', // Добавлена иконка
     active: true
   },
+  {
+    id: 1006,
+    name: "spelling new",
+    path: "spell-it",
+    gameData: shortWordsData,
+    active: true
+  },
 
   // {
   //   id: 90,
