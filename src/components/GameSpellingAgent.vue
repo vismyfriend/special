@@ -52,7 +52,8 @@
       </div>
 
       <!-- Буквы для выбора -->
-      <div class="letters-grid" v-if="difficultyLevel !== 3 || !showFeedback">
+<!--      <div class="letters-grid" v-if="difficultyLevel !== 3 || !showFeedback">-->
+      <div class="letters-grid">
         <div
           v-for="(letter, index) in availableLetters"
           :key="index"
@@ -73,11 +74,11 @@
         </select>
 
         <button class="reset-button" @click="resetCurrentWord">
-          ↻ Сбросить слово
+          Reset сбросить
         </button>
 
         <button v-if="difficultyLevel === 3" class="check-button" @click="checkWord">
-          ✓ Проверить
+          ✓ check Проверить
         </button>
       </div>
     </div>
@@ -334,6 +335,10 @@ const selectLetter = (itemObj) => {
     filledSlots.value[firstEmptyIndex] = itemObj.value;
     itemObj.used = true;
     if (filledSlots.value.every(slot => slot !== null)) {
+      // Воспроизводим аудио если есть
+      if (currentWord.value?.audio) {
+        playAudio();
+      }
       setTimeout(() => {
         currentWordIndex.value++;
         loadWord();
@@ -373,6 +378,10 @@ const checkWord = () => {
   showFeedback.value = true;
 
   if (allCorrect) {
+    // Воспроизводим аудио если есть
+    if (currentWord.value?.audio) {
+      playAudio();
+    }
     // Если всё правильно, переходим к следующему слову
     setTimeout(() => {
       showFeedback.value = false;
@@ -380,6 +389,10 @@ const checkWord = () => {
       loadWord();
     }, 2000);
   } else {
+    // Воспроизводим аудио если есть
+    if (currentWord.value?.audio) {
+      playAudio();
+    }
     // Если есть ошибки, увеличиваем счетчик и показываем подсветку
     mistakesCount.value++;
     setTimeout(() => {
@@ -486,7 +499,7 @@ onBeforeUnmount(() => {
   border-radius: 40px;
   border: 2px solid #4a90e2;
   background: white;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -496,12 +509,13 @@ onBeforeUnmount(() => {
 
 .check-button {
   padding: 12px 24px;
+  width: 130px;
   background: #3ec46d;
   color: white;
   border: none;
   border-radius: 40px;
   font-size: 16px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -610,7 +624,7 @@ onBeforeUnmount(() => {
   padding: 10px 24px;
   font-size: 16px;
   border-radius: 40px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -621,10 +635,11 @@ onBeforeUnmount(() => {
 
 .translation {
   text-align: center;
+  line-height: 25px;
   font-size: 32px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   padding: 2px;
   background: #f5f5f5;
   border-radius: 16px;
@@ -654,6 +669,7 @@ onBeforeUnmount(() => {
   background: #f0f4fa;
   border-radius: 20px;
   display: inline-block;
+  display: none;
   width: auto;
   margin-left: auto;
   margin-right: auto;
@@ -699,7 +715,7 @@ onBeforeUnmount(() => {
 .letters-grid {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 1px;
   flex-wrap: wrap;
   margin-bottom: 2px;
 }
@@ -715,7 +731,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.2s ease;
 
   &:hover:not(.letter-disabled) {
@@ -739,15 +755,14 @@ onBeforeUnmount(() => {
 
 .reset-button {
   display: block;
-  width: 200px;
-  margin: 2px auto 0;
+  width: 150px;
   padding: 12px 24px;
   background: #ff9800;
   color: white;
   border: none;
   border-radius: 40px;
   font-size: 16px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -783,7 +798,7 @@ onBeforeUnmount(() => {
   border: none;
   border-radius: 40px;
   font-size: 18px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
 
   &:hover {

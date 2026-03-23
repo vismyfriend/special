@@ -3,7 +3,14 @@
 const shortWordsData = {
 
   testQuicklyData: [
-    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/",
+    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/"},
+    { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/"},
+    { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
+    { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
+  ],
+
+  dev: [
+    { id: 1, eng: "Cucumber", ru: "Огурец", hint: "/кьЮ кам бэр/",
       audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href},
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/",
       pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
@@ -13,6 +20,62 @@ const shortWordsData = {
     { id: 4, eng: "Special agent", ru: "Особенный", hint: "/ спЭшл /" },
   ],
 
+  toughThWords: [
+    {
+      id: 1,
+      eng: "thought",
+      ru: "мысль",
+      hint: "/θɔːt/",
+      example: "I had a strange thought.",
+      exampleRu: "У меня была странная мысль",
+      audio: new URL('../assets/audio/thought.mp3', import.meta.url).href
+    },
+    {
+      id: 2,
+      eng: "tough",
+      ru: "жёсткий, трудный",
+      hint: "/tʌf/",
+      example: "This exam is really tough.",
+      exampleRu: "Этот экзамен очень сложный",
+      audio: new URL('../assets/audio/tough.mp3', import.meta.url).href
+    },
+    {
+      id: 3,
+      eng: "through",
+      ru: "через, сквозь",
+      hint: "/θruː/",
+      example: "We walked through the park.",
+      exampleRu: "Мы прошли через парк",
+      audio: new URL('../assets/audio/through.mp3', import.meta.url).href
+    },
+    {
+      id: 4,
+      eng: "although",
+      ru: "хотя",
+      hint: "/ɔːlˈðəʊ/",
+      example: "Although it was raining, we went out.",
+      exampleRu: "Хотя шёл дождь, мы вышли",
+      audio: new URL('../assets/audio/although.mp3', import.meta.url).href
+    },
+    {
+      id: 5,
+      eng: "though",
+      ru: "хотя (сокращённо)",
+      hint: "/ðəʊ/",
+      example: "I liked the movie. It was long, though.",
+      exampleRu: "Мне понравился фильм. Хотя он был длинный",
+      audio: new URL('../assets/audio/though.mp3', import.meta.url).href
+    },
+    {
+      id: 6,
+      eng: "taught",
+      ru: "обучил кого-то чему-то",
+      hint: "/tɔːt/",
+      example: "Vincent taught me this.",
+      exampleRu: "Винсент научил меня этому",
+      audio: new URL('../assets/audio/taught.mp3', import.meta.url).href
+    }
+  ],
   ArticlesAll: [
     // ========== С АРТИКЛЕМ A ==========
     { id: 1, eng: "a driver", ru: "водитель", hint: "/ э драйвэр /" },
