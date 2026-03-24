@@ -402,7 +402,7 @@ onMounted(() => {
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  padding: 15px;
+  padding: 10px;
 }
 
 .notebook-page {
@@ -519,18 +519,21 @@ onMounted(() => {
 }
 
 .hint {
-  //color: #7f8c8d;
+  color: #3174b4;
   font-style: italic;
   line-height: 20px;
   font-family: 'Arial', serif;
+  font-weight: bold;
 
 }
 
 .translation {
-  color: rgba(127, 140, 141, 0.86);
+  color: rgba(127, 140, 141, 0.75);
   //flex: 1;  /* ← ЭТО заставляет перевод занимать всё оставшееся пространство */
   line-height: 20px;
 }
+
+
 
 /* Контролы печати */
 .print-controls {
@@ -546,7 +549,7 @@ onMounted(() => {
   color: white;
   font-size: 16px;
   padding: 12px 24px;
-  cursor: pointer;
+  cursor: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-family: 'Times New Roman', serif;
@@ -590,6 +593,7 @@ onMounted(() => {
   background-size: 6px 20px;
   background-repeat: repeat-y;
   z-index: 2;
+  display: none;
 }
 
 /* Стили для печати */
@@ -721,11 +725,12 @@ onMounted(() => {
   gap: 8px;
   min-height: 20px;
   line-height: 20px;
+  justify-content: space-between;
 }
 
 .hint-icon {
   color: #1e5799;
-  cursor: pointer;
+  cursor: none;
   font-size: 12px;
   opacity: 0.7;
   transition: all 0.3s ease;
@@ -744,6 +749,7 @@ onMounted(() => {
 .hint-text {
   font-style: italic;
   font-family: 'Arial', serif;
+
 }
 
 @keyframes fadeIn {
@@ -775,8 +781,10 @@ onMounted(() => {
 
 .word-to-translate {
   font-weight: bold;
-  color: #ff0000;
+  color: #3b8a2a;
   font-size: 18px;
+  text-align: left; // ← добавить для явного выравнивания
+  flex: 1; // ← это заставит слово занимать всё свободное место
 }
 
 .translation-input {
@@ -839,7 +847,7 @@ onMounted(() => {
   color: white;
   font-size: 14px;
   padding: 12px 24px;
-  cursor: pointer;
+  cursor: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-family: 'Times New Roman', serif;
@@ -930,7 +938,8 @@ onMounted(() => {
 
 .translation-cell {
   grid-column: 2;
-  color: #ff001e;
+  color: rgb(152, 149, 149);
+  font-size: 14px;
 }
 
 .pronunciation-cell {
@@ -963,7 +972,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
+  cursor: none;
   user-select: none;
   position: relative;
 }
@@ -1025,6 +1034,8 @@ onMounted(() => {
   font-size: 14px;
   line-height: 20px;
 }
+
+
 
 /* Адаптивность */
 @media (max-width: 768px) {

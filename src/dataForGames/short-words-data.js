@@ -1689,16 +1689,16 @@ whatISitVideoMission: [
   ],
 
   freeIntroLesson0: [
-    { id: 1, eng: "memory", ru: "память, воспоминание", hint: "/ мЭмори /" },
+    { id: 1, eng: "Memory", ru: "память, воспоминание", hint: "/ мЭмори /" },
     { id: 2, eng: "I remember", ru: "Я помню", hint: "/ ай ри мЭм бэ /" },
     { id: 3, eng: "I don't remember", ru: "Я не помню", hint: "/ ай донт ри мЭм бэ /" },
-    { id: 4, eng: "phrase", ru: "фраза, выражение", hint: "/ фрЭЙз /" },
-    { id: 5, eng: "special", ru: "особенный, специальный", hint: "/ спЭшл /" },
-    { id: 6, eng: "agent", ru: "агент", hint: "/ Эй джент /" },
-    { id: 7, eng: "by the way", ru: "кстати", hint: "/ бай дэ уэй /" },
-    { id: 8, eng: "can you hear me?", ru: "меня слышно?", hint: "/ кЭн Ю хИЭ ми /" },
+    { id: 4, eng: "Phrase", ru: "фраза, выражение", hint: "/ фрЭЙз /" },
+    { id: 5, eng: "Special", ru: "особенный", hint: "/ спЭшл /" },
+    { id: 6, eng: "Agent", ru: "агент", hint: "/ Эй джент /" },
+    { id: 7, eng: "By the way", ru: "кстати", hint: "/ бай дэ уэй /" },
+    { id: 8, eng: "Can you hear me?", ru: "меня слышно?", hint: "/ кЭн Ю хИЭ ми /" },
     { id: 9, eng: "I can't recall", ru: "Я не могу вспомнить", hint: "/ ай кЭнт рикОл /" },
-    { id: 10, eng: "remind me please", ru: "Напомните мне пожалуйста", hint: "/  римАйнд ми плиз /" },
+    { id: 10, eng: "Remind me plz.", ru: "Напомните мне пжлст.", hint: "/  римАйнд ми плиз /" },
 
   ],
     devmode1: [
