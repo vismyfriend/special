@@ -722,16 +722,21 @@ const focusSearch = () => {
 
 
 // ==================== УРОВНИ (LVL) ====================
-const currentLevel = ref('lvl1');
+const currentLevel = ref('lvlAll');
 
 const levels = [
+  { id: 'lvlAll', label: 'все' },
+
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
   { id: 'lvl3', label: '3' },
-  { id: 'lvl4', label: '4' },
+  { id: 'lvl4', label: '🔓' },
   { id: 'lvl5', label: '5' },
+
   // { id: 'lvl6', label: '6' },
   // { id: 'lvl7', label: '7' }
+
+
 ];
 
 const setLevel = (levelId) => {
@@ -742,7 +747,7 @@ const setLevel = (levelId) => {
 // Проверка, соответствует ли элемент выбранному уровню
 const matchesLevel = (item) => {
   if (!item.lvl) {
-    return currentLevel.value === 'lvl1';
+    return currentLevel.value === 'lvlAll';
   }
 
   if (Array.isArray(item.lvl)) {

@@ -5,6 +5,7 @@ export const allGamesAndSetsOfWordsList =
     //первая страница первый раздел
     {
       type: "subTasks",
+      lvl: ["lvl1"],
       missionVisibleName: "Определить свой уровень :",
       missionDescription: "мой уровень :",
       id: "subtasks-newSub",
@@ -175,7 +176,7 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/freeIntroLesson0/find-pairs-easy",
-      missionVisibleName: "Миссия 1 обезвредить бомбу",
+      missionVisibleName: "Миссия 1.1 Обезвредить бомбу",
       missionDescription: "Первое занятие",
       id: 1001,
       active: true,
@@ -183,8 +184,16 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/freeIntroLesson0/print-all-words",
-      missionVisibleName: "Фразы с первого занятия",
-      missionDescription: "Первое занятие",
+      missionVisibleName: "Миссия 1.2 Список фраз",
+      missionDescription: "Первое занятие - фразы",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/spell-it",
+      missionVisibleName: "Миссия 1.3 Пишы правельна",
+      missionDescription: "Напиши правильно",
       id: 1001,
       active: true,
     },
@@ -263,11 +272,28 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/emoji/find-pairs-hard",
-      missionVisibleName: "Миссия 2 соединить пары",
-      missionDescription: "Mission 2 connect pairs",
+      missionVisibleName: "Миссия 2.0 Соедини пары",
+      missionDescription: "Мишн ту - конЭкт пЭарз",
       id: 1001,
       active: true,
     },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
+      missionVisibleName: "Мишшн 2.1 Спик Инглиш",
+      missionDescription: "Mission 2.1 speak English",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/introMillionaire22/millionaire",
+      missionVisibleName: "Мишшн 2.2 ту поинт ту",
+      missionDescription: "Mission 2.1 speak English",
+      id: 1001,
+      active: true,
+    },
+
     {
       missionVisibleName: "Разминка",
       missionDescription: "Warm up",

@@ -22,9 +22,10 @@
 
         <div class="simple-buttons">
           <button class="simple-btn details-btn" @click="showDetailed = true">
-            ☝ произнёс вслух? -yes?<br> доволен результатом?
+            ☝ произнёс вслух? -yes?<br> доволен результатом? <br> нажми 🌎 поделиться со всем миром или кнопку ниже
           </button>
           <button class="simple-btn try-again" @click="tryAgain">ещё разок !</button>
+          <button class="simple-btn allMissions" @click="toAllMissions">другие миссии</button>
 <!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
 <!--          <button class="simple-btn next-mission" @click="seeAllWordsInSet">Увидеть все слова</button>-->
 
@@ -341,6 +342,7 @@ const seeAllWordsInSet = () => {
 };
 
 const tryAgain = () => router.go(-1);
+const toAllMissions = () =>     router.push("/see-all-sets-of-words/");
 const toggleExpand = () => isExpanded.value = !isExpanded.value;
 const handleChangeName = () => router.push("/registration");
 
@@ -559,7 +561,7 @@ onMounted(async () => {
   }
 }
 
-.try-again {
+.try-again, .allMissions {
   background: linear-gradient(145deg, #FFC107, #FF9800);
   color: white;
   font-family: Special_f1;

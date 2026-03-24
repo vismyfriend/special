@@ -1,7 +1,42 @@
 <template>
   <div class="drag-game">
     <div class="game-header">
-      <h2>🧩 Перетяни правильный слова порядок в</h2>
+      <h2>🧩 Перетяни слова в правильный порядок 🧩</h2>
+    </div>
+
+
+
+    <!-- Обновленный блок с переводом/произнесением/картинкой/аудио -->
+    <div class="translation-container" v-if="shouldShowTranslation">
+      <!-- Картинка если есть -->
+      <div v-if="currentPicture" class="picture-container">
+        <img :src="currentPicture" alt="illustration" class="sentence-picture" />
+      </div>
+      <!-- Аудио кнопка -->
+      <div v-if="currentAudio" class="audio-control">
+        <button @click="playAudio(false)" class="audio-button" :class="{ 'playing': isPlaying }">
+          <span class="audio-icon">{{ isPlaying ? '🔊' : '🔈' }}</span>
+          <span>{{ isPlaying ? 'Играет...' : 'Прослушать' }}</span>
+        </button>
+      </div>
+      <div class="translation-content">
+        <div class="translation-text" :class="{ 'speak-prompt': isSpeakPrompt }">
+          {{ displayTranslation }}
+        </div>
+
+        <!-- Произношение (транскрипция) -->
+        <div v-if="currentHint"
+             class="pronunciation-hint"
+             :class="{ 'blurred': isHintBlurred }"
+             @click="handleHintClick"
+
+        >
+          <span class="hint-icon"></span>
+          <span class="hint-text">{{ currentHint }}</span>
+        </div>
+
+
+      </div>
     </div>
 
     <div ref="container" class="sentence-container">
@@ -25,13 +60,6 @@
       </div>
     </div>
 
-    <!-- Обновленный блок с переводом/произнесением -->
-    <div class="translation-container" v-if="shouldShowTranslation">
-      <div class="translation-text" :class="{ 'speak-prompt': isSpeakPrompt }">
-        {{ displayTranslation }}
-      </div>
-    </div>
-
     <div class="game-controls">
       <div class="progress-info">
         {{ completedSentences.size }} / {{ currentGameData.length }}
@@ -41,8 +69,42 @@
       </button>
     </div>
   </div>
-</template>
 
+  <!-- Модальное окно завершения игры -->
+  <div v-if="isGameFinished" class="game-overlay">
+    <div class="game-over-modal">
+      <div class="modal-header">
+        <h2 class="special-font">🎉 Поздравляю! 🎉</h2>
+      </div>
+
+      <div class="modal-body">
+        <div class="result-stats">
+          <div class="stat-item">
+            <span class="stat-label">Время:</span>
+            <span class="stat-value">{{ formatTime(finalTime) }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Предложений:</span>
+            <span class="stat-value">{{ completedSentences.size }} / {{ currentGameData.length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-btn improve-btn" @click="improveResult">
+          📈 Улучшить результат
+        </button>
+        <button class="modal-btn backend-btn" @click="shareResults">
+          🌎 Поделиться с миром
+        </button>
+        <button class="modal-btn finish-btn" @click="goToAllSets">
+          🏁 К другим миссиям
+        </button>
+      </div>
+    </div>
+  </div>
+
+</template>
 <script>
 import Sortable from 'sortablejs'
 import { useRoute, useRouter } from 'vue-router'
@@ -80,7 +142,16 @@ export default {
       startTime: null,
       mistakes: 0,
       currentTranslation: '',
-      totalAttempts: 0
+      currentHint: '',        // ← добавляем для произношения
+      currentAudio: '',       // ← добавляем для аудио
+      currentPicture: '',     // ← добавляем для картинки
+      totalAttempts: 0,
+      isPlaying: false,       // ← состояние воспроизведения
+      isHintBlurred: true,
+      isGameFinished: false,      // флаг завершения игры
+      currentAudioObj: null,   // ← для управления аудио
+      timerInterval: null,    // для таймера
+      time: 0,                // текущее время игры
     }
   },
 
@@ -125,8 +196,26 @@ export default {
     isSpeakPrompt() {
       return this.isCurrentSentenceCompleted || !this.currentTranslation
     },
+    finalTime() {
+      return this.time
+    }
   },
 
+  watch: {
+    isCurrentSentenceCompleted(newVal) {
+      // Когда предложение правильно собрано (все слова на своих местах)
+      if (newVal) {
+        // Разблюриваем произношение
+        if (this.isHintBlurred) {
+          this.isHintBlurred = false
+        }
+        // Если есть аудио, воспроизводим его
+        if (this.currentAudio) {
+          this.playAudio(false) // false = не автовоспроизведение, но снимем blur (уже сняли)
+        }
+      }
+    }
+  },
   mounted() {
     this.initializeGame()
   },
@@ -134,7 +223,19 @@ export default {
   methods: {
     initializeGame() {
       const missionName = this.route.params.missionName
-      this.currentGameData = shortSentencesWordOrderData[missionName] || []
+      const allData = shortSentencesWordOrderData[missionName] || []
+
+      // 🆕 Берем только 10 случайных предложений
+      const shuffledAll = this.shuffleArray([...allData])
+      this.currentGameData = shuffledAll.slice(0, 10)
+
+      // Проверяем, что у нас есть хотя бы 10 предложений
+      if (this.currentGameData.length === 0) {
+        console.error('Нет данных для миссии:', missionName)
+        return
+      }
+
+      console.log(`📚 Загружено ${this.currentGameData.length} предложений из ${allData.length}`)
 
       // Сохраняем полные объекты с переводами
       this.sentences = this.currentGameData
@@ -150,7 +251,8 @@ export default {
       this.startTime = Date.now()
       this.mistakes = 0
       this.totalAttempts = 0
-
+      // Запускаем таймер
+      this.startTimer()
       this.loadSentence()
     },
 
@@ -185,7 +287,6 @@ export default {
         return
       }
 
-      // Получаем полный объект предложения
       const sentenceObj = this.shuffledSentences[sentenceIndex]
 
       if (!sentenceObj || !sentenceObj.eng) {
@@ -196,8 +297,22 @@ export default {
 
       const text = sentenceObj.eng.trim()
 
-      // Устанавливаем перевод текущего предложения
+      // Загружаем данные
       this.currentTranslation = sentenceObj.ru || ''
+      this.currentHint = sentenceObj.hint || ''
+      this.currentAudio = sentenceObj.audio || ''
+      this.currentPicture = sentenceObj.pic || ''
+
+      // 🆕 Логика blur:
+      // 1. Если нет произношения (hint) → не показываем блок вообще (и так работает через v-if)
+      // 2. Если это первое предложение (индекс 0) → показываем без blur
+      // 3. Иначе → показываем с blur
+      const isFirstSentence = (this.gamePhase === 'first-round' && this.currentSentenceIndex === 0)
+      if (isFirstSentence) {
+        this.isHintBlurred = false
+      } else {
+        this.isHintBlurred = true
+      }
 
       const words = this.splitSentence(text)
 
@@ -288,6 +403,52 @@ export default {
 
       return 'correct'
     },
+    handleHintClick() {
+      // При клике на заблюренный текст
+      if (this.isHintBlurred) {
+        // Если есть аудио - проигрываем и снимаем blur после прослушивания
+        if (this.currentAudio) {
+          this.playAudio(false) // снимем blur после прослушивания
+        } else {
+          // Если аудио нет - просто снимаем blur сразу
+          this.isHintBlurred = false
+        }
+      }
+    },
+    // 🆕 Функция для воспроизведения аудио
+    playAudio(isAutoPlay = false) {
+      if (!this.currentAudio) return
+
+      if (this.currentAudioObj) {
+        this.currentAudioObj.pause()
+        this.currentAudioObj.currentTime = 0
+      }
+
+      this.currentAudioObj = new Audio(this.currentAudio)
+      this.isPlaying = true
+
+      this.currentAudioObj.play().catch(err => {
+        console.error('Ошибка воспроизведения аудио:', err)
+        this.isPlaying = false
+      })
+
+      this.currentAudioObj.onended = () => {
+        this.isPlaying = false
+        this.currentAudioObj = null
+
+        // 🆕 Снимаем blur ТОЛЬКО если это НЕ автовоспроизведение
+        // И если blur еще не снят (например, при правильном составлении мы уже сняли)
+        if (!isAutoPlay && this.isHintBlurred) {
+          this.isHintBlurred = false
+        }
+      }
+
+      this.currentAudioObj.onerror = () => {
+        console.error('Ошибка загрузки аудио')
+        this.isPlaying = false
+        this.currentAudioObj = null
+      }
+    },
 
     handleControlButton() {
       if (this.gamePhase === 'completed') {
@@ -334,6 +495,14 @@ export default {
       }
 
       this.loadSentence()
+
+      // 🆕 Автоматически воспроизводим аудио при загрузке нового предложения
+      // Передаем true (автовоспроизведение), чтобы НЕ снимать blur
+      setTimeout(() => {
+        if (this.currentAudio) {
+          this.playAudio(true)
+        }
+      }, 100)
     },
 
     prepareRemainingSentences() {
@@ -346,7 +515,7 @@ export default {
 
       if (this.remainingSentences.length === 0) {
         this.gamePhase = 'completed'
-        this.finishGame()
+        this.finishGame()  // ← уже есть
       } else {
         this.gamePhase = 'remaining'
         this.currentSentenceIndex = 0
@@ -355,25 +524,75 @@ export default {
     },
 
     finishGame() {
-      const duration = Date.now() - this.startTime
+      this.isGameFinished = true
 
-      const gameResults = {
-        missionName: this.route.params.missionName,
-        gameType: 'SentenceOrder',
-        completionTime: duration,
-        mistakes: this.mistakes,
-        totalSentences: this.currentGameData.length,
-        completedSentences: this.completedSentences.size,
-        totalAttempts: this.totalAttempts,
-        accuracy: Math.round((this.completedSentences.size / this.currentGameData.length) * 100),
-        timestamp: new Date().toISOString()
+      // Останавливаем таймер если он есть
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval)
+        this.timerInterval = null
       }
 
-      this.gameStore.setLastGameResults(duration, this.mistakes)
+      // Сохраняем в store для лидерборда
+      this.gameStore.setLastGameResults(this.time, this.mistakes)
       this.gameStore.setGameName("SentenceOrder")
       this.gameStore.setWordSet(this.route.params.missionName)
 
-      console.log('🎉 Игра завершена! Результаты:', gameResults)
+      console.log('🎉 Игра завершена!', {
+        time: this.time,
+        mistakes: this.mistakes,
+        completed: this.completedSentences.size
+      })
+    },
+    uuid() {
+      return Math.random().toString(36).substring(2, 10) + Date.now().toString(36)
+    },
+
+
+    formatTime(ms) {
+      if (typeof ms !== 'number' || isNaN(ms)) return '0 sec'
+      const minutes = Math.floor(ms / 60000)
+      const seconds = Math.floor((ms % 60000) / 1000)
+      const getMinuteText = (num) => num === 1 ? 'minute' : 'minutes'
+      const getSecondText = (num) => num === 1 ? 'second' : 'seconds'
+
+      if (minutes === 0) return `${seconds} ${getSecondText(seconds)} only!`
+      if (seconds === 0) return `${minutes} ${getMinuteText(minutes)} sharp!`
+      return `${minutes} ${getMinuteText(minutes)} ${seconds} ${getSecondText(seconds)}`
+    },
+
+    improveResult() {
+      // Перезапускаем игру на том же уровне
+      this.isGameFinished = false
+      this.mistakes = 0
+      this.time = 0
+      this.completedSentences.clear()
+      this.currentSentenceIndex = 0
+      this.gamePhase = 'first-round'
+
+      // 🆕 Заново выбираем 10 случайных предложений
+      const missionName = this.route.params.missionName
+      const allData = shortSentencesWordOrderData[missionName] || []
+      const shuffledAll = this.shuffleArray([...allData])
+      this.currentGameData = shuffledAll.slice(0, 10)
+      this.sentences = this.currentGameData
+
+      // Запускаем таймер заново
+      if (this.timerInterval) clearInterval(this.timerInterval)
+      this.startTimer()
+
+      // Перемешиваем предложения заново
+      this.shuffledSentences = this.shuffleArray([...this.sentences])
+      this.remainingSentences = [...this.shuffledSentences.keys()]
+      this.completedSentences = new Set()
+
+      this.loadSentence()
+    },
+
+    shareResults() {
+      // Отправляем результаты на бэкенд и переходим в лидерборд
+      this.gameStore.setLastGameResults(this.time, this.mistakes)
+      this.gameStore.setGameName("SentenceOrder")
+      this.gameStore.setWordSet(this.route.params.missionName)
 
       this.router.push({
         path: "/leader-board/",
@@ -383,13 +602,22 @@ export default {
       })
     },
 
-    uuid() {
-      return Math.random().toString(36).substring(2, 10) + Date.now().toString(36)
+    goToAllSets() {
+      this.router.push("/see-all-sets-of-words/")
+    },
+
+    startTimer() {
+      this.timerInterval = setInterval(() => {
+        this.time += 10
+      }, 10)
     }
+
+
   },
 
-  beforeUnmount() {
+  onBeforeUnmount() {
     if (this.sortable) this.sortable.destroy()
+    if (this.timerInterval) clearInterval(this.timerInterval)
   }
 }
 </script>
@@ -399,7 +627,7 @@ export default {
 .drag-game {
   max-width: 800px;
   margin: 30px auto;
-  padding: 30px;
+  padding: 5px;
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
@@ -410,19 +638,20 @@ export default {
 
 .game-header {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 15px;
 }
 
 .game-header h2 {
-  font-size: 2.2rem;
+  font-size: 1.1rem;
   margin-bottom: 10px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   font-weight: 700;
+
 }
 
 .progress-info {
   background: rgba(255, 255, 255, 0.15);
-  padding: 20px 5px;
+  padding: 10px 5px;
   margin-right: 5px;
   border-radius: 10px;
   font-weight: 600;
@@ -436,12 +665,12 @@ export default {
 .sentence-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   justify-content: center;
   align-items: center;
   align-content: center;
   margin: 5px 0;
-  padding: 5px;
+  padding: 2px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 18px;
@@ -567,11 +796,11 @@ export default {
 }
 
 .control-button {
-  padding: 14px 30px;
+  padding: 7px 30px;
   border: none;
   border-radius: 12px;
   font-size: 15px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.25s ease;
   min-width: 220px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
@@ -618,8 +847,22 @@ export default {
   animation: fadeIn 0.5s ease-in;
   margin: 10px 0;
 }
+.hint-text {
+  font-size: 1.3rem;
+
+}
+
+.pronunciation-hint.blurred {
+  filter: blur(3px);
+  cursor: none;
+}
+
+.pronunciation-hint.blurred:hover {
+  filter: blur(2px);
+}
 
 .translation-text {
+  padding: 5px;
   font-size: 1.3rem;
   font-weight: 600;
   color: white;
@@ -628,6 +871,64 @@ export default {
   line-height: 20px;
 }
 
+.audio-control {
+  margin-top: 12px;
+}
+
+.audio-button {
+  background: linear-gradient(135deg, #ffd89b, #c7e9fb);
+  border: none;
+  border-radius: 30px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: none;
+  transition: all 0.3s ease;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.audio-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.audio-button.playing {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+  animation: pulse-audio 1s ease-in-out infinite;
+}
+
+.audio-icon {
+  font-size: 1.1rem;
+}
+
+@keyframes pulse-audio {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.picture-container {
+ display: flex;
+  justify-content: center;
+}
+
+.sentence-picture {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: white;
+  padding: 5px;
+}
 /* Анимация пульсации для всех сообщений в translation-text */
 .translation-text {
   animation: subtle-pulse 3s ease-in-out infinite;
@@ -660,5 +961,161 @@ export default {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Модальное окно завершения игры */
+.game-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.game-over-modal {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 32px;
+  padding: 30px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 215, 0, 0.3);
+  animation: slideUp 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 25px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
+  }
+}
+
+.modal-body {
+  margin-bottom: 30px;
+}
+
+.result-stats {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .stat-label {
+    color: #aaa;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    color: #ffd700;
+    font-weight: bold;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-btn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.improve-btn {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  }
+}
+
+.backend-btn {
+  background: linear-gradient(135deg, #c521f3, #1976d2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  }
+}
+
+.finish-btn {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  }
+}
+
+.special-font {
+  font-family: Special_f1;
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>

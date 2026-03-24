@@ -2126,6 +2126,59 @@ const MillionaireData = {
     }
   ],
 
+  introMillionaire22: [
+    {
+      text: "Как на английском произносится знак + ПЛЮС",
+      options: {
+        A: "plus + плУс",
+        B: "plus + плАс",
+        C: "plus + плЮс",
+        D: "plus + плУУУУУс"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Как на английском сказать число 22 ?",
+      options: {
+        A: "twenty two",
+        B: "twelfty two",
+        C: "twenteen two",
+        D: "dvasat dva"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как на английском сказать ТУПОЙ ?",
+      options: {
+        A: "Stupid - стьЮпид",
+        B: "Shy - шАй",
+        C: "Tired - тАйд",
+        D: "Cow - кАу",
+        E: "Funny - фАнни"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как правильно пишется имя вИнсэнт на английском?",
+      options: {
+        A: "Vinsent",
+        B: "Vincent",
+        C: "Vin 50 cent",
+        D: "Vinsant"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Что такое Notebook ?",
+      options: {
+        A: "компьютер переносной",
+        B: "записная книжка",
+        C: "я вообще ХЗ чё это",
+        D: "это ноутбук"
+      },
+      correctAnswer: "B",
+    },
+  ],
 
 
 

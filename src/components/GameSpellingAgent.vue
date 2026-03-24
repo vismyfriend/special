@@ -15,7 +15,7 @@
         <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">
           <option value="1">🌟 выбран лёгкий уровень</option>
           <option value="2">⭐⭐ Средний уровень </option>
-          <option value="3">⭐⭐⭐ Уровень профи ! </option>
+          <option value="3">⭐⭐⭐ Уровень HardCore ! </option>
         </select>
 
 
@@ -49,25 +49,27 @@
           v-for="(item, index) in wordStructure"
           :key="index"
           class="letter-slot"
-          :class="{
-      filled: filledSlots[index],
-      space: item.isSpace,
-      'correct-highlight': showFeedback && filledSlots[index] && isSlotCorrect(index),
-      'wrong-highlight': showFeedback && filledSlots[index] && !isSlotCorrect(index)
-    }"
+          :class="getSlotClass(index, item)"
           @click="removeLetterFromSlot(index)"
         >
           {{ filledSlots[index] || (item.isSpace ? ' ' : '') }}
         </div>
       </div>
       <!-- Подсказка (произношение) -->
+      <!-- Подсказка (произношение) -->
       <div class="hint-section" v-if="currentWord.hint">
-        <div class="pronunciation">{{ currentWord.hint }}</div>
+        <div
+          class="pronunciation"
+          :class="{ 'blurred': isHintBlurred }"
+          @click="handleHintClick"
+        >
+          {{ currentWord.hint }}
+        </div>
       </div>
 
 
       <!-- Буквы для выбора -->
-<!--      <div class="letters-grid" v-if="difficultyLevel !== 3 || !showFeedback">-->
+      <!--      <div class="letters-grid" v-if="difficultyLevel !== 3 || !showFeedback">-->
       <div class="letters-grid">
         <div
           v-for="(letter, index) in availableLetters"
@@ -82,11 +84,11 @@
 
       <!-- Панель управления -->
       <div class="control-panel">
-<!--        <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">-->
-<!--          <option value="1">🌟 Уровень 1 - Легкий </option>-->
-<!--          <option value="2">⭐⭐ Уровень 2 - Средний </option>-->
-<!--          <option value="3">⭐⭐⭐ Уровень 3 - Сложный </option>-->
-<!--        </select>-->
+        <!--        <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">-->
+        <!--          <option value="1">🌟 Уровень 1 - Легкий </option>-->
+        <!--          <option value="2">⭐⭐ Уровень 2 - Средний </option>-->
+        <!--          <option value="3">⭐⭐⭐ Уровень 3 - Сложный </option>-->
+        <!--        </select>-->
 
         <button v-if="difficultyLevel === 3" class="reset-button" @click="resetCurrentWord">
           Reset сбросить
@@ -139,9 +141,9 @@
           >
             ⬆️ Попробовать уровень сложнее
           </button>
-<!--          <button class="modal-btn finish-btn" @click="finishGame">-->
-<!--            🏁 Завершить-->
-<!--          </button>-->
+                    <button class="modal-btn backend-btn" @click="finishGame">
+                      🌎 Поделиться с миром
+                    </button>
           <button class="modal-btn finish-btn" @click="goToAllSets">
             🏁 К другим миссиям
           </button>
@@ -166,33 +168,27 @@ const difficultyLevel = ref(1);
 const showFeedback = ref(false);
 let feedbackTimeout = null;
 
-
+// Переменные для очереди слов на 3 уровне
+const wordsToRepeat = ref([]);
+const originalWordsList = ref([]);
+let isLoadingNext = false;
 
 // "Умное" перемешивание - гарантирует, что первая буква не будет первой буквой слова
 const smartShuffle = (array, firstLetter = null) => {
-  // Создаем копию массива
   const newArray = [...array];
-
-  // Перемешиваем массив
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
-
-  // Если передана первая буква и она есть в массиве
   if (firstLetter && newArray.includes(firstLetter)) {
-    // Проверяем, не стоит ли первая буква на первом месте
     if (newArray[0] === firstLetter) {
-      // Находим другую позицию для этой буквы
       const firstLetterIndex = newArray.indexOf(firstLetter);
-      // Меняем местами с какой-нибудь другой буквой (не первой)
       if (newArray.length > 1) {
-        const swapIndex = 1; // Меняем со второй позицией
+        const swapIndex = 1;
         [newArray[firstLetterIndex], newArray[swapIndex]] = [newArray[swapIndex], newArray[firstLetterIndex]];
       }
     }
   }
-
   return newArray;
 };
 
@@ -206,26 +202,22 @@ const symbolMapping = {
   '"': ['"', '“', '”'],
   '-': ['-', '–', '—']
 };
-// Mapping маппинг если забыли переключить раскладку и вводят на русском
+
+// Маппинг русских букв на английские
 const russianToEnglishMap = {
   'й': 'q', 'ц': 'w', 'у': 'e', 'к': 'r', 'е': 't', 'н': 'y', 'г': 'u', 'ш': 'i', 'щ': 'o', 'з': 'p',
   'ф': 'a', 'ы': 's', 'в': 'd', 'а': 'f', 'п': 'g', 'р': 'h', 'о': 'j', 'л': 'k', 'д': 'l',
   'я': 'z', 'ч': 'x', 'с': 'c', 'м': 'v', 'и': 'b', 'т': 'n', 'ь': 'm', 'б': ',', 'ю': '.', 'ё': '`',
-  // Заглавные буквы
   'Й': 'Q', 'Ц': 'W', 'У': 'E', 'К': 'R', 'Е': 'T', 'Н': 'Y', 'Г': 'U', 'Ш': 'I', 'Щ': 'O', 'З': 'P', 'Х': '[', 'Ъ': ']',
   'Ф': 'A', 'Ы': 'S', 'В': 'D', 'А': 'F', 'П': 'G', 'Р': 'H', 'О': 'J', 'Л': 'K', 'Д': 'L', 'Ж': ';', 'Э': "'",
   'Я': 'Z', 'Ч': 'X', 'С': 'C', 'М': 'V', 'И': 'B', 'Т': 'N', 'Ь': 'M', 'Б': ',', 'Ю': '.', 'Ё': '`'
 };
 
-// Функция для преобразования русских букв в английские
 const convertToEnglish = (char) => {
-  // Если буква русская, возвращаем английский аналог
-  if (russianToEnglishMap[char]) {
-    return russianToEnglishMap[char];
-  }
-  // Иначе возвращаем исходный символ
+  if (russianToEnglishMap[char]) return russianToEnglishMap[char];
   return char;
 };
+
 const getRandomLetters = (count, isVowel) => {
   const source = isVowel ? vowels : consonants;
   const result = [];
@@ -245,12 +237,16 @@ const filledSlots = ref([]);
 const availableLetters = ref([]);
 const mistakesCount = ref(0);
 const time = ref(0);
+
 let timerInterval = null;
+
 const isGameFinished = ref(false);
 const earthquakeEffect = ref(false);
 const isWaveAnimating = ref(false);
 
-// Массив со звуками
+const isHintBlurred = ref(true);
+
+// Массив со звуками ошибок
 const wrongAnswerSounds = ref([
   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no1.mp3', import.meta.url).href,
@@ -259,77 +255,51 @@ const wrongAnswerSounds = ref([
   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no4.mp3', import.meta.url).href,
   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no5.mp3', import.meta.url).href,
   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no6.mp3', import.meta.url).href,
-
 ]);
 
+// Computed свойства для прогресса
 const totalWords = computed(() => gameWords.value.length);
 const matchedPairs = computed(() => currentWordIndex.value);
 const progressWidth = computed(() => `${(matchedPairs.value / totalWords.value) * 100}%`);
 const progressPercentage = computed(() => Math.round((matchedPairs.value / totalWords.value) * 100));
-const finalTime = computed(() => {
-  return time.value;
-});
+const finalTime = computed(() => time.value);
+
 const formatTime = (ms) => {
   if (typeof ms !== 'number' || isNaN(ms)) return '0 sec';
-
   const minutes = Math.floor(ms / 60000);
   const seconds = Math.floor((ms % 60000) / 1000);
-
-  // Функция для правильного склонения
-  const getMinuteText = (num) => {
-    if (num === 1) return 'minute';
-    return 'minutes';
-  };
-
-  const getSecondText = (num) => {
-    if (num === 1) return 'second';
-    return 'seconds';
-  };
-
-  if (minutes === 0) {
-    return `${seconds} ${getSecondText(seconds)} only !`;
-  }
-
-  if (seconds === 0) {
-    return `${minutes} ${getMinuteText(minutes)} sharp !`;
-  }
-
+  const getMinuteText = (num) => num === 1 ? 'minute' : 'minutes';
+  const getSecondText = (num) => num === 1 ? 'second' : 'seconds';
+  if (minutes === 0) return `${seconds} ${getSecondText(seconds)} only !`;
+  if (seconds === 0) return `${minutes} ${getMinuteText(minutes)} sharp !`;
   return `${minutes} ${getMinuteText(minutes)} ${seconds} ${getSecondText(seconds)}`;
 };
 
-
-// Функция для запуска волновой анимации
+// Анимация волны
 const startWaveAnimation = () => {
   if (isWaveAnimating.value) return;
   isWaveAnimating.value = true;
-
   const slots = document.querySelectorAll('.letter-slot');
   const filledSlotsArray = Array.from(slots).filter((_, index) => filledSlots.value[index] !== null);
-
-  // Запускаем анимацию для каждого заполненного слота с задержкой
   filledSlotsArray.forEach((slot, index) => {
     setTimeout(() => {
       slot.classList.add('wave-animation');
       setTimeout(() => {
         slot.classList.remove('wave-animation');
       }, 100);
-    }, index * (1500 / filledSlotsArray.length)); // Равномерно распределяем на 1.5 секунды
+    }, index * (1500 / Math.max(filledSlotsArray.length, 1)));
   });
-
   setTimeout(() => {
     isWaveAnimating.value = false;
   }, 1500);
 };
 
-// Функция воспроизведения случайного звука
+// Звук ошибки
 const playRandomWrongAnswerSound = () => {
   if (wrongAnswerSounds.value.length === 0) return;
   const randomIndex = Math.floor(Math.random() * wrongAnswerSounds.value.length);
   const audio = new Audio(wrongAnswerSounds.value[randomIndex]);
-
-  // Устанавливаем громкость (0.0 - 1.0)
-  audio.volume = 0.3; // 40% громкости
-
+  audio.volume = 0.3;
   audio.play().catch(e => console.log('Sound play failed:', e));
 };
 
@@ -373,8 +343,7 @@ const isSlotCorrect = (index) => {
   return isCharMatch(filledSlots.value[index], expectedValue);
 };
 
-// Генерация доступных элементов - ИСПРАВЛЕНО: сравниваем с числом
-// Генерация доступных элементов
+// Генерация доступных букв
 const generateAvailableItems = (word) => {
   const itemsOnly = [];
   for (let i = 0; i < word.length; i++) {
@@ -383,8 +352,6 @@ const generateAvailableItems = (word) => {
       itemsOnly.push(char.toUpperCase());
     }
   }
-
-  // Получаем первую букву слова (без учета пробелов)
   let firstLetter = null;
   for (let i = 0; i < word.length; i++) {
     if (!isSpace(word[i])) {
@@ -392,27 +359,20 @@ const generateAvailableItems = (word) => {
       break;
     }
   }
-
-
-  // УРОВЕНЬ 1 - ТОЛЬКО БУКВЫ СЛОВА
   if (difficultyLevel.value === 1) {
     const shuffledItems = smartShuffle(itemsOnly, firstLetter);
     return shuffledItems.map(item => ({ value: item, used: false }));
   }
-
-  // УРОВНИ 2 И 3 - ДОБАВЛЯЕМ 4 ЛИШНИХ БУКВЫ
   const extraLetters = [
     ...getRandomLetters(2, true),
     ...getRandomLetters(2, false)
   ];
-
   const allItems = [...itemsOnly, ...extraLetters];
   const shuffledItems = smartShuffle(allItems, firstLetter);
-
   return shuffledItems.map(item => ({ value: item, used: false }));
 };
 
-// Простое перемешивание (для списка слов)
+// Перемешивание для списка слов
 const simpleShuffle = (array) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -427,13 +387,62 @@ const selectRandomWords = (data, count) => {
   return shuffled.slice(0, count);
 };
 
+// Инициализация 3 уровня (только для первого запуска)
+const initLevel3 = () => {
+  originalWordsList.value = [...gameWords.value];
+  wordsToRepeat.value = [...gameWords.value];
+  loadNextWordFromQueue();
+};
+
+// Загрузка следующего слова из очереди (для 3 уровня)
+// Загрузка следующего слова из очереди (для 3 уровня)
+const loadNextWordFromQueue = () => {
+  if (isLoadingNext) return;
+  isLoadingNext = true;
+
+  if (wordsToRepeat.value.length === 0) {
+    isGameFinished.value = true;
+    if (timerInterval) clearInterval(timerInterval);
+    isLoadingNext = false;
+    return;
+  }
+
+  const nextWord = wordsToRepeat.value.shift();
+  // Находим индекс слова в оригинальном списке (для прогресса)
+  currentWordIndex.value = originalWordsList.value.findIndex(w => w.id === nextWord.id);
+  currentWord.value = nextWord;
+  const englishWord = currentWord.value.eng;
+
+  wordStructure.value = parseWordStructure(englishWord);
+  filledSlots.value = wordStructure.value.map(item => item.isSpace ? ' ' : null);
+  availableLetters.value = generateAvailableItems(englishWord);
+  showFeedback.value = false;  // Сбрасываем подсветку при загрузке нового слова
+
+  // 🆕 Для 3 уровня: blur всегда включен, кроме первого слова
+  // Проверяем, это первое слово в игре?
+  const isFirstWordOverall = (originalWordsList.value.findIndex(w => w.id === nextWord.id) === 0);
+  if (isFirstWordOverall && currentWordIndex.value === 0) {
+    isHintBlurred.value = false;
+  } else {
+    isHintBlurred.value = true;
+  }
+
+  setTimeout(() => {
+    isLoadingNext = false;
+  }, 100);
+};
+// Загрузка слова для уровней 1 и 2
 const loadWord = () => {
+  if (difficultyLevel.value === 3) {
+    // Если на 3 уровне, но ещё не инициализирована очередь
+    if (wordsToRepeat.value.length === 0 && !currentWord.value && !isGameFinished.value) {
+      initLevel3();
+    }
+    return;
+  }
+
+  // Для уровней 1 и 2
   if (currentWordIndex.value >= gameWords.value.length) {
-    console.log('=== GAME FINISHED ===');
-    console.log('Final time value:', time.value);
-    console.log('Final mistakesCount value:', mistakesCount.value);
-    console.log('mistakesCount type:', typeof mistakesCount.value);
-    console.log('mistakesCount ref:', mistakesCount);
     isGameFinished.value = true;
     if (timerInterval) clearInterval(timerInterval);
     return;
@@ -442,11 +451,19 @@ const loadWord = () => {
   currentWord.value = gameWords.value[currentWordIndex.value];
   const englishWord = currentWord.value.eng;
 
-
   wordStructure.value = parseWordStructure(englishWord);
   filledSlots.value = wordStructure.value.map(item => item.isSpace ? ' ' : null);
   availableLetters.value = generateAvailableItems(englishWord);
   showFeedback.value = false;
+
+
+  // 🆕 Логика blur: первое слово показываем без blur, остальные с blur
+  const isFirstWord = (currentWordIndex.value === 0);
+  if (isFirstWord) {
+    isHintBlurred.value = false;
+  } else {
+    isHintBlurred.value = true;
+  }
 };
 
 const triggerEarthquake = () => {
@@ -464,39 +481,29 @@ const highlightItem = (itemValue) => {
   });
 };
 
-// Функция для удаления буквы из слота
+// Удаление буквы из слота (только 3 уровень)
 const removeLetterFromSlot = (slotIndex) => {
-  // Только для 3 уровня (сложного)
   if (difficultyLevel.value !== 3) return;
-
-  // Нельзя удалять во время показа обратной связи
   if (showFeedback.value) return;
-
-  // Нельзя удалять пробелы
   if (wordStructure.value[slotIndex].isSpace) return;
 
-  // Проверяем, есть ли буква в этом слоте
   const currentLetter = filledSlots.value[slotIndex];
   if (currentLetter === null || currentLetter === ' ') return;
 
-  // Находим эту букву в availableLetters
   const letterToReturn = availableLetters.value.find(
     letter => letter.value === currentLetter && letter.used === true
   );
 
   if (letterToReturn) {
-    // Возвращаем букву обратно в доступные
     letterToReturn.used = false;
-
-    // Очищаем слот
     filledSlots.value[slotIndex] = null;
   }
 };
 
+// Выбор буквы
 const selectLetter = (itemObj) => {
   if (isGameFinished.value || itemObj.used || showFeedback.value) return;
 
-  // Для сложного уровня - просто заполняем слоты без проверки
   if (difficultyLevel.value === 3) {
     const firstEmptyIndex = filledSlots.value.findIndex(slot => slot === null);
     if (firstEmptyIndex === -1) return;
@@ -505,7 +512,6 @@ const selectLetter = (itemObj) => {
     return;
   }
 
-  // Для уровней 1 и 2 - проверяем сразу
   const firstEmptyIndex = filledSlots.value.findIndex(slot => slot === null);
   if (firstEmptyIndex === -1) return;
 
@@ -517,10 +523,7 @@ const selectLetter = (itemObj) => {
     filledSlots.value[firstEmptyIndex] = itemObj.value;
     itemObj.used = true;
     if (filledSlots.value.every(slot => slot !== null)) {
-      // Воспроизводим аудио если есть
-      if (currentWord.value?.audio) {
-        playAudio();
-      }
+      if (currentWord.value?.audio) playAudio();
       setTimeout(() => {
         currentWordIndex.value++;
         loadWord();
@@ -528,7 +531,6 @@ const selectLetter = (itemObj) => {
     }
   } else {
     mistakesCount.value++;
-
     const itemExists = availableLetters.value.some(l => l.value === itemObj.value && !l.used);
     if (itemExists) {
       highlightItem(itemObj.value);
@@ -538,20 +540,19 @@ const selectLetter = (itemObj) => {
   }
 };
 
+// Проверка слова (только 3 уровень)
+// Проверка слова (только 3 уровень)
 const checkWord = () => {
   if (difficultyLevel.value !== 3) return;
 
-  // Проверяем, все ли слоты заполнены
   const isComplete = filledSlots.value.every(slot => slot !== null);
   if (!isComplete) {
     triggerEarthquake();
     return;
   }
 
-  // Запускаем волновую анимацию
   startWaveAnimation();
 
-  // Проверяем правильность каждого слота
   let allCorrect = true;
   for (let i = 0; i < filledSlots.value.length; i++) {
     if (!isSlotCorrect(i)) {
@@ -560,61 +561,64 @@ const checkWord = () => {
     }
   }
 
-  // Показываем обратную связь (с задержкой, чтобы анимация успела пройти)
   setTimeout(() => {
-    showFeedback.value = true;
+    showFeedback.value = true;  // Это активирует подсветку правильных/неправильных
 
     if (allCorrect) {
-      // Воспроизводим аудио если есть
-      if (currentWord.value?.audio) {
-        playAudio();
-      }
-      // Если всё правильно, переходим к следующему слову
+      if (currentWord.value?.audio) playAudio();
       setTimeout(() => {
         showFeedback.value = false;
-        currentWordIndex.value++;
-        loadWord();
+        loadNextWordFromQueue();
       }, 500);
     } else {
-      // ВСЕГДА воспроизводим звук ошибки, независимо от наличия аудио у слова
       playRandomWrongAnswerSound();
-      // Воспроизводим аудио если есть
       if (currentWord.value?.audio) {
-        setTimeout(() => {
-          playAudio();
-        }, 1700);
+        setTimeout(() => playAudio(), 1700);
       }
-      // Если есть ошибки, увеличиваем счетчик и показываем подсветку
       mistakesCount.value++;
+
+      // Добавляем слово в конец очереди, если его там ещё нет
+      const isAlreadyInQueue = wordsToRepeat.value.some(w => w.id === currentWord.value.id);
+      if (!isAlreadyInQueue) {
+        wordsToRepeat.value.push(currentWord.value);
+      }
+
       setTimeout(() => {
         showFeedback.value = false;
-        resetCurrentWord();
+        loadNextWordFromQueue();
       }, 2000);
     }
-  }, 800); // Небольшая задержка, чтобы волна прошла
+  }, 800);
 };
+
+const handleHintClick = () => {
+  // При клике на заблюренный текст
+  if (isHintBlurred.value) {
+    // Если есть аудио - проигрываем и снимаем blur
+    if (currentWord.value?.audio) {
+      playAudio();
+      isHintBlurred.value = false;
+    } else {
+      // Если аудио нет - просто снимаем blur
+      isHintBlurred.value = false;
+    }
+  }
+};
+
+// Обработка клавиатуры
 const handleKeyPress = (event) => {
   if (isGameFinished.value || showFeedback.value) return;
 
-  // Обработка Enter для проверки слова (только на 3 уровне)
   if (event.key === 'Enter') {
     event.preventDefault();
-
-    // Только для 3 уровня (сложного)
-    if (difficultyLevel.value === 3) {
-      checkWord();
-    }
+    if (difficultyLevel.value === 3) checkWord();
     return;
   }
 
-  // Обработка Backspace
   if (event.key === 'Backspace') {
     event.preventDefault();
-
-    // Только для 3 уровня (сложного)
     if (difficultyLevel.value !== 3) return;
 
-    // Находим последний заполненный слот
     let lastFilledIndex = -1;
     for (let i = filledSlots.value.length - 1; i >= 0; i--) {
       if (filledSlots.value[i] !== null && filledSlots.value[i] !== ' ') {
@@ -623,46 +627,30 @@ const handleKeyPress = (event) => {
       }
     }
 
-    // Если есть заполненный слот, удаляем букву
     if (lastFilledIndex !== -1) {
       const currentLetter = filledSlots.value[lastFilledIndex];
-
-      // Находим эту букву в availableLetters
       const letterToReturn = availableLetters.value.find(
         letter => letter.value === currentLetter && letter.used === true
       );
-
       if (letterToReturn) {
-        // Возвращаем букву обратно в доступные
         letterToReturn.used = false;
-        // Очищаем слот
         filledSlots.value[lastFilledIndex] = null;
-
-        // Визуальная обратная связь
         const slotElement = document.querySelectorAll('.letter-slot')[lastFilledIndex];
         if (slotElement) {
           slotElement.classList.add('remove-pulse');
-          setTimeout(() => {
-            slotElement.classList.remove('remove-pulse');
-          }, 200);
+          setTimeout(() => slotElement.classList.remove('remove-pulse'), 200);
         }
       }
     }
     return;
   }
 
-
-  // Сначала обрабатываем специальные клавиши
-
   let key = event.key;
   if (key === ' ' || key === 'Space') key = ' ';
   if (key === '§' || key === '±') key = "'";
   if (key === '`' || key === "'" || key === '´' || key === '’' || key === '‘') key = "'";
-
-  // Преобразуем русские буквы в английские
   key = convertToEnglish(key);
 
-  // Проверяем, что это допустимый символ (теперь и русские буквы преобразуются)
   const isValidChar = /[A-Za-z0-9\s'`´"\-!@#$%&*()+=?/\\|,.;:§±~]/.test(key);
   if (isValidChar && key.length === 1) {
     event.preventDefault();
@@ -685,36 +673,119 @@ const handleKeyPress = (event) => {
   }
 };
 
-// Функция для смены уровня (убираем @change из select)
+
+// Смена уровня - сохраняем прогресс
 const onDifficultyChange = (event) => {
   const newLevel = parseInt(event.target.value, 10);
+
+  // Если уровень не изменился - ничего не делаем
+  if (difficultyLevel.value === newLevel) return;
+
+  const oldLevel = difficultyLevel.value;
   difficultyLevel.value = newLevel;
+  isHintBlurred.value = false;  // 🆕 Добавить сброс blur
+
+
+  // Случай 1: Переключаемся на 3 уровень с другого уровня
+  if (newLevel === 3 && oldLevel !== 3) {
+    // Создаём очередь из оставшихся слов
+    originalWordsList.value = [...gameWords.value];
+    // Очередь = слова, которые ещё не пройдены
+    wordsToRepeat.value = gameWords.value.slice(currentWordIndex.value);
+    // Загружаем первое слово из очереди
+    loadNextWordFromQueue();
+  }
+  // Случай 2: Переключаемся с 3 уровня на другой
+  else if (oldLevel === 3 && newLevel !== 3) {
+    // Находим текущее слово в оригинальном списке
+    const currentWordId = currentWord.value?.id;
+    if (currentWordId !== undefined) {
+      currentWordIndex.value = originalWordsList.value.findIndex(w => w.id === currentWordId);
+    }
+    // Очищаем данные очереди
+    wordsToRepeat.value = [];
+    originalWordsList.value = [];
+    // Загружаем слово для 1/2 уровня
+    loadWord();
+  }
+  // Случай 3: Переключение между 1 и 2 уровнем
+  else {
+    // Просто обновляем доступные буквы для текущего слова
+    if (currentWord.value) {
+      const englishWord = currentWord.value.eng;
+      availableLetters.value = generateAvailableItems(englishWord);
+      showFeedback.value = false;
+    }
+  }
 };
 
-// При смене уровня - обновляем доступные буквы для текущего слова
-watch(difficultyLevel, (newLevel, oldLevel) => {
-  if (oldLevel !== newLevel && currentWord.value) {
-    // Обновляем доступные буквы для текущего слова
-    const englishWord = currentWord.value.eng;
-    availableLetters.value = generateAvailableItems(englishWord);
-    // Сбрасываем флаг показа обратной связи
-    showFeedback.value = false;
-  }
-});
+// Попробовать уровень сложнее
+const tryHarderLevel = () => {
+  if (difficultyLevel.value === 3) return;
 
-const resetCurrentWord = () => loadWord();
+  const oldLevel = difficultyLevel.value;
+  const newLevel = oldLevel + 1;
+  difficultyLevel.value = newLevel;
+
+  // Сбрасываем все игровые данные
+  currentWordIndex.value = 0;
+  mistakesCount.value = 0;
+  time.value = 0;
+  isGameFinished.value = false;
+  isHintBlurred.value = false;  // 🆕 Добавить сброс blur
+
+
+  // Очищаем таймер и запускаем заново
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => { time.value += 10; }, 10);
+
+  // Получаем слова для текущей миссии
+  const allWords = shortWordsData[currentMission.value];
+  if (allWords?.length > 0) {
+    // Заново выбираем 10 случайных слов
+    gameWords.value = selectRandomWords(allWords, 10);
+
+    // Если переключаемся на 3 уровень
+    if (newLevel === 3) {
+      // Создаём очередь из всех слов
+      originalWordsList.value = [...gameWords.value];
+      wordsToRepeat.value = [...gameWords.value];
+      // Загружаем первое слово из очереди
+      loadNextWordFromQueue();
+    } else {
+      // Для 1 и 2 уровня - просто загружаем первое слово
+      loadWord();
+    }
+  }
+
+  // Закрываем модальное окно
+  isGameFinished.value = false;
+};
+const resetCurrentWord = () => {
+  if (currentWord.value) {
+    const englishWord = currentWord.value.eng;
+    wordStructure.value = parseWordStructure(englishWord);
+    filledSlots.value = wordStructure.value.map(item => item.isSpace ? ' ' : null);
+    availableLetters.value = generateAvailableItems(englishWord);
+    showFeedback.value = false;  // Сбрасываем подсветку при сбросе
+  }
+};
 const playAudio = () => {
   if (currentWord.value?.audio) {
     const audio = new Audio(currentWord.value.audio);
     audio.play().catch(e => console.log('Audio play failed:', e));
+    // 🆕 При воспроизведении аудио снимаем blur
+    isHintBlurred.value = false;
   }
 };
+
 const finishGame = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value);
   gameStore.setGameName(`SpellingAgent_${getDifficultyName()}`);
   gameStore.setWordSet(currentMission.value);
   router.push("/leader-board/");
 };
+
 const goToAllSets = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value);
   gameStore.setGameName(`SpellingAgent_${getDifficultyName()}`);
@@ -722,52 +793,48 @@ const goToAllSets = () => {
   router.push("/see-all-sets-of-words/");
 };
 
-
 // Улучшить результат - перезапустить игру на том же уровне
 const improveResult = () => {
   isGameFinished.value = false;
   currentWordIndex.value = 0;
   mistakesCount.value = 0;
   time.value = 0;
+  isHintBlurred.value = false;  // 🆕 Добавить сброс blur
 
-
-  // ЗАНОВО ПЕРЕМЕШИВАЕМ СЛОВА
   const allWords = shortWordsData[currentMission.value];
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
+    if (difficultyLevel.value === 3) {
+      initLevel3();
+    } else {
+      loadWord();
+    }
   }
 
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => { time.value += 10; }, 10);
-
-  loadWord();
 };
+// Функция для получения класса слота
+const getSlotClass = (index, item) => {
+  // Если это пробел
+  if (item.isSpace) return 'space';
 
-// Попробовать уровень сложнее
-const tryHarderLevel = () => {
-  if (difficultyLevel.value === 3) return; // Нельзя повысить выше 3
+  // Если слот пустой
+  if (!filledSlots.value[index]) return '';
 
-  // Повышаем уровень
-  difficultyLevel.value = difficultyLevel.value + 1;
-
-  // Сбрасываем игру
-  isGameFinished.value = false;
-  currentWordIndex.value = 0;
-  mistakesCount.value = 0;
-  time.value = 0;
-
-  // ЗАНОВО ПЕРЕМЕШИВАЕМ СЛОВА
-  const allWords = shortWordsData[currentMission.value];
-  if (allWords?.length > 0) {
-    gameWords.value = selectRandomWords(allWords, 10);
+  // На 3 уровне без фидбека - нейтральный цвет
+  if (difficultyLevel.value === 3 && !showFeedback.value) {
+    return 'neutral-highlight';
   }
 
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(() => { time.value += 10; }, 10);
+  // Если показываем фидбек
+  if (showFeedback.value) {
+    return isSlotCorrect(index) ? 'correct-highlight' : 'wrong-highlight';
+  }
 
-  loadWord();
+  // Обычный заполненный слот (1 и 2 уровни)
+  return 'filled';
 };
-
 
 onMounted(() => {
   currentMission.value = route.params.missionName;
@@ -777,7 +844,12 @@ onMounted(() => {
     currentWordIndex.value = 0;
     mistakesCount.value = 0;
     time.value = 0;
-    loadWord();
+
+    if (difficultyLevel.value === 3) {
+      initLevel3();
+    } else {
+      loadWord();
+    }
 
     timerInterval = setInterval(() => { time.value += 10; }, 10);
   }
@@ -790,7 +862,6 @@ onBeforeUnmount(() => {
   if (feedbackTimeout) clearTimeout(feedbackTimeout);
 });
 </script>
-
 <style lang="scss" scoped>
 /* Добавляем стили для новых элементов */
 .control-panel {
@@ -912,15 +983,24 @@ onBeforeUnmount(() => {
 }
 
 .pronunciation {
-  font-size: 28px;
+  font-size: 25px;
   font-weight: bold;
   color: #4a90e2;
   background: #f0f4fa;
   display: inline-block;
-  padding: 8px 24px;
+  padding: 8px 15px;
   border-radius: 40px;
   font-family: monospace;
   margin-bottom: 10px;
+  transition: all 0.3s ease;
+
+  &.blurred {
+    filter: blur(4px);
+
+    &:hover {
+      filter: blur(3px);
+    }
+  }
 }
 
 .audio-section {
@@ -1027,6 +1107,12 @@ onBeforeUnmount(() => {
     border-style: dashed;
     color: #999;
     opacity: 0.6;
+  }
+
+  &.neutral-highlight {
+    background: #b3e5fc;
+    border-color: #4a90e2;
+    color: #01579b;
   }
 }
 
@@ -1256,7 +1342,7 @@ onBeforeUnmount(() => {
   }
 }
 
-.finish-btn {
+.finish-btn, .backend-btn {
   background: linear-gradient(135deg, #2196f3, #1976d2);
   color: white;
   box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
@@ -1264,6 +1350,10 @@ onBeforeUnmount(() => {
   &:hover:not(:disabled) {
     box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
   }
+}
+.backend-btn {
+  background: linear-gradient(135deg, #c521f3, #1976d2);
+
 }
 
 @keyframes fadeIn {
@@ -1402,4 +1492,5 @@ onBeforeUnmount(() => {
     max-height: 120px;
   }
 }
+
 </style>
