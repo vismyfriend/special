@@ -197,6 +197,15 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/introTapButtonWords/spell-it",
+      missionVisibleName: "24 March 2026",
+      missionDescription: "the 24th of March 2026",
+      lvl: ["lvl365"],
+      id: 1001,
+      active: true,
+    },
     // extra information
     {
       missionVisibleName: "Extra information",

@@ -731,7 +731,7 @@ const levels = [
   { id: 'lvl2', label: '2' },
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '🔓' },
-  { id: 'lvl5', label: '5' },
+  { id: 'lvl365', label: '365' },
 
   // { id: 'lvl6', label: '6' },
   // { id: 'lvl7', label: '7' }
@@ -3038,7 +3038,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 .level-btn {
   flex: 1;
-  padding: 8px 0;
+  padding: 8px 2px;
   border: 2px solid #000;
   border-radius: 20px;
   background: #f0f0f0;
