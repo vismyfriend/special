@@ -1,1 +1,0 @@
-import{C as t}from"./CustomCursorLayout.e719e0cd.js";import{r,o as a,f as s,a as e,F as n}from"./index.c3b3e5b5.js";import"./plugin-vue_export-helper.21dcd24c.js";const l={__name:"TestingLayout",setup(m){return(c,u)=>{const o=r("router-view");return a(),s(n,null,[e(o),e(t)],64)}}};export{l as default};

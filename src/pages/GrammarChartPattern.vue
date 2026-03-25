@@ -4,27 +4,25 @@
 
     <div class="case-file">
       <div class="file-label" @click="toggleCountdownTimer">
-        Нужно заучить{{ caseId }}<br>{{ caseTitle }}
+        Нужно заучить<br>{{ data.title }}
       </div>
+
       <div class="table-wrapper">
         <table class="noir-table">
-        <tbody>
-        <tr v-for="(row, rowIndex) in tableConfig.rows" :key="rowIndex">
-          <td
-            v-for="(cell, cellIndex) in row.cells"
-            :key="cellIndex"
-            :colspan="cell.colspan || 1"
-            :rowspan="cell.rowspan || 1"
-            :class="[...(Array.isArray(cell.classes) ? cell.classes : [cell.classes]),
-          { 'blurred': cell.isBlurred }]"
-            v-html="cell.content"
-            @click="toggleBlur(rowIndex, cellIndex)"
-          ></td>
-        </tr>
-        </tbody>
-
-
-
+          <tbody>
+          <tr v-for="(row, rowIndex) in data.tableConfig.rows" :key="rowIndex">
+            <td
+              v-for="(cell, cellIndex) in row.cells"
+              :key="cellIndex"
+              :colspan="cell.colspan || 1"
+              :rowspan="cell.rowspan || 1"
+              :class="[...(Array.isArray(cell.classes) ? cell.classes : [cell.classes]),
+                  { 'blurred': cell.isBlurred }]"
+              v-html="cell.content"
+              @click="toggleBlur(rowIndex, cellIndex)"
+            ></td>
+          </tr>
+          </tbody>
         </table>
       </div>
 
@@ -42,6 +40,8 @@
     </div>
 
     <div class="noir-overlay"></div>
+
+    <!-- Обычный таймер -->
     <div
       class="stopwatch-timer"
       :class="{ 'freeze': !isRunning && showTimer }"
@@ -51,7 +51,7 @@
       {{ minutes }}:{{ seconds }}<span class="milliseconds">.{{ milliseconds }}</span>
     </div>
 
-    <!-- Новый обратный таймер (детективный) -->
+    <!-- Обратный таймер -->
     <div
       class="countdown-timer"
       :class="{ 'disabled': !isCountdownActive }"
@@ -66,24 +66,33 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+
+// ==================== PROPS ====================
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+    validator: (value) => {
+      return value && value.id && value.title && value.tableConfig;
+    }
+  }
+});
 
 const router = useRouter();
 
-// Таймер 1
-
+// ==================== ТАЙМЕР 1 (обычный) ====================
 const showTimer = ref(false);
 const timer = ref(null);
 const startTime = ref(0);
 const elapsedTime = ref(0);
 const isRunning = ref(false);
-// Таймер 2
-const countdownStartTime = ref(0);
+const isDelaying = ref(false);
 
-
-
-// Таймер 1
-
+// Защита: если данных нет, не выполняем код
+if (!props.data) {
+  console.error('GrammarChartPattern: no data provided');
+}
 
 const formatTime = (time) => {
   const mins = Math.floor(time / 60000).toString().padStart(2, '0');
@@ -95,25 +104,19 @@ const formatTime = (time) => {
 const minutes = computed(() => formatTime(elapsedTime.value).mins);
 const seconds = computed(() => formatTime(elapsedTime.value).secs);
 const milliseconds = computed(() => formatTime(elapsedTime.value).ms);
-// Добавляем новый реф для контроля задержки
-const isDelaying = ref(false);
 
 const updateTimer = () => {
   if (!isRunning.value) return;
-
   elapsedTime.value = Date.now() - startTime.value;
-
   if (elapsedTime.value >= 59999) {
     stopTimer();
     return;
   }
-
   timer.value = requestAnimationFrame(updateTimer);
 };
 
 const startTimer = () => {
-  if (isRunning.value || isDelaying.value) return; // Не запускаем, если уже работает или в задержке
-
+  if (isRunning.value || isDelaying.value) return;
   showTimer.value = true;
   isRunning.value = true;
   startTime.value = Date.now();
@@ -121,30 +124,23 @@ const startTimer = () => {
   updateTimer();
 };
 
-
 const stopTimer = () => {
-  if (isDelaying.value) return; // Если уже в процессе задержки - игнорируем
-
+  if (isDelaying.value) return;
   isRunning.value = false;
-  isDelaying.value = true; // Включаем флаг задержки
-
+  isDelaying.value = true;
   if (timer.value) {
     cancelAnimationFrame(timer.value);
     timer.value = null;
   }
-
   setTimeout(() => {
     showTimer.value = false;
     elapsedTime.value = 0;
-    isDelaying.value = false; // Сбрасываем флаг после завершения
+    isDelaying.value = false;
   }, 3000);
 };
 
-// Запуск по клику на CONFIDENTIAL
-
 const toggleConfidential = () => {
-  if (isDelaying.value) return; // Игнорируем нажатия во время задержки
-
+  if (isDelaying.value) return;
   if (!showTimer.value) {
     startTimer();
   } else {
@@ -152,12 +148,12 @@ const toggleConfidential = () => {
   }
 };
 
-
-// Обратный таймер (детективная игра)
+// ==================== ТАЙМЕР 2 (обратный) ====================
 const countdownTimer = ref(null);
-const countdownTime = ref(77000); // 77 секунд (можно изменить)
-const countdownRemaining = ref(77000);
+const countdownTime = ref(props.data.countdownTime || 77000);
+const countdownRemaining = ref(props.data.countdownTime || 77000);
 const isCountdownActive = ref(true);
+const countdownStartTime = ref(0);
 
 const countdownMinutes = computed(() => {
   const mins = Math.floor(countdownRemaining.value / 60000).toString().padStart(2, '0');
@@ -173,17 +169,15 @@ const countdownMilliseconds = computed(() => {
   const ms = Math.floor((countdownRemaining.value % 1000) / 10).toString().padStart(2, '0');
   return ms;
 });
+
 const updateCountdown = () => {
   if (!isCountdownActive.value) return;
-
   countdownRemaining.value = countdownTime.value - (Date.now() - countdownStartTime.value);
-
   if (countdownRemaining.value <= 0) {
     stopCountdownTimer();
-    router.push('/see-all-sets-of-words/'); // измените путь на нужный
+    router.push('/see-all-sets-of-words/');
     return;
   }
-
   countdownTimer.value = requestAnimationFrame(updateCountdown);
 };
 
@@ -202,7 +196,6 @@ const stopCountdownTimer = () => {
 };
 
 const disableCountdownTimer = () => {
-  // Отключаем таймер
   isCountdownActive.value = false;
   if (countdownTimer.value) {
     cancelAnimationFrame(countdownTimer.value);
@@ -211,237 +204,30 @@ const disableCountdownTimer = () => {
 };
 
 const enableCountdownTimer = () => {
-  // Включаем таймер заново с полного времени
   isCountdownActive.value = true;
   startCountdownTimer();
 };
 
 const toggleCountdownTimer = () => {
   if (isCountdownActive.value) {
-    // Если активен - отключаем
     disableCountdownTimer();
   } else {
-    // Если отключён - включаем заново
     enableCountdownTimer();
   }
 };
-// Очистка при размонтировании
 
-onMounted(() => {
-  // Запускаем обратный таймер сразу при монтировании
-  startCountdownTimer();
-});
+// ==================== ТАБЛИЦА ====================
+const tableConfig = ref(props.data.tableConfig);
 
-onUnmounted(() => {
-  // Очищаем таймеры при размонтировании
-  if (timer.value) cancelAnimationFrame(timer.value);
-  if (countdownTimer.value) cancelAnimationFrame(countdownTimer.value);
-});
-
-
-// Конфигурация таблицы
-const caseId = ref('.');
-const caseTitle = ref('--------------');
-
-const tableConfig = ref({
-  // Основной контейнер для всех строк таблицы
-  rows: [
-    // Первая строка таблицы
-    {
-      cells: [
-        {
-          content: 'Name',                     // Текст в ячейке
-          classes: 'notes-label',              // CSS-классы для стилизации
-          rowspan: 1                          // Ячейка занимает 1 строку (значение по умолчанию)
-        },
-        {
-          content: 'PRESENT SIMPLE (настоящее простое)',
-          classes: 'case-title',
-          isBlurred: true, // Начальное состояние - размыто
-
-          colspan: 2                          // Ячейка объединяет 2 колонки
-        }
-      ]
-    },
-    // Вторая строка таблицы
-    {
-      cells: [
-        {
-          content: 'Rule',
-          classes: 'evidence-tag',
-          rowspan: 1                          // Можно не указывать, 1 - значение по умолчанию
-        },
-        {
-          content: `<div class="note-line">We use P.S. when we talk about everyday usual actions</div>`,
-          classes: 'rules',
-          isBlurred: true, // Начальное состояние - размыто
-
-          colspan: 2                          // Объединение 2 колонок
-        }
-      ]
-    },
-
-    // 3 строка (начало блока с hints)
-    {
-      cells: [
-        {
-          content: 'hints',
-          classes: 'evidence-tag green',
-
-        },
-        {
-          content:
-            'never, almost never, rarely, seldom, not often, often, usually, sometimes, from time to time, once a day, twice a week, three times a month, every year, always',
-          classes: 'notes',
-          colspan: 2,                              // Объединение 2 колонок
-          isBlurred: true // Начальное состояние - размыто
-
-        },
-
-      ]
-    },
-    // 4 строка таблицы
-    {
-      cells: [
-        {
-          content: 'Who',
-          classes: 'notes-label'
-          // rowspan и colspan не указаны - значит = 1 (занимает одну ячейку)
-        },
-        {
-          content: 'It, he, She',
-          classes: 'blue-font',
-          isBlurred: true, // Начальное состояние - размыто
-        },
-        {
-          content: 'I, You, We, They',
-          classes: 'blue-font',
-          isBlurred: true, // Начальное состояние - размыто
-
-        }
-      ]
-    },
-    // Шестая строка (начало блока verbs)
-    {
-      cells: [
-        {
-          content: 'verbs',
-          classes: 'suspect',
-          rowspan: 4                          // Ячейка растягивается на 4 строки вниз
-        }
-      ]
-    },
-    // Седьмая строка (первая строка блока verbs)
-    {
-      cells: [
-        // Первая ячейка "занята" rowspan из предыдущей строки
-        {
-          content: 'run<u>s</u>',
-          classes: 'verb',
-
-        },
-        {
-          content: 'run',
-          classes: 'verb-alias',
-
-        }
-      ]
-    },
-    // Восьмая строка
-    {
-      cells: [
-        {
-          content: 'kiss<u>es</u>',
-          classes: 'verb',
-
-        },
-        {
-          content: 'kiss',
-          classes: 'verb-alias',
-
-        }
-      ]
-    },
-    // Девятая строка
-    {
-      cells: [
-        {
-          content: 'watch<u>es</u>',
-          classes: 'verb',
-
-        },
-        {
-          content: 'watch',
-          classes: 'verb-alias',
-
-        }
-      ]
-    },
-    // Десятая строка
-    {
-      cells: [
-        {
-          content: 'Remem <br>-ber',
-          classes: ['notes-label','vertical-text']  // Вертикальный текст
-        },
-        {
-          content: `
-            <div class="note-line"> ⭐ (с ит хи щи S пиши)</div>
-            <div class="note-line">Окончание S добавляется только в утверждениях :</div>
-            <div class="note-line">&nbsp;</div>
-            <div class="note-line">&nbsp;&nbsp;+ He writes. </div>
-            <div class="note-line">&nbsp;&nbsp;- He doesn't write </div>
-            <div class="note-line">&nbsp;&nbsp;+ Does he write? </div>
-            <div class="note-line">&nbsp;o? What does he write? </div>
-            <div class="note-line"> \u00A0</div>
-          `,    // Многострочное содержимое с HTML-разметкой
-          classes: 'notes',
-          isBlurred: true, // Начальное состояние - размыто
-          colspan: 2                              // Объединение 2 колонок
-        }
-      ]
-    },
-    {
-      cells: [
-        {
-          content: 'Неви- <br> димки',
-          classes: 'evidence-tag green'
-          // rowspan и colspan не указаны - значит = 1 (занимает одну ячейку)
-        },
-        {
-          content: 'Does',
-          classes: 'case-title',
-        },
-        {
-          content: 'Do',
-          classes: 'case-title',
-        }
-      ]
-    },
-    {
-      cells: [
-        {
-          content: '...',
-          classes: 'notes-label'
-        },
-        {
-          content: ' . . . . . . . . . . . . . .',
-          classes: ['notes','blurred'],
-          colspan: 2                              // Объединение 2 колонок
-        }
-      ]
-    },
-  ]
-});
 const toggleBlur = (rowIndex, cellIndex) => {
   const cell = tableConfig.value.rows[rowIndex].cells[cellIndex];
-  // Проверяем, есть ли вообще возможность размытия
   if (cell.classes?.includes('blurred') || cell.isBlurred !== undefined) {
     cell.isBlurred = !cell.isBlurred;
   }
 };
-const stamps = ref([
 
+// ==================== ШТАМПЫ ====================
+const stamps = ref([
   {
     text: 'НАДО ВЫУЧИТЬ!',
     type: 'confidential',
@@ -453,13 +239,18 @@ const stamps = ref([
     action: () => {
       router.push('/see-all-sets-of-words/');
     }
-  },
+  }
 ]);
 
-// Метод для обновления конфигурации
-const updateTable = (newConfig) => {
-  tableConfig.value = { ...tableConfig.value, ...newConfig };
-};
+// ==================== LIFECYCLE ====================
+onMounted(() => {
+  startCountdownTimer();
+});
+
+onUnmounted(() => {
+  if (timer.value) cancelAnimationFrame(timer.value);
+  if (countdownTimer.value) cancelAnimationFrame(countdownTimer.value);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -542,6 +333,7 @@ const updateTable = (newConfig) => {
   text-transform: uppercase;
   border: 2px solid #333;
   transform: rotate(-2deg);
+  cursor: pointer;
 }
 
 .noir-table {
@@ -598,18 +390,9 @@ const updateTable = (newConfig) => {
     background: #1e1e1e;
     color: #b8860b;
     font-weight: bold;
-    //writing-mode: vertical-rl;
-    //text-orientation: upright;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
-  }
-  .vertical-text {
-    //writing-mode: vertical-rl; /* вертикальное написание справа налево */
-    //text-orientation: upright;
-    //white-space: nowrap;
-
-
   }
 
   .verb {
@@ -682,6 +465,7 @@ const updateTable = (newConfig) => {
     font-weight: bold;
     transform: rotate(5deg);
     opacity: 0.8;
+    cursor: pointer;
 
     &.approved {
       border-color: #006400;
@@ -708,7 +492,6 @@ const updateTable = (newConfig) => {
   z-index: 1;
 }
 
-/* Анимация мерцания лампы */
 @keyframes flicker {
   0%, 100% { opacity: 0.8; }
   25% { opacity: 0.6; }
@@ -720,7 +503,6 @@ const updateTable = (newConfig) => {
   animation: flicker 5s infinite;
 }
 
-/* Добавляем медиа-запросы для мобильных */
 @media (max-width: 768px) {
   .noir-container {
     padding: 20px 10px;
@@ -760,7 +542,7 @@ const updateTable = (newConfig) => {
 
   .noir-table {
     font-size: 14px;
-    min-width: 250px; /* Минимальная ширина для сохранения структуры */
+    min-width: 250px;
 
     td {
       padding: 5px 4px;
@@ -816,7 +598,7 @@ const updateTable = (newConfig) => {
   font-size: 1.5rem;
   color: #10e3ff;
 }
-/* Добавляем анимацию для "заблокированного" состояния */
+
 .stamp.confidential:active {
   transform: rotate(5deg) scale(0.95);
   transition: transform 0.1s;
@@ -826,10 +608,12 @@ const updateTable = (newConfig) => {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
 }
+
 .stopwatch-timer.freeze {
   animation: none;
   border-color: #10e3ff;
@@ -837,11 +621,6 @@ const updateTable = (newConfig) => {
   transform: translateX(-50%) scale(1.05);
 }
 
-@keyframes freeze-pulse {
-  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
-  50% { opacity: 0.9; transform: translateX(-50%) scale(1.05); }
-}
-/* Для мобильных */
 @media (max-width: 768px) {
   .stopwatch-timer {
     font-size: 1.8rem;
@@ -854,7 +633,6 @@ const updateTable = (newConfig) => {
   }
 }
 
-/* Обратный таймер (детективный) */
 .countdown-timer {
   position: fixed;
   top: 20px;
@@ -905,7 +683,6 @@ const updateTable = (newConfig) => {
   }
 }
 
-/* Для мобильных */
 @media (max-width: 768px) {
   .countdown-timer {
     font-size: 1.2rem;
@@ -917,7 +694,4 @@ const updateTable = (newConfig) => {
     font-size: 0.8rem;
   }
 }
-
 </style>
-<script setup lang="ts">
-</script>

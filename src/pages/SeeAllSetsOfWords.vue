@@ -746,6 +746,12 @@ const setLevel = (levelId) => {
 
 // Проверка, соответствует ли элемент выбранному уровню
 const matchesLevel = (item) => {
+
+  // Если выбран lvlDev - показываем всё без исключения
+  if (currentLevel.value === 'lvl365') {
+    return true;
+  }
+
   if (!item.lvl) {
     return currentLevel.value === 'lvlAll';
   }

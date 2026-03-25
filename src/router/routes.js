@@ -410,7 +410,10 @@ const routes = [
     path: '/test',
     component: () => import('pages/PageForTestingImports.vue')
   },
-
+  {
+    path: '/grammar/:tableId',
+    component: () => import('src/pages/GrammarChartView.vue') // путь к вашему view
+  },
 
   {
     path: '/:catchAll(.*)*',

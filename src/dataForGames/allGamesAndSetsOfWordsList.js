@@ -5,10 +5,10 @@ export const allGamesAndSetsOfWordsList =
     //первая страница первый раздел
     {
       type: "subTasks",
-      lvl: ["lvl1"],
       missionVisibleName: "Определить свой уровень :",
       missionDescription: "мой уровень :",
       id: "subtasks-newSub",
+      lvl: "lvl365",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
       subTasks: [
@@ -288,20 +288,55 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
-      missionVisibleName: "Мишшн 2.1 Спик Инглиш",
-      missionDescription: "Mission 2.1 speak English",
+      path: "/see-all-sets-of-words/introMillionaire22/millionaire",
+      missionVisibleName: "Мишшн 2.1 ту поинт уан",
+      missionDescription: "Mission 2.1 два точка один",
       id: 1001,
       active: true,
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/introMillionaire22/millionaire",
-      missionVisibleName: "Мишшн 2.2 ту поинт ту",
-      missionDescription: "Mission 2.1 speak English",
+      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
+      missionVisibleName: "Мишшн 2.2 Спик Инглиш",
+      missionDescription: "Mission 2.2 speak English",
       id: 1001,
       active: true,
     },
+
+    {
+      type: "hardcodedLink",
+      path: "/grammar/to-be",
+      missionVisibleName: "Mission 3 Невидимки Ар Эм Из",
+      missionDescription: "Are Am Is - невидимка to be",
+      id: 1001,
+      active: true,
+    },
+    // {
+    //   type: "hardcodedLink",
+    //   path: "/tablitsaRef",
+    //   missionVisibleName: "тест таблица",
+    //   missionDescription: "ref",
+    //   id: 1001,
+    //   active: true,
+    // },
+    {
+      type: "hardcodedLink",
+      path: "/grammar/present-simple",
+      missionVisibleName: "Настоящее Простое Время",
+      missionDescription: "Present Simple",
+      id: 1001,
+      active: true,
+    },
+
+    // {
+    //   type: "hardcodedLink",
+    //   path: "/grammar/present-continuous",
+    //   missionVisibleName: "Pr.Cont",
+    //   missionDescription: "NEW",
+    //   id: 1001,
+    //   active: true,
+    // },
+
 
     {
       missionVisibleName: "Разминка",
