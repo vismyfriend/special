@@ -4,35 +4,42 @@
     <!-- Упрощенный вид результатов -->
     <div class="simple-results" v-if="!showDetailed">
       <div class="simple-container">
-        <h2 class="simple-title">Скажи вслух :</h2>
-        <div class="stat-item time-words">
-          <span class="stat-value time-words-value">{{ timeInWords }} seconds</span>
+        <div class="stat-item">
+          <span class="stat-label">My time is:</span>
+          <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
         </div>
-        <div class="simple-stats">
-          <div class="stat-item">
-            <span class="stat-label">My time is:</span>
-            <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
+        <!-- Анимированные слова -->
+        <div class="animated-words-container">
+          <div class="animated-words">
+            <div v-for="(word, idx) in animatedWords" :key="idx" class="animated-word" :style="{ animationDelay: idx * 0.05 + 's' }">
+              {{ word }}
+            </div>
           </div>
-<!--          <div class="stat-item">-->
-<!--            <span class="stat-label">mistakes :</span>-->
-<!--            <span class="stat-value mistakes-value">{{ gameStore.lastGameResults.mistakes }}</span>-->
-<!--          </div>-->
-
         </div>
 
-        <div class="simple-buttons">
-          <button class="simple-btn details-btn" @click="showDetailed = true">
-            ☝ произнёс вслух? -yes?<br> доволен результатом? <br> нажми 🌎 поделиться со всем миром или кнопку ниже
-          </button>
-          <button class="simple-btn try-again" @click="tryAgain">ещё разок !</button>
-          <button class="simple-btn allMissions" @click="toAllMissions">другие миссии</button>
-<!--          <button class="simple-btn next-mission" @click="backToSameSet">Next Mission</button>-->
-<!--          <button class="simple-btn next-mission" @click="seeAllWordsInSet">Увидеть все слова</button>-->
+        <!-- Результаты (появляются после анимации) -->
+        <transition name="result-fade">
+          <div v-if="showFinalResult" class="final-results">
 
-        </div>
+            <div class="stat-item time-words">
+              <span class="stat-value time-words-value">{{ timeInWords }} seconds</span>
+            </div>
+            <span>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</span>
+
+
+            <div class="simple-buttons">
+
+              <button class="simple-btn try-again" @click="tryAgain">ещё разок ! могу быстрее</button>
+<!--              <button class="simple-btn allMissions" @click="toAllMissions">другие задания</button>-->
+              <button class="simple-btn allMissions" @click="backToSameSet">другие задания</button>
+              <button class="simple-btn details-btn" @click="showDetailed = true">
+                ☝ произнёс вслух? -yes?<br> доволен результатом? <br> нажми 🌎 поделиться со всем миром или кнопку ниже
+              </button>
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
-
     <!-- Подробный вид (как было раньше) -->
     <div class="detailed-results" v-else>
       <!-- Блок с результатами игры -->
@@ -153,11 +160,97 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, onBeforeUnmount } from "vue";
 import { api } from "src/api";
 import { useGameStore } from "stores/example-store";
 import { useRoute, useRouter } from 'vue-router'
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
+
+
+
+// ==================== АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА ====================
+const animatedWords = ref([]);
+const currentWordIndex = ref(0);
+const showFinalResult = ref(false);
+const animationInterval = ref(null);
+
+// Массив слов для анимации
+const animationTexts = [
+  "Супер !",
+  "Круто !",
+  "Отлично !",
+  "Молодец !",
+  "Вау !",
+  "Так держать !",
+  "Браво !",
+  "Ты справился !",
+  "Поздравляю !"
+];
+
+// Случайное поздравление
+const randomGreeting = computed(() => {
+  const randomIndex = Math.floor(Math.random() * animationTexts.length);
+  return animationTexts[randomIndex];
+});
+
+
+// Массив вариантов фразы "Я закончил"
+const completionPhrases = [
+  ' " I have finished! " ',
+  ' " I have done it! " ',
+  ' " I have made it! " ',
+  ' " The end! " ',
+  ' " It is good! " ',
+  ' " I am fast! " '
+];
+
+// Случайная фраза завершения
+const randomCompletionPhrase = computed(() => {
+  const randomIndex = Math.floor(Math.random() * completionPhrases.length);
+  return completionPhrases[randomIndex];
+});
+
+// Запуск анимации
+const startAnimation = () => {
+  animatedWords.value = [];
+  currentWordIndex.value = 0;
+  showFinalResult.value = false;
+
+  // Очищаем предыдущий интервал, если есть
+  if (animationInterval.value) {
+    clearInterval(animationInterval.value);
+  }
+
+  // Создаём массив слов для анимации
+  const wordsToAnimate = [
+    randomGreeting.value,
+    "скажи вслух :",
+    "_____________",
+    randomCompletionPhrase.value,  // ← теперь рандомная фраза
+    "--------------",
+    "и произнеси",
+    "свой результат",
+    "по-английски",
+    "разборчиво, уверенно",
+    "вслух",
+
+  ];
+
+  let index = 0;
+
+  animationInterval.value = setInterval(() => {
+    if (index < wordsToAnimate.length) {
+      animatedWords.value.push(wordsToAnimate[index]);
+      index++;
+    } else {
+      // Анимация завершена, показываем результат
+      clearInterval(animationInterval.value);
+      animationInterval.value = null;
+      showFinalResult.value = true;
+    }
+  }, 300); // каждые 300 миллисекунд появляется новое слово
+};
+
 
 // Инициализация хранилища и роутера
 const router = useRouter();
@@ -381,9 +474,16 @@ const formatResult = () => {
     }
   });
 };
-
+// Очистка интервала при размонтировании
+onBeforeUnmount(() => {
+  if (animationInterval.value) {
+    clearInterval(animationInterval.value);
+  }
+});
 // Хук жизненного цикла
 onMounted(async () => {
+  // Запускаем анимацию
+  startAnimation();
   // Проверка и инициализация имени агента
   const savedName = localStorage.getItem('agentName');
   const savedToken = localStorage.getItem('token');
@@ -440,7 +540,10 @@ onMounted(async () => {
 
   await fetchLeaderboard();
   formatResult();
+
 });
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -468,7 +571,7 @@ onMounted(async () => {
 .simple-container {
   background: linear-gradient(135deg, #2c3e50, #4ca1af);
   border-radius: 20px;
-  padding: 30px;
+  padding: 1px 20px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   color: white;
   text-align: center;
@@ -488,7 +591,7 @@ onMounted(async () => {
 }
 
 .simple-stats {
-  margin-bottom: 30px;
+  margin-bottom: 2px;
 }
 
 .stat-item {
@@ -497,7 +600,7 @@ onMounted(async () => {
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-
+  margin-bottom: 5px;
   &:last-child {
     border-bottom: none;
   }
@@ -524,7 +627,6 @@ onMounted(async () => {
 
 .time-words {
   justify-content: center;
-  margin-top: 10px;
 }
 
 .time-words-value {
@@ -541,7 +643,7 @@ onMounted(async () => {
 }
 
 .simple-btn {
-  padding: 15px 20px;
+  padding: 15px 10px;
   border: none;
   border-radius: 25px;
   font-size: 16px;
@@ -977,6 +1079,60 @@ onMounted(async () => {
     transform: translateY(1px);
   }
 }
+/* Стили для кнопки "ещё разок" с пульсацией */
+.try-again {
+  margin-top: 5px;
+  background: linear-gradient(145deg, #FFC107, #FF9800);
+  color: white;
+  font-family: Special_f1;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  animation: pulse-attention 1.2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+
+  &:hover {
+    animation: none;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Пульсирующая анимация с эффектом "позови меня" */
+@keyframes pulse-attention {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(255, 152, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+  }
+}
+
+/* Альтернативный вариант с мягким свечением */
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px 0 rgba(255, 152, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px 5px rgba(255, 152, 0, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px 0 rgba(255, 152, 0, 0.5);
+  }
+}
 
 .toggle-btn {
   width: 210px;
@@ -1088,5 +1244,87 @@ color: #faf624;
   .toggle-btn {
     order: -1; /* Перемещаем кнопку в начало на мобильных */
   }
+}
+
+/* Стили для анимированных слов */
+.animated-words-container {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.animated-words {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.animated-word {
+  font-size: 24px;
+  font-family: Special_f1;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-align: center;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: slideInLeft 0.4s ease-out forwards;
+  transform-origin: left center;
+}
+
+/* Анимация появления слова слева с легким наклоном */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.9);
+  }
+  60% {
+    transform: translateX(5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Альтернативный вариант — появление снизу */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Можно использовать slideUp вместо slideInLeft, заменив animation-name */
+
+/* Анимация для появления результата */
+.result-fade-enter-active {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стили для финальных результатов */
+.final-results {
+  margin-top: 2px;
 }
 </style>

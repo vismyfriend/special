@@ -1,12 +1,12 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
-      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">
+<!--      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">-->
       <p class="bubble left think" id="intro-message">Choose<br> a game</p>
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
 
       <div class="inside-phone-frame">
-        <q-btn push color="brown-5" @click="backToPreviousPage">📷 другой набор слов 🔎 </q-btn>
+<!--        <q-btn push color="brown-5" @click="backToPreviousPage">📷 показать все миссии 🔎 </q-btn>-->
 
         <div class="games-grid">
           <div
@@ -72,7 +72,7 @@ const AllGames = ref([
 
   {
     id: 80,
-    name: "Print all words",
+    name: "Все слова из набора",
     path: "print-all-words",
     gameData: shortWordsData,
     cardIcon: '🖨️', // Изменено на более подходящую иконку

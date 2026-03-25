@@ -1,9 +1,9 @@
 <template>
-  <div class="noir-container">
+  <div v-if="data" class="noir-container">
     <div class="desk-lamp"></div>
 
     <div class="case-file">
-      <div class="file-label" @click="toggleCountdownTimer">
+      <div class="file-label" @click="goToAllMissionSets">
         Нужно заучить<br>{{ data.title }}
       </div>
 
@@ -16,11 +16,39 @@
               :key="cellIndex"
               :colspan="cell.colspan || 1"
               :rowspan="cell.rowspan || 1"
+              :style="cell.style || {}"
               :class="[...(Array.isArray(cell.classes) ? cell.classes : [cell.classes]),
-                  { 'blurred': cell.isBlurred }]"
-              v-html="cell.content"
+    { 'blurred': cell.isBlurred }]"
               @click="toggleBlur(rowIndex, cellIndex)"
-            ></td>
+            >
+              <!-- Изображение (если есть) -->
+              <div
+                v-if="cell.image"
+                class="cell-image-container"
+                :class="cell.imagePosition || 'inline'"
+                @click.stop="openImageModal(cell.image)"
+              >
+                <img
+                  :src="cell.image"
+                  :alt="cell.imageAlt || 'image'"
+                  class="cell-image"
+                  :class="{ 'zoomable': true }"
+                />
+              </div>
+
+              <!-- HTML контент -->
+              <span v-html="cell.content" class="cell-content"></span>
+
+              <!-- Аудио кнопка (если есть) -->
+              <AudioButtonSpecial1
+                v-if="cell.audio"
+                :audioSrc="cell.audio"
+                :showText="true"
+                :text="cell.audioText || '.'"
+                class="cell-audio-button"
+                @click.stop
+              />
+            </td>
           </tr>
           </tbody>
         </table>
@@ -61,12 +89,26 @@
       <span class="timer-icon">{{ isCountdownActive ? '' : '' }}</span>
       {{ countdownMinutes }}:{{ countdownSeconds }}<span class="milliseconds">.{{ countdownMilliseconds }}</span>
     </div>
+
+    <!-- Модальное окно для изображения -->
+    <div v-if="showImageModal" class="image-modal" @click="closeImageModal">
+      <div class="image-modal-content" @click.stop>
+        <img
+          :src="modalImageSrc"
+          alt="Full size image"
+          class="modal-image"
+          @click="closeByImageClick"
+        />
+        <button class="modal-close" @click="closeImageModal">✕</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRouter } from "vue-router";
+import AudioButtonSpecial1 from '../components/AudioButtonSpecial1.vue';
 
 // ==================== PROPS ====================
 const props = defineProps({
@@ -148,6 +190,10 @@ const toggleConfidential = () => {
   }
 };
 
+const goToAllMissionSets = () => {
+    router.push('/see-all-sets-of-words/');
+}
+
 // ==================== ТАЙМЕР 2 (обратный) ====================
 const countdownTimer = ref(null);
 const countdownTime = ref(props.data.countdownTime || 77000);
@@ -224,6 +270,25 @@ const toggleBlur = (rowIndex, cellIndex) => {
   if (cell.classes?.includes('blurred') || cell.isBlurred !== undefined) {
     cell.isBlurred = !cell.isBlurred;
   }
+};
+
+// ==================== ИЗОБРАЖЕНИЯ (модальное окно) ====================
+const showImageModal = ref(false);
+const modalImageSrc = ref('');
+
+const openImageModal = (imageSrc) => {
+  modalImageSrc.value = imageSrc;
+  showImageModal.value = true;
+};
+
+const closeImageModal = () => {
+  showImageModal.value = false;
+  modalImageSrc.value = '';
+};
+
+// Новая функция для клика по картинке в модалке
+const closeByImageClick = () => {
+  closeImageModal();
 };
 
 // ==================== ШТАМПЫ ====================
@@ -348,6 +413,7 @@ onUnmounted(() => {
     padding: 6px;
     border: 1px solid #333;
     position: relative;
+    vertical-align: middle;
 
     &::after {
       content: "";
@@ -359,7 +425,9 @@ onUnmounted(() => {
       background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
       pointer-events: none;
     }
+
   }
+
 
   .evidence-tag {
     background: #8B0000;
@@ -375,6 +443,7 @@ onUnmounted(() => {
   .green {
     background: #42dd2785;
   }
+
   .case-title {
     background: #222;
     color: #FFD700;
@@ -384,7 +453,6 @@ onUnmounted(() => {
     text-transform: uppercase;
     text-align: center;
   }
-
 
   .suspect {
     background: #1e1e1e;
@@ -404,10 +472,12 @@ onUnmounted(() => {
     color: #10e3ff;
     font-style: italic;
   }
+
   .verb-alias {
     color: #98fb98;
     font-style: italic;
   }
+
   .blurred {
     filter: blur(3px);
     user-select: none;
@@ -429,12 +499,10 @@ onUnmounted(() => {
     color: #d3d3d3;
     line-height: 18px;
 
-
     .note-line {
       margin-bottom: 8px;
       position: relative;
       padding-left: 20px;
-
 
       &::before {
         content: "•";
@@ -443,12 +511,100 @@ onUnmounted(() => {
         color: #8B0000;
       }
     }
-
   }
+
   .rules {
     color: white;
     line-height: 17px;
+  }
 
+  // Стили для изображений в ячейках
+  .cell-image-container {
+    display: inline-flex;
+    vertical-align: middle;
+    margin: 4px;
+
+    &.inline {
+      display: inline-flex;
+      vertical-align: middle;
+    }
+
+    &.left {
+      float: left;
+      margin-right: 12px;
+      margin-bottom: 8px;
+    }
+
+    &.right {
+      float: right;
+      margin-left: 12px;
+      margin-bottom: 8px;
+    }
+
+    &.top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 12px;
+    }
+
+
+    &.bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    // Новый стиль для fullCell
+    &.fullCell {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+      z-index: 1;
+
+      .cell-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 4px;
+      }
+    }
+
+    .cell-image {
+      max-width: 50px;
+      max-height: 50px;
+      object-fit: contain;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &.zoomable:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  .cell-content {
+    display: inline;
+  }
+
+  .cell-audio-button {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
   }
 }
 
@@ -503,6 +659,56 @@ onUnmounted(() => {
   animation: flicker 5s infinite;
 }
 
+// Модальное окно для изображений
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .image-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    cursor: default;
+
+    .modal-image {
+      max-width: 70vw;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: #8B0000;
+      color: #FFD700;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.1);
+        background: #a00000;
+      }
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .noir-container {
     padding: 20px 10px;
@@ -551,7 +757,6 @@ onUnmounted(() => {
       &.notes-label {
         width: auto;
         font-size: 12px;
-
       }
 
       &.case-title {
@@ -559,11 +764,20 @@ onUnmounted(() => {
       }
 
       &.suspect {
-
         padding: 8px;
         font-size: 14px;
       }
+
+      .cell-image-container .cell-image {
+        max-width: 35px;
+        max-height: 35px;
+      }
+
+      .cell-audio-button {
+        transform: scale(0.9);
+      }
     }
+
   }
 
   .stamps {
@@ -573,6 +787,14 @@ onUnmounted(() => {
       padding: 3px 10px;
       font-size: 12px;
     }
+  }
+
+  .image-modal .image-modal-content .modal-close {
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
   }
 }
 

@@ -306,8 +306,16 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/grammar/to-be",
-      missionVisibleName: "Mission 3 Невидимки Ар Эм Из",
+      missionVisibleName: "Мишн<b>3 Невидимки</b>Ар Эм Из",
       missionDescription: "Are Am Is - невидимка to be",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/grammar/test-audio-and-pic",
+      missionVisibleName: "test",
+      missionDescription: "0",
       id: 1001,
       active: true,
     },

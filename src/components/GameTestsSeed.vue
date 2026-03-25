@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <h3 class="task-title">{{ task.taskDescription }}</h3>
+        <h3 class="task-title" v-html="task.taskDescription"></h3>
 
         <!-- Добавлено отображение картинки, если она есть -->
         <div v-if="task.taskPicture" class="task-image-container">
@@ -104,7 +104,7 @@
         <!-- Multiple Choice -->
         <div v-else-if="task.taskID === 'multiple_choice'" class="multiple-choice-container">
           <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
-            <p class="question-text margin-bottom">{{ qi + 1 }}) {{ q.text }}</p>
+            <p class="question-text margin-bottom" v-html="qi + 1 + ') ' + q.text"></p>
 
             <!-- Добавлено: отображение картинки для вопроса, если она есть -->
             <div v-if="q.questionPicture" class="question-image-container">
@@ -132,7 +132,7 @@
             <!-- Кнопка Explain появляется сразу после выбора ответа -->
             <div v-if="answers[index][qi]" class="explain-container">
               <div v-if="expandedExplanations[index]?.[qi]" class="explanation-content">
-                <p>{{ q.explanation }}</p>
+                <p v-html="q.explanation"></p>
               </div>
               <button
                 class="explain-button"

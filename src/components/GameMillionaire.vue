@@ -798,7 +798,7 @@ const toggleShuffle = () => {
   height: 20px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
@@ -825,13 +825,13 @@ const toggleShuffle = () => {
 }
 
 .question-container {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .question-card {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
-  padding: 30px;
+  padding: 20px 10px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   border: 3px solid #fff;
@@ -867,8 +867,8 @@ const toggleShuffle = () => {
   font-size: 24px;
   font-weight: 600;
   color: white;
-  margin-bottom: 20px;
-  line-height: 1.4;
+  margin-bottom: 1px;
+  line-height: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -882,7 +882,7 @@ const toggleShuffle = () => {
 .options-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 15px;
+  gap: 5px;
   margin-bottom: 30px;
 }
 
@@ -954,14 +954,10 @@ const toggleShuffle = () => {
 }
 
 /* Стили для подсказок */
-.hints-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 30px;
-}
+
 
 .hint-button {
+  line-height: 15px;
   background: linear-gradient(135deg, #ffd89b, #19547b);
   border: none;
   border-radius: 15px;
@@ -1259,8 +1255,8 @@ const toggleShuffle = () => {
   }
 
   .option-card {
-    padding: 15px;
-    min-height: 70px;
+    padding: 10px;
+    min-height: 60px;
   }
 
   .error-text, .positive-text {
@@ -1275,33 +1271,7 @@ const toggleShuffle = () => {
 }
 
 
-.shuffle-control-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
 
-.shuffle-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-
-  input {
-    display: none;
-  }
-}
 
 .toggle-slider {
   position: relative;
@@ -1373,7 +1343,7 @@ input:checked + .toggle-slider {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   transition: all 0.3s ease;
 
   /* Компактный режим */
@@ -1490,14 +1460,14 @@ input:checked + .toggle-slider {
 .shuffle-control-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .shuffle-toggle {
   display: flex;
   align-items: center;
   gap: 12px;
-  cursor: pointer;
+  cursor: none;
   padding: 10px 16px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 25px;

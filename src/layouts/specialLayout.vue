@@ -11,8 +11,8 @@
     <div class="top-menu-wrapper" :class="{ collapsed: isMenuCollapsed }">
       <div class="top-menu-bar">
         <button class="menu-button" @click="showAboutGame">⚙️</button>
-        <button class="menu-button" @click="otherGames">Задания</button>
-        <button class="menu-button" @click="restartGame">Заново</button>
+        <button class="menu-button" @click="otherGames">Задание</button>
+        <button class="menu-button" @click="restartGame">Обновить</button>
         <button class="menu-button" @click="changeSet">Миссии</button>
 
         <!-- Кнопка с визуалом LegendaryMode -->

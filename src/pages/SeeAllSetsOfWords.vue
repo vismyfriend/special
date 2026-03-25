@@ -89,10 +89,7 @@
                 }"
               >
                 <div class="card-content">
-                  <span class="card-description">
-                    {{ missionItem.missionVisibleName }}
-<!--                    ( {{ getActiveSubTasksCount(missionItem) }} )-->
-                  </span>
+                  <span class="card-description" v-html="missionItem.missionVisibleName"></span>
                   <span class="card-icons">
                     <span class="expand-icon">
                       {{ isSubTasksExpanded(missionItem) ?
@@ -222,9 +219,7 @@
               }"
             >
               <div class="card-content">
-                <span class="card-description">
-                  {{ missionItem.missionVisibleName }}
-                </span>
+                <span class="card-description" v-html="missionItem.missionVisibleName"></span>
                 <span class="card-icons">
                   <span class="card-stars" v-if="missionItem.stars">
                     {{ getLevelStars(missionItem.stars) }}
@@ -584,8 +579,9 @@
               }"
             >
               <div class="card-content">
-                <span class="card-description">
-                  {{ currentSetOfWords.missionVisibleName }}
+                <span class="card-description"
+                      v-html="currentSetOfWords.missionVisibleName"
+                >
                 </span>
                 <span class="card-icons">
                   <span class="card-stars" v-if="currentSetOfWords.stars">
@@ -751,7 +747,6 @@ const matchesLevel = (item) => {
   if (currentLevel.value === 'lvl365') {
     return true;
   }
-
   if (!item.lvl) {
     return currentLevel.value === 'lvlAll';
   }

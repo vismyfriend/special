@@ -1646,6 +1646,44 @@ const GameTestsSeedData = {
 
     ]
   },
+  AreAmIs0: {
+    mainDescription: "Не бойтесь ошибаться",
+    tasks: [
+      {
+        taskDescription: 'Выьирайте по логике ответ:',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: null,
+        questions: [
+          {
+            text: "crocodile ___ green <br>(крокодил зеленый)",
+            options: {
+              A: "are",
+              B: "am",
+              C: "is",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C"
+          },
+          {
+            text: "Snow ___ yellow ! <br> (Снег жёлтый)",
+            options: {
+              A: "are",
+              B: "is",
+              C: "is not",
+              D: "am",
+              E: "not",
+            },
+            correctAnswer: ["B","C"],
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+
+          },
+        ]
+      },
+
+    ]
+  },
 }
 
 export default GameTestsSeedData

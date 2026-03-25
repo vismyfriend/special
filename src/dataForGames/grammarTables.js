@@ -23,7 +23,7 @@ export const grammarTables = {
         {
           cells: [
             { content: 'hints', classes: 'evidence-tag green' },
-            { content: 'Их называют невидимки потому что в русском переводе их не видно <br><br> they are invisible<br> ', classes: 'notes', colspan: 3, isBlurred: true }
+            { content: 'Их называют невидимки потому что в русском переводе их не видно <br><br>&nbsp&nbsp&nbsp&nbsp<u>they</u> are <u>invisible</u><br><br>&nbsp&nbsp&nbsp&nbsp&nbsp<u>они</u>&nbsp&nbsp<u>невидимые</u> ', classes: 'notes', colspan: 3, isBlurred: true }
           ]
         },
 
@@ -36,21 +36,21 @@ export const grammarTables = {
           cells: [
             { content: 'I', classes: 'verb' },
             { content: 'AM', classes: 'verb-alias' },
-            { content: 'happy', classes: 'verb' },
+            { content: 'invisible', classes: 'verb' },
           ]
         },
         {
           cells: [
             { content: 'You <br> We <br> They', classes: 'verb' },
             { content: 'ARE', classes: 'verb-alias' },
-            { content: 'happy', classes: 'verb' },
+            { content: 'invisible', classes: 'verb' },
           ]
         },
         {
           cells: [
             { content: 'It <br> He <br> She', classes: 'verb' },
             { content: 'IS', classes: 'verb-alias' },
-            { content: 'happy', classes: 'verb' },
+            { content: 'invisible', classes: 'verb' },
 
           ]
         },
@@ -163,6 +163,137 @@ export const grammarTables = {
             { content: ' . . . . . . . . . . . . . .', classes: ['notes', 'blurred'], colspan: 2 }
           ]
         }
+      ]
+    }
+  },
+  'test-audio-and-pic': {
+    id: 'dev',
+    title: 'разработчик',
+    description: 'Необязательно указывать',
+    countdownTime: 77000,
+    tableConfig: {
+      rows: [
+        {
+          cells: [
+            { content: 'Name', classes: 'notes-label', rowspan: 1 },
+            { content: 'Пример имени<br>"name example"<br> таблица 112', classes: 'case-title', colspan: 3,
+              // Можно добавить аудио для заголовка
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
+            }
+          ]
+        },
+        {
+          cells: [
+            { content: 'Rule', classes: 'evidence-tag', rowspan: 1 },
+            {
+              content: `<div class="note-line">We use P.S. when we talk about everyday usual actions</div>`,
+              classes: 'rules',
+              isBlurred: true,
+              colspan: 2,
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no1.mp3', import.meta.url).href,
+            }
+          ]
+        },
+        {
+          cells: [
+            { content: 'hints', classes: 'evidence-tag green' },
+            {
+              content: 'never, almost never, rarely, seldom, not often, often, usually, sometimes, from time to time, once a day, twice a week, three times a month, every year, always',
+              classes: 'notes',
+              colspan: 2,
+              isBlurred: true
+            }
+          ]
+        },
+        {
+          cells: [
+            { content: 'Who', classes: 'notes-label' },
+            {
+              content: 'It, he, She',
+              classes: 'blue-font',
+              isBlurred: true,
+              // Пример с картинкой
+              image: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+              imageAlt: 'She'
+            },
+            {
+              content: 'I, You, We, They',
+              classes: 'blue-font',
+              isBlurred: true,
+              image: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+              imageAlt: 'They'
+            }
+          ]
+        },
+        {
+          cells: [
+            { content: 'verbs', classes: 'suspect', rowspan: 4 }
+          ]
+        },
+        {
+          cells: [
+            {
+              content: 'run<u>s</u>',
+              classes: 'verb',
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no2.mp3', import.meta.url).href,
+            },
+            {
+              content: 'run',
+              classes: 'verb-alias',
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no3.mp3', import.meta.url).href,
+            }
+          ]
+        },
+        {
+          cells: [
+            {
+              content: 'kiss<u>es</u>',
+              classes: 'verb',
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no4.mp3', import.meta.url).href,
+            },
+            {
+              content: 'kiss',
+              classes: 'verb-alias',
+            }
+          ]
+        },
+        {
+          cells: [
+            {
+              classes: 'blue-font',
+              isBlurred: true,
+              image: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+              imageAlt: 'confusedG',
+              imagePosition: 'top',  // left | right | top | inline - можно удалить тогда автоматически будет inline встроено
+            },
+            {
+              content: 'watch',
+              classes: 'verb-alias',
+              audio:   new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
+
+            }
+          ]
+        },
+        {
+          cells: [
+            { content: 'Remem <br>-ber', classes: ['notes-label', 'vertical-text'],
+              rowspan: 3, // ← объединяем 3 строки
+            },
+            {
+              classes: 'notes',
+              isBlurred: false,
+              colspan: 2,
+
+              // Пример с картинкой
+              image: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+              imageAlt: 'Grammar tip',
+              imagePosition: 'fullCell', // left | right | top | fullCell | bottom
+              style: 'height: 100px; min-height: 100px;', // ← добавляем
+
+            }
+          ]
+        },
+
       ]
     }
   },
