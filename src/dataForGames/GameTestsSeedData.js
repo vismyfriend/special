@@ -1647,10 +1647,11 @@ const GameTestsSeedData = {
     ]
   },
   AreAmIs0: {
-    mainDescription: "Не бойтесь ошибаться",
+    mainDescription: "Все делают ошибки 🤯",
+    secondDescription: "(не бойтесь ошибиться, а затем исправить на другой ответ)",
     tasks: [
       {
-        taskDescription: 'Выьирайте по логике ответ:',
+        taskDescription: 'читай вслух и нажимай ответы',
         audio: null,
         taskID: "multiple_choice",
         taskPicture: null,
@@ -1664,7 +1665,9 @@ const GameTestsSeedData = {
               C: "is",
               D: "ничего не нужно вставлять"
             },
-            correctAnswer: "C"
+            correctAnswer: "C",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+
           },
           {
             text: "Snow ___ yellow ! <br> (Снег жёлтый)",
@@ -1677,8 +1680,151 @@ const GameTestsSeedData = {
             },
             correctAnswer: ["B","C"],
             explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
-
           },
+          {
+            text: "I ___ a student.<br>(Я студент)",
+            options: {
+              A: "is",
+              B: "are",
+              C: "am",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+          },
+          {
+            text: "She ___ my best friend.<br>(Она моя лучшая подруга)",
+            options: {
+              A: "am",
+              B: "are",
+              C: "is",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+          },
+          {
+            text: "We ___ happy.<br>(Мы счастливы)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+          },
+          {
+            text: "Your dog ___ angry<br>(Ваша собака злая)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              E: "ничего не нужно вставлять"
+
+            },
+            correctAnswer: "B",
+            explanation: "Ваша собака = она (she is / it is)"
+          },
+          {
+            text: "___ I late?<br>(Я опоздал?)",
+            options: {
+              A: "Am",
+              B: "Is",
+              C: "Are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "A",
+            explanation: "Am I late ? — вопрос<br><br>I am late . - утверждение"
+          },
+                    {
+            text: "You and I ___ good.<br>(Ты и я хорошие)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: "You and I = 2 человека <br><br> we (мы) are good"
+          },
+          {
+            text: "My bro and I ___ sportsmen.<br>(Мой брат и я спортсмены)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: "He and I = 2 человека <br><br> we (мы) are спортики"
+          },
+          {
+            text: "Students ___ here.<br>(Студенты здесь)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: " they = students = они + are"
+          },
+          {
+            text: "One of my friends ___ a doctor.<br>(Один из моих друзей врач)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "B",
+            explanation: "One of my friends = один из друзей<br><br>He/She + is"
+          },
+          {
+            text: "She and he ___ a team.<br>(Она и он команда)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: "2 человека = Она и он<br> Они = They are "
+          },
+          {
+            text: "Shrek and Fiona ___ green.<br>(Шрэк и Фиона зелёные)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "C",
+            explanation: "2 персонажа = Она и он<br> Они = They are<br>Огры, орки, они"
+          },
+          {
+            text: "Vincent ___ not very stupid.<br>(Винсент не очень туп)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "B",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+          },
+          {
+            text: "Pizza ___ our favorite food.<br>(Пицца - наша любимая еда)",
+            options: {
+              A: "am",
+              B: "is",
+              C: "are",
+              D: "ничего не нужно вставлять"
+            },
+            correctAnswer: "B",
+            explanation: " am + я<br><br>are + ты <br>are + вы <br>are + мы <br>are + они<br><br>is + он <br>is + она <br>is + оно <br>is + это"
+          }
         ]
       },
 

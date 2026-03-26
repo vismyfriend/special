@@ -101,6 +101,66 @@ const shortSentencesWordOrderData = {
     },
 
   ],
+  helloEverybody: [
+    { eng: "hello everybody", ru: "Привет всем", hint: "/ хэлОу Эврибади /",
+      // audio: new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    { eng: "my name is agent Bond", ru: "Моё имя агент Бонд", hint: "/ май нЭйм из Эй джЭнт бонд /",
+      // audio: new URL('../assets/audio/SoundEffects/NoSoundsWrongAnswers/no.mp3', import.meta.url).href,
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "my pets are snakes🐍",
+      ru: "Мои домашние животные - змеи",
+      hint: "/ май пЭтс а снЭЙкс /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "I like snakes🐍 a lot",
+      ru: "Мне очень нравятся змеи",
+      hint: "/ ай лайк снЭЙкс Э лот /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "I am crazy about cucumbers🥒",
+      ru: "Я с ума схожу по огурчикам",
+      hint: "/ай эм крЭйзи ЭбАут кЬЮ кАм бЭрz /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "I love cucumbers🥒 very much",
+      ru: "Я очень сильно люблю огурцы",
+      hint: "/ ай лАв кЬЮ кАм бЭрz вЭри мАч /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "my hobby is gadgets📱💻🎧🤖🔌📷🎮🕹",
+      ru: "Моё хобби это гаджеты(приборы)",
+      hint: "/ май хобби из гАджэтс /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "I collect gadgets📱💻🎧🤖🔌📷🎮🕹",
+      ru: "Я коллекционирую приборы",
+      hint: "/ ай коллЭкт гАджэтс /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "But my collection of gadgets📱📷🎧 is not very big yet",
+      ru: "Но моя коллекция девайсов не очень большая пока что",
+      hint: "/ бат май колЭкшэн ОВ гАджэтс из нот вэри биг йЕт /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+    {
+      eng: "sorry but I didn't get it",
+      ru: "извините но до меня не дошло",
+      hint: "/ сОри бат ай дИднт гет ит /",
+      pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+    },
+
+  ],
+
   pattern: [
     { eng: "One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve"},
     { eng: "I like Vincent very much."},

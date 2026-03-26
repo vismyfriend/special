@@ -139,15 +139,15 @@
     <button
       class="spin-btn"
       @click="spin"
-      :disabled="isAnySpinning || balance < 3 || verbsData.length === 0"
+      :disabled="isAnySpinning || balance < 10 || verbsData.length === 0"
       :class="{
         'jackpot-mode': isJackpotSpin,
-        'no-money': balance < 3
+        'no-money': balance < 10
       }"
     >
       <span class="spin-icon">{{ isAnySpinning ? '🌀' : (isJackpotSpin ? '⭐' : '🎰') }}</span>
       <span class="spin-text">{{ spinButtonText }}</span>
-      <span class="spin-cost">$3</span>
+      <span class="spin-cost">$10</span>
     </button>
 
     <!-- Модальное окно с заданием -->
@@ -165,7 +165,7 @@
         <div class="task-modal-footer">
           <button class="task-done-btn" @click="completeTask">
             <span class="btn-text">✓ I'VE DONE IT!</span>
-            <span class="btn-reward">+$10</span>
+            <span class="btn-reward">+$5</span>
           </button>
           <button class="task-skip-btn" @click="skipTask">
             <span class="btn-text">✗ I DON'T WANT TO</span>
@@ -236,9 +236,13 @@ const spinCount = ref(0);
 const winAmount = ref(0);
 const spinningStates = ref([false, false, false]);
 const tableBodyRef = ref(null);
-// Добавь после других состояний
+
+
 const hasSpunOnce = ref(false);
 const hasSpunTwice = ref(false);
+
+const tutorialSpinCount = ref(0); // Счётчик обучающих спинов
+const isTutorialSpin = ref(true); // Флаг обучающего режима
 
 
 const showSecretModal = ref(false);
@@ -280,7 +284,6 @@ const checkSecretAnswer = () => {
   }
 };
 
-// Добавь после других состояний
 const taskMessages = ref([
   { text: 'Скажи любое предложение со словом \n {word}', type: 'sentence' },
   { text: 'Составь ОТРИЦАНИЕ со словом \n {word}', type: 'negative' },
@@ -300,6 +303,28 @@ const taskMessages = ref([
   { text: 'Напиши пальцем на столе слово \n {word}', type: 'write' }
 ]);
 
+
+// Эмодзи для обучающих спинов
+const tutorialEmojis = [
+  { spin: 1, v1: "🍒", v2: "🍒", v3: "🍒", message: "🍒 Смотри! Если выпадают одинаковые эмодзи — это выигрыш! 🎰" },
+  { spin: 2, v1: "🍒", v2: "🍒", v3: "🍊", message: "🍒🍒 Два одинаковых — +$20!" },
+  { spin: 3, v1: "🍊", v2: "🍒", v3: "🍌", message: "🍊🍒🍌 А если все разные — нет выигрыша" },
+  { spin: 4, v1: "🥒", v2: "🍸", v3: "🍒", message: "🥒🍸🍒 Видишь? Нужно ждать совпадений!" },
+  { spin: 5, v1: "🍒", v2: "🍊", v3: "🍌", message: "🎰 Теперь понял механику? Жми SPIN и учи глаголы!" }
+];
+
+
+const funEmojis = [
+  { emoji: "🙈", name: "обезьянка-невидимка" },
+  { emoji: "🙉", name: "обезьянка-неслышка" },
+  { emoji: "🙊", name: "обезьянка-неговорун" },
+  { emoji: "❓", name: "вопрос" },
+  { emoji: "🎲", name: "кубик" },
+  { emoji: "🌈", name: "радуга" },
+  { emoji: "🎈", name: "шарик" },
+  { emoji: "🍕", name: "пицца" },
+
+];
 const currentTask = ref(null);
 const showTaskModal = ref(false);
 const consecutiveLosses = ref(0); // Счетчик проигрышей подряд
@@ -514,14 +539,14 @@ const updateBalanceWithWin = (win) => {
 const spinButtonText = computed(() => {
   if (verbsData.value.length === 0) return 'LOADING...';
   if (isAnySpinning.value) return 'It iS SPINNING - вращается ';
-  if (balance.value < 3) return 'NO MONEY = NO HONEY, honey';
+  if (balance.value < 10) return 'NO MONEY = NO HONEY, honey';
   if (isJackpotSpin.value) return 'Vincent loves you!';
   return 'CLICK TO SPIN (чтобы вращать)';
 });
 
 // Функция вращения
 const spin = () => {
-  if (isAnySpinning.value || balance.value < 3 || !verbsData.value.length) return;
+  if (isAnySpinning.value || balance.value < 10 || !verbsData.value.length) return;
 
   // Логика поэтапного появления
   if (!hasSpunOnce.value) {
@@ -530,7 +555,7 @@ const spin = () => {
     hasSpunTwice.value = true;
   }
 
-  balance.value -= 3;
+  balance.value -= 10;
   if (spinTimeout) clearTimeout(spinTimeout);
 
   spinCount.value++;
@@ -539,23 +564,72 @@ const spin = () => {
   let spinIterations = 0;
   const maxIterations = 15;
 
+  // Для спинов 1-3 выбираем один глагол, который будет использоваться на всех барабанах
+  let baseVerb = null;
+  if (spinCount.value === 1 || spinCount.value === 2 || spinCount.value === 3) {
+    baseVerb = verbsData.value[Math.floor(Math.random() * verbsData.value.length)];
+  }
+
   const spinInterval = setInterval(() => {
-    const randomVerb = verbsData.value[Math.floor(Math.random() * verbsData.value.length)];
+    let randomVerb;
+
+    // Для спинов 1-3 используем один и тот же глагол
+    if (spinCount.value === 1 || spinCount.value === 2 || spinCount.value === 3) {
+      randomVerb = baseVerb;
+    } else {
+      randomVerb = verbsData.value[Math.floor(Math.random() * verbsData.value.length)];
+    }
+
+    // Определяем, какие эмодзи показывать в зависимости от номера спина
+    let v1Display = randomVerb.v1;
+    let v2Display = randomVerb.v2;
+    let v3Display = randomVerb.v3;
+    let v1Pron = randomVerb.v1Pron;
+    let v2Pron = randomVerb.v2Pron;
+    let v3Pron = randomVerb.v3Pron;
+    let v1Ru = randomVerb.v1ru;
+    let v2Ru = randomVerb.v2ru;
+    let v3Ru = randomVerb.v3ru;
+
+    // Спин 1: первый барабан — V1, второй и третий — вишенки
+    if (spinCount.value === 1) {
+      v2Display = "🍒";
+      v3Display = "🍒";
+      v2Pron = "";
+      v3Pron = "";
+      // переводы оставляем как есть (v2Ru и v3Ru уже содержат переводы V2 и V3)
+    }
+    // Спин 2: второй барабан — V2, первый и третий — эмодзи
+    else if (spinCount.value === 2) {
+      v1Display = "🍊";
+      v3Display = "🍌";
+      v1Pron = "";
+      v3Pron = "";
+      // v1Ru и v3Ru оставляем как есть (но они будут заменены ниже)
+    }
+    // Спин 3: третий барабан — V3, первый и второй — эмодзи
+    else if (spinCount.value === 3) {
+      v1Display = "🥒";
+      v2Display = "🍸";
+      v1Pron = "";
+      v2Pron = "";
+      // v1Ru и v2Ru оставляем как есть
+    }
 
     if (spinningStates.value[0]) {
-      reels.value[0].currentWord = randomVerb.v1;
-      reels.value[0].currentPron = randomVerb.v1Pron;
-      reels.value[0].currentRu = randomVerb.v1ru;
+      reels.value[0].currentWord = v1Display;
+      reels.value[0].currentPron = v1Pron;
+      reels.value[0].currentRu = v1Ru;
     }
     if (spinningStates.value[1]) {
-      reels.value[1].currentWord = randomVerb.v2;
-      reels.value[1].currentPron = randomVerb.v2Pron;
-      reels.value[1].currentRu = randomVerb.v2ru;
+      reels.value[1].currentWord = v2Display;
+      reels.value[1].currentPron = v2Pron;
+      reels.value[1].currentRu = v2Ru;
     }
     if (spinningStates.value[2]) {
-      reels.value[2].currentWord = randomVerb.v3;
-      reels.value[2].currentPron = randomVerb.v3Pron;
-      reels.value[2].currentRu = randomVerb.v3ru;
+      reels.value[2].currentWord = v3Display;
+      reels.value[2].currentPron = v3Pron;
+      reels.value[2].currentRu = v3Ru;
     }
 
     spinIterations++;
@@ -563,7 +637,16 @@ const spin = () => {
     if (spinIterations >= maxIterations) {
       clearInterval(spinInterval);
 
-      if (isJackpotSpin.value) {
+      // Устанавливаем финальные значения currentWords
+      if (spinCount.value === 1 || spinCount.value === 2 || spinCount.value === 3) {
+        // Для спинов 1-3 используем один глагол
+        currentWords.value = {
+          v1: baseVerb.v1,
+          v2: baseVerb.v2,
+          v3: baseVerb.v3,
+          ru: baseVerb.ru
+        };
+      } else if (isJackpotSpin.value) {
         const jackpotVerb = verbsData.value[Math.floor(Math.random() * verbsData.value.length)];
         currentWords.value = {
           v1: jackpotVerb.v1,
@@ -591,27 +674,98 @@ const spin = () => {
           spinningStates.value[index] = false;
 
           if (index === 0) {
-            const v1Verb = verbsData.value.find(v => v.v1 === currentWords.value.v1);
-            reels.value[0].currentWord = currentWords.value.v1;
-            reels.value[0].currentPron = v1Verb?.v1Pron || '';
-            reels.value[0].currentRu = v1Verb?.v1ru || '';
-          } else if (index === 1) {
-            const v2Verb = verbsData.value.find(v => v.v2 === currentWords.value.v2);
-            reels.value[1].currentWord = currentWords.value.v2;
-            reels.value[1].currentPron = v2Verb?.v2Pron || '';
-            reels.value[1].currentRu = v2Verb?.v2ru || '';
-          } else {
-            const v3Verb = verbsData.value.find(v => v.v3 === currentWords.value.v3);
-            reels.value[2].currentWord = currentWords.value.v3;
-            reels.value[2].currentPron = v3Verb?.v3Pron || '';
-            reels.value[2].currentRu = v3Verb?.v3ru || '';
+            if (spinCount.value === 1) {
+              // Первый барабан — V1
+              const v1Verb = verbsData.value.find(v => v.v1 === currentWords.value.v1);
+              reels.value[0].currentWord = currentWords.value.v1;
+              reels.value[0].currentPron = v1Verb?.v1Pron || '';
+              reels.value[0].currentRu = v1Verb?.v1ru || '';
+            }
+            else if (spinCount.value === 2) {
+              // Первый барабан — апельсин
+              reels.value[0].currentWord = "🍊";
+              reels.value[0].currentPron = '';
+              // Подставляем перевод V1
+              const v1Verb = verbsData.value.find(v => v.v1 === currentWords.value.v1);
+              reels.value[0].currentRu = v1Verb?.v1ru || '🍊';
+            }
+            else if (spinCount.value === 3) {
+              // Первый барабан — огурец
+              reels.value[0].currentWord = "🥒";
+              reels.value[0].currentPron = '';
+              const v1Verb = verbsData.value.find(v => v.v1 === currentWords.value.v1);
+              reels.value[0].currentRu = v1Verb?.v1ru || '🥒';
+            }
+            else {
+              const v1Verb = verbsData.value.find(v => v.v1 === currentWords.value.v1);
+              reels.value[0].currentWord = currentWords.value.v1;
+              reels.value[0].currentPron = v1Verb?.v1Pron || '';
+              reels.value[0].currentRu = v1Verb?.v1ru || '';
+            }
+          }
+          else if (index === 1) {
+            if (spinCount.value === 1) {
+              // Второй барабан — вишенка, перевод V2
+              reels.value[1].currentWord = "🍒";
+              reels.value[1].currentPron = '';
+              const v2Verb = verbsData.value.find(v => v.v2 === currentWords.value.v2);
+              reels.value[1].currentRu = v2Verb?.v2ru || '';
+            }
+            else if (spinCount.value === 2) {
+              // Второй барабан — V2
+              const v2Verb = verbsData.value.find(v => v.v2 === currentWords.value.v2);
+              reels.value[1].currentWord = currentWords.value.v2;
+              reels.value[1].currentPron = v2Verb?.v2Pron || '';
+              reels.value[1].currentRu = v2Verb?.v2ru || '';
+            }
+            else if (spinCount.value === 3) {
+              // Второй барабан — мартини
+              reels.value[1].currentWord = "🍸";
+              reels.value[1].currentPron = '';
+              const v2Verb = verbsData.value.find(v => v.v2 === currentWords.value.v2);
+              reels.value[1].currentRu = v2Verb?.v2ru || '🍸';
+            }
+            else {
+              const v2Verb = verbsData.value.find(v => v.v2 === currentWords.value.v2);
+              reels.value[1].currentWord = currentWords.value.v2;
+              reels.value[1].currentPron = v2Verb?.v2Pron || '';
+              reels.value[1].currentRu = v2Verb?.v2ru || '';
+            }
+          }
+          else {
+            if (spinCount.value === 1) {
+              // Третий барабан — вишенка, перевод V3
+              reels.value[2].currentWord = "🍒";
+              reels.value[2].currentPron = '';
+              const v3Verb = verbsData.value.find(v => v.v3 === currentWords.value.v3);
+              reels.value[2].currentRu = v3Verb?.v3ru || '';
+            }
+            else if (spinCount.value === 2) {
+              // Третий барабан — банан
+              reels.value[2].currentWord = "🍌";
+              reels.value[2].currentPron = '';
+              const v3Verb = verbsData.value.find(v => v.v3 === currentWords.value.v3);
+              reels.value[2].currentRu = v3Verb?.v3ru || '🍌';
+            }
+            else if (spinCount.value === 3) {
+              // Третий барабан — V3
+              const v3Verb = verbsData.value.find(v => v.v3 === currentWords.value.v3);
+              reels.value[2].currentWord = currentWords.value.v3;
+              reels.value[2].currentPron = v3Verb?.v3Pron || '';
+              reels.value[2].currentRu = v3Verb?.v3ru || '';
+            }
+            else {
+              const v3Verb = verbsData.value.find(v => v.v3 === currentWords.value.v3);
+              reels.value[2].currentWord = currentWords.value.v3;
+              reels.value[2].currentPron = v3Verb?.v3Pron || '';
+              reels.value[2].currentRu = v3Verb?.v3ru || '';
+            }
           }
 
           if (index === 2) {
             const win = checkMatchesAndCalculateWin();
             updateBalanceWithWin(win);
 
-            // Отслеживаем проигрыши
             if (win === 0) {
               consecutiveLosses.value++;
               lastWinAmount.value = 0;
@@ -620,9 +774,7 @@ const spin = () => {
               lastWinAmount.value = win;
             }
 
-            // Проверяем, нужно ли показать задание
             checkAndShowTask();
-
             scrollToV2();
           }
         }, delay);
@@ -630,6 +782,8 @@ const spin = () => {
     }
   }, 60);
 };
+
+
 // Навигация назад
 const goBack = () => {
   if (spinTimeout) clearTimeout(spinTimeout);

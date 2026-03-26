@@ -5,7 +5,8 @@
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
       <div class="header-bottom">
-        <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
+<!--        <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>-->
+        <p class="second-description" v-html="exerciseData.secondDescription"></p>
         <div class="task-counter">
           {{ currentTaskIndex + 1 }}/{{ shuffledTasks.length }}
         </div>
@@ -1734,8 +1735,10 @@ const rainbowColors = [
   margin-bottom: 0.5rem;
 }
 
-.main-description {
+.main-description, .second-description {
   font-size: 1.125rem;
+  line-height: 15px;
+  padding: 5px;
   color: #4b5563;
 }
 

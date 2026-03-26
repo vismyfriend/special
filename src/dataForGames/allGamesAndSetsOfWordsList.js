@@ -296,7 +296,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
+      path: "/see-all-sets-of-words/helloEverybody/word-order-sortable",
       missionVisibleName: "Мишшн 2.2 Спик Инглиш",
       missionDescription: "Mission 2.2 speak English",
       id: 1001,
@@ -313,11 +313,67 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
-      path: "/grammar/test-audio-and-pic",
-      missionVisibleName: "test",
-      missionDescription: "0",
+      path: "/see-all-sets-of-words/AreAmIs0/tests-and-exams",
+      missionVisibleName: "Mission 3.1 <b>Test</b> / тЭст /",
+      missionDescription: "Test - Are Am Is - to be",
       id: 1001,
       active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
+      missionVisibleName: "Mission 3.2 Порядок слов 1",
+      missionDescription: "Mission 3.2 Word Order 1",
+      id: 1001,
+      active: true,
+    },
+
+    {
+
+      type: "subTasks",
+      missionVisibleName: "Useful Phrases",
+      missionDescription: "Юсфул фрЭйzиз (полезные фр...)",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up1/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 1",
+          missionDescription: "Юсфул фрЭйzиз 1",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up2/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 2",
+          missionDescription: "Юсфул фрЭйzиз 2",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up3/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 3",
+          missionDescription: "Юсфул фрЭйzиз 3",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up4/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 4",
+          missionDescription: "Юсфул фрЭйzиз 4",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+      ]
     },
     // {
     //   type: "hardcodedLink",
@@ -334,6 +390,8 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Present Simple",
       id: 1001,
       active: true,
+      lvl: ["lvl2"],
+
     },
 
     // {
@@ -365,6 +423,8 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
+      lvl: ["lvl1"],
+
       subTasks: [
         {
           type: "hardcodedLink",
