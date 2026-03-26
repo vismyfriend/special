@@ -1914,6 +1914,13 @@ export const allGamesAndSetsOfWordsList =
       active: true
     },
     {
+      missionName: "testDeepSeek",
+      missionVisibleName: "Test from DeepSeek",
+      missionDescription: "Test from DeepSeek",
+      id: 7,
+      active: true
+    },
+    {
       missionName: "introSetCutWires",
       missionVisibleName: "intro Set Cut Wires",
       missionDescription: "Вопросительные слова intro",

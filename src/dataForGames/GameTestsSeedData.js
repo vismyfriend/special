@@ -774,7 +774,7 @@ const GameTestsSeedData = {
               A: "with",
               B: "by",
               C: "for",
-              D: "b y",
+              D: "buy",
               E: "in"
             },
             correctAnswer: ["B","D"],
@@ -942,27 +942,17 @@ const GameTestsSeedData = {
             explanation: "The correct negative form is 'can't help'."
           },
           {
-            text: "And this is your ____.",
+            text: "Welcome to your new room, and this is your ____.",
             options: {
-              A: "desk",
-              B: "desks",
-              C: "a desk",
-              D: "an desk"
+              A: "new desk",
+              B: "the new desk",
+              C: "a new desk",
+              D: "an new desk"
             },
             correctAnswer: "A",
-            explanation: "The singular form 'desk' is correct."
+            explanation: "есть принадлежность ВАШЕ рабочее место - с притяжательными местоимениями не нужны артикли."
           },
-          {
-            text: "____ to the cinema.",
-            options: {
-              A: "We not often go",
-              B: "We don't go often",
-              C: "We don't often go",
-              D: "Often we don't go"
-            },
-            correctAnswer: "C",
-            explanation: "The correct adverb placement is 'don't often go'."
-          },
+
           {
             text: "What ____ do after school today?",
             options: {
@@ -972,7 +962,7 @@ const GameTestsSeedData = {
               D: "you"
             },
             correctAnswer: "A",
-            explanation: "The future form 'are you going to' is correct."
+            explanation: "Чем собираетесь заняться сегодня после школы? (что делаете после школы?) имеем ввиду не вообще каждый день а именно сегодня после школы какие планы?"
           },
           {
             text: "____ two airports in the city.",
@@ -1211,15 +1201,16 @@ const GameTestsSeedData = {
               D: "of"
             },
             correctAnswer: "A",
-            explanation: "The preposition 'on' indicates location."
+            explanation: "если ответили in - то сумка значит ВНУТРИ стола. Но стол который я представлял себе когда писал это предложение не имеет отверстия куда бы сумку можно было засунуть) Так что правильно ON - на столе. Но и in могло бы быть верно если бы я имел столько же воображения сколько и вы (отправьте мне скриншот этого, а то мне даже интересно увидит ли кто-то когда-то это объяснение. Thank you. Your Vincent!)"
           },
           {
-            text: "I'm Jeff Caine. Nice to ____ you, Mr Caine.",
+            text: "I'm James Bond!. <Br>- Nice to ____ you, Mr. Bond.",
             options: {
               A: "speak",
               B: "talk",
               C: "meet",
-              D: "watch"
+              D: "kisses",
+              E: "watch"
             },
             correctAnswer: "C",
             explanation: "The correct phrase is 'Nice to meet you'."
@@ -1263,6 +1254,348 @@ const GameTestsSeedData = {
 
     ]
   },
+  testDeepSeek: {
+    mainDescription: "Grammar & Vocabulary Test (30 questions)",
+    tasks: [
+      {
+        taskDescription: 'Совет от Vincentik: читайте ответы вслух - если звучит хорошо, то возможно ответ верный... но это не точно =)',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: null,
+        questions: [
+          {
+            text: "The concert ___ at 5 o'clock. Don't be late!",
+            options: {
+              A: "starts",
+              B: "will start",
+              C: "is starting",
+              D: "start"
+            },
+            correctAnswer: "A",
+            explanation: "Present Simple для расписаний и событий по расписанию."
+          },
+          {
+            text: "John is 1 year ___ than me.",
+            options: {
+              A: "older",
+              B: "elder",
+              C: "more old",
+              D: "old"
+            },
+            correctAnswer: "A",
+            explanation: "Сравнительная степень: older."
+          },
+          {
+            text: "What time ___ me?",
+            options: {
+              A: "did you call",
+              B: "have you called",
+              C: "were you calling",
+              D: "you called"
+            },
+            correctAnswer: "A",
+            explanation: "Past Simple для вопроса о действии в прошлом."
+          },
+          {
+            text: "Andrew ___ to Italy ___ Monday.",
+            options: {
+              A: "is flying, on",
+              B: "flies, at",
+              C: "will fly, in",
+              D: "fly, on"
+            },
+            correctAnswer: "A",
+            explanation: "Present Continuous для планов на будущее; on Monday."
+          },
+          {
+            text: "The woman ___ a snake.",
+            options: {
+              A: "was bitten by",
+              B: "was bit by",
+              C: "bitten by",
+              D: "was bite by"
+            },
+            correctAnswer: "A",
+            explanation: "Past Simple Passive: was bitten by."
+          },
+          {
+            text: "I ___ for 2 hours and she's not here.",
+            options: {
+              A: "have been waiting",
+              B: "have waited",
+              C: "am waiting",
+              D: "wait"
+            },
+            correctAnswer: "A",
+            explanation: "Present Perfect Continuous для действия, которое длится и результат важен сейчас."
+          },
+          {
+            text: "She would get $100 if she ___ this old chair.",
+            options: {
+              A: "sold",
+              B: "sells",
+              C: "would sell",
+              D: "will sell"
+            },
+            correctAnswer: "A",
+            explanation: "Second Conditional: if + Past Simple, would + infinitive."
+          },
+          {
+            text: "It is ___ show I've ever seen.",
+            options: {
+              A: "the worst",
+              B: "worst",
+              C: "the baddest",
+              D: "more bad"
+            },
+            correctAnswer: "A",
+            explanation: "Превосходная степень: the worst."
+          },
+          {
+            text: "I ___ this car for 7 years so far.",
+            options: {
+              A: "have had",
+              B: "have",
+              C: "had",
+              D: "have been having"
+            },
+            correctAnswer: "A",
+            explanation: "Present Perfect для действия, начавшегося в прошлом и продолжающегося до сих пор."
+          },
+          {
+            text: "Mark ___ to hospital in an ambulance.",
+            options: {
+              A: "was taken",
+              B: "took",
+              C: "was took",
+              D: "were taken"
+            },
+            correctAnswer: "A",
+            explanation: "Past Simple Passive: was taken."
+          },
+          {
+            text: "Don't call me at 5 p.m. tomorrow, I ___ my homework.",
+            options: {
+              A: "will be doing",
+              B: "will do",
+              C: "am doing",
+              D: "do"
+            },
+            correctAnswer: "A",
+            explanation: "Future Continuous для действия в процессе в определённый момент в будущем."
+          },
+          {
+            text: "This is ___ coffee I've ever drunk.",
+            options: {
+              A: "the worst",
+              B: "the baddest",
+              C: "more bad",
+              D: "worst"
+            },
+            correctAnswer: "A",
+            explanation: "Превосходная степень: the worst."
+          },
+          {
+            text: "The royal wedding ___ by millions of people tomorrow.",
+            options: {
+              A: "will be watched",
+              B: "will watch",
+              C: "is watched",
+              D: "was watched"
+            },
+            correctAnswer: "A",
+            explanation: "Future Simple Passive: will be watched."
+          },
+          {
+            text: "This is ___ biggest shop in the mall.",
+            options: {
+              A: "the",
+              B: "a",
+              C: "-",
+              D: "an"
+            },
+            correctAnswer: "A",
+            explanation: "Определённый артикль с превосходной степенью."
+          },
+          {
+            text: "If I ___ you, I wouldn't eat that cake.",
+            options: {
+              A: "were",
+              B: "was",
+              C: "am",
+              D: "would be"
+            },
+            correctAnswer: "A",
+            explanation: "Second Conditional: were для всех лиц."
+          },
+          {
+            text: "You left ___ this box?",
+            options: {
+              A: "What in",
+              B: "What",
+              C: "Where",
+              D: "When"
+            },
+            correctAnswer: "A",
+            explanation: "Вопрос о содержимом: 'What in this box?'"
+          },
+          {
+            text: "Josh ___ to the cinema with his friends tonight.",
+            options: {
+              A: "is going",
+              B: "goes",
+              C: "will go",
+              D: "went"
+            },
+            correctAnswer: "A",
+            explanation: "Present Continuous для планов на будущее."
+          },
+          {
+            text: "We met when ___ in France.",
+            options: {
+              A: "we were living",
+              B: "we lived",
+              C: "we have lived",
+              D: "we live"
+            },
+            correctAnswer: "A",
+            explanation: "Past Continuous для фонового действия."
+          },
+          {
+            text: "She ___ happy when she finds out what you have done.",
+            options: {
+              A: "won't be",
+              B: "isn't",
+              C: "wasn't",
+              D: "hasn't been"
+            },
+            correctAnswer: "A",
+            explanation: "Future Simple в придаточном времени с when."
+          },
+          {
+            text: "I knew he ___ at 7 p.m. yesterday.",
+            options: {
+              A: "was working",
+              B: "worked",
+              C: "has worked",
+              D: "works"
+            },
+            correctAnswer: "A",
+            explanation: "Past Continuous для действия в процессе в определённый момент в прошлом."
+          },
+          {
+            text: "They ___ climb the wall but the police caught them right there.",
+            options: {
+              A: "were able to",
+              B: "could",
+              C: "can",
+              D: "managed"
+            },
+            correctAnswer: "A",
+            explanation: "'Were able to' — смогли (однократное действие в прошлом)."
+          },
+          {
+            text: "Before he got married he ___ a lot.",
+            options: {
+              A: "used to travel",
+              B: "would travel",
+              C: "traveled",
+              D: "was traveling"
+            },
+            correctAnswer: "A",
+            explanation: "'Used to' для привычек в прошлом."
+          },
+          {
+            text: "This is ___ my house.",
+            options: {
+              A: "-",
+              B: "a",
+              C: "the"
+            },
+            correctAnswer: "A",
+            explanation: "Артикль не нужен с притяжательными местоимениями."
+          },
+          {
+            text: "Who ___ the fight?",
+            options: {
+              A: "began",
+              B: "begin",
+              C: "did begin",
+              D: "was begin"
+            },
+            correctAnswer: "A",
+            explanation: "Past Simple неправильного глагола: began."
+          },
+          {
+            text: "Charles ___ in Thailand three times last year.",
+            options: {
+              A: "was",
+              B: "has been",
+              C: "have been",
+              D: "had been"
+            },
+            correctAnswer: "A",
+            explanation: "Past Simple для законченного действия в прошлом с указанием времени (last year)."
+          },
+          {
+            text: "___ you help me with the housework, please?",
+            options: {
+              A: "Could",
+              B: "Are you going to",
+              C: "Should"
+            },
+            correctAnswer: "A",
+            explanation: "Вежливая просьба: 'Could you...?'"
+          },
+          {
+            text: "___ I go out?",
+            options: {
+              A: "Can",
+              B: "May",
+              C: "both are correct"
+            },
+            correctAnswer: "C",
+            explanation: "И can, и may допустимы для разрешения."
+          },
+          {
+            text: "I ___ all my homework by 6 o'clock yesterday.",
+            options: {
+              A: "had done",
+              B: "have done",
+              C: "was doing",
+              D: "have been doing"
+            },
+            correctAnswer: "A",
+            explanation: "Past Perfect для действия, завершённого к определённому моменту в прошлом."
+          },
+          {
+            text: "___ open the window, please?",
+            options: {
+              A: "Could you",
+              B: "Must you",
+              C: "Are you able"
+            },
+            correctAnswer: "A",
+            explanation: "Вежливая просьба: 'Could you...?'"
+          },
+          {
+            text: "I told you he ___ going to come to the party.",
+            options: {
+              A: "was",
+              B: "will",
+              C: "is",
+              D: "would"
+            },
+            correctAnswer: "A",
+            explanation: "Reported speech: is → was."
+          }
+        ]
+      }
+    ]
+  },
+
+
   test1V1: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
