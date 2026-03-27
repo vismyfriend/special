@@ -1441,7 +1441,7 @@ const GameTestsSeedData = {
             explanation: "Вопрос о содержимом: 'What in this box?'"
           },
           {
-            text: "Josh ___ to the cinema with his friends tonight.",
+            text: "Patrick ___ to the cinema with his friends tonight.",
             options: {
               A: "is going",
               B: "goes",

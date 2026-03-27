@@ -108,7 +108,7 @@
           <p><strong>Google Chrome:</strong> Нажмите на иконку перевода 🔤 в адресной строке и выберите "Перевести страницу" → "Никогда не переводить этот сайт"</p>
           <p><strong>Яндекс.Браузер:</strong> Нажмите на иконку перевода 🌐 в адресной строке и отключите "Переводить страницы автоматически"</p>
           <p><strong>Safari:</strong> Правый клик → "Перевести" → "Отключить автоперевод"</p>
-          <p><strongY>Проверка -></strongY> справа должно быть на английском<strongY> -> Checking</strongY> </p>
+          <p><strong>Проверка -></strong> справа должно быть на английском<strong> -> Checking</strong> </p>
         </div>
 
         <button class="warning-button" @click="dismissTranslationWarning">
@@ -905,9 +905,9 @@ calc(var(--fadeStart) * 100%) {
   margin-bottom: 0;
 }
 
+
+
 .warning-instructions strong {
-  color: #4CAF50;
-}.warning-instructions strongY {
   color: #ffc400;
   font-weight: bold;
 }

@@ -335,6 +335,7 @@
               {{ expandedScriptIndex === index ? 'Скрыть подсказки' : 'Показать подсказки' }}
             </button>
             <!-- Блок управления seed -->
+
             <!-- Блок управления seed - показываем ТОЛЬКО для multiple choice -->
             <div
               v-if="task.taskID === 'multiple_choice'"

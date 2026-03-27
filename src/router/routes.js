@@ -395,6 +395,18 @@ const routes = [
     component: () => import('src/pages/LandingPage/LandingPageVismyfriend.vue')
   },
   {
+    path: '/api2',
+    component: () => import('components/dictionaryAPI2.vue')
+  },
+  {
+    path: '/ai-assistant',
+    component: () => import('src/layouts/MainLayoutWithCursor.vue'),
+    children: [
+      { path: '', component: () => import('components/AIChat.vue') },
+      { path: '/api', component: () => import('components/dictionaryAPIspecial.vue') }
+    ]
+  },
+  {
     path: '/sounds',
     component: () => import('src/pages/EnglishSounds.vue')
   },
