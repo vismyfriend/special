@@ -137,6 +137,22 @@ const AllGames = ref([
     active: true,
   },
   {
+    id: 1203,
+    name: "Произношение",
+    path: "game-pronunciation",
+    gameData: shortWordsData,
+    cardIcon: '✏️', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 21203,
+    name: "Что ты слышишь?",
+    path: "game-whatDoYouHear",
+    gameData: shortWordsData,
+    cardIcon: '✏️', // Добавлена иконка
+    active: true,
+  },
+  {
     id: 180,
     name: "Brainstorm",
     path: "brainstorm",

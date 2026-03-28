@@ -135,7 +135,7 @@ const shortSentencesWordOrderData = {
       pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
     },
     {
-      eng: "My hobby is gadgets.📱💻🎧🤖🔌📷🎮🕹",
+      eng: "My hobby is gadgets📱💻🎧🤖🔌📷🎮🕹",
       ru: "Моё хобби это гаджеты(приборы)",
       hint: "/ май хобби из гАджэтс /",
       pic: new URL("../assets/images/confusedGirl.png", import.meta.url).href,

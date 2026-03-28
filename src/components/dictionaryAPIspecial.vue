@@ -570,6 +570,13 @@ const speakWord = () => {
   const utterance = new SpeechSynthesisUtterance(currentWord.value.word)
   utterance.lang = 'en-US'
   utterance.rate = 0.8
+
+  // Логируем какой голос будет использован
+  const voices = window.speechSynthesis.getVoices()
+  const defaultVoice = voices.find(voice => voice.default && voice.lang.startsWith('en'))
+  console.log('🌐 Доступные голоса:', voices.map(v => `${v.name} (${v.lang}) ${v.default ? '[DEFAULT]' : ''}`).join(', '))
+  console.log('🎤 Будет использован голос по умолчанию:', defaultVoice?.name)
+
   utterance.onend = () => { isSpeaking.value = false }
   utterance.onerror = () => { isSpeaking.value = false }
   speechSynthesis.speak(utterance)

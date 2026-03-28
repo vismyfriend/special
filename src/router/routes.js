@@ -152,6 +152,14 @@ const routes = [
                 component: () => import('src/components/GameTranslate.vue')
               },
               {
+                path: 'game-pronunciation',
+                component: () => import('src/components/GamePronunciation.vue')
+              },
+              {
+                path: 'game-whatDoYouHear',
+                component: () => import('src/components/GameWhatDoYouHear.vue')
+              },
+              {
                 path: '4sentences',
                 component: () => import('components/Game4Sentences.vue')
               },
@@ -397,6 +405,14 @@ const routes = [
   {
     path: '/api2',
     component: () => import('components/dictionaryAPI2.vue')
+  },
+  {
+    path: '/pronunciationTrainer',
+    component: () => import('components/PronunciationTrainer.vue')
+  },
+  {
+    path: '/puterTester',
+    component: () => import('components/PuterTester.vue')
   },
   {
     path: '/ai-assistant',
