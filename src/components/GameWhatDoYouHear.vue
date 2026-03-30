@@ -462,7 +462,6 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  margin-top: 60px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1f 100%);
   font-family: 'Courier New', monospace;
   z-index: 100;
@@ -477,6 +476,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 60px;
+
 }
 
 .safe-overlay {

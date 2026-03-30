@@ -289,8 +289,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/introMillionaire22/millionaire",
-      missionVisibleName: "Мишшн 2.1 ту поинт уан",
-      missionDescription: "Mission 2.1 два точка один",
+      missionVisibleName: "Мишшн 2.1 Миллионер",
+      missionDescription: "Mission 2.1 a millionaire",
       id: 1001,
       active: true,
     },
