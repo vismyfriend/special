@@ -4,7 +4,7 @@
     <!-- Экран загрузки -->
     <div v-if="isLoading" class="loading-screen">
       <div class="loader"></div>
-      <p>🔐 Загрузка данных взлома...</p>
+      <p>🔐 Hello, special agent <br>Загрузка данных... подождите 10 секунд и отправьте скриншот Винсенту если не загружается или зависло</p>
     </div>
 
     <!-- Стартовый экран -->
@@ -144,6 +144,7 @@ const isPlaying = ref(false)
 const lastPhraseEng = ref(null)
 const showTextInsteadOfAudio = ref(false)
 const isLoading = ref(true) // 👈 Добавляем состояние загрузки
+const isDataReady = ref(false); // данные загружены и обработаны
 
 // Голоса для TTS (без изменений)
 let availableVoices = []
@@ -415,36 +416,30 @@ const closeGame = () => {
   cancelCurrentSpeech()
 }
 
-// 👇 НОВАЯ ФУНКЦИЯ: синхронная инициализация данных
-const initGameData = () => {
-  const missionName = route.params.missionName
-
-  console.log('Initializing game for mission:', missionName)
+const initGameData = async () => {
+  const missionName = route.params.missionName;
+  console.log('Waiting for data for mission:', missionName);
 
   if (!missionName) {
-    console.error('No mission name in route params')
-    $q.notify({
-      type: 'negative',
-      message: '❌ Ошибка: не указана миссия',
-      timeout: 3000
-    })
-    isLoading.value = false
-    return false
+    console.error('No mission name');
+    isLoading.value = false;
+    return false;
   }
 
-  // Синхронно получаем данные из импортированного модуля
-  const missionData = shortWordsData[missionName]
+  // Используем setTimeout с нулевой задержкой, чтобы дать браузеру
+  // возможность завершить загрузку чанка с данными.
+  // Это ключевой момент для решения race condition.
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // Теперь безопасно обращаемся к данным
+  const missionData = shortWordsData[missionName];
 
   if (!missionData) {
-    console.error(`Mission "${missionName}" not found in data`)
-    console.log('Available missions:', Object.keys(shortWordsData))
-    $q.notify({
-      type: 'negative',
-      message: `❌ Миссия "${missionName}" не найдена`,
-      timeout: 3000
-    })
-    isLoading.value = false
-    return false
+    console.error(`Mission "${missionName}" not found. Available:`, Object.keys(shortWordsData));
+    $q.notify({ type: 'negative', message: `❌ Миссия "${missionName}" не найдена`, timeout: 5000 });
+    isLoading.value = false;
+    isDataReady.value = false; // Помечаем, что данные готовы
+    return false;
   }
 
   // Преобразуем данные в нужный формат
@@ -473,14 +468,23 @@ const initGameData = () => {
 
 // Жизненный цикл
 onMounted(async () => {
-  // Сначала загружаем голоса (асинхронно, но это не блокирует данные)
-  await loadVoices()
-  const randomVoice = getRandomVoice()
-  updateSelectedVoice(randomVoice)
+  await loadVoices();
+  const randomVoice = getRandomVoice();
+  updateSelectedVoice(randomVoice);
 
-  // Синхронно загружаем данные игры
-  initGameData()
-})
+  // Дожидаемся, пока данные точно загрузятся
+  await initGameData();
+
+  // Уведомление о голосе показываем только когда всё готово
+  if (!isLoading.value && gameWords.value.length) {
+    $q.notify({
+      type: 'info',
+      message: `🎲 Голос: ${voiceOptions.find(v => v.value === randomVoice)?.label}`,
+      position: 'top',
+      timeout: 3000
+    });
+  }
+});
 
 onBeforeUnmount(() => {
   cancelCurrentSpeech()
