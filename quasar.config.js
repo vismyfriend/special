@@ -8,6 +8,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
+require('dotenv').config()
 
 const { configure } = require('quasar/wrappers');
 
@@ -78,8 +79,11 @@ module.exports = configure(function (/* ctx */) {
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
-      distDir: "docs"
+      distDir: "docs",
 
+      env: {
+        DEEPSEEK_API_KEY: JSON.stringify(process.env.DEEPSEEK_API_KEY)
+      }
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 

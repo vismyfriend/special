@@ -175,6 +175,14 @@ export const allGamesAndSetsOfWordsList =
     // определить уровень
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/ai1",
+      missionVisibleName: "Новая миссия",
+      missionDescription: "Vincent's brain",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/freeIntroLesson0/find-pairs-easy",
       missionVisibleName: "Миссия 1.1 Обезвредить бомбу",
       missionDescription: "Первое занятие",

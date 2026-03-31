@@ -415,6 +415,10 @@ const routes = [
     component: () => import('components/PuterTester.vue')
   },
   {
+    path: '/ai1',
+    component: () => import('components/AIChat.vue')
+  },
+  {
     path: '/ai-assistant',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
