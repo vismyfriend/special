@@ -1,52 +1,55 @@
 
 <template>
   <!-- Основной контейнер с фоновым изображением -->
-  <div class="background">
-    <!-- Canvas для эффекта частиц -->
-    <canvas ref="canvas" class="particles-canvas"></canvas>
+  <div class="bgBlack">
+    <div class="background" :class="{ 'menu-open': isMenuOpen }">
 
-    <!-- Главное меню -->
-    <nav class="main-menu" :class="{ 'active': isMenuOpen }">
-      <ul>
-        <li v-for="(item, index) in menuItems"
-            :key="index"
-            @mouseenter="handleMouseEnter(index)"
-            @mouseleave="handleMouseLeave(index)">
-          <a href="#" @click.prevent="toggleSubmenu(index)">
-            {{ item.title }}
-          </a>
+      <!-- Canvas для эффекта частиц -->
+      <canvas ref="canvas" class="particles-canvas"></canvas>
 
-          <!-- Подменю -->
-          <transition name="fade">
-            <ul class="submenu" v-if="activeSubmenu === index">
-              <li v-for="(subItem, subIndex) in item.subItems" :key="subIndex">
-                <a href="#"
-                   @click.prevent="navigateTo(item.title, subItem)"
-                   :target="subItem.url?.startsWith('http') ? '_blank' : ''">
-                  {{ subItem.name || subItem }}
-                </a>
-              </li>
-            </ul>
-          </transition>
-        </li>
-      </ul>
-    </nav>
+      <!-- Главное меню -->
+      <nav class="main-menu" :class="{ 'active': isMenuOpen }">
+        <ul>
+          <li v-for="(item, index) in menuItems"
+              :key="index"
+              @mouseenter="handleMouseEnter(index)"
+              @mouseleave="handleMouseLeave(index)">
+            <a href="#" @click.prevent="toggleSubmenu(index)">
+              {{ item.title }}
+            </a>
 
-    <!-- Добавляем overlay для затемнения -->
-    <div class="menu-overlay"
-         :class="{ 'active': isMenuOpen && activeSubmenu !== null }"
-         @click="closeAllMenus"></div>
+            <!-- Подменю -->
+            <transition name="fade">
+              <ul class="submenu" v-if="activeSubmenu === index">
+                <li v-for="(subItem, subIndex) in item.subItems" :key="subIndex">
+                  <a href="#"
+                     @click.prevent="navigateTo(item.title, subItem)"
+                     :target="subItem.url?.startsWith('http') ? '_blank' : ''">
+                    {{ subItem.name || subItem }}
+                  </a>
+                </li>
+              </ul>
+            </transition>
+          </li>
+        </ul>
+      </nav>
 
-    <div class="app-container">
-      <div class="menu-container">
-        <button class="fancy-btn" @click="playEminem">Welcome</button>
-        <button class="fancy-btn" @click="toggleRussian">
-          <span>{{ isMenuOpen && currentLanguage === 'ru' ? '<-->' : 'Привет' }}</span>
-        </button>
-        <button class="fancy-btn" @click="toggleEnglish">
-          <span>{{ isMenuOpen && currentLanguage === 'en' ? '<-->' : 'Hello' }}</span>
-        </button>
+      <!-- Добавляем overlay для затемнения -->
+      <div class="menu-overlay"
+           :class="{ 'active': isMenuOpen && activeSubmenu !== null }"
+           @click="closeAllMenus"></div>
 
+      <div class="app-container">
+        <div class="menu-container">
+          <button class="fancy-btn" @click="playEminem">Welcome</button>
+          <button class="fancy-btn" @click="toggleRussian">
+            <span>{{ isMenuOpen && currentLanguage === 'ru' ? '<-->' : 'Привет' }}</span>
+          </button>
+          <button class="fancy-btn" @click="toggleEnglish">
+            <span>{{ isMenuOpen && currentLanguage === 'en' ? '<-->' : 'Hello' }}</span>
+          </button>
+
+        </div>
       </div>
     </div>
   </div>
@@ -714,18 +717,39 @@ html, body, #app {
 
 <style lang="scss" scoped>
 /* Базовые стили */
-.background {
-  position: fixed;
+
+
+.background, .bgBlack {
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background-image: url('../assets/images/MyFriendJonatanStars1.jpg');
+  background-image: url('../assets/images/vismyfriend_travel_photo_2026_TPNG_copy2.jpg');
   background-size: cover;
   background-position: center;
   z-index: 0;
   overflow: hidden;
 }
+
+.bgBlack {
+  background: #000;
+}
+.background {
+  margin-top: -50px;
+  transition: background-position 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная анимация */
+
+  /* Когда меню открыто - смещаем фон */
+  &.menu-open {
+    @media (max-width: 768px) {
+      background-position: 110% center !important; /* Смещаем влево */
+    }
+
+  }
+
+  /* Базовое положение (центр) */
+  background-position: center center;
+}
+
 
 .particles-canvas {
   position: fixed;
@@ -785,6 +809,7 @@ html, body, #app {
   margin: 0.5em 0;
   padding: 0.8em 2.2em;
   cursor: pointer;
+  font-family: Special_f1;
 
   /* Чистый стеклянный эффект */
   background: rgba(255, 255, 255, 0.15);
@@ -1177,6 +1202,7 @@ html, body, #app {
     font-size: 1.6em;
     padding: 0.6em 1.5em;
   }
+
 }
 
 </style>

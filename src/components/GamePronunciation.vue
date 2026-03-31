@@ -1,4 +1,9 @@
 <template>
+  <!-- Добавляем состояние загрузки -->
+  <div v-if="isLoading" class="loading-screen">
+    <div class="loader"></div>
+    <p>🔐 Загрузка тренировочных данных...</p>
+  </div>
   <div class="game-container" v-if="gameWords.length">
     <!-- Модалка с результатами -->
     <div v-if="showModal" class="modal-overlay">
@@ -149,12 +154,20 @@
       </button>
     </div>
   </div>
+  <!-- Если данных нет и не в загрузке -->
+  <div v-else-if="!isLoading && !gameWords.length" class="error-screen">
+    <p>❌ Не удалось загрузить данные</p>
+    <button @click="loadGameData">Повторить попытку</button>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
+
+// 👇 ДОБАВЛЯЕМ СИНХРОННЫЙ ИМПОРТ КАК ЗАПАСНОЙ ВАРИАНТ
+import shortWordsData from '../dataForGames/short-words-data'
 
 const route = useRoute()
 const $q = useQuasar()
@@ -167,6 +180,8 @@ const wordStatistics = ref([])
 const isPronunciationBlurred = ref(true)
 const currentAttempt = ref(null)
 const hasAttempt = ref(false)
+const isLoading = ref(true) // 👈 ДОБАВЛЯЕМ состояние загрузки
+
 
 
 // Количество завершенных слов (имеющих хотя бы одну попытку)
@@ -188,6 +203,47 @@ const showModal = ref(false)
 const totalWordsCount = ref(0)
 const averageScore = ref(0)
 const bestScore = ref(0)
+
+
+
+
+// 👇 НОВАЯ ФУНКЦИЯ: синхронная инициализация с fallback
+const initGame = (data) => {
+  if (!data || !data.length) {
+    console.error('No data provided for pronunciation game')
+    isLoading.value = false
+    return false
+  }
+
+  gameWords.value = data.map(item => ({
+    ru: item.ru || item.translation || item.text,
+    eng: item.eng || item.word || item.text,
+    pronunciation: item.pronunciation || item.hint || item.transcription || ''
+  }))
+
+  // Берем первые 10 фраз или все, если меньше
+  if (gameWords.value.length > 10) {
+    gameWords.value = gameWords.value.slice(0, 10)
+  }
+
+  // Перемешиваем
+  gameWords.value = shuffle(gameWords.value)
+
+  // Инициализируем статистику
+  wordStatistics.value = gameWords.value.map(word => ({
+    phrase: word.ru,
+    attempts: [],
+    bestScore: 0
+  }))
+
+  currentIndex.value = 0
+  isPronunciationBlurred.value = false
+  loadCurrentWord()
+  isLoading.value = false
+
+  return true
+}
+
 
 // Голоса для TTS
 let availableVoices = []
@@ -649,55 +705,58 @@ const closeModal = () => {
   showModal.value = false
 }
 
-// Инициализация игры с данными
-const initGame = (data) => {
-  if (!data || !data.length) {
-    console.error('No data provided for pronunciation game')
+
+// Получаем данные из параметров маршрута
+
+// 👇 ИСПРАВЛЕННАЯ ФУНКЦИЯ: с синхронным fallback
+const loadGameData = async () => {
+  const missionName = route.params.missionName
+
+  if (!missionName) {
+    console.error('No mission name in route params')
+    $q.notify({
+      type: 'negative',
+      message: '❌ Ошибка: не указана миссия',
+      timeout: 3000
+    })
+    isLoading.value = false
     return
   }
 
-  gameWords.value = data.map(item => ({
-    ru: item.ru || item.translation || item.text,
-    eng: item.eng || item.word || item.text,
-    pronunciation: item.pronunciation || item.hint || item.transcription || ''
-  }))
-
-  // Берем первые 10 фраз или все, если меньше
-  if (gameWords.value.length > 10) {
-    gameWords.value = gameWords.value.slice(0, 10)
+  // Сначала проверяем синхронные данные (быстро)
+  const syncData = shortWordsData[missionName]
+  if (syncData) {
+    console.log('Using sync data for mission:', missionName)
+    initGame(syncData)
+    return
   }
 
-  // Перемешиваем
-  gameWords.value = shuffle(gameWords.value)
-
-  // Инициализируем статистику
-  wordStatistics.value = gameWords.value.map(word => ({
-    phrase: word.ru,
-    attempts: [],
-    bestScore: 0
-  }))
-
-  currentIndex.value = 0
-  isPronunciationBlurred.value = false
-  loadCurrentWord()
-}
-
-// Получаем данные из параметров маршрута
-const loadGameData = () => {
-  const missionName = route.params.missionName
-
-  import(`../dataForGames/short-words-data.js`).then(module => {
+  // Если синхронных нет, пробуем динамический импорт (может быть API в будущем)
+  try {
+    console.log('Trying dynamic import for mission:', missionName)
+    const module = await import(`../dataForGames/short-words-data.js`)
     const data = module.default[missionName]
+
     if (data) {
       initGame(data)
     } else {
       console.error('Mission not found:', missionName)
-      $q.notify({ type: 'negative', message: 'Данные для игры не найдены' })
+      $q.notify({
+        type: 'negative',
+        message: `❌ Миссия "${missionName}" не найдена`,
+        timeout: 3000
+      })
+      isLoading.value = false
     }
-  }).catch(error => {
+  } catch (error) {
     console.error('Error loading game data:', error)
-    $q.notify({ type: 'negative', message: 'Ошибка загрузки данных' })
-  })
+    $q.notify({
+      type: 'negative',
+      message: '❌ Ошибка загрузки данных игры',
+      timeout: 3000
+    })
+    isLoading.value = false
+  }
 }
 
 // Функция для случайного выбора голоса
@@ -706,6 +765,7 @@ const getRandomVoice = () => {
   const randomIndex = Math.floor(Math.random() * availableVoicesValues.length)
   return availableVoicesValues[randomIndex]
 }
+
 
 // Жизненный цикл
 onMounted(async () => {
@@ -717,15 +777,19 @@ onMounted(async () => {
 
   updateSelectedVoice()
   initSpeechRecognition()
-  loadGameData()
 
-  // Показываем уведомление о случайном голосе
-  $q.notify({
-    type: 'info',
-    message: `🎲 Сегодняшний голос: ${voiceOptions.find(v => v.value === randomVoice)?.label}`,
-    position: 'top',
-    timeout: 3000
-  })
+  // Загружаем данные (теперь с синхронным fallback)
+  await loadGameData()
+
+  // Показываем уведомление о случайном голосе (только если данные загружены)
+  if (!isLoading.value && gameWords.value.length) {
+    $q.notify({
+      type: 'info',
+      message: `🎲 Сегодняшний голос: ${voiceOptions.find(v => v.value === randomVoice)?.label}`,
+      position: 'top',
+      timeout: 3000
+    })
+  }
 })
 
 onBeforeUnmount(() => {
@@ -1213,5 +1277,52 @@ onBeforeUnmount(() => {
   background: #2ecc71;
   border-radius: 4px;
   transition: width 0.3s ease;
+}
+
+/* Добавляем стили для экранов загрузки и ошибок */
+.loading-screen,
+.error-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-screen p,
+.error-screen p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.error-screen button {
+  padding: 10px 20px;
+  background: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #667eea;
 }
 </style>

@@ -1,7 +1,14 @@
 <template>
   <div class="game-container">
+
+    <!-- Экран загрузки -->
+    <div v-if="isLoading" class="loading-screen">
+      <div class="loader"></div>
+      <p>🔐 Загрузка данных взлома...</p>
+    </div>
+
     <!-- Стартовый экран -->
-    <div v-if="!gameStarted" class="start-screen">
+    <div v-else-if="!gameStarted" class="start-screen">
       <div class="safe-overlay">
         <div class="safe-door">
           <div class="safe-lock">
@@ -31,7 +38,6 @@
       <div class="hack-progress">
         <div class="progress-header">
           <span class="progress-label">ВЗЛОМ СЕЙФА</span>
-<!--          <span class="progress-count">{{ correctAnswers }} / {{ totalQuestions }}</span>-->
         </div>
         <div class="progress-bar-safe">
           <div class="progress-fill-safe" :style="{ width: (correctAnswers / totalQuestions * 100) + '%' }"></div>
@@ -41,7 +47,6 @@
         </div>
       </div>
 
-      <!-- Кодовый дисплей -->
       <div class="code-display">
         <div class="display-screen">
           <div class="display-text">
@@ -64,7 +69,6 @@
         </div>
       </div>
 
-      <!-- Варианты ответов (как кнопки сейфа) -->
       <div class="options-panel">
         <div class="safe-keypad">
           <button
@@ -85,12 +89,10 @@
         </div>
       </div>
 
-      <!-- Сообщение о результате -->
       <div v-if="feedbackMessage" class="feedback-message" :class="feedbackType">
         {{ feedbackMessage }}
       </div>
 
-      <!-- Модалка завершения -->
       <div v-if="gameCompleted" class="completion-modal">
         <div class="modal-content-safe">
           <div class="safe-opened">
@@ -119,6 +121,8 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
+// 👇 СИНХРОННЫЙ ИМПОРТ (как в работающем коде)
+import shortWordsData from '../dataForGames/short-words-data'
 
 const route = useRoute()
 const $q = useQuasar()
@@ -139,12 +143,12 @@ const feedbackType = ref('')
 const isPlaying = ref(false)
 const lastPhraseEng = ref(null)
 const showTextInsteadOfAudio = ref(false)
+const isLoading = ref(true) // 👈 Добавляем состояние загрузки
 
-// Голоса для TTS
+// Голоса для TTS (без изменений)
 let availableVoices = []
 let currentVoice = null
 
-// Настройки голосов
 const voiceOptions = [
   { label: '👨 Дэниэл', value: 'daniel' },
   { label: '👩 Саманта', value: 'samantha' },
@@ -156,14 +160,12 @@ const voiceOptions = [
 
 const currentVoiceName = ref('albert')
 
-// Функция для случайного выбора голоса
 const getRandomVoice = () => {
   const availableVoicesValues = voiceOptions.map(v => v.value)
   const randomIndex = Math.floor(Math.random() * availableVoicesValues.length)
   return availableVoicesValues[randomIndex]
 }
 
-// Поиск голоса по названию
 const findVoiceByName = (voiceName) => {
   if (!availableVoices.length) return null
 
@@ -189,14 +191,12 @@ const findVoiceByName = (voiceName) => {
   return foundVoice
 }
 
-// Обновление выбранного голоса
 const updateSelectedVoice = (voiceName) => {
   currentVoiceName.value = voiceName
   currentVoice = findVoiceByName(voiceName)
   console.log('Selected voice:', currentVoice?.name, 'for option:', voiceName)
 }
 
-// Загрузка голосов
 const loadVoices = () => {
   return new Promise((resolve) => {
     const voices = window.speechSynthesis.getVoices()
@@ -212,7 +212,6 @@ const loadVoices = () => {
   })
 }
 
-// Остановка текущего воспроизведения
 const cancelCurrentSpeech = () => {
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel()
@@ -220,7 +219,6 @@ const cancelCurrentSpeech = () => {
   isPlaying.value = false
 }
 
-// Озвучка фразы
 const speakPhrase = (text) => {
   return new Promise((resolve) => {
     if (!currentVoice) {
@@ -244,26 +242,20 @@ const speakPhrase = (text) => {
   })
 }
 
-// Воспроизведение текущей фразы со случайным голосом
 const playCurrentPhrase = async () => {
   if (isPlaying.value) return
 
-  // Сбрасываем режим "не слышно" если он был включен
   if (showTextInsteadOfAudio.value) {
     showTextInsteadOfAudio.value = false
   }
 
-  // Выбираем случайный голос для этой фразы
   const randomVoice = getRandomVoice()
   updateSelectedVoice(randomVoice)
 
   await speakPhrase(currentPhrase.value.eng)
 }
 
-// Кнопка "Не слышно"
-// Кнопка "Не слышно"
 const toggleNoSound = () => {
-  // Останавливаем любое текущее воспроизведение
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel()
   }
@@ -277,7 +269,6 @@ const toggleNoSound = () => {
   })
 }
 
-// Генерация случайных вариантов ответов
 const generateOptions = (correctPhrase, allPhrases) => {
   const otherPhrases = allPhrases.filter(p => p.eng !== correctPhrase.eng)
 
@@ -307,10 +298,20 @@ const generateOptions = (correctPhrase, allPhrases) => {
   return options
 }
 
-// Загрузка нового вопроса
 const loadNewQuestion = () => {
   if (correctAnswers.value >= totalQuestions) {
     gameCompleted.value = true
+    return
+  }
+
+  // 👈 Добавляем проверку на наличие данных
+  if (!gameWords.value.length) {
+    console.error('No game words available!')
+    $q.notify({
+      type: 'negative',
+      message: '❌ Ошибка: данные не загружены',
+      timeout: 3000
+    })
     return
   }
 
@@ -326,7 +327,6 @@ const loadNewQuestion = () => {
   lastPhraseEng.value = currentPhrase.value.eng
   currentOptions.value = generateOptions(currentPhrase.value, gameWords.value)
 
-  // Сбрасываем режим "не слышно" для нового вопроса
   showTextInsteadOfAudio.value = false
 
   answerLocked.value = false
@@ -335,7 +335,6 @@ const loadNewQuestion = () => {
   feedbackMessage.value = ''
 }
 
-// Обработка выбора ответа
 const selectAnswer = async (option) => {
   if (answerLocked.value) return
 
@@ -365,7 +364,6 @@ const selectAnswer = async (option) => {
     feedbackMessage.value = '❌ НЕВЕРНО! Попробуйте еще раз...'
     feedbackType.value = 'error'
 
-    // Произносим выбранный неправильный вариант
     if (option.eng) {
       const randomVoice = getRandomVoice()
       updateSelectedVoice(randomVoice)
@@ -387,15 +385,23 @@ const selectAnswer = async (option) => {
   }
 }
 
-// Запуск игры
 const startGame = () => {
+  // 👈 Проверяем, что данные загружены
+  if (!gameWords.value.length) {
+    $q.notify({
+      type: 'warning',
+      message: '⏳ Данные еще загружаются, подождите...',
+      timeout: 2000
+    })
+    return
+  }
+
   gameStarted.value = true
   correctAnswers.value = 0
   showTextInsteadOfAudio.value = false
   loadNewQuestion()
 }
 
-// Перезапуск игры
 const restartGame = () => {
   gameCompleted.value = false
   correctAnswers.value = 0
@@ -403,51 +409,77 @@ const restartGame = () => {
   loadNewQuestion()
 }
 
-// Закрыть игру
 const closeGame = () => {
   gameCompleted.value = false
   gameStarted.value = false
   cancelCurrentSpeech()
 }
 
-// Инициализация игры с данными
-const initGame = (data) => {
-  if (!data || !data.length) {
-    console.error('No data provided for What Do You Hear game')
-    return
-  }
-
-  gameWords.value = data.map(item => ({
-    ru: item.ru || item.translation || item.text,
-    eng: item.eng || item.word || item.text,
-    pronunciation: item.pronunciation || item.hint || item.transcription || ''
-  }))
-}
-
-// Получаем данные из параметров маршрута
-const loadGameData = () => {
+// 👇 НОВАЯ ФУНКЦИЯ: синхронная инициализация данных
+const initGameData = () => {
   const missionName = route.params.missionName
 
-  import(`../dataForGames/short-words-data.js`).then(module => {
-    const data = module.default[missionName]
-    if (data) {
-      initGame(data)
-    } else {
-      console.error('Mission not found:', missionName)
-      $q.notify({ type: 'negative', message: 'Данные для игры не найдены' })
-    }
-  }).catch(error => {
-    console.error('Error loading game data:', error)
-    $q.notify({ type: 'negative', message: 'Ошибка загрузки данных' })
-  })
+  console.log('Initializing game for mission:', missionName)
+
+  if (!missionName) {
+    console.error('No mission name in route params')
+    $q.notify({
+      type: 'negative',
+      message: '❌ Ошибка: не указана миссия',
+      timeout: 3000
+    })
+    isLoading.value = false
+    return false
+  }
+
+  // Синхронно получаем данные из импортированного модуля
+  const missionData = shortWordsData[missionName]
+
+  if (!missionData) {
+    console.error(`Mission "${missionName}" not found in data`)
+    console.log('Available missions:', Object.keys(shortWordsData))
+    $q.notify({
+      type: 'negative',
+      message: `❌ Миссия "${missionName}" не найдена`,
+      timeout: 3000
+    })
+    isLoading.value = false
+    return false
+  }
+
+  // Преобразуем данные в нужный формат
+  gameWords.value = missionData.map(item => ({
+    ru: item.ru || item.translation || item.text,
+    eng: item.eng || item.word || item.text,
+    pronunciation: item.pronunciation || item.hint || ''
+  })).filter(item => item.ru && item.eng) // 👈 Фильтруем неполные данные
+
+  console.log(`Loaded ${gameWords.value.length} words for mission:`, missionName)
+
+  if (gameWords.value.length === 0) {
+    console.error('No valid words after mapping')
+    $q.notify({
+      type: 'negative',
+      message: '❌ Ошибка: некорректный формат данных',
+      timeout: 3000
+    })
+    isLoading.value = false
+    return false
+  }
+
+  isLoading.value = false
+  return true
 }
 
 // Жизненный цикл
 onMounted(async () => {
+  // Сначала загружаем голоса (асинхронно, но это не блокирует данные)
   await loadVoices()
   const randomVoice = getRandomVoice()
   updateSelectedVoice(randomVoice)
-  loadGameData()
+
+  // Синхронно загружаем данные игры
+  initGameData()
 })
 
 onBeforeUnmount(() => {
@@ -1316,5 +1348,41 @@ onBeforeUnmount(() => {
   .option-btn {
     padding: 8px 12px;
   }
+}
+
+
+/* Добавляем стили для экрана загрузки */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1f 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #e67e22;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-screen p {
+  color: #e67e22;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
 }
 </style>
