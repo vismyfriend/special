@@ -58,7 +58,7 @@
             <!-- Индикатор печати -->
             <div v-if="isLoading" class="message assistant">
               <div class="message-header">
-                <strong>Напрягаю извилины... I am thinking...</strong>
+                <strong>{{ currentLoadingPhrase }}</strong>
               </div>
               <div class="message-content typing-indicator">
                 <span>.</span><span>.</span><span>.</span>
@@ -89,6 +89,8 @@
               Ask me ❓
             </q-btn>
 
+
+
             <!-- Циклические кнопки — всегда видны -->
             <q-btn @click="sendCyclicPreset('iDontKnow')" size="sm">
               I don't know 🤔
@@ -97,6 +99,15 @@
               Еще пример 📚
             </q-btn>
 
+            <!-- Кнопка коррекции (появляется после первого сообщения) -->
+
+            <q-btn
+              v-if="hasUserSentMessage"
+              @click="sendCorrectionPreset"
+              size="sm"
+            >
+              Я правильно написал? ✍️
+            </q-btn>
 
           </q-btn-group>
         </div>
@@ -151,35 +162,70 @@ const chatHistory = ref([])
 
 const presetIndexes = ref({
   iDontKnow: 0,
+  correction: 0,
   anotherExample: 0
 })
 
+//  функция отправки циклического пресета для коррекции
+// Фразы для пресета коррекции (с шаблоном)
+const correctionPhrasesTemplates = [
+  "Проверь моё последнее сообщение:\nя правильно написал?\n\"{message}\"",
+  "Были mistakes - ошибки в моём message или всё норм?\n\"{message}\"",
+  "Я правильно вообще пишу и говорю? Меня поймут?",
+  "Correct me if I make mistakes, okay? 👀"
+]
 
+// Функция отправки пресета коррекции
+const sendCorrectionPreset = () => {
+  // Находим последнее сообщение пользователя
+  const lastUserMessage = [...messages.value].reverse().find(msg => msg.role === 'user')
 
-// Проверка, можно ли использовать одноразовый пресет
-const canUseOneTimePreset = (presetName) => {
-  const today = new Date().toDateString()
-  const storageKey = `preset_${presetName}_${currentChatId.value}`
-  const lastUsed = localStorage.getItem(storageKey)
+  if (!lastUserMessage) {
+    $q.notify({
+      type: 'warning',
+      message: 'Сначала напишите что-нибудь, чтобы я мог проверить 😊',
+      timeout: 3000
+    })
+    return
+  }
 
-  // Если использован в этом чате - нельзя
-  if (lastUsed === 'used') return false
+  // Выбираем случайную фразу и подставляем сообщение
+  const template = correctionPhrasesTemplates[presetIndexes.value.correction % correctionPhrasesTemplates.length]
+  presetIndexes.value.correction++
 
-  return true
+  const correctionRequest = template.replace('{message}', lastUserMessage.content)
+
+  sendPreset(correctionRequest)
 }
 
+// Добавьте кнопки которые хотите сделать одноразовыми
 const usedOneTimePresets = ref({
   hello: false,
-  askMe: false
+  askMe: false,
 })
 
+// Флаг, было ли отправлено сообщение пользователем
+const hasUserSentMessage = ref(false)
+
+// Добавьте в функцию resetPresetsState
+const resetPresetsState = () => {
+  presetIndexes.value = {
+    iDontKnow: 0,
+    correction: 0,
+    anotherExample: 0
+  }
+  usedOneTimePresets.value = {
+    hello: false,
+    askMe: false,
+  }
+  // Сбрасываем флаг отправки сообщений
+  hasUserSentMessage.value = false
+}
 // Проверка, использован ли пресет в текущем чате
 const isPresetUsed = (presetName) => {
   const storageKey = `preset_${presetName}_${currentChatId.value}`
   return localStorage.getItem(storageKey) === 'used'
 }
-
-// Обновленная функция отправки одноразового пресета
 const sendOneTimePreset = (presetType) => {
   if (presetType === 'hello') {
     if (isPresetUsed('hello')) {
@@ -211,27 +257,41 @@ const sendOneTimePreset = (presetType) => {
   }
 }
 
-// Отметить пресет как использованный
+// Обновите функцию markPresetAsUsed, чтобы поддерживала новый тип
 const markPresetAsUsed = (presetName) => {
   const storageKey = `preset_${presetName}_${currentChatId.value}`
   localStorage.setItem(storageKey, 'used')
-  // Обновляем реактивность для перерендера
   usedOneTimePresets.value[presetName] = true
 }
 
-// Сброс состояния пресетов при новом чате
-const resetPresetsState = () => {
-  // Сбрасываем индексы циклических пресетов
-  presetIndexes.value = {
-    iDontKnow: 0,
-    anotherExample: 0
-  }
-  // Сбрасываем состояние одноразовых пресетов (для реактивности)
-  usedOneTimePresets.value = {
-    hello: false,
-    askMe: false
-  }
+
+
+// Массив фраз для индикатора загрузки (добавьте после других массивов)
+const loadingPhrases = [
+  "Напрягаю извилинки... 🧠",
+  "Хммм... One moment... 🤔",
+  "Let me think a bit... 💭",
+  "Ща... одну секундулю... ⚙️",
+  "To be or not to be... 🧐",
+  "когда вообще использовать ing... 📊",
+  "it, he, she + S пиши... 🎯",
+  "Серое вещество бурлит... 🧠⚡",
+  "Just a moment... ⏳",
+  "Соображаю... 🤓",
+  "Подбираю правильные слова... 📝",
+  "Ну вы и сообщение написали... 🧮",
+  "Интересно, а чем сейчас Винсент занят... 🌟"
+]
+
+// Текущая фраза загрузки (добавьте с другими ref)
+const currentLoadingPhrase = ref("Напрягаю извилины... I am thinking...")
+
+// Функция для получения случайной фразы загрузки
+const getRandomLoadingPhrase = () => {
+  const randomIndex = Math.floor(Math.random() * loadingPhrases.length)
+  return loadingPhrases[randomIndex]
 }
+
 
 // Массивы фраз для циклических пресетов
 const iDontKnowPhrases = [
@@ -285,25 +345,6 @@ const sendCyclicPreset = (presetType) => {
 }
 
 
-// При загрузке чата проверяем состояние кнопок
-const updatePresetButtonsState = () => {
-  nextTick(() => {
-    const helloBtn = document.querySelector('.preset-hello')
-    const askBtn = document.querySelector('.preset-ask-me')
-
-    if (helloBtn) {
-      const canUse = canUseOneTimePreset('hello')
-      helloBtn.style.opacity = canUse ? '1' : '0.5'
-      helloBtn.style.pointerEvents = canUse ? 'auto' : 'none'
-    }
-
-    if (askBtn) {
-      const canUse = canUseOneTimePreset('askMe')
-      askBtn.style.opacity = canUse ? '1' : '0.5'
-      askBtn.style.pointerEvents = canUse ? 'auto' : 'none'
-    }
-  })
-}
 const goToAllMissionSets = () => {
   router.push('/see-all-sets-of-words/');
 }
@@ -347,14 +388,15 @@ const saveCurrentChat = () => {
 }
 
 // Загрузка чата
-// Загрузка чата (обновите существующую функцию)
-// Загрузка чата
 const loadChat = (chatId) => {
   const chat = chatHistory.value.find(c => c.id === chatId)
   if (chat) {
     currentChatId.value = chat.id
     currentChatDate.value = chat.date
     messages.value = JSON.parse(JSON.stringify(chat.messages))
+
+    // Проверяем, есть ли сообщения от пользователя
+    hasUserSentMessage.value = messages.value.some(msg => msg.role === 'user')
 
     // Обновляем состояние одноразовых кнопок для загруженного чата
     usedOneTimePresets.value.hello = isPresetUsed('hello')
@@ -365,11 +407,9 @@ const loadChat = (chatId) => {
     })
   }
 }
-// Создание нового чата
-// Создание нового чата (обновите существующую функцию)
+
 // Создание нового чата
 const newChat = () => {
-  // Сохраняем текущий чат
   if (currentChatId.value && messages.value.length > 0) {
     saveCurrentChat()
   }
@@ -480,6 +520,11 @@ const sendMessage = async () => {
 
   const userMessage = userInput.value.trim()
 
+  // 👇 Устанавливаем флаг, что пользователь отправил сообщение
+  if (!hasUserSentMessage.value) {
+    hasUserSentMessage.value = true
+  }
+
   messages.value.push({
     role: 'user',
     content: userMessage,
@@ -487,6 +532,10 @@ const sendMessage = async () => {
   })
 
   userInput.value = ''
+
+
+  // 👇 ВЫБИРАЕМ СЛУЧАЙНУЮ ФРАЗУ ПЕРЕД ЗАГРУЗКОЙ
+  currentLoadingPhrase.value = getRandomLoadingPhrase()
   isLoading.value = true
 
   await scrollToBottom()
@@ -639,9 +688,12 @@ watch(messages, () => {
   saveCurrentChat()
 }, { deep: true })
 
-// Добавьте после других watch
 watch(currentChatId, () => {
-  updatePresetButtonsState()
+  // При смене чата обновляем состояние кнопок через реактивность
+  if (currentChatId.value) {
+    usedOneTimePresets.value.hello = isPresetUsed('hello')
+    usedOneTimePresets.value.askMe = isPresetUsed('askMe')
+  }
 })
 
 </script>
