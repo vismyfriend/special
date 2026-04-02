@@ -14,13 +14,13 @@
              class="chat-item"
              :class="{ active: currentChatId === chat.id }"
              @click="loadChat(chat.id)">
-          <div class="chat-date">{{ chat.date }}</div>
+          <div class="chat-date">{{ getChatHistoryDate(chat.date) }}</div>
           <q-btn flat round dense icon="delete" size="sm" @click.stop="deleteChat(chat.id)" />
         </div>
       </div>
-      <div class="sidebar-footer">
-         <q-btn flat full-width @click="newChat" color="primary">➕ Новый чат</q-btn>
-      </div>
+<!--      <div class="sidebar-footer">-->
+<!--         <q-btn flat full-width @click="newChat" color="primary">➕ Новый чат</q-btn>-->
+<!--      </div>-->
     </div>
 
     <!-- Основной чат (клик по нему закрывает сайдбар на мобилках) -->
@@ -35,8 +35,7 @@
           </q-avatar>
           <q-toolbar-title @click.stop="sidebarOpen = !sidebarOpen">
             Мозг Винсента
-            <div class="current-chat-date">{{ currentChatDate }}</div>
-
+            <div class="current-chat-date">{{ getChatHeaderDate(currentChatDate) }}</div>
           </q-toolbar-title>
 
                     <q-btn flat round icon="logout" @click="goToAllMissionSets" />
@@ -71,6 +70,18 @@
         <q-separator />
         <div class="presets-area">
           <q-btn-group flat>
+            <!-- НОВАЯ КНОПКА НОВЫЙ ЧАТ - ВСЕГДА ВИДИМАЯ, САМАЯ ПЕРВАЯ -->
+            <q-btn
+              @click="createNewChatAndOpenSidebar"
+              size="sm"
+              color="primary"
+              icon="add"
+              label="New chat"
+              class="new-chat-preset-btn"
+            >
+
+            </q-btn>
+
             <!-- Уровень 0: начальные кнопки (видны только до первого сообщения) -->
             <q-btn
               v-if="!isPresetUsed('hello') && userMessageCount === 0"
@@ -224,12 +235,26 @@ const iDontKnowButtonIndex = ref(0)
 
 // Массив запросов для загадок
 const riddlePhrases = [
-  "Give me a riddle in English",
-  "Загадай мне загадку на английском",
-  "I want to guess - хочу отгадать попробовать что-нибудь",
+  "Give me a riddle in English (только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
+  "Загадай мне загадку на английском, только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже",
+  "I want to guess - хочу отгадать попробовать что-нибудь ((только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
 ]
 
+// Новая функция: создаёт чат И открывает сайдбар если он свернут
+// Новая функция: создаёт чат И открывает сайдбар если он свернут
+const createNewChatAndOpenSidebar = async () => {
 
+  // Создаём новый чат
+  newChat()
+
+  // Ждём следующего тика, чтобы Vue завершил все обновления
+  await nextTick()
+
+  // Небольшая задержка, чтобы обойти возможные сбросы
+  setTimeout(() => {
+    sidebarOpen.value = true
+  }, 50)
+}
 // Функция для отправки пресета с загадкой
 const sendRiddlePreset = () => {
 
@@ -332,6 +357,7 @@ const resetPresetsState = () => {
 
 
 // Проверка, нужно ли создать новый чат при загрузке
+// Проверка, нужно ли создать новый чат при загрузке
 const checkAndCreateNewChatIfNewDay = () => {
   // Если нет чатов в истории, просто создаём новый
   if (chatHistory.value.length === 0) {
@@ -341,10 +367,13 @@ const checkAndCreateNewChatIfNewDay = () => {
 
   // Получаем последний чат (первый в списке, т.к. новые добавляются в начало)
   const lastChat = chatHistory.value[0]
-  const todayDate = getCurrentDate()
+
+  // Сравниваем ТОЛЬКО ДАТУ (без времени)
+  const lastChatDate = new Date(lastChat.date).toDateString()
+  const todayDate = new Date().toDateString()
 
   // Если дата последнего чата не сегодняшняя - создаём новый чат
-  if (lastChat.date !== todayDate) {
+  if (lastChatDate !== todayDate) {
     console.log('Новый день! Создаём новый чат автоматически')
     newChat()
 
@@ -438,11 +467,14 @@ const loadingPhrases = [
 const longerLoadingPhrases = [
   "когда вообще использовать ing... 📊",
   "it, he, she + S пиши... 🎯",
+  "Так-то Винсент молодец мне кажется...",
+  "хорошо, что я уже выучил русский... 🤯",
   "ну и запрос! Думаю... 🤯",
   "This is good... 🔄",
   "Английский — это вам не хухры-мухры... 📚",
   "Мозг кипит! Скоро отвечу... ⚡",
   "Загружаю знания из глубины памяти... 💾",
+  "Ох уж этот Роckoмнадзор...🤯",
   "Формулирую ответ, чтобы даже ребенок понял... 💡"
 ]
 
@@ -502,11 +534,17 @@ const triggeredMotivations = ref({
 })
 
 // Функция для получения следующей длинной фразы (циклически)
+// const getNextLongPhrase = () => {
+//   const phrase = longerLoadingPhrases[currentLongIndex % longerLoadingPhrases.length]
+//   currentLongIndex++
+//   return phrase
+// }
+// Функция для получения случайной длинной фразы
 const getNextLongPhrase = () => {
-  const phrase = longerLoadingPhrases[currentLongIndex % longerLoadingPhrases.length]
-  currentLongIndex++
-  return phrase
+  const randomIndex = Math.floor(Math.random() * longerLoadingPhrases.length)
+  return longerLoadingPhrases[randomIndex]
 }
+
 
 // Функция для запуска таймера смены фраз
 const startLoadingPhraseTimer = () => {
@@ -535,12 +573,12 @@ const startLoadingPhraseTimer = () => {
         } else {
           clearInterval(interval)
         }
-      }, 4000)  // ← ЭТО 4 СЕКУНДЫ (интервал между длинными фразами)
+      }, 3000)  // ← ЭТО 3 СЕКУНДЫ (интервал между длинными фразами)
 
       // Сохраняем интервал в loadingTimer для очистки
       loadingTimer = interval
     }
-  }, 3000)  // ← ЭТО  3 СЕКУНДЫ (задержка перед первым переключением)
+  }, 2000)  // ← ЭТО  2 СЕКУНДЫ (задержка перед первым переключением)
 }
 
 // Функция для остановки таймера
@@ -588,9 +626,10 @@ const helloPhrases = [
 
 const iDontRememberPhrases = [  // ← добавляем
 
-  "<b>+</b> I remember nothing <br><b>-</b> I don't remember anything<br><b>?</b> Do I remember anything?<br> <br>Давай выучим какие-нибудь популярные сейчас сленговые phrases, чтобы я удивил Винсента на уроке!",
+  "<b>+</b> I remember nothing <br><b>-</b> I don't remember anything<br><b>?</b> Do I remember anything?<br> <br>I must remember something",
   "I remember nothing!!!<br> <br>Спроси меня что-нибудь полегче!",
   "Ничё не помню!<br> <br>Как кстати это по-английски говорится? дай два варианта формально и на сленге",
+  "I don't remember anything!<br> <br>Напиши какие-нибудь популярные сейчас сленговые phrases, чтобы я удивил Винсента на уроке!",
 ]
 
 const askMePhrases = [
@@ -606,22 +645,62 @@ const askMePhrases = [
 
 // Варианты сообщений для описания картинки
 const describeMessages = [
-  "🖼️ **Describe this picture in English:**\n\nWhat do you see? Try to make 3-5 sentences.",
-  "🎨 **Look at this image!**\n\nDescribe what's happening in English. Use present continuous if you can!",
-  "📸 **Time to practice!**\n\nDescribe this scene in English. What colors, objects, and actions do you see?",
-  "🌍 **Your turn to speak!**\n\nWrite a short description of this picture in English.",
-  "✨ **Practice makes perfect!**\n\nDescribe this image in English. I'll help you with mistakes!"
+  "🖼️ **Опиши эту картинку по-английски:**\n\nWhat do you see? 3-4 предложения составь.",
+  "🎨 **Look at this image!**\n\nОпиши эту картинку in English.",
+  "📸 **Опиши вслух - что видишь?**\n\nWhat colors, objects, and actions do you see?",
+  "🌍 **дискрАйб - описАть**\n\nDescribe what you see:",
+
 ]
-const imageIds = [501, 502, 503, 504, 505, 506, 507, 508, 509, 510]
+
+// Известные рабочие ID картинок (от 1 до 200 — точно существуют)
+const imageIds = [1, 10, 15, 20, 25, 30, 33, 40, 42, 50, 55, 60, 66, 70, 77, 80, 88, 90, 99, 100]
+
+
 
 // Функция для отправки пресета с картинкой
+// Функция для отправки пресета с картинкой
+// Функция для отправки пресета с картинкой
 const sendDescribePreset = () => {
-  // КАЖДЫЙ РАЗ НОВАЯ СЛУЧАЙНАЯ КАРТИНКА
-// Выбираем случайный ID из массива
+  // Выбираем случайный ID из массива
   const randomId = imageIds[Math.floor(Math.random() * imageIds.length)]
   const randomImageUrl = `https://picsum.photos/400/300?image=${randomId}`
   const randomMessage = describeMessages[Math.floor(Math.random() * describeMessages.length)]
-  const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
+
+  // Большой массив эмодзи по категориям
+  const emojis = [
+    // Животные 🐾
+    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵',
+    '🐔', '🐧', '🐦', '🐤', '🐴', '🐺', '🦝', '🐗', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜',
+    '🕷️', '🦂', '🦀', '🐠', '🐟', '🐡', '🐙', '🦑', '🐬', '🐳', '🐋', '🦈', '🦭', '🐊', '🐉',
+
+    // Растения 🌱
+    '🌵', '🎄', '🌲', '🌳', '🌴', '🌿', '🍀', '☘️', '🍃', '🍂', '🍁', '🌾', '🌺', '🌸', '🌷',
+    '🌹', '🌻', '🌼', '💐', '🪴', '🌱', '🪷', '🌊',
+
+    // Еда 🍕
+    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
+    '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠',
+    '🥐', '🥯', '🍞', '🥖', '🧀', '🍳', '🍔', '🍟', '🍕', '🌭', '🥪', '🌮', '🌯', '🫔', '🥙',
+    '🥚', '🍲', '🥣', '🥗', '🍿', '🧈', '🍩', '🍪', '🎂', '🍰', '🧁', '🍫', '🍬', '🍭', '🍮',
+
+    // Разное 🌟
+    '⭐', '🌟', '✨', '💫', '☀️', '🌙', '🌈', '⚡', '🔥', '💧', '❄️', '🎈', '🎉', '🎊', '💝'
+  ]
+
+  // Выбираем 5 случайных разных эмодзи
+  const shuffled = [...emojis]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  const randomEmojis = shuffled.slice(0, 5)
+  const emojiString = randomEmojis.join(' ')
+
+  // Создаём изображение с обработчиками ошибок
+  const img = new Image()
+
+  // Показываем индикатор загрузки
+  const loadingHtml = `<div style="padding: 10px; text-align: center;">🖼️ Загрузка картинки...</div>`
 
   if (!isDescribeAvailable.value) {
     $q.notify({
@@ -633,23 +712,49 @@ const sendDescribePreset = () => {
   }
   describeUsageCount.value++
 
-
+  // Сначала показываем сообщение с загрузкой
+  const messageIndex = messages.value.length
   messages.value.push({
     role: 'assistant',
-    content: `${randomMessage}\n\n${imageHtml}`,
+    content: `${randomMessage}\n\n${loadingHtml}`,
     timestamp: new Date().toLocaleTimeString()
   })
-
-// 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА
-  assistantMessageCount.value++
-
-// 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
-  checkAndSendMotivationalMessage()
 
   nextTick(() => {
     scrollToBottom()
   })
 
+  // Пытаемся загрузить изображение
+  img.onload = () => {
+    // Изображение загрузилось - обновляем сообщение
+    const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
+    messages.value[messageIndex].content = `${randomMessage}\n\n${imageHtml}`
+    nextTick(() => {
+      scrollToBottom()
+    })
+  }
+
+  img.onerror = () => {
+    // Ошибка загрузки - показываем эмодзи
+    const fallbackHtml = `
+      <div style="padding: 12px; text-align: center; background: #f5f5f5; border-radius: 12px; margin: 8px 0;">
+        <div style="font-size: 40px; letter-spacing: 8px;">${emojiString}</div>
+        <div style="font-size: 12px; color: #666; margin-top: 8px;"> (Фотка пока не загрузилась, опиши эмОджиз)</div>
+      </div>
+    `
+    messages.value[messageIndex].content = `${randomMessage}\n\n${fallbackHtml}`
+    nextTick(() => {
+      scrollToBottom()
+    })
+  }
+
+  img.src = randomImageUrl
+
+  // 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА
+  assistantMessageCount.value++
+
+  // 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
+  checkAndSendMotivationalMessage()
 
   // Если достигнут лимит, блокируем кнопку на 5 минут
   if (describeUsageCount.value >= MAX_USAGE) {
@@ -702,9 +807,9 @@ const generateChatId = () => {
 }
 
 // Получение текущей даты
+// Получение текущей даты (сохраняем полную дату для сортировки)
 const getCurrentDate = () => {
-  const now = new Date()
-  return now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+  return new Date().toISOString()  // Сохраняем ISO формат для правильной сортировки
 }
 
 // Сохранение текущего чата
@@ -733,6 +838,36 @@ const saveCurrentChat = () => {
   }
 
   localStorage.setItem('chat_history', JSON.stringify(chatHistory.value))
+}
+
+
+// Форматирование для истории чатов (компактный формат: "16 марта, 16:26" или "16 Mar, 16:26")
+const getChatHistoryDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+
+  // Месяц на английском (3 буквы)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = months[date.getMonth()]
+
+  return `${day} ${month}, ${hours}:${minutes}`
+}
+
+// Форматирование для заголовка чата (полный русский формат с временем)
+const getChatHeaderDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+
+  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+  const month = months[date.getMonth()]
+  const year = date.getFullYear()
+
+  return `${day} ${month} ${year}, ${hours}:${minutes}`
 }
 
 // Загрузка чата
@@ -785,7 +920,6 @@ const newChat = () => {
     }
   ]
   saveCurrentChat()
-  sidebarOpen.value = false
 
   // Сбрасываем состояние пресетов
   resetPresetsState()
@@ -837,25 +971,69 @@ const clearCurrentChat = () => {
 }
 
 // Загрузка истории из localStorage
+// Загрузка истории из localStorage
+// Загрузка истории из localStorage
 const loadHistory = () => {
   const saved = localStorage.getItem('chat_history')
   if (saved) {
-    chatHistory.value = JSON.parse(saved)
+    let history = JSON.parse(saved)
+
+    // Миграция старых дат в ISO формат
+    history = history.map(chat => {
+      // Если дата уже в ISO формате - пропускаем
+      if (chat.date && chat.date.match(/^\d{4}-\d{2}-\d{2}/)) {
+        return chat
+      }
+
+      // Пытаемся преобразовать старый русский формат "16 марта 2026"
+      if (chat.date && typeof chat.date === 'string') {
+        const months = {
+          'января': 0, 'февраля': 1, 'марта': 2, 'апреля': 3, 'мая': 4, 'июня': 5,
+          'июля': 6, 'августа': 7, 'сентября': 8, 'октября': 9, 'ноября': 10, 'декабря': 11
+        }
+
+        // Пробуем распарсить "16 марта 2026"
+        const parts = chat.date.match(/(\d+)\s+([а-я]+)\s+(\d+)/)
+        if (parts) {
+          const day = parseInt(parts[1])
+          const month = months[parts[2]]
+          const year = parseInt(parts[3])
+
+          if (month !== undefined && !isNaN(day) && !isNaN(year)) {
+            // Создаём дату в полдень, чтобы избежать проблем с часовыми поясами
+            const newDate = new Date(year, month, day, 12, 0, 0)
+            chat.date = newDate.toISOString()
+          }
+        }
+
+        // Если не распарсилось, пробуем другой формат или ставим текущую дату
+        if (!chat.date.match(/^\d{4}-\d{2}-\d{2}/)) {
+          chat.date = new Date().toISOString()
+        }
+      }
+
+      return chat
+    })
+
+    chatHistory.value = history
   }
 
   // Проверяем дату и создаём новый чат если нужно
   checkAndCreateNewChatIfNewDay()
 }
+
 const handleVisibilityChange = () => {
   if (!document.hidden && chatHistory.value.length > 0) {
     const lastChat = chatHistory.value[0]
-    const todayDate = getCurrentDate()
+    const lastChatDate = new Date(lastChat.date).toDateString()
+    const todayDate = new Date().toDateString()
 
-    if (lastChat && lastChat.date !== todayDate) {
+    if (lastChat && lastChatDate !== todayDate) {
       checkAndCreateNewChatIfNewDay()
     }
   }
 }
+
 // Прокрутка вниз
 const scrollToBottom = async () => {
   await nextTick()
@@ -1494,6 +1672,19 @@ html, body, #app {
 .ai-chat-container,
 .chat-card {
   overflow: hidden;
+}
+
+
+/* Стиль для кнопки Новый чат в пресетах */
+.new-chat-preset-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+.new-chat-preset-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 /* На мобилках подправляем отступ */
