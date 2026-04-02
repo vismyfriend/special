@@ -34,7 +34,7 @@
             🧠
           </q-avatar>
           <q-toolbar-title @click.stop="sidebarOpen = !sidebarOpen">
-            Мозги Винсента
+            Мозг Винсента
             <div class="current-chat-date">{{ currentChatDate }}</div>
 
           </q-toolbar-title>
@@ -90,7 +90,7 @@
 
             <!-- Уровень 1: появляются после 2 сообщений -->
             <q-btn
-              v-if="userMessageCount >= 2"
+              v-if="userMessageCount >= 1"
               @click="sendCyclicPreset('iDontKnow')"
               size="sm"
             >
@@ -328,6 +328,37 @@ const resetPresetsState = () => {
 
   if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
   if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
+}
+
+
+// Проверка, нужно ли создать новый чат при загрузке
+const checkAndCreateNewChatIfNewDay = () => {
+  // Если нет чатов в истории, просто создаём новый
+  if (chatHistory.value.length === 0) {
+    newChat()
+    return
+  }
+
+  // Получаем последний чат (первый в списке, т.к. новые добавляются в начало)
+  const lastChat = chatHistory.value[0]
+  const todayDate = getCurrentDate()
+
+  // Если дата последнего чата не сегодняшняя - создаём новый чат
+  if (lastChat.date !== todayDate) {
+    console.log('Новый день! Создаём новый чат автоматически')
+    newChat()
+
+    // Показываем уведомление (опционально)
+    $q.notify({
+      type: 'info',
+      message: '✨ Новый день! Начинаем свежий диалог ✨',
+      timeout: 3000,
+      position: 'top'
+    })
+  } else {
+    // Если чат сегодняшний, загружаем его
+    loadChat(lastChat.id)
+  }
 }
 
 // Проверка, использован ли пресет в текущем чате
@@ -582,11 +613,14 @@ const describeMessages = [
   "🌍 **Your turn to speak!**\n\nWrite a short description of this picture in English.",
   "✨ **Practice makes perfect!**\n\nDescribe this image in English. I'll help you with mistakes!"
 ]
+const imageIds = [501, 502, 503, 504, 505, 506, 507, 508, 509, 510]
 
 // Функция для отправки пресета с картинкой
 const sendDescribePreset = () => {
   // КАЖДЫЙ РАЗ НОВАЯ СЛУЧАЙНАЯ КАРТИНКА
-  const randomImageUrl = `https://picsum.photos/400/300?random=${Math.random()}`
+// Выбираем случайный ID из массива
+  const randomId = imageIds[Math.floor(Math.random() * imageIds.length)]
+  const randomImageUrl = `https://picsum.photos/400/300?image=${randomId}`
   const randomMessage = describeMessages[Math.floor(Math.random() * describeMessages.length)]
   const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
 
@@ -809,14 +843,19 @@ const loadHistory = () => {
     chatHistory.value = JSON.parse(saved)
   }
 
-  // Если есть сохранённые чаты, загружаем последний
-  if (chatHistory.value.length > 0) {
-    loadChat(chatHistory.value[0].id)
-  } else {
-    newChat()
+  // Проверяем дату и создаём новый чат если нужно
+  checkAndCreateNewChatIfNewDay()
+}
+const handleVisibilityChange = () => {
+  if (!document.hidden && chatHistory.value.length > 0) {
+    const lastChat = chatHistory.value[0]
+    const todayDate = getCurrentDate()
+
+    if (lastChat && lastChat.date !== todayDate) {
+      checkAndCreateNewChatIfNewDay()
+    }
   }
 }
-
 // Прокрутка вниз
 const scrollToBottom = async () => {
   await nextTick()
@@ -1021,6 +1060,7 @@ const clearChat = () => {
 
 onMounted(() => {
   loadHistory()
+  document.addEventListener('visibilitychange', handleVisibilityChange)  // ← при возвращении на страницу (например, пользователь переключил вкладку и вернулся через несколько часов) тоже проверялась дата.
   console.log('Мозги Винсента зашевелились и по телу прошла дрожь')
 })
 
@@ -1040,6 +1080,8 @@ onUnmounted(() => {
   stopLoadingPhraseTimer()
   if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
   if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
+  document.removeEventListener('visibilitychange', handleVisibilityChange)  // ← добавить
+
 })
 </script>
 
