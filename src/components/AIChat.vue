@@ -71,10 +71,9 @@
         <q-separator />
         <div class="presets-area">
           <q-btn-group flat>
-
-            <!-- Одноразовые кнопки — СКРЫВАЮТСЯ после использования -->
+            <!-- Уровень 0: начальные кнопки (видны только до первого сообщения) -->
             <q-btn
-              v-if="!isPresetUsed('hello')"
+              v-if="!isPresetUsed('hello') && userMessageCount === 0"
               @click="sendOneTimePreset('hello')"
               size="sm"
             >
@@ -82,33 +81,64 @@
             </q-btn>
 
             <q-btn
-              v-if="!isPresetUsed('askMe')"
-              @click="sendOneTimePreset('askMe')"
+              v-if="!isPresetUsed('iDontRemember') && userMessageCount >= 0 && userMessageCount < 4"
+              @click="sendOneTimePreset('iDontRemember')"
               size="sm"
             >
-              Ask me ❓
+              Я ничего не помню 🤷
             </q-btn>
 
-
-
-            <!-- Циклические кнопки — всегда видны -->
-            <q-btn @click="sendCyclicPreset('iDontKnow')" size="sm">
-              I don't know 🤔
+            <!-- Уровень 1: появляются после 2 сообщений -->
+            <q-btn
+              v-if="userMessageCount >= 2"
+              @click="sendCyclicPreset('iDontKnow')"
+              size="sm"
+            >
+              {{ iDontKnowButtonTexts[iDontKnowButtonIndex] }}
             </q-btn>
-            <q-btn @click="sendCyclicPreset('anotherExample')" size="sm">
+
+            <q-btn
+              v-if="userMessageCount >= 2"
+              @click="sendCyclicPreset('anotherExample')"
+              size="sm"
+            >
               Еще пример 📚
             </q-btn>
 
-            <!-- Кнопка коррекции (появляется после первого сообщения) -->
-
+            <!-- Кнопка коррекции (появляется после 2 сообщений) -->
             <q-btn
-              v-if="hasUserSentMessage"
+              v-if="userMessageCount >= 2 && userMessageCount < 5"
               @click="sendCorrectionPreset"
               size="sm"
             >
               Я правильно написал? ✍️
             </q-btn>
 
+            <!-- Кнопка Ask Me появляется после 3 сообщений -->
+            <q-btn
+              v-if="!isPresetUsed('askMe') && userMessageCount >= 3"
+              @click="sendOneTimePreset('askMe')"
+              size="sm"
+            >
+              Ask me ❓
+            </q-btn>
+
+            <!-- Уровень 2: появляются после 4 сообщений -->
+            <q-btn
+              v-if="userMessageCount >= 4 && isRiddleAvailable"
+              @click="sendRiddlePreset"
+              size="sm"
+            >
+              Загадка 🧩
+            </q-btn>
+
+            <q-btn
+              v-if="userMessageCount >= 4 && isDescribeAvailable"
+              @click="sendDescribePreset"
+              size="sm"
+            >
+              Describe 🖼️
+            </q-btn>
           </q-btn-group>
         </div>
 
@@ -137,7 +167,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, watch } from 'vue'
+import { ref, nextTick, onMounted, watch , onUnmounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from "vue-router";
 const router = useRouter()
@@ -159,6 +189,22 @@ const messages = ref([])
 // История чатов
 const chatHistory = ref([])
 
+// Счётчик сообщений пользователя
+const userMessageCount = ref(0)
+
+// Счётчики использований для лимитированных кнопок
+const describeUsageCount = ref(0)
+const riddleUsageCount = ref(0)
+const MAX_USAGE = 3
+const COOLDOWN_MS = 5 * 60 * 1000 // 5 минут
+
+// Таймеры для кнопок
+let describeCooldownTimer = null
+let riddleCooldownTimer = null
+
+// Флаги доступности кнопок
+const isDescribeAvailable = ref(true)
+const isRiddleAvailable = ref(true)
 
 const presetIndexes = ref({
   iDontKnow: 0,
@@ -166,6 +212,50 @@ const presetIndexes = ref({
   anotherExample: 0
 })
 
+// Массив названий для кнопки I don't know (циклически меняется)
+const iDontKnowButtonTexts = [
+  "I don't know 🤔",
+  "I am not sure 🤷",
+  "Give me a hint 💡"
+]
+
+// Текущий индекс названия кнопки
+const iDontKnowButtonIndex = ref(0)
+
+// Массив запросов для загадок
+const riddlePhrases = [
+  "Give me a riddle in English",
+  "Загадай мне загадку на английском",
+  "I want to guess - хочу отгадать попробовать что-нибудь",
+]
+
+
+// Функция для отправки пресета с загадкой
+const sendRiddlePreset = () => {
+
+
+  riddleUsageCount.value++
+  const randomRiddle = riddlePhrases[Math.floor(Math.random() * riddlePhrases.length)]
+  sendPreset(randomRiddle)
+
+  // Если достигнут лимит, блокируем кнопку на 5 минут
+  if (riddleUsageCount.value >= MAX_USAGE) {
+    isRiddleAvailable.value = false
+
+
+
+    // Устанавливаем таймер на разблокировку
+    riddleCooldownTimer = setTimeout(() => {
+      isRiddleAvailable.value = true
+      riddleUsageCount.value = 0
+      $q.notify({
+        type: 'positive',
+        message: 'Кнопка "Загадка" снова доступна! 🎉',
+        timeout: 3000
+      })
+    }, COOLDOWN_MS)
+  }
+}
 //  функция отправки циклического пресета для коррекции
 // Фразы для пресета коррекции (с шаблоном)
 const correctionPhrasesTemplates = [
@@ -202,6 +292,8 @@ const sendCorrectionPreset = () => {
 const usedOneTimePresets = ref({
   hello: false,
   askMe: false,
+  iDontRemember: false,  // ← добавляем
+
 })
 
 // Флаг, было ли отправлено сообщение пользователем
@@ -217,10 +309,27 @@ const resetPresetsState = () => {
   usedOneTimePresets.value = {
     hello: false,
     askMe: false,
+    iDontRemember: false,
   }
-  // Сбрасываем флаг отправки сообщений
   hasUserSentMessage.value = false
+  userMessageCount.value = 0
+  describeUsageCount.value = 0
+  riddleUsageCount.value = 0
+  isDescribeAvailable.value = true
+  isRiddleAvailable.value = true
+  iDontKnowButtonIndex.value = 0
+
+  // 👇 СБРАСЫВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА И ФЛАГИ
+  assistantMessageCount.value = 0
+  triggeredMotivations.value = {
+    6: false,
+    12: false
+  }
+
+  if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
+  if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
 }
+
 // Проверка, использован ли пресет в текущем чате
 const isPresetUsed = (presetName) => {
   const storageKey = `preset_${presetName}_${currentChatId.value}`
@@ -240,6 +349,20 @@ const sendOneTimePreset = (presetType) => {
     const randomHello = helloPhrases[Math.floor(Math.random() * helloPhrases.length)]
     markPresetAsUsed('hello')
     sendPreset(randomHello)
+  }
+  else if (presetType === 'iDontRemember') {  // ← добавляем
+    if (isPresetUsed('iDontRemember')) {
+      $q.notify({
+        type: 'warning',
+        message: 'Эта фраза уже использована в этом чате! 😊',
+        timeout: 3000
+      })
+      return
+    }
+
+    const randomPhrase = iDontRememberPhrases[Math.floor(Math.random() * iDontRememberPhrases.length)]
+    markPresetAsUsed('iDontRemember')
+    sendPreset(randomPhrase)
   }
   else if (presetType === 'askMe') {
     if (isPresetUsed('askMe')) {
@@ -269,22 +392,135 @@ const markPresetAsUsed = (presetName) => {
 // Массив фраз для индикатора загрузки (добавьте после других массивов)
 const loadingPhrases = [
   "Напрягаю извилинки... 🧠",
-  "Хммм... One moment... 🤔",
+  "Хммм... 🤔",
+  "One moment... 🤔",
   "Let me think a bit... 💭",
-  "Ща... одну секундулю... ⚙️",
+  "Ща... пару секунд... ⚙️",
   "To be or not to be... 🧐",
+  "Серое вещество бурлит... 🧠⚡",
+  "Just a second... ⏳",
+  "Соображаю... 🤓",
+
+]
+
+// Массив длинных фраз (если ответ задерживается)
+const longerLoadingPhrases = [
   "когда вообще использовать ing... 📊",
   "it, he, she + S пиши... 🎯",
-  "Серое вещество бурлит... 🧠⚡",
-  "Just a moment... ⏳",
-  "Соображаю... 🤓",
-  "Подбираю правильные слова... 📝",
-  "Ну вы и сообщение написали... 🧮",
-  "Интересно, а чем сейчас Винсент занят... 🌟"
+  "ну и запрос! Думаю... 🤯",
+  "This is good... 🔄",
+  "Английский — это вам не хухры-мухры... 📚",
+  "Мозг кипит! Скоро отвечу... ⚡",
+  "Загружаю знания из глубины памяти... 💾",
+  "Формулирую ответ, чтобы даже ребенок понял... 💡"
 ]
 
 // Текущая фраза загрузки (добавьте с другими ref)
 const currentLoadingPhrase = ref("Напрягаю извилины... I am thinking...")
+
+
+// Таймер и счётчик для смены фраз
+let loadingTimer = null
+let currentLongIndex = 0
+
+// Счётчик ответов ассистента
+const assistantMessageCount = ref(0)
+
+// Мотивационные сообщения (появляются после определённого количества ответов ассистента)
+const motivationalMessages = [
+  {
+    triggerCount: 6,
+    message: "Кстати By the way! Ты же хочешь говорить, а не молчать на английском! Тренируйся читать все вслух! 🗣️✨"
+  },
+  {
+    triggerCount: 12,
+    message: "Do you read everything outloud? Точно вслух всё читаешь? Винсент следит за тобой 😎👀"
+  }
+]
+
+// Функция для проверки и отправки мотивационных сообщений
+// Функция для проверки и отправки мотивационных сообщений
+const checkAndSendMotivationalMessage = () => {
+  for (const msg of motivationalMessages) {
+    if (assistantMessageCount.value === msg.triggerCount && !triggeredMotivations.value[msg.triggerCount]) {
+      // Отмечаем, что сообщение уже отправлено
+      triggeredMotivations.value[msg.triggerCount] = true
+
+      // Добавляем псевдосообщение от ассистента С ЗАДЕРЖКОЙ
+      setTimeout(() => {
+        messages.value.push({
+          role: 'assistant',
+          content: msg.message,
+          timestamp: new Date().toLocaleTimeString()
+        })
+
+        nextTick(() => {
+          scrollToBottom()
+        })
+      }, 1500) // 1.5 секунды задержки
+
+      break
+    }
+  }
+}
+
+// Флаг, чтобы не отправлять сообщение повторно при достижении триггера
+const triggeredMotivations = ref({
+  6: false,
+  12: false
+})
+
+// Функция для получения следующей длинной фразы (циклически)
+const getNextLongPhrase = () => {
+  const phrase = longerLoadingPhrases[currentLongIndex % longerLoadingPhrases.length]
+  currentLongIndex++
+  return phrase
+}
+
+// Функция для запуска таймера смены фраз
+const startLoadingPhraseTimer = () => {
+  // Очищаем предыдущий таймер, если есть
+  if (loadingTimer) {
+    clearTimeout(loadingTimer)
+    clearInterval(loadingTimer)
+    loadingTimer = null
+  }
+
+  // Сбрасываем счётчик длинных фраз
+  currentLongIndex = 0
+
+  // Устанавливаем первую случайную короткую фразу
+  currentLoadingPhrase.value = getRandomLoadingPhrase()
+
+  // Таймер для переключения на длинные фразы через 3 секунды
+  loadingTimer = setTimeout(() => {
+    if (isLoading.value) {
+      currentLoadingPhrase.value = getNextLongPhrase()
+
+      // Запускаем интервал для смены длинных фраз каждые 4 секунды
+      const interval = setInterval(() => {
+        if (isLoading.value) {
+          currentLoadingPhrase.value = getNextLongPhrase()
+        } else {
+          clearInterval(interval)
+        }
+      }, 4000)  // ← ЭТО 4 СЕКУНДЫ (интервал между длинными фразами)
+
+      // Сохраняем интервал в loadingTimer для очистки
+      loadingTimer = interval
+    }
+  }, 3000)  // ← ЭТО  3 СЕКУНДЫ (задержка перед первым переключением)
+}
+
+// Функция для остановки таймера
+const stopLoadingPhraseTimer = () => {
+  if (loadingTimer) {
+    clearTimeout(loadingTimer)
+    clearInterval(loadingTimer)
+    loadingTimer = null
+  }
+  currentLongIndex = 0
+}
 
 // Функция для получения случайной фразы загрузки
 const getRandomLoadingPhrase = () => {
@@ -295,12 +531,10 @@ const getRandomLoadingPhrase = () => {
 
 // Массивы фраз для циклических пресетов
 const iDontKnowPhrases = [
-  "I don't know",
-  "не знаю",
-  "I have no clue",
-  "понятия не имею",
-  "No idea",
-  "I'm not sure"
+  "I don't know - не знаю",
+  "Ай эм нот щуэ - не уверен",
+  "Дашь подсказку?",
+
 ]
 
 const anotherExamplePhrases = [
@@ -321,6 +555,14 @@ const helloPhrases = [
   "Hi! What's up?"
 ]
 
+const iDontRememberPhrases = [  // ← добавляем
+  "Как сказать на английском 'я ничего не помню'?",
+  "How do you say 'я ничего не помню' in English?",
+  "What's the English for 'я ничего не помню'?",
+  "Подскажи, как будет 'я ничего не помню' на английском",
+  "Translate to English: я ничего не помню"
+]
+
 const askMePhrases = [
   "Ask me something, I want to practice English",
   "Can you ask me a question? I want to practice",
@@ -329,6 +571,76 @@ const askMePhrases = [
   "Could you quiz me on English?"
 ]
 
+
+
+
+// Варианты сообщений для описания картинки
+const describeMessages = [
+  "🖼️ **Describe this picture in English:**\n\nWhat do you see? Try to make 3-5 sentences.",
+  "🎨 **Look at this image!**\n\nDescribe what's happening in English. Use present continuous if you can!",
+  "📸 **Time to practice!**\n\nDescribe this scene in English. What colors, objects, and actions do you see?",
+  "🌍 **Your turn to speak!**\n\nWrite a short description of this picture in English.",
+  "✨ **Practice makes perfect!**\n\nDescribe this image in English. I'll help you with mistakes!"
+]
+
+// Функция для отправки пресета с картинкой
+const sendDescribePreset = () => {
+  // КАЖДЫЙ РАЗ НОВАЯ СЛУЧАЙНАЯ КАРТИНКА
+  const randomImageUrl = `https://picsum.photos/400/300?random=${Math.random()}`
+  const randomMessage = describeMessages[Math.floor(Math.random() * describeMessages.length)]
+  const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
+
+  if (!isDescribeAvailable.value) {
+    $q.notify({
+      type: 'warning',
+      message: 'Кнопка "Describe" временно недоступна. Попробуйте через 5 минут! 😊',
+      timeout: 3000
+    })
+    return
+  }
+  describeUsageCount.value++
+
+
+  messages.value.push({
+    role: 'assistant',
+    content: `${randomMessage}\n\n${imageHtml}`,
+    timestamp: new Date().toLocaleTimeString()
+  })
+
+// 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА
+  assistantMessageCount.value++
+
+// 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
+  checkAndSendMotivationalMessage()
+
+  nextTick(() => {
+    scrollToBottom()
+  })
+
+
+  // Если достигнут лимит, блокируем кнопку на 5 минут
+  if (describeUsageCount.value >= MAX_USAGE) {
+    isDescribeAvailable.value = false
+
+    $q.notify({
+      type: 'info',
+      message: `Кнопка "Describe" заблокирована на 5 минут. Пишите свои сообщения! 💪`,
+      timeout: 4000
+    })
+
+    describeCooldownTimer = setTimeout(() => {
+      isDescribeAvailable.value = true
+      describeUsageCount.value = 0
+      $q.notify({
+        type: 'positive',
+        message: 'Кнопка "Describe" снова доступна! 🎉',
+        timeout: 3000
+      })
+    }, COOLDOWN_MS)
+  }
+}
+
+// Отправка циклического пресета
 // Отправка циклического пресета
 const sendCyclicPreset = (presetType) => {
   let phrase = ''
@@ -336,6 +648,9 @@ const sendCyclicPreset = (presetType) => {
   if (presetType === 'iDontKnow') {
     phrase = iDontKnowPhrases[presetIndexes.value.iDontKnow % iDontKnowPhrases.length]
     presetIndexes.value.iDontKnow++
+
+    // 👇 МЕНЯЕМ НАЗВАНИЕ КНОПКИ ПРИ КАЖДОМ НАЖАТИИ
+    iDontKnowButtonIndex.value = (iDontKnowButtonIndex.value + 1) % iDontKnowButtonTexts.length
   } else if (presetType === 'anotherExample') {
     phrase = anotherExamplePhrases[presetIndexes.value.anotherExample % anotherExamplePhrases.length]
     presetIndexes.value.anotherExample++
@@ -398,9 +713,22 @@ const loadChat = (chatId) => {
     // Проверяем, есть ли сообщения от пользователя
     hasUserSentMessage.value = messages.value.some(msg => msg.role === 'user')
 
-    // Обновляем состояние одноразовых кнопок для загруженного чата
+    // Считаем количество сообщений пользователя
+    userMessageCount.value = messages.value.filter(msg => msg.role === 'user').length
+
+    // 👇 СЧИТАЕМ КОЛИЧЕСТВО ОТВЕТОВ АССИСТЕНТА
+    assistantMessageCount.value = messages.value.filter(msg => msg.role === 'assistant').length
+
+    // 👇 ВОССТАНАВЛИВАЕМ ФЛАГИ МОТИВАЦИОННЫХ СООБЩЕНИЙ
+    triggeredMotivations.value = {
+      6: assistantMessageCount.value >= 6,
+      12: assistantMessageCount.value >= 12
+    }
+
+    // Обновляем состояние одноразовых кнопок
     usedOneTimePresets.value.hello = isPresetUsed('hello')
     usedOneTimePresets.value.askMe = isPresetUsed('askMe')
+    usedOneTimePresets.value.iDontRemember = isPresetUsed('iDontRemember')
 
     nextTick(() => {
       scrollToBottom()
@@ -525,17 +853,21 @@ const sendMessage = async () => {
     hasUserSentMessage.value = true
   }
 
+  // 👇 Увеличиваем счётчик сообщений
+  userMessageCount.value++
+
   messages.value.push({
     role: 'user',
     content: userMessage,
     timestamp: new Date().toLocaleTimeString()
   })
 
+
   userInput.value = ''
 
 
-  // 👇 ВЫБИРАЕМ СЛУЧАЙНУЮ ФРАЗУ ПЕРЕД ЗАГРУЗКОЙ
-  currentLoadingPhrase.value = getRandomLoadingPhrase()
+  // Запускаем таймер смены фраз
+  startLoadingPhraseTimer()
   isLoading.value = true
 
   await scrollToBottom()
@@ -626,6 +958,13 @@ const sendMessage = async () => {
       timestamp: new Date().toLocaleTimeString()
     })
 
+
+// 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ТОЛЬКО ЗДЕСЬ
+    assistantMessageCount.value++
+
+// 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
+    checkAndSendMotivationalMessage()
+
   } catch (error) {
     console.error('Ошибка DeepSeek API:', error)
     $q.notify({
@@ -643,6 +982,7 @@ const sendMessage = async () => {
     })
   } finally {
     isLoading.value = false
+    stopLoadingPhraseTimer()
     await scrollToBottom()
   }
   lastRequestTime.value = now // запоминаем время последнего запроса
@@ -696,6 +1036,11 @@ watch(currentChatId, () => {
   }
 })
 
+onUnmounted(() => {
+  stopLoadingPhraseTimer()
+  if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
+  if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
+})
 </script>
 
 <style>
@@ -734,6 +1079,8 @@ html, body, #app {
     min-height: 100vh;
     padding: 20px;
   }
+
+
 }
 
 /* На мобилках убираем лишние отступы */
@@ -743,6 +1090,7 @@ html, body, #app {
     padding: 0;
     align-items: flex-start;
   }
+
 }
 
 /* Основной контейнер */
@@ -1052,6 +1400,11 @@ html, body, #app {
 
   .presets-area :deep(.q-btn-group) {
     gap: 5px;
+  }
+
+  .message {
+
+    max-width: 92%;
   }
 }
 
