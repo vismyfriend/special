@@ -24,7 +24,7 @@
     </div>
 
     <!-- Основной чат (клик по нему закрывает сайдбар на мобилках) -->
-    <div class="ai-chat-container q-pa-md" @click="closeSidebarOnMobile">
+    <div class="ai-chat-container q-pa-md" @click="closeSidebarOnClick">
       <q-card class="chat-card">
         <!-- Заголовок -->
         <q-toolbar class="bg-primary text-white">
@@ -587,11 +587,10 @@ const helloPhrases = [
 ]
 
 const iDontRememberPhrases = [  // ← добавляем
-  "Как сказать на английском 'я ничего не помню'?",
-  "How do you say 'я ничего не помню' in English?",
-  "What's the English for 'я ничего не помню'?",
-  "Подскажи, как будет 'я ничего не помню' на английском",
-  "Translate to English: я ничего не помню"
+
+  "<b>+</b> I remember nothing <br><b>-</b> I don't remember anything<br><b>?</b> Do I remember anything?<br> <br>Давай выучим какие-нибудь популярные сейчас сленговые phrases, чтобы я удивил Винсента на уроке!",
+  "I remember nothing!!!<br> <br>Спроси меня что-нибудь полегче!",
+  "Ничё не помню!<br> <br>Как кстати это по-английски говорится? дай два варианта формально и на сленге",
 ]
 
 const askMePhrases = [
@@ -792,9 +791,10 @@ const newChat = () => {
   resetPresetsState()
 }
 
-const closeSidebarOnMobile = () => {
-  // Проверяем, что это мобильное устройство и сайдбар открыт
-  if (window.innerWidth <= 768 && sidebarOpen.value) {
+// Закрытие сайдбара при клике на область чата (работает и на мобилках, и на десктопе)
+const closeSidebarOnClick = () => {
+  // Закрываем сайдбар, если он открыт (на любом устройстве)
+  if (sidebarOpen.value) {
     sidebarOpen.value = false
   }
 }
@@ -1121,7 +1121,11 @@ html, body, #app {
     min-height: 100vh;
     padding: 20px;
   }
+  .chat-layout .chat-sidebar.sidebar-open ~ .ai-chat-container {
+    width: calc(100% - 180px);
+    margin-left: 0;
 
+  }
 
 }
 
@@ -1264,6 +1268,7 @@ html, body, #app {
 /* Когда сайдбар открыт - чат сдвигается вправо */
 .chat-layout .chat-sidebar.sidebar-open ~ .ai-chat-container {
   transform: translateX(180px);
+
 }
 
 /* Карточка чата */
