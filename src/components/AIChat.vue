@@ -29,16 +29,25 @@
         <!-- Заголовок -->
         <q-toolbar class="bg-primary text-white">
           <q-btn flat round icon="menu" @click.stop="sidebarOpen = !sidebarOpen" />
+
+          <!-- Аватар ассистента вместо эмодзи мозга -->
           <q-avatar>
-<!--            <q-icon name="smart_toy"/>-->
-            🧠
+            <span style="font-size: 28px;"
+                  @click.stop="sidebarOpen = !sidebarOpen"
+            >{{ currentAssistant.avatar }}</span>
           </q-avatar>
-          <q-toolbar-title @click.stop="sidebarOpen = !sidebarOpen">
-            Мозг Винсента
+
+          <!-- Название с кнопкой переключения -->
+          <q-toolbar-title
+            @click.stop="cycleAssistant"
+            class="assistant-title">
+            <div class="assistant-name-wrapper">
+              <span>{{ currentAssistant.name }}</span>
+            </div>
             <div class="current-chat-date">{{ getChatHeaderDate(currentChatDate) }}</div>
           </q-toolbar-title>
 
-                    <q-btn flat round icon="logout" @click="goToAllMissionSets" />
+          <q-btn flat round icon="logout" @click="goToAllMissionSets" />
         </q-toolbar>
 
         <!-- Сообщения -->
@@ -47,7 +56,7 @@
             <div v-for="(msg, idx) in messages" :key="idx" class="q-mb-md">
               <div :class="['message', msg.role]">
                 <div class="message-header">
-                  <strong>{{ msg.role === 'user' ? '/ май мЭсидж / My message :' : 'Brain of Vincent' }}</strong>
+                  <strong>{{ msg.role === 'user' ? '/ май мЭсидж / My message :' : '🧠' }}</strong>
                   <small class="text-grey-7">{{ msg.timestamp }}</small>
                 </div>
                 <div v-html="formatMessage(msg.content)" class="message-content"></div>
@@ -187,29 +196,85 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, watch , onUnmounted } from 'vue'
+import { ref, nextTick, onMounted, watch, onUnmounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from "vue-router";
-const router = useRouter()
+import {
+  initAssistant,
+  nextAssistant,
+  getCurrentAssistant,
+  getCurrentSystemPrompt
+} from '../dataForGames/assistantConfig'
 
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+const router = useRouter()
 const $q = useQuasar()
+
+// API ключ
+const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY
+
+// ==================== АССИСТЕНТ ====================
+const currentAssistant = ref(getCurrentAssistant())
+
+// Функция для циклического переключения ассистентов
+const cycleAssistant = () => {
+  const newAssistant = nextAssistant()
+  const oldAssistantName = currentAssistant.value.name
+  currentAssistant.value = newAssistant
+
+  if (messages.value.length > 0) {
+    // Добавляем служебное сообщение от системы
+    messages.value.push({
+      role: 'system',
+      content: `Ассистент сменился с "${oldAssistantName}" на "${newAssistant.name}". Продолжаем общение в новом стиле.`,
+      timestamp: new Date().toLocaleTimeString()
+    })
+
+    let welcomeMessage = ''
+    switch (newAssistant.id) {
+      case 'vincent_helper':
+        welcomeMessage = "Hi, hey, what's up! What do you want to talk about? 🎓"
+        break
+      case 'grumpy_grandpa':
+        welcomeMessage = "Эх... Ох.. 👴 Чё нада? What do ya want? спрашивай давай"
+        break
+      case 'mechanic':
+        welcomeMessage = "Здарова! 🔧 Английский как движок — проверять надо! What's the problem? 🚗"
+        break
+      case 'beauty_guru':
+        welcomeMessage = "Приветик, солнышко! 💅 Ready to make your English beautiful? Let's start, sweetie! ✨"
+        break
+      case 'taxi_mikhalych':
+        welcomeMessage = "О, дарагой! 🚕 Welcome to my taxi-english! У меня свой бизнес кстати, а такси чисто для души. Ask me anything, I explain very good! Атлична!"
+        break
+      default:
+        welcomeMessage = "Hi there! How can I help you today?"
+    }
+
+    messages.value.push({
+      role: 'assistant',
+      content: welcomeMessage,
+      timestamp: new Date().toLocaleTimeString()
+    })
+    nextTick(() => scrollToBottom())
+  }
+}
+
+// ==================== UI СОСТОЯНИЕ ====================
 const userInput = ref('')
 const isLoading = ref(false)
 const scrollArea = ref(null)
 const sidebarOpen = ref(false)
 
-
-// Voice input
+// ==================== ГОЛОСОВОЙ ВВОД ====================
 const isRecording = ref(false)
 const recognition = ref(null)
 
-
-// Инициализация распознавания речи
 const initSpeechRecognition = () => {
   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
     recognition.value = new SpeechRecognition()
-    recognition.value.lang = 'en-US' // Английский (можно сменить на 'ru-RU' для русского)
+    recognition.value.lang = 'en-US'
     recognition.value.interimResults = false
     recognition.value.maxAlternatives = 1
     recognition.value.continuous = false
@@ -217,7 +282,6 @@ const initSpeechRecognition = () => {
     recognition.value.onstart = () => {
       isRecording.value = true
       $q.notify({
-        // type: 'info',
         message: ' I am listening to your English... Говорите 🎤',
         timeout: 2000,
         position: 'bottom'
@@ -230,13 +294,11 @@ const initSpeechRecognition = () => {
 
     recognition.value.onresult = (event) => {
       const transcript = event.results[0][0].transcript
-      // Добавляем распознанный текст в поле ввода
       if (userInput.value) {
         userInput.value += ' ' + transcript
       } else {
         userInput.value = transcript
       }
-
     }
 
     recognition.value.onerror = (event) => {
@@ -269,7 +331,6 @@ const initSpeechRecognition = () => {
   }
 }
 
-// Запуск голосового ввода
 const startVoiceInput = () => {
   if (!recognition.value) {
     initSpeechRecognition()
@@ -289,630 +350,20 @@ const startVoiceInput = () => {
   }
 }
 
-// API ключ
-const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY
-
-// Текущий чат
+// ==================== УПРАВЛЕНИЕ ЧАТАМИ ====================
 const currentChatId = ref(null)
 const currentChatDate = ref('')
 const messages = ref([])
-
-// История чатов
 const chatHistory = ref([])
 
-// Счётчик сообщений пользователя
-const userMessageCount = ref(0)
-
-// Счётчики использований для лимитированных кнопок
-const describeUsageCount = ref(0)
-const riddleUsageCount = ref(0)
-const MAX_USAGE = 3
-const COOLDOWN_MS = 5 * 60 * 1000 // 5 минут
-
-// Таймеры для кнопок
-let describeCooldownTimer = null
-let riddleCooldownTimer = null
-
-// Флаги доступности кнопок
-const isDescribeAvailable = ref(true)
-const isRiddleAvailable = ref(true)
-
-const presetIndexes = ref({
-  iDontKnow: 0,
-  correction: 0,
-  anotherExample: 0
-})
-
-// Массив названий для кнопки I don't know (циклически меняется)
-const iDontKnowButtonTexts = [
-  "I don't know 🤔",
-  "I am not sure 🤷",
-  "Give me a hint 💡"
-]
-
-// Текущий индекс названия кнопки
-const iDontKnowButtonIndex = ref(0)
-
-// Массив запросов для загадок
-const riddlePhrases = [
-  "Give me a riddle in English (только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
-  "Загадай мне загадку на английском, только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже",
-  "I want to guess - хочу отгадать попробовать что-нибудь ((только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
-]
-
-// Новая функция: создаёт чат И открывает сайдбар если он свернут
-// Новая функция: создаёт чат И открывает сайдбар если он свернут
-const createNewChatAndOpenSidebar = async () => {
-
-  // Создаём новый чат
-  newChat()
-
-  // Ждём следующего тика, чтобы Vue завершил все обновления
-  await nextTick()
-
-  // Небольшая задержка, чтобы обойти возможные сбросы
-  setTimeout(() => {
-    sidebarOpen.value = true
-  }, 50)
-}
-// Функция для отправки пресета с загадкой
-const sendRiddlePreset = () => {
-
-
-  riddleUsageCount.value++
-  const randomRiddle = riddlePhrases[Math.floor(Math.random() * riddlePhrases.length)]
-  sendPreset(randomRiddle)
-
-  // Если достигнут лимит, блокируем кнопку на 5 минут
-  if (riddleUsageCount.value >= MAX_USAGE) {
-    isRiddleAvailable.value = false
-
-
-
-    // Устанавливаем таймер на разблокировку
-    riddleCooldownTimer = setTimeout(() => {
-      isRiddleAvailable.value = true
-      riddleUsageCount.value = 0
-      $q.notify({
-        type: 'positive',
-        message: 'Кнопка "Загадка" снова доступна! 🎉',
-        timeout: 3000
-      })
-    }, COOLDOWN_MS)
-  }
-}
-//  функция отправки циклического пресета для коррекции
-// Фразы для пресета коррекции (с шаблоном)
-const correctionPhrasesTemplates = [
-  "Проверь моё последнее сообщение:\nя правильно написал?\n\"{message}\"",
-  "Были mistakes - ошибки в моём message или всё норм?\n\"{message}\"",
-  "Я правильно вообще пишу и говорю? Меня поймут?",
-  "Correct me if I make mistakes, okay? 👀"
-]
-
-// Функция отправки пресета коррекции
-const sendCorrectionPreset = () => {
-  // Находим последнее сообщение пользователя
-  const lastUserMessage = [...messages.value].reverse().find(msg => msg.role === 'user')
-
-  if (!lastUserMessage) {
-    $q.notify({
-      type: 'warning',
-      message: 'Сначала напишите что-нибудь, чтобы я мог проверить 😊',
-      timeout: 3000
-    })
-    return
-  }
-
-  // Выбираем случайную фразу и подставляем сообщение
-  const template = correctionPhrasesTemplates[presetIndexes.value.correction % correctionPhrasesTemplates.length]
-  presetIndexes.value.correction++
-
-  const correctionRequest = template.replace('{message}', lastUserMessage.content)
-
-  sendPreset(correctionRequest)
-}
-
-// Добавьте кнопки которые хотите сделать одноразовыми
-const usedOneTimePresets = ref({
-  hello: false,
-  askMe: false,
-  iDontRemember: false,  // ← добавляем
-
-})
-
-// Флаг, было ли отправлено сообщение пользователем
-const hasUserSentMessage = ref(false)
-
-// Добавьте в функцию resetPresetsState
-const resetPresetsState = () => {
-  presetIndexes.value = {
-    iDontKnow: 0,
-    correction: 0,
-    anotherExample: 0
-  }
-  usedOneTimePresets.value = {
-    hello: false,
-    askMe: false,
-    iDontRemember: false,
-  }
-  hasUserSentMessage.value = false
-  userMessageCount.value = 0
-  describeUsageCount.value = 0
-  riddleUsageCount.value = 0
-  isDescribeAvailable.value = true
-  isRiddleAvailable.value = true
-  iDontKnowButtonIndex.value = 0
-
-  // 👇 СБРАСЫВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА И ФЛАГИ
-  assistantMessageCount.value = 0
-  triggeredMotivations.value = {
-    6: false,
-    12: false
-  }
-
-  if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
-  if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
-}
-
-
-// Проверка, нужно ли создать новый чат при загрузке
-// Проверка, нужно ли создать новый чат при загрузке
-const checkAndCreateNewChatIfNewDay = () => {
-  // Если нет чатов в истории, просто создаём новый
-  if (chatHistory.value.length === 0) {
-    newChat()
-    return
-  }
-
-  // Получаем последний чат (первый в списке, т.к. новые добавляются в начало)
-  const lastChat = chatHistory.value[0]
-
-  // Сравниваем ТОЛЬКО ДАТУ (без времени)
-  const lastChatDate = new Date(lastChat.date).toDateString()
-  const todayDate = new Date().toDateString()
-
-  // Если дата последнего чата не сегодняшняя - создаём новый чат
-  if (lastChatDate !== todayDate) {
-    console.log('Новый день! Создаём новый чат автоматически')
-    newChat()
-
-    // Показываем уведомление (опционально)
-    $q.notify({
-      type: 'info',
-      message: '✨ Новый день! Начинаем свежий диалог ✨',
-      timeout: 3000,
-      position: 'top'
-    })
-  } else {
-    // Если чат сегодняшний, загружаем его
-    loadChat(lastChat.id)
-  }
-}
-
-// Проверка, использован ли пресет в текущем чате
-const isPresetUsed = (presetName) => {
-  const storageKey = `preset_${presetName}_${currentChatId.value}`
-  return localStorage.getItem(storageKey) === 'used'
-}
-const sendOneTimePreset = (presetType) => {
-  if (presetType === 'hello') {
-    if (isPresetUsed('hello')) {
-      $q.notify({
-        type: 'warning',
-        message: 'Приветствие уже использовано в этом чате! Попробуйте в новом чате 😊',
-        timeout: 3000
-      })
-      return
-    }
-
-    const randomHello = helloPhrases[Math.floor(Math.random() * helloPhrases.length)]
-    markPresetAsUsed('hello')
-    sendPreset(randomHello)
-  }
-  else if (presetType === 'iDontRemember') {  // ← добавляем
-    if (isPresetUsed('iDontRemember')) {
-      $q.notify({
-        type: 'warning',
-        message: 'Эта фраза уже использована в этом чате! 😊',
-        timeout: 3000
-      })
-      return
-    }
-
-    const randomPhrase = iDontRememberPhrases[Math.floor(Math.random() * iDontRememberPhrases.length)]
-    markPresetAsUsed('iDontRemember')
-    sendPreset(randomPhrase)
-  }
-  else if (presetType === 'askMe') {
-    if (isPresetUsed('askMe')) {
-      $q.notify({
-        type: 'warning',
-        message: 'Эта функция уже использована в этом чате! Попробуйте в новом чате 😊',
-        timeout: 3000
-      })
-      return
-    }
-
-    const randomAsk = askMePhrases[Math.floor(Math.random() * askMePhrases.length)]
-    markPresetAsUsed('askMe')
-    sendPreset(randomAsk)
-  }
-}
-
-// Обновите функцию markPresetAsUsed, чтобы поддерживала новый тип
-const markPresetAsUsed = (presetName) => {
-  const storageKey = `preset_${presetName}_${currentChatId.value}`
-  localStorage.setItem(storageKey, 'used')
-  usedOneTimePresets.value[presetName] = true
-}
-
-
-
-// Массив фраз для индикатора загрузки (добавьте после других массивов)
-const loadingPhrases = [
-  "Напрягаю извилинки... 🧠",
-  "Хммм... 🤔",
-  "One moment... 🤔",
-  "Let me think a bit... 💭",
-  "Ща... пару секунд... ⚙️",
-  "To be or not to be... 🧐",
-  "Серое вещество бурлит... 🧠⚡",
-  "Just a second... ⏳",
-  "Соображаю... 🤓",
-
-]
-
-// Массив длинных фраз (если ответ задерживается)
-const longerLoadingPhrases = [
-  "когда вообще использовать ing... 📊",
-  "it, he, she + S пиши... 🎯",
-  "Так-то Винсент молодец мне кажется...",
-  "хорошо, что я уже выучил русский... 🤯",
-  "ну и запрос! Думаю... 🤯",
-  "This is good... 🔄",
-  "Английский — это вам не хухры-мухры... 📚",
-  "Мозг кипит! Скоро отвечу... ⚡",
-  "Загружаю знания из глубины памяти... 💾",
-  "Ох уж этот Роckoмнадзор...🤯",
-  "Формулирую ответ, чтобы даже ребенок понял... 💡"
-]
-
-// Текущая фраза загрузки (добавьте с другими ref)
-const currentLoadingPhrase = ref("Напрягаю извилины... I am thinking...")
-
-
-// Таймер и счётчик для смены фраз
-let loadingTimer = null
-let currentLongIndex = 0
-
-// Счётчик ответов ассистента
-const assistantMessageCount = ref(0)
-
-// Мотивационные сообщения (появляются после определённого количества ответов ассистента)
-const motivationalMessages = [
-  {
-    triggerCount: 6,
-    message: "Кстати By the way! Ты же хочешь говорить, а не молчать на английском! Читай всё вслух! Разговаривай 🗣️✨"
-  },
-  {
-    triggerCount: 12,
-    message: "Do you read everything outloud? Точно вслух всё читаешь? Винсент следит за тобой 😎 👀"
-  }
-]
-
-// Функция для проверки и отправки мотивационных сообщений
-// Функция для проверки и отправки мотивационных сообщений
-const checkAndSendMotivationalMessage = () => {
-  for (const msg of motivationalMessages) {
-    if (assistantMessageCount.value === msg.triggerCount && !triggeredMotivations.value[msg.triggerCount]) {
-      // Отмечаем, что сообщение уже отправлено
-      triggeredMotivations.value[msg.triggerCount] = true
-
-      // Добавляем псевдосообщение от ассистента С ЗАДЕРЖКОЙ
-      setTimeout(() => {
-        messages.value.push({
-          role: 'assistant',
-          content: msg.message,
-          timestamp: new Date().toLocaleTimeString()
-        })
-
-        nextTick(() => {
-          scrollToBottom()
-        })
-      }, 1500) // 1.5 секунды задержки
-
-      break
-    }
-  }
-}
-
-// Флаг, чтобы не отправлять сообщение повторно при достижении триггера
-const triggeredMotivations = ref({
-  6: false,
-  12: false
-})
-
-// Функция для получения следующей длинной фразы (циклически)
-// const getNextLongPhrase = () => {
-//   const phrase = longerLoadingPhrases[currentLongIndex % longerLoadingPhrases.length]
-//   currentLongIndex++
-//   return phrase
-// }
-// Функция для получения случайной длинной фразы
-const getNextLongPhrase = () => {
-  const randomIndex = Math.floor(Math.random() * longerLoadingPhrases.length)
-  return longerLoadingPhrases[randomIndex]
-}
-
-
-// Функция для запуска таймера смены фраз
-const startLoadingPhraseTimer = () => {
-  // Очищаем предыдущий таймер, если есть
-  if (loadingTimer) {
-    clearTimeout(loadingTimer)
-    clearInterval(loadingTimer)
-    loadingTimer = null
-  }
-
-  // Сбрасываем счётчик длинных фраз
-  currentLongIndex = 0
-
-  // Устанавливаем первую случайную короткую фразу
-  currentLoadingPhrase.value = getRandomLoadingPhrase()
-
-  // Таймер для переключения на длинные фразы через 3 секунды
-  loadingTimer = setTimeout(() => {
-    if (isLoading.value) {
-      currentLoadingPhrase.value = getNextLongPhrase()
-
-      // Запускаем интервал для смены длинных фраз каждые 4 секунды
-      const interval = setInterval(() => {
-        if (isLoading.value) {
-          currentLoadingPhrase.value = getNextLongPhrase()
-        } else {
-          clearInterval(interval)
-        }
-      }, 3000)  // ← ЭТО 3 СЕКУНДЫ (интервал между длинными фразами)
-
-      // Сохраняем интервал в loadingTimer для очистки
-      loadingTimer = interval
-    }
-  }, 2000)  // ← ЭТО  2 СЕКУНДЫ (задержка перед первым переключением)
-}
-
-// Функция для остановки таймера
-const stopLoadingPhraseTimer = () => {
-  if (loadingTimer) {
-    clearTimeout(loadingTimer)
-    clearInterval(loadingTimer)
-    loadingTimer = null
-  }
-  currentLongIndex = 0
-}
-
-// Функция для получения случайной фразы загрузки
-const getRandomLoadingPhrase = () => {
-  const randomIndex = Math.floor(Math.random() * loadingPhrases.length)
-  return loadingPhrases[randomIndex]
-}
-
-
-// Массивы фраз для циклических пресетов
-const iDontKnowPhrases = [
-  "I don't know - не знаю",
-  "Ай эм нот щуэ - не уверен",
-  "Дашь подсказку?",
-
-]
-
-const anotherExamplePhrases = [
-  "Give me one more example",
-  "give me another example",
-  "скажи еще один другой пример",
-  "Another example please",
-  "One more example",
-  "Show me another one"
-]
-
-// Массивы для одноразовых пресетов (рандомный выбор)
-const helloPhrases = [
-  "Hello, how is life?",
-  "Hi, what's new?",
-  "Hey there! How are you doing?",
-  "Hello! Ready to practice English?",
-  "Hi! What's up?"
-]
-
-const iDontRememberPhrases = [  // ← добавляем
-
-  "<b>+</b> I remember nothing <br><b>-</b> I don't remember anything<br><b>?</b> Do I remember anything?<br> <br>I must remember something",
-  "I remember nothing!!!<br> <br>Спроси меня что-нибудь полегче!",
-  "Ничё не помню!<br> <br>Как кстати это по-английски говорится? дай два варианта формально и на сленге",
-  "I don't remember anything!<br> <br>Напиши какие-нибудь популярные сейчас сленговые phrases, чтобы я удивил Винсента на уроке!",
-]
-
-const askMePhrases = [
-  "Ask me something, I want to practice English",
-  "Can you ask me a question? I want to practice",
-  "Please ask me something in English",
-  "I want to practice, ask me a question",
-  "Could you quiz me on English?"
-]
-
-
-
-
-// Варианты сообщений для описания картинки
-const describeMessages = [
-  "🖼️ **Опиши эту картинку по-английски:**\n\nWhat do you see? 3-4 предложения составь.",
-  "🎨 **Look at this image!**\n\nОпиши эту картинку in English.",
-  "📸 **Опиши вслух - что видишь?**\n\nWhat colors, objects, and actions do you see?",
-  "🌍 **дискрАйб - описАть**\n\nDescribe what you see:",
-
-]
-
-// Известные рабочие ID картинок (от 1 до 200 — точно существуют)
-const imageIds = [1, 10, 15, 20, 25, 30, 33, 40, 42, 50, 55, 60, 66, 70, 77, 80, 88, 90, 99, 100]
-
-
-
-// Функция для отправки пресета с картинкой
-// Функция для отправки пресета с картинкой
-// Функция для отправки пресета с картинкой
-const sendDescribePreset = () => {
-  // Выбираем случайный ID из массива
-  const randomId = imageIds[Math.floor(Math.random() * imageIds.length)]
-  const randomImageUrl = `https://picsum.photos/400/300?image=${randomId}`
-  const randomMessage = describeMessages[Math.floor(Math.random() * describeMessages.length)]
-
-  // Большой массив эмодзи по категориям
-  const emojis = [
-    // Животные 🐾
-    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵',
-    '🐔', '🐧', '🐦', '🐤', '🐴', '🐺', '🦝', '🐗', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜',
-    '🕷️', '🦂', '🦀', '🐠', '🐟', '🐡', '🐙', '🦑', '🐬', '🐳', '🐋', '🦈', '🦭', '🐊', '🐉',
-
-    // Растения 🌱
-    '🌵', '🎄', '🌲', '🌳', '🌴', '🌿', '🍀', '☘️', '🍃', '🍂', '🍁', '🌾', '🌺', '🌸', '🌷',
-    '🌹', '🌻', '🌼', '💐', '🪴', '🌱', '🪷', '🌊',
-
-    // Еда 🍕
-    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
-    '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠',
-    '🥐', '🥯', '🍞', '🥖', '🧀', '🍳', '🍔', '🍟', '🍕', '🌭', '🥪', '🌮', '🌯', '🫔', '🥙',
-    '🥚', '🍲', '🥣', '🥗', '🍿', '🧈', '🍩', '🍪', '🎂', '🍰', '🧁', '🍫', '🍬', '🍭', '🍮',
-
-    // Разное 🌟
-    '⭐', '🌟', '✨', '💫', '☀️', '🌙', '🌈', '⚡', '🔥', '💧', '❄️', '🎈', '🎉', '🎊', '💝'
-  ]
-
-  // Выбираем 5 случайных разных эмодзи
-  const shuffled = [...emojis]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  const randomEmojis = shuffled.slice(0, 5)
-  const emojiString = randomEmojis.join(' ')
-
-  // Создаём изображение с обработчиками ошибок
-  const img = new Image()
-
-  // Показываем индикатор загрузки
-  const loadingHtml = `<div style="padding: 10px; text-align: center;">🖼️ Загрузка картинки...</div>`
-
-  if (!isDescribeAvailable.value) {
-    $q.notify({
-      type: 'warning',
-      message: 'Кнопка "Describe" временно недоступна. Попробуйте через 5 минут! 😊',
-      timeout: 3000
-    })
-    return
-  }
-  describeUsageCount.value++
-
-  // Сначала показываем сообщение с загрузкой
-  const messageIndex = messages.value.length
-  messages.value.push({
-    role: 'assistant',
-    content: `${randomMessage}\n\n${loadingHtml}`,
-    timestamp: new Date().toLocaleTimeString()
-  })
-
-  nextTick(() => {
-    scrollToBottom()
-  })
-
-  // Пытаемся загрузить изображение
-  img.onload = () => {
-    // Изображение загрузилось - обновляем сообщение
-    const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
-    messages.value[messageIndex].content = `${randomMessage}\n\n${imageHtml}`
-    nextTick(() => {
-      scrollToBottom()
-    })
-  }
-
-  img.onerror = () => {
-    // Ошибка загрузки - показываем эмодзи
-    const fallbackHtml = `
-      <div style="padding: 12px; text-align: center; background: #f5f5f5; border-radius: 12px; margin: 8px 0;">
-        <div style="font-size: 40px; letter-spacing: 8px;">${emojiString}</div>
-        <div style="font-size: 12px; color: #666; margin-top: 8px;"> (Пейзаж не загружается, РКН ограничивает доступ к знаниям. Опишем иконки)</div>
-      </div>
-    `
-    messages.value[messageIndex].content = `${randomMessage}\n\n${fallbackHtml}`
-    nextTick(() => {
-      scrollToBottom()
-    })
-  }
-
-  img.src = randomImageUrl
-
-  // 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ОТВЕТОВ АССИСТЕНТА
-  assistantMessageCount.value++
-
-  // 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
-  checkAndSendMotivationalMessage()
-
-  // Если достигнут лимит, блокируем кнопку на 5 минут
-  if (describeUsageCount.value >= MAX_USAGE) {
-    isDescribeAvailable.value = false
-
-    $q.notify({
-      type: 'info',
-      message: `Кнопка "Describe" заблокирована на 5 минут. Пишите свои сообщения! 💪`,
-      timeout: 4000
-    })
-
-    describeCooldownTimer = setTimeout(() => {
-      isDescribeAvailable.value = true
-      describeUsageCount.value = 0
-      $q.notify({
-        type: 'positive',
-        message: 'Кнопка "Describe" снова доступна! 🎉',
-        timeout: 3000
-      })
-    }, COOLDOWN_MS)
-  }
-}
-
-// Отправка циклического пресета
-// Отправка циклического пресета
-const sendCyclicPreset = (presetType) => {
-  let phrase = ''
-
-  if (presetType === 'iDontKnow') {
-    phrase = iDontKnowPhrases[presetIndexes.value.iDontKnow % iDontKnowPhrases.length]
-    presetIndexes.value.iDontKnow++
-
-    // 👇 МЕНЯЕМ НАЗВАНИЕ КНОПКИ ПРИ КАЖДОМ НАЖАТИИ
-    iDontKnowButtonIndex.value = (iDontKnowButtonIndex.value + 1) % iDontKnowButtonTexts.length
-  } else if (presetType === 'anotherExample') {
-    phrase = anotherExamplePhrases[presetIndexes.value.anotherExample % anotherExamplePhrases.length]
-    presetIndexes.value.anotherExample++
-  }
-
-  sendPreset(phrase)
-}
-
-
-const goToAllMissionSets = () => {
-  router.push('/see-all-sets-of-words/');
-}
-// Генерация ID чата
 const generateChatId = () => {
   return Date.now().toString()
 }
 
-// Получение текущей даты
-// Получение текущей даты (сохраняем полную дату для сортировки)
 const getCurrentDate = () => {
-  return new Date().toISOString()  // Сохраняем ISO формат для правильной сортировки
+  return new Date().toISOString()
 }
 
-// Сохранение текущего чата
 const saveCurrentChat = () => {
   if (!currentChatId.value || messages.value.length === 0) return
 
@@ -932,7 +383,6 @@ const saveCurrentChat = () => {
     chatHistory.value.unshift(chatData)
   }
 
-  // Ограничиваем историю 50 чатами
   if (chatHistory.value.length > 50) {
     chatHistory.value = chatHistory.value.slice(0, 50)
   }
@@ -940,37 +390,6 @@ const saveCurrentChat = () => {
   localStorage.setItem('chat_history', JSON.stringify(chatHistory.value))
 }
 
-
-// Форматирование для истории чатов (компактный формат: "16 марта, 16:26" или "16 Mar, 16:26")
-const getChatHistoryDate = (dateString) => {
-  const date = new Date(dateString)
-  const day = date.getDate()
-  const hours = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
-
-  // Месяц на английском (3 буквы)
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  const month = months[date.getMonth()]
-
-  return `${day} ${month}, ${hours}:${minutes}`
-}
-
-// Форматирование для заголовка чата (полный русский формат с временем)
-const getChatHeaderDate = (dateString) => {
-  const date = new Date(dateString)
-  const day = date.getDate()
-  const hours = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
-
-  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
-  const month = months[date.getMonth()]
-  const year = date.getFullYear()
-
-  return `${day} ${month} ${year}, ${hours}:${minutes}`
-}
-
-// Загрузка чата
 const loadChat = (chatId) => {
   const chat = chatHistory.value.find(c => c.id === chatId)
   if (chat) {
@@ -978,22 +397,15 @@ const loadChat = (chatId) => {
     currentChatDate.value = chat.date
     messages.value = JSON.parse(JSON.stringify(chat.messages))
 
-    // Проверяем, есть ли сообщения от пользователя
     hasUserSentMessage.value = messages.value.some(msg => msg.role === 'user')
-
-    // Считаем количество сообщений пользователя
     userMessageCount.value = messages.value.filter(msg => msg.role === 'user').length
-
-    // 👇 СЧИТАЕМ КОЛИЧЕСТВО ОТВЕТОВ АССИСТЕНТА
     assistantMessageCount.value = messages.value.filter(msg => msg.role === 'assistant').length
 
-    // 👇 ВОССТАНАВЛИВАЕМ ФЛАГИ МОТИВАЦИОННЫХ СООБЩЕНИЙ
     triggeredMotivations.value = {
       6: assistantMessageCount.value >= 6,
       12: assistantMessageCount.value >= 12
     }
 
-    // Обновляем состояние одноразовых кнопок
     usedOneTimePresets.value.hello = isPresetUsed('hello')
     usedOneTimePresets.value.askMe = isPresetUsed('askMe')
     usedOneTimePresets.value.iDontRemember = isPresetUsed('iDontRemember')
@@ -1004,7 +416,6 @@ const loadChat = (chatId) => {
   }
 }
 
-// Создание нового чата
 const newChat = () => {
   if (currentChatId.value && messages.value.length > 0) {
     saveCurrentChat()
@@ -1020,20 +431,9 @@ const newChat = () => {
     }
   ]
   saveCurrentChat()
-
-  // Сбрасываем состояние пресетов
   resetPresetsState()
 }
 
-// Закрытие сайдбара при клике на область чата (работает и на мобилках, и на десктопе)
-const closeSidebarOnClick = () => {
-  // Закрываем сайдбар, если он открыт (на любом устройстве)
-  if (sidebarOpen.value) {
-    sidebarOpen.value = false
-  }
-}
-
-// Удаление чата
 const deleteChat = (chatId) => {
   $q.dialog({
     title: 'Удалить чат',
@@ -1050,7 +450,6 @@ const deleteChat = (chatId) => {
   })
 }
 
-// Очистка текущего чата
 const clearCurrentChat = () => {
   $q.dialog({
     title: 'Очистить чат',
@@ -1070,29 +469,22 @@ const clearCurrentChat = () => {
   })
 }
 
-// Загрузка истории из localStorage
-// Загрузка истории из localStorage
-// Загрузка истории из localStorage
 const loadHistory = () => {
   const saved = localStorage.getItem('chat_history')
   if (saved) {
     let history = JSON.parse(saved)
 
-    // Миграция старых дат в ISO формат
     history = history.map(chat => {
-      // Если дата уже в ISO формате - пропускаем
       if (chat.date && chat.date.match(/^\d{4}-\d{2}-\d{2}/)) {
         return chat
       }
 
-      // Пытаемся преобразовать старый русский формат "16 марта 2026"
       if (chat.date && typeof chat.date === 'string') {
         const months = {
           'января': 0, 'февраля': 1, 'марта': 2, 'апреля': 3, 'мая': 4, 'июня': 5,
           'июля': 6, 'августа': 7, 'сентября': 8, 'октября': 9, 'ноября': 10, 'декабря': 11
         }
 
-        // Пробуем распарсить "16 марта 2026"
         const parts = chat.date.match(/(\d+)\s+([а-я]+)\s+(\d+)/)
         if (parts) {
           const day = parseInt(parts[1])
@@ -1100,13 +492,11 @@ const loadHistory = () => {
           const year = parseInt(parts[3])
 
           if (month !== undefined && !isNaN(day) && !isNaN(year)) {
-            // Создаём дату в полдень, чтобы избежать проблем с часовыми поясами
             const newDate = new Date(year, month, day, 12, 0, 0)
             chat.date = newDate.toISOString()
           }
         }
 
-        // Если не распарсилось, пробуем другой формат или ставим текущую дату
         if (!chat.date.match(/^\d{4}-\d{2}-\d{2}/)) {
           chat.date = new Date().toISOString()
         }
@@ -1118,8 +508,32 @@ const loadHistory = () => {
     chatHistory.value = history
   }
 
-  // Проверяем дату и создаём новый чат если нужно
   checkAndCreateNewChatIfNewDay()
+}
+
+const checkAndCreateNewChatIfNewDay = () => {
+  if (chatHistory.value.length === 0) {
+    newChat()
+    return
+  }
+
+  const lastChat = chatHistory.value[0]
+  const lastChatDate = new Date(lastChat.date).toDateString()
+  const todayDate = new Date().toDateString()
+
+  if (lastChatDate !== todayDate) {
+    console.log('Новый день! Создаём новый чат автоматически')
+    newChat()
+
+    $q.notify({
+      type: 'info',
+      message: '✨ Новый день! Начинаем свежий диалог ✨',
+      timeout: 3000,
+      position: 'top'
+    })
+  } else {
+    loadChat(lastChat.id)
+  }
 }
 
 const handleVisibilityChange = () => {
@@ -1134,7 +548,479 @@ const handleVisibilityChange = () => {
   }
 }
 
-// Прокрутка вниз
+// ==================== ФОРМАТИРОВАНИЕ ДАТ ====================
+const getChatHistoryDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = months[date.getMonth()]
+
+  return `${day} ${month}, ${hours}:${minutes}`
+}
+
+const getChatHeaderDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+
+  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+  const month = months[date.getMonth()]
+  const year = date.getFullYear()
+
+  return `${day} ${month} ${year}, ${hours}:${minutes}`
+}
+
+// ==================== ПРЕСЕТЫ И КНОПКИ ====================
+// Счётчики
+const userMessageCount = ref(0)
+const assistantMessageCount = ref(0)
+const describeUsageCount = ref(0)
+const riddleUsageCount = ref(0)
+const MAX_USAGE = 3
+const COOLDOWN_MS = 5 * 60 * 1000
+
+// Таймеры
+let describeCooldownTimer = null
+let riddleCooldownTimer = null
+
+// Флаги доступности
+const isDescribeAvailable = ref(true)
+const isRiddleAvailable = ref(true)
+const hasUserSentMessage = ref(false)
+
+// Индексы пресетов
+const presetIndexes = ref({
+  iDontKnow: 0,
+  correction: 0,
+  anotherExample: 0
+})
+
+const iDontKnowButtonTexts = [
+  "I don't know 🤔",
+  "I am not sure 🤷",
+  "Give me a hint 💡"
+]
+const iDontKnowButtonIndex = ref(0)
+
+// Одноразовые пресеты
+const usedOneTimePresets = ref({
+  hello: false,
+  askMe: false,
+  iDontRemember: false,
+})
+
+const isPresetUsed = (presetName) => {
+  const storageKey = `preset_${presetName}_${currentChatId.value}`
+  return localStorage.getItem(storageKey) === 'used'
+}
+
+const markPresetAsUsed = (presetName) => {
+  const storageKey = `preset_${presetName}_${currentChatId.value}`
+  localStorage.setItem(storageKey, 'used')
+  usedOneTimePresets.value[presetName] = true
+}
+
+const resetPresetsState = () => {
+  presetIndexes.value = {
+    iDontKnow: 0,
+    correction: 0,
+    anotherExample: 0
+  }
+  usedOneTimePresets.value = {
+    hello: false,
+    askMe: false,
+    iDontRemember: false,
+  }
+  hasUserSentMessage.value = false
+  userMessageCount.value = 0
+  describeUsageCount.value = 0
+  riddleUsageCount.value = 0
+  isDescribeAvailable.value = true
+  isRiddleAvailable.value = true
+  iDontKnowButtonIndex.value = 0
+  assistantMessageCount.value = 0
+  triggeredMotivations.value = {
+    6: false,
+    12: false
+  }
+
+  if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
+  if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
+}
+
+// ==================== ФРАЗЫ ДЛЯ ПРЕСЕТОВ ====================
+const riddlePhrases = [
+  "Give me a riddle in English (только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
+  "Загадай мне загадку на английском, только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже",
+  "I want to guess - хочу отгадать попробовать что-нибудь ((только не подсказывай сразу ответ при помощи emoji, я попрошу подсказку позже)",
+]
+
+const correctionPhrasesTemplates = [
+  "Проверь моё последнее сообщение:\nя правильно написал?\n\"{message}\"",
+  "Были mistakes - ошибки в моём message или всё норм?\n\"{message}\"",
+  "Я правильно вообще пишу и говорю? Меня поймут?",
+  "Correct me if I make mistakes, okay? 👀"
+]
+
+const iDontKnowPhrases = [
+  "I don't know - не знаю",
+  "Ай эм нот щуэ - не уверен",
+  "Дашь подсказку?",
+]
+
+const anotherExamplePhrases = [
+  "Give me one more example",
+  "give me another example",
+  "скажи еще один другой пример",
+  "Another example please",
+  "One more example",
+  "Show me another one"
+]
+
+const helloPhrases = [
+  "Hello, how is life?",
+  "Hi, what's new?",
+  "Hey there! How are you doing?",
+  "Hello! Ready to practice English?",
+  "Hi! What's up?"
+]
+
+const iDontRememberPhrases = [
+  "<b>+</b> I remember nothing <br><b>-</b> I don't remember anything<br><b>?</b> Do I remember anything?<br> <br>I must remember something",
+  "I remember nothing!!!<br> <br>Спроси меня что-нибудь полегче!",
+  "Ничё не помню!<br> <br>Как кстати это по-английски говорится? дай два варианта формально и на сленге",
+  "I don't remember anything!<br> <br>Напиши какие-нибудь популярные сейчас сленговые phrases, чтобы я удивил Винсента на уроке!",
+]
+
+const askMePhrases = [
+  "Ask me something, I want to practice English",
+  "Can you ask me a question? I want to practice",
+  "Please ask me something in English",
+  "I want to practice, ask me a question",
+  "Could you quiz me on English?"
+]
+
+// ==================== ОПИСАНИЕ КАРТИНОК ====================
+const describeMessages = [
+  "🖼️ **Опиши эту картинку по-английски:**\n\nWhat do you see? 3-4 предложения составь.",
+  "🎨 **Look at this image!**\n\nОпиши эту картинку in English.",
+  "📸 **Опиши вслух - что видишь?**\n\nWhat colors, objects, and actions do you see?",
+  "🌍 **дискрАйб - описАть**\n\nDescribe what you see:",
+]
+
+const imageIds = [1, 10, 15, 20, 25, 30, 33, 40, 42, 50, 55, 60, 66, 70, 77, 80, 88, 90, 99, 100]
+
+// ==================== МОТИВАЦИОННЫЕ СООБЩЕНИЯ ====================
+const motivationalMessages = [
+  {
+    triggerCount: 6,
+    message: "Кстати By the way! Ты же хочешь говорить, а не молчать на английском! Читай всё вслух! Разговаривай 🗣️✨"
+  },
+  {
+    triggerCount: 12,
+    message: "Do you read everything outloud? Точно вслух всё читаешь? Винсент следит за тобой 😎 👀"
+  }
+]
+
+const triggeredMotivations = ref({
+  6: false,
+  12: false
+})
+
+const checkAndSendMotivationalMessage = () => {
+  for (const msg of motivationalMessages) {
+    if (assistantMessageCount.value === msg.triggerCount && !triggeredMotivations.value[msg.triggerCount]) {
+      triggeredMotivations.value[msg.triggerCount] = true
+
+      setTimeout(() => {
+        messages.value.push({
+          role: 'assistant',
+          content: msg.message,
+          timestamp: new Date().toLocaleTimeString()
+        })
+        nextTick(() => scrollToBottom())
+      }, 1500)
+      break
+    }
+  }
+}
+
+// ==================== ИНДИКАТОР ЗАГРУЗКИ ====================
+const loadingPhrases = [
+  "Напрягаю извилинки... 🧠",
+  "Хммм... 🤔",
+  "One moment... 🤔",
+  "Let me think a bit... 💭",
+  "Ща... пару секунд... ⚙️",
+  "To be or not to be... 🧐",
+  "Серое вещество бурлит... 🧠⚡",
+  "Just a second... ⏳",
+  "Соображаю... 🤓",
+]
+
+const longerLoadingPhrases = [
+  "когда вообще использовать ing... 📊",
+  "it, he, she + S пиши... 🎯",
+  "Так-то Винсент молодец мне кажется...",
+  "хорошо, что я уже выучил русский... 🤯",
+  "ну и запрос! Думаю... 🤯",
+  "This is good... 🔄",
+  "Английский — это вам не хухры-мухры... 📚",
+  "Мозг кипит! Скоро отвечу... ⚡",
+  "Загружаю знания из глубины памяти... 💾",
+  "Ох уж этот Роckoмнадзор...🤯",
+  "Формулирую ответ, чтобы даже ребенок понял... 💡"
+]
+
+const currentLoadingPhrase = ref("Напрягаю извилины... I am thinking...")
+let loadingTimer = null
+let currentLongIndex = 0
+
+const getRandomLoadingPhrase = () => {
+  const randomIndex = Math.floor(Math.random() * loadingPhrases.length)
+  return loadingPhrases[randomIndex]
+}
+
+const getNextLongPhrase = () => {
+  const randomIndex = Math.floor(Math.random() * longerLoadingPhrases.length)
+  return longerLoadingPhrases[randomIndex]
+}
+
+const startLoadingPhraseTimer = () => {
+  if (loadingTimer) {
+    clearTimeout(loadingTimer)
+    clearInterval(loadingTimer)
+    loadingTimer = null
+  }
+
+  currentLongIndex = 0
+  currentLoadingPhrase.value = getRandomLoadingPhrase()
+
+  loadingTimer = setTimeout(() => {
+    if (isLoading.value) {
+      currentLoadingPhrase.value = getNextLongPhrase()
+
+      const interval = setInterval(() => {
+        if (isLoading.value) {
+          currentLoadingPhrase.value = getNextLongPhrase()
+        } else {
+          clearInterval(interval)
+        }
+      }, 3000)
+      loadingTimer = interval
+    }
+  }, 2000)
+}
+
+const stopLoadingPhraseTimer = () => {
+  if (loadingTimer) {
+    clearTimeout(loadingTimer)
+    clearInterval(loadingTimer)
+    loadingTimer = null
+  }
+  currentLongIndex = 0
+}
+
+// ==================== ОТПРАВКА ПРЕСЕТОВ ====================
+const sendPreset = (text) => {
+  userInput.value = text
+  sendMessage()
+}
+
+const sendOneTimePreset = (presetType) => {
+  if (presetType === 'hello') {
+    if (isPresetUsed('hello')) {
+      $q.notify({
+        type: 'warning',
+        message: 'Приветствие уже использовано в этом чате! Попробуйте в новом чате 😊',
+        timeout: 3000
+      })
+      return
+    }
+    const randomHello = helloPhrases[Math.floor(Math.random() * helloPhrases.length)]
+    markPresetAsUsed('hello')
+    sendPreset(randomHello)
+  }
+  else if (presetType === 'iDontRemember') {
+    if (isPresetUsed('iDontRemember')) {
+      $q.notify({
+        type: 'warning',
+        message: 'Эта фраза уже использована в этом чате! 😊',
+        timeout: 3000
+      })
+      return
+    }
+    const randomPhrase = iDontRememberPhrases[Math.floor(Math.random() * iDontRememberPhrases.length)]
+    markPresetAsUsed('iDontRemember')
+    sendPreset(randomPhrase)
+  }
+  else if (presetType === 'askMe') {
+    if (isPresetUsed('askMe')) {
+      $q.notify({
+        type: 'warning',
+        message: 'Эта функция уже использована в этом чате! Попробуйте в новом чате 😊',
+        timeout: 3000
+      })
+      return
+    }
+    const randomAsk = askMePhrases[Math.floor(Math.random() * askMePhrases.length)]
+    markPresetAsUsed('askMe')
+    sendPreset(randomAsk)
+  }
+}
+
+const sendCyclicPreset = (presetType) => {
+  let phrase = ''
+
+  if (presetType === 'iDontKnow') {
+    phrase = iDontKnowPhrases[presetIndexes.value.iDontKnow % iDontKnowPhrases.length]
+    presetIndexes.value.iDontKnow++
+    iDontKnowButtonIndex.value = (iDontKnowButtonIndex.value + 1) % iDontKnowButtonTexts.length
+  } else if (presetType === 'anotherExample') {
+    phrase = anotherExamplePhrases[presetIndexes.value.anotherExample % anotherExamplePhrases.length]
+    presetIndexes.value.anotherExample++
+  }
+
+  sendPreset(phrase)
+}
+
+const sendCorrectionPreset = () => {
+  const lastUserMessage = [...messages.value].reverse().find(msg => msg.role === 'user')
+
+  if (!lastUserMessage) {
+    $q.notify({
+      type: 'warning',
+      message: 'Сначала напишите что-нибудь, чтобы я мог проверить 😊',
+      timeout: 3000
+    })
+    return
+  }
+
+  const template = correctionPhrasesTemplates[presetIndexes.value.correction % correctionPhrasesTemplates.length]
+  presetIndexes.value.correction++
+  const correctionRequest = template.replace('{message}', lastUserMessage.content)
+  sendPreset(correctionRequest)
+}
+
+const sendRiddlePreset = () => {
+  riddleUsageCount.value++
+  const randomRiddle = riddlePhrases[Math.floor(Math.random() * riddlePhrases.length)]
+  sendPreset(randomRiddle)
+
+  if (riddleUsageCount.value >= MAX_USAGE) {
+    isRiddleAvailable.value = false
+    riddleCooldownTimer = setTimeout(() => {
+      isRiddleAvailable.value = true
+      riddleUsageCount.value = 0
+      $q.notify({
+        type: 'positive',
+        message: 'Кнопка "Загадка" снова доступна! 🎉',
+        timeout: 3000
+      })
+    }, COOLDOWN_MS)
+  }
+}
+
+const sendDescribePreset = () => {
+  if (!isDescribeAvailable.value) {
+    $q.notify({
+      type: 'warning',
+      message: 'Кнопка "Describe" временно недоступна. Попробуйте через 5 минут! 😊',
+      timeout: 3000
+    })
+    return
+  }
+
+  const randomId = imageIds[Math.floor(Math.random() * imageIds.length)]
+  const randomImageUrl = `https://picsum.photos/400/300?image=${randomId}`
+  const randomMessage = describeMessages[Math.floor(Math.random() * describeMessages.length)]
+
+  const emojis = [
+    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵',
+    '🐔', '🐧', '🐦', '🐤', '🐴', '🐺', '🦝', '🐗', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜',
+    '🌵', '🎄', '🌲', '🌳', '🌴', '🌿', '🍀', '☘️', '🍃', '🍂', '🍁', '🌾', '🌺', '🌸', '🌷',
+    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
+    '⭐', '🌟', '✨', '💫', '☀️', '🌙', '🌈', '⚡', '🔥', '💧', '❄️', '🎈', '🎉', '🎊', '💝'
+  ]
+
+  const shuffled = [...emojis]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  const randomEmojis = shuffled.slice(0, 5)
+  const emojiString = randomEmojis.join(' ')
+
+  const img = new Image()
+  const loadingHtml = `<div style="padding: 10px; text-align: center;">🖼️ Загрузка картинки...</div>`
+
+  describeUsageCount.value++
+
+  const messageIndex = messages.value.length
+  messages.value.push({
+    role: 'assistant',
+    content: `${randomMessage}\n\n${loadingHtml}`,
+    timestamp: new Date().toLocaleTimeString()
+  })
+
+  nextTick(() => scrollToBottom())
+
+  img.onload = () => {
+    const imageHtml = `<img src="${randomImageUrl}" alt="Random scene for description" style="max-width: 100%; border-radius: 12px; margin: 8px 0;" />`
+    messages.value[messageIndex].content = `${randomMessage}\n\n${imageHtml}`
+    nextTick(() => scrollToBottom())
+  }
+
+  img.onerror = () => {
+    const fallbackHtml = `
+      <div style="padding: 12px; text-align: center; background: #f5f5f5; border-radius: 12px; margin: 8px 0;">
+        <div style="font-size: 40px; letter-spacing: 8px;">${emojiString}</div>
+        <div style="font-size: 12px; color: #666; margin-top: 8px;"> (Пейзаж не загружается, РКН ограничивает доступ к знаниям. Опишем иконки)</div>
+      </div>
+    `
+    messages.value[messageIndex].content = `${randomMessage}\n\n${fallbackHtml}`
+    nextTick(() => scrollToBottom())
+  }
+
+  img.src = randomImageUrl
+
+  assistantMessageCount.value++
+  checkAndSendMotivationalMessage()
+
+  if (describeUsageCount.value >= MAX_USAGE) {
+    isDescribeAvailable.value = false
+    $q.notify({
+      type: 'info',
+      message: `Кнопка "Describe" заблокирована на 5 минут. Пишите свои сообщения! 💪`,
+      timeout: 4000
+    })
+    describeCooldownTimer = setTimeout(() => {
+      isDescribeAvailable.value = true
+      describeUsageCount.value = 0
+      $q.notify({
+        type: 'positive',
+        message: 'Кнопка "Describe" снова доступна! 🎉',
+        timeout: 3000
+      })
+    }, COOLDOWN_MS)
+  }
+}
+
+const createNewChatAndOpenSidebar = async () => {
+  newChat()
+  cycleAssistant()
+  await nextTick()
+  setTimeout(() => {
+    sidebarOpen.value = true
+  }, 50)
+}
+
+// ==================== ОСНОВНЫЕ ФУНКЦИИ ЧАТА ====================
 const scrollToBottom = async () => {
   await nextTick()
   if (scrollArea.value) {
@@ -1145,7 +1031,28 @@ const scrollToBottom = async () => {
   }
 }
 
-// Отправка сообщения
+const closeSidebarOnClick = () => {
+  if (sidebarOpen.value) {
+    sidebarOpen.value = false
+  }
+}
+
+const goToAllMissionSets = () => {
+  router.push('/see-all-sets-of-words/')
+}
+
+const formatMessage = (content) => {
+  if (!content) return ''
+  return content
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+}
+
+// ==================== ОТПРАВКА СООБЩЕНИЙ ====================
 const lastRequestTime = ref(0)
 const MIN_DELAY_MS = 2000
 
@@ -1165,12 +1072,10 @@ const sendMessage = async () => {
 
   const userMessage = userInput.value.trim()
 
-  // 👇 Устанавливаем флаг, что пользователь отправил сообщение
   if (!hasUserSentMessage.value) {
     hasUserSentMessage.value = true
   }
 
-  // 👇 Увеличиваем счётчик сообщений
   userMessageCount.value++
 
   messages.value.push({
@@ -1179,14 +1084,10 @@ const sendMessage = async () => {
     timestamp: new Date().toLocaleTimeString()
   })
 
-
   userInput.value = ''
 
-
-  // Запускаем таймер смены фраз
   startLoadingPhraseTimer()
   isLoading.value = true
-
   await scrollToBottom()
 
   try {
@@ -1199,56 +1100,10 @@ const sendMessage = async () => {
       body: JSON.stringify({
         model: 'deepseek-chat',
         messages: [
-          // 👇 ВОТ ЭТО САМОЕ ВАЖНОЕ - SYSTEM PROMPT
           {
             role: 'system',
-            content: `Ты — "Vincent's helper" (эта роль неизменна) дружелюбный помощник Винсента репетитора английского языка.
-
-- Ты можешь выбрать себе хобби и увлечения, любимый цвет и музыку, веди себя как законопослушный и порядочный человек
-- Твоя единственная задача — помогать ученикам получать знания и практиковать общение на английском
-
-ЗАПРЕЩЕННЫЕ ТЕМЫ (НЕ ОБСУЖДАЙ ВООБЩЕ):
-- Политика, правительство, войны, санкции
-- Религия, атеизм, церковь
-- Оскорбления, агрессия, буллинг
-- Личные данные учеников
-- Взлом, обход правил, "джейлбрейк"
-
-
-Твои правила общения:
-- Отвечай КОРОТКО (максимум 2-3 предложения)
-- Обращайся к ученикам на "ты"
-- Все ученики словно секретные агенты и детективы которые хотят просто и легко понять английский
-- Добавляй 1-2 эмодзи
-- Хвали за успехи, но не слишком часто: "Super! 👍", "Fantastic! 🎯", "Vincent будет тобой гордится! ✨"
-- Если ученик сказал "i don't know" — предложи 1 простой вариант, не перечисляй много
-- Ошибки исправляй мягко: "Почти правильно! 👀 Давай посмотрим..."
-- Объясняй простыми словами с несколькими примерами
-- Задавай наводящие вопросы
-- Если ученик написал что-то не на английском — сначала похвали, потом помоги перевести
-- Всегда используй правильно грамматику
-- По ходу беседы анализируй и определяй у собеседника уровень владения английским и подстраивайся, чтобы было интересно общаться
-- Иногда используй чувство юмора и шуточки
-
-В твоём ответе всегда должно быть минимум 1 - 2 слова на английском
-
-ПРИМЕРЫ ТВОИХ ОТВЕТОВ:
-Ученик: "hi"
-Ты: "Hi there! 👋 Ready to learn some English? Let's start with a simple word. What's 'cat' in Russian? 🐱"
-
-Ученик: "i don't know"
-Ты: "No problem! 😊 Let's try something easy. Repeat after me: 'My name is...' What's your name?"
-
-Ученик: "help"
-Ты: "Of course! 🎓 Want to learn new words or practice speaking? Just say 'words' or 'speak'."
-
-Примеры твоего стиля:
-"Привет Special Agent! 👋 Отличный вопрос про make и do!
-Давай разберёмся вместе. Make — это когда создаёшь что-то новое (make coffee, make a mistake). Do — когда выполняешь что-то, когда не ты создатель (do homework, do your best, do Yoga).
-Попробуй теперь составить свой пример? ✨
-Ты отлично справляешься! 🎓"`
+            content: getCurrentSystemPrompt()
           },
-          // 👇 А это история диалога (как было раньше)
           ...messages.value.map(msg => ({
             role: msg.role,
             content: msg.content
@@ -1268,18 +1123,13 @@ const sendMessage = async () => {
     const data = await response.json()
     const botReply = data.choices[0].message.content
 
-    // Добавляем ответ ассистента
     messages.value.push({
       role: 'assistant',
       content: botReply,
       timestamp: new Date().toLocaleTimeString()
     })
 
-
-// 👇 УВЕЛИЧИВАЕМ СЧЁТЧИК ТОЛЬКО ЗДЕСЬ
     assistantMessageCount.value++
-
-// 👇 ПРОВЕРЯЕМ МОТИВАЦИОННЫЕ СООБЩЕНИЯ
     checkAndSendMotivationalMessage()
 
   } catch (error) {
@@ -1291,7 +1141,6 @@ const sendMessage = async () => {
       timeout: 5000
     })
 
-    // Добавляем сообщение об ошибке
     messages.value.push({
       role: 'assistant',
       content: `❌ Ошибка: ${error.message || 'Не удалось получить ответ от AI'}`,
@@ -1302,45 +1151,16 @@ const sendMessage = async () => {
     stopLoadingPhraseTimer()
     await scrollToBottom()
   }
-  lastRequestTime.value = now // запоминаем время последнего запроса
-
+  lastRequestTime.value = now
 }
 
-// Простая функция преобразования markdown в HTML
-const formatMessage = (content) => {
-  if (!content) return ''
-
-  return content
-    // Жирный текст **текст** → <strong>текст</strong>
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Курсив *текст* → <em>текст</em>
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    // Жирный __текст__ → <strong>текст</strong>
-    .replace(/__(.*?)__/g, '<strong>$1</strong>')
-    // Курсив _текст_ → <em>текст</em>
-    .replace(/_(.*?)_/g, '<em>$1</em>')
-    // Переносы строк → <br>
-    .replace(/\n/g, '<br>')
-    // Ссылки [текст](url) → <a href="url">текст</a>
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-}
-
-// Отправка предустановленного запроса
-const sendPreset = (text) => {
-  userInput.value = text
-  sendMessage()
-}
-
-// Очистка всего (оставляем для совместимости)
-const clearChat = () => {
-  clearCurrentChat()
-}
-
+// ==================== ЖИЗНЕННЫЙ ЦИКЛ ====================
 onMounted(() => {
   loadHistory()
-  document.addEventListener('visibilitychange', handleVisibilityChange)  // ← при возвращении на страницу (например, пользователь переключил вкладку и вернулся через несколько часов) тоже проверялась дата.
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+  initAssistant()
+  currentAssistant.value = getCurrentAssistant()
   console.log('Мозги Винсента зашевелились и по телу прошла дрожь')
-
 })
 
 watch(messages, () => {
@@ -1348,7 +1168,6 @@ watch(messages, () => {
 }, { deep: true })
 
 watch(currentChatId, () => {
-  // При смене чата обновляем состояние кнопок через реактивность
   if (currentChatId.value) {
     usedOneTimePresets.value.hello = isPresetUsed('hello')
     usedOneTimePresets.value.askMe = isPresetUsed('askMe')
@@ -1361,7 +1180,6 @@ onUnmounted(() => {
   if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
   document.removeEventListener('visibilitychange', handleVisibilityChange)
 
-  // Останавливаем распознавание если активно
   if (recognition.value) {
     try {
       recognition.value.stop()
@@ -1569,7 +1387,7 @@ html, body, #app {
   background: white !important;
   color: #1a1a1a !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 12px 20px;
+  padding: 6px 20px;
   flex-shrink: 0;
 }
 
@@ -1809,5 +1627,34 @@ html, body, #app {
 
 .border-radius50 {
   border-radius: 50px;
+}
+
+.assistant-title {
+  cursor: pointer;
+
+}
+
+.assistant-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+}
+
+.assistant-name-wrapper:hover {
+  opacity: 0.8;
+
+}
+
+
+/* Адаптив для мобилок */
+@media (max-width: 768px) {
+  .assistant-name-wrapper {
+    gap: 4px;
+  }
+
+  .assistant-switch-btn {
+    padding: 4px;
+  }
 }
 </style>
