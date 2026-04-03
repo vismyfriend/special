@@ -597,7 +597,7 @@ const motivationalMessages = [
   },
   {
     triggerCount: 12,
-    message: "Do you read everything outloud? Точно вслух всё читаешь? Винсент следит за тобой 😎👀"
+    message: "Do you read everything outloud? Точно вслух всё читаешь? Винсент следит за тобой 😎 👀"
   }
 ]
 
