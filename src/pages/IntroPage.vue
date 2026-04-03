@@ -1,5 +1,19 @@
 <template>
 
+
+  <!-- Добавляем невидимый компонент синтезатора речи -->
+  <SpeechSynthesizer
+    ref="speechSynthesizer"
+    :rate="0.85"
+    :volume="0.3"
+    :randomVoiceOnInit="true"
+    :randomVoiceEachTime="true"
+    @speaking-start="onSpeakingStart"
+    @speaking-end="onSpeakingEnd"
+  />
+
+  <!-- Остальной ваш шаблон -->
+
   <div class="background-gradient"></div>
 
 
@@ -42,7 +56,7 @@
 <!--    <img src="../assets/images/ButtonGreenLady.png" alt="greenButton" class="custom-image">-->
 <!--    <img src="../assets/images/lightBulbGirl.png" alt="greenButton" class="custom-image">-->
 <!--    <img src="../assets/images/Character6.png" alt="greenButton" class="custom-image">-->
-    <img src="../assets/images/RedDoor1.png" alt="RedDoor1" class="custom-image">
+    <img src="../assets/images/RedDoor2.png" alt="RedDoor2" class="custom-image">
 <!--    <img src="../assets/images/whereToClick.png" alt="greenButton" class="custom-image">-->
 
 
@@ -123,10 +137,43 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import shortWordsData from '../dataForGames/short-words-data';
 
+
 import { useRouter } from 'vue-router';
 import questionsData from "src/dataForGames/questions-data";
 
 import knockSound from '/src/assets/audio/knockOnDoorSound.mp3';
+
+
+import SpeechSynthesizer from 'src/components/WebSpeechAPI.vue';
+
+// Реф для компонента синтезатора
+const speechSynthesizer = ref(null);
+const isSpeakingNow = ref(false);
+
+// Функция для произношения текста
+const speakText = async (text, options = {}) => {
+  if (speechSynthesizer.value) {
+    try {
+      await speechSynthesizer.value.speak(text, options);
+      return true;
+    } catch (error) {
+      console.error('Speech error:', error);
+      return false;
+    }
+  }
+  return false;
+};
+
+// Обработчики событий
+const onSpeakingStart = (text) => {
+  isSpeakingNow.value = true;
+  console.log('🔊 Speaking:', text);
+};
+
+const onSpeakingEnd = (text) => {
+  isSpeakingNow.value = false;
+  console.log('✅ Finished speaking:', text);
+};
 
 
 // Состояние для отображения инструкции
@@ -179,6 +226,7 @@ const preloadKnock = () => {
   masterKnock.value.load(); // принудительная загрузка
 };
 
+
 // 3. Функция воспроизведения (мгновенно!)
 const playDoorKnock = () => {
   if (masterKnock.value) {
@@ -205,19 +253,19 @@ const sessionCounter = computed(() => counter.value - sessionStartCounter.value)
 const initialShowText = ref(true); // Новый флаг для первоначального отображения текста
 
 const buttonLabel = computed(() => {
-  return sessionCounter.value >= 20
-    ? "Super! Разминка окончена, жми сюда"
+  return sessionCounter.value >= 41
+    ? "It is OPEN ! Открыто уже, жми сюда"
     : "Нажми сюда , click here , клик хИэ";
 });
 
 const buttonColor = computed(() => {
-  return sessionCounter.value >= 23
+  return sessionCounter.value >= 41
     ? "blue"
     : "red";
 });
 
 const dynamicMessage = computed(() => {
-  const remaining = 20 - sessionCounter.value;
+  const remaining = 41 - sessionCounter.value;
   if (remaining <= 0) {
     return `Разминка мозгов и языка:<br><br>
     1) Молодчина! Хорошая практика.<br>
@@ -225,28 +273,45 @@ const dynamicMessage = computed(() => {
     и проверить правильно ли вы его произнесли<br>
     `;
   } else {
-    return `Разомни память и произношение<br> <b>pronunciation </b> / пронАн си эйшн /<br>
+    return `Тренируй <b>произношение</b><br> <b>pronunciation </b> / пронАн си эйшн /<br>
 <br><br>
 <!--    1) нажми "Tap here" ${remaining} times - раз(а)<br>-->
-    1) Стучи в дверь ✊ ${remaining}<br>
+    1) Стучи в дверь ✊ ${remaining}<br>(до тех пор пока не откроют)<br>
     2) читай <b>вслух </b> слова<br>
     `;
   }
 });
+// Добавьте в начало script setup
+const isNavigating = ref(false);
 
-const backToIntroPage = () => {
-  if (sessionCounter.value >= 20) {
-    handleBubbleClick();
-    // Задержка перед переходом
-    setTimeout(() => {
+// И обновите backToIntroPage:
+const backToIntroPage = async () => {
+  // Предотвращаем множественные вызовы
+  if (isNavigating.value) return;
+
+  if (sessionCounter.value >= 41) {
+    isNavigating.value = true;
+
+    try {
+      // Ждем завершения произношения
+      await handleBubbleClick();
+
+      // Небольшая задержка для плавности
+      setTimeout(() => {
+        router.push("/keypad");
+        isNavigating.value = false;
+      }, 300);
+    } catch (error) {
+      console.error('Error during speech:', error);
+      isNavigating.value = false;
+      // В случае ошибки все равно переходим
       router.push("/keypad");
-    }, 500); // пол секунды – чтобы успело показаться сообщение
+    }
   } else {
     infoMessage.value = dynamicMessage.value;
     showOverlay.value = true;
 
     setTimeout(() => {
-      // showOverlay.value = false;
       infoMessage.value = '';
     }, 7000);
   }
@@ -325,18 +390,26 @@ function numberToWords(num) {
 const showTextInstead = ref(false);
 const textVersion = computed(() => numberToWords(counter.value));
 
-const handleBubbleClick = () => {
+const handleBubbleClick = async () => {
+  // Показываем текстовую версию
   showTextInstead.value = true;
+
+  // Произносим число
+  await speakText(textVersion.value);
+
   setTimeout(() => {
     showTextInstead.value = false;
-  }, 6000); // показываем текст на 6 секунд
+  }, 6000);
 };
+
+
 // Собираем все английские слова
 // const welcomeWords = ["S","P","E","C","i","A","L","Special","agent","!!!","Hello","from","Vincent","He", "is", "your", "friend","#vismyfriend",];
 // const welcomeWords = ["S","P","E","C","i","A","L","Vincent","#vismyfriend"];
 // const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
 // const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
-const welcomeWords = ["читай","вслух","произноси","всё","вслуууух!","Hello","hi","Vincent","I","am","a","special","agent","I am not","a","lazy","ass","VINCEEENT!"];
+// const welcomeWords = ["читай","вслух","произноси","всё","вслуууух!","Hello","hi","Vincent","I","am","a","special","agent","I am not","a","lazy","ass","VINCEEENT!"];
+const welcomeWords = ["тук","тук!","knock","knock!","бэм","bam!","чем больше","повторяю","тем больше","запоминаю","the","more","I","repeat","the","more","I memorize","мэмо рАйз","memorize","запоминай","и","читай","всё","вслух","read","out","loud","аут лауд","вслух!","OUT LOUD"];
 
 
 const allEnglishWords = [
@@ -485,6 +558,20 @@ html {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* Запрещаем скролл на всей странице для этого компонента */
+body {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Чтобы контент скроллился внутри если нужно */
+.keypad-container {
+  overflow-y: auto;
+  height: 100vh;
 }
 
 .flying-word {

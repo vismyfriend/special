@@ -88,7 +88,7 @@
               @click="sendOneTimePreset('hello')"
               size="sm"
             >
-              Hello 👋
+              👋 Hello
             </q-btn>
 
             <q-btn
@@ -157,12 +157,21 @@
         <div class="input-area q-pa-md">
           <q-input v-model="userInput"
                    @keyup.enter="sendMessage"
-                   placeholder="Напишите сообщение..."
+                   placeholder="Напечатай или запиши голосовое"
                    dense
                    outlined
+                   input-class="italic"
                    class="full-width"
                    :disable="isLoading"
                    autofocus />
+
+
+          <q-btn @click="startVoiceInput"
+                 color="secondary"
+                 icon="mic"
+                 :loading="isRecording"
+                 :disable="isLoading"
+                 class="q-ml-sm border-radius50" />
           <q-btn @click="sendMessage"
                  color="primary"
                  icon="send"
@@ -188,6 +197,97 @@ const userInput = ref('')
 const isLoading = ref(false)
 const scrollArea = ref(null)
 const sidebarOpen = ref(false)
+
+
+// Voice input
+const isRecording = ref(false)
+const recognition = ref(null)
+
+
+// Инициализация распознавания речи
+const initSpeechRecognition = () => {
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+    recognition.value = new SpeechRecognition()
+    recognition.value.lang = 'en-US' // Английский (можно сменить на 'ru-RU' для русского)
+    recognition.value.interimResults = false
+    recognition.value.maxAlternatives = 1
+    recognition.value.continuous = false
+
+    recognition.value.onstart = () => {
+      isRecording.value = true
+      $q.notify({
+        // type: 'info',
+        message: ' I am listening to your English... Говорите 🎤',
+        timeout: 2000,
+        position: 'bottom'
+      })
+    }
+
+    recognition.value.onend = () => {
+      isRecording.value = false
+    }
+
+    recognition.value.onresult = (event) => {
+      const transcript = event.results[0][0].transcript
+      // Добавляем распознанный текст в поле ввода
+      if (userInput.value) {
+        userInput.value += ' ' + transcript
+      } else {
+        userInput.value = transcript
+      }
+
+    }
+
+    recognition.value.onerror = (event) => {
+      console.error('Speech recognition error:', event.error)
+      isRecording.value = false
+
+      let errorMessage = 'Ошибка распознавания'
+      if (event.error === 'not-allowed') {
+        errorMessage = '❌ Нет доступа к микрофону. Разрешите доступ в настройках браузера'
+      } else if (event.error === 'no-speech') {
+        errorMessage = '🎤 Не услышал речь. Попробуйте еще раз'
+      } else if (event.error === 'audio-capture') {
+        errorMessage = '🎙️ Микрофон не найден. Проверьте подключение'
+      }
+
+      $q.notify({
+        type: 'negative',
+        message: errorMessage,
+        timeout: 3000,
+        position: 'top'
+      })
+    }
+  } else {
+    $q.notify({
+      type: 'warning',
+      message: 'Ваш браузер не поддерживает распознавание речи',
+      timeout: 3000,
+      position: 'top'
+    })
+  }
+}
+
+// Запуск голосового ввода
+const startVoiceInput = () => {
+  if (!recognition.value) {
+    initSpeechRecognition()
+  }
+
+  if (recognition.value) {
+    try {
+      recognition.value.start()
+    } catch (error) {
+      console.error('Failed to start recognition:', error)
+      $q.notify({
+        type: 'negative',
+        message: 'Не удалось запустить микрофон',
+        timeout: 2000
+      })
+    }
+  }
+}
 
 // API ключ
 const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY
@@ -493,7 +593,7 @@ const assistantMessageCount = ref(0)
 const motivationalMessages = [
   {
     triggerCount: 6,
-    message: "Кстати By the way! Ты же хочешь говорить, а не молчать на английском! Тренируйся читать все вслух! 🗣️✨"
+    message: "Кстати By the way! Ты же хочешь говорить, а не молчать на английском! Читай всё вслух! Разговаривай 🗣️✨"
   },
   {
     triggerCount: 12,
@@ -739,7 +839,7 @@ const sendDescribePreset = () => {
     const fallbackHtml = `
       <div style="padding: 12px; text-align: center; background: #f5f5f5; border-radius: 12px; margin: 8px 0;">
         <div style="font-size: 40px; letter-spacing: 8px;">${emojiString}</div>
-        <div style="font-size: 12px; color: #666; margin-top: 8px;"> (Фотка пока не загрузилась, опиши эмОджиз)</div>
+        <div style="font-size: 12px; color: #666; margin-top: 8px;"> (Пейзаж не загружается, РКН ограничивает доступ к знаниям. Опишем иконки)</div>
       </div>
     `
     messages.value[messageIndex].content = `${randomMessage}\n\n${fallbackHtml}`
@@ -915,7 +1015,7 @@ const newChat = () => {
   messages.value = [
     {
       role: 'assistant',
-      content: 'Hello. <br> Какое слово или фразу помнишь с прошлого занятия английским?',
+      content: '- Hello 👋 <br> Какое слово или выражение помнишь с твоего последнего занятия английским?',
       timestamp: new Date().toLocaleTimeString()
     }
   ]
@@ -1240,6 +1340,7 @@ onMounted(() => {
   loadHistory()
   document.addEventListener('visibilitychange', handleVisibilityChange)  // ← при возвращении на страницу (например, пользователь переключил вкладку и вернулся через несколько часов) тоже проверялась дата.
   console.log('Мозги Винсента зашевелились и по телу прошла дрожь')
+
 })
 
 watch(messages, () => {
@@ -1258,8 +1359,14 @@ onUnmounted(() => {
   stopLoadingPhraseTimer()
   if (describeCooldownTimer) clearTimeout(describeCooldownTimer)
   if (riddleCooldownTimer) clearTimeout(riddleCooldownTimer)
-  document.removeEventListener('visibilitychange', handleVisibilityChange)  // ← добавить
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
 
+  // Останавливаем распознавание если активно
+  if (recognition.value) {
+    try {
+      recognition.value.stop()
+    } catch (e) {}
+  }
 })
 </script>
 
@@ -1694,7 +1801,9 @@ html, body, #app {
   }
 
   .input-area {
-    padding: 12px;
+    padding: 6px;
+    gap: 1px;
+
   }
 }
 

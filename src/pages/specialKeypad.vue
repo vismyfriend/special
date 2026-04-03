@@ -310,7 +310,7 @@ export default {
       const audio = new Audio()
       audio.src = src
       audio.preload = 'auto'
-      audio.volume = 1.0
+      audio.volume = 0.4
       audio.load()
       return audio
     },
@@ -319,6 +319,8 @@ export default {
     initializeAudio() {
       this.clickAudio = this.createOptimizedAudio(keySoundPress)
       this.clickAudio.muted = this.muted
+      this.clickAudio.volume = 0.4
+
     },
 
     initializeLetterAudios() {
@@ -342,6 +344,7 @@ export default {
       if (this.captcha.status === 'waiting' && this.captcha.targetKey) {
         const audio = this.letterAudios[this.captcha.targetKey]
         if (audio && !this.muted) {
+          audio.volume = 0.4
           audio.currentTime = 0
           const playPromise = audio.play()
           if (playPromise !== undefined) {
