@@ -1134,16 +1134,16 @@ const sendMessage = async () => {
 
   } catch (error) {
     console.error('Ошибка DeepSeek API:', error)
-    $q.notify({
-      type: 'negative',
-      message: error.message || 'Ошибка при запросе к AI. Проверьте интернет или API ключ',
-      position: 'top',
-      timeout: 5000
-    })
+    // $q.notify({
+    //   type: 'negative',
+    //   message: error.message || 'Ошибка при запросе к AI. Проверьте интернет или API ключ',
+    //   position: 'top',
+    //   timeout: 5000
+    // })
 
     messages.value.push({
       role: 'assistant',
-      content: `❌ Ошибка: ${error.message || 'Не удалось получить ответ от AI'}`,
+      content: `Ой, oops! I am sorry, сожалею, но пока не получится со мной поболтать. Напишите Винсенту в телеграмм, чтобы он разрешил мне с вами общаться...}`,
       timestamp: new Date().toLocaleTimeString()
     })
   } finally {

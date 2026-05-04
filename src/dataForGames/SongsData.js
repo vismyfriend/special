@@ -132,6 +132,70 @@ const songsData = {
 
     ],
   },
+  songHelloHowAreYou: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: 'На размытый текст можно кликать, чтобы увидеть подсказки',
+        taskID: "listenCarefully",
+        audio: new URL('../assets/audio/Hello_how_are_you.mp3', import.meta.url).href,
+        taskPicture: new URL("../assets/images/agents_TJPEG.jpeg", import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: null,
+            audioName: null,
+            text:
+              "Hello (hello) hello\n" +
+              "how are (you)?\n" +
+              "Hello hello hello\n" +
+              "(how) are you?\n" +
+              "-\n" +
+              "I am (good),\n " +
+              "I am (great),\n" +
+              "I (am) wonderful !\n" +
+              "-\n" +
+              "I am (good),\n " +
+              "I am (great),\n" +
+              "I (am) wonderful !\n" +
+              "\n" +
+              "Hello (hello) hello\n" +
+              "how are (you)?\n" +
+              "Hello hello hello\n" +
+              "(how) are you?\n" +
+              "-\n" +
+              "I am tired,\n " +
+              "I am hungry,\n" +
+              "I am not so (good) !\n" +
+              "-\n" +
+              "I am (tired),\n " +
+              "I (am) hungry,\n" +
+              "I am (not) so good !\n"
+          },
+        ]
+      },
+      {
+        taskDescription: 'Юсфул вордс - это переводится : полезные слова',
+        taskID: "taskDialogs",
+        usefulWords: "/ ХАЙ / - привет!, / ХАУ / - как?, Hi how are you? - Привет как ваши дела?, хай хау а ю - тренируйте произношение",
+        taskPicture: null,
+        audio: null,
+        extraInfo: null,
+        script: [
+          {
+            singer: "1 and 2",
+            audioName: null,
+            text:
+            //если слово в скобках, то оно будет заблюрено до клика по нему
+              "A: Hello\n" +
+              "B: Hi\n" +
+              "A: How are you?\n"
+          },
+        ]
+      },
+
+    ],
+  },
   songPresentContinuous1tutu: {
     mainDescription: null,
     tasks: [
@@ -355,6 +419,73 @@ const songsData = {
       },
     ],
   },
+  dialogAboutCards: {
+    mainDescription: "A dialog about cards",
+    tasks: [
+      {
+        taskDescription: 'На размытый текст можно кликать, чтобы увидеть подсказки',
+        taskID: "taskDialogs",
+        usefulWords: null,
+        taskPicture: null,
+        audio: null,
+        extraInfo: null,
+        script: [
+          {
+            singer: "1 and 2",
+            audioName: null,
+            text:
+            //если слово в скобках, то оно будет заблюрено до клика по нему
+              "Juan: \"You like to play cards, don't you? (не так ли)\"\n" +
+              "Peter: \"Yes, from time to time.\"\n" +
+              "Peter: \"Why do you want to know?\"\n" +
+              "Juan: \"Because I don't know the names of cards in English. Help me, please.\"\n" +
+              "Juan: \"I'm going to a casino with my friend Vincent next week, and I don't want to look silly  (or stupid - не хочу выглядеть глупо)\"\n" +
+              "Peter: \"Well, first of all (во-первых) you need to know tha word deck (колода) - it is all 52 or 36 cards together . In a deck of cards every card has one of 4 different suits (/сютс/ масти), two of the suits are red and two of them are black.\"\n" +
+              "Juan: \"Is one of the black suits looks like a garden tool?\"\n" +
+              "Peter: \"That's right, it is (spades) пики! And it really looks like a spade - with this tool people usually dig potatoes. The other black suit, which looks like a cross is called a club.\"\n" +
+              "Juan: \"Clubs and spades... Okay I will remember. I know that one of the red suits looks like love symbol?\"\n" +
+              "Peter: \"Yes, this is a suit of hearts. And another red suit that looks like a square - it is called a diamond.\"\n" +
+              "Juan: \"Four suits, I got it. Suit of clubs and the suit of spades are black. Diamonds and hearts are red.\"\n" +
+              "Peter: \"Super. You are a fast learner. The suit of diamonds, the suit of hearts, the suit of clubs and the suit of spades.\"\n" +
+              "Juan: \"Cards with numbers are easy - like the 'ten of clubs' or the 'five of spades'), but there are some playing cards with pictures of people on them which I don't know the names of. What is the name of the card with the old man with a beard on it?\"\n" +
+              "Peter: \"A card with an old man with a beard is called a King. A card with a picture of a woman, is called a Queen. And a card with a picture of a young man without a beard is called a Jack. For example, the King of hearts or the Jack of clubs.\"\n" +
+              "Juan: \"And what is the name of the cards that have only one diamond, one spade, one heart or one club in the middle, they also have the letter 'A' on them in the corners, what are they called?\"\n" +
+              "Peter: \"A card with the letter 'A' in the corner is called an Ace. For example, the Ace of hearts. There are also another 2 additional cards in a pack of cards which are not in any suit (e.g. suit of diamonds) and have a picture of a funny and strange man on them. Each of these two cards is called a Joker.\"\n" +
+              "Juan: \"A joker? Really? Like in film about Batman?\"\n" +
+              "Peter: \"Exactly.\""
+          },
+        ]
+      },
+      {
+        taskDescription: 'диалог 2',
+        taskID: "taskDialogs",
+        usefulWords: null,
+        taskPicture: null,
+        audio: null,
+        extraInfo: null,
+        script: [
+          {
+            singer: "1 and 2",
+            audioName: null,
+            roles: [
+              { character: "Dealer", text: "Welcome to our casino!" },
+              { character: "Dealer", text: "Place your bets! (размещайте ваши ставки)" },
+              { character: "Juan", text: "What is a minimum bet?" },
+              { character: "Dealer", text: "The minimum bet is 8 dollars" },
+              { character: "Vincent", text: "I bet 9 dollars" },
+              { character: "Juan", text: "Okay, I bet 12 dollars" },
+              { character: "Dealer", text: "We are playing Black Jack. If you need a card - say : hit me" },
+              { character: "Vincent", text: "I have an ace of spades and a two of hearts... Hit me" },
+              { character: "Dealer", text: "One more card for you, it is a six of clubs" },
+              { character: "Juan", text: "I have two aces! I have an ace of hearts and an ace of clubs, how many points do I have?" },
+              { character: "A lady behind", text: "You are lucky, you can choose the points... I recommend you to say : hit me" },
+            ]
+          },
+        ]
+      },
+    ],
+  },
+
   testQuicklyData: {
     mainDescription: "How much is too much?",
     tasks: [

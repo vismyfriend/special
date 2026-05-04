@@ -17,7 +17,7 @@ export const grammarTables = {
         {
           cells: [
             { content: 'Rule', classes: 'evidence-tag', rowspan: 1 },
-            { content: `<div class="note-line">Мы используем Are, am, is когда <u>нет обычного глагола</u> (когда нет повседневного действия, например: спать, есть, пить, улыбаться...)</div>`, classes: 'rules', isBlurred: true, colspan: 3 }
+            { content: `<div class="note-line">Мы используем Are, am, is когда <u>нет обычного глагола</u> (когда нет повседневного действия, например: спать, есть, пить, улыбаться...) <br><br> <u>Арамис</u> нужен <u>для описания</u> - например: Картина красивая, Горы большие, Я умный</div>`, classes: 'rules', isBlurred: true, colspan: 3 }
           ]
         },
         {
