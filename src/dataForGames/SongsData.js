@@ -487,7 +487,7 @@ const songsData = {
         taskDescription: 'диалог 3',
         taskID: "taskDialogs",
         usefulWords: null,
-        taskPicture: null,
+        taskPicture: new URL("../assets/images/pokerCombinationsEngTPNG.jpg", import.meta.url).href,
         audio: null,
         extraInfo: null,
         script: [

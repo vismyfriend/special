@@ -7,6 +7,7 @@ const routes = [
         component: () => import('pages/IntroPage.vue')
       },
 
+
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
@@ -15,6 +16,10 @@ const routes = [
           {
             path: '/phoneFramePattern',
             component: () => import('pages/PhoneFramePattern.vue'),
+          },
+          {
+            path: '/cards52',
+            component: () => import('src/components/Game52Cards.vue')
           },
           {
             path: ':missionName',
@@ -78,6 +83,7 @@ const routes = [
                 path: 'spell-it',
                 component: () => import('src/components/GameSpellingAgent.vue')
               },
+
               {
                 path: 'millionaire',
                 component: () => import('src/components/GameMillionaire.vue')
@@ -337,6 +343,7 @@ const routes = [
             path: '/pixelArt',
             component: () => import('pages/PixelArtEditor.vue')
           },
+
         ]
       },
 

@@ -310,7 +310,6 @@ h4 {
 
 .task-image {
   width: 100%;
-  max-height: 300px;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 10px;

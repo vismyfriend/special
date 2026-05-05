@@ -233,6 +233,7 @@ const AllGames = ref([
     cardIcon: '🐍', // Добавлена иконка
     active: true
   },
+
   {
     id: 102,
     name: "Spelling old game",
