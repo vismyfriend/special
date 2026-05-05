@@ -47,6 +47,53 @@ const questionsData = {
     { id: 26, eng: "The more mistakes I make, the more experience I have", ru: "Чем больше ошибок я делаю, тем больше у меня опыта" },
     { id: 27, eng: "The more experience I have, the more stories I can tell", ru: "Чем больше у меня опыта, тем больше историй я могу рассказать" }
   ],
+  cards36: [
+    // ЧЕРВИ (HEARTS) ❤️
+    { id: 1, eng: "A❤️", ru: "ace of hearts" },
+    { id: 6, eng: "6❤️", ru: "six of hearts" },
+    { id: 7, eng: "7❤️", ru: "seven of hearts" },
+    { id: 8, eng: "8❤️", ru: "eight of hearts" },
+    { id: 9, eng: "9❤️", ru: "nine of hearts" },
+    { id: 10, eng: "10❤️", ru: "ten of hearts" },
+    { id: 11, eng: "J❤️", ru: "jack of hearts" },
+    { id: 12, eng: "Q❤️", ru: "queen of hearts" },
+    { id: 13, eng: "K❤️", ru: "king of hearts" },
+
+    // БУБНЫ (DIAMONDS) ♦️
+    { id: 14, eng: "A♦️", ru: "ace of diamonds" },
+    { id: 19, eng: "6♦️", ru: "six of diamonds" },
+    { id: 20, eng: "7♦️", ru: "seven of diamonds" },
+    { id: 21, eng: "8♦️", ru: "eight of diamonds" },
+    { id: 22, eng: "9♦️", ru: "nine of diamonds" },
+    { id: 23, eng: "10♦️", ru: "ten of diamonds" },
+    { id: 24, eng: "J♦️", ru: "jack of diamonds" },
+    { id: 25, eng: "Q♦️", ru: "queen of diamonds" },
+    { id: 26, eng: "K♦️", ru: "king of diamonds" },
+
+    // ТРЕФЫ (CLUBS) ♣️
+    { id: 27, eng: "A♣️", ru: "ace of clubs" },
+    { id: 32, eng: "6♣️", ru: "six of clubs" },
+    { id: 33, eng: "7♣️", ru: "seven of clubs" },
+    { id: 34, eng: "8♣️", ru: "eight of clubs" },
+    { id: 35, eng: "9♣️", ru: "nine of clubs" },
+    { id: 36, eng: "10♣️", ru: "ten of clubs" },
+    { id: 37, eng: "J♣️", ru: "jack of clubs" },
+    { id: 38, eng: "Q♣️", ru: "queen of clubs" },
+    { id: 39, eng: "K♣️", ru: "king of clubs" },
+
+    // ПИКИ (SPADES) ♠️
+    { id: 40, eng: "A♠️", ru: "ace of spades" },
+    { id: 45, eng: "6♠️", ru: "six of spades" },
+    { id: 46, eng: "7♠️", ru: "seven of spades" },
+    { id: 47, eng: "8♠️", ru: "eight of spades" },
+    { id: 48, eng: "9♠️", ru: "nine of spades" },
+    { id: 49, eng: "10♠️", ru: "ten of spades" },
+    { id: 50, eng: "J♠️", ru: "jack of spades" },
+    { id: 51, eng: "Q♠️", ru: "queen of spades" },
+    { id: 52, eng: "K♠️", ru: "king of spades" },
+    { id: 53, eng: "️🤡🃏", ru: "a joker" },
+    { id: 54, eng: "️🃏🤡", ru: "a joker" },
+  ],
   introSetAlias: [
       // Цвета
       { id: 1, eng: "red", ru: "красный", hint: "/ рэд /" },

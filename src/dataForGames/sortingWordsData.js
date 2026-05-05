@@ -87,8 +87,52 @@ const sortingWordsData = {
       { id: 12, eng: '🎸 guitar', ru: 'гитара', correctColumn: 'a' },
       { id: 13, eng: '🐱 cats', ru: 'коты', correctColumn: '-' },
       { id: 14, eng: '🐱 cat', ru: 'кот', correctColumn: 'a' },
+    ]
+  },
+  cards36: {
+    instructions: 'перетяни карты в нужную колонку (черная или красная масть) произноси карты вслух на инглише',
+    columns: [
+      { id: 'b', title: 'Black suits' },
+      { id: 'r', title: 'Red suits' },
+    ],
+    items: [
+      // КРАСНЫЕ МАСТИ (Red suits) - ЧЕРВИ И БУБНЫ
+
+      { id: 3, eng: 'eight of hearts', ru: 'восьмёрка черви', correctColumn: 'r' },
+      { id: 4, eng: 'nine of hearts', ru: 'девятка черви', correctColumn: 'r' },
+      { id: 5, eng: 'ten of hearts', ru: 'десятка черви', correctColumn: 'r' },
+      { id: 6, eng: 'jack of hearts', ru: 'валет черви', correctColumn: 'r' },
+      { id: 7, eng: 'queen of hearts', ru: 'дама черви', correctColumn: 'r' },
+      { id: 8, eng: 'king of hearts', ru: 'король черви', correctColumn: 'r' },
+      { id: 9, eng: 'ace of hearts', ru: 'туз черви', correctColumn: 'r' },
 
 
+      { id: 12, eng: 'eight of diamonds', ru: 'восьмёрка буби', correctColumn: 'r' },
+      { id: 13, eng: 'nine of diamonds', ru: 'девятка буби', correctColumn: 'r' },
+      { id: 14, eng: 'ten of diamonds', ru: 'десятка буби', correctColumn: 'r' },
+      { id: 15, eng: 'jack of diamonds', ru: 'валет буби', correctColumn: 'r' },
+      { id: 16, eng: 'queen of diamonds', ru: 'дама буби', correctColumn: 'r' },
+      { id: 17, eng: 'king of diamonds', ru: 'король буби', correctColumn: 'r' },
+      { id: 18, eng: 'ace of diamonds', ru: 'туз буби', correctColumn: 'r' },
+
+      // ЧЁРНЫЕ МАСТИ (Black suits) - ТРЕФЫ И ПИКИ
+
+      { id: 21, eng: 'eight of clubs', ru: 'восьмёрка крести', correctColumn: 'b' },
+      { id: 22, eng: 'nine of clubs', ru: 'девятка крести', correctColumn: 'b' },
+      { id: 23, eng: 'ten of clubs', ru: 'десятка крести', correctColumn: 'b' },
+      { id: 24, eng: 'jack of clubs', ru: 'валет крести', correctColumn: 'b' },
+      { id: 25, eng: 'queen of clubs', ru: 'дама крести', correctColumn: 'b' },
+      { id: 26, eng: 'king of clubs', ru: 'король крести', correctColumn: 'b' },
+      { id: 27, eng: 'ace of clubs', ru: 'туз крести', correctColumn: 'b' },
+
+
+      { id: 30, eng: 'eight of spades', ru: 'восьмёрка пики', correctColumn: 'b' },
+      { id: 31, eng: 'nine of spades', ru: 'девятка пики', correctColumn: 'b' },
+      { id: 32, eng: 'ten of spades', ru: 'десятка пики', correctColumn: 'b' },
+      { id: 33, eng: 'jack of spades', ru: 'валет пики', correctColumn: 'b' },
+      { id: 34, eng: 'queen of spades', ru: 'дама пики', correctColumn: 'b' },
+      { id: 35, eng: 'king of spades', ru: 'король пики', correctColumn: 'b' },
+      { id: 36, eng: 'ace of spades', ru: 'туз пики', correctColumn: 'b' },
     ]
   },
   sortingArticlesAn: {

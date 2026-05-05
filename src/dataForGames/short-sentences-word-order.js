@@ -5,6 +5,51 @@ const shortSentencesWordOrderData = {
     { eng: "Do I love English?", ru: "Я люблю английский?"},
     { eng: "Why do I love English?", ru: "Почему я люблю английский"},
   ],
+  cards36: [
+    // ЧЕРВИ (HEARTS) ❤️
+    { eng: "the six of hearts .", ru: "шестерка черви" },
+    { eng: "the seven of hearts .", ru: "семерка черви" },
+    { eng: "the eight of hearts .", ru: "восьмерка черви" },
+    { eng: "the nine of hearts .", ru: "девятка черви" },
+    { eng: "the ten of hearts .", ru: "десятка черви" },
+    { eng: "the jack of hearts .", ru: "валет черви" },
+    { eng: "the queen of hearts .", ru: "дама черви" },
+    { eng: "the king of hearts .", ru: "король черви" },
+    { eng: "the ace of hearts .", ru: "туз черви" },
+
+    // БУБНЫ (DIAMONDS) ♦️
+    { eng: "the six of diamonds .", ru: "шестерка буби" },
+    { eng: "the seven of diamonds .", ru: "семерка буби" },
+    { eng: "the eight of diamonds .", ru: "восьмерка буби" },
+    { eng: "the nine of diamonds .", ru: "девятка буби" },
+    { eng: "the ten of diamonds .", ru: "десятка буби" },
+    { eng: "the jack of diamonds .", ru: "валет буби" },
+    { eng: "the queen of diamonds .", ru: "дама буби" },
+    { eng: "the king of diamonds .", ru: "король буби" },
+    { eng: "the ace of diamonds .", ru: "туз буби" },
+
+    // ТРЕФЫ (CLUBS) ♣️
+    { eng: "the six of clubs .", ru: "шестерка крести" },
+    { eng: "the seven of clubs .", ru: "семерка крести" },
+    { eng: "the eight of clubs .", ru: "восьмерка крести" },
+    { eng: "the nine of clubs .", ru: "девятка крести" },
+    { eng: "the ten of clubs .", ru: "десятка крести" },
+    { eng: "the jack of clubs .", ru: "валет крести" },
+    { eng: "the queen of clubs .", ru: "дама крести" },
+    { eng: "the king of clubs .", ru: "король крести" },
+    { eng: "the ace of clubs .", ru: "туз крести" },
+
+    // ПИКИ (SPADES) ♠️
+    { eng: "the six of spades .", ru: "шестерка пики" },
+    { eng: "the seven of spades .", ru: "семерка пики" },
+    { eng: "the eight of spades .", ru: "восьмерка пики" },
+    { eng: "the nine of spades .", ru: "девятка пики" },
+    { eng: "the ten of spades .", ru: "десятка пики" },
+    { eng: "the jack of spades .", ru: "валет пики" },
+    { eng: "the queen of spades .", ru: "дама пики" },
+    { eng: "the king of spades .", ru: "король пики" },
+    { eng: "the ace of spades .", ru: "туз пики" },
+  ],
   irregularVerbsSortingB: [
     { eng: "break broke broken", ru: "ломаю сломал сломанный"},
     { eng: "do did done", ru: "делаю сделал сделанный"},

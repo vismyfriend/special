@@ -71,49 +71,32 @@ const route = useRoute()
 const AllGames = ref([
 
   {
-    id: 80,
+    id: 1,
     name: "Все слова из набора",
     path: "print-all-words",
     gameData: shortWordsData,
     cardIcon: '🖨️', // Изменено на более подходящую иконку
     active: true,
   },
-
   {
-    id: 102,
+    id: 2,
     name: "Find pairs EASY",
     path: "find-pairs-easy",
     gameData: shortWordsData,
     cardIcon: '✂️', // Добавлена иконка
     active: true,
   },
-  {
-    id: 103,
-    name: "Correct order",
-    path: "word-order-sortable",
-    gameData: shortSentencesWordOrderData,
-    cardIcon: '👌', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 103,
-    name: "Sort it out",
-    path: "sorting",
-    gameData: sortingWordsData,
-    active: true,
-    cardIcon: '🛒', // Добавлена иконка
 
-  },
   {
-    id: 104,
-    name: "Translate it",
-    path: "game-translate",
-    gameData: shortWordsData, // если тут указать другую дату, то эта игра не будет отображаться в списке выбора игр
-    cardIcon: '🌐', // Добавлена иконка
+    id: 4,
+    name: "Spell it",
+    path: "spell-it",
+    gameData: shortWordsData,
+    cardIcon: '🔠', // Добавлена иконка
     active: true
   },
   {
-    id: 101,
+    id: 5,
     name: "Find pairs HARD",
     path: "find-pairs-hard",
     gameData: shortWordsData,
@@ -121,12 +104,53 @@ const AllGames = ref([
     active: true,
   },
   {
-    id: 102,
-    name: "Spell this",
-    path: "spelling",
+    id: 6,
+    name: "Say it",
+    path: "game-pronunciation",
     gameData: shortWordsData,
-    cardIcon: '🔠', // Добавлена иконка
+    cardIcon: '🎤️', // Добавлена иконка
     active: true,
+  },
+  {
+    id: 7,
+    name: "Listen to it",
+    path: "game-whatDoYouHear",
+    gameData: shortWordsData,
+    cardIcon: '🎧', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 8,
+    name: "A deck of cards",
+    path: "deck-of-cards",
+    gameData: questionsData,
+    cardIcon: '🃏', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 9,
+    name: "Lyrics and Dialogs",
+    path: "songs",
+    gameData: songsData,
+    cardIcon: '🗣️',
+    active: true
+  },
+  {
+    id: 10,
+    name: "Correct order",
+    path: "word-order-sortable",
+    gameData: shortSentencesWordOrderData,
+    cardIcon: '🔢', // Добавлена иконка
+    active: true,
+  },
+  {
+    id: 11,
+    name: "Sort it out",
+    path: "sorting",
+    gameData: sortingWordsData,
+    active: true,
+    cardIcon: '🛒', // Добавлена иконка
+
   },
   {
     id: 103,
@@ -136,21 +160,14 @@ const AllGames = ref([
     cardIcon: '✏️', // Добавлена иконка
     active: true,
   },
+
   {
-    id: 1203,
-    name: "Произношение",
-    path: "game-pronunciation",
-    gameData: shortWordsData,
-    cardIcon: '✏️', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 21203,
-    name: "Что ты слышишь?",
-    path: "game-whatDoYouHear",
-    gameData: shortWordsData,
-    cardIcon: '✏️', // Добавлена иконка
-    active: true,
+    id: 104,
+    name: "Translate it",
+    path: "game-translate",
+    gameData: shortWordsData, // если тут указать другую дату, то эта игра не будет отображаться в списке выбора игр
+    cardIcon: '🌐', // Добавлена иконка
+    active: true
   },
   {
     id: 180,
@@ -176,14 +193,8 @@ const AllGames = ref([
     cardIcon: '📝', // Добавлена иконка
     active: true,
   },
+
   {
-    id: 104,
-    name: "A deck of cards",
-    path: "deck-of-cards",
-    gameData: questionsData,
-    cardIcon: '🃏', // Добавлена иконка
-    active: true
-  },  {
     id: 104,
     name: "Definitions",
     path: "definitions-game",
@@ -219,16 +230,18 @@ const AllGames = ref([
     name: "Новая змейка",
     path: "gameSnakeWords",
     gameData: shortWordsData,
-    cardIcon: '💰', // Добавлена иконка
+    cardIcon: '🐍', // Добавлена иконка
     active: true
   },
   {
-    id: 1006,
-    name: "spelling new",
-    path: "spell-it",
+    id: 102,
+    name: "Spelling old game",
+    path: "spelling",
     gameData: shortWordsData,
-    active: true
+    cardIcon: '🔠', // Добавлена иконка
+    active: true,
   },
+
 
   // {
   //   id: 90,
@@ -331,14 +344,7 @@ const AllGames = ref([
     cardIcon: '🎧',
     active: true
   },
-  {
-    id: 113,
-    name: "Lyrics",
-    path: "songs",
-    gameData: songsData,
-    cardIcon: '🎧',
-    active: true
-  },
+
 
 
 ])

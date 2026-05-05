@@ -22,6 +22,52 @@ const shortWordsData = {
     },
     { id: 4, eng: "Special agent", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  cards36: [
+    // ТРЕФЫ (CLUBS) ♣️ - КРЕСТИ
+    { id: 1, eng: "six of clubs", ru: "шестерка крести", hint: "/ сыкс ов клабз /" },
+    { id: 2, eng: "seven of clubs", ru: "семерка крести", hint: "/ сэвэн ов клабз /" },
+    { id: 3, eng: "eight of clubs", ru: "восьмерка крести", hint: "/ эйт ов клабз /" },
+    { id: 4, eng: "nine of clubs", ru: "девятка крести", hint: "/ найн ов клабз /" },
+    { id: 5, eng: "ten of clubs", ru: "десятка крести", hint: "/ тэн ов клабз /" },
+    { id: 6, eng: "jack of clubs", ru: "валет крести", hint: "/ джэк ов клабз /" },
+    { id: 7, eng: "queen of clubs", ru: "дама крести", hint: "/ куин ов клабз /" },
+    { id: 8, eng: "king of clubs", ru: "король крести", hint: "/ кинг ов клабз /" },
+    { id: 9, eng: "ace of clubs", ru: "туз крести", hint: "/ эйс ов клабз /" },
+
+    // ПИКИ (SPADES) ♠️ - ВИНИ
+    { id: 10, eng: "six of spades", ru: "шестерка пики", hint: "/ сыкс ов спэйдз /" },
+    { id: 11, eng: "seven of spades", ru: "семерка пики", hint: "/ сэвэн ов спэйдз /" },
+    { id: 12, eng: "eight of spades", ru: "восьмерка пики", hint: "/ эйт ов спэйдз /" },
+    { id: 13, eng: "nine of spades", ru: "девятка пики", hint: "/ найн ов спэйдз /" },
+    { id: 14, eng: "ten of spades", ru: "десятка пики", hint: "/ тэн ов спэйдз /" },
+    { id: 15, eng: "jack of spades", ru: "валет пики", hint: "/ джэк ов спэйдз /" },
+    { id: 16, eng: "queen of spades", ru: "дама пики", hint: "/ куин ов спэйдз /" },
+    { id: 17, eng: "king of spades", ru: "король пики", hint: "/ кинг ов спэйдз /" },
+    { id: 18, eng: "ace of spades", ru: "туз пики", hint: "/ эйс ов спэйдз /" },
+
+    // ЧЕРВИ (HEARTS) ❤️ - ЧЕРВИ
+    { id: 19, eng: "six of hearts", ru: "шестерка черви", hint: "/ сыкс ов хартс /" },
+    { id: 20, eng: "seven of hearts", ru: "семерка черви", hint: "/ сэвэн ов хартс /" },
+    { id: 21, eng: "eight of hearts", ru: "восьмерка черви", hint: "/ эйт ов хартс /" },
+    { id: 22, eng: "nine of hearts", ru: "девятка черви", hint: "/ найн ов хартс /" },
+    { id: 23, eng: "ten of hearts", ru: "десятка черви", hint: "/ тэн ов хартс /" },
+    { id: 24, eng: "jack of hearts", ru: "валет черви", hint: "/ джэк ов хартс /" },
+    { id: 25, eng: "queen of hearts", ru: "дама черви", hint: "/ куин ов хартс /" },
+    { id: 26, eng: "king of hearts", ru: "король черви", hint: "/ кинг ов хартс /" },
+    { id: 27, eng: "ace of hearts", ru: "туз черви", hint: "/ эйс ов хартс /" },
+
+    // БУБНЫ (DIAMONDS) ♦️ - БУБИ
+    { id: 28, eng: "six of diamonds", ru: "шестерка буби", hint: "/ сыкс ов дайэмэндз /" },
+    { id: 29, eng: "seven of diamonds", ru: "семерка буби", hint: "/ сэвэн ов дайэмэндз /" },
+    { id: 30, eng: "eight of diamonds", ru: "восьмерка буби", hint: "/ эйт ов дайэмэндз /" },
+    { id: 31, eng: "nine of diamonds", ru: "девятка буби", hint: "/ найн ов дайэмэндз /" },
+    { id: 32, eng: "ten of diamonds", ru: "десятка буби", hint: "/ тэн ов дайэмэндз /" },
+    { id: 33, eng: "jack of diamonds", ru: "валет буби", hint: "/ джэк ов дайэмэндз /" },
+    { id: 34, eng: "queen of diamonds", ru: "дама буби", hint: "/ куин ов дайэмэндз /" },
+    { id: 35, eng: "king of diamonds", ru: "король буби", hint: "/ кинг ов дайэмэндз /" },
+    { id: 36, eng: "ace of diamonds", ru: "туз буби", hint: "/ эйс ов дайэмэндз /" },
+    { id: 37, eng: "joker", ru: "джОУкэр", hint: "/ джОУкэ /" },
+  ],
   up1: [
     { id: 1, eng: "I didn’t get it", ru: "я не уловил, до меня не дошло", hint: "/ай диднт гет ит/" },
     { id: 2, eng: "Repeat slowly", ru: "повторите медленнее пожалуйста", hint: "/рипит слОУли/" },

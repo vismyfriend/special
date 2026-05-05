@@ -184,6 +184,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/cards36",
+      missionVisibleName: "Колода карт  ♥️♣️🃏♦️♠️",
+      missionDescription: "A deck of cards",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/songHelloHowAreYou/songs",
       missionVisibleName: "Миссия 1.0 Ван дэр фул",
       missionDescription: "Mission 1.0 Wonderful",

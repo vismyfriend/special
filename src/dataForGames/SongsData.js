@@ -419,7 +419,7 @@ const songsData = {
       },
     ],
   },
-  dialogAboutCards: {
+  cards36: {
     mainDescription: "A dialog about cards",
     tasks: [
       {
@@ -480,6 +480,51 @@ const songsData = {
               { character: "Juan", text: "I have two aces! I have an ace of hearts and an ace of clubs, how many points do I have?" },
               { character: "A lady behind", text: "You are lucky, you can choose the points... I recommend you to say : hit me" },
             ]
+          },
+        ]
+      },
+      {
+        taskDescription: 'диалог 3',
+        taskID: "taskDialogs",
+        usefulWords: null,
+        taskPicture: null,
+        audio: null,
+        extraInfo: null,
+        script: [
+          {
+            singer: "1 and 2",
+            audioName: null,
+            text:
+              "Juan: \"Now I know all the cards!\"\n" +
+              "Juan: \"I mean I know the names of the cards! But I want to know how to win in Poker. Do you know how to play it?\"\n" +
+              "Peter: \"Good question! Yes, I do. In Poker you need to make the best hand (комбинация карт в твоих руках).\"\n" +
+              "Juan: \"What is the strongest combination?\"\n" +
+              "Peter: \"What is the strongest hand you mean? The word combination is very formal and nobody uses it in a real life and especially in a casino\"\n" +
+              "Juan: \"Yep I mean hand. What is the strongest hand?\"\n" +
+              "Peter: \"The best is (Royal Flush - флэш рояль) - that's Ace, King, Queen, Jack and Ten of the same suit (одной масти)\"\n" +
+              "Juan: \"Only from Ace to Ten ? What if I have from the King to nine or maybe from the eight to four?\"\n" +
+              "Peter: \"If your cards are in the correct order and they are all of the same suit it is called (Straight Flush - стрит флэш) - it is the second best combination.\"\n" +
+              "Juan: \"Okay, same suit and in order. Got it! Royal Flush is the best, and the straight flush is the second. What else? \"\n" +
+              "Peter: \"On the third place of best combinations (hands) is Four of a Kind (четыре одинаковых карты разных мастей) - four cards with the same number. For example, four Aces or four Kings. Or four twos (четыре двойки)\"\n" +
+              "Juan: \"Four twos? Wow it is not usual and it is cool. I must be very lucky to have four twos!\"\n" +
+              "Peter: \"Very lucky! Next hand is (Full House) - three of the same cards plus two of another. For example 3 queens and 2 jacks.\"\n" +
+              "Juan: \"Three plus two. Easy to remember!\"\n" +
+              "Juan: \"Three twos and two fours for example (три двойки и две четверки например)\"\n" +
+              "Peter: \"Yes. Other combinations (hands) are very common (частые и распространенные) Flush - флеш - any five cards of the same suit, not in order.\"\n" +
+              "Juan: \"So, for example all hearts or all spades?\"\n" +
+              "Peter: \"Exactly! Then you can have (Straight) - стрит five cards in a row, but different suits. Like 4,5,6,7,8 of mixed suits.\"\n" +
+              "Juan: \"In a row (подряд) but not the same colour?\"\n" +
+              "Peter: \"Yes! Next is (Three of a Kind) - three cards of the same number.\"\n" +
+              "Juan: \"Like three Jacks? Or three threes?\"\n" +
+              "Peter: \"Perfect example! Then (Two Pairs) - two different pairs. Like two 5s and two Kings.\"\n" +
+              "Juan: \"And what about just one pair?\"\n" +
+              "Peter: \"That's called (One Pair) - two cards of the same number. It's still a good hand!\"\n" +
+              "Juan: \"And the weakest?\"\n" +
+              "Peter: \"The weakest is (High Card) - it means you don't have any pairs, no straight, no flush. You just have something... And your something must be bigger than other players' cards.\"\n" +
+              "Juan: \"So Ace is the best high card?\"\n" +
+              "Peter: \"Yes! Ace is the strongest. Remember - Royal Flush is the best, and other combinations are just about the same colors or the same cards\"\n" +
+              "Juan: \"I think I'm ready for the casino now!\"\n" +
+              "Peter: \"Oh My God... I think yes... But don't spend all your money! Gambling is addictive (вызывает привыкание)\""
           },
         ]
       },
