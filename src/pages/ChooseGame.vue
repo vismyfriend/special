@@ -153,6 +153,14 @@ const AllGames = ref([
 
   },
   {
+    id: 12,
+    name: "Millionaire",
+    path: "millionaire",
+    gameData: MillionaireData,
+    cardIcon: '💰', // Добавлена иконка
+    active: true
+  },
+  {
     id: 103,
     name: "Spell Ten",
     path: "spell-ten",
@@ -160,7 +168,6 @@ const AllGames = ref([
     cardIcon: '✏️', // Добавлена иконка
     active: true,
   },
-
   {
     id: 104,
     name: "Translate it",
@@ -217,14 +224,7 @@ const AllGames = ref([
     cardIcon: '🏷️', // Добавлена иконка
     active: true
   },
-  {
-    id: 1005,
-    name: "Millionaire",
-    path: "millionaire",
-    gameData: MillionaireData,
-    cardIcon: '💰', // Добавлена иконка
-    active: true
-  },
+
   {
     id: 1005,
     name: "Новая змейка",

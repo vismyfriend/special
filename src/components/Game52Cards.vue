@@ -95,7 +95,7 @@
                 <div class="card-suit">{{ getSuitSymbol(card.suit) }}</div>
               </div>
             </div>
-            <div class="combination-name">{{ quizHands.player1Name }}</div>
+<!--            <div class="combination-name">{{ quizHands.player1Name }}</div>-->
           </div>
 
           <!-- VS -->
@@ -119,7 +119,7 @@
                 <div class="card-suit">{{ getSuitSymbol(card.suit) }}</div>
               </div>
             </div>
-            <div class="combination-name">{{ quizHands.player2Name }}</div>
+<!--            <div class="combination-name">{{ quizHands.player2Name }}</div>-->
           </div>
         </div>
 

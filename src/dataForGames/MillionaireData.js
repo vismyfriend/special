@@ -34,6 +34,116 @@ const MillionaireData = {
       correctAnswer: "A",
     },
   ],
+  cards36: [
+    {
+      text: "Как на английском сказать 'Пиковый Туз'?",
+      options: {
+        A: "The ace of spades",
+        B: "The ace of clubs",
+        C: "The Donald Trump",
+        D: "The Pick Tuz",
+        E: "The King of Hearts"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is 'Королева червей' in English?",
+      options: {
+        A: "Queen of hearts",
+        B: "Queen of spades",
+        C: "Red Queen",
+        D: "Queen of diamonds",
+        E: "Lady of worms"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "How many cards do you need to play DURAK ?",
+      options: {
+        A: "36",
+        B: "54",
+        D: "48",
+        E: "32"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is the strongest hand in poker?",
+      options: {
+        A: "Four of a Kind",
+        B: "Straight Flush",
+        C: "Royal Flush",
+        D: "Full House",
+        E: "Flush"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Как переводится 'spades' ?",
+      options: {
+        A: "лопаты = пики",
+        B: "дубинки = трефы = крести",
+        C: "бриллианты = буби",
+        D: "сердца = червы = черви",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как произносится карточная масть 'черви' на английском?",
+      options: {
+        A: "hearts - хАртс",
+        B: "hearts - хЁртс",
+        C: "hearts - хИртс",
+        D: "hearts - ХЗ",
+      },
+      correctAnswer: "A",
+    },
+
+    {
+      text: "How many suits are in a deck of cards?",
+      options: {
+        A: "36",
+        B: "4",
+        C: "20",
+        D: "12",
+        E: "8"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is 'Буби' in English?",
+      options: {
+        A: "Hearts",
+        B: "Spades",
+        C: "Diamonds",
+        D: "Clubs",
+        E: "Boobs"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What does Vincent usually do when he has a bad hand?",
+      options: {
+        A: "Starts crying",
+        B: "Folds cards dramatically",
+        C: "Blames the dealer",
+        D: "Asks for a rematch",
+        E: "He does everything!"
+      },
+      correctAnswer: "E",
+    },
+    {
+      text: "How to win at poker 100%?",
+      options: {
+        A: "Have the best hand",
+        B: "Be lucky",
+        C: "Play with Vincent (he always loses)",
+        D: "Don't play at all",
+        E: "Use a mirror"
+      },
+      correctAnswer: "C",
+    }
+  ],
 
   ieltsIntroTest: [
     {

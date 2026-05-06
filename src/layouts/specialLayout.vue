@@ -321,7 +321,9 @@ const showAboutGame = () => {
 };
 
 const restartGame = () => {
-  router.go(0);
+  // router.go(0);
+  window.location.reload()
+
 };
 
 const changeSet = () => {

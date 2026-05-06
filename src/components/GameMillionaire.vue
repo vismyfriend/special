@@ -251,6 +251,7 @@ let startTime = null;
 const shuffleEnabled = ref(true)
 const originalQuestions = ref([])
 
+const isAnswerProcessing = ref(false); // Блокировка повторных нажатий
 
 // Прогресс
 const progressWidth = computed(() => `${progressPercentage.value}%`);
@@ -594,6 +595,9 @@ const loadQuestion = async () => {
   isAudioPlaying.value = false
   closeModals()
 
+  // ✅ СБРАСЫВАЕМ БЛОКИРОВКУ ПРИ ЗАГРУЗКЕ НОВОГО ВОПРОСА
+  isAnswerProcessing.value = false
+
   // Завершение игры
   if (currentQuestionIndex.value >= allQuestions.value.length && failedQuestions.value.length === 0) {
     finishGame();
@@ -620,8 +624,8 @@ const loadQuestion = async () => {
 
 // Проверка ответа
 const checkAnswer = (optionKey, optionValue) => {
-  // УБИРАЕМ ПРОВЕРКУ НА БЛОКИРОВКУ
-  // if (hintsDisabled.value) return;
+  // ✅ НОВАЯ ПРОВЕРКА - блокируем повторные нажатия во время обработки
+  if (isAnswerProcessing.value) return;
 
   selectedOption.value = optionKey;
   const correctAnswer = currentQuestion.value.correctAnswer;
@@ -629,6 +633,9 @@ const checkAnswer = (optionKey, optionValue) => {
 
   const isFirstAnswer = !firstTryCorrect.value[currentQuestionIndex.value] &&
     firstTryCorrect.value[currentQuestionIndex.value] !== false;
+
+  // ✅ БЛОКИРУЕМ ОБРАБОТКУ
+  isAnswerProcessing.value = true;
 
   if (isCorrect.value) {
     // Правильный ответ
@@ -664,9 +671,11 @@ const checkAnswer = (optionKey, optionValue) => {
     setTimeout(() => {
       currentQuestionIndex.value++;
       loadQuestion();
+      // ✅ РАЗБЛОКИРУЕМ после перехода
+      isAnswerProcessing.value = false;
     }, 800);
   } else {
-    // Неправильный ответ - НЕ БЛОКИРУЕМ, А ПРОДОЛЖАЕМ
+    // Неправильный ответ
 
     if (isFirstAnswer) {
       firstTryCorrect.value[currentQuestionIndex.value] = false;
@@ -680,7 +689,7 @@ const checkAnswer = (optionKey, optionValue) => {
       failedQuestions.value.push(currentQuestion.value);
     }
 
-    // Анимация ошибки (оставляем для обратной связи)
+    // Анимация ошибки
     Object.values(optionRefs.value).forEach((el) => {
       if (!el) return;
       el.classList.add('shake');
@@ -699,14 +708,14 @@ const checkAnswer = (optionKey, optionValue) => {
       });
     }, 500);
 
-    // Сброс текста ошибки и ПЕРЕХОД К СЛЕДУЮЩЕМУ ВОПРОСУ
+    // Сброс текста ошибки и переход к следующему вопросу
     setTimeout(() => {
       errorText.value = '';
       isFading.value[optionKey] = false;
-
-      // ВАЖНО: ПЕРЕХОДИМ К СЛЕДУЮЩЕМУ ВОПРОСУ ДАЖЕ ПРИ ОШИБКЕ
       currentQuestionIndex.value++;
       loadQuestion();
+      // ✅ РАЗБЛОКИРУЕМ после перехода
+      isAnswerProcessing.value = false;
     }, 1500);
   }
 };
@@ -779,6 +788,9 @@ const toggleShuffle = () => {
   matchedPairs.value = 0
   mistakes.value = 0
   progressPercentage.value = 0
+
+  // ✅ Сбрасываем блокировку
+  isAnswerProcessing.value = false
 
   loadQuestion()
 }
