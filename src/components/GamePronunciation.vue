@@ -709,53 +709,102 @@ const closeModal = () => {
 // Получаем данные из параметров маршрута
 
 // 👇 ИСПРАВЛЕННАЯ ФУНКЦИЯ: с синхронным fallback
-const loadGameData = async () => {
-  const missionName = route.params.missionName
+// const loadGameData = async () => {
+//   const missionName = route.params.missionName
+//
+//   if (!missionName) {
+//     console.error('No mission name in route params')
+//     $q.notify({
+//       type: 'negative',
+//       message: '❌ Ошибка: не указана миссия',
+//       timeout: 3000
+//     })
+//     isLoading.value = false
+//     return
+//   }
+//
+//   // Сначала проверяем синхронные данные (быстро)
+//   const syncData = shortWordsData[missionName]
+//   if (syncData) {
+//     console.log('Using sync data for mission:', missionName)
+//     initGame(syncData)
+//     return
+//   }
+//
+//   // Если синхронных нет, пробуем динамический импорт (может быть API в будущем)
+//   try {
+//     console.log('Trying dynamic import for mission:', missionName)
+//     const module = await import(`../dataForGames/short-words-data.js`)
+//     const data = module.default[missionName]
+//
+//     if (data) {
+//       initGame(data)
+//     } else {
+//       console.error('Mission not found:', missionName)
+//       $q.notify({
+//         type: 'negative',
+//         message: `❌ Миссия "${missionName}" не найдена`,
+//         timeout: 3000
+//       })
+//       isLoading.value = false
+//     }
+//   } catch (error) {
+//     console.error('Error loading game data:', error)
+//     $q.notify({
+//       type: 'negative',
+//       message: '❌ Ошибка загрузки данных игры',
+//       timeout: 3000
+//     })
+//     isLoading.value = false
+//   }
+// }
 
-  if (!missionName) {
-    console.error('No mission name in route params')
-    $q.notify({
-      type: 'negative',
-      message: '❌ Ошибка: не указана миссия',
-      timeout: 3000
-    })
-    isLoading.value = false
-    return
-  }
+// ===== ПРОБУЕМ УСТРАНИТЬ БЕСКОНЕЧНОЕ ЗАВИСАНИЕ НА ЗАГРУЗКЕ: УБИРАЕМ АСИНХРОННОСТЬ =====
+// Весь код загрузки данных должен быть синхронным чтобы у тех у кого медленный мобильный интернет тоже грузилось
 
-  // Сначала проверяем синхронные данные (быстро)
-  const syncData = shortWordsData[missionName]
-  if (syncData) {
-    console.log('Using sync data for mission:', missionName)
-    initGame(syncData)
-    return
-  }
-
-  // Если синхронных нет, пробуем динамический импорт (может быть API в будущем)
-  try {
-    console.log('Trying dynamic import for mission:', missionName)
-    const module = await import(`../dataForGames/short-words-data.js`)
-    const data = module.default[missionName]
-
-    if (data) {
-      initGame(data)
-    } else {
-      console.error('Mission not found:', missionName)
+const loadGameData = () => {
+  // Таймаут на случай проблем
+  const timeoutId = setTimeout(() => {
+    if (isLoading.value) {
+      console.error('Loading timeout - check network/Auth')
+      isLoading.value = false
       $q.notify({
         type: 'negative',
-        message: `❌ Миссия "${missionName}" не найдена`,
-        timeout: 3000
+        message: '⚠️ Ошибка загрузки. Возможно кто-то блокирует доступ',
+        timeout: 5000
       })
-      isLoading.value = false
     }
-  } catch (error) {
-    console.error('Error loading game data:', error)
+  }, 8000)
+
+  const missionName = route.params.missionName
+
+  console.log('=== LOADING DATA ===')
+  console.log('Mission name:', missionName)
+
+  if (!missionName) {
+    clearTimeout(timeoutId)
+    console.error('No mission name')
+    isLoading.value = false
+    $q.notify({ type: 'negative', message: '❌ Ошибка: не указана миссия' })
+    return
+  }
+
+  // ПРЯМОЙ СИНХРОННЫЙ ДОСТУП
+  const data = shortWordsData[missionName]
+
+  if (data && Array.isArray(data) && data.length > 0) {
+    console.log('✅ Data loaded! Items:', data.length)
+    initGame(data)
+  } else {
+    clearTimeout(timeoutId)
+    console.error('❌ Mission not found:', missionName)
+    console.log('Available missions:', Object.keys(shortWordsData))
+    isLoading.value = false
     $q.notify({
       type: 'negative',
-      message: '❌ Ошибка загрузки данных игры',
+      message: `❌ Миссия "${missionName}" не найдена`,
       timeout: 3000
     })
-    isLoading.value = false
   }
 }
 
