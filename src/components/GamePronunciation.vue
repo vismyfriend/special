@@ -2,7 +2,7 @@
   <!-- Добавляем состояние загрузки -->
   <div v-if="isLoading" class="loading-screen">
     <div class="loader"></div>
-    <p>🔐 Загрузка тренировочных данных...</p>
+    <p>🔐 Если загрузка идёт слишком долго, то наверное это РКН блокирует...</p>
   </div>
   <div class="game-container" v-if="gameWords.length">
     <!-- Модалка с результатами -->
@@ -418,6 +418,8 @@ const toggleRecording = () => {
     startRecording()
   }
 }
+
+
 
 // Оценка фразы
 const evaluatePhrase = (spoken) => {

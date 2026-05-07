@@ -1596,6 +1596,7 @@ const GameTestsSeedData = {
   },
 
 
+
   test1V1: {
     mainDescription: "Let's find out the weak spots",
     tasks: [

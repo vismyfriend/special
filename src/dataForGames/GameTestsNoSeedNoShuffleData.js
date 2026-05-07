@@ -398,6 +398,33 @@ const gameTestsNoSeedNoShuffleData = {
       }
     ]
   },
+  testPattern: {
+    mainDescription: "Let's find out the weak spots",
+    tasks: [
+      {
+        taskDescription: 'Read out loud, choose the best variant',
+        audio: null,
+        taskID: "multiple_choice",
+        taskPicture: null,
+        textScript: null,
+        questions: [
+          {
+            text: "Вопрос",
+            options: {
+              A: "answer",
+              B: "answer",
+              C: "answer",
+              D: "answer",
+              E: "answer",
+            },
+            correctAnswer: "D",
+            explanation: 'давайте разберемся почему это правильный ответ'
+          },
+        ]
+      },
+
+    ]
+  },
 
 
   debug: {
@@ -429,14 +456,154 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
-  pattern: {
-    mainDescription: "V-IS-MY-DEBUGGER",
+  cards36: {
+    mainDescription: 'Экзамен по теме "deck of cards"',
     tasks: [
       {
-        taskDescription: "Grid - fill in",
         taskID: "grid_table",
+        taskDescription: "Впиши перевод",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
         tableData: {
-          headers: ["v1","v2","v3","перевод","пример",],
+          headers: ["Английский","Русский"],
+          rows: [
+            {
+              cells: ["", "Пиковая дама",],
+              editable: [true, false,],
+              correctAnswers: {
+                cells: ["the queen of spades", null ],
+                almostCorrect: {
+                  0: ["a queen of spades","queen of spades"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["The Jack of hearts", "",],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [ null, "валет черви" ],
+                almostCorrect: {
+                  1: ["валет червей","червовый валет","валет червовый","червей валет"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["", "Шутник",],
+              editable: [true, false,],
+              correctAnswers: {
+                cells: ["a joker", null ],
+                almostCorrect: {
+                  0: ["the joker","joker"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+
+          ]
+        }
+      },
+      {
+        taskID: "true_false",
+        taskDescription: "Послушайте и ответьте",
+        usefulWords: 'in turns - по очереди, suit - / сЮт / масть или костюм, high or low? - высокий/низкий (ранг карты), trump - козырная карта, let`s give it a go - ну давай попробуем!',
+        audio: new URL('../assets/audio/Playing-cards-full.mp3', import.meta.url).href,
+        textScript: 'Man: So, how do you play again?\n' +
+          'Woman: You have seven cards. Everybody plays in turns, and the highest card wins.\n' +
+          'Man: And... Are aces high or low?\n' +
+          'Woman: High.\n' +
+          'Man: Can I play any suit?\n' +
+          'Woman: No, of course not! You have to follow suit!\n' +
+          'Man: So then, if someone plays hearts, and I don’t have any hearts…\n' +
+          'Woman: You can play anything. You can play a trump, if you have one.\n' +
+          'Man: I see. So I should try to win as many tricks as possible?\n' +
+          'Woman: Yes, but don’t play all your winners straight away. You need to watch what other people are doing, too.\n' +
+          'Man: Okay, let’s give it a go!',
+        questions: [
+          {
+            text: "1. A woman is asking a man how to play cards",
+            correctAnswer: "false"
+          },
+          {
+            text: "2. A woman is explaining to a man how to play cards",
+            correctAnswer: "true"
+          },
+          {
+            text: "3. In this game Aces are low cards.",
+            correctAnswer: "false"
+          },
+          {
+            text: "4. The woman recommends not to watch what other players are doing, and to use all trumps.",
+            correctAnswer: "true"
+          },
+        ]
+      },
+      {
+        taskID: "drop_down_text",
+        taskDescription: "Drop down",
+        usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
+        audio: null,
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "Hello friends! Let me share (for, to, with*) you a few words about my favorite card game! It (is*, do, does, are, am ) called 'Twenty One'. This game (has*, have) the second name - it is Black Jack\n" +
+              '\n' +
+              "The rules (are*, am, is) very simple and easy. All players (have*, has) 2 cards in the beginning of the game, and all players must count cards.\n" +
+              '\n' +
+              "The ace is 11 points or 1 point. The king, the queen, and the (John, Jim, Jack*, Josh) are 10 points. And all other (cards*, card) have numbers of points on them.\n" +
+              '\n' +
+              "The winner is a player who is closer to 21. If you have more than 21 - you lose. If you have 20 and other players have 19 or 18 or less - they lose and you win\n" +
+              '\n' +
+              "And the funniest of this game is that when you need one more card from the ( dekc ,desk, deck*) of card you must say: HIT ME !",
+          },
+        ]
+      },
+      {
+        taskID: "discussion_task",
+        taskDescription: "Discuss these questions",
+        usefulWords: null,
+        audio: null,
+        textScript: null,
+        questions: [
+          {
+            text: "What is your favorite card game?",
+            translation: "Какая твоя любимая карточная игра?",
+          },
+          {
+            text: "When did you play cards last time? Tell about that",
+            translation: "когда последний раз играли в картчеую игру? Расскажите об этом",
+          },
+          {
+            text: "What else can people do with cards, besides playing?",
+            translation: "Что еще можно делать с картами, кроме играния",
+          },
+        ]
+      },
+      {
+        taskDescription: "Translate",
+        taskID: "student_input",
+        textScript: null,
+        questions: [
+          {
+            text: 'Как на английском написать: "Мой учитель играет в карты со мной каждый урок" ____',
+            correctAnswer: "My teacher plays cards with me every lesson",
+            almostCorrectAnswers: ["Vincent plays cards with me every lesson", "V plays cards with me every lesson"]  // 👈 эти тоже засчитаются
+
+          },{
+            text: "Напиши короткий текст как ты относишься к карточным играм почему хорошо или плохо? ____",
+            correctAnswer: "anyIsOk",
+
+          },
+        ]
+      },
+    ],
+  },
+
+  pattern: {
+    mainDescription: "ШАБЛОНЫ ЗАДАНИЙ : можно добавлять аудио или видео или картинки и слова полезные для выполнения",
+    tasks: [
+      {
+        taskID: "grid_table",
+        taskDescription: "задания с таблицами - ввести точный ответ или любой ответ",
+        tableData: {
+          headers: ["1"," 2"," 3","eng","пример",],
           rows: [
             {
               cells: ["do", "did", "done","делать", "I did it"],
@@ -448,17 +615,24 @@ const gameTestsNoSeedNoShuffleData = {
               correctAnswers: {
                 cells: [null, "ate",null,"есть","anyIsOk" ],
                 almostCorrect: {
-                  1: ["two","2"], // Индекс поля (начиная с 0)
+                  1: ["two","2"], // Индекс поля (начиная с 0) первый столбец это ноль
                   3: ["поесть","кушать","жрать","скушать","покушать",],
                 }
+              }
+            },
+            {
+              cells: ["break","broke","","ломать","he breaks it",],
+              editable: [false, false, true, false, false,],
+              correctAnswers: {
+                cells: [null, null, "anyIsOk", null, null],
               }
             },
           ]
         }
       },
       {
-        taskDescription: "GRID - Irregular Verbs:",
         taskID: "grid_table",
+        taskDescription: "GRID - Irregular Verbs:",
         taskPicture: null,
         tableData: {
           headers: ["V1", "V2", "V3", "перевод"],
@@ -578,8 +752,8 @@ const gameTestsNoSeedNoShuffleData = {
         }
       },
       {
-        taskDescription: "Заполни пропуски в таблице:",
         taskID: "grid_table",
+        taskDescription: "Заполни пропуски в таблице:",
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
         tableData: {
           headers: ["Russian", "English"],
@@ -652,8 +826,8 @@ const gameTestsNoSeedNoShuffleData = {
         },
       },
       {
-        taskDescription: "Послушайте и ответьте",
         taskID: "true_false",
+        taskDescription: "Послушайте и ответьте",
         usefulWords: 'useful - полезные , words - слова , special - /спэшл/ особенный',
         audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
         taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
@@ -671,8 +845,8 @@ const gameTestsNoSeedNoShuffleData = {
         ]
       },
       {
-        taskDescription: "Drop down",
         taskID: "drop_down_text",
+        taskDescription: "Drop down",
         usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
         audio: null,
         textScript: 'выбирай правильный ответ',
@@ -685,8 +859,8 @@ const gameTestsNoSeedNoShuffleData = {
         ]
       },
       {
-        taskDescription: "Discuss this:",
         taskID: "discussion_task",
+        taskDescription: "Discuss this:",
         usefulWords: null,
         audio: null,
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
@@ -707,56 +881,26 @@ const gameTestsNoSeedNoShuffleData = {
         ]
       },
       {
-        taskDescription: "Translate",
         taskID: "student_input",
-        usefulWords: null,
-        audio: null,
-        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        taskDescription: "Translate",
         textScript: null,
         questions: [
           {
-            text: "Позвольте мне ____",
-            correctAnswer: "Let me",
-          },
-          {
-            text: "поделиться с вами ____",
-            correctAnswer: "share with you",
-          },
-          {
-            text: "несколькими словами про моего сына____",
-            correctAnswer: "a few words about my son",
-            almostCorrectAnswers: ["a few words about cheesecake","a few words about my cheesecake",]
+            text: 'Как на английском написать: "Мой учитель играет в карты со мной каждый урок" ____',
+            correctAnswer: "My teacher plays cards with me every lesson",
+            almostCorrectAnswers: ["Vincent plays cards with me every lesson", "V plays cards with me every lesson"]  // 👈 эти тоже засчитаются
+
+          },{
+            text: "Напиши короткий текст как ты относишься к карточным играм почему хорошо или плохо? ____",
+            correctAnswer: "anyIsOk",
 
           },
-          {
-            text: "Он не любит ТикТок ____",
-            correctAnswer: "He doesn't like TikTok",
-            almostCorrectAnswers: ["He doesn't love TikTok",]
-          },
-          {
-            text: "Кто любит ТикТок? ____",
-            correctAnswer: "Who likes TikTok?",
-            almostCorrectAnswers: ["Who loves TikTok?",]
-          },
-          {
-            text: "Кого любит ТикТок? ____",
-            correctAnswer: "Who does TikTok like?",
-            almostCorrectAnswers: ["Who does TikTok love?",]
-          },
-          {
-            text: "Кого ты любишь? ____",
-            correctAnswer: "Who do you like?",
-            almostCorrectAnswers: ["Who do you love?",]
-          },
-
-
-
         ]
       },
       {
+        taskID: "multiple_choice",
         taskDescription: "Listen & click the correct answer",
         audio: new URL('../assets/audio/how_are_they_getting_there.mp3', import.meta.url).href,
-        taskID: "multiple_choice",
         taskPicture: new URL("../assets/images/listeningPicture1.jpg", import.meta.url).href,
         textScript: '1)\n' +
           '\n' +
@@ -895,10 +1039,11 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
+
+
   patternNEWCODEtest: {
     mainDescription: "V-IS-MY-DEBUGGER",
     tasks: [
-
       {
         taskID: "student_input",
         questions: [
@@ -946,7 +1091,6 @@ const gameTestsNoSeedNoShuffleData = {
 
         ]
       },
-
       {
         taskDescription: "Послушайте и ответьте",
         taskID: "true_false",

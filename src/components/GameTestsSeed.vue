@@ -1056,64 +1056,90 @@ const splitQuestionText = (text) => {
 
 // Директива для автоматического изменения высоты textarea
 // Директива для автоматического изменения высоты textarea
+// Директива для автоматического изменения высоты textarea
+// Директива для автоматического изменения высоты textarea
 const vAutoresize = {
   mounted: (el) => {
-    // Создаем вспомогательный элемент для измерения
-    const measureEl = document.createElement('div')
-    measureEl.style.cssText = `
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-      visibility: hidden;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      font-family: ${getComputedStyle(el).fontFamily};
-      font-size: ${getComputedStyle(el).fontSize};
-      font-weight: ${getComputedStyle(el).fontWeight};
-      line-height: ${getComputedStyle(el).lineHeight};
-      padding: ${getComputedStyle(el).padding};
-      width: ${el.offsetWidth}px;
-      border: ${getComputedStyle(el).border};
-      box-sizing: border-box;
-    `
-    document.body.appendChild(measureEl)
+    console.log('🎯 vAutoresize mounted')
+
+    // Сохраняем предыдущее количество строк (по высоте)
+    let previousLineCount = 0
+    let timeoutId = null
+
+    const getLineCount = () => {
+      // Временно убираем ограничение высоты
+      const originalHeight = el.style.height
+      el.style.height = 'auto'
+      const scrollHeight = el.scrollHeight
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight)
+      const lines = Math.ceil(scrollHeight / lineHeight)
+      el.style.height = originalHeight
+      return lines
+    }
 
     const resize = () => {
-      if (el.value) {
-        measureEl.textContent = el.value + ' '
-      } else {
-        measureEl.textContent = el.placeholder || ''
+      const currentLineCount = getLineCount()
+
+      // Меняем высоту ТОЛЬКО если изменилось количество строк
+      if (currentLineCount !== previousLineCount) {
+        console.log(`📏 Lines changed: ${previousLineCount} → ${currentLineCount}`)
+        previousLineCount = currentLineCount
+
+        const lineHeight = parseFloat(getComputedStyle(el).lineHeight)
+        const paddingTop = parseFloat(getComputedStyle(el).paddingTop)
+        const paddingBottom = parseFloat(getComputedStyle(el).paddingBottom)
+        const newHeight = (currentLineCount * lineHeight) + paddingTop + paddingBottom + 4
+        el.style.height = 'auto'
+        el.style.height = Math.min(newHeight, 400) + 'px'
       }
+    }
 
-      const height = measureEl.offsetHeight + 2 // небольшой запас
+    // Debounced input - срабатывает только когда пользователь перестал печатать
+    const onInput = () => {
+      if (timeoutId) clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        resize()
+        timeoutId = null
+      }, 100) // Ждём 100ms после последнего символа
+    }
+
+    // Enter и Backspace - срабатывают сразу
+    const onKeyDown = (event) => {
+      if (event.key === 'Enter' || event.key === 'Backspace') {
+        // Отменяем отложенный вызов
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
+        setTimeout(resize, 10)
+      }
+    }
+
+    el.addEventListener('input', onInput)
+    el.addEventListener('keydown', onKeyDown)
+
+    el._resizeHandler = onInput
+    el._onKeyDownHandler = onKeyDown
+
+    // Начальная инициализация
+    setTimeout(() => {
+      previousLineCount = getLineCount()
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight)
+      const paddingTop = parseFloat(getComputedStyle(el).paddingTop)
+      const paddingBottom = parseFloat(getComputedStyle(el).paddingBottom)
+      const initialHeight = (previousLineCount * lineHeight) + paddingTop + paddingBottom + 4
       el.style.height = 'auto'
-      el.style.height = height + 'px'
-    }
-
-    el.addEventListener('input', resize)
-
-    // Сохраняем для очистки
-    el._resizeHandler = resize
-    el._measureEl = measureEl
-
-    // Первоначальный resize
-    setTimeout(resize, 0)
-  },
-
-  updated: (el) => {
-    // Добавляем updated hook для реакции на изменения v-model
-    if (el._resizeHandler) {
-      setTimeout(el._resizeHandler, 0)
-    }
+      el.style.height = Math.min(initialHeight, 400) + 'px'
+      console.log(`🏁 Initial: ${previousLineCount} lines, height: ${initialHeight}px`)
+    }, 0)
   },
 
   unmounted: (el) => {
     if (el._resizeHandler) {
       el.removeEventListener('input', el._resizeHandler)
     }
-    if (el._measureEl) {
-      document.body.removeChild(el._measureEl)
+    if (el._onKeyDownHandler) {
+      el.removeEventListener('keydown', el._onKeyDownHandler)
     }
   }
 }
@@ -2934,6 +2960,7 @@ input[type="radio"]:checked + .radio-custom::after {
 /* Стили для textarea с авто-растяжением */
 .student-input-textarea {
   width: 100%;
+  min-height: 60px;
   min-width: 300px;
   max-width: 800px;
   text-align: left;
