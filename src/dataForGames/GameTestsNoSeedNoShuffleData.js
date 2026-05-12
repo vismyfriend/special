@@ -460,6 +460,62 @@ const gameTestsNoSeedNoShuffleData = {
     mainDescription: 'Экзамен по теме "deck of cards"',
     tasks: [
       {
+        taskID: "multiple_choice",
+        taskDescription: "Включите аудио, прибавьте звук, выберите верный ответ",
+        audio: new URL('../assets/audio/Playing-cards-sort-order.mp3', import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "Какую карту мужчина назвал первой?",
+            options: {
+              A: "The Queen of clubs",
+              B: "The Queen of hearts",
+              C: "The Jack of hearts",
+              D: "The King of clubs",
+              E: "Да вообще ХЗ не слышу!",
+              F: "The King of hearts"
+            },
+            correctAnswer: "F",
+            explanation: "/ ДЭ КИНГ ОВ ХАРТС / Король черви",
+
+          },
+          {
+            text: "Какую карту мужчина назвал второй?",
+            options: {
+              A: "Девятка крести",
+              B: "Восьмерка пики",
+              C: "Буби восьмерка",
+              D: "Туз буби",
+            },
+            correctAnswer: "C",
+            explanation: "/ ДЭ ЭЙТ ОВ ДАЙМОНДЗ / The eight of diamonds",
+          },
+          {
+            text: "Какую карту мужчина назвал второй?",
+            options: {
+              A: "The ace of spades",
+              B: "The ace of diamonds",
+              C: "The ace of clubs",
+              D: "The ace of hearts",
+
+            },
+            correctAnswer: "C",
+            explanation: "/ ДЭ ЭЙC ОВ КЛАБЗ / Туз крести",
+          },
+          {
+            text: "Какие две карты были последними?",
+            options: {
+              A: "Туз черви и Дама крести",
+              B: "Двойка пики и Дама пики",
+              C: "Дама черви и Двойка пики",
+              D: "двойка черви и Дама пики ",
+            },
+            correctAnswer: "D",
+            explanation: "Two of hearts and queen of spades",
+          },
+        ]
+      },
+      {
         taskID: "grid_table",
         taskDescription: "Впиши перевод",
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
@@ -531,7 +587,7 @@ const gameTestsNoSeedNoShuffleData = {
           },
           {
             text: "4. The woman recommends not to watch what other players are doing, and to use all trumps.",
-            correctAnswer: "true"
+            correctAnswer: "false"
           },
         ]
       },
@@ -4811,7 +4867,7 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ]
   },
-  grid_table_IrregularVerbs_c_ru: {
+  grid_table_IrregularVerbs_c_ru1: {
     mainDescription: "Irregular Verbs 'С'",
     tasks: [
       {
@@ -4931,6 +4987,135 @@ const gameTestsNoSeedNoShuffleData = {
                 cells: [null, null, "резать"],
                 almostCorrect: {
                   2: ["разрезать", "отрезать", "порезать"]
+                }
+              }
+            },
+          ]
+        }
+      },
+    ]
+  },
+  grid_table_IrregularVerbs_c_ru: {
+    mainDescription: "Irregular Verbs 'С'",
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["- выбирать -", "- выбрал -", "- выбранный -", "-"],
+          rows: [
+
+            {
+              cells: ["choose", "chose", "chosen", "произношение"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["чУз", "чОуз", "чОузн", "чУз - чОуз - чОузн"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["catch", "caught", "caught", "ловить"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["кЭч", "кОт", "кОт", "кЭч - кОт - кОт"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["come", "came", "come", "приходить"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["кАм", "кЕйм", "кАм", "кАм - кЕйм - кАм"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["creep", "crept", "crept", "ползать"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["крИп", "крЭпт", "крЭпт", "крИп - крЭпт - крЭпт"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["cost", "cost", "cost", "стоить"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["кост", "кост", "кост", "кост - кост - кост"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["cut", "cut", "cut", "резать"],
+              editable: [false, false, false, false],
+            },
+            {
+              cells: ["кАт", "кАт", "кАт", "кАт - кАт - кАт"],
+              editable: [false, false, false, false],
+            },
+          ]
+        }
+      },
+      {
+        taskDescription: null,
+        taskID: "grid_table",
+        tableData: {
+          headers: ["1 форма (Infinitive)", "2 форма (Past Simple)", "3 форма (Past Participle)", "Перевод (впиши)"],
+          rows: [
+            {
+              cells: ["come", "came", "come", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "приходить"],
+                almostCorrect: {
+                  3: ["прийти", "подходить", "наступать"]
+                }
+              }
+            },
+            {
+              cells: ["choose", "chose", "chosen", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "выбирать"],
+                almostCorrect: {
+                  3: ["выбрать", "избирать", "предпочитать"]
+                }
+              }
+            },
+            {
+              cells: ["catch", "caught", "caught", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "ловить"],
+                almostCorrect: {
+                  3: ["поймать", "схватить", "перехватить"]
+                }
+              }
+            },
+            {
+              cells: ["creep", "crept", "crept", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "ползать"],
+                almostCorrect: {
+                  3: ["красться", "пресмыкаться", "медленно двигаться"]
+                }
+              }
+            },
+            {
+              cells: ["cost", "cost", "cost", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "стоить"],
+              }
+            },
+            {
+              cells: ["cut", "cut", "cut", ""],
+              editable: [false, false, false, true],
+              correctAnswers: {
+                cells: [null, null, null, "резать"],
+                almostCorrect: {
+                  3: ["разрезать", "отрезать", "порезать"]
                 }
               }
             },

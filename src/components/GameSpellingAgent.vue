@@ -523,6 +523,9 @@ const selectLetter = (itemObj) => {
     filledSlots.value[firstEmptyIndex] = itemObj.value;
     itemObj.used = true;
     if (filledSlots.value.every(slot => slot !== null)) {
+      // 🔥 СНАЧАЛА устанавливаем blur
+      isHintBlurred.value = true;
+
       if (currentWord.value?.audio) playAudio();
       setTimeout(() => {
         currentWordIndex.value++;

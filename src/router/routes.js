@@ -83,6 +83,10 @@ const routes = [
                 path: 'spell-it',
                 component: () => import('src/components/GameSpellingAgent.vue')
               },
+              {
+                path: 'listenAndSpell',
+                component: () => import('src/components/GameListenAndSpell.vue')
+              },
 
               {
                 path: 'millionaire',
@@ -436,6 +440,10 @@ const routes = [
   {
     path: '/sounds',
     component: () => import('src/pages/EnglishSounds.vue')
+  },
+  {
+    path: '/NV',
+    component: () => import('src/pages/NaughtyVerbsWithAudio.vue')
   },
   {
     path: '/canvas-test',

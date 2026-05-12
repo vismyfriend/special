@@ -1595,6 +1595,201 @@ const GameTestsSeedData = {
     ]
   },
 
+  cards36: {
+    mainDescription: 'Экзамен по теме "deck of cards"',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "Включите аудио, прибавьте звук, выберите верный ответ",
+        audio: new URL('../assets/audio/Playing-cards-sort-order.mp3', import.meta.url).href,
+        textScript: null,
+        questions: [
+          {
+            text: "Какую карту мужчина назвал первой?",
+            options: {
+              A: "The Queen of clubs",
+              B: "The Queen of hearts",
+              C: "The Jack of hearts",
+              D: "The King of clubs",
+              E: "Да вообще ХЗ не слышу!",
+              F: "The King of hearts"
+            },
+            correctAnswer: "F",
+            explanation: "/ ДЭ КИНГ ОВ ХАРТС / Король черви",
+
+          },
+          {
+            text: "Какую карту мужчина назвал второй?",
+            options: {
+              A: "Девятка крести",
+              B: "Восьмерка пики",
+              C: "Буби восьмерка",
+              D: "Туз буби",
+            },
+            correctAnswer: "C",
+            explanation: "/ ДЭ ЭЙТ ОВ ДАЙМОНДЗ / The eight of diamonds",
+          },
+          {
+            text: "Какую карту мужчина назвал второй?",
+            options: {
+              A: "The ace of spades",
+              B: "The ace of diamonds",
+              C: "The ace of clubs",
+              D: "The ace of hearts",
+
+            },
+            correctAnswer: "C",
+            explanation: "/ ДЭ ЭЙC ОВ КЛАБЗ / Туз крести",
+          },
+          {
+            text: "Какие две карты были последними?",
+            options: {
+              A: "Туз черви и Дама крести",
+              B: "Двойка пики и Дама пики",
+              C: "Дама черви и Двойка пики",
+              D: "двойка черви и Дама пики ",
+            },
+            correctAnswer: "D",
+            explanation: "Two of hearts and queen of spades",
+          },
+        ]
+      },
+      {
+        taskID: "grid_table",
+        taskDescription: "Впиши перевод",
+        taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
+        tableData: {
+          headers: ["Английский","Русский"],
+          rows: [
+            {
+              cells: ["", "Пиковая дама",],
+              editable: [true, false,],
+              correctAnswers: {
+                cells: ["the queen of spades", null ],
+                almostCorrect: {
+                  0: ["a queen of spades","queen of spades"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["The Jack of hearts", "",],
+              editable: [false, true],
+              correctAnswers: {
+                cells: [ null, "валет черви" ],
+                almostCorrect: {
+                  1: ["валет червей","червовый валет","валет червовый","червей валет"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+            {
+              cells: ["", "Шутник",],
+              editable: [true, false,],
+              correctAnswers: {
+                cells: ["a joker", null ],
+                almostCorrect: {
+                  0: ["the joker","joker"], // Индекс поля (начиная с 0)
+                }
+              }
+            },
+
+          ]
+        }
+      },
+      {
+        taskID: "true_false",
+        taskDescription: "Послушайте и ответьте",
+        usefulWords: 'in turns - по очереди, suit - / сЮт / масть или костюм, high or low? - высокий/низкий (ранг карты), trump - козырная карта, let`s give it a go - ну давай попробуем!',
+        audio: new URL('../assets/audio/Playing-cards-full.mp3', import.meta.url).href,
+        textScript: 'Man: So, how do you play again?\n' +
+          'Woman: You have seven cards. Everybody plays in turns, and the highest card wins.\n' +
+          'Man: And... Are aces high or low?\n' +
+          'Woman: High.\n' +
+          'Man: Can I play any suit?\n' +
+          'Woman: No, of course not! You have to follow suit!\n' +
+          'Man: So then, if someone plays hearts, and I don’t have any hearts…\n' +
+          'Woman: You can play anything. You can play a trump, if you have one.\n' +
+          'Man: I see. So I should try to win as many tricks as possible?\n' +
+          'Woman: Yes, but don’t play all your winners straight away. You need to watch what other people are doing, too.\n' +
+          'Man: Okay, let’s give it a go!',
+        questions: [
+          {
+            text: "1. A woman is asking a man how to play cards",
+            correctAnswer: "false"
+          },
+          {
+            text: "2. A woman is explaining to a man how to play cards",
+            correctAnswer: "true"
+          },
+          {
+            text: "3. In this game Aces are low cards.",
+            correctAnswer: "false"
+          },
+          {
+            text: "4. The woman recommends not to watch what other players are doing, and to use all trumps.",
+            correctAnswer: "false"
+          },
+        ]
+      },
+      {
+        taskID: "drop_down_text",
+        taskDescription: "Drop down",
+        usefulWords: "let me - позвольте мне, share with you - поделиться с вами, a few words - несколько слов",
+        audio: null,
+        textScript: 'выбирай правильный ответ',
+        questions: [
+          {
+            text: "Hello friends! Let me share (for, to, with*) you a few words about my favorite card game! It (is*, do, does, are, am ) called 'Twenty One'. This game (has*, have) the second name - it is Black Jack\n" +
+              '\n' +
+              "The rules (are*, am, is) very simple and easy. All players (have*, has) 2 cards in the beginning of the game, and all players must count cards.\n" +
+              '\n' +
+              "The ace is 11 points or 1 point. The king, the queen, and the (John, Jim, Jack*, Josh) are 10 points. And all other (cards*, card) have numbers of points on them.\n" +
+              '\n' +
+              "The winner is a player who is closer to 21. If you have more than 21 - you lose. If you have 20 and other players have 19 or 18 or less - they lose and you win\n" +
+              '\n' +
+              "And the funniest of this game is that when you need one more card from the ( dekc ,desk, deck*) of card you must say: HIT ME !",
+          },
+        ]
+      },
+      {
+        taskID: "discussion_task",
+        taskDescription: "Discuss these questions",
+        usefulWords: null,
+        audio: null,
+        textScript: null,
+        questions: [
+          {
+            text: "What is your favorite card game?",
+            translation: "Какая твоя любимая карточная игра?",
+          },
+          {
+            text: "When did you play cards last time? Tell about that",
+            translation: "когда последний раз играли в картчеую игру? Расскажите об этом",
+          },
+          {
+            text: "What else can people do with cards, besides playing?",
+            translation: "Что еще можно делать с картами, кроме играния",
+          },
+        ]
+      },
+      {
+        taskDescription: "Translate",
+        taskID: "student_input",
+        textScript: null,
+        questions: [
+          {
+            text: 'Как на английском написать: "Мой учитель играет в карты со мной каждый урок" ____',
+            correctAnswer: "My teacher plays cards with me every lesson",
+            almostCorrectAnswers: ["Vincent plays cards with me every lesson", "V plays cards with me every lesson"]  // 👈 эти тоже засчитаются
+
+          },{
+            text: "Напиши короткий текст как ты относишься к карточным играм почему хорошо или плохо? ____",
+            correctAnswer: "anyIsOk",
+
+          },
+        ]
+      },
+    ],
+  },
 
 
   test1V1: {
