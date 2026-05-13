@@ -108,8 +108,8 @@
           <p>Вы успешно взломали {{ totalQuestions }} кодов!</p>
           <p class="success-rate">Точность: {{ Math.round(correctAnswers / totalQuestions * 100) }}%</p>
           <div class="completion-buttons">
-            <button class="play-again-btn" @click="restartGame">ИГРАТЬ СНОВА</button>
-            <button class="close-btn" @click="closeGame">ЗАКРЫТЬ</button>
+            <button class="play-again-btn" @click="restartGame">ЗАКРЫТЬ</button>
+            <button class="close-btn" @click="goToPage">СХВАТИТЬ И УБЕЖАТЬ</button>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 // 👇 СИНХРОННЫЙ ИМПОРТ (как в работающем коде)
 import shortWordsData from '../dataForGames/short-words-data'
@@ -416,6 +416,17 @@ const closeGame = () => {
   cancelCurrentSpeech()
 }
 
+const router = useRouter()
+
+const goToPage = () => {
+  // Получаем имя миссии из route params
+  const missionName = route.params.missionName;
+
+  // Переходим на find-pairs-easy с передачей missionName в query
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}/game-pronunciation`
+  });
+}
 const initGameData = async () => {
   const missionName = route.params.missionName;
   console.log('Waiting for data for mission:', missionName);

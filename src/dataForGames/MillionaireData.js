@@ -2321,7 +2321,7 @@ const MillionaireData = {
         F: "меньше чем 3 часа в неделю",
         G: "достаточно"
       },
-      correctAnswers: "A"
+      correctAnswer: "A"
     },
     {
       text: "Никто не сможет научить меня Английскому кроме:",
