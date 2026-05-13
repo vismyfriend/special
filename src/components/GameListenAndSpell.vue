@@ -14,7 +14,7 @@
       <div class="control-panel">
         <!-- Кнопка прослушать аудио вместо выбора уровня сложности -->
         <button class="audio-button" @click="handleAudioButtonClick" :disabled="!currentWord?.audio">
-          🔊 Прослушать произношение
+          🔊 Послушать ещё раз
         </button>
       </div>
 
@@ -451,6 +451,7 @@ const removeLetterFromSlot = (slotIndex) => {
 };
 
 // Выбор буквы
+// Замените функцию selectLetter на эту версию
 const selectLetter = (itemObj) => {
   if (isGameFinished.value || itemObj.used || showFeedback.value) return;
 
@@ -464,22 +465,32 @@ const selectLetter = (itemObj) => {
   if (isCharMatch(itemObj.value, expectedValue)) {
     filledSlots.value[firstEmptyIndex] = itemObj.value;
     itemObj.used = true;
-    if (filledSlots.value.every(slot => slot !== null)) {
-      // НЕМЕДЛЕННО применяем размытие к текущему слову
-      isHintBlurred.value = true;
-      isTranslationBlurred.value = true;
 
+    if (filledSlots.value.every(slot => slot !== null)) {
+      // Сначала показываем перевод и произношение (снимаем размытие)
+      isHintBlurred.value = false;
+      isTranslationBlurred.value = false;
+
+      // Ждем 700 мс, чтобы пользователь увидел перевод и произношение
       setTimeout(() => {
-        currentWordIndex.value++;
-        loadWord();
-        // Автоматически воспроизводим следующее слово
-        if (currentWordIndex.value < gameWords.value.length && gameWords.value[currentWordIndex.value]?.audio) {
-          setTimeout(() => {
-            const audio = new Audio(gameWords.value[currentWordIndex.value].audio);
-            audio.play().catch(e => console.log('Audio play failed:', e));
-          }, 300);
-        }
-      }, 500);
+        // Затем применяем размытие к текущему слову (чтобы оно стало размытым перед следующим)
+        isHintBlurred.value = true;
+        isTranslationBlurred.value = true;
+
+        // Еще небольшая задержка перед загрузкой следующего слова
+        setTimeout(() => {
+          currentWordIndex.value++;
+          loadWord();
+
+          // Автоматически воспроизводим следующее слово
+          if (currentWordIndex.value < gameWords.value.length && gameWords.value[currentWordIndex.value]?.audio) {
+            setTimeout(() => {
+              const audio = new Audio(gameWords.value[currentWordIndex.value].audio);
+              audio.play().catch(e => console.log('Audio play failed:', e));
+            }, 300);
+          }
+        }, 50); // Маленькая задержка, чтобы размытие успело примениться
+      }, 700); // Пользователь видит перевод 0.7 секунды
     }
   } else {
     mistakesCount.value++;
@@ -491,6 +502,8 @@ const selectLetter = (itemObj) => {
     }
   }
 };
+
+
 
 const handleAudioButtonClick = () => {
   if (currentWord.value?.audio) {
@@ -512,6 +525,7 @@ const handleHintClick = () => {
 };
 
 // Обработка клавиатуры
+// Обновите handleKeyPress для правильной обработки завершения слова
 const handleKeyPress = (event) => {
   if (isGameFinished.value || showFeedback.value) return;
 
@@ -1099,15 +1113,34 @@ onBeforeUnmount(() => {
   100% { transform: scale(1); }
 }
 
-@keyframes wrongPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
+
+
 
 .wrong-pulse {
   animation: wrongPulse 0.6s ease-in-out;
 }
+
+@keyframes wrongPulse {
+  0% {
+    transform: scale(1);
+    background: #ffebee;
+    border-color: #f44336;
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.6);
+  }
+  50% {
+    transform: scale(1.05);
+    background: #ffcdd2;
+    border-color: #f44336;
+    box-shadow: 0 0 8px 4px rgba(244, 67, 54, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    background: #f0f4fa;
+    border-color: #ccc;
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+  }
+}
+
 
 @keyframes earthquake {
   0%, 100% {

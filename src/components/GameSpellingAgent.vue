@@ -168,6 +168,7 @@ const difficultyLevel = ref(1);
 const showFeedback = ref(false);
 let feedbackTimeout = null;
 
+
 // Переменные для очереди слов на 3 уровне
 const wordsToRepeat = ref([]);
 const originalWordsList = ref([]);
@@ -522,14 +523,25 @@ const selectLetter = (itemObj) => {
   if (isCharMatch(itemObj.value, expectedValue)) {
     filledSlots.value[firstEmptyIndex] = itemObj.value;
     itemObj.used = true;
-    if (filledSlots.value.every(slot => slot !== null)) {
-      // 🔥 СНАЧАЛА устанавливаем blur
-      isHintBlurred.value = true;
 
+    if (filledSlots.value.every(slot => slot !== null)) {
+      // 1. Сначала снимаем размытие с текущего слова (показываем его чётко)
+      isHintBlurred.value = false;
+
+      // 2. Проигрываем аудио
       if (currentWord.value?.audio) playAudio();
+
+      // 3. Ждем 500 мс, чтобы пользователь увидел произношение
       setTimeout(() => {
-        currentWordIndex.value++;
-        loadWord();
+        // 4. Применяем размытие К ТЕКУЩЕМУ слову перед загрузкой нового
+        isHintBlurred.value = true;
+
+        // 5. Теперь загружаем новое слово - оно уже будет с blur,
+        //    потому что loadWord() установит isHintBlurred.value = true
+        setTimeout(() => {
+          currentWordIndex.value++;
+          loadWord();
+        }, 50); // Маленькая задержка, чтобы размытие успело примениться в DOM
       }, 500);
     }
   } else {

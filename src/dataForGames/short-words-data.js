@@ -225,6 +225,18 @@ const shortWordsData = {
     { id: 27, eng: "What time is it?", ru: "Сколько времени?", hint: "" },
     { id: 28, eng: "How much is it?", ru: "Сколько это стоит?", hint: "/хАу мАч из ит/" }
   ],
+  up6: [
+    { id: 1, eng: "So, what is next ?", ru: "Итак, что дальше?", hint: "/соу уот из нэкст/" },
+    { id: 2, eng: "Where to press ?", ru: "Итак, куда нажимать?", hint: "/уЭэ ту прэс/" },
+    { id: 3, eng: "How to do it ?", ru: "Как это делается? Как сделать это?", hint: "/хау ту ду ит/" },
+    { id: 4, eng: "I see some thing", ru: "Я вижу какую-то штуку", hint: "/ай си сАм Thын/" },
+    { id: 5, eng: "I don't see it", ru: "Мне не видно этого", hint: "/ай дОУнт си ит/" },
+    { id: 6, eng: "Wait for me please", ru: "Подождите меня пжлст", hint: "/уэйт фо ми плиз/" },
+    { id: 7, eng: "Can you hear me ?", ru: "Меня слышно?", hint: "/кэн ю хИэ ми/" },
+    { id: 8, eng: "Can you see my screen ?", ru: "Мой экран видно?", hint: "/кэн ю си май скрин/" },
+    { id: 9, eng: "I have to go", ru: "Мне нужно идти", hint: "/ай хЭв ту гоу/" },
+    { id: 10, eng: "I have to ask you", ru: "Мне нужно спросить у вас", hint: "/ай хЭв ту аск ю/" },
+  ],
   toughThWords: [
     {
       id: 1,
