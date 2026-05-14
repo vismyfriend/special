@@ -35,11 +35,11 @@ const routes = [
                 component: () => import('components/ThisGameIsComingSoon.vue')
               },
               {
-                path: 'print-all-words',
+                path: 'print-all-words2',
                 component: () => import('components/GameHWNotebook.vue')
               },
               {
-                path: 'print-all-words2',
+                path: 'print-all-words',
                 component: () => import('components/GamePrintAllWordsNotebook.vue')
               },
               {

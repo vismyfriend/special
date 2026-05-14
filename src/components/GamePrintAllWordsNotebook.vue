@@ -1,5 +1,30 @@
 <template>
   <div class="container">
+    <!-- Затемнение фона -->
+    <div class="modal-overlay" v-if="showModal" @click.self="showModal = false">
+      <!-- Модальное окно -->
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-icon">⚠️</span>
+          <h3>Не все поля заполнены!</h3>
+        </div>
+        <div class="modal-content">
+          <p>Вы не написали перевод для следующих слов:</p>
+          <ul class="missing-words-list">
+            <li v-for="word in missingWords" :key="word.ru">
+              {{ word.ru }}
+            </li>
+          </ul>
+          <p class="modal-hint">Пожалуйста, заполните все поля перед отправкой.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn" @click="showModal = false">
+            Понятно, исправлю ✏️
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="notebook-wrapper" :style="{ height: notebookHeight + 'px' }">
       <!-- Обложка тетради -->
       <div class="notebook-cover">
@@ -12,96 +37,228 @@
           <div class="notebook-content" ref="contentRef">
             <!-- Заголовок урока -->
             <div class="lesson-title">
-              {{ currentMission }}
+              Homework - домашка
             </div>
 
-            <!-- Слова и фразы -->
-            <div class="words-section">
-              <div class="section-title ">Секретная миссия : </div>
+            <div class="textInLine">
               <div class="lesson-title"></div>
-              <div class="words-list">
-                <div
-                  class="word-line"
-                  v-for="(word, index) in currentGameData"
-                  :key="word.id"
-                >
-                  <div class="word-content">
-                    <span class="english-word">{{ word.eng }}</span>
-                    <span class="hint" v-if="word.hint">{{ word.hint }}</span>
-                    <span class="translation">- {{ word.ru }}</span>
+              <p class="textRight">" {{ currentMission }} "</p>
+              <div class="lesson-title"></div>
+
+              <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> все WORDS</a> с урока</p>
+              <p class="fontAm">2. Введи перевод нескольких слов :</p>
+              <div class="lesson-title"></div>
+            </div>
+
+            <!-- Секция домашнего задания -->
+            <div class="homework-section" v-if="showHomeworkSection">
+              <div class="homework-content">
+                <div class="homework-words">
+                  <div class="homework-word" v-for="(word, index) in homeworkWords" :key="'hw-' + index">
+                    <div class="word-header">
+                      <span class="word-to-translate">{{ word.ru }}</span>
+                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)">
+                        🔍️ подсказка
+                      </span>
+                    </div>
+
+                    <!-- Показываем подсказку только если она активна -->
+                    <div class="hint-content" v-if="word.showHint">
+                      <span class="hint-text">{{ word.hint }}</span>
+                    </div>
+
+                    <input
+                      type="text"
+                      v-model="word.userTranslation"
+                      :placeholder="'введите перевод...'"
+                      class="translation-input"
+                    >
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Дополнительные материалы -->
-            <div class="materials-section" v-if="hasAdditionalMaterials">
-              <div class="section-title"> Ох уж этот Vincent...</div>
-              <div class="materials-content">
-                <p>напридумывает словосочетаний всяких,</p>
-                <p>будь готов их переводить special agent!</p>
+                <div class="textInLine">
+                  <div class="lesson-title"></div>
+                  <p class="fontAm">3. <b>Ручкой</b> на любой бумажке или в своей тетради <b>напиши</b> что-нибудь по-английски, <b>сфотографируй</b> и send to Винсенту.</p>
+                </div>
+
+                <button
+                  class="homework-submit-btn"
+                  @click="handleSendClick"
+                >
+                  отправить на проверку
+                </button>
+
+                <!-- Контейнер с гифкой -->
+                <div class="gif-container" v-if="currentGif">
+                  <img :src="currentGif" alt="funny gif" class="random-gif">
+<!--                  <button class="refresh-gif-btn" @click="changeGif" title="Показать другую гифку">-->
+<!--                    🔄-->
+<!--                  </button>-->
+                </div>
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Кнопка печати -->
-    <div class="print-controls">
-      <button class="print-button" @click="printNotebook">Распечатать материал</button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
+import gifMissionIsPossible from '/src/assets/images/gifs/missionIsPossible.gif';
+import gifDoYouUnderstand from '/src/assets/images/gifs/doYouUnderstand.gif';
+import gifWhatIsUp1 from '/src/assets/images/gifs/whatIsUp1.gif';
+import gifMatrixPills2 from '/src/assets/images/gifs/MatrixPills.gif';
+import areAmIs from '/src/assets/images/areAmIs.png';
+
+const currentGif = ref('');
+const gifList = ref([
+  { name: 'matrixPills2', url: gifMatrixPills2 },
+  { name: 'missionIsPossible', url: gifMissionIsPossible },
+  { name: 'doYouUnderstand', url: gifDoYouUnderstand },
+  { name: 'whatIsUp1', url: gifWhatIsUp1 },
+  { name: 'areAmIs', url: areAmIs }
+]);
+
+const changeGif = () => {
+  const randomIndex = Math.floor(Math.random() * gifList.value.length);
+  currentGif.value = gifList.value[randomIndex].url;
+};
+
 const route = useRoute();
+const router = useRouter();
 
 const currentMission = ref('');
+
+
 const currentGameData = ref([]);
 const contentRef = ref(null);
-const notebookHeight = ref(600);
+const notebookHeight = ref(800);
+const homeworkWords = ref([]);
+const showModal = ref(false);
 
-// Вычисляем, есть ли дополнительные материалы
-const hasAdditionalMaterials = computed(() => {
-  return currentGameData.value.length > 0;
+const goToAnontherComponent = () => {
+  const missionName = route.params.missionName;
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}/print-all-words2`
+  });
+};
+
+
+// Валидность домашнего задания (только слова)
+const isHomeworkValid = computed(() => {
+  return homeworkWords.value.every(word =>
+    word.userTranslation &&
+    word.userTranslation.trim() !== '' &&
+    word.userTranslation.trim().length >= 1
+  );
 });
+
+// Список незаполненных слов
+const missingWords = computed(() => {
+  return homeworkWords.value.filter(word =>
+    !word.userTranslation ||
+    word.userTranslation.trim() === '' ||
+    word.userTranslation.trim().length < 1
+  );
+});
+
+// Показывать ли секцию домашнего задания
+const showHomeworkSection = computed(() => {
+  return homeworkWords.value.length > 0;
+});
+
+// Функция для выбора случайных слов для домашнего задания
+const selectHomeworkWords = () => {
+  if (currentGameData.value.length === 0) return [];
+
+  // Берем до 3 случайных слов из текущего урока
+  const shuffled = [...currentGameData.value].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, Math.min(3, shuffled.length)).map(word => ({
+    ...word,
+    userTranslation: '',
+    showHint: false
+  }));
+};
+
+// Функция переключения подсказки
+const toggleHint = (word) => {
+  word.showHint = !word.showHint;
+};
+
+// Обработчик нажатия на кнопку отправки
+const handleSendClick = () => {
+  if (isHomeworkValid.value) {
+    // Если все заполнено - отправляем
+    openTelegramMessage();
+  } else {
+    // Если есть незаполненные поля - показываем модальное окно
+    showModal.value = true;
+  }
+};
+
+// Функция для копирования текста в буфер обмена
+const copyToClipboard = async (text) => {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      return true;
+    }
+  } catch (error) {
+    console.error('Ошибка при копировании в буфер обмена:', error);
+    return false;
+  }
+};
+
+// Функция отправки в Telegram
+const openTelegramMessage = async () => {
+  const username = 'vismyfriend';
+
+  // Формируем сообщение с домашним заданием
+  let homeworkMessage = "Hi teacher V.\n\n";
+  homeworkMessage += "Words from homework:\n";
+  homeworkWords.value.forEach((word, index) => {
+    homeworkMessage += `${index + 1}. ${word.ru}\n`;
+  });
+
+  homeworkMessage += `\nMy translation:\n`;
+  homeworkWords.value.forEach((word, index) => {
+    homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
+  });
+
+  homeworkMessage += `\nСейчас ещё фотку отправлю`;
+  homeworkMessage += `\n(${currentMission.value})\n`;
+
+
+  // Копируем в буфер обмена
+  await copyToClipboard(homeworkMessage);
+
+  alert("✅ Скопированно!\nОсталось фотку отправить!\n\nВставьте в телеграмм:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱 На телефоне: \nзажмите пальцем → Вставить");
+
+  const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(homeworkMessage)}`;
+  window.open(telegramUrl, '_blank');
+};
 
 // Функция для расчета высоты тетради
 const calculateContentHeight = () => {
   if (!contentRef.value) return 600;
-
   const contentHeight = contentRef.value.scrollHeight;
   const minHeight = 600;
   const padding = 50;
-
   return Math.max(minHeight, contentHeight + padding);
-};
-
-// Печать тетради
-const printNotebook = () => {
-  const printControls = document.querySelector('.print-controls');
-
-  // Скрываем кнопки печати
-  if (printControls) {
-    printControls.style.display = 'none';
-  }
-
-  // Даем время на скрытие элементов перед печати
-  setTimeout(() => {
-    window.print();
-
-    // Восстанавливаем кнопки после печати
-    setTimeout(() => {
-      if (printControls) {
-        printControls.style.display = 'block';
-      }
-    }, 500);
-  }, 100);
 };
 
 onMounted(() => {
@@ -109,18 +266,24 @@ onMounted(() => {
   currentMission.value = route.params.missionName || 'Текущий урок';
   currentGameData.value = shortWordsData[currentMission.value] || [];
 
+  // Выбираем слова для домашнего задания
+  homeworkWords.value = selectHomeworkWords();
+
+  // Выбираем случайную гифку
+  changeGif();
+
   // Настраиваем высоту тетради после загрузки данных
   setTimeout(() => {
     notebookHeight.value = calculateContentHeight();
   }, 100);
 });
+
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: 100%;
   min-height: 100vh;
-  //background: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,9 +306,7 @@ onMounted(() => {
   height: 100%;
   background: linear-gradient(135deg, #1e5799 0%, #207cca 51%, #2989d8 51%, #7db9e8 100%);
   border-radius: 8px 12px 12px 8px;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   padding: 10px;
 }
 
@@ -155,10 +316,7 @@ onMounted(() => {
   height: 100%;
   background: white;
   border-radius: 4px;
-  box-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 white,
-    inset 0 -1px 0 white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 1px 0 white, inset 0 -1px 0 white;
   overflow: hidden;
 }
 
@@ -196,113 +354,262 @@ onMounted(() => {
   padding: 20px 40px 20px 20px;
   font-family: 'Times New Roman', serif;
   font-size: 16px;
-  line-height: 20px; /* Важно: совпадает с высотой клетки */
+  line-height: 20px;
   color: #2c3e50;
   overflow-y: auto;
 }
+.fontAm {
+  font-family: 'American Typewriter', serif;
 
+}
 /* Заголовок урока */
 .lesson-title {
   font-size: 20px;
+  font-family: Special_f1;
+  justify-content: center;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 30px;
   color: #1e5799;
   padding-bottom: 10px;
   line-height: 20px;
   height: 20px;
 }
 
-/* Секции */
-.words-section,
-.materials-section {
+.textInLine {
+  color: #2c3e50;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Стили для секции домашнего задания */
+.homework-section {
   margin-bottom: 20px;
 }
 
-.section-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #25598e;
-  border-left: 3px solid #00ff14;
-  padding-left: 10px;
-  line-height: 20px;
-  height: 20px;
+.homework-content {
+  p {
+    margin-bottom: 20px;
+    line-height: 20px;
+    min-height: 20px;
+  }
 }
 
-/* Стили для слов - ВАЖНО: выравнивание по клеточкам */
-.words-list {
+.homework-words {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.homework-word {
   display: flex;
   flex-direction: column;
 }
 
-.word-line {
+.word-header {
   display: flex;
   align-items: center;
-  min-height: 20px; /* Высота одной клетки */
-  margin-bottom: 0;
-  position: relative;
-}
-
-.word-content {
-  display: flex;
-  align-items: baseline;
   gap: 8px;
-  width: 100%;
-  line-height: 20px;
   min-height: 20px;
-}
-
-.english-word {
-  font-weight: bold;
-  color: #2c3e50;
-  min-width: 150px;
   line-height: 20px;
+  justify-content: space-between;
 }
 
-.hint {
-  //color: #7f8c8d;
+.hint-icon {
+  color: #1e5799;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}
+
+.hint-content {
+  margin-left: 25px;
+  animation: fadeIn 0.3s ease;
+}
+
+.hint-text {
   font-style: italic;
-  line-height: 20px;
-  font-weight: bold;
   font-family: 'Arial', serif;
 }
 
-.translation {
-  color: rgba(127, 140, 141, 0.86);
-  //flex: 1;  /* ← ЭТО заставляет перевод занимать всё оставшееся пространство */
-  line-height: 20px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Контролы печати */
-.print-controls {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+.word-to-translate {
+  margin-left: 30px;
+  font-weight: bold;
+  color: #3b8a2a;
+  font-size: 18px;
+  text-align: left;
+  flex: 1;
 }
 
-.print-button {
+.translation-input {
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: 'Times New Roman', serif;
+  margin-left: 20px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    transform: translateX(5px);
+  }
+
+  &::placeholder {
+    color: #aaa;
+    font-style: italic;
+  }
+}
+
+.homework-submit-btn {
   background: linear-gradient(180deg, #4CAF50, #45a049);
   border: none;
   border-radius: 25px;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   padding: 12px 24px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  font-family: Special_f1;
+
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, #45a049, #4CAF50);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Стили для модального окна */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+.textRight {
+  text-align: right;
+}
+.modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  font-size: 28px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
   font-family: 'Times New Roman', serif;
 }
 
-.print-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(180deg, #45a049, #4CAF50);
+.modal-content {
+  padding: 20px;
 }
 
-.print-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.modal-content p {
+  margin: 0 0 12px 0;
+  color: #2c3e50;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+}
+
+.missing-words-list {
+  margin: 12px 0;
+  padding-left: 25px;
+  color: #ee5a24;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+}
+
+.missing-words-list li {
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+.modal-hint {
+  margin-top: 16px;
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 12px !important;
+}
+
+.modal-footer {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-btn {
+  background: linear-gradient(180deg, #4CAF50, #45a049);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Times New Roman', serif;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Красная вертикальная линия для полей */
@@ -313,25 +620,85 @@ onMounted(() => {
   left: 35px;
   width: 1px;
   height: 100%;
-  //background: #ff6b6b;
   z-index: 3;
 }
 
-/* Дырочки для пружины */
-.notebook-cover::after {
-  content: '';
+.words-link {
+  color: #1e5799;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #ff6b6b;
+    text-decoration: none;
+  }
+}
+
+.gif-container {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  line-height: 20px;
+}
+
+.random-gif {
+  max-width: 100%;
+  height: auto;
+  max-height: 150px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.refresh-gif-btn {
   position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 80%;
-  background:
-    radial-gradient(circle at center, #666 2px, transparent 2px),
-    transparent;
-  background-size: 6px 20px;
-  background-repeat: repeat-y;
-  z-index: 2;
+  top: -10px;
+  right: -10px;
+  background: white;
+  border: 2px solid #1e5799;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: rotate(90deg);
+    background: #1e5799;
+    color: white;
+  }
+
+  &:active {
+    transform: rotate(180deg);
+  }
+}
+
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .word-to-translate {
+    font-size: 18px;
+  }
+
+  .translation-input {
+    margin-left: 20px;
+  }
 }
 
 /* Стили для печати */
@@ -340,9 +707,8 @@ onMounted(() => {
     background: none;
     padding: 0;
   }
-
-  .print-controls {
-    display: none !important;
+  .gif-container {
+    display: none;
   }
 
   .notebook-wrapper {
@@ -386,51 +752,22 @@ onMounted(() => {
       );
   }
 
-  /* Убираем декоративные элементы при печати */
   .notebook-cover::before,
   .notebook-cover::after,
   .notebook-page::before {
     display: none;
   }
 
-  /* Оптимизируем для печати */
-  .word-content {
-    gap: 6px;
+  .translation-input {
+    border: 1px solid #ccc;
+    background: white;
+    color: #333;
+    margin-left: 25px;
   }
 
-  .english-word {
-    min-width: 140px;
+  .homework-submit-btn,
+  .modal-overlay {
+    display: none;
   }
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-
-  .english-word {
-
-    min-width: 125px;
-  }
-}
-
-/* Убедимся, что все элементы точно выровнены по сетке */
-.lesson-title,
-.section-title,
-.word-line,
-.materials-section p {
-  display: flex;
-  align-items: center;
-  min-height: 20px;
-  margin: 0;
-  padding: 0;
-}
-
-/* Отступы между строками слов */
-.word-line + .word-line {
-  margin-top: 0; /* Убираем отступы, так как каждая строка занимает ровно одну клетку */
-}
-
-.dnone {
-  display: none;
-
 }
 </style>
