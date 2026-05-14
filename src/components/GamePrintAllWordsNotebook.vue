@@ -6,10 +6,10 @@
       <div class="modal">
         <div class="modal-header">
           <span class="modal-icon">⚠️</span>
-          <h3>Не все поля заполнены!</h3>
+          <h3>А чего это ? <br>You ain't a lazy ass, r u?</h3>
         </div>
         <div class="modal-content">
-          <p>Вы не написали перевод для следующих слов:</p>
+          <p>{{ modalMessage }}</p>
           <ul class="missing-words-list">
             <li v-for="word in missingWords" :key="word.ru">
               {{ word.ru }}
@@ -19,7 +19,7 @@
         </div>
         <div class="modal-footer">
           <button class="modal-btn" @click="showModal = false">
-            Понятно, исправлю ✏️
+            Оу кэй! Ща сделаю! ✏️
           </button>
         </div>
       </div>
@@ -45,9 +45,16 @@
               <p class="textRight">" {{ currentMission }} "</p>
               <div class="lesson-title"></div>
 
-              <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> все WORDS</a> с урока</p>
-              <p class="fontAm">2. Введи перевод нескольких слов :</p>
-              <div class="lesson-title"></div>
+              <p class="fontAm">1. Вслух прочитай <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> с урока</p>
+              <div class="textInLine" v-if="!harderModeEnabled">
+                <p class="fontAm">2. Введи перевод этих трёх слов/фраз:</p>
+                <div class="lesson-title"></div>
+              </div>
+
+              <div class="textInLine" v-if="harderModeEnabled">
+                <p class="fontAm">2. Напиши разговорные предложения:</p>
+                <div class="lesson-title"></div>
+              </div>
             </div>
 
             <!-- Секция домашнего задания -->
@@ -67,12 +74,37 @@
                       <span class="hint-text">{{ word.hint }}</span>
                     </div>
 
+                    <!-- Поле для перевода (только в обычном режиме) -->
                     <input
+                      v-if="!harderModeEnabled"
                       type="text"
                       v-model="word.userTranslation"
                       :placeholder="'введите перевод...'"
                       class="translation-input"
                     >
+
+                    <!-- Три поля для сложного режима -->
+                    <div v-if="harderModeEnabled" class="sentences-group">
+
+                      <input
+                        type="text"
+                        v-model="word.affirmativeSentence"
+                        :placeholder="'+ Утверждение'"
+                        class="translation-input sentence-input"
+                      >
+                      <input
+                        type="text"
+                        v-model="word.negativeSentence"
+                        :placeholder="'- Отрицание'"
+                        class="translation-input sentence-input"
+                      >
+                      <input
+                        type="text"
+                        v-model="word.questionSentence"
+                        :placeholder="'? Любой вопрос'"
+                        class="translation-input sentence-input"
+                      >
+                    </div>
                   </div>
                 </div>
 
@@ -81,19 +113,18 @@
                   <p class="fontAm">3. <b>Ручкой</b> на любой бумажке или в своей тетради <b>напиши</b> что-нибудь по-английски, <b>сфотографируй</b> и send to Винсенту.</p>
                 </div>
 
-                <button
-                  class="homework-submit-btn"
-                  @click="handleSendClick"
-                >
-                  отправить на проверку
-                </button>
+                <div class="buttons-wrapper">
+                  <button class="harder-homework-btn" @click="goToHarderHomework">
+                    {{ harderModeEnabled ? 'вернуть полегче домашку' : '⭐ хочу домашку посложнее' }}
+                  </button>
+                  <button class="homework-submit-btn" @click="handleSendClick">
+                    отправить на проверку
+                  </button>
+                </div>
 
                 <!-- Контейнер с гифкой -->
                 <div class="gif-container" v-if="currentGif">
-                  <img :src="currentGif" alt="funny gif" class="random-gif">
-<!--                  <button class="refresh-gif-btn" @click="changeGif" title="Показать другую гифку">-->
-<!--                    🔄-->
-<!--                  </button>-->
+                  <img :src="currentGif" alt="funny gif" class="random-gif" @click="changeGif">
                 </div>
 
               </div>
@@ -106,7 +137,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
@@ -115,6 +146,8 @@ import gifDoYouUnderstand from '/src/assets/images/gifs/doYouUnderstand.gif';
 import gifWhatIsUp1 from '/src/assets/images/gifs/whatIsUp1.gif';
 import gifMatrixPills2 from '/src/assets/images/gifs/MatrixPills.gif';
 import areAmIs from '/src/assets/images/areAmIs.png';
+
+const harderModeEnabled = ref(false);
 
 const currentGif = ref('');
 const gifList = ref([
@@ -134,8 +167,6 @@ const route = useRoute();
 const router = useRouter();
 
 const currentMission = ref('');
-
-
 const currentGameData = ref([]);
 const contentRef = ref(null);
 const notebookHeight = ref(800);
@@ -149,24 +180,86 @@ const goToAnontherComponent = () => {
   });
 };
 
-
-// Валидность домашнего задания (только слова)
+// Валидность домашнего задания
 const isHomeworkValid = computed(() => {
-  return homeworkWords.value.every(word =>
-    word.userTranslation &&
-    word.userTranslation.trim() !== '' &&
-    word.userTranslation.trim().length >= 1
-  );
+  if (!homeworkWords.value.length) return false;
+
+  if (harderModeEnabled.value) {
+    // В сложном режиме проверяем все три предложения
+    return homeworkWords.value.every(word =>
+      word.affirmativeSentence && word.affirmativeSentence.trim().length >= 1 &&
+      word.negativeSentence && word.negativeSentence.trim().length >= 1 &&
+      word.questionSentence && word.questionSentence.trim().length >= 1
+    );
+  } else {
+    // В обычном режиме проверяем только переводы
+    return homeworkWords.value.every(word =>
+      word.userTranslation &&
+      word.userTranslation.trim().length >= 1
+    );
+  }
 });
 
 // Список незаполненных слов
 const missingWords = computed(() => {
-  return homeworkWords.value.filter(word =>
-    !word.userTranslation ||
-    word.userTranslation.trim() === '' ||
-    word.userTranslation.trim().length < 1
-  );
+  if (!homeworkWords.value.length) return [];
+
+  if (harderModeEnabled.value) {
+    return homeworkWords.value.filter(word =>
+      !word.affirmativeSentence || word.affirmativeSentence.trim().length < 1 ||
+      !word.negativeSentence || word.negativeSentence.trim().length < 1 ||
+      !word.questionSentence || word.questionSentence.trim().length < 1
+    );
+  } else {
+    return homeworkWords.value.filter(word =>
+      !word.userTranslation ||
+      word.userTranslation.trim().length < 1
+    );
+  }
 });
+
+// Текст для модального окна
+const modalMessage = computed(() => {
+  if (harderModeEnabled.value) {
+    return 'Вы не заполнили предложения для следующих слов:';
+  } else {
+    return 'Вы не написали перевод для следующих слов:';
+  }
+});
+
+const goToHarderHomework = () => {
+  harderModeEnabled.value = !harderModeEnabled.value;
+
+  if (harderModeEnabled.value) {
+    // Обновляем слова и добавляем поля для предложений
+    refreshWordsForHarderMode();
+  }
+
+  // Пересчитываем высоту тетради
+  nextTick(() => {
+    setTimeout(() => {
+      notebookHeight.value = calculateContentHeight();
+    }, 50);
+  });
+};
+
+// Функция обновления слов для сложного режима
+const refreshWordsForHarderMode = () => {
+  if (currentGameData.value.length === 0) return;
+
+  // Выбираем новые случайные слова
+  const shuffled = [...currentGameData.value].sort(() => 0.5 - Math.random());
+  const newWords = shuffled.slice(0, Math.min(3, shuffled.length)).map(word => ({
+    ...word,
+    userTranslation: '',
+    affirmativeSentence: '',
+    negativeSentence: '',
+    questionSentence: '',
+    showHint: false
+  }));
+
+  homeworkWords.value = newWords;
+};
 
 // Показывать ли секцию домашнего задания
 const showHomeworkSection = computed(() => {
@@ -177,11 +270,13 @@ const showHomeworkSection = computed(() => {
 const selectHomeworkWords = () => {
   if (currentGameData.value.length === 0) return [];
 
-  // Берем до 3 случайных слов из текущего урока
   const shuffled = [...currentGameData.value].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, Math.min(3, shuffled.length)).map(word => ({
     ...word,
     userTranslation: '',
+    affirmativeSentence: '',
+    negativeSentence: '',
+    questionSentence: '',
     showHint: false
   }));
 };
@@ -189,15 +284,20 @@ const selectHomeworkWords = () => {
 // Функция переключения подсказки
 const toggleHint = (word) => {
   word.showHint = !word.showHint;
+
+  // Пересчитываем высоту после открытия/закрытия подсказки
+  nextTick(() => {
+    setTimeout(() => {
+      notebookHeight.value = calculateContentHeight();
+    }, 50);
+  });
 };
 
 // Обработчик нажатия на кнопку отправки
 const handleSendClick = () => {
   if (isHomeworkValid.value) {
-    // Если все заполнено - отправляем
     openTelegramMessage();
   } else {
-    // Если есть незаполненные поля - показываем модальное окно
     showModal.value = true;
   }
 };
@@ -227,26 +327,33 @@ const copyToClipboard = async (text) => {
 const openTelegramMessage = async () => {
   const username = 'vismyfriend';
 
-  // Формируем сообщение с домашним заданием
   let homeworkMessage = "Hi teacher V.\n\n";
   homeworkMessage += "Words from homework:\n";
   homeworkWords.value.forEach((word, index) => {
     homeworkMessage += `${index + 1}. ${word.ru}\n`;
   });
 
-  homeworkMessage += `\nMy translation:\n`;
-  homeworkWords.value.forEach((word, index) => {
-    homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
-  });
+  if (harderModeEnabled.value) {
+    homeworkMessage += `\nMy sentences:\n`;
+    homeworkWords.value.forEach((word, index) => {
+      homeworkMessage += `${index + 1}. ${word.ru}:\n`;
+      homeworkMessage += `   +) ${word.affirmativeSentence}\n`;
+      homeworkMessage += `   -) ${word.negativeSentence}\n`;
+      homeworkMessage += `   ?) ${word.questionSentence}\n`;
+    });
+  } else {
+    homeworkMessage += `\nMy translation:\n`;
+    homeworkWords.value.forEach((word, index) => {
+      homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
+    });
+  }
 
   homeworkMessage += `\nСейчас ещё фотку отправлю`;
   homeworkMessage += `\n(${currentMission.value})\n`;
 
-
-  // Копируем в буфер обмена
   await copyToClipboard(homeworkMessage);
 
-  alert("✅ Скопированно!\nОсталось фотку отправить!\n\nВставьте в телеграмм:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱 На телефоне: \nзажмите пальцем → Вставить");
+  alert("✅ Скопированно!\n\nВставьте в телеграмм:\n\n💻 На компьютере: \nклик правой кнопкой → Вставить\n📱 На телефоне: \nзажмите пальцем → Вставить");
 
   const telegramUrl = `https://t.me/${username}?text=${encodeURIComponent(homeworkMessage)}`;
   window.open(telegramUrl, '_blank');
@@ -254,30 +361,32 @@ const openTelegramMessage = async () => {
 
 // Функция для расчета высоты тетради
 const calculateContentHeight = () => {
-  if (!contentRef.value) return 600;
+  if (!contentRef.value) return 700;
   const contentHeight = contentRef.value.scrollHeight;
-  const minHeight = 600;
+  const minHeight = 700;
   const padding = 50;
   return Math.max(minHeight, contentHeight + padding);
 };
 
+// Следим за изменением слов для пересчета высоты
+watch(homeworkWords, () => {
+  nextTick(() => {
+    setTimeout(() => {
+      notebookHeight.value = calculateContentHeight();
+    }, 50);
+  });
+}, { deep: true });
+
 onMounted(() => {
-  // Получаем данные урока
   currentMission.value = route.params.missionName || 'Текущий урок';
   currentGameData.value = shortWordsData[currentMission.value] || [];
-
-  // Выбираем слова для домашнего задания
   homeworkWords.value = selectHomeworkWords();
-
-  // Выбираем случайную гифку
   changeGif();
 
-  // Настраиваем высоту тетради после загрузки данных
   setTimeout(() => {
     notebookHeight.value = calculateContentHeight();
   }, 100);
 });
-
 </script>
 
 <style lang="scss" scoped>
@@ -294,7 +403,7 @@ onMounted(() => {
   position: relative;
   width: 800px;
   max-width: 95%;
-  height: 600px;
+  height: 700px;
   perspective: 1000px;
   transition: height 0.3s ease;
   margin-bottom: 30px;
@@ -320,7 +429,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* Сетка тетради в клетку */
 .notebook-grid {
   position: absolute;
   top: 0;
@@ -358,11 +466,28 @@ onMounted(() => {
   color: #2c3e50;
   overflow-y: auto;
 }
+
 .fontAm {
   font-family: 'American Typewriter', serif;
-
 }
-/* Заголовок урока */
+
+.sentences-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.sentence-input {
+  margin-top: 0 !important;
+  border-color: #ff9800;
+
+  &:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+  }
+}
+
 .lesson-title {
   font-size: 20px;
   font-family: Special_f1;
@@ -382,17 +507,14 @@ onMounted(() => {
   line-height: 20px;
 }
 
-/* Стили для секции домашнего задания */
 .homework-section {
   margin-bottom: 20px;
 }
 
-.homework-content {
-  p {
-    margin-bottom: 20px;
-    line-height: 20px;
-    min-height: 20px;
-  }
+.homework-content p {
+  margin-bottom: 20px;
+  line-height: 20px;
+  min-height: 20px;
 }
 
 .homework-words {
@@ -458,7 +580,7 @@ onMounted(() => {
   padding: 8px 12px;
   font-family: 'Times New Roman', serif;
   margin-left: 20px;
-  width: 280px;
+  width: 340px;
   background: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 
@@ -475,18 +597,49 @@ onMounted(() => {
   }
 }
 
+.buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.harder-homework-btn {
+  background: linear-gradient(180deg, #ff9800, #f57c00);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-family: Special_f1;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, #f57c00, #ff9800);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
 .homework-submit-btn {
   background: linear-gradient(180deg, #4CAF50, #45a049);
   border: none;
   border-radius: 25px;
   color: white;
   font-size: 14px;
-  padding: 12px 24px;
+  padding: 8px 16px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-family: Special_f1;
-
 
   &:hover {
     transform: translateY(-2px);
@@ -500,7 +653,6 @@ onMounted(() => {
   }
 }
 
-/* Стили для модального окна */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -515,9 +667,11 @@ onMounted(() => {
   z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
+
 .textRight {
   text-align: right;
 }
+
 .modal {
   background: white;
   border-radius: 16px;
@@ -544,7 +698,7 @@ onMounted(() => {
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  font-family: 'Times New Roman', serif;
+  font-family: "American Typewriter", serif;
 }
 
 .modal-content {
@@ -612,7 +766,6 @@ onMounted(() => {
   }
 }
 
-/* Красная вертикальная линия для полей */
 .notebook-page::before {
   content: '';
   position: absolute;
@@ -653,6 +806,7 @@ onMounted(() => {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.02);
@@ -660,37 +814,6 @@ onMounted(() => {
   }
 }
 
-.refresh-gif-btn {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: white;
-  border: 2px solid #1e5799;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-  &:hover {
-    transform: rotate(90deg);
-    background: #1e5799;
-    color: white;
-  }
-
-  &:active {
-    transform: rotate(180deg);
-  }
-}
-
-
-
-/* Адаптивность */
 @media (max-width: 768px) {
   .word-to-translate {
     font-size: 18px;
@@ -698,15 +821,16 @@ onMounted(() => {
 
   .translation-input {
     margin-left: 20px;
+    width: 280px;
   }
 }
 
-/* Стили для печати */
 @media print {
   .container {
     background: none;
     padding: 0;
   }
+
   .gif-container {
     display: none;
   }
