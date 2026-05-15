@@ -202,7 +202,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/SarahAndHerDay1/print-all-words",
       missionVisibleName: "Sarah's day️",
-      missionDescription: "День Сары - Сарин день",
+      missionDescription: "Сарин день (День Сары)",
       id: 1001,
       active: true,
     },
