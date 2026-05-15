@@ -42,8 +42,8 @@
 
             <div class="textInLine">
               <div class="lesson-title"></div>
-              <p class="textRight">" {{ currentMission }} "</p>
-              <div class="lesson-title"></div>
+<!--              <p class="textRight">" {{ currentMission }} "</p>-->
+<!--              <div class="lesson-title"></div>-->
 
               <p class="fontAm">1. Вслух прочитай <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> с урока</p>
               <div class="textInLine" v-if="!harderModeEnabled">
@@ -52,7 +52,7 @@
               </div>
 
               <div class="textInLine" v-if="harderModeEnabled">
-                <p class="fontAm">2. Напиши разговорные предложения:</p>
+                <p class="fontAm">2. Придумай короткие предложения:</p>
                 <div class="lesson-title"></div>
               </div>
             </div>
@@ -328,27 +328,30 @@ const openTelegramMessage = async () => {
   const username = 'vismyfriend';
 
   let homeworkMessage = "Hi teacher V.\n\n";
-  homeworkMessage += "Words from homework:\n";
+  homeworkMessage += "Нужно было написать:\n";
   homeworkWords.value.forEach((word, index) => {
     homeworkMessage += `${index + 1}. ${word.ru}\n`;
+    homeworkMessage += `${index + 1}. ${word.eng}\n`;
+
   });
 
   if (harderModeEnabled.value) {
-    homeworkMessage += `\nMy sentences:\n`;
+    homeworkMessage += `\nВот мои ответы, норм?\n`;
     homeworkWords.value.forEach((word, index) => {
       homeworkMessage += `${index + 1}. ${word.ru}:\n`;
-      homeworkMessage += `   +) ${word.affirmativeSentence}\n`;
-      homeworkMessage += `   -) ${word.negativeSentence}\n`;
       homeworkMessage += `   ?) ${word.questionSentence}\n`;
+      homeworkMessage += `   -) ${word.negativeSentence}\n`;
+      homeworkMessage += `   +) ${word.affirmativeSentence}\n`;
+
     });
   } else {
-    homeworkMessage += `\nMy translation:\n`;
+    homeworkMessage += `\nВот мои ответы, норм?\n`;
     homeworkWords.value.forEach((word, index) => {
       homeworkMessage += `${index + 1}. ${word.userTranslation}\n`;
     });
   }
 
-  homeworkMessage += `\nСейчас ещё фотку отправлю`;
+  homeworkMessage += `\nСейчас ещё фотку отправлю, что в тетради у меня записано`;
   homeworkMessage += `\n(${currentMission.value})\n`;
 
   await copyToClipboard(homeworkMessage);
@@ -783,7 +786,7 @@ onMounted(() => {
   transition: all 0.3s ease;
 
   &:hover {
-    color: #ff6b6b;
+    color: #c600ff;
     text-decoration: none;
   }
 }

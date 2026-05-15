@@ -255,7 +255,7 @@ const initialShowText = ref(true); // Новый флаг для первона�
 const buttonLabel = computed(() => {
   return sessionCounter.value >= 41
     ? "It is OPEN ! Открыто уже, жми сюда"
-    : "Нажми сюда , click here , клик хИэ";
+    : "Докажи, что ты не бот, стучи в дверь";
 });
 
 const buttonColor = computed(() => {
@@ -409,7 +409,7 @@ const handleBubbleClick = async () => {
 // const welcomeWords = ["ща","я","как","начну","читать","по-","английски","вслух","погнали","vincent"];
 // const welcomeWords = ["Oh","my","God","скоро","же","Halloween","хЭл","ОУ","Уин","HALLOWEEN","Vinccenteen",];
 // const welcomeWords = ["читай","вслух","произноси","всё","вслуууух!","Hello","hi","Vincent","I","am","a","special","agent","I am not","a","lazy","ass","VINCEEENT!"];
-const welcomeWords = ["тук","тук!","knock","knock!","бэм","bam!","чем больше","повторяю","тем больше","запоминаю","the","more","I","repeat","the","more","I memorize","мэмо рАйз","memorize","запоминай","и","читай","всё","вслух","read","out","loud","аут лауд","вслух!","OUT LOUD"];
+const welcomeWords = ["тук","тук!","knock","knock!","я не бот","I","AM","not","a bot!","откройте","дверь","плиз","please","Vincent","open","the","door","ну сколько ещё","How long?"];
 
 
 const allEnglishWords = [

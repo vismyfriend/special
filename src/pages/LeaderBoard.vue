@@ -5,7 +5,7 @@
     <div class="simple-results" v-if="!showDetailed">
       <div class="simple-container">
         <div class="stat-item">
-          <span class="stat-label">My time is:</span>
+          <span class="stat-label">time :</span>
           <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
         </div>
         <!-- Анимированные слова -->
@@ -24,7 +24,7 @@
             <div class="stat-item time-words">
               <span class="stat-value time-words-value">{{ timeInWords }} seconds</span>
             </div>
-            <span>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</span>
+<!--            <span>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</span>-->
 
 
             <div class="simple-buttons">
@@ -33,7 +33,7 @@
 <!--              <button class="simple-btn allMissions" @click="toAllMissions">другие задания</button>-->
               <button class="simple-btn allMissions" @click="backToSameSet">другие задания</button>
               <button class="simple-btn details-btn" @click="showDetailed = true">
-                ☝ произнёс вслух? -yes?<br> доволен результатом? <br> нажми 🌎 поделиться со всем миром или кнопку ниже
+                 🌎 поделиться
               </button>
             </div>
           </div>
@@ -176,16 +176,13 @@ const animationInterval = ref(null);
 
 // Массив слов для анимации
 const animationTexts = [
-  "Супер !",
-  "Круто !",
-  "Отлично !",
-  "Молодец !",
-  "Вау !",
-  "Так держать !",
-  "Браво !",
-  "Ты справился !",
-  "Поздравляю !"
-];
+  "Супер ! Super",
+  "Круто ! Cool",
+  "Отлично ! Great",
+  "Вау ! Wow",
+  "Офигенно ! Awesome",
+  "Браво ! Bravo",
+  ];
 
 // Случайное поздравление
 const randomGreeting = computed(() => {
@@ -224,15 +221,13 @@ const startAnimation = () => {
   // Создаём массив слов для анимации
   const wordsToAnimate = [
     randomGreeting.value,
-    "скажи вслух :",
+    "скажи цифры вслух",
     "_____________",
-    randomCompletionPhrase.value,  // ← теперь рандомная фраза
+
+    timeInWords ,
     "--------------",
-    "и произнеси",
-    "свой результат",
-    "по-английски",
-    "разборчиво, уверенно",
-    "вслух",
+
+    // randomCompletionPhrase.value,  // ← теперь рандомная фраза
 
   ];
 
@@ -610,11 +605,14 @@ onMounted(async () => {
   font-size: 20px;
   font-weight: 600;
   opacity: 0.9;
+  font-family: Special_f1;
 }
 
 .stat-value {
   font-size: 24px;
   font-weight: bold;
+  font-family: "American Typewriter";
+
 }
 
 .time-value {
@@ -664,9 +662,11 @@ onMounted(async () => {
 }
 
 .try-again, .allMissions {
-  background: linear-gradient(145deg, #FFC107, #FF9800);
+  background: linear-gradient(145deg, #8664fb, #b38dff);
   color: white;
   font-family: Special_f1;
+  animation: pulse-attention 1s ease-in-out infinite;
+
 }
 
 .next-mission {

@@ -5,7 +5,7 @@
     <div class="exercise-header">
       <h2>{{ exerciseData.mainDescription }}</h2>
       <div class="header-bottom">
-        <p class="main-description">Special tasks for S.P.E.C.i.A.L. agents</p>
+        <p class="main-description">You are S.P.E.C.i.A.L.</p>
         <div class="task-counter">
           {{ currentTaskIndex + 1 }}/{{ exerciseData.tasks.length }}
         </div>

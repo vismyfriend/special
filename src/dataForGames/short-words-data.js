@@ -252,7 +252,7 @@ const shortWordsData = {
     { id: 12, eng: "Go to living room", ru: "Идти в гостиную", hint: "/ гоу ту лИвин рум /" },
     { id: 13, eng: "Have a cup of coffee", ru: "Выпить чашку кофе", hint: "/ хэв э кап ов кОфи /" },
     { id: 14, eng: "Drink a glass of water", ru: "Выпить стакан воды", hint: "/ дринк э глас ов уОтэ /" },
-    { id: 15, eng: "Take a cup of ", ru: "Взять чашечку чая", hint: "/ тэйк э кап ов ти /" },
+    { id: 15, eng: "Take a cup of tea ", ru: "Взять чашечку чая", hint: "/ тэйк э кап ов ти /" },
     { id: 16, eng: "Get a glass of wine", ru: "Достать бокал вина", hint: "/ гет э глас ов уайн /" },
     { id: 17, eng: "Drink a bottle of milk", ru: "Выпить бутылку молока", hint: "/ дринк э ботл ов милк /" },
     { id: 18, eng: "Leave", ru: "Покидать", hint: "/ лив /" },

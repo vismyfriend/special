@@ -131,7 +131,7 @@
 
         <div class="modal-footer">
           <button class="modal-btn improve-btn" @click="improveResult">
-            📈 Улучшить результат
+            Могу быстрее ! Ещё разок?
           </button>
           <button
             class="modal-btn harder-btn"
@@ -139,13 +139,13 @@
             :disabled="difficultyLevel === 3"
             :class="{ disabled: difficultyLevel === 3 }"
           >
-            ⬆️ Попробовать уровень сложнее
+            Хочу сложнее уровень
           </button>
                     <button class="modal-btn backend-btn" @click="finishGame">
                       🌎 Поделиться с миром
                     </button>
           <button class="modal-btn finish-btn" @click="goToAllSets">
-            🏁 К другим миссиям
+            Другое задание / миссия
           </button>
         </div>
       </div>
@@ -805,7 +805,11 @@ const goToAllSets = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value);
   gameStore.setGameName(`SpellingAgent_${getDifficultyName()}`);
   gameStore.setWordSet(currentMission.value);
-  router.push("/see-all-sets-of-words/");
+  // router.push("/see-all-sets-of-words/");
+  const missionName = route.params.missionName;
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}`
+  });
 };
 
 // Улучшить результат - перезапустить игру на том же уровне

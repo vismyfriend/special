@@ -184,6 +184,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/iForgotEverything1/brainstorm",
+      missionVisibleName: "Я кажется всё забыл(а) !️",
+      missionDescription: "I've forgotten everything!",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/commonlyMispronouncedWords/listenAndspell",
       missionVisibleName: "Commonly misspeled words️",
       missionDescription: "Слова в кот. часто ошибаются",

@@ -651,6 +651,59 @@ const gameTestsNoSeedNoShuffleData = {
       },
     ],
   },
+  iForgotEverything1: {
+    mainDescription: 'Forgot? Не беда - ща вспомним что-нибудь"',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "Можно менять свой ответ, пробуйте",
+        textScript: null,
+        questions: [
+          {
+            text: "Как сказать Я НЕ ГЛУПАЯ",
+            options: {
+              A: "I not stupid",
+              B: "Me no stupid",
+              C: "I'm not silly",
+              D: "I don't stupid",
+              E: "Me is not stupid",
+              F: "Ya ne znayou"
+            },
+            correctAnswer: "C",
+            explanation: "I am not silly. (остальные варианты все с ошибками, do используется когда есть действие, ну и stupid переводится тупой, а не глупый)",
+
+          },
+          {
+            text: "Как сказать ОН ВСЁ ЗАБЫЛ",
+            options: {
+              A: "He forgeted everything",
+              B: "He forgot all",
+              C: "She forgot everything",
+              D: "She forgots all",
+              E: "He has forgot all",
+              F: "He forgot everything",
+            },
+            correctAnswer: "F",
+            explanation: "Неправильный глагол forget - forgot - forgotten. She - она ",
+          },
+          {
+            text: "Я ничего не помню",
+            options: {
+              A: "I doesn't remember anything",
+              B: "I nothing remember",
+              C: "I don't remember nothing",
+              D: "I nothing don't remember",
+              E: "I remember nothing",
+
+            },
+            correctAnswer: "E",
+            explanation: "В английском нельзя говорить двойные отрицания, поэтому правильно только I remember nothing или I don't remember anything",
+          },
+
+        ]
+      },
+    ],
+  },
 
   pattern: {
     mainDescription: "ШАБЛОНЫ ЗАДАНИЙ : можно добавлять аудио или видео или картинки и слова полезные для выполнения",
