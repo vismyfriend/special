@@ -216,6 +216,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howWasTheInterview/print-all-words",
+      missionVisibleName: "How was it 1",
+      missionDescription: "Как прошло?",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/cards52",
       missionVisibleName: "Poker combinations",
       missionDescription: "Poker Hands ♥️♣️♦️♠️",
