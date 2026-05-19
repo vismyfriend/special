@@ -45,7 +45,7 @@
 <!--              <p class="textRight">" {{ currentMission }} "</p>-->
 <!--              <div class="lesson-title"></div>-->
 
-              <p class="fontAm">1. Вслух прочитай <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> с урока</p>
+              <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> 👈 ссылка</p>
               <div class="textInLine" v-if="!harderModeEnabled">
                 <p class="fontAm">2. Введи перевод этих трёх слов/фраз:</p>
                 <div class="lesson-title"></div>

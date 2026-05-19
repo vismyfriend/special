@@ -59,63 +59,68 @@
               </div>
             </div>
             <!-- Дополнительные материалы -->
-            <div class="materials-section" v-if="hasAdditionalMaterials">
-              <div class="section-title"> Ох уж этот Vincent...</div>
-              <div class="materials-content">
-                <p>напридумывает фраз всяких, a мне</p>
-                <p>писать и переводить... Ладно, напишу!</p>
-                <p>Я же понимаю, что училка для меня</p>
-                <p>старался. И я не ленивая задница! </p>
-              </div>
-            </div>
+<!--            <div class="materials-section" v-if="hasAdditionalMaterials">-->
+<!--              <div class="section-title"> Ох уж этот Vincent...</div>-->
+<!--              <div class="materials-content">-->
+<!--                <p>напридумывает фраз всяких, a мне</p>-->
+<!--                <p>писать и переводить... Ладно, напишу!</p>-->
+<!--                <p>Я же понимаю, что училка для меня</p>-->
+<!--                <p>старался. И я не ленивая задница! </p>-->
+<!--              </div>-->
+<!--            </div>-->
 
             <!-- Секция домашнего задания -->
-            <div class="homework-section " v-if="showHomeworkSection">
-              <!--              <div class="section-title ">Cейчас напишу :</div>-->
-              <div class="homework-content">
+<!--            <div class="homework-section " v-if="showHomeworkSection">-->
+<!--              &lt;!&ndash;              <div class="section-title ">Cейчас напишу :</div>&ndash;&gt;-->
+<!--              <div class="homework-content">-->
 
-                <div class="homework-words">
-                  <div class="homework-word" v-for="(word, index) in homeworkWords" :key="'hw-' + index">
-                    <div class="word-header">
-                      <span class="word-number">{{ index + 1 }}. </span>
-                      <span class="word-to-translate">{{ word.ru }}</span>
-                      <!-- Показываем кнопку подсказки только если подсказка еще не показана -->
-                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)"> 🔍️ подсказка
-    </span>
-                    </div>
+<!--                <div class="homework-words">-->
+<!--                  <div class="homework-word" v-for="(word, index) in homeworkWords" :key="'hw-' + index">-->
+<!--                    <div class="word-header">-->
+<!--                      <span class="word-number">{{ index + 1 }}. </span>-->
+<!--                      <span class="word-to-translate">{{ word.ru }}</span>-->
+<!--                      &lt;!&ndash; Показываем кнопку подсказки только если подсказка еще не показана &ndash;&gt;-->
+<!--                      <span class="hint-icon" v-if="word.hint && !word.showHint" @click="toggleHint(word)"> 🔍️ подсказка-->
+<!--    </span>-->
+<!--                    </div>-->
 
-                    <!-- Показываем подсказку только если она активна -->
-                    <div class="hint-content" v-if="word.showHint">
-                      <span class="hint-text">{{ word.hint }}</span>
-                    </div>
+<!--                    &lt;!&ndash; Показываем подсказку только если она активна &ndash;&gt;-->
+<!--                    <div class="hint-content" v-if="word.showHint">-->
+<!--                      <span class="hint-text">{{ word.hint }}</span>-->
+<!--                    </div>-->
 
-                    <input
-                      type="text"
-                      v-model="word.userTranslation"
-                      :placeholder="'введите перевод...'"
-                      class="translation-input"
-                      @input="validateHomework"
-                    >
-                  </div>
-                </div>
+<!--                    <input-->
+<!--                      type="text"-->
+<!--                      v-model="word.userTranslation"-->
+<!--                      :placeholder="'введите перевод...'"-->
+<!--                      class="translation-input"-->
+<!--                      @input="validateHomework"-->
+<!--                    >-->
+<!--                  </div>-->
+<!--                </div>-->
 
-                <!-- Поле для имени и кнопка отправки -->
-                <div class="homework-submission">
-                  <textarea
-                    class="message-input"
-                    v-model="customMessage"
-                    placeholder="Практикуйся, используй 1 - 2 слова из этого списка и напиши любой вопрос? (или составь любое предложение)"
-                  ></textarea>
+<!--                &lt;!&ndash; Поле для имени и кнопка отправки &ndash;&gt;-->
+<!--                <div class="homework-submission">-->
+<!--                  <textarea-->
+<!--                    class="message-input"-->
+<!--                    v-model="customMessage"-->
+<!--                    placeholder="Практикуйся, используй 1 - 2 слова из этого списка и напиши любой вопрос? (или составь любое предложение)"-->
+<!--                  ></textarea>-->
 
-                  <button
-                    class="homework-submit-btn"
-                    @click="openTelegramMessage"
-                    :disabled="!isHomeworkValid"
-                  >
-                    Send to Vismyfriend →
-                  </button>
-                </div>
-              </div>
+<!--                  <button-->
+<!--                    class="homework-submit-btn"-->
+<!--                    @click="openTelegramMessage"-->
+<!--                    :disabled="!isHomeworkValid"-->
+<!--                  >-->
+<!--                    Send to Vismyfriend →-->
+<!--                  </button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+            <div class="buttons-wrapper">
+              <button class="homework-submit-btn" @click="goToAnontherComponent">
+                выполнить домаху <br>do homework
+              </button>
             </div>
           </div>
         </div>
@@ -123,18 +128,19 @@
     </div>
 
     <!-- Кнопка печати -->
-    <div class="print-controls">
-      <button class="print-button" @click="printNotebook">Распечатать материал</button>
-    </div>
+<!--    <div class="print-controls">-->
+<!--      <button class="print-button" @click="printNotebook">Распечатать материал</button>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
 const route = useRoute();
+const router = useRouter()
 
 const currentMission = ref('');
 const currentGameData = ref([]);
@@ -142,7 +148,6 @@ const contentRef = ref(null);
 const notebookHeight = ref(600);
 const customMessage = ref('');
 const homeworkWords = ref([]);
-
 // Состояние для перемешивания
 const shuffleEnabled = ref(false);
 // Оригинальные данные (несортированные)
@@ -150,6 +155,14 @@ const originalGameData = ref([]);
 // Отображаемые данные (могут быть перемешаны)
 const displayedWords = ref([]);
 
+
+
+const goToAnontherComponent = () => {
+  const missionName = route.params.missionName;
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}/print-all-words`
+  });
+};
 
 // Функция перемешивания массива (алгоритм Фишера-Йетса)
 const shuffleArray = (array) => {
@@ -850,7 +863,8 @@ onMounted(() => {
   cursor: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
-  font-family: 'Times New Roman', serif;
+  font-family: Special_f1;
+  margin-left: 80px;
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
