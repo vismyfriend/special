@@ -3,35 +3,39 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
 jobs:
   build:
-    runs-on: ubuntu-latest  # лучше использовать latest вместо конкретной версии
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # обновите до v4
-      
+        uses: actions/checkout@v4
+        
       - name: Setup Node
-        uses: actions/setup-node@v4  # обновите до v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'  # node 10 уже устарел, используйте 18 или 20
+          node-version: '18.x'  # или 20.x, но не 10.x
           
       - name: Cache
-        uses: actions/cache@v3  # обновите до v3
+        uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: |
+            ~/.npm
+            node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
             
-      - name: Install
+      - name: Install dependencies
         run: npm ci
         
-      - name: Build
-        run: npm run build
+      - name: Build with Quasar
+        run: npx quasar build  #直接用 npx quasar build
         
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # правильный action для деплоя
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/spa  # ваша папка со сборкой
-          publish_branch: gh-pages  # ветка для публикации
+          publish_dir: ./dist/spa
+          publish_branch: gh-pages
