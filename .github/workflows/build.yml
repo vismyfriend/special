@@ -4,12 +4,17 @@ on:
   push:
     branches:
       - main
-    # Игнорируем теги, чтобы не было двойных запусков
     tags-ignore:
       - '**'
   workflow_dispatch:
 
-# Предотвращаем параллельные запуски для одной ветки
+# Даем права на запись
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Предотвращаем параллельные запуски
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -17,7 +22,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Защита от двойного запуска при push в main
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     
     steps:
@@ -45,48 +49,62 @@ jobs:
       - name: Fix asset imports (CASE SENSITIVE)
         run: |
           # Находим ВСЕ файлы в assets и создаем их копии с разными вариантами регистра
-          find src/assets -type f \( -name "*.gif" -o -name "*.jpg" -o -name "*.png" -o -name "*.svg" -o -name "*.webp" \) | while read file; do
-            dir=$(dirname "$file")
-            filename=$(basename "$file")
-            
-            # Вариант 1: с большой первой буквы
-            first_upper=$(echo "$filename" | sed 's/^./\U&/')
-            if [ "$filename" != "$first_upper" ]; then
-              cp "$file" "$dir/$first_upper" 2>/dev/null || true
-              echo "Copied $filename -> $first_upper"
-            fi
-            
-            # Вариант 2: с маленькой первой буквы
-            first_lower=$(echo "$filename" | sed 's/^./\L&/')
-            if [ "$filename" != "$first_lower" ]; then
-              cp "$file" "$dir/$first_lower" 2>/dev/null || true
-              echo "Copied $filename -> $first_lower"
-            fi
-            
-            # Вариант 3: полностью в нижний регистр
-            all_lower=$(echo "$filename" | tr '[:upper:]' '[:lower:]')
-            if [ "$filename" != "$all_lower" ] && [ "$first_lower" != "$all_lower" ]; then
-              cp "$file" "$dir/$all_lower" 2>/dev/null || true
-              echo "Copied $filename -> $all_lower"
-            fi
-          done
-          
-          # Проверяем, что теперь файл существует
-          if [ -f "src/assets/images/gifs/MatrixPills.gif" ]; then
-            echo "✅ MatrixPills.gif exists"
+          if [ -d "src/assets" ]; then
+            find src/assets -type f \( -name "*.gif" -o -name "*.jpg" -o -name "*.png" -o -name "*.svg" -o -name "*.webp" \) 2>/dev/null | while read file; do
+              dir=$(dirname "$file")
+              filename=$(basename "$file")
+              
+              # Вариант 1: с большой первой буквы
+              first_upper=$(echo "$filename" | sed 's/^./\U&/')
+              if [ "$filename" != "$first_upper" ]; then
+                cp "$file" "$dir/$first_upper" 2>/dev/null || true
+                echo "Copied $filename -> $first_upper"
+              fi
+              
+              # Вариант 2: с маленькой первой буквы
+              first_lower=$(echo "$filename" | sed 's/^./\L&/')
+              if [ "$filename" != "$first_lower" ]; then
+                cp "$file" "$dir/$first_lower" 2>/dev/null || true
+                echo "Copied $filename -> $first_lower"
+              fi
+              
+              # Вариант 3: полностью в нижний регистр
+              all_lower=$(echo "$filename" | tr '[:upper:]' '[:lower:]')
+              if [ "$filename" != "$all_lower" ] && [ "$first_lower" != "$all_lower" ]; then
+                cp "$file" "$dir/$all_lower" 2>/dev/null || true
+                echo "Copied $filename -> $all_lower"
+              fi
+            done
           else
-            echo "❌ MatrixPills.gif still missing, creating placeholder"
-            mkdir -p src/assets/images/gifs
-            # Создаем пустой файл-заглушку
+            echo "src/assets directory not found"
+          fi
+          
+          # Создаем недостающие файлы
+          mkdir -p src/assets/images/gifs
+          if [ ! -f "src/assets/images/gifs/MatrixPills.gif" ]; then
+            echo "Creating placeholder for MatrixPills.gif"
             touch src/assets/images/gifs/MatrixPills.gif
           fi
         
       - name: Build with Quasar
         run: npx quasar build
         
+      - name: Debug - check build output
+        run: |
+          echo "=== Build output directories ==="
+          ls -la
+          echo "=== Check for dist or docs ==="
+          ls -la dist/ 2>/dev/null || echo "dist not found"
+          ls -la docs/ 2>/dev/null || echo "docs not found"
+          echo "=== Looking for index.html ==="
+          find . -name "index.html" -path "*/dist/*" -o -name "index.html" -path "*/docs/*" 2>/dev/null || echo "No index.html found"
+        
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/spa
+          publish_dir: ./docs  # ← меняем на docs
           publish_branch: gh-pages
+          force_orphan: true   # ← создает ветку с нуля
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
