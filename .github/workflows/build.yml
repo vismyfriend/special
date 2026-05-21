@@ -5,29 +5,33 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest  # лучше использовать latest вместо конкретной версии
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # обновите до v4
+      
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4  # обновите до v4
         with:
-          node-version: '10.x'
+          node-version: '18.x'  # node 10 уже устарел, используйте 18 или 20
+          
       - name: Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3  # обновите до v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+            
       - name: Install
         run: npm ci
+        
       - name: Build
         run: npm run build
-      - name: Deploy
-        uses: vinchento
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_BRANCH: main
-          BRANCH: gh-pages
-          FOLDER: dist/spa
+        
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # правильный action для деплоя
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/spa  # ваша папка со сборкой
+          publish_branch: gh-pages  # ветка для публикации
