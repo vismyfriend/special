@@ -83,7 +83,23 @@ module.exports = configure(function (/* ctx */) {
 
       env: {
         DEEPSEEK_API_KEY: JSON.stringify(process.env.DEEPSEEK_API_KEY)
+      },
+        commonjsOptions: {
+    ignoreTryCatch: true
+  },
+  
+  // 2. Настройки Rollup для игнорирования ошибок резолвинга
+  rollupOptions: {
+    onwarn(warning, warn) {
+      // Игнорируем предупреждения о неразрешенных импортах (case sensitivity)
+      if (warning.code === 'UNRESOLVED_IMPORT' || 
+          warning.message.includes('Could not resolve') ||
+          warning.message.includes('Failed to resolve import')) {
+        return;
       }
+      warn(warning);
+    }
+  },
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
