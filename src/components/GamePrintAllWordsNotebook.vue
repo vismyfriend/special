@@ -144,7 +144,7 @@ import shortWordsData from '../dataForGames/short-words-data';
 import gifMissionIsPossible from '/src/assets/images/gifs/missionIsPossible.gif';
 import gifDoYouUnderstand from '/src/assets/images/gifs/doYouUnderstand.gif';
 import gifWhatIsUp1 from '/src/assets/images/gifs/whatIsUp1.gif';
-import gifMatrixPills2 from '/src/assets/images/gifs/MatrixPills.gif';
+import gifMatrixPills2 from '/src/assets/images/gifs/matrixPills.gif';
 import areAmIs from '/src/assets/images/areAmIs.png';
 
 const harderModeEnabled = ref(false);
