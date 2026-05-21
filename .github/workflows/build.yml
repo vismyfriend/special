@@ -42,45 +42,45 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-        - name: Fix asset imports (CASE SENSITIVE)
-  run: |
-    # Находим ВСЕ файлы в assets и создаем их копии с разными вариантами регистра
-    find src/assets -type f \( -name "*.gif" -o -name "*.jpg" -o -name "*.png" -o -name "*.svg" -o -name "*.webp" \) | while read file; do
-      dir=$(dirname "$file")
-      filename=$(basename "$file")
-      
-      # Вариант 1: с большой первой буквы
-      first_upper=$(echo "$filename" | sed 's/^./\U&/')
-      if [ "$filename" != "$first_upper" ]; then
-        cp "$file" "$dir/$first_upper" 2>/dev/null || true
-        echo "Copied $filename -> $first_upper"
-      fi
-      
-      # Вариант 2: с маленькой первой буквы
-      first_lower=$(echo "$filename" | sed 's/^./\L&/')
-      if [ "$filename" != "$first_lower" ]; then
-        cp "$file" "$dir/$first_lower" 2>/dev/null || true
-        echo "Copied $filename -> $first_lower"
-      fi
-      
-      # Вариант 3: полностью в нижний регистр
-      all_lower=$(echo "$filename" | tr '[:upper:]' '[:lower:]')
-      if [ "$filename" != "$all_lower" ] && [ "$first_lower" != "$all_lower" ]; then
-        cp "$file" "$dir/$all_lower" 2>/dev/null || true
-        echo "Copied $filename -> $all_lower"
-      fi
-    done
-    
-    # Проверяем, что теперь файл существует
-    if [ -f "src/assets/images/gifs/MatrixPills.gif" ]; then
-      echo "✅ MatrixPills.gif exists"
-    else
-      echo "❌ MatrixPills.gif still missing, creating placeholder"
-      mkdir -p src/assets/images/gifs
-      # Создаем пустой файл-заглушку
-      echo "fake gif content" > src/assets/images/gifs/MatrixPills.gif
-    fi
-
+      - name: Fix asset imports (CASE SENSITIVE)
+        run: |
+          # Находим ВСЕ файлы в assets и создаем их копии с разными вариантами регистра
+          find src/assets -type f \( -name "*.gif" -o -name "*.jpg" -o -name "*.png" -o -name "*.svg" -o -name "*.webp" \) | while read file; do
+            dir=$(dirname "$file")
+            filename=$(basename "$file")
+            
+            # Вариант 1: с большой первой буквы
+            first_upper=$(echo "$filename" | sed 's/^./\U&/')
+            if [ "$filename" != "$first_upper" ]; then
+              cp "$file" "$dir/$first_upper" 2>/dev/null || true
+              echo "Copied $filename -> $first_upper"
+            fi
+            
+            # Вариант 2: с маленькой первой буквы
+            first_lower=$(echo "$filename" | sed 's/^./\L&/')
+            if [ "$filename" != "$first_lower" ]; then
+              cp "$file" "$dir/$first_lower" 2>/dev/null || true
+              echo "Copied $filename -> $first_lower"
+            fi
+            
+            # Вариант 3: полностью в нижний регистр
+            all_lower=$(echo "$filename" | tr '[:upper:]' '[:lower:]')
+            if [ "$filename" != "$all_lower" ] && [ "$first_lower" != "$all_lower" ]; then
+              cp "$file" "$dir/$all_lower" 2>/dev/null || true
+              echo "Copied $filename -> $all_lower"
+            fi
+          done
+          
+          # Проверяем, что теперь файл существует
+          if [ -f "src/assets/images/gifs/MatrixPills.gif" ]; then
+            echo "✅ MatrixPills.gif exists"
+          else
+            echo "❌ MatrixPills.gif still missing, creating placeholder"
+            mkdir -p src/assets/images/gifs
+            # Создаем пустой файл-заглушку
+            touch src/assets/images/gifs/MatrixPills.gif
+          fi
+        
       - name: Build with Quasar
         run: npx quasar build
         
