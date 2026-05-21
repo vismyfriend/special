@@ -1,13 +1,25 @@
 name: Build & Deploy
+
 on:
   push:
     branches:
       - main
+    # Игнорируем теги, чтобы не было двойных запусков
+    tags-ignore:
+      - '**'
   workflow_dispatch:
+
+# Предотвращаем параллельные запуски для одной ветки
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Защита от двойного запуска при push в main
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'  # или 20.x, но не 10.x
+          node-version: '18.x'
           
       - name: Cache
         uses: actions/cache@v3
@@ -31,7 +43,7 @@ jobs:
         run: npm ci
         
       - name: Build with Quasar
-        run: npx quasar build  #直接用 npx quasar build
+        run: npx quasar build
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
