@@ -391,7 +391,7 @@ const routes = [
   },
   {
     path: '/gameSnakeCursor',
-    component: () => import('src/pages/gameSnakeCursor.vue')
+    component: () => import('src/pages/GameSnakeCursor.vue')
   },
   {
     path: '/gameSnakeWords',
