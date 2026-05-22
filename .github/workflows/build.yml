@@ -20,6 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Добавляем отдельный job для сборки
   build:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
@@ -81,7 +82,22 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'  # или './dist/spa' - проверьте, куда билдит Quasar
+          path: './docs'  # папка с собранным проектом
           
+  # НОВЫЙ JOB для деплоя с указанием environment
+  deploy:
+    # Добавляем environment обязательно!
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    needs: build  # Ждем завершения сборки
+    permissions:
+      pages: write
+      id-token: write
+    
+    steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
