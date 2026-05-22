@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Build & Deploy to GitHub Pages
 
 on:
   push:
@@ -8,9 +8,11 @@ on:
       - '**'
   workflow_dispatch:
 
-# Даем права на push
+# Даем права на деплой
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 # Предотвращаем параллельные запуски
 concurrency:
@@ -25,9 +27,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Нужно для push
-          
+        
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -75,20 +75,13 @@ jobs:
       - name: Build with Quasar
         run: npx quasar build
         
-      - name: Commit and push docs folder
-        run: |
-          # Настраиваем git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'  # или './dist/spa' - проверьте, куда билдит Quasar
           
-          # Добавляем папку docs (или dist/spa - проверьте куда билдит Quasar)
-          git add docs/
-          
-          # Проверяем, есть ли изменения
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Auto-build: update docs [skip ci]"
-            git push origin main
-            echo "✅ Changes pushed to main branch"
-          fi
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
