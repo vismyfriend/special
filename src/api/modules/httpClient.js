@@ -2,7 +2,7 @@ import axios from "axios";
 
 // const baseURL = 'http://178.184.87.113:3000';
 // const baseURL = 'https://backend-for-english-app.onrender.com';
-const baseURL = 'http://92.63.98.129';
+const baseURL = 'https://92.63.98.129';
 const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use((config) => {
