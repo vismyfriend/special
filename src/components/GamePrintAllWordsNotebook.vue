@@ -47,8 +47,10 @@
 
               <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> 👈 ссылка</p>
               <div class="textInLine" v-if="!harderModeEnabled">
-                <p class="fontAm">2. Введи перевод этих трёх слов/фраз:</p>
-                <div class="lesson-title"></div>
+                <p class="fontAm">2. Введи перевод
+                  <a href="#" @click.prevent="refreshRandomWords" class="random-words-link">случайных</a>
+                  3 слов/фраз:
+                </p>                <div class="lesson-title"></div>
               </div>
 
               <div class="textInLine" v-if="harderModeEnabled">
@@ -178,6 +180,22 @@ const goToAnontherComponent = () => {
   router.push({
     path: `/see-all-sets-of-words/${missionName}/print-all-words2`
   });
+};
+
+const refreshRandomWords = () => {
+  if (currentGameData.value.length === 0) return;
+
+  const shuffled = [...currentGameData.value].sort(() => 0.5 - Math.random());
+  const newWords = shuffled.slice(0, Math.min(3, shuffled.length)).map(word => ({
+    ...word,
+    userTranslation: '',
+    affirmativeSentence: '',
+    negativeSentence: '',
+    questionSentence: '',
+    showHint: false
+  }));
+
+  homeworkWords.value = newWords;
 };
 
 // Валидность домашнего задания
@@ -817,6 +835,18 @@ onMounted(() => {
   }
 }
 
+.random-words-link {
+  color: #3b8a2a;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #af10af;
+    text-decoration: none;
+  }
+}
 @media (max-width: 768px) {
   .word-to-translate {
     font-size: 18px;

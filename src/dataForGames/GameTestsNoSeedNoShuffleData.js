@@ -660,7 +660,7 @@ const gameTestsNoSeedNoShuffleData = {
         textScript: null,
         questions: [
           {
-            text: "Как сказать Я НЕ ГЛУПАЯ",
+            text: "Как сказать Я НЕ ГЛУПАЯ ! (ый)",
             options: {
               A: "I not stupid",
               B: "Me no stupid",
@@ -684,7 +684,7 @@ const gameTestsNoSeedNoShuffleData = {
               F: "He forgot everything",
             },
             correctAnswer: "F",
-            explanation: "Неправильный глагол forget - forgot - forgotten. She - она ",
+            explanation: "после all нужно уточнение: all words. или all information. forget - forgot - forgotten. She - она. Слово everything отлично подходит и означает 'всё'. He has forgotten everything = He forgot everything. ",
           },
           {
             text: "Я ничего не помню",
@@ -697,7 +697,33 @@ const gameTestsNoSeedNoShuffleData = {
 
             },
             correctAnswer: "E",
-            explanation: "В английском нельзя говорить двойные отрицания, поэтому правильно только I remember nothing или I don't remember anything",
+            explanation: "В английском нельзя говорить двойные отрицания, поэтому правильный только один ответ: I remember nothing или I don't remember anything. ну и doesn't используется только с it, he, she",
+          },
+          {
+            text: "Офигенно! Чё то помню!",
+            options: {
+              A: "Osm. I remember something!",
+              B: "It cool. I remember something!",
+              C: "Oops. I remember something!",
+              D: "Awesome! I remember something!",
+              E: "Owesome! I remember anything!",
+
+            },
+            correctAnswer: "D",
+            explanation: "Слово 'офигенно' правильно пишется AWESOME произносится / ОСЭМ /. anything переводится - что-угодно, а похожее слово something переводится - что-то. ",
+          },
+          {
+            text: "Когда ставится ing ?",
+            options: {
+              A: "что-то происходит обычно",
+              B: "что-то происходит всегда",
+              C: "что-то произойдет когда-то",
+              D: "что-то происходит сейчас",
+              E: "интуитивно",
+
+            },
+            correctAnswer: "D",
+            explanation: "ing - означает процесс, либо прямо сейчас, либо период в прошлом. I am reading now.",
           },
 
         ]
