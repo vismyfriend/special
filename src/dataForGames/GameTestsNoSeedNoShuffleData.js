@@ -723,7 +723,7 @@ const gameTestsNoSeedNoShuffleData = {
 
             },
             correctAnswer: "D",
-            explanation: "ing - означает процесс, либо прямо сейчас, либо период в прошлом. I am reading now.",
+            explanation: "ing - означает процесс, либо прямо сейчас, либо период в прошлом. I am reading now .",
           },
 
         ]
