@@ -125,6 +125,10 @@ const routes = [
                 component: () => import('src/components/GameDeckOfCards.vue')
               },
               {
+                path: 'twoDecks',
+                component: () => import('src/components/GameTwoDecks.vue')
+              },
+              {
                 path: 'tnt',
                 component: () => import('src/components/GameTNT.vue')
               },

@@ -164,7 +164,7 @@ const route = useRoute();
 const gameStore = useGameStore();
 
 // Уровни сложности - используем число, но из select приходит строка
-const difficultyLevel = ref(1);
+const difficultyLevel = ref(2);
 const showFeedback = ref(false);
 let feedbackTimeout = null;
 

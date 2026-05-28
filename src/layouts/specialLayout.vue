@@ -25,7 +25,7 @@
 
         <!-- Кнопка свернуть/развернуть -->
         <button class="collapse-button">
-          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '...' }}
+          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : userName }}
         </button>
       </div>
     </div>
@@ -142,6 +142,73 @@ const isRolling = ref(false);
 const currentDiceNumber = ref(null);
 const showResult = ref(false);
 const diceResult = ref(1);
+
+
+// -------------------------
+// УПРАВЛЕНИЕ ИМЕНЕМ ПОЛЬЗОВАТЕЛЯ (упрощенная версия)
+// -------------------------
+
+const userName = ref('Agent 404'); // Значение по умолчанию
+
+// Функция проверки связи с бэкендом
+const checkBackendConnection = async () => {
+  try {
+    // Пробуем получить токен - это и будет проверкой связи
+    const response = await api.auth.getToken('connection_test');
+    return response && response.status === 200;
+  } catch (error) {
+    console.log('Бэкенд не доступен, используем Agent 404');
+    return false;
+  }
+};
+
+// Функция загрузки имени пользователя
+const loadUserName = async () => {
+  // Сначала пробуем взять из localStorage
+  const savedName = localStorage.getItem('userName');
+
+  if (savedName) {
+    // Если есть сохраненное имя - используем его
+    userName.value = savedName;
+    console.log('Имя загружено из localStorage:', userName.value);
+  } else {
+    // Если имени нет - проверяем связь с бэкендом
+    const isBackendAvailable = await checkBackendConnection();
+
+    if (isBackendAvailable) {
+      // Бэкенд доступен - пробуем получить имя (пока ставим временное)
+      userName.value = 'Agent 007';
+      localStorage.setItem('userName', userName.value);
+      console.log('Бэкенд доступен, установлен Agent 007');
+    } else {
+      // Бэкенд не доступен - Agent 404
+      userName.value = 'Agent 404';
+      localStorage.setItem('userName', userName.value);
+      console.log('Бэкенд не доступен, установлен Agent 404');
+    }
+  }
+};
+
+// Функция обновления имени (если нужно будет синхронизировать с бэкендом позже)
+const syncUserNameWithBackend = async () => {
+  try {
+    const isBackendAvailable = await checkBackendConnection();
+
+    if (isBackendAvailable && userName.value === 'Agent 404') {
+      // Если бэкенд появился, а у нас 404 - обновляем до 007
+      userName.value = 'Agent 007';
+      localStorage.setItem('userName', userName.value);
+      console.log('Бэкенд появился, обновлено имя до Agent 007');
+    } else if (!isBackendAvailable && userName.value === 'Agent 007') {
+      // Если бэкенд пропал, а у нас 007 - меняем на 404
+      userName.value = 'Agent 404';
+      localStorage.setItem('userName', userName.value);
+      console.log('Бэкенд пропал, изменено имя на Agent 404');
+    }
+  } catch (error) {
+    console.log('Ошибка синхронизации с бэкендом');
+  }
+};
 
 // -------------------------
 // УПРОЩЕННЫЙ ТРЕКЕР ПОСЕЩЕНИЙ
@@ -378,14 +445,18 @@ const hideInstructions = () => {
   isInstructionsVisible.value = false;
 }
 
-onMounted(() => {
+onMounted(async () => {
   // Инициализируем трекер при загрузке
   updateStreak();
   cleanupOldVisits();
 
+  // Загружаем имя пользователя
+  await loadUserName();
+
   // Для отладки
   console.log('Current streak:', legendaryDays.value);
   console.log('All visits:', getAllVisitDates());
+  console.log('User name:', userName.value);
 });
 
 </script>
