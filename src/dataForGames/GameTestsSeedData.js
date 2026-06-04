@@ -1790,12 +1790,13 @@ const GameTestsSeedData = {
       },
     ],
   },
+
   examY2V2: {
-    mainDescription: 'Можно выбирать несколько ответов',
+    mainDescription: 'Можно кликать на несколько ответов и...',
     tasks: [
       {
         taskID: "multiple_choice",
-        taskDescription: "",
+        taskDescription: "...или можно менять свой ответ после выбора",
         textScript: null,
         questions: [
           {
@@ -2123,7 +2124,7 @@ const GameTestsSeedData = {
               C: "--"
             },
             correctAnswer: "C",
-            explanation: "перед притяжательными местоимениями (my) артикль НЕ нужен"
+            explanation: "перед притяжательными местоимениями (my) артикли НЕ ставятся никакие. Если бы не было my тогда можно было бы сказать the house или a house"
           },
           {
             text: "Who ___ the fight?",
