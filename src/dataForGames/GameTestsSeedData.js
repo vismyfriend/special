@@ -1605,7 +1605,7 @@ const GameTestsSeedData = {
         textScript: null,
         questions: [
           {
-            text: "Какую карту мужчина назвал первой?",
+            text: "Какую карту мужчина назвал первой 1?",
             options: {
               A: "The Queen of clubs",
               B: "The Queen of hearts",
@@ -1786,6 +1786,430 @@ const GameTestsSeedData = {
             correctAnswer: "anyIsOk",
 
           },
+        ]
+      },
+    ],
+  },
+  examY2V2: {
+    mainDescription: 'Можно выбирать несколько ответов',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "",
+        textScript: null,
+        questions: [
+          {
+            text: "The concert ___ at 5 o’clock. Don’t be late!",
+            options: {
+              A: "will start",
+              B: "is starting",
+              C: "starts",
+              D: "start"
+            },
+            correctAnswer: "C",
+            explanation: "когда говорим о расписании (концерт по расписанию), используем Present Simple"
+          },
+          {
+            text: "John is 1 year ___ than me.",
+            options: {
+              A: "oldest",
+              B: "older",
+              C: "more old"
+            },
+            correctAnswer: "B",
+            explanation: "than — это сравнение. old → older старше чем я"
+          },
+          {
+            text: "What time ___ me?",
+            options: {
+              A: "have you called",
+              B: "had you called",
+              C: "did you call"
+            },
+            correctAnswer: "C",
+            explanation: "спрашиваем о действии в прошлом (когда позвонил?), нужен Past Simple: did you call. Present Perfect здесь было бы ошибкой, так как действие в прошлом, а не в настоящем"
+          },
+          {
+            text: "Andrew ___ to Italy ___ Monday.",
+            options: {
+              A: "flies, at",
+              B: "is flying, in",
+              C: "is flying, on",
+              D: "flies, on"
+            },
+            correctAnswer: "C",
+            explanation: "is flying — договорённость на ближайшее будущее, с днями недели предлог on"
+          },
+          {
+            text: "The woman ___ a snake.",
+            options: {
+              A: "was bitten for",
+              B: "was bitten by",
+              C: "was bitten from",
+              D: "was beaten by"
+            },
+            correctAnswer: "B",
+            explanation: "пассивный залог: was bitten by (была укушена кем? змеёй)"
+          },
+          {
+            text: "I ___ for 2 hours and she’s not here.",
+            options: {
+              A: "have waited",
+              B: "have been waiting",
+              C: "am waiting",
+              D: "wait"
+            },
+            correctAnswer: "B",
+            explanation: "действие длится 2 часа и ВСЁ ЕЩЁ продолжается → Present Perfect Continuous жду жду жду, а ее всё нет"
+          },
+          {
+            text: "She would get $100 if she ___ this old chair.",
+            options: {
+              A: "will sell",
+              B: "sold",
+              C: "would sell",
+              D: "sell"
+            },
+            correctAnswer: "B",
+            explanation: "второй тип условных: if + Past Simple (sold), would + глагол"
+          },
+          {
+            text: "It is ___ show I’ve ever seen.",
+            options: {
+              A: "the most good",
+              B: "better",
+              C: "best",
+              D: "the best"
+            },
+            correctAnswer: "D",
+            explanation: "превосходная степень: the best (good → better → the best)"
+          },
+          {
+            text: "I ___ this car for 7 years so far.",
+            options: {
+              A: "have had",
+              B: "have",
+              C: "have been having",
+              D: "did have"
+            },
+            correctAnswer: "A",
+            explanation: "so far (до сих пор) — сигнал Present Perfect. have (иметь) в Continuous не используется"
+          },
+          {
+            text: "Mark ___ to hospital in an ambulance.",
+            options: {
+              A: "was taken",
+              B: "was took",
+              C: "was taking"
+            },
+            correctAnswer: "A",
+            explanation: "пассивный залог: его увезли (was taken), а не он сам увёз"
+          },
+          {
+            text: "Don’t call me at 5 p.m. tomorrow, I ___ my homework.",
+            options: {
+              A: "will do",
+              B: "will be doing",
+              C: "am doing",
+              D: "do"
+            },
+            correctAnswer: "B",
+            explanation: "в конкретный момент в будущем (в 5 вечера) будет длиться действие → Future Continuous"
+          },
+          {
+            text: "I ___ my toe. I can’t walk now.",
+            options: {
+              A: "have hurt",
+              B: "hurt",
+              C: "have hurted"
+            },
+            correctAnswer: "A",
+            explanation: "результат в настоящем (не могу ходить) → Present Perfect. hurt — неправильный глагол: hurt-hurt-hurt"
+          },
+          {
+            text: "I'm too old now but when I was younger I ___ surf and water ski.",
+            options: {
+              A: "could",
+              B: "can",
+              C: "can't",
+              D: "was able"
+            },
+            correctAnswer: "A",
+            explanation: "способность в прошлом (был способен, умел) → could"
+          },
+          {
+            text: "Be careful! That tree ___.",
+            options: {
+              A: "will fall",
+              B: "is going to fall",
+              C: "falls"
+            },
+            correctAnswer: "B",
+            explanation: "видим доказательства / признаки (дерево вот-вот упадёт) → is going to fall"
+          },
+          {
+            text: "If I ___ you, I wouldn’t eat that cake.",
+            options: {
+              A: "be",
+              B: "were",
+              C: "will be",
+              D: "would be",
+              E: "will"
+            },
+            correctAnswer: "B",
+            explanation: "второй тип условных с глаголом to be ВСЕГДА were (даже с I, he, she, it)"
+          },
+          {
+            text: "This is ___ coffee I’ve ever drunk!",
+            options: {
+              A: "more disgusting",
+              B: "the most disgusting",
+              C: "the disgustingest",
+              D: "disgusting"
+            },
+            correctAnswer: "B",
+            explanation: "I've ever drunk — сигнал превосходной степени (самый отвратительный) → the most disgusting"
+          },
+          {
+            text: "The royal wedding ___ by millions of people tomorrow.",
+            options: {
+              A: "was watched",
+              B: "were watched",
+              C: "will watch",
+              D: "will be watched"
+            },
+            correctAnswer: "D",
+            explanation: "tomorrow — будущее, пассивный залог (свадьбу будут смотреть) → will be watched"
+          },
+          {
+            text: "This is ___ biggest shop in the mall.",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "B",
+            explanation: "перед превосходной степенью (biggest) всегда ставим the"
+          },
+          {
+            text: "This time tomorrow I ___.",
+            options: {
+              A: "will ski",
+              B: "will skiing",
+              C: "will be skiing"
+            },
+            correctAnswer: "C",
+            explanation: "в точно указанный момент в будущем (this time tomorrow) → Future Continuous"
+          },
+          {
+            text: "___ you lift this box?",
+            options: {
+              A: "can",
+              B: "mayn’t",
+              C: "able to"
+            },
+            correctAnswer: "A",
+            explanation: "спрашиваем о физической возможности (сможешь поднять?) → can"
+          },
+          {
+            text: "Josh ___ to the cinema with his friends tonight.",
+            options: {
+              A: "goes",
+              B: "is going",
+              C: "will go",
+              D: "is"
+            },
+            correctAnswer: "B",
+            explanation: "запланированное действие на ближайшее будущее (есть билеты/договорённость) → is going"
+          },
+          {
+            text: "We met when we ___ in France.",
+            options: {
+              A: "study",
+              B: "were studying",
+              C: "have been studying"
+            },
+            correctAnswer: "B",
+            explanation: "длительное действие в прошлом (учились) прервалось другим (встретились) → Past Continuous"
+          },
+          {
+            text: "She ___ happy when she finds out what you have done.",
+            options: {
+              A: "is",
+              B: "would be",
+              C: "will be",
+              D: "was"
+            },
+            correctAnswer: "C",
+            explanation: "придаточное с when в настоящем (finds out), а главное — в будущем → will be"
+          },
+          {
+            text: "I knew he ___ at 7 p.m. yesterday.",
+            options: {
+              A: "was sleeping",
+              B: "slept",
+              C: "have been sleeping"
+            },
+            correctAnswer: "A",
+            explanation: "в конкретный момент в прошлом (в 7 вечера) длилось действие → Past Continuous"
+          },
+          {
+            text: "He is ___ mad at you!",
+            options: {
+              A: "a",
+              B: "such",
+              C: "so"
+            },
+            correctAnswer: "C",
+            explanation: "so + прилагательное (mad) — так сильно (злится). such + существительное"
+          },
+          {
+            text: "She ___ live in Liverpool.",
+            options: {
+              A: "didn’t used to",
+              B: "didn’t use to",
+              C: "usedn’t to"
+            },
+            correctAnswer: "B",
+            explanation: "отрицание used to: didn't use to (без D в конце)"
+          },
+          {
+            text: "The text is on ___ page 43.",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "C",
+            explanation: "перед номером страницы (page 43) артикль НЕ нужен"
+          },
+          {
+            text: "He thought that she ___ be home.",
+            options: {
+              A: "won’t",
+              B: "want",
+              C: "wouldn’t",
+              D: "were"
+            },
+            correctAnswer: "C",
+            explanation: "согласование времён: thought (прошлое) → wouldn't (а не won't)"
+          },
+          {
+            text: "They ___ climb the wall but the police caught them right there.",
+            options: {
+              A: "could",
+              B: "was able to",
+              C: "were able to"
+            },
+            correctAnswer: "C",
+            explanation: "смогли И сделали (конкретный успешный результат в прошлом) → were able to (а не could) потому что could переводилось бы - они могли лазать по стене, а не смогли перелезть."
+          },
+          {
+            text: "Before he got married he ___ a lot.",
+            options: {
+              A: "travels",
+              B: "has travelled",
+              C: "has been travelling",
+              D: "had travelled"
+            },
+            correctAnswer: "D",
+            explanation: "действие закончилось ДО другого действия в прошлом (до женитьбы) → Past Perfect"
+          },
+          {
+            text: "This is ___ my house.",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "C",
+            explanation: "перед притяжательными местоимениями (my) артикль НЕ нужен"
+          },
+          {
+            text: "Who ___ the fight?",
+            options: {
+              A: "begin",
+              B: "begun",
+              C: "did begin",
+              D: "began"
+            },
+            correctAnswer: "D",
+            explanation: "вопрос к подлежащему — не нужен did, просто ставим глагол в прошедшее время: began"
+          },
+          {
+            text: "Charles ___ in Thailand three times last year.",
+            options: {
+              A: "was",
+              B: "has been",
+              C: "have been",
+              D: "had been"
+            },
+            correctAnswer: "A",
+            explanation: "last year — законченное время в прошлом (был 3 раза, но уже не важно) → Past Simple (was)"
+          },
+          {
+            text: "___ you help me with the housework, please?",
+            options: {
+              A: "Could you",
+              B: "Are you going to",
+              C: "Should"
+            },
+            correctAnswer: "A",
+            explanation: "вежливая просьба → Could you (не are you going to / should)"
+          },
+          {
+            text: "___ I go out?",
+            options: {
+              A: "can",
+              B: "may",
+              C: "both are correct"
+            },
+            correctAnswer: "C",
+            explanation: "и can, и may подходят для просьбы. can — разговорный, may — более официальный"
+          },
+          {
+            text: "I ___ all my homework by 6 o'clock yesterday",
+            options: {
+              A: "have done",
+              B: "had done",
+              C: "was doing",
+              D: "have been doing"
+            },
+            correctAnswer: "B",
+            explanation: "by 6 o'clock yesterday — действие завершилось ДО определённого момента в прошлом → Past Perfect"
+          },
+          {
+            text: "___ open the window, please?",
+            options: {
+              A: "could you",
+              B: "must you",
+              C: "are you able"
+            },
+            correctAnswer: "A",
+            explanation: "вежливая просьба → could you (можешь ли ты?)"
+          },
+          {
+            text: "I told you he ___ going to come to the party.",
+            options: {
+              A: "will",
+              B: "is",
+              C: "was",
+              D: "would"
+            },
+            correctAnswer: "C",
+            explanation: "согласование времён: told (прошлое) → was going to (а не is going to)"
+          },
+          {
+            text: "We ___ in two days. Don’t be late!",
+            options: {
+              A: "meet",
+              B: "will meet",
+              C: "are meeting",
+              D: "met"
+            },
+            correctAnswer: "C",
+            explanation: "запланированная встреча в ближайшем будущем → Present Continuous (are meeting)"
+          }
         ]
       },
     ],

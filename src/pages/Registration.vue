@@ -207,7 +207,7 @@ const submitName = async () => {
 
     gameStore.setAgentName(uniqueAgentName);
 
-    setNotify(`Hello, ${userName.value}! Your agent ID: ${uniqueSuffix}`);
+    setNotify(`Hello, ${userName.value}! `);
 
     await router.push("/see-all-sets-of-words/");
   } catch (error) {
