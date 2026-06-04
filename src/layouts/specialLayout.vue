@@ -24,8 +24,8 @@
         </button>
 
         <!-- Кнопка свернуть/развернуть -->
-        <button class="collapse-button">
-          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : userName }}
+        <button class="collapse-button" @click="goToRegistration">
+          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : 'agent:' + ' '+ displayUserName }}
         </button>
       </div>
     </div>
@@ -128,9 +128,14 @@
 import {computed, inject, onMounted, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import LegendaryMode from '../components/LegendaryMode.vue';
+import { api } from 'src/api';
+import { useGameStore } from 'stores/example-store';
+
+
 
 const route = useRoute()
 const router = useRouter();
+const gameStore = useGameStore();
 
 const showModal = ref(false);
 const modalMessage = ref('');
@@ -143,70 +148,80 @@ const currentDiceNumber = ref(null);
 const showResult = ref(false);
 const diceResult = ref(1);
 
-
+const goToRegistration = () => {
+  // router.push(-1) НЕ РАБОТАЕТ -1 если раскомментировтаь
+  router.push("/registration")
+}
 // -------------------------
-// УПРАВЛЕНИЕ ИМЕНЕМ ПОЛЬЗОВАТЕЛЯ (упрощенная версия)
+// УПРАВЛЕНИЕ ИМЕНЕМ ПОЛЬЗОВАТЕЛЯ (из store)
 // -------------------------
 
-const userName = ref('Agent 404'); // Значение по умолчанию
+// Вычисляемое свойство для отображения имени
+const displayUserName = computed(() => {
+  // Если есть имя в store - показываем его (красивое имя без суффикса)
+  if (gameStore.agentName) {
+    // Извлекаем имя до символа # (если есть)
+    return gameStore.agentName.split('#')[0];
+  }
 
-// Функция проверки связи с бэкендом
-const checkBackendConnection = async () => {
+  // Если store пустой, но есть в localStorage (запасной вариант)
+  const savedName = localStorage.getItem('agentName');
+  if (savedName) {
+    return savedName;
+  }
+
+  // Если ничего нет - Agent 404
+  return 'Agent 404';
+});
+
+// Функция загрузки имени пользователя из бэкенда
+const loadUserFromBackend = async () => {
   try {
-    // Пробуем получить токен - это и будет проверкой связи
-    const response = await api.auth.getToken('connection_test');
-    return response && response.status === 200;
+    // Пробуем получить токен из localStorage
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.log('Нет токена, пользователь не авторизован');
+      return false;
+    }
+
+    // Декодируем токен, чтобы получить userId (если нужно)
+    // Или делаем запрос к бэкенду за данными пользователя
+    // Для этого нужно добавить эндпоинт /me на бэкенде
+
+    // Пока просто проверяем, что токен валидный
+    // и берем имя из localStorage (оно сохранилось при регистрации)
+    const fullAgentName = localStorage.getItem('fullAgentName');
+    const agentName = localStorage.getItem('agentName');
+
+    if (fullAgentName && agentName) {
+      // Восстанавливаем store
+      gameStore.setAgentName(fullAgentName);
+      console.log('Имя восстановлено из localStorage:', agentName);
+      return true;
+    }
+
+    return false;
   } catch (error) {
-    console.log('Бэкенд не доступен, используем Agent 404');
+    console.error('Ошибка загрузки пользователя:', error);
     return false;
   }
 };
 
-// Функция загрузки имени пользователя
-const loadUserName = async () => {
-  // Сначала пробуем взять из localStorage
-  const savedName = localStorage.getItem('userName');
-
-  if (savedName) {
-    // Если есть сохраненное имя - используем его
-    userName.value = savedName;
-    console.log('Имя загружено из localStorage:', userName.value);
-  } else {
-    // Если имени нет - проверяем связь с бэкендом
-    const isBackendAvailable = await checkBackendConnection();
-
-    if (isBackendAvailable) {
-      // Бэкенд доступен - пробуем получить имя (пока ставим временное)
-      userName.value = 'Agent 007';
-      localStorage.setItem('userName', userName.value);
-      console.log('Бэкенд доступен, установлен Agent 007');
-    } else {
-      // Бэкенд не доступен - Agent 404
-      userName.value = 'Agent 404';
-      localStorage.setItem('userName', userName.value);
-      console.log('Бэкенд не доступен, установлен Agent 404');
-    }
-  }
-};
-
-// Функция обновления имени (если нужно будет синхронизировать с бэкендом позже)
-const syncUserNameWithBackend = async () => {
+// Проверка соединения с бэкендом
+const checkBackendConnection = async () => {
   try {
-    const isBackendAvailable = await checkBackendConnection();
-
-    if (isBackendAvailable && userName.value === 'Agent 404') {
-      // Если бэкенд появился, а у нас 404 - обновляем до 007
-      userName.value = 'Agent 007';
-      localStorage.setItem('userName', userName.value);
-      console.log('Бэкенд появился, обновлено имя до Agent 007');
-    } else if (!isBackendAvailable && userName.value === 'Agent 007') {
-      // Если бэкенд пропал, а у нас 007 - меняем на 404
-      userName.value = 'Agent 404';
-      localStorage.setItem('userName', userName.value);
-      console.log('Бэкенд пропал, изменено имя на Agent 404');
-    }
+    // Пробуем сделать легкий запрос к бэкенду
+    const response = await fetch(`${process.env.API_URL || 'http://localhost:3000'}/health`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    return response.ok;
   } catch (error) {
-    console.log('Ошибка синхронизации с бэкендом');
+    console.log('Бэкенд не доступен');
+    return false;
   }
 };
 
@@ -445,18 +460,27 @@ const hideInstructions = () => {
   isInstructionsVisible.value = false;
 }
 
+// Инициализация
 onMounted(async () => {
   // Инициализируем трекер при загрузке
   updateStreak();
   cleanupOldVisits();
 
-  // Загружаем имя пользователя
-  await loadUserName();
+  // Пытаемся загрузить пользователя
+  const isBackendAvailable = await checkBackendConnection();
 
-  // Для отладки
+  if (isBackendAvailable) {
+    // Бэкенд доступен - загружаем данные пользователя
+    await loadUserFromBackend();
+    console.log('Пользователь загружен:', displayUserName.value);
+  } else {
+    // Бэкенд не доступен - показываем Agent 404
+    console.log('Бэкенд не доступен, отображаем Agent 404');
+  }
+
   console.log('Current streak:', legendaryDays.value);
   console.log('All visits:', getAllVisitDates());
-  console.log('User name:', userName.value);
+  console.log('User name:', displayUserName.value);
 });
 
 </script>
@@ -589,7 +613,6 @@ onMounted(async () => {
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90px;
   height: 20px;
   border: none;
   border-radius: 0 0 10px 10px;
@@ -603,6 +626,7 @@ onMounted(async () => {
   color: #2c3e50;
   z-index: 1001;
   transition: all 0.3s ease;
+  padding: 1px 10px 1px 10px;
 }
 
 .collapse-button:hover {
@@ -653,9 +677,8 @@ onMounted(async () => {
   }
 
   .collapse-button {
-    bottom: -17px;
+    bottom: -20px;
     height: 20px;
-    width: 70px;
     font-size: 10px;
   }
 

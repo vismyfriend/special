@@ -165,30 +165,49 @@ const setNotify = (message, color = 'black') => {
   });
 };
 
+
 const submitName = async () => {
   isSubmitting.value = true;
   isLoading.value = true;
+
   if (!userName.value || userName.value.trim() === "") {
     setNotify("Please enter a valid name!", 'red');
+    isSubmitting.value = false;
+    isLoading.value = false;
     return;
   }
 
-  // Проверяем, не пытается ли пользователь зарегистрировать то же имя
-  const savedName = localStorage.getItem('agentName');
-  if (savedName === userName.value) {
-    setNotify(`Welcome back, ${userName.value}!`);
+  // Генерируем уникальный суффикс
+  const generateUniqueSuffix = () => {
+    // Вариант 1: Простой timestamp + случайные символы
+    const timestamp = Date.now().toString(36); // конвертируем время в 36-ричную систему
+    const random = Math.random().toString(36).substring(2, 6); // 4 случайных символа
+    return `${timestamp}${random}`;
 
-    await router.push("/see-all-sets-of-words/");
-    return;
-  }
+    // Вариант 2: Только короткий ID (для красоты)
+    // return Math.random().toString(36).substring(2, 8);
+
+    // Вариант 3: Имя пользователя + короткий ID
+    // const shortId = Math.random().toString(36).substring(2, 5);
+    // return `${userName.value}_${shortId}`;
+  };
+
+  const uniqueSuffix = generateUniqueSuffix();
+  const uniqueAgentName = `${userName.value}#${uniqueSuffix}`;
 
   try {
-    const res = await api.auth.post(userName.value);
+    const res = await api.auth.post(uniqueAgentName);
     localStorage.setItem('token', res.data.token);
-    localStorage.setItem('agentName', userName.value);
-    gameStore.setAgentName(userName.value);
 
-    setNotify(`Hello, ${userName.value}`);
+    // Сохраняем красивое имя для отображения
+    localStorage.setItem('agentName', userName.value);
+
+    // Сохраняем полное уникальное имя для бэкенда
+    localStorage.setItem('fullAgentName', uniqueAgentName);
+
+    gameStore.setAgentName(uniqueAgentName);
+
+    setNotify(`Hello, ${userName.value}! Your agent ID: ${uniqueSuffix}`);
 
     await router.push("/see-all-sets-of-words/");
   } catch (error) {
@@ -198,9 +217,7 @@ const submitName = async () => {
     isSubmitting.value = false;
     isLoading.value = false;
   }
-
 };
-
 
 // настроить режим анонимных пользователей
 // не пушится - удали этот коммент))
