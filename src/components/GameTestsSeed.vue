@@ -10,6 +10,14 @@
         <div class="task-counter">
           {{ currentTaskIndex + 1 }}/{{ shuffledTasks.length }}
         </div>
+        <!-- НОВАЯ КНОПКА ПЕРЕКЛЮЧЕНИЯ РЕЖИМА -->
+        <button
+          v-if="shuffledTasks[currentTaskIndex]?.taskID === 'multiple_choice'"
+          class="toggle-mode-btn"
+          @click="toggleDisplayMode"
+        >
+          {{ displayMode === 'list' ? '📄' : '📋' }}
+        </button>
       </div>
 
 
@@ -103,49 +111,150 @@
 
         <!-- Multiple Choice -->
         <!-- Multiple Choice -->
+        <!-- Multiple Choice -->
         <div v-else-if="task.taskID === 'multiple_choice'" class="multiple-choice-container">
-          <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
-            <p class="question-text margin-bottom" v-html="qi + 1 + ') ' + q.text"></p>
 
-            <!-- Добавлено: отображение картинки для вопроса, если она есть -->
-            <div v-if="q.questionPicture" class="question-image-container">
-              <img :src="q.questionPicture" :alt="'Image for question ' + (qi + 1)" class="question-image">
-            </div>
+          <!-- РЕЖИМ: ПОКАЗЫВАТЬ ВСЕ ВОПРОСЫ СРАЗУ -->
+          <template v-if="displayMode === 'list'">
+            <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
+              <p class="question-text margin-bottom" v-html="qi + 1 + ') ' + q.text"></p>
 
-            <div class="options-container">
-              <label
-                v-for="(label, key) in q.options"
-                :key="key"
-                class="option-label"
-                :class="getInstantOptionClass(index, qi, key, q.correctAnswer)"
-              >
-                <input
-                  type="radio"
-                  :name="'task' + index + 'q' + qi"
-                  :value="key"
-                  class="option-input"
-                  @click="handleMultipleChoiceSelection(index, qi, key, $event)"
-                />
-                <span class="option-text">{{ key }} : {{ label }}</span>
-              </label>
-            </div>
-
-            <!-- Кнопка Explain появляется сразу после выбора ответа -->
-            <div v-if="answers[index][qi]" class="explain-container">
-              <div v-if="expandedExplanations[index]?.[qi]" class="explanation-content">
-                <p v-html="q.explanation"></p>
+              <!-- Картинка вопроса -->
+              <div v-if="q.questionPicture" class="question-image-container">
+                <img :src="q.questionPicture" :alt="'Image for question ' + (qi + 1)" class="question-image">
               </div>
-              <button
-                class="explain-button"
-                :class="getExplainButtonClass(index, qi, q.correctAnswer)"
-                @click="toggleExplanation(index, qi)"
-              >
-                {{ expandedExplanations[index]?.[qi] ? 'Well, okay... ' : 'Explain it to me' }}
-              </button>
+
+              <div class="options-container">
+                <label
+                  v-for="(label, key) in q.options"
+                  :key="key"
+                  class="option-label"
+                  :class="getInstantOptionClass(index, qi, key, q.correctAnswer)"
+                >
+                  <input
+                    type="radio"
+                    :name="'task' + index + 'q' + qi"
+                    :value="key"
+                    class="option-input"
+                    @click="handleMultipleChoiceSelection(index, qi, key, $event)"
+                  />
+                  <span class="option-text">{{ key }} : {{ label }}</span>
+                </label>
+              </div>
+
+              <!-- Кнопка Explain -->
+              <div v-if="answers[index][qi]" class="explain-container">
+                <div v-if="expandedExplanations[index]?.[qi]" class="explanation-content">
+                  <p v-html="q.explanation"></p>
+                </div>
+                <button
+                  class="explain-button"
+                  :class="getExplainButtonClass(index, qi, q.correctAnswer)"
+                  @click="toggleExplanation(index, qi)"
+                >
+                  {{ expandedExplanations[index]?.[qi] ? 'Well, okay... ' : '💡 показать объяснение - Explain it to me' }}
+                </button>
+              </div>
             </div>
-          </div>
-          <!-- Кнопка "Проверить" УДАЛЕНА -->
+          </template>
+
+          <!-- РЕЖИМ: ПОКАЗЫВАТЬ ПО ОДНОМУ ВОПРОСУ -->
+          <template v-else>
+<!--            &lt;!&ndash; Индикатор прогресса по вопросам &ndash;&gt;-->
+<!--            <div class="question-progress">-->
+<!--      <span class="progress-text">-->
+<!--        Вопрос {{ currentQuestionIndex + 1 }} из {{ task.questions.length }}-->
+<!--      </span>-->
+<!--              <div class="progress-bar">-->
+<!--                <div-->
+<!--                  class="progress-fill"-->
+<!--                  :style="{ width: ((currentQuestionIndex + 1) / task.questions.length * 100) + '%' }"-->
+<!--                ></div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+            <!-- Текущий вопрос -->
+            <div class="question-container single-question-mode">
+              <p class="question-text margin-bottom" v-html="currentQuestionIndex + 1 + ') ' + task.questions[currentQuestionIndex].text"></p>
+
+              <!-- Картинка вопроса -->
+              <div v-if="task.questions[currentQuestionIndex].questionPicture" class="question-image-container">
+                <img
+                  :src="task.questions[currentQuestionIndex].questionPicture"
+                  :alt="'Image for question ' + (currentQuestionIndex + 1)"
+                  class="question-image"
+                >
+              </div>
+
+              <div class="options-container">
+                <label
+                  v-for="(label, key) in task.questions[currentQuestionIndex].options"
+                  :key="key"
+                  class="option-label"
+                  :class="getInstantOptionClass(index, currentQuestionIndex, key, task.questions[currentQuestionIndex].correctAnswer)"
+                >
+                  <input
+                    type="radio"
+                    :name="'single_q_' + index"
+                    :value="key"
+                    class="option-input"
+                    @click="handleMultipleChoiceSelection(index, currentQuestionIndex, key, $event)"
+                  />
+                  <span class="option-text">{{ key }} : {{ label }}</span>
+                </label>
+              </div>
+
+              <!-- Кнопка Explain -->
+              <div v-if="answers[index][currentQuestionIndex]" class="explain-container">
+                <div v-if="expandedExplanations[index]?.[currentQuestionIndex]" class="explanation-content">
+                  <p v-html="task.questions[currentQuestionIndex].explanation"></p>
+                </div>
+                <button
+                  class="explain-button"
+                  :class="getExplainButtonClass(index, currentQuestionIndex, task.questions[currentQuestionIndex].correctAnswer)"
+                  @click="toggleExplanation(index, currentQuestionIndex)"
+                >
+                  {{ expandedExplanations[index]?.[currentQuestionIndex] ? 'Well, okay... ' : 'Explain it to me' }}
+                </button>
+              </div>
+
+              <!-- Навигация по вопросам (стрелочки) -->
+              <div class="question-navigation">
+                <button
+                  class="nav-question-button prev-question"
+                  @click="goToPrevQuestion(index)"
+                >
+                  ◀
+                </button>
+                <span class="question-counter">
+    {{ currentQuestionIndex + 1 }} / {{ task.questions.length }}
+  </span>
+                <button
+                  class="nav-question-button next-question"
+                  @click="goToNextQuestion(index)"
+                >
+                  ▶
+                </button>
+              </div>
+
+            </div>
+            <!-- Индикатор прогресса по вопросам -->
+            <div class="question-progress">
+      <span class="progress-text">
+        Вопрос {{ currentQuestionIndex + 1 }} из {{ task.questions.length }}
+      </span>
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  :style="{ width: ((currentQuestionIndex + 1) / task.questions.length * 100) + '%' }"
+                ></div>
+              </div>
+            </div>
+          </template>
         </div>
+
+
+
         <!-- Student Input блок -->
         <div v-else-if="task.taskID === 'student_input'" class="student-input-container">
           <div v-for="(q, qi) in task.questions" :key="qi" class="question-container">
@@ -363,15 +472,17 @@
                 📋
               </button>
             </div>
-            <div
-              class="score-display"
-              :class="[
-      { 'score-visible': checkedTasks[index] },
-      checkedTasks[index] ? getGrade(taskScores[index]).class : ''
-    ]"
-            >
-              {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}
-            </div>
+
+            <!-- оценка динамическая -->
+<!--            <div-->
+<!--              class="score-display"-->
+<!--              :class="[-->
+<!--      { 'score-visible': checkedTasks[index] },-->
+<!--      checkedTasks[index] ? getGrade(taskScores[index]).class : ''-->
+<!--    ]"-->
+<!--            >-->
+<!--              {{ checkedTasks[index] ? `${taskScores[index]}% (${getGrade(taskScores[index]).letter})` : '' }}-->
+<!--            </div>-->
 
             <!-- НОВАЯ КНОПКА: Статистика для multiple-choice -->
             <button
@@ -550,7 +661,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import GameTestsSeedData from '../dataForGames/GameTestsSeedData'
 
@@ -576,6 +687,61 @@ const currentSeed = ref('')
 const inputSeed = ref('')
 const isEditingSeed = ref(false)
 const seedInput = ref(null)
+
+
+// Добавь эти переменные после существующих
+const displayMode = ref('list') // 'list' или 'single'
+const currentQuestionIndex = ref(0)
+
+// Функция для переключения режима отображения
+const toggleDisplayMode = () => {
+  displayMode.value = displayMode.value === 'list' ? 'single' : 'list'
+  currentQuestionIndex.value = 0 // сбрасываем на первый вопрос при переключении
+}
+
+// Функции навигации по вопросам внутри задания (с зацикливанием)
+const goToPrevQuestion = (taskIndex) => {
+  const task = shuffledTasks.value[taskIndex]
+  if (task && task.questions) {
+    if (currentQuestionIndex.value === 0) {
+      // Если на первом вопросе - переходим на последний
+      currentQuestionIndex.value = task.questions.length - 1
+    } else {
+      currentQuestionIndex.value--
+    }
+  }
+}
+
+const goToNextQuestion = (taskIndex) => {
+  const task = shuffledTasks.value[taskIndex]
+  if (task && task.questions) {
+    if (currentQuestionIndex.value === task.questions.length - 1) {
+      // Если на последнем вопросе - переходим на первый
+      currentQuestionIndex.value = 0
+    } else {
+      currentQuestionIndex.value++
+    }
+  }
+}
+
+// Добавь функцию для обработки нажатий клавиш
+const handleKeydown = (event) => {
+  // Проверяем, что мы в режиме multiple-choice и включён режим "по одному"
+  const currentTask = shuffledTasks.value[currentTaskIndex.value]
+  if (!currentTask || currentTask.taskID !== 'multiple_choice') return
+  if (displayMode.value !== 'single') return
+
+  // Стрелка влево
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault() // предотвращаем скролл страницы
+    goToPrevQuestion(currentTaskIndex.value)
+  }
+  // Стрелка вправо
+  else if (event.key === 'ArrowRight') {
+    event.preventDefault() // предотвращаем скролл страницы
+    goToNextQuestion(currentTaskIndex.value)
+  }
+}
 
 // Функция отправки в Telegram
 // Функция отправки в Telegram
@@ -857,6 +1023,7 @@ const resetAnswers = () => {
 const goToNextTask = () => {
   if (currentTaskIndex.value < shuffledTasks.value.length - 1) {
     currentTaskIndex.value++
+    currentQuestionIndex.value = 0  // <-- ДОБАВИТЬ
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
@@ -864,6 +1031,7 @@ const goToNextTask = () => {
 const goToPrevTask = () => {
   if (currentTaskIndex.value > 0) {
     currentTaskIndex.value--
+    currentQuestionIndex.value = 0  // <-- ДОБАВИТЬ
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
@@ -1657,8 +1825,14 @@ onMounted(() => {
   }
 
   disableAudioDownload()
+
+  window.addEventListener('keydown', handleKeydown)
+
 })
 
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 const rainbowColors = [
   '#cff0ff',
   '#e0c0ff',
@@ -1725,7 +1899,7 @@ const rainbowColors = [
 .header-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   margin-top: 0.5rem;
 }
 
@@ -2618,9 +2792,7 @@ input[type="radio"]:checked + .radio-custom::after {
     //margin-top: 60px;
   }
 
-  .task-controls {
-    flex-wrap: wrap;
-  }
+
 
   .grid-table {
     font-size: 11px;
@@ -3035,7 +3207,118 @@ input[type="radio"]:checked + .radio-custom::after {
 
 
 
+/* Кнопка переключения режима */
+.toggle-mode-btn {
+  padding: 6px 12px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: none;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  margin-left: 10px;
+}
 
+.toggle-mode-btn:hover {
+  background-color: #7c3aed;
+  transform: translateY(-1px);
+}
+
+/* Прогресс-бар для вопросов */
+.question-progress {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #10b981;
+  transition: width 0.3s ease;
+}
+
+/* Режим одного вопроса */
+.single-question-mode {
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Навигация по вопросам */
+.question-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  gap: 15px;
+}
+
+.nav-question-button {
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.nav-question-button:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.nav-question-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.question-counter {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+
+
+  .question-navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-question-button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .single-question-mode {
+    padding: 12px;
+  }
+}
 
 
 </style>
