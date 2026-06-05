@@ -1306,7 +1306,7 @@ const GameTestsSeedData = {
               D: "fly, on"
             },
             correctAnswer: "A",
-            explanation: "Present Continuous для планов на будущее; on Monday."
+            explanation: "перед днями недели предлог ON - ну а для планов на будущее используем Present Continuous"
           },
           {
             text: "The woman ___ a snake.",
@@ -1808,10 +1808,10 @@ const GameTestsSeedData = {
               D: "start"
             },
             correctAnswer: "C",
-            explanation: "когда говорим о расписании (концерт по расписанию), используем Present Simple"
+            explanation: "когда говорим о расписании (концерт по расписанию начнётся), используем Present Simple, даже несмотря на то что действие в будущем произойдет - расписание общественное всегда Present Simple"
           },
           {
-            text: "John is 1 year ___ than me.",
+            text: "Roberto is a year and a half ___ than me.",
             options: {
               A: "oldest",
               B: "older",
@@ -2149,14 +2149,14 @@ const GameTestsSeedData = {
             explanation: "last year — законченное время в прошлом (был 3 раза, но уже не важно) → Past Simple (was)"
           },
           {
-            text: "___ you help me with the housework, please?",
+            text: "___ help me with the housework, please?",
             options: {
               A: "Could you",
               B: "Are you going to",
-              C: "Should"
+              C: "Should you"
             },
             correctAnswer: "A",
-            explanation: "вежливая просьба → Could you (не are you going to / should)"
+            explanation: "вежливая просьба → Could you могли бы вы помочь"
           },
           {
             text: "___ I go out?",
@@ -2166,7 +2166,7 @@ const GameTestsSeedData = {
               C: "both are correct"
             },
             correctAnswer: "C",
-            explanation: "и can, и may подходят для просьбы. can — разговорный, may — более официальный"
+            explanation: "и can, и may подходят для просьбы. can — разговорный, may — более официальный. Both - переводится оба"
           },
           {
             text: "I ___ all my homework by 6 o'clock yesterday",
@@ -2210,6 +2210,970 @@ const GameTestsSeedData = {
             },
             correctAnswer: "C",
             explanation: "запланированная встреча в ближайшем будущем → Present Continuous (are meeting)"
+          }
+        ]
+      },
+
+    ],
+  },
+  examY2V1: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "What time ___ her?",
+            options: {
+              A: "did you see",
+              B: "have you seen",
+              C: "had you seen"
+            },
+            correctAnswer: "A",
+            explanation: "спрашиваем о конкретном моменте в прошлом (когда увидел) → Past Simple: did you see"
+          },
+          {
+            text: "This time tomorrow I ___",
+            options: {
+              A: "will work",
+              B: "will be working",
+              C: "will working",
+              D: "work"
+            },
+            correctAnswer: "B",
+            explanation: "в конкретный момент в будущем (this time tomorrow) будет длиться действие → Future Continuous: will be working"
+          },
+          {
+            text: "I ___ you if you ___ that again.",
+            options: {
+              A: "hit, say",
+              B: "will hit, will say",
+              C: "hit, will say",
+              D: "will hit, say"
+            },
+            correctAnswer: "D",
+            explanation: "первый тип условия: if + Present Simple (say), главная часть will + глагол (will hit)"
+          },
+          {
+            text: "I have ___ family.",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "A",
+            explanation: "используем a, потому что имеется в виду 'одна семья' (неопределённый артикль)"
+          },
+          {
+            text: "___ finish your homework last night?",
+            options: {
+              A: "could you",
+              B: "can you",
+              C: "were you able to",
+              D: "was you able to"
+            },
+            correctAnswer: "C",
+            explanation: "were you able to — смогли И сделали (конкретный успешный результат в прошлом). could — общая способность, но не факт, что сделали"
+          },
+          {
+            text: "It’s ___ show I have ever seen.",
+            options: {
+              A: "the baddest",
+              B: "worse",
+              C: "worst",
+              D: "the worst"
+            },
+            correctAnswer: "D",
+            explanation: "I have ever seen — сигнал превосходной степени (самый плохой) → the worst (bad → worse → the worst)"
+          },
+          {
+            text: "The conference ___ at 10 a.m.",
+            options: {
+              A: "will start",
+              B: "starts",
+              C: "is start"
+            },
+            correctAnswer: "B",
+            explanation: "расписание (конференция по расписанию) → Present Simple: starts"
+          },
+          {
+            text: "If Pat ___ his bike, he could go on a bicycle tour with us.",
+            options: {
+              A: "repaired",
+              B: "repairs",
+              C: "would repair",
+              D: "will repair"
+            },
+            correctAnswer: "A",
+            explanation: "второй тип условия: if + Past Simple (repaired), could + глагол (возможность сейчас или в будущем)"
+          },
+          {
+            text: "You look so tired, Jack! Just go and have some rest! I ___ the dishes.",
+            options: {
+              A: "will be washing",
+              B: "wash",
+              C: "am washing",
+              D: "will wash"
+            },
+            correctAnswer: "D",
+            explanation: "спонтанное решение (только что решил помочь) → Future Simple: will wash"
+          },
+          {
+            text: "I ___ to America three times this year.",
+            options: {
+              A: "have been",
+              B: "was",
+              C: "had been"
+            },
+            correctAnswer: "A",
+            explanation: "this year — период времени, который ещё не закончился → Present Perfect: have been"
+          },
+          {
+            text: "In the morning they told us that we ___ have lunch.",
+            options: {
+              A: "won’t",
+              B: "want",
+              C: "wouldn’t",
+              D: "were"
+            },
+            correctAnswer: "C",
+            explanation: "согласование времён: told (прошлое) → wouldn't (а не won't)"
+          },
+          {
+            text: "Australia ___ in 1606.",
+            options: {
+              A: "is discovered",
+              B: "was discovering",
+              C: "will be discovered",
+              D: "was discovered"
+            },
+            correctAnswer: "D",
+            explanation: "пассивный залог в прошлом (Австралию открыли) → was discovered"
+          },
+          {
+            text: "___ you close the door, please?",
+            options: {
+              A: "could",
+              B: "must",
+              C: "are you able"
+            },
+            correctAnswer: "A",
+            explanation: "вежливая просьба → Could you"
+          },
+          {
+            text: "Sarah ___ yesterday from 9 a.m. till 6 p.m.",
+            options: {
+              A: "worked",
+              B: "was working",
+              C: "had been working"
+            },
+            correctAnswer: "B",
+            explanation: "действие длилось в течение определённого периода в прошлом → Past Continuous: was working"
+          },
+          {
+            text: "I ___ home late tonight.",
+            options: {
+              A: "--",
+              B: "will be",
+              C: "would be"
+            },
+            correctAnswer: "B",
+            explanation: "предсказание / обещание на будущее → Future Simple: will be"
+          },
+          {
+            text: "Where is ___ platform 6?",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "C",
+            explanation: "перед номером платформы (platform 6) артикль НЕ нужен"
+          },
+          {
+            text: "I ___ smoke.",
+            options: {
+              A: "didn’t used to",
+              B: "didn’t use to",
+              C: "usedn’t to"
+            },
+            correctAnswer: "B",
+            explanation: "отрицание used to: didn't use to (без D в конце)"
+          },
+          {
+            text: "___ you play the piano?",
+            options: {
+              A: "can",
+              B: "mayn’t",
+              C: "able to"
+            },
+            correctAnswer: "A",
+            explanation: "спрашиваем об умении / способности → can"
+          },
+          {
+            text: "We ___ tomorrow at 6 p.m. Don’t be late!",
+            options: {
+              A: "going to meet",
+              B: "will meeting",
+              C: "are meeting",
+              D: "met"
+            },
+            correctAnswer: "C",
+            explanation: "запланированная встреча на конкретное время → Present Continuous: are meeting"
+          },
+          {
+            text: "He is ___ fat!",
+            options: {
+              A: "a",
+              B: "such",
+              C: "so"
+            },
+            correctAnswer: "C",
+            explanation: "so + прилагательное (fat) — такой толстый. such + существительное"
+          },
+          {
+            text: "___ I learn ___ I know.",
+            options: {
+              A: "then more, then littler",
+              B: "more, less",
+              C: "the more, the less",
+              D: "then more, then less"
+            },
+            correctAnswer: "C",
+            explanation: "конструкция the + сравнительная степень, the + сравнительная степень (чем больше, тем меньше)"
+          },
+          {
+            text: "Daniel ___ when his wife came home.",
+            options: {
+              A: "was sleeping",
+              B: "slept",
+              C: "has slept"
+            },
+            correctAnswer: "A",
+            explanation: "длительное действие в прошлом (спал) прервалось другим (пришла жена) → Past Continuous"
+          },
+          {
+            text: "If they had enough money, they ___ a new car.",
+            options: {
+              A: "will buy",
+              B: "buy",
+              C: "would buy"
+            },
+            correctAnswer: "C",
+            explanation: "второй тип условия (нереальная ситуация сейчас): if + Past Simple (had), would + глагол"
+          },
+          {
+            text: "I ___ a dog for 7 years so far.",
+            options: {
+              A: "have had",
+              B: "have",
+              C: "have been having",
+              D: "did have"
+            },
+            correctAnswer: "A",
+            explanation: "so far (до сих пор) — сигнал Present Perfect. have (иметь) в Continuous не используется"
+          },
+          {
+            text: "She ___ to London ___ Wednesday.",
+            options: {
+              A: "flies, at",
+              B: "is flying, in",
+              C: "is flying, on",
+              D: "flied, on"
+            },
+            correctAnswer: "C",
+            explanation: "is flying — договорённость на ближайшее будущее, с днями недели предлог on"
+          },
+          {
+            text: "This is ___ book I’ve ever read.",
+            options: {
+              A: "the most boring",
+              B: "the boringest",
+              C: "more boring"
+            },
+            correctAnswer: "A",
+            explanation: "I've ever read — сигнал превосходной степени. boring — длинное слово → the most boring"
+          },
+          {
+            text: "Last night I decided that I ___ going to leave for another city.",
+            options: {
+              A: "will",
+              B: "would",
+              C: "am",
+              D: "was"
+            },
+            correctAnswer: "D",
+            explanation: "согласование времён: decided (прошлое) → was going to (а не am going to)"
+          },
+          {
+            text: "___ Gloria last week?",
+            options: {
+              A: "have you seen",
+              B: "did you see",
+              C: "had you seen",
+              D: "did you used to see"
+            },
+            correctAnswer: "B",
+            explanation: "last week — законченное время в прошлом → Past Simple: did you see"
+          },
+          {
+            text: "They ___ save the man from the fire.",
+            options: {
+              A: "could",
+              B: "was able to",
+              C: "were able to"
+            },
+            correctAnswer: "C",
+            explanation: "смогли И сделали (конкретный успешный результат) → were able to (множественное число they)"
+          },
+          {
+            text: "This morning I ___ up by the neighbour's dog.",
+            options: {
+              A: "woke",
+              B: "was woke",
+              C: "was woken",
+              D: "were woken"
+            },
+            correctAnswer: "C",
+            explanation: "пассивный залог: меня разбудили (was woken) → was woken by"
+          },
+          {
+            text: "He drives ___ than anybody I know",
+            options: {
+              A: "more fast",
+              B: "faster",
+              C: "the fastest",
+              D: "more faster"
+            },
+            correctAnswer: "B",
+            explanation: "than — сигнал сравнительной степени. fast → faster (не more fast)"
+          },
+          {
+            text: "These boxes are so heavy. ___ carry them for me, please.",
+            options: {
+              A: "Could you",
+              B: "Are you going to",
+              C: "Would"
+            },
+            correctAnswer: "A",
+            explanation: "вежливая просьба о помощи → Could you"
+          },
+          {
+            text: "Look at those big black clouds, ___",
+            options: {
+              A: "it will rain",
+              B: "it is going to rain",
+              C: "it’s raining",
+              D: "it rains"
+            },
+            correctAnswer: "B",
+            explanation: "видим доказательства / признаки (чёрные тучи) → is going to rain"
+          },
+          {
+            text: "I was sure that I ___ her before.",
+            options: {
+              A: "meat",
+              B: "have met",
+              C: "had met",
+              D: "meet"
+            },
+            correctAnswer: "C",
+            explanation: "действие закончилось ДО другого действия в прошлом (до того, как был уверен) → Past Perfect: had met"
+          },
+          {
+            text: "This picture ___ by a famous artist.",
+            options: {
+              A: "was drawed",
+              B: "was drew",
+              C: "was drawn"
+            },
+            correctAnswer: "C",
+            explanation: "пассивный залог в прошлом. draw — неправильный глагол: draw-drew-drawn → was drawn"
+          },
+          {
+            text: "They ___ work when I called them.",
+            options: {
+              A: "have already finished",
+              B: "already finished",
+              C: "have finished already",
+              D: "had already finished"
+            },
+            correctAnswer: "D",
+            explanation: "действие завершилось ДО другого действия в прошлом (до того, как позвонил) → Past Perfect: had already finished"
+          },
+          {
+            text: "There is ___ fridge in the kitchen.",
+            options: {
+              A: "a",
+              B: "the",
+              C: "--"
+            },
+            correctAnswer: "A",
+            explanation: "упоминаем предмет впервые (холодильник) → неопределённый артикль a"
+          },
+          {
+            text: "It’s 9 a.m. and I’m so tired! I ___ all morning!",
+            options: {
+              A: "am working",
+              B: "worked",
+              C: "have been working",
+              D: "had worked"
+            },
+            correctAnswer: "C",
+            explanation: "действие длилось всё утро И результат виден сейчас (устал) → Present Perfect Continuous"
+          },
+          {
+            text: "___ I come in?",
+            options: {
+              A: "can",
+              B: "may",
+              C: "both are correct"
+            },
+            correctAnswer: "C",
+            explanation: "и can, и may подходят для просьбы. can — разговорный, may — более официальный"
+          },
+          {
+            text: "Who ___ the fish?",
+            options: {
+              A: "catch",
+              B: "caught",
+              C: "did catch",
+              D: "catched"
+            },
+            correctAnswer: "B",
+            explanation: "catch - caught - caught - Кто поймал рыбу? Так как неизвестно кто поймал, поэтому не нужно did - это правило называется - Вопросы к подлежащему. Если скаазть Who did fish catch? это переводилось бы - кого поймала рыба? =)"
+          }
+        ]
+      },
+    ],
+  },
+  examY1V1: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "Did you buy ….. good toys?",
+            options: {
+              A: "some",
+              B: "any",
+              C: "anything",
+              D: "a"
+            },
+            correctAnswer: "B",
+            explanation: "в вопросе и отрицании с неисчисляемыми/множественными используем any (some — в утверждении)"
+          },
+          {
+            text: "She …….. talks to anyone.",
+            options: {
+              A: "never",
+              B: "doesn’t",
+              C: "will",
+              D: "has"
+            },
+            correctAnswer: "A",
+            explanation: "never (никогда) — отрицательное наречие, не требует вспомогательного глагола doesn't"
+          },
+          {
+            text: "We have …….love in this world.",
+            options: {
+              A: "few",
+              B: "little",
+              C: "any",
+              D: "many"
+            },
+            correctAnswer: "B",
+            explanation: "love (любовь) — неисчисляемое, little = мало (few — для исчисляемых)"
+          },
+          {
+            text: "I promise I……… read it.",
+            options: {
+              A: "will",
+              B: "am going to",
+              C: "have to",
+              D: "am to"
+            },
+            correctAnswer: "A",
+            explanation: "обещание → Future Simple: will read (will + глагол)"
+          },
+          {
+            text: "Time……..so quickly!",
+            options: {
+              A: "go",
+              B: "goes",
+              C: "has"
+            },
+            correctAnswer: "B",
+            explanation: "time (время) — 3 лицо единственное число → goes (Present Simple)"
+          },
+          {
+            text: "I’ve …….. eaten",
+            options: {
+              A: "yet",
+              B: "still",
+              C: "already"
+            },
+            correctAnswer: "C",
+            explanation: "already — уже (в утверждении), yet — в вопросах/отрицаниях, still — всё ещё"
+          },
+          {
+            text: "She ……. help me with anything.",
+            options: {
+              A: "can’t",
+              B: "can’t to",
+              C: "doesn’t can to"
+            },
+            correctAnswer: "A",
+            explanation: "отрицание can: can't + глагол без to (никаких doesn't)"
+          },
+          {
+            text: "I ……. a dog.",
+            options: {
+              A: "haven’t",
+              B: "don’t has",
+              C: "don’t have"
+            },
+            correctAnswer: "C",
+            explanation: "I don't have — правильное отрицание для have (значения 'иметь')"
+          },
+          {
+            text: "It ……. rains in London.",
+            options: {
+              A: "will",
+              B: "often",
+              C: "was"
+            },
+            correctAnswer: "B",
+            explanation: "often (часто) — наречие частотности, ставится перед смысловым глаголом"
+          },
+          {
+            text: "If you come I………there",
+            options: {
+              A: "will",
+              B: "am",
+              C: "will be"
+            },
+            correctAnswer: "C",
+            explanation: "первый тип условия: if + Present Simple (come), главная часть will be"
+          },
+          {
+            text: "I………always my keys!",
+            options: {
+              A: "lose",
+              B: "lost",
+              C: "am losing",
+              D: "have lost"
+            },
+            correctAnswer: "A",
+            explanation: "always с Present Simple выражает регулярное действие (вечно теряю)"
+          },
+          {
+            text: "I like…………late",
+            options: {
+              A: "to",
+              B: "being"
+            },
+            correctAnswer: "B",
+            explanation: "like + ing (нравится делать что-то) → being late"
+          },
+          {
+            text: "News…….good today!",
+            options: {
+              A: "are",
+              B: "is",
+              C: "-"
+            },
+            correctAnswer: "B",
+            explanation: "news (новости) — в английском единственное число → is"
+          },
+          {
+            text: "I ……my leg. I can’t go now.",
+            options: {
+              A: "have hurt",
+              B: "hurt",
+              C: "hurted"
+            },
+            correctAnswer: "A",
+            explanation: "результат в настоящем (не могу идти) → Present Perfect. hurt-hurt-hurt"
+          },
+          {
+            text: "She didn’t drink …….coffee.",
+            options: {
+              A: "few",
+              B: "a few",
+              C: "much",
+              D: "many"
+            },
+            correctAnswer: "C",
+            explanation: "coffee (неисчисляемое) → much. many — для исчисляемых"
+          },
+          {
+            text: "Those people ……. organized a band.",
+            options: {
+              A: "has",
+              B: "have",
+              C: "did",
+              D: "were"
+            },
+            correctAnswer: "B",
+            explanation: "people (люди) — мн. число → have (Present Perfect: have organized)"
+          },
+          {
+            text: "I haven’t come……..",
+            options: {
+              A: "yet",
+              B: "still",
+              C: "already",
+              D: "just"
+            },
+            correctAnswer: "A",
+            explanation: "yet — в отрицаниях и вопросах (ещё не). already/just — в утверждениях"
+          },
+          {
+            text: "I want to ………..some gardening",
+            options: {
+              A: "make",
+              B: "have",
+              C: "do"
+            },
+            correctAnswer: "C",
+            explanation: "устойчивое выражение: do gardening (заниматься садоводством)"
+          },
+          {
+            text: "I……..it 2 years ago.",
+            options: {
+              A: "did",
+              B: "have done",
+              C: "am doing"
+            },
+            correctAnswer: "A",
+            explanation: "2 years ago — законченное время в прошлом → Past Simple: did"
+          },
+          {
+            text: "I’m sorry. I …….. yet",
+            options: {
+              A: "haven’t finished",
+              B: "didn’t finish",
+              C: "don’t finish"
+            },
+            correctAnswer: "A",
+            explanation: "yet — сигнал Present Perfect: haven't finished yet"
+          },
+          {
+            text: "I want to give up………",
+            options: {
+              A: "to drink",
+              B: "drink",
+              C: "drinking"
+            },
+            correctAnswer: "C",
+            explanation: "give up + ing (бросить делать что-то) → give up drinking"
+          },
+          {
+            text: "She has stopped the train, ……..?",
+            options: {
+              A: "doesn’t she",
+              B: "has she",
+              C: "hasn’t she",
+              D: "did she"
+            },
+            correctAnswer: "C",
+            explanation: "разделительный вопрос: has → hasn't she"
+          },
+          {
+            text: "There …… a door and 2 windows there.",
+            options: {
+              A: "are",
+              B: "is",
+              C: "some"
+            },
+            correctAnswer: "B",
+            explanation: "конструкция there is + первое существительное в единственном числе (a door)"
+          },
+          {
+            text: "It’s not warm, ……?",
+            options: {
+              A: "is it",
+              B: "isn’t it?",
+              C: "does it"
+            },
+            correctAnswer: "A",
+            explanation: "разделительный вопрос: отрицание в первой части → is it?"
+          },
+          {
+            text: "Are you going there? – Yes, I…….",
+            options: {
+              A: "do",
+              B: "was",
+              C: "am",
+              D: "did"
+            },
+            correctAnswer: "C",
+            explanation: "краткий ответ на Are you... → Yes, I am"
+          },
+          {
+            text: "There’s …….. paper on the table.",
+            options: {
+              A: "a",
+              B: "some",
+              C: "any"
+            },
+            correctAnswer: "B",
+            explanation: "paper (бумага) — неисчисляемое → some в утверждении"
+          },
+          {
+            text: "How many brothers and sisters……..?",
+            options: {
+              A: "are you having",
+              B: "you have",
+              C: "have you",
+              D: "do you have"
+            },
+            correctAnswer: "D",
+            explanation: "вопрос с how many → do you have (Present Simple)"
+          },
+          {
+            text: "We met when we…….in France",
+            options: {
+              A: "are",
+              B: "was",
+              C: "were",
+              D: "study"
+            },
+            correctAnswer: "C",
+            explanation: "we → were (Past Continuous: were living / находились во Франции)"
+          },
+          {
+            text: "I don’t want …… to leave me.",
+            options: {
+              A: "she",
+              B: "her",
+              C: "that she"
+            },
+            correctAnswer: "B",
+            explanation: "после want + объект (her) + to leave (конструкция want somebody to do)"
+          },
+          {
+            text: "………… in London.",
+            options: {
+              A: "Snow goes",
+              B: "It snows",
+              C: "It snowing"
+            },
+            correctAnswer: "B",
+            explanation: "говорим о погоде: it snows (Present Simple — обычно идёт снег)"
+          },
+          {
+            text: "How………sugar do you eat a day?",
+            options: {
+              A: "many",
+              B: "much",
+              C: "is"
+            },
+            correctAnswer: "B",
+            explanation: "sugar (сахар) — неисчисляемое → how much"
+          },
+          {
+            text: "There ……… some grapes there the day before yesterday.",
+            options: {
+              A: "was",
+              B: "were",
+              C: "are",
+              D: "is"
+            },
+            correctAnswer: "B",
+            explanation: "grapes (виноград) — мн. число, the day before yesterday → Past: were"
+          },
+          {
+            text: "Will you do it? – No, I…….",
+            options: {
+              A: "won’t",
+              B: "wouldn’t",
+              C: "will"
+            },
+            correctAnswer: "A",
+            explanation: "краткий отрицательный ответ на will → No, I won't"
+          },
+          {
+            text: "Who are …….people?",
+            options: {
+              A: "this",
+              B: "those",
+              C: "that"
+            },
+            correctAnswer: "B",
+            explanation: "people (мн. число) → those (те). this/that — для ед. числа"
+          },
+          {
+            text: "It’s ………..weather!",
+            options: {
+              A: "a terrible",
+              B: "terrible",
+              C: "the terrible"
+            },
+            correctAnswer: "B",
+            explanation: "weather — неисчисляемое, артикль a не нужен → terrible weather"
+          },
+          {
+            text: "As soon as she……., I’ll do it.",
+            options: {
+              A: "come",
+              B: "will come",
+              C: "comes"
+            },
+            correctAnswer: "C",
+            explanation: "as soon as + Present Simple (comes) — будущее время не используется"
+          },
+          {
+            text: "His eyes ……. blue",
+            options: {
+              A: "are",
+              B: "have",
+              C: "has",
+              D: "is"
+            },
+            correctAnswer: "A",
+            explanation: "eyes (мн. число) → are (глаза голубые)"
+          },
+          {
+            text: "…… children are too noisy",
+            options: {
+              A: "they",
+              B: "them",
+              C: "their"
+            },
+            correctAnswer: "C",
+            explanation: "притяжательное местоимение перед существительным → their children"
+          },
+          {
+            text: "Now she…….. him.",
+            options: {
+              A: "is hating",
+              B: "hated",
+              C: "hates",
+              D: "hate"
+            },
+            correctAnswer: "C",
+            explanation: "hate (ненавидеть) — глагол состояния, не используется в Continuous → hates"
+          },
+          {
+            text: "I’m going …….home with you.",
+            options: {
+              A: "at",
+              B: "to",
+              C: "–",
+              D: "in"
+            },
+            correctAnswer: "C",
+            explanation: "go home — предлог НЕ нужен (home — наречие)"
+          },
+          {
+            text: "She ………soon.",
+            options: {
+              A: "leaves",
+              B: "will leaves",
+              C: "is leaving",
+              D: "leave"
+            },
+            correctAnswer: "C",
+            explanation: "запланированное действие в ближайшем будущем → is leaving"
+          },
+          {
+            text: "What time ………. today?",
+            options: {
+              A: "has she come",
+              B: "she has come",
+              C: "did she come"
+            },
+            correctAnswer: "C",
+            explanation: "today (уже закончившийся день/прошлое) → Past Simple: did she come"
+          },
+          {
+            text: "I …….. silly",
+            options: {
+              A: "amn’t",
+              B: "am not",
+              C: "isn’t"
+            },
+            correctAnswer: "B",
+            explanation: "отрицание I am → I am not (amn't не используется)"
+          },
+          {
+            text: "Who ………a shower with you?",
+            options: {
+              A: "have",
+              B: "has",
+              C: "do have"
+            },
+            correctAnswer: "B",
+            explanation: "вопрос к подлежащему (who = 3 лицо ед. число) → has"
+          },
+          {
+            text: "What …….?",
+            options: {
+              A: "she wants",
+              B: "does she want",
+              C: "does she wants"
+            },
+            correctAnswer: "B",
+            explanation: "вопрос в Present Simple: does she want (без S на want)"
+          },
+          {
+            text: "She’s gonna…… leave",
+            options: {
+              A: "at",
+              B: "to",
+              C: "–",
+              D: "in"
+            },
+            correctAnswer: "C",
+            explanation: "gonna = going to → gonna leave (без лишних предлогов)"
+          },
+          {
+            text: "If he… .kisses me tomorrow, I’ll kiss him",
+            options: {
+              A: "–",
+              B: "will",
+              C: "are",
+              D: "is"
+            },
+            correctAnswer: "A",
+            explanation: "первый тип условия: if + Present Simple (kisses) — will не нужен"
+          },
+          {
+            text: "They will arrive …. Sunday",
+            options: {
+              A: "in",
+              B: "on",
+              C: "at",
+              D: "-"
+            },
+            correctAnswer: "B",
+            explanation: "с днями недели предлог on → on Sunday"
+          },
+          {
+            text: "….. help me?",
+            options: {
+              A: "can you to",
+              B: "do you can",
+              C: "can you"
+            },
+            correctAnswer: "C",
+            explanation: "вопрос с can: Can you help me? (без to и do)"
+          },
+          {
+            text: "I…..agree",
+            options: {
+              A: "am",
+              B: "–"
+            },
+            correctAnswer: "B",
+            explanation: "agree — глагол, не требует am. I agree — я согласен"
           }
         ]
       },

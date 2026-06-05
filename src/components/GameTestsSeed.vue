@@ -143,17 +143,40 @@
               </div>
 
               <!-- Кнопка Explain -->
+              <!-- Кнопка Explain и Add Examples -->
               <div v-if="answers[index][qi]" class="explain-container">
+                <div class="explain-buttons">
+                  <button
+                    class="explain-button"
+                    :class="getExplainButtonClass(index, qi, q.correctAnswer)"
+                    @click="toggleExplanation(index, qi)"
+                  >
+                    {{ expandedExplanations[index]?.[qi] ? 'Well, okay...' : '💡 Explain it to me - показать объяснение' }}
+                  </button>
+                  <button
+                    v-if="expandedExplanations[index]?.[qi]"
+                    class="examples-button"
+                    @click="toggleExamples(index, qi)"
+                  >
+                    📝 {{ expandedExamples[index]?.[qi] ? '' : 'examples' }}
+                  </button>
+                </div>
+
+                <!-- Объяснение -->
                 <div v-if="expandedExplanations[index]?.[qi]" class="explanation-content">
                   <p v-html="q.explanation"></p>
                 </div>
-                <button
-                  class="explain-button"
-                  :class="getExplainButtonClass(index, qi, q.correctAnswer)"
-                  @click="toggleExplanation(index, qi)"
-                >
-                  {{ expandedExplanations[index]?.[qi] ? 'Well, okay... ' : '💡 показать объяснение - Explain it to me' }}
-                </button>
+
+                <!-- Блок с примерами -->
+                <div v-if="expandedExamples[index]?.[qi]" class="examples-content">
+    <textarea
+      class="examples-textarea"
+      :placeholder="'Напишите свои примеры здесь...\n( или задайте вопрос Винсенту )\n\n' + getExamplePlaceholder(q)"
+      v-model="exampleTexts[index][qi]"
+      @input="saveExampleText(index, qi, $event)"
+      rows="4"
+    ></textarea>
+                </div>
               </div>
             </div>
           </template>
@@ -205,17 +228,40 @@
               </div>
 
               <!-- Кнопка Explain -->
+              <!-- Кнопка Explain и Add Examples -->
               <div v-if="answers[index][currentQuestionIndex]" class="explain-container">
+                <div class="explain-buttons">
+                  <button
+                    class="explain-button"
+                    :class="getExplainButtonClass(index, currentQuestionIndex, task.questions[currentQuestionIndex].correctAnswer)"
+                    @click="toggleExplanation(index, currentQuestionIndex)"
+                  >
+                    {{ expandedExplanations[index]?.[currentQuestionIndex] ? 'Well, okay...' : 'Explain it to me' }}
+                  </button>
+                  <button
+                    v-if="expandedExplanations[index]?.[currentQuestionIndex]"
+                    class="examples-button"
+                    @click="toggleExamples(index, currentQuestionIndex)"
+                  >
+                    📝 {{ expandedExamples[index]?.[currentQuestionIndex] ? 'Скрыть примеры' : 'Add examples' }}
+                  </button>
+                </div>
+
+                <!-- Объяснение -->
                 <div v-if="expandedExplanations[index]?.[currentQuestionIndex]" class="explanation-content">
                   <p v-html="task.questions[currentQuestionIndex].explanation"></p>
                 </div>
-                <button
-                  class="explain-button"
-                  :class="getExplainButtonClass(index, currentQuestionIndex, task.questions[currentQuestionIndex].correctAnswer)"
-                  @click="toggleExplanation(index, currentQuestionIndex)"
-                >
-                  {{ expandedExplanations[index]?.[currentQuestionIndex] ? 'Well, okay... ' : 'Explain it to me' }}
-                </button>
+
+                <!-- Блок с примерами -->
+                <div v-if="expandedExamples[index]?.[currentQuestionIndex]" class="examples-content">
+    <textarea
+      class="examples-textarea"
+      :placeholder="'Напишите свои примеры здесь...\n( или задайте вопрос Винсенту )\n\n' + getExamplePlaceholder(task.questions[currentQuestionIndex])"
+      v-model="exampleTexts[index][currentQuestionIndex]"
+      @input="saveExampleText(index, currentQuestionIndex, $event)"
+      rows="4"
+    ></textarea>
+                </div>
               </div>
 
               <!-- Навигация по вопросам (стрелочки) -->
@@ -682,6 +728,38 @@ const isShuffled = ref(false)
 const gridTableFeedback = ref([])
 const inputFields = ref([])
 
+
+const expandedExamples = ref([]) // для хранения состояния открытых примеров
+const exampleTexts = ref([]) // для хранения текста примеров по каждому вопросу
+
+// Функция для переключения панели примеров
+const toggleExamples = (taskIndex, questionIndex) => {
+  if (!expandedExamples.value[taskIndex]) {
+    expandedExamples.value[taskIndex] = []
+  }
+  expandedExamples.value[taskIndex][questionIndex] =
+    !expandedExamples.value[taskIndex][questionIndex]
+}
+
+
+
+// Функция для сохранения текста примеров
+const saveExampleText = (taskIndex, questionIndex, event) => {
+  if (!exampleTexts.value[taskIndex]) {
+    exampleTexts.value[taskIndex] = []
+  }
+  if (!exampleTexts.value[taskIndex][questionIndex]) {
+    exampleTexts.value[taskIndex][questionIndex] = ''
+  }
+  exampleTexts.value[taskIndex][questionIndex] = event.target.value
+}
+
+// Добавь в <script setup>
+const getExamplePlaceholder = (question) => {
+  // Можно добавить примеры на основе типа вопроса или правильного ответа
+  return `+ утверждение\n- отрицание\n? открытый вопрос`
+}
+
 // Seed-related refs
 const currentSeed = ref('')
 const inputSeed = ref('')
@@ -992,6 +1070,9 @@ const resetAnswers = () => {
   taskScores.value = shuffledTasks.value.map(() => null)
   expandedExplanations.value = shuffledTasks.value.map(task =>
     task && task.questions ? Array(task.questions.length).fill(false) : []
+  )
+  exampleTexts.value = shuffledTasks.value.map(task =>
+    task && task.questions ? Array(task.questions.length).fill('') : []
   )
   gridTableFeedback.value = shuffledTasks.value.map(() => [])
   discussionChecked.value = shuffledTasks.value.map(task =>
@@ -2311,7 +2392,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .explain-button.explain-incorrect {
-  background-color: #ef4444;
+  background-color: #7c3aed;
   color: white;
 }
 
@@ -2330,6 +2411,65 @@ input[type="radio"]:checked + .radio-custom::after {
   color: #1f2937;
 }
 
+/* Блок с кнопками Explain и Examples */
+.explain-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Кнопка Examples */
+.examples-button {
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #f59e0b;
+  color: white;
+}
+
+.examples-button:hover {
+  background-color: #d97706;
+  transform: translateY(-1px);
+}
+
+/* Блок с примерами */
+.examples-content {
+  margin-top: 12px;
+  padding: 6px;
+  background-color: #fffbeb;
+  border-left: 3px solid #f59e0b;
+  border-radius: 8px;
+}
+
+.examples-textarea {
+  width: 100%;
+  height: 130px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.examples-textarea:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.examples-textarea::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.85rem;
+}
 
 /* Student Input */
 .student-input-container {

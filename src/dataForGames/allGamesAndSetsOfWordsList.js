@@ -184,9 +184,17 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/examY2V2/tests-and-exams",
+      path: "/see-all-sets-of-words/examY1V1/tests-and-exams",
       missionVisibleName: "Давно мы тест не решали 💡",
       missionDescription: "Long time without a test 💡",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examY2V2/tests-and-exams",
+      missionVisibleName: "В этом тесте grammar сложнее",
+      missionDescription: "This test is harder",
       id: 1001,
       active: true,
     },
