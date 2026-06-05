@@ -2658,18 +2658,21 @@ const GameTestsSeedData = {
         textScript: null,
         questions: [
           {
-            text: "Did you buy ….. good toys?",
+            text: "Did you buy _____ good toys?",
+            textExtra: "Вы купили хоть каких-то хороших игрушек?",
             options: {
               A: "some",
               B: "any",
               C: "anything",
-              D: "a"
+              D: "an",
+              E: "a"
             },
             correctAnswer: "B",
-            explanation: "в вопросе и отрицании с неисчисляемыми/множественными используем any (some — в утверждении)"
+            explanation: "Если бы был вариант ничего не вставлять, то было бы верно и супер, но по условию задания нужно перевести фразу - ВЫ КУПИЛИ ХОТЬ КАКИХ-НИБУДЬ ХОРОШИХ ИГРУШЕК ? Поэтому нужно выбрать один вариант з предложенных. В вопросе и отрицании с неисчисляемыми/множественными используем any (some — в утверждении)"
           },
           {
-            text: "She …….. talks to anyone.",
+            text: "She _____ talks to anyone.",
+            textExtra: "Она ни с кем не разговаривает.",
             options: {
               A: "never",
               B: "doesn’t",
@@ -2677,10 +2680,11 @@ const GameTestsSeedData = {
               D: "has"
             },
             correctAnswer: "A",
-            explanation: "never (никогда) — отрицательное наречие, не требует вспомогательного глагола doesn't"
+            explanation: "never (никогда) Она никогда не говорит ни с кем. Два отрицания англичане не говорят. поэтому she never talks "
           },
           {
-            text: "We have …….love in this world.",
+            text: "We have _____ love in this world.",
+            textExtra: "У нас мало любви в этом мире.",
             options: {
               A: "few",
               B: "little",
@@ -2688,10 +2692,11 @@ const GameTestsSeedData = {
               D: "many"
             },
             correctAnswer: "B",
-            explanation: "love (любовь) — неисчисляемое, little = мало (few — для исчисляемых)"
+            explanation: "В этом мире мало любви. (little) мало + неисчисляемое, (few) мало + исчисляемое, (any) любой, (many) много + исчисляемое, (much) много + неисчисляемое"
           },
           {
-            text: "I promise I……… read it.",
+            text: "I promise I _____ read it.",
+            textExtra: "Я обещаю, я прочитаю это.",
             options: {
               A: "will",
               B: "am going to",
@@ -2699,20 +2704,22 @@ const GameTestsSeedData = {
               D: "am to"
             },
             correctAnswer: "A",
-            explanation: "обещание → Future Simple: will read (will + глагол)"
+            explanation: "когда обещаем используем will → Future Simple: will read (will + глагол)"
           },
           {
-            text: "Time……..so quickly!",
+            text: "Time _____ so quickly!",
+            textExtra: "Время летит так быстро!",
             options: {
               A: "go",
               B: "goes",
               C: "has"
             },
             correctAnswer: "B",
-            explanation: "time (время) — 3 лицо единственное число → goes (Present Simple)"
+            explanation: "time (время) — это оно - it - значит goes (Present Simple)"
           },
           {
-            text: "I’ve …….. eaten",
+            text: "I’ve _____ eaten",
+            textExtra: "Я уже поел.",
             options: {
               A: "yet",
               B: "still",
@@ -2722,37 +2729,42 @@ const GameTestsSeedData = {
             explanation: "already — уже (в утверждении), yet — в вопросах/отрицаниях, still — всё ещё"
           },
           {
-            text: "She ……. help me with anything.",
+            text: "She ______ help me with anything.",
+            textExtra: "Она ничем не может мне помочь.",
             options: {
               A: "can’t",
               B: "can’t to",
               C: "doesn’t can to"
             },
             correctAnswer: "A",
-            explanation: "отрицание can: can't + глагол без to (никаких doesn't)"
+            explanation: "отрицание can't + глагол (никаких doesn't не нужно) CAN и MUST это модальные глаголы, с ними не нужны ни to ни does ничего не нужно))  "
           },
           {
-            text: "I ……. a dog.",
+            text: "I _____ a dog.",
+            textExtra: "У меня нет собаки.",
             options: {
               A: "haven’t",
               B: "don’t has",
               C: "don’t have"
             },
             correctAnswer: "C",
-            explanation: "I don't have — правильное отрицание для have (значения 'иметь')"
+            explanation: "I don't have — правильное отрицание для have (значения 'иметь') еще можно было бы сказать I have no dog - но такого варианта нет здесь. I haven't нельзя говорить так. После haven't может быть только глагол - например I haven't kissed a dog!"
           },
           {
-            text: "It ……. rains in London.",
+            text: "It _____ rains in London.",
+            textExtra: "В Лондоне часто идёт дождь.",
             options: {
               A: "will",
               B: "often",
-              C: "was"
+              C: "goes",
+              D: "was"
             },
             correctAnswer: "B",
-            explanation: "often (часто) — наречие частотности, ставится перед смысловым глаголом"
+            explanation: "таких слова всего два ДОЖДЬ и СНЕГ с ними всегда говорим it rains или it snows - часто дождит, часто идет дождь/снег - often всегда ставится перед смысловым глаголом. It rains sometimes, it often rains и так далее. Говорить Rain goes нельзя"
           },
           {
-            text: "If you come I………there",
+            text: "If you come I ______ there",
+            textExtra: "Если ты придёшь, я буду там.",
             options: {
               A: "will",
               B: "am",
@@ -2762,27 +2774,30 @@ const GameTestsSeedData = {
             explanation: "первый тип условия: if + Present Simple (come), главная часть will be"
           },
           {
-            text: "I………always my keys!",
+            text: "I _______ always my keys.",
+            textExtra: "Я всегда теряю свои ключи.",
             options: {
               A: "lose",
               B: "lost",
-              C: "am losing",
+              C: "am loosing",
               D: "have lost"
             },
             correctAnswer: "A",
-            explanation: "always с Present Simple выражает регулярное действие (вечно теряю)"
+            explanation: "loosing не подойдет по смыслу (loose  ослаблять) если бы было I am always losing keys то так можно. Но такого не было дано варианта"
           },
           {
-            text: "I like…………late",
+            text: "I like ______ late",
+            textExtra: "Я люблю опаздывать.",
             options: {
               A: "to",
               B: "being"
             },
             correctAnswer: "B",
-            explanation: "like + ing (нравится делать что-то) → being late"
+            explanation: "late - прилагательное ОПОЗДАВШИЙ - в английском нет глагола ОПАЗДЫВАТЬ поэтому они используют прилагательное - like + БЫТЬ + ing (нравится делать что-то) → being late - мне нравится БЫТЬ ОПОЗДАВШИМ - I don't like being late. I like being on time - мне нравится приходить вовремя"
           },
           {
-            text: "News…….good today!",
+            text: "The news _____ good today!",
+            textExtra: "Новости сегодня хорошие!",
             options: {
               A: "are",
               B: "is",
@@ -2792,17 +2807,19 @@ const GameTestsSeedData = {
             explanation: "news (новости) — в английском единственное число → is"
           },
           {
-            text: "I ……my leg. I can’t go now.",
+            text: "I _____ my leg! I can’t go now.",
+            textExtra: "Я поранил ногу! Не могу сейчас идти.",
             options: {
               A: "have hurt",
               B: "hurt",
               C: "hurted"
             },
             correctAnswer: "A",
-            explanation: "результат в настоящем (не могу идти) → Present Perfect. hurt-hurt-hurt"
+            explanation: "результат в настоящем (не могу идти) → Present Perfect. неправильный глагол hurt-hurt-hurt"
           },
           {
-            text: "She didn’t drink …….coffee.",
+            text: "She didn’t drink _____ coffee.",
+            textExtra: "Она не выпила много кофе.",
             options: {
               A: "few",
               B: "a few",
@@ -2810,10 +2827,11 @@ const GameTestsSeedData = {
               D: "many"
             },
             correctAnswer: "C",
-            explanation: "coffee (неисчисляемое) → much. many — для исчисляемых"
+            explanation: "Она не выпила много кофе. (a few) немного + исчисляемое, (few) мало + исчисляемое, (many) много + исчисляемое, (much) много + неисчисляемое"
           },
           {
-            text: "Those people ……. organized a band.",
+            text: "Those people _____ organized a band",
+            textExtra: "Те люди организовали группу.",
             options: {
               A: "has",
               B: "have",
@@ -2821,10 +2839,11 @@ const GameTestsSeedData = {
               D: "were"
             },
             correctAnswer: "B",
-            explanation: "people (люди) — мн. число → have (Present Perfect: have organized)"
+            explanation: "Если бы был вариант ничего не вставлять то было бы верно и супер - но такого варианта нет. Нужно выбрать подходящее - people (люди) — мн. число → have (Present Perfect: have organized)"
           },
           {
-            text: "I haven’t come……..",
+            text: "I haven’t come _____ ",
+            textExtra: "Я ещё не пришёл.",
             options: {
               A: "yet",
               B: "still",
@@ -2832,20 +2851,22 @@ const GameTestsSeedData = {
               D: "just"
             },
             correctAnswer: "A",
-            explanation: "yet — в отрицаниях и вопросах (ещё не). already/just — в утверждениях"
+            explanation: "yet — в отрицаниях и вопросах (ещё не, пока не). already - уже , just - только что"
           },
           {
-            text: "I want to ………..some gardening",
+            text: "I want to ______ some gardening",
+            textExtra: "Я хочу заняться садоводством.",
             options: {
               A: "make",
               B: "have",
               C: "do"
             },
             correctAnswer: "C",
-            explanation: "устойчивое выражение: do gardening (заниматься садоводством)"
+            explanation: "устойчивое выражение: do gardening (заниматься садоводством) Make было бы правильно в предложении make a garden - создать сад"
           },
           {
-            text: "I……..it 2 years ago.",
+            text: "I _____ it 2 years ago.",
+            textExtra: "Я сделал это 2 года назад.",
             options: {
               A: "did",
               B: "have done",
@@ -2855,27 +2876,30 @@ const GameTestsSeedData = {
             explanation: "2 years ago — законченное время в прошлом → Past Simple: did"
           },
           {
-            text: "I’m sorry. I …….. yet",
+            text: "I’m sorry. I ______ yet",
+            textExtra: "Извините. Я ещё не закончил.",
             options: {
               A: "haven’t finished",
               B: "didn’t finish",
               C: "don’t finish"
             },
             correctAnswer: "A",
-            explanation: "yet — сигнал Present Perfect: haven't finished yet"
+            explanation: "yet — ещё, пока - используется когда говорим пока еще не сделали чего-то - это Present Perfect"
           },
           {
-            text: "I want to give up………",
+            text: "I want to give up _______",
+            textExtra: "Я хочу бросить пить.",
             options: {
               A: "to drink",
               B: "drink",
               C: "drinking"
             },
             correctAnswer: "C",
-            explanation: "give up + ing (бросить делать что-то) → give up drinking"
+            explanation: "после give up всегда говорим глагол + ing"
           },
           {
-            text: "She has stopped the train, ……..?",
+            text: "She has stopped the train, ______?",
+            textExtra: "Она остановила поезд, не так ли?",
             options: {
               A: "doesn’t she",
               B: "has she",
@@ -2883,30 +2907,33 @@ const GameTestsSeedData = {
               D: "did she"
             },
             correctAnswer: "C",
-            explanation: "разделительный вопрос: has → hasn't she"
+            explanation: "это правило tag questions - если тут ошиблись, то напишите Винсенту объяснить вам это правило'"
           },
           {
-            text: "There …… a door and 2 windows there.",
+            text: "There _____ a door and 2 windows there.",
+            textExtra: "Там есть дверь и два окна.",
             options: {
               A: "are",
               B: "is",
               C: "some"
             },
             correctAnswer: "B",
-            explanation: "конструкция there is + первое существительное в единственном числе (a door)"
+            explanation: "Находится дверь - there is + существительное в единственном числе (a door). Если бы сперва были окна, то было бы there are 2 windows and a door."
           },
           {
-            text: "It’s not warm, ……?",
+            text: "It’s not warm, _____?",
+            textExtra: "Не тепло, правда?",
             options: {
               A: "is it",
               B: "isn’t it?",
               C: "does it"
             },
             correctAnswer: "A",
-            explanation: "разделительный вопрос: отрицание в первой части → is it?"
+            explanation: "правило батарейки -+ , +- уточняющий вопрос tag question? "
           },
           {
-            text: "Are you going there? – Yes, I…….",
+            text: "Are you going there? – Yes, I _____ ",
+            textExtra: "Ты идёшь туда? – Да.",
             options: {
               A: "do",
               B: "was",
@@ -2917,17 +2944,19 @@ const GameTestsSeedData = {
             explanation: "краткий ответ на Are you... → Yes, I am"
           },
           {
-            text: "There’s …….. paper on the table.",
+            text: "There’s _____ paper on the table.",
+            textExtra: "На столе есть немного бумаги.",
             options: {
               A: "a",
               B: "some",
               C: "any"
             },
             correctAnswer: "B",
-            explanation: "paper (бумага) — неисчисляемое → some в утверждении"
+            explanation: "Немного бумаги на столе или какая-то бумага на столе. В утверждениях some, в отрицаниях any. Артикль (A) не нужен потому что бумага - неисчислимое"
           },
           {
-            text: "How many brothers and sisters……..?",
+            text: "How many brothers and sisters _____ ?",
+            textExtra: "Сколько у тебя братьев и сестёр?",
             options: {
               A: "are you having",
               B: "you have",
@@ -2935,10 +2964,11 @@ const GameTestsSeedData = {
               D: "do you have"
             },
             correctAnswer: "D",
-            explanation: "вопрос с how many → do you have (Present Simple)"
+            explanation: "do you have brothers? How many brothers do you have? Вопрос с how many → do you have (Present Simple)"
           },
           {
-            text: "We met when we…….in France",
+            text: "We met when we _____ in France",
+            textExtra: "Мы встретились, когда были во Франции.",
             options: {
               A: "are",
               B: "was",
@@ -2946,30 +2976,33 @@ const GameTestsSeedData = {
               D: "study"
             },
             correctAnswer: "C",
-            explanation: "we → were (Past Continuous: were living / находились во Франции)"
+            explanation: "was - был, were - были, study - учиться, are - если бы мы сейчас находились во франции"
           },
           {
-            text: "I don’t want …… to leave me.",
+            text: "I don’t want _____ to leave me.",
+            textExtra: "Я не хочу, чтобы она ушла от меня.",
             options: {
               A: "she",
               B: "her",
               C: "that she"
             },
             correctAnswer: "B",
-            explanation: "после want + объект (her) + to leave (конструкция want somebody to do)"
+            explanation: "нужно запомнить эту конструкцию, это не так как в русском языке - хочу чтобы она - want her to..."
           },
           {
-            text: "………… in London.",
+            text: "____ _____ in London.",
+            textExtra: "В Лондоне идёт снег.",
             options: {
               A: "Snow goes",
               B: "It snows",
               C: "It snowing"
             },
             correctAnswer: "B",
-            explanation: "говорим о погоде: it snows (Present Simple — обычно идёт снег)"
+            explanation: "говорим о погоде: it snows (Present Simple — обычно идёт снег) так всегда будет с дождем и снегом. It snows, it rains. Говорить Rain goes нельзя"
           },
           {
-            text: "How………sugar do you eat a day?",
+            text: "How _____ sugar do you eat a day?",
+            textExtra: "Сколько сахара ты съедаешь в день?",
             options: {
               A: "many",
               B: "much",
@@ -2979,7 +3012,8 @@ const GameTestsSeedData = {
             explanation: "sugar (сахар) — неисчисляемое → how much"
           },
           {
-            text: "There ……… some grapes there the day before yesterday.",
+            text: "There _____ some grapes there the day before yesterday.",
+            textExtra: "Там было немного винограда позавчера.",
             options: {
               A: "was",
               B: "were",
@@ -2987,50 +3021,55 @@ const GameTestsSeedData = {
               D: "is"
             },
             correctAnswer: "B",
-            explanation: "grapes (виноград) — мн. число, the day before yesterday → Past: were"
+            explanation: "Находилось несколько винограден (grapes) там позавчера - первое there никак не переводится это просто отсылка - что-то находится где-то. А второе there переводится ТАМ "
           },
           {
-            text: "Will you do it? – No, I…….",
+            text: "Will you do it? – No, I _____",
+            textExtra: "Ты сделаешь это? – Нет.",
             options: {
               A: "won’t",
               B: "wouldn’t",
               C: "will"
             },
             correctAnswer: "A",
-            explanation: "краткий отрицательный ответ на will → No, I won't"
+            explanation: "краткий ответ won't это тоже самое что длинный ответ WILL + NOT. (won't = will + not)"
           },
           {
-            text: "Who are …….people?",
+            text: "Who are ______ people?",
+            textExtra: "Кто эти люди?",
             options: {
               A: "this",
               B: "those",
               C: "that"
             },
             correctAnswer: "B",
-            explanation: "people (мн. число) → those (те). this/that — для ед. числа"
+            explanation: "this - вот этот , that - вон тот, those - вон те, these - вот эти"
           },
           {
-            text: "It’s ………..weather!",
+            text: "It’s _____ weather today",
+            textExtra: "Сегодня ужасная погода.",
             options: {
               A: "a terrible",
               B: "terrible",
               C: "the terrible"
             },
             correctAnswer: "B",
-            explanation: "weather — неисчисляемое, артикль a не нужен → terrible weather"
+            explanation: "weather — неисчисляемое, артикль не нужен → terrible weather"
           },
           {
-            text: "As soon as she……., I’ll do it.",
+            text: "As soon as she ______, I’ll do it.",
+            textExtra: "Как только она придёт, я сделаю это.",
             options: {
               A: "come",
               B: "will come",
               C: "comes"
             },
             correctAnswer: "C",
-            explanation: "as soon as + Present Simple (comes) — будущее время не используется"
+            explanation: "как только она придет + Present Simple (comes) — будущее время не используется после as soon as"
           },
           {
-            text: "His eyes ……. blue",
+            text: "His eyes _____ blue",
+            textExtra: "Его глаза голубые.",
             options: {
               A: "are",
               B: "have",
@@ -3041,17 +3080,19 @@ const GameTestsSeedData = {
             explanation: "eyes (мн. число) → are (глаза голубые)"
           },
           {
-            text: "…… children are too noisy",
+            text: "_____ children are too noisy",
+            textExtra: "Их дети слишком шумные.",
             options: {
               A: "they",
               B: "them",
               C: "their"
             },
             correctAnswer: "C",
-            explanation: "притяжательное местоимение перед существительным → their children"
+            explanation: "them - им , they - они , their - их (притяжательное местоимение)"
           },
           {
-            text: "Now she…….. him.",
+            text: "Now she _____ him.",
+            textExtra: "Теперь она ненавидит его.",
             options: {
               A: "is hating",
               B: "hated",
@@ -3059,10 +3100,11 @@ const GameTestsSeedData = {
               D: "hate"
             },
             correctAnswer: "C",
-            explanation: "hate (ненавидеть) — глагол состояния, не используется в Continuous → hates"
+            explanation: "hate (ненавидеть) — глагол состояния, не используется в Continuous → ну и после it he she S пиши! hates"
           },
           {
-            text: "I’m going …….home with you.",
+            text: "I’m going _____ home with you.",
+            textExtra: "Я пойду домой с тобой.",
             options: {
               A: "at",
               B: "to",
@@ -3070,61 +3112,69 @@ const GameTestsSeedData = {
               D: "in"
             },
             correctAnswer: "C",
-            explanation: "go home — предлог НЕ нужен (home — наречие)"
+            explanation: "go home — предлог НЕ нужен - запомните фразу эту просто GO HOME !"
           },
           {
-            text: "She ………soon.",
+            text: "She _____ soon.",
+            textExtra: "Она скоро уезжает.",
             options: {
               A: "leaves",
               B: "will leaves",
               C: "is leaving",
-              D: "leave"
+              D: "is life",
+              E: "is live",
+              F: "leave"
             },
             correctAnswer: "C",
-            explanation: "запланированное действие в ближайшем будущем → is leaving"
+            explanation: "покинет, уйдет. действие в ближайшем будущем → is leaving, остальные варианты просто неправильный набор слов бессмысленный"
           },
           {
-            text: "What time ………. today?",
+            text: "What time _____ today?",
+            textExtra: "В котором часу она пришла сегодня?",
             options: {
               A: "has she come",
               B: "she has come",
               C: "did she come"
             },
             correctAnswer: "C",
-            explanation: "today (уже закончившийся день/прошлое) → Past Simple: did she come"
+            explanation: "В вопросе what time всегда Past Simple или Past Continuous"
           },
           {
-            text: "I …….. silly",
+            text: "I _____ silly",
+            textExtra: "Я не глупый.",
             options: {
               A: "amn’t",
               B: "am not",
               C: "isn’t"
             },
             correctAnswer: "B",
-            explanation: "отрицание I am → I am not (amn't не используется)"
+            explanation: "отрицание I am → I am not (amn't не используется и это ошибка 100%)"
           },
           {
-            text: "Who ………a shower with you?",
+            text: "Who _____ a shower with you?",
+            textExtra: "Кто принимает душ вместе с тобой?",
             options: {
               A: "have",
               B: "has",
               C: "do have"
             },
             correctAnswer: "B",
-            explanation: "вопрос к подлежащему (who = 3 лицо ед. число) → has"
+            explanation: "Запомни в таких вопросах всегда сразу глагол. Вопрос к подлежащему (who = 3 лицо ед. число) → has - если не понимаешь это правило, то попроси Винсента объяснить у него есть лайфхак"
           },
           {
-            text: "What …….?",
+            text: "What _____ ?",
+            textExtra: "Что она хочет?",
             options: {
               A: "she wants",
               B: "does she want",
               C: "does she wants"
             },
             correctAnswer: "B",
-            explanation: "вопрос в Present Simple: does she want (без S на want)"
+            explanation: "вопрос в Present Simple - это просто база - если неправильно ответил - гоу первые уроки повторять "
           },
           {
-            text: "She’s gonna…… leave",
+            text: "She’s gonna _____ leave",
+            textExtra: "Она собирается уйти.",
             options: {
               A: "at",
               B: "to",
@@ -3135,7 +3185,8 @@ const GameTestsSeedData = {
             explanation: "gonna = going to → gonna leave (без лишних предлогов)"
           },
           {
-            text: "If he… .kisses me tomorrow, I’ll kiss him",
+            text: "If he _____ kisses me tomorrow, I’ll kiss him too",
+            textExtra: "Если он поцелует меня завтра, я тоже поцелую его.",
             options: {
               A: "–",
               B: "will",
@@ -3143,10 +3194,11 @@ const GameTestsSeedData = {
               D: "is"
             },
             correctAnswer: "A",
-            explanation: "первый тип условия: if + Present Simple (kisses) — will не нужен"
+            explanation: "После if не нужно will - если забыл это правило, то повтори - оно называется - первый тип условия: if + Present Simple"
           },
           {
-            text: "They will arrive …. Sunday",
+            text: "They will arrive _____ Sunday",
+            textExtra: "Они прибудут в воскресенье.",
             options: {
               A: "in",
               B: "on",
@@ -3157,7 +3209,8 @@ const GameTestsSeedData = {
             explanation: "с днями недели предлог on → on Sunday"
           },
           {
-            text: "….. help me?",
+            text: "_____ help me?",
+            textExtra: "Ты можешь мне помочь?",
             options: {
               A: "can you to",
               B: "do you can",
@@ -3167,19 +3220,30 @@ const GameTestsSeedData = {
             explanation: "вопрос с can: Can you help me? (без to и do)"
           },
           {
-            text: "I…..agree",
+            text: "I _____ agree",
+            textExtra: "Я не согласен.",
+            options: {
+              A: "am not",
+              B: "not",
+              C: "do not"
+            },
+            correctAnswer: "C",
+            explanation: "agree — глагол - I don't agree"
+          },
+          {
+            text: "I _____ agree",
+            textExtra: "Я согласен.",
             options: {
               A: "am",
               B: "–"
             },
             correctAnswer: "B",
-            explanation: "agree — глагол, не требует am. I agree — я согласен"
+            explanation: "agree — глагол - I agree"
           }
         ]
-      },
-    ],
+      }
+    ]
   },
-
 
   test1V1: {
     mainDescription: "Let's find out the weak spots",
