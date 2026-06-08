@@ -358,7 +358,8 @@ const AllGames = ref([
 const filteredGames = computed(() => {
   const missionName = route.params.missionName;
 
-  const wordSetExists = (name) => {
+  // Функция проверки существования набора в shortWordsData
+  const shortWordsSetExists = (name) => {
     if (shortWordsData[name]) return true;
     for (const level in shortWordsData) {
       if (shortWordsData[level] && shortWordsData[level][name]) {
@@ -368,20 +369,28 @@ const filteredGames = computed(() => {
     return false;
   };
 
-  if (!wordSetExists(missionName)) return [];
+  // Универсальная функция проверки для любых данных
+  const gameHasData = (game) => {
+    const gameData = game.gameData;
 
-  // Список игр, которые используют shortWordsData
-  const shortWordsGamePaths = [
-    'print-all-words', 'find-pairs-easy', 'spell-it', 'find-pairs-hard',
-    'game-pronunciation', 'game-whatDoYouHear', 'spell-ten', 'game-translate',
-    'gameSnakeWords', 'spelling'
-  ];
+    // Если игра использует shortWordsData
+    if (gameData === shortWordsData) {
+      return shortWordsSetExists(missionName);
+    }
 
-  return AllGames.value.filter(game =>
-    shortWordsGamePaths.includes(game.path) && game.active
-  );
+    // Для других типов данных - проверяем, есть ли у них свойство с именем миссии
+    if (gameData && typeof gameData.hasOwnProperty === 'function') {
+      return gameData.hasOwnProperty(missionName);
+    }
+
+    // Если не можем проверить - не показываем
+    return false;
+  };
+
+  return AllGames.value.filter(game => {
+    return gameHasData(game) && game.active;
+  });
 });
-
 
 
 const startGame = (path) => {
