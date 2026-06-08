@@ -183,6 +183,26 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      type: "hardcodedLink",
+      path: "/level/A0/words",  // ← новый маршрут для просмотра всех слов уровня A0
+      missionVisibleName: "📚 Все слова уровня A0",
+      missionDescription: "Все слова, которые нужно знать на уровне A0",
+      lvl: "lvl1",
+      id: 1000,
+      active: true,
+      gameIcon: "📖",
+      stars: "1"
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
+      missionVisibleName: "Местоимения",
+      missionDescription: "Слова вместо имени",
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examY1V1/tests-and-exams",
       missionVisibleName: "Давно мы тест не решали 💡",

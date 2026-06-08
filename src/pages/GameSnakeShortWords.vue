@@ -137,6 +137,9 @@ export default {
       strobeState: false
     };
   },
+
+
+
   mounted() {
     this.loadGameData();
     this.initGame();
@@ -146,37 +149,43 @@ export default {
   },
   methods: {
     // Метод для загрузки данных игры
+
+    getWordSet(name) {
+      if (shortWordsData[name]) return shortWordsData[name];
+      for (const level in shortWordsData) {
+        if (shortWordsData[level] && shortWordsData[level][name]) {
+          return shortWordsData[level][name];
+        }
+      }
+      return [];
+    },
+
     loadGameData() {
       try {
-        // Получаем missionName из текущего маршрута
         const missionName = this.$route?.params?.missionName;
-
         console.log('Current mission name:', missionName);
-        console.log('Available missions:', Object.keys(shortWordsData));
 
-        // Проверяем, есть ли данные для этой миссии
-        if (missionName && shortWordsData[missionName]) {
-          this.testQuicklyData = shortWordsData[missionName];
+        // Используем новую функцию getWordSet
+        const words = this.getWordSet(missionName);
+
+        if (words.length > 0) {
+          this.testQuicklyData = words;
           console.log(`Загружена миссия: ${missionName}, слов: ${this.testQuicklyData.length}`);
 
-          // ДЕБАГ: выводим первое слово для проверки русских символов
           if (this.testQuicklyData.length > 0) {
             console.log('Первое слово:', this.testQuicklyData[0]);
-            console.log('Русский перевод:', this.testQuicklyData[0].ru);
-            console.log('Тип данных ru:', typeof this.testQuicklyData[0].ru);
           }
         } else {
-          // Если миссия не найдена, используем демо-данные ИЗ ПЕРВОГО КОМПОНЕНТА
+          // Если миссия не найдена, используем демо-данные
           console.warn('Миссия не найдена, используем демо-данные');
           this.testQuicklyData = [
             { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/" },
             { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/" },
-            { id: 3, eng: "Capital", ru: "Столица1234567891011" },
-            { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
+            { id: 3, eng: "Capital", ru: "Столица", hint: "/кЭпитал/" },
+            { id: 4, eng: "Special", ru: "Особенный", hint: "/спЭшл/" },
           ];
         }
 
-        // Проверяем, что данные загружены
         if (this.testQuicklyData.length === 0) {
           console.error('Нет данных для игры');
           this.testQuicklyData = [
@@ -186,7 +195,6 @@ export default {
         }
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
-        // Резервные данные на случай ошибки
         this.testQuicklyData = [
           { id: 1, eng: "Error", ru: "Ошибка", hint: "/эрор/" },
           { id: 2, eng: "Loading", ru: "Загрузка", hint: "/лОудинг/" }

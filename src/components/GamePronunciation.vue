@@ -168,7 +168,15 @@ import { useQuasar } from 'quasar'
 
 // 👇 ДОБАВЛЯЕМ СИНХРОННЫЙ ИМПОРТ КАК ЗАПАСНОЙ ВАРИАНТ
 import shortWordsData from '../dataForGames/short-words-data'
-
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
 const route = useRoute()
 const $q = useQuasar()
 
@@ -791,8 +799,8 @@ const loadGameData = () => {
     return
   }
 
-  // ПРЯМОЙ СИНХРОННЫЙ ДОСТУП
-  const data = shortWordsData[missionName]
+  // ✅ ИСПОЛЬЗУЕМ getWordSet ВМЕСТО ПРЯМОГО ДОСТУПА
+  const data = getWordSet(missionName)
 
   if (data && Array.isArray(data) && data.length > 0) {
     console.log('✅ Data loaded! Items:', data.length)
@@ -809,7 +817,6 @@ const loadGameData = () => {
     })
   }
 }
-
 // Функция для случайного выбора голоса
 const getRandomVoice = () => {
   const availableVoicesValues = voiceOptions.map(v => v.value)

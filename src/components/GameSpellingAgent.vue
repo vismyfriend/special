@@ -159,6 +159,19 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useGameStore } from "stores/example-store";
 
+
+// Добавьте после импортов
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
+
 const router = useRouter();
 const route = useRoute();
 const gameStore = useGameStore();
@@ -755,7 +768,7 @@ const tryHarderLevel = () => {
   timerInterval = setInterval(() => { time.value += 10; }, 10);
 
   // Получаем слова для текущей миссии
-  const allWords = shortWordsData[currentMission.value];
+  const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
     // Заново выбираем 10 случайных слов
     gameWords.value = selectRandomWords(allWords, 10);
@@ -820,7 +833,7 @@ const improveResult = () => {
   time.value = 0;
   isHintBlurred.value = false;  // 🆕 Добавить сброс blur
 
-  const allWords = shortWordsData[currentMission.value];
+  const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
     if (difficultyLevel.value === 3) {
@@ -857,7 +870,7 @@ const getSlotClass = (index, item) => {
 
 onMounted(() => {
   currentMission.value = route.params.missionName;
-  const allWords = shortWordsData[currentMission.value];
+  const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
     currentWordIndex.value = 0;

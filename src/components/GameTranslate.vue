@@ -83,7 +83,15 @@
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
-
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
 const route = useRoute();
 
 // Данные игры
@@ -325,7 +333,7 @@ onMounted(() => {
   window.addEventListener('resize', fitText);
 
   const missionName = route.params.missionName;
-  currentGameData.value = shortWordsData[missionName] || [];
+  currentGameData.value = getWordSet(missionName);
   shuffledData.value = shuffle([...currentGameData.value]);
 
   if (shuffledData.value.length > 0) {

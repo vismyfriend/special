@@ -123,7 +123,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 // 👇 СИНХРОННЫЙ ИМПОРТ (как в работающем коде)
 import shortWordsData from '../dataForGames/short-words-data'
-
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
 const route = useRoute()
 const $q = useQuasar()
 
@@ -437,19 +445,14 @@ const initGameData = async () => {
     return false;
   }
 
-  // Используем setTimeout с нулевой задержкой, чтобы дать браузеру
-  // возможность завершить загрузку чанка с данными.
-  // Это ключевой момент для решения race condition.
-  await new Promise(resolve => setTimeout(resolve, 0));
+  // Используем новую функцию getWordSet вместо прямого доступа
+  const missionData = getWordSet(missionName);
 
-  // Теперь безопасно обращаемся к данным
-  const missionData = shortWordsData[missionName];
-
-  if (!missionData) {
-    console.error(`Mission "${missionName}" not found. Available:`, Object.keys(shortWordsData));
+  if (!missionData || missionData.length === 0) {
+    console.error(`Mission "${missionName}" not found. Available keys:`, Object.keys(shortWordsData));
     $q.notify({ type: 'negative', message: `❌ Миссия "${missionName}" не найдена`, timeout: 5000 });
     isLoading.value = false;
-    isDataReady.value = false; // Помечаем, что данные готовы
+    isDataReady.value = false;
     return false;
   }
 
@@ -458,7 +461,7 @@ const initGameData = async () => {
     ru: item.ru || item.translation || item.text,
     eng: item.eng || item.word || item.text,
     pronunciation: item.pronunciation || item.hint || ''
-  })).filter(item => item.ru && item.eng) // 👈 Фильтруем неполные данные
+  })).filter(item => item.ru && item.eng)
 
   console.log(`Loaded ${gameWords.value.length} words for mission:`, missionName)
 

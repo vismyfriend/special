@@ -139,6 +139,16 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
 const route = useRoute();
 const router = useRouter()
 
@@ -364,7 +374,7 @@ const printNotebook = () => {
 onMounted(() => {
   // Получаем данные урока
   currentMission.value = route.params.missionName || 'Текущий урок';
-  currentGameData.value = shortWordsData[currentMission.value] || [];
+  currentGameData.value = getWordSet(currentMission.value);
 
 
   // Сохраняем оригинальные данные

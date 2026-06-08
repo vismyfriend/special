@@ -1357,6 +1357,22 @@ const shortWordsData = {
     { id: 26, eng: "chapel", ru: "часовня, капелла" },
   ],
 
+  A0: {
+    pronouns0: [
+      {id: 1, eng: "I", ru: "я", hint: "/ aй /", level: "A0"},
+      {id: 2, eng: "he", ru: "он", hint: "/ хи /", level: "A0"},
+      {id: 3, eng: "she", ru: "она", hint: "/ щИ /", level: "A0"},
+      {id: 4, eng: "we", ru: "мы", hint: "/ уи /", level: "A0"},
+      {id: 5, eng: "they", ru: "они", hint: "/ Дэй /", level: "A0"},
+      {id: 6, eng: "you", ru: "вы", hint: "/ ю /", level: "A0"},
+      {id: 7, eng: "it", ru: "это", hint: "/ ит /", level: "A1"},
+    ],
+    test: [
+      {id: 1, eng: "test", ru: "test", hint: "/ 1 /"},
+      {id: 2, eng: "test2", ru: "test2", hint: "/ 2 /"},
+
+    ],
+  },
 
   pronounsA0: [
     { id: 1, eng: "I", ru: "я", hint: "/ aй /" },
@@ -1365,7 +1381,7 @@ const shortWordsData = {
     { id: 4, eng: "we", ru: "мы", hint: "/ уи /" },
     { id: 5, eng: "they", ru: "они", hint: "/ Дэй /" },
     { id: 6, eng: "you", ru: "вы", hint: "/ ю /" },
-    { id: 7, eng: "it = this", ru: "это (вот это)", hint: "/ ит = дыс /" },
+    { id: 7, eng: "it = this", ru: "это (вот это)", hint: "/ ит = дыс /", level: "A0" },
     { id: 8, eng: "our", ru: "наш", hint: "/ АУа /" },
     { id: 9, eng: "your", ru: "ваш", hint: "/ ё /" },
     { id: 10, eng: "her", ru: "её", hint: "/ хё /" },

@@ -43,6 +43,11 @@ const routes = [
                 component: () => import('components/GamePrintAllWordsNotebook.vue')
               },
               {
+                path: '/level/:level/words',
+                name: 'AllWordsByLevel',
+                component: () => import('src/components/AllWordsByLevel.vue')
+              },
+              {
                 path: 'print',
                 component: () => import('components/GamePrintAllWords.vue')
               },

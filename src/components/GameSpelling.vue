@@ -147,6 +147,16 @@ import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 import { computed, onMounted, ref } from 'vue';
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
 const router = useRouter();
 const route = useRoute();
 
@@ -339,11 +349,13 @@ const currentWordDisplay = computed(() => {
 });
 
 onMounted(() => {
-  currentMission.value = route.params.missionName;
-  currentGameData.value = shortWordsData[currentMission.value] || [];
+  const missionName = route.params.missionName; // ✅ определяем переменную
+  currentMission.value = missionName;
+  currentGameData.value = getWordSet(missionName);
   shuffledData = shuffle([...currentGameData.value]);
   loadQuestion();
 });
+
 </script>
 
 <style lang="scss" scoped>

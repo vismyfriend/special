@@ -224,20 +224,31 @@ const finishGame = () => {
 };
 
 onMounted(() => {
+  currentMission.value = route.params.missionName;
 
-    currentMission.value = route.params.missionName;
-    currentGameData.value = shortWordsData[currentMission.value];
-    currentGameData.value = selectRandomWords(currentGameData.value, 20); // Выбираем 20 случайных слов
+  // Функция для получения данных из любой структуры
+  const getWordSet = (name) => {
+    if (shortWordsData[name]) return shortWordsData[name];
+    for (const level in shortWordsData) {
+      if (shortWordsData[level] && shortWordsData[level][name]) {
+        return shortWordsData[level][name];
+      }
+    }
+    return [];
+  };
 
-    ruCards.value = splitCards("ru");
-    engCards.value = splitCards("eng");
+  const words = getWordSet(currentMission.value);
+  console.log(`Загружено слов для "${currentMission.value}": ${words.length}`);
 
-    // Запускаем секундомер
-    setInterval(() => {time.value+= 10}, 10)
+  currentGameData.value = selectRandomWords(words, 20);
 
+  ruCards.value = splitCards("ru");
+  engCards.value = splitCards("eng");
 
-
+  // Запускаем секундомер
+  setInterval(() => {time.value+= 10}, 10)
 });
+
 </script>
 
 <style lang="scss" scoped>

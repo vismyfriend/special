@@ -351,8 +351,35 @@ const AllGames = ref([
 ])
 
 
+// const filteredGames = computed(() => {
+//   return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
+// });
+
 const filteredGames = computed(() => {
-  return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
+  const missionName = route.params.missionName;
+
+  const wordSetExists = (name) => {
+    if (shortWordsData[name]) return true;
+    for (const level in shortWordsData) {
+      if (shortWordsData[level] && shortWordsData[level][name]) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  if (!wordSetExists(missionName)) return [];
+
+  // Список игр, которые используют shortWordsData
+  const shortWordsGamePaths = [
+    'print-all-words', 'find-pairs-easy', 'spell-it', 'find-pairs-hard',
+    'game-pronunciation', 'game-whatDoYouHear', 'spell-ten', 'game-translate',
+    'gameSnakeWords', 'spelling'
+  ];
+
+  return AllGames.value.filter(game =>
+    shortWordsGamePaths.includes(game.path) && game.active
+  );
 });
 
 

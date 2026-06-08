@@ -150,6 +150,16 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useGameStore } from "stores/example-store";
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
 const router = useRouter();
 const route = useRoute();
 const gameStore = useGameStore();
@@ -619,16 +629,18 @@ const goToAllSets = () => {
 };
 
 // Улучшить результат - перезапустить игру
+// Улучшить результат - перезапустить игру
 const improveResult = () => {
   isGameFinished.value = false;
   currentWordIndex.value = 0;
   mistakesCount.value = 0;
   time.value = 0;
   isHintBlurred.value = true;
-  isTranslationBlurred.value = true;  // Добавляем эту строку
+  isTranslationBlurred.value = true;
   showInstructions.value = true;
 
-  const allWords = shortWordsData[currentMission.value];
+  // ✅ ИСПРАВЛЕНО: используем getWordSet
+  const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
     loadWord();
@@ -636,6 +648,7 @@ const improveResult = () => {
 
   if (timerInterval) clearInterval(timerInterval);
 };
+
 // Функция для получения класса слота
 const getSlotClass = (index, item) => {
   if (item.isSpace) return 'space';
@@ -648,7 +661,8 @@ const getSlotClass = (index, item) => {
 
 onMounted(() => {
   currentMission.value = route.params.missionName;
-  const allWords = shortWordsData[currentMission.value];
+  const allWords = getWordSet(currentMission.value);
+
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
     currentWordIndex.value = 0;

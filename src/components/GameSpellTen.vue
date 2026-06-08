@@ -34,6 +34,15 @@ import { ref, onMounted } from 'vue';
 import shortWordsData from '../dataForGames/short-words-data';
 import { useRoute } from 'vue-router';
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
 const route = useRoute();
 
 const currentGameData = ref([]);
@@ -170,7 +179,7 @@ const isAnswerCorrect = (userAnswer, correctAnswer) => {
 };
 onMounted(() => {
   const missionName = route.params.missionName;
-  currentGameData.value = shortWordsData[missionName];
+  currentGameData.value = getWordSet(missionName);
   ruCards.value = splitCards("ru");
 });
 </script>

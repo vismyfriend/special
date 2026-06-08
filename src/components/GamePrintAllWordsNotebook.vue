@@ -149,6 +149,16 @@ import gifWhatIsUp1 from '/src/assets/images/gifs/whatIsUp1.gif';
 import gifMatrixPills2 from '/src/assets/images/gifs/matrixPills.gif';
 import areAmIs from '/src/assets/images/areAmIs.png';
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
 const harderModeEnabled = ref(false);
 
 const currentGif = ref('');
@@ -400,7 +410,7 @@ watch(homeworkWords, () => {
 
 onMounted(() => {
   currentMission.value = route.params.missionName || 'Текущий урок';
-  currentGameData.value = shortWordsData[currentMission.value] || [];
+  currentGameData.value = getWordSet(currentMission.value);
   homeworkWords.value = selectHomeworkWords();
   changeGif();
 

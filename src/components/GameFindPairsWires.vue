@@ -76,6 +76,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useGameStore } from 'stores/example-store';
 import shortWordsData from '../dataForGames/short-words-data';
 
+
+
 const router = useRouter();
 const route = useRoute();
 const gameStore = useGameStore();
@@ -386,7 +388,21 @@ let startTime = null;
 
 onMounted(() => {
   currentMission.value = route.params.missionName;
-  currentGameData.value = shortWordsData[currentMission.value] || [];
+// Функция для получения данных (работает и с плоской, и с вложенной структурой)
+  const getWordSet = (name) => {
+    // Проверка в плоской структуре
+    if (shortWordsData[name]) return shortWordsData[name];
+
+    // Проверка во вложенной структуре
+    for (const level in shortWordsData) {
+      if (shortWordsData[level] && shortWordsData[level][name]) {
+        return shortWordsData[level][name];
+      }
+    }
+    return [];
+  };
+
+  currentGameData.value = getWordSet(currentMission.value);
   console.log(currentMission.value);
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
   initialTotalQuestions.value = shuffledData.length; // например, 12

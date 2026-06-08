@@ -69,6 +69,16 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 
+const getWordSet = (name) => {
+  if (shortWordsData[name]) return shortWordsData[name];
+  for (const level in shortWordsData) {
+    if (shortWordsData[level] && shortWordsData[level][name]) {
+      return shortWordsData[level][name];
+    }
+  }
+  return [];
+};
+
 const router = useRouter();
 const route = useRoute();
 
@@ -128,7 +138,7 @@ const toggleWord = (index) => {
 
 onMounted(() => {
     currentMission.value = route.params.missionName;
-    currentGameData.value = shortWordsData[currentMission.value] || [];
+    currentGameData.value = getWordSet(currentMission.value);
 });
 </script>
 
