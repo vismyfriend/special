@@ -358,37 +358,24 @@ const AllGames = ref([
 const filteredGames = computed(() => {
   const missionName = route.params.missionName;
 
-  // Функция проверки существования набора в shortWordsData
-  const shortWordsSetExists = (name) => {
-    if (shortWordsData[name]) return true;
-    for (const level in shortWordsData) {
-      if (shortWordsData[level] && shortWordsData[level][name]) {
+  // Универсальная проверка: есть ли данные для этой миссии
+  const hasData = (dataObj) => {
+    if (!dataObj) return false;
+
+    // Прямая проверка
+    if (dataObj[missionName]) return true;
+
+    // Проверка во вложенных объектах (для уровней A0, CustomLevel и т.д.)
+    for (const key in dataObj) {
+      if (dataObj[key] && typeof dataObj[key] === 'object' && dataObj[key][missionName]) {
         return true;
       }
     }
     return false;
   };
 
-  // Универсальная функция проверки для любых данных
-  const gameHasData = (game) => {
-    const gameData = game.gameData;
-
-    // Если игра использует shortWordsData
-    if (gameData === shortWordsData) {
-      return shortWordsSetExists(missionName);
-    }
-
-    // Для других типов данных - проверяем, есть ли у них свойство с именем миссии
-    if (gameData && typeof gameData.hasOwnProperty === 'function') {
-      return gameData.hasOwnProperty(missionName);
-    }
-
-    // Если не можем проверить - не показываем
-    return false;
-  };
-
   return AllGames.value.filter(game => {
-    return gameHasData(game) && game.active;
+    return hasData(game.gameData) && game.active;
   });
 });
 

@@ -185,20 +185,45 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/level/A0/words",  // ← новый маршрут для просмотра всех слов уровня A0
-      missionVisibleName: "📚 Все слова уровня A0",
-      missionDescription: "Все слова, которые нужно знать на уровне A0",
-      lvl: "lvl1",
+      missionVisibleName: "Все слова  A0",
+      missionDescription: "Все слова A0",
+      lvl: "lvl365",
       id: 1000,
       active: true,
-      gameIcon: "📖",
-      stars: "1"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/level/CustomLevel/words",
+      missionVisibleName: "Мой кастомный уровень",
+      missionDescription: "Все слова CustomLevel",
+      lvl: "lvl365",
+      active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
-      missionVisibleName: "Местоимения",
-      missionDescription: "Слова вместо имени",
-      lvl: "lvl1",
+      missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',
+      missionDescription: 'Mission: "WHO?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/spell-it",
+      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(предлоги)</i>',
+      missionDescription: 'Mission: "WHAT?"',
+      stars: 2,
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/time0/find-pairs-hard",
+      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(время)</i>',
+      missionDescription: 'Mission: "WHEN?"',
+      lvl: "lvl0",
       id: 1001,
       active: true,
     },
@@ -317,78 +342,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
-    // extra information
-    {
-      missionVisibleName: "Extra information",
-      type: "subTasks",
-      missionDescription: "Дополнительные материалы",
-      id: "subtasks-newSub",
-      style: "glassMorphism", // Это ключевое значение для применения стиля
-      active: true,
-      lvl: ["lvl2"],
-      subTasks: [
-        {
-          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-          url: "https://drive.google.com/drive/u/0/recent",
-          target: '_blank', // Открывать в новой вкладке
-          missionVisibleName: "Google документы",
-          missionDescription: "Secret information",
-          id: 1002,
-          active: true,
-          gameImg: "wiresPic.png",
-          gameIcon:'📚'
-        },
-        {
-          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          path: "/sounds",
-          missionVisibleName: "Все звуки английского",
-          missionDescription: "фонетика",
-          id: 1001,
-          active: true,
-          gameIcon:'🗣️',
-        },
-        {
-          type: "externalLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-          url: "https://youtube.com/@vismyfriend?sub_confirmation=1.",
-          missionVisibleName: "Ютюб Винсента",
-          missionDescription: "My YouTube channel",
-          id: 1001,
-          active: true,
-          gameIcon:'🍿',
-        },
-        {
-          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-          url: "https://ororo.tv",
-          target: '_blank', // Открывать в новой вкладке
-          missionVisibleName: "Films in English",
-          missionDescription: "Movies in English",
-          id: 1002,
-          active: true,
-          gameImg: "wiresPic.png",
-          gameIcon:'🎬'
-        },{
-          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-          url: "https://perchance.org/ai-text-to-image-generator",
-          target: '_blank', // Открывать в новой вкладке
-          missionVisibleName: "Ai image generator",
-          missionDescription: "ИИ генератор картинок",
-          id: 1002,
-          active: true,
-          gameImg: "wiresPic.png",
-          gameIcon:'🎨'
-        },
-        {
-          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
-          url: "https://vismyfriend.github.io/2.5_D_game_1/",
-          target: '_blank', // Открывать в новой вкладке
-          missionVisibleName: "2.5D Copybook Game",
-          missionDescription: "Notebook Game 2.5Д",
-          id: 1002,
-          active: true,
-        },
-      ]
-    },
-    // определить уровень
+
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/emoji/find-pairs-hard",
@@ -551,7 +505,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl1"],
+      lvl: ["lvl0"],
 
       subTasks: [
         {
@@ -561,7 +515,7 @@ export const allGamesAndSetsOfWordsList =
           missionDescription: "Digits - диджитс",
           id: 1001,
           active: true,
-          stars: 3
+          gameIcon: '1️⃣'
         },
         {
           type: "hardcodedLink",
@@ -570,7 +524,7 @@ export const allGamesAndSetsOfWordsList =
           missionDescription: "Homework №1",
           id: 1001,
           active: true,
-          stars: 4
+          gameIcon: '2️⃣'
         },
         {
           type: "hardcodedLink",
@@ -1029,6 +983,79 @@ export const allGamesAndSetsOfWordsList =
       gameIcon:'1️⃣'
 
     },
+
+    // extra information
+    {
+      missionVisibleName: "Extra information",
+      type: "subTasks",
+      missionDescription: "Дополнительные материалы",
+      id: "subtasks-newSub",
+      style: "glassMorphism", // Это ключевое значение для применения стиля
+      active: true,
+      lvl: ["lvl0"],
+      subTasks: [
+        {
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://drive.google.com/drive/u/0/recent",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Google документы",
+          missionDescription: "Secret information",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'📚'
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/sounds",
+          missionVisibleName: "Все звуки английского",
+          missionDescription: "фонетика",
+          id: 1001,
+          active: true,
+          gameIcon:'🗣️',
+        },
+        {
+          type: "externalLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          url: "https://youtube.com/@vismyfriend?sub_confirmation=1.",
+          missionVisibleName: "Ютюб Винсента",
+          missionDescription: "My YouTube channel",
+          id: 1001,
+          active: true,
+          gameIcon:'🍿',
+        },
+        {
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://ororo.tv",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Films in English",
+          missionDescription: "Movies in English",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'🎬'
+        },{
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://perchance.org/ai-text-to-image-generator",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "Ai image generator",
+          missionDescription: "ИИ генератор картинок",
+          id: 1002,
+          active: true,
+          gameImg: "wiresPic.png",
+          gameIcon:'🎨'
+        },
+        {
+          type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
+          url: "https://vismyfriend.github.io/2.5_D_game_1/",
+          target: '_blank', // Открывать в новой вкладке
+          missionVisibleName: "2.5D Copybook Game",
+          missionDescription: "Notebook Game 2.5Д",
+          id: 1002,
+          active: true,
+        },
+      ]
+    },
+    // определить уровень
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA00/find-pairs-hard",

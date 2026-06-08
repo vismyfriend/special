@@ -1367,7 +1367,35 @@ const shortWordsData = {
       {id: 6, eng: "you", ru: "вы", hint: "/ ю /", level: "A0"},
       {id: 7, eng: "it", ru: "это", hint: "/ ит /", level: "A1"},
     ],
-    test: [
+    prepositionsOfPlace0: [
+      {id: 1, eng: "at work", ru: "на работе", hint: "/ эт ворк /"},
+      {id: 2, eng: "home", ru: "дома", hint: "/ хОум /"},
+      {id: 3, eng: "in a shop", ru: "в магазине", hint: "/ ин э шоп /"},
+      {id: 4, eng: "on vacation", ru: "в отпуске", hint: "/ он вэ кЭй шэн /"},
+      {id: 5, eng: "near by", ru: "рядом с", hint: "/ нИар бай /"},
+      {id: 6, eng: "at school", ru: "в школе", hint: "/ эт скул /"},
+    ],
+    time0: [
+      {id: 1, eng: "at one pm", ru: "в час дня", hint: "/ эт уан пи эм /", level: "A0"},
+      {id: 2, eng: "at two am", ru: "в два часа ночи", hint: "/ эт ту эй эм /", level: "A0"},
+      {id: 4, eng: "at four pm", ru: "в четыре часа дня", hint: "/ эт фо пи эм /", level: "A0"},
+      {id: 5, eng: "at five", ru: "в пять", hint: "/ эт файв /", level: "A0"},
+      {id: 6, eng: "at six am", ru: "в шесть утра", hint: "/ эт сЫкс эй эм/", level: "A0"},
+      {id: 8, eng: "at eight am", ru: "в восемь утра", hint: "/ эт эйт эй эм/", level: "A0"},
+      {id: 9, eng: "at nine", ru: "в девять", hint: "/ эт найн /", level: "A0"},
+      {id: 10, eng: "at ten pm", ru: "в десять вечера", hint: "/ эт тэн пи эм/", level: "A0"},
+      {id: 12, eng: "at twelve pm", ru: "в 12 дня", hint: "/ эт туэлв пи эм/", level: "A0"},
+      {id: 13, eng: "at twelve am", ru: "в 12 ночи", hint: "/ эт туэлв эй эм /", level: "A0"},
+    ],
+  },
+
+  CustomLevel: {
+    pronouns0: [
+      {id: 1, eng: "I", ru: "я", hint: "/ aй /", level: "A0"},
+      {id: 2, eng: "he", ru: "он", hint: "/ хи /", level: "A0"},
+
+    ],
+    test2: [
       {id: 1, eng: "test", ru: "test", hint: "/ 1 /"},
       {id: 2, eng: "test2", ru: "test2", hint: "/ 2 /"},
 

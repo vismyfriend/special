@@ -253,6 +253,7 @@
 
           <!-- Специальные карточки -->
           <div
+            v-if="currentLevel !== 'lvl0'"
             class="v-card-choose tooltip-wrapper random-set"
             role="button"
             @click="playRandomSet"
@@ -266,6 +267,8 @@
           </div>
 
           <div
+            v-if="currentLevel !== 'lvl0'"
+
             class="v-card-choose tooltip-wrapper glassMorphism"
             role="button"
             @click="tapalka"
@@ -282,6 +285,8 @@
 
           <!-- Рандомные вопросы -->
           <div
+            v-if="currentLevel !== 'lvl0'"
+
             class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
             @click="playRandomQuestions"
@@ -355,6 +360,8 @@
 
           <!-- Змейка -->
           <div
+            v-if="currentLevel === 'lvlAll' || currentLevel === 'lvl365'"
+
             class="v-card-choose tooltip-wrapper glassMorphism3"
             role="button"
             @click="playSnake"
@@ -721,12 +728,13 @@ const focusSearch = () => {
 const currentLevel = ref('lvlAll');
 
 const levels = [
-  { id: 'lvlAll', label: 'все' },
 
+  { id: 'lvl0', label: '0' },
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '🔓' },
+  { id: 'lvlAll', label: 'все' },
   { id: 'lvl365', label: '365' },
 
   // { id: 'lvl6', label: '6' },
@@ -1027,7 +1035,9 @@ const universalSearch = (item, query, checkChildrenOnly = false) => {
 // ==================== ФИЛЬТРЫ ====================
 const filterByCategory = (categoryName) => {
   return AllSetsOfWords.value.filter(set =>
-    set.active && hasCategory(set, categoryName)
+    set.active &&
+    hasCategory(set, categoryName) &&
+    matchesLevel(set)  // ← добавить проверку уровня
   );
 };
 
