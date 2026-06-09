@@ -1375,7 +1375,72 @@ const shortWordsData = {
       {id: 5, eng: "near by", ru: "рядом с", hint: "/ нИар бай /"},
       {id: 6, eng: "at school", ru: "в школе", hint: "/ эт скул /"},
     ],
-    time0: [
+
+    digits09: [
+      { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
+      { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
+      { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
+      { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
+      { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
+      { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
+      { id: 7, eng: "seven", ru: "семь", hint: "/ сэвэн /" },
+      { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
+      { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
+      { id: 10, eng: "zero", ru: "ноль", hint: "/ зИро /" },
+
+    ],
+    adjectives0: [
+      // Основные прилагательные внешности
+      { id: 1, eng: "cute", ru: "милый милая", hint: "/ кьЮт /" },
+      { id: 2, eng: "tall", ru: "высокая высокий", hint: "/ тОл /" },
+      { id: 3, eng: "fat", ru: "жирный жирная", hint: "/ фЭт /" },
+      { id: 4, eng: "ugly", ru: "уродливый уродливая", hint: "/ Агли /" },
+      { id: 5, eng: "fit", ru: "подтянутый подтянутая", hint: "/ фИт /" },
+      { id: 6, eng: "slim", ru: "стройный стройная", hint: "/ фИт /" },
+      { id: 7, eng: "short", ru: "низкий низкая", hint: "/ шОрт /" },
+      { id: 8, eng: "skinny", ru: "тощий тощая", hint: "/ скИни /" },
+      { id: 9, eng: "usual", ru: "обычный обычная", hint: "/ Южал /" },
+      { id: 10, eng: "bald", ru: "лысая лысый", hint: "/ бОлд /" },
+    ],
+
+    verbs0: [
+      // Основные прилагательные внешности
+      { id: 1, eng: "can", ru: "могу, умею", hint: "/ кЭн /" },
+      { id: 2, eng: "could", ru: "мог, умел", hint: "/ кУд /" },
+      { id: 3, eng: "sleep", ru: "спать", hint: "/ слип /" },
+      { id: 4, eng: "study", ru: "учиться", hint: "/ стАди /" },
+      { id: 5, eng: "teach", ru: "обучать", hint: "/ тИч /" },
+      { id: 6, eng: "run", ru: "бегать", hint: "/ ран /" },
+      { id: 7, eng: "kiss", ru: "целоваться", hint: "/ кИс /" },
+      { id: 8, eng: "work", ru: "работать", hint: "/ ворк /" },
+      { id: 9, eng: "waste", ru: "тратить в пустую", hint: "/ вЭйст /" },
+      { id: 10, eng: "do", ru: "заниматься, делать", hint: "/ ду /" },
+    ],
+
+    numbers10to1000: [
+
+      { id: 10, eng: "ten", ru: "десять", hint: "/ тэн /" },
+      { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ илЭвэн /" },
+      { id: 12, eng: "twelve", ru: "двенадцать", hint: "/ туэлв /" },
+      { id: 13, eng: "thirteen", ru: "тринадцать", hint: "/ THётиииин /" },
+      { id: 14, eng: "fourteen", ru: "четырнадцать", hint: "/ фортиИИН /" },
+      { id: 15, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтиИИН /" },
+      { id: 16, eng: "sixteen", ru: "шестнадцать", hint: "/ сыкстиИИН /" },
+      { id: 17, eng: "seventeen", ru: "семнадцать", hint: "/ сэвэнтиИИН /" },
+      { id: 18, eng: "eighteen", ru: "восемнадцать", hint: "/ эйтиИИН /" },
+      { id: 19, eng: "nineteen", ru: "девятнадцать", hint: "/ найнтиИИН /" },
+      { id: 20, eng: "twenty", ru: "двадцать", hint: "/ твэнти /" },
+      { id: 24, eng: "thirty", ru: "тридцать", hint: "/  THёрти /" },
+      { id: 25, eng: "forty", ru: "сорок", hint: "/ форти /" },
+      { id: 26, eng: "fifty", ru: "пятьдесят", hint: "/ фИфти /" },
+      { id: 27, eng: "eighty", ru: "восемьдесят", hint: "/ эйти /" },
+      { id: 28, eng: "ninety", ru: "девяносто", hint: "/ нАйнти /" },
+      { id: 29, eng: "hundred", ru: "сто", hint: "/ хАНДред /" },
+      { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
+      { id: 31, eng: "million", ru: "миллион", hint: "/ мИлион /" },
+      { id: 32, eng: "billion", ru: "миллиард", hint: "/ бИлион /" }
+    ],
+    test4: [
       {id: 1, eng: "at one pm", ru: "в час дня", hint: "/ эт уан пи эм /", level: "A0"},
       {id: 2, eng: "at two am", ru: "в два часа ночи", hint: "/ эт ту эй эм /", level: "A0"},
       {id: 4, eng: "at four pm", ru: "в четыре часа дня", hint: "/ эт фо пи эм /", level: "A0"},
@@ -1395,7 +1460,7 @@ const shortWordsData = {
       {id: 2, eng: "he", ru: "он", hint: "/ хи /", level: "A0"},
 
     ],
-    test2: [
+    test4: [
       {id: 1, eng: "test", ru: "test", hint: "/ 1 /"},
       {id: 2, eng: "test2", ru: "test2", hint: "/ 2 /"},
 
@@ -1951,42 +2016,6 @@ whatISitVideoMission: [
 
   ],
 
-  digits09: [
-    { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
-    { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
-    { id: 3, eng: "three", ru: "три", hint: "/ THри /" },
-    { id: 4, eng: "four", ru: "четыре", hint: "/ фор /" },
-    { id: 5, eng: "five", ru: "пять", hint: "/ файв /" },
-    { id: 6, eng: "six", ru: "шесть", hint: "/ сыкс /" },
-    { id: 7, eng: "seven", ru: "семь", hint: "/ сэвэн /" },
-    { id: 8, eng: "eight", ru: "восемь", hint: "/ эйт /" },
-    { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
-    { id: 10, eng: "zero", ru: "ноль", hint: "/ зИро /" },
-    ],
-
-  numbers10to1000: [
-
-        { id: 10, eng: "ten", ru: "десять", hint: "/ тэн /" },
-        { id: 11, eng: "eleven", ru: "одиннадцать", hint: "/ илЭвэн /" },
-        { id: 12, eng: "twelve", ru: "двенадцать", hint: "/ туэлв /" },
-        { id: 13, eng: "thirteen", ru: "тринадцать", hint: "/ THётиииин /" },
-        { id: 14, eng: "fourteen", ru: "четырнадцать", hint: "/ фортиИИН /" },
-        { id: 15, eng: "fifteen", ru: "пятнадцать", hint: "/ фифтиИИН /" },
-        { id: 16, eng: "sixteen", ru: "шестнадцать", hint: "/ сыкстиИИН /" },
-        { id: 17, eng: "seventeen", ru: "семнадцать", hint: "/ сэвэнтиИИН /" },
-        { id: 18, eng: "eighteen", ru: "восемнадцать", hint: "/ эйтиИИН /" },
-        { id: 19, eng: "nineteen", ru: "девятнадцать", hint: "/ найнтиИИН /" },
-        { id: 20, eng: "twenty", ru: "двадцать", hint: "/ твэнти /" },
-        { id: 24, eng: "thirty", ru: "тридцать", hint: "/  THёрти /" },
-        { id: 25, eng: "forty", ru: "сорок", hint: "/ форти /" },
-        { id: 26, eng: "fifty", ru: "пятьдесят", hint: "/ фИфти /" },
-        { id: 27, eng: "eighty", ru: "восемьдесят", hint: "/ эйти /" },
-        { id: 28, eng: "ninety", ru: "девяносто", hint: "/ нАйнти /" },
-        { id: 29, eng: "hundred", ru: "сто", hint: "/ хАНДред /" },
-        { id: 30, eng: "thousand", ru: "тысяча", hint: "/ THаузэнд /" },
-        { id: 31, eng: "million", ru: "миллион", hint: "/ мИлион /" },
-        { id: 32, eng: "billion", ru: "миллиард", hint: "/ бИлион /" }
-    ],
     devModeNumbers: [
         { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
         { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
@@ -2130,6 +2159,9 @@ whatISitVideoMission: [
     { id: 9, eng: "nine", ru: "девять", hint: "/ найн /" },
     { id: 10, eng: "zero", ru: "ноль", hint: "/ оу или зироу /" }
   ],
+
+
+
   phrasesWhenPeoplePlay1: [
     { id: 1, eng: "Wanna play?", ru: "Хочешь сыграть?", hint: "/ уОна плэй /" },
     { id: 2, eng: "Want a challenge?", ru: "Хочешь испытание?", hint: "/ уОнт э челендж /" },

@@ -725,7 +725,7 @@ const focusSearch = () => {
 
 
 // ==================== УРОВНИ (LVL) ====================
-const currentLevel = ref('lvlAll');
+const currentLevel = ref('lvl0');
 
 const levels = [
 

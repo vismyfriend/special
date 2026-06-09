@@ -25,7 +25,7 @@
                   class="checkbox-input"
                 >
                 <span class="checkbox-custom"></span>
-                <span class="checkbox-text">включить перемешивание (обнови страницу)</span>
+                <span class="checkbox-text">включить перемешивание? <i>(обнови страницу)</i></span>
               </label>
             </div>
 
@@ -118,9 +118,18 @@
 <!--              </div>-->
 <!--            </div>-->
             <div class="buttons-wrapper">
-              <button class="homework-submit-btn" @click="goToAnontherComponent">
-                выполнить домаху <br>do homework
-              </button>
+              <div class="buttons-wrapper">
+                <button class="homework-submit-btn" @click="goToFindPairsGame" data-en="deactivate a bomb">
+                  обезвредить бомбу
+                </button>
+                <button class="homework-submit-btn" @click="goToFindPairsHardGame" data-en="find a pair">
+                  найти пару
+                </button>
+                <button class="homework-submit-btn" @click="goToAnontherComponent" data-en="do homework">
+                  выполнить домаху
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
@@ -171,6 +180,18 @@ const goToAnontherComponent = () => {
   const missionName = route.params.missionName;
   router.push({
     path: `/see-all-sets-of-words/${missionName}/print-all-words`
+  });
+};
+const goToFindPairsGame = () => {
+  const missionName = route.params.missionName;
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}/find-pairs-easy`
+  });
+};
+const goToFindPairsHardGame = () => {
+  const missionName = route.params.missionName;
+  router.push({
+    path: `/see-all-sets-of-words/${missionName}/find-pairs-hard`
   });
 };
 
@@ -862,7 +883,14 @@ onMounted(() => {
     font-style: italic;
   }
 }
-
+.buttons-wrapper {
+  display: flex;
+  gap: 24px;          // расстояние между кнопками
+  justify-content: center;  // центрирование по горизонтали
+  align-items: center;      // центрирование по вертикали
+  flex-wrap: wrap;          // адаптивность
+  padding: 20px;            // отступы от краёв
+}
 .homework-submit-btn {
   background: linear-gradient(180deg, #4CAF50, #45a049);
   border: none;
@@ -874,7 +902,7 @@ onMounted(() => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-family: Special_f1;
-  margin-left: 80px;
+  position: relative;
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
@@ -893,8 +921,56 @@ onMounted(() => {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-}
 
+  // Тултип при наведении
+  &::after {
+    content: attr(data-en);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(14px);  // было 4px, стало 14px (+10px)
+    background: rgba(0, 0, 0, 0.85);
+    color: #4CAF50;
+    font-size: 12px;
+    font-family: sans-serif;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(4px);
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  // Стрелочка у тултипа
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(14px);  // было 4px, стало 14px (+10px)
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 0;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(10px);  // было 0px, стало 10px (+10px)
+  }
+
+  &:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(10px);  // было 0px, стало 10px (+10px)
+  }
+}
 /* Адаптивность для домашнего задания */
 @media (max-width: 768px) {
   .homework-item {

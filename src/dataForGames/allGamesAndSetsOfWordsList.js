@@ -210,9 +210,9 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/prepositionsOfPlace0/spell-it",
-      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(предлоги)</i>',
-      missionDescription: 'Mission: "WHAT?"',
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/find-pairs-hard",
+      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(места)</i>',
+      missionDescription: 'Mission: "WHERE?"',
       stars: 2,
       lvl: "lvl0",
       id: 1001,
@@ -220,13 +220,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/time0/find-pairs-hard",
-      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(время)</i>',
+      path: "/see-all-sets-of-words/digits09/spell-it",
+      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(цифры)</i>',
       missionDescription: 'Mission: "WHEN?"',
       lvl: "lvl0",
       id: 1001,
       active: true,
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examY1V1/tests-and-exams",
@@ -611,6 +612,26 @@ export const allGamesAndSetsOfWordsList =
         },
       ]
     },
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/adjectives0/print-all-words2",
+      missionVisibleName: 'Mission: <b>"КАКОЙ"</b><i>(прилагательные)</i>',
+      missionDescription: 'какие, какая, какое, какой',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbs0/print-all-words2",
+      missionVisibleName: 'Mission: <b>"ЧЁ ДЕЛАТЬ?"</b><i>(глагол)</i>',
+      missionDescription: 'глагол на английском / вёрб /',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+
     // 365 days of English
     {
       type: "subTasks",
@@ -992,7 +1013,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "glassMorphism", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl0"],
+      lvl: ["lvl1"],
       subTasks: [
         {
           type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
