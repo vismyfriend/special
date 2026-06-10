@@ -22,6 +22,26 @@ const sortingWordsData = {
     ]
   },
 
+  amIsAre0: {
+    columns: [
+      { id: 'are', title: 'are' },
+      { id: 'am', title: 'am' },
+      { id: 'is', title: 'is' }
+    ],
+    items: [
+      { id: 1, eng: 'I', ru: 'я', correctColumn: 'am' },
+      { id: 2, eng: 'я', ru: 'я', correctColumn: 'am' },
+      { id: 3, eng: 'he', ru: 'он', correctColumn: 'is' },
+      { id: 4, eng: 'she', ru: 'она', correctColumn: 'is' },
+      { id: 5, eng: 'it', ru: 'оно', correctColumn: 'is' },
+      { id: 6, eng: 'this', ru: 'вот это', correctColumn: 'is' },
+      { id: 6, eng: 'оно', ru: 'это', correctColumn: 'is' },
+      { id: 8, eng: 'you', ru: 'ты', correctColumn: 'are' },
+      { id: 9, eng: 'we', ru: 'мы', correctColumn: 'are' },
+      { id: 11, eng: 'they', ru: 'они', correctColumn: 'are' },
+    ]
+  },
+
   sortingArticlesTheAnA: {
     columns: [
       { id: 'a', title: '--- A --- говорим Э если 1-ый звук слова согласный ' },

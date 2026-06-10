@@ -498,10 +498,31 @@ export const allGamesAndSetsOfWordsList =
 
     },
 
+
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/adjectives0/print-all-words2",
+      missionVisibleName: 'Mission: <b>"КАКОЙ"</b><i>(прилагательные)</i>',
+      missionDescription: 'какие, какая, какое, какой',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbs0/print-all-words2",
+      missionVisibleName: 'Mission: <b>"ЧЁ ДЕЛАТЬ"</b><i>(глагол)</i>',
+      missionDescription: 'глагол на английском / вёрб /',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
     // начать с самого начала
     {
       type: "subTasks",
-      missionVisibleName: "Начать с самого начала",
+      missionVisibleName: "Хочу начать с самого начала",
       missionDescription: "Start from the beginning",
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
@@ -509,6 +530,43 @@ export const allGamesAndSetsOfWordsList =
       lvl: ["lvl0"],
 
       subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/letters62/find-pairs-easy",
+          missionVisibleName: "Буквы",
+          missionDescription: "Letters - лЭттэрз",
+          id: 1001,
+          active: true,
+          stars: 1
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/letters26/game-whatDoYouHear",
+          missionVisibleName: "Произношение букв",
+          missionDescription: "Letters - лЭттэрз - буквы",
+          id: 1001,
+          active: true,
+          stars: 2
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/digits09/print-all-words2",
+          missionVisibleName: "Цифры",
+          missionDescription: "Digits - диджитс",
+          id: 1001,
+          active: true,
+          gameIcon: '1️⃣'
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/amIsAre0/sorting",
+          missionVisibleName: 'Правило №1 порядок слов',
+          missionDescription: 'ту би глагол to be (am, is, are)',
+          lvl: "lvl0",
+          id: 1001,
+          active: true,
+
+        },
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/digits09/game-translate",
@@ -545,15 +603,7 @@ export const allGamesAndSetsOfWordsList =
           active: true,
           stars: 1
         },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/letters62/find-pairs-easy",
-          missionVisibleName: "Буквы",
-          missionDescription: "Letters - лЭттэрз",
-          id: 1001,
-          active: true,
-          stars: 2
-        },
+
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/letters62/print-all-words",
@@ -613,24 +663,6 @@ export const allGamesAndSetsOfWordsList =
       ]
     },
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/adjectives0/print-all-words2",
-      missionVisibleName: 'Mission: <b>"КАКОЙ"</b><i>(прилагательные)</i>',
-      missionDescription: 'какие, какая, какое, какой',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/verbs0/print-all-words2",
-      missionVisibleName: 'Mission: <b>"ЧЁ ДЕЛАТЬ?"</b><i>(глагол)</i>',
-      missionDescription: 'глагол на английском / вёрб /',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
 
     // 365 days of English
     {

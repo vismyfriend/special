@@ -154,6 +154,7 @@ const showTextInsteadOfAudio = ref(false)
 const isLoading = ref(true) // 👈 Добавляем состояние загрузки
 const isDataReady = ref(false); // данные загружены и обработаны
 
+
 // Голоса для TTS (без изменений)
 let availableVoices = []
 let currentVoice = null
