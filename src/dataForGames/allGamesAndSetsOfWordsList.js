@@ -1037,6 +1037,25 @@ export const allGamesAndSetsOfWordsList =
 
     },
 
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examA164V1/tests-and-exams",
+      missionVisibleName: "Почувствуй себя умным!",
+      missionDescription: "test year1",
+      id: 1001,
+      active: true,
+      lvl: ["lvl1"],
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examA164V1/tests-and-exams",
+      missionVisibleName: "Если не почувствовал, жми сюда",
+      missionDescription: "test year1 мфкшфте 2",
+      id: 1001,
+      active: true,
+      lvl: ["lvl1"],
+    },
+
     // extra information
     {
       missionVisibleName: "Extra information",

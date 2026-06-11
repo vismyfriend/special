@@ -3244,6 +3244,660 @@ const GameTestsSeedData = {
       }
     ]
   },
+  examA164V1: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "The film starts ____ 9 o'clock.",
+            textExtra: "Фильм начинается в 9 часов.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "B",
+            explanation: "перед времене используем предлог at 21:00, at 9 PM)"
+          },
+          {
+            text: "We usually ____ shopping to a supermarket.",
+            textExtra: "Мы обычно ходим за покупками в супермаркет.",
+            options: { A: "make", B: "do", C: "have", D: "go" },
+            correctAnswer: "D",
+            explanation: "go shopping — устойчивое выражение 'ходить за покупками'"
+          },
+          {
+            text: "The ____ names are Gail and Cindy.",
+            textExtra: "Имена девочек — Гейл и Синди.",
+            options: { A: "girl is", B: "girls'", C: "girl's", D: "girls" },
+            correctAnswer: "B",
+            explanation: "если множественное число оканчивается на s, то запятая сверху (она же опостроф - притяжательный падеж) ставится после s"
+          },
+          {
+            text: "____ are my bottles!",
+            textExtra: "Вот эти мои ,бутылки!",
+            options: { A: "this", B: "that", C: "it", D: "these" },
+            correctAnswer: "D",
+            explanation: "this - это одно, that - то одно, these - эти несколько, those - те несколько"
+          },
+          {
+            text: "And this is your ____.",
+            textExtra: "А это твоя парта.",
+            options: { A: "desk", B: "desks", C: "a desk", D: "an desk" },
+            correctAnswer: "A",
+            explanation: "с притяжательными словами (your) не нужен артикль"
+          },
+          {
+            text: "I'm from Paris. ____ is in France.",
+            textExtra: "Я из Парижа. Он во Франции.",
+            options: { A: "They", B: "It", C: "He", D: "She" },
+            correctAnswer: "B",
+            explanation: "Париж — это город (it), неодушевлённый предмет"
+          },
+          {
+            text: "____? No, he isn't.",
+            textExtra: "Мистер Баннинг — учитель? Нет.",
+            options: { A: "Are they teachers?", B: "Are you from Italy?", C: "Is Mr Banning a teacher?", D: "Is this your phone?" },
+            correctAnswer: "C",
+            explanation: "в ответе he, значит вопрос про мужчину → Is Mr Banning a teacher?"
+          },
+          {
+            text: "A lot of ____ live in cities.",
+            textExtra: "Много людей живут в городах.",
+            options: { A: "people", B: "man", C: "person", D: "we" },
+            correctAnswer: "A",
+            explanation: "people — уже множественное число (люди), остальные не подходят"
+          },
+          {
+            text: "My name's Pete and this is Sylvia. ____ doctors from France.",
+            textExtra: "Меня зовут Пит, а это Сильвия. Мы врачи из Франции.",
+            options: { A: "I'm", B: "We're", C: "She's", D: "They're" },
+            correctAnswer: "B",
+            explanation: "говорит о себе и Сильвии → мы (We're)"
+          },
+          {
+            text: "Her birthday is ____ 6th May 1979.",
+            textExtra: "Её день рождения 6 мая 1979 года.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "C",
+            explanation: "с конкретной датой используем предлог on (on 6th May)"
+          },
+          {
+            text: "“Hello! How are you?” – ____ .",
+            textExtra: "— Привет! Как дела? — У меня всё отлично.",
+            options: { A: "I'm fine", B: "I'm very", C: "I'm very fine", D: "Thanks" },
+            correctAnswer: "A",
+            explanation: "стандартный ответ на How are you? — I'm fine"
+          },
+          {
+            text: "I want ____ omelet, please.",
+            textExtra: "Я хочу омлет, пожалуйста.",
+            options: { A: "a", B: "--", C: "an", D: "two" },
+            correctAnswer: "C",
+            explanation: "omelet начинается с гласного звука → an (an omelet)"
+          },
+          {
+            text: "Do you sleep ____ Sunday afternoon?",
+            textExtra: "Ты спишь в воскресенье днём?",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "C",
+            explanation: "с днями недели + часть дня → on Sunday afternoon"
+          },
+          {
+            text: "____ they live in London?",
+            textExtra: "Они живут в Лондоне?",
+            options: { A: "Are", B: "Is", C: "Do", D: "Does" },
+            correctAnswer: "C",
+            explanation: "вопрос в Present Simple с they → вспомогательный глагол Do"
+          },
+          {
+            text: "There aren't ____ here.",
+            textExtra: "Здесь нет ресторанов.",
+            options: { A: "a restaurants", B: "any restaurants", C: "any restaurant", D: "a restaurant" },
+            correctAnswer: "B",
+            explanation: "отрицание + множественное число → any restaurants"
+          },
+          {
+            text: "What are ____ names?",
+            textExtra: "Как их зовут?",
+            options: { A: "they", B: "this", C: "their", D: "they're" },
+            correctAnswer: "C",
+            explanation: "их имена → притяжательное местоимение their"
+          },
+          {
+            text: "Ron is ____ tired.",
+            textExtra: "Рон устал.",
+            options: { A: "a", B: "an", C: "--" },
+            correctAnswer: "C",
+            explanation: "перед прилагательным tired артикль не нужен"
+          },
+          {
+            text: "____ to the Disneyland.",
+            textExtra: "Мы не часто ходим в кино.",
+            options: { A: "We not often go", B: "We don't go often", C: "We don't often go", D: "Often we don't go" },
+            correctAnswer: "C",
+            explanation: "слово OFTEN (наречие частотности) ставится перед смысловым глаголом. Любой другой вариант можно конечно попытаться за уши притянуть по приколу и настоять что типа правильно, но вообще это бред - так что просто так запомните - we don't often go there"
+          },
+          {
+            text: "His ____ name is Peter.",
+            textExtra: "Его отца зовут Питер.",
+            options: { A: "father's", B: "father is", C: "of father", D: "father" },
+            correctAnswer: "A",
+            explanation: "имя отца → притяжательный падеж father's"
+          },
+          {
+            text: "Stephen ____ in our company.",
+            textExtra: "Стивен работает в нашей компании.",
+            options: { A: "work", B: "works", C: "is work", D: "working" },
+            correctAnswer: "B",
+            explanation: "Stephen (он) → в Present Simple добавляем -s: works"
+          },
+          {
+            text: "It's ____.",
+            textExtra: "Это дорогой отель.",
+            options: { A: "a hotel expensive", B: "expensive hotel", C: "expensive a hotel", D: "an expensive hotel" },
+            correctAnswer: "D",
+            explanation: "expensive начинается с гласного → an, прилагательное перед существительным"
+          },
+          {
+            text: "Where's Steve? He ____ a shower.",
+            textExtra: "Где Стив? Он принимает душ.",
+            options: { A: "has", B: "is having", C: "having", D: "is have" },
+            correctAnswer: "B",
+            explanation: "действие происходит сейчас → Present Continuous: is having"
+          },
+          {
+            text: "We're coming ____ train.",
+            textExtra: "Мы едем на поезде.",
+            options: { A: "with", B: "by", C: "for", D: "in" },
+            correctAnswer: "B",
+            explanation: "способ передвижения → by train (by car, by bus)"
+          },
+          {
+            text: "one potato - two ____.",
+            textExtra: "одна картофелина — две картофелины",
+            options: { A: "potatoes", B: "potatos", C: "potato's" },
+            correctAnswer: "A",
+            explanation: "множественное число potato → potatoes (добавляем -es)"
+          },
+          {
+            text: "She ____ speaks on the phone.",
+            textExtra: "Она никогда не говорит по телефону.",
+            options: { A: "never", B: "doesn't", C: "isn't", D: "doesn't never" },
+            correctAnswer: "A",
+            explanation: "never (никогда) уже означает отрицание, doesn't не нужно"
+          },
+          {
+            text: "I'm always tired ____ the morning.",
+            textExtra: "Я всегда уставший по утрам.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "A",
+            explanation: "части суток → in the morning, in the afternoon, in the evening"
+          },
+          {
+            text: "I have a lot of ____.",
+            textExtra: "У меня много зубов.",
+            options: { A: "tooths", B: "tooth", C: "teeth", D: "toothes" },
+            correctAnswer: "C",
+            explanation: "исключение: tooth → teeth (зуб → зубы)"
+          },
+          {
+            text: "“Are you skinny?” – “Yes, ____”.",
+            textExtra: "— Ты худой? — Да.",
+            options: { A: "I do", B: "I have", C: "I'm", D: "I am" },
+            correctAnswer: "D",
+            explanation: "краткий ответ на Are you... → Yes, I am"
+          },
+          {
+            text: "There ____ windows in my room.",
+            textExtra: "В моей комнате есть несколько окон.",
+            options: { A: "are some", B: "is some", C: "aren't some", D: "is any" },
+            correctAnswer: "A",
+            explanation: "windows — мн.ч., утверждение → There are some"
+          },
+          {
+            text: "I'm going ____ the bank.",
+            textExtra: "Я иду в банк.",
+            options: { A: "on", B: "to", C: "in", D: "of" },
+            correctAnswer: "B",
+            explanation: "направление движения → go to the bank"
+          },
+          {
+            text: "What is ____?",
+            textExtra: "Какая у Мэри работа?",
+            options: { A: "job Mary", B: "Mary job", C: "Mary's job", D: "job's Mary" },
+            correctAnswer: "C",
+            explanation: "работа Мэри → притяжательный падеж Mary's job"
+          },
+          {
+            text: "Mary is married to John. He's her ____",
+            textExtra: "Мэри замужем за Джоном. Он её муж.",
+            options: { A: "son", B: "husband", C: "wife", D: "boyfriend" },
+            correctAnswer: "B",
+            explanation: "мужчина, на котором жената Мэри → husband (муж)"
+          },
+          {
+            text: "Your bag is ____ the desk.",
+            textExtra: "Твоя сумка на столе.",
+            options: { A: "on", B: "to", C: "in", D: "of" },
+            correctAnswer: "A",
+            explanation: "на поверхности → on the desk"
+          },
+          {
+            text: "I'm Jeff Caine. Nice to ____ you, Mr Caine.",
+            textExtra: "Я Джефф Кейн. Приятно познакомиться, мистер Кейн.",
+            options: { A: "speak", B: "talk", C: "meet", D: "watch" },
+            correctAnswer: "C",
+            explanation: "при знакомстве → Nice to meet you"
+          },
+          {
+            text: "____ two airports in the city.",
+            textExtra: "В городе два аэропорта.",
+            options: { A: "It is", B: "There is", C: "There are", D: "This is" },
+            correctAnswer: "C",
+            explanation: "there are + мн.ч. (two airports) → 'имеется, находится'"
+          },
+          {
+            text: "Mandy is over there. She's ____ a blue T-shirt and jeans.",
+            textExtra: "Мэнди вон там. На ней синяя футболка и джинсы.",
+            options: { A: "having", B: "wearing", C: "doing", D: "walking" },
+            correctAnswer: "B",
+            explanation: "на ней надето → wearing (носить одежду)"
+          },
+          {
+            text: "His friends are ____.",
+            textExtra: "Его друзья — мужчины.",
+            options: { A: "man", B: "men", C: "mans", D: "men's" },
+            correctAnswer: "B",
+            explanation: "множественное число man → men (мужчины)"
+          },
+          {
+            text: "I ____ 25 years old.",
+            textExtra: "Мне 25 лет.",
+            options: { A: "have", B: "am", C: "has", D: "is" },
+            correctAnswer: "B",
+            explanation: "о возрасте: I am 25 years old (глагол to be)"
+          },
+          {
+            text: "When do you play tennis? ____ Mondays.",
+            textExtra: "Когда ты играешь в теннис? По понедельникам.",
+            options: { A: "On", B: "In", C: "At", D: "By" },
+            correctAnswer: "A",
+            explanation: "с днями недели → on Mondays (по понедельникам)"
+          },
+          {
+            text: "one party – two ____.",
+            textExtra: "одна вечеринка — две вечеринки",
+            options: { A: "parties", B: "partys", C: "partys" },
+            correctAnswer: "A",
+            explanation: "party → parties (y меняется на ies)"
+          },
+          {
+            text: "How many brothers and sisters _____?",
+            textExtra: "Сколько у тебя братьев и сестёр?",
+            options: { A: "are you having", B: "you have", C: "have you", D: "do you have" },
+            correctAnswer: "D",
+            explanation: "вопрос в Present Simple: How many... do you have?"
+          },
+          {
+            text: "Who are ____ people?",
+            textExtra: "Кто эти люди?",
+            options: { A: "this", B: "those", C: "that", D: "a" },
+            correctAnswer: "B",
+            explanation: "people (мн.ч.) + 'те' на расстоянии → those people"
+          },
+          {
+            text: "This is ____ milk.",
+            textExtra: "Это молоко.",
+            options: { A: "a", B: "an", C: "--" },
+            correctAnswer: "C",
+            explanation: "milk — неисчисляемое, артикль не нужен"
+          },
+          {
+            text: "We're students. That's ____ classroom.",
+            textExtra: "Мы студенты. Это наш класс.",
+            options: { A: "we", B: "our", C: "is", D: "the we" },
+            correctAnswer: "B",
+            explanation: "притяжательное местоимение 'наш' → our"
+          },
+          {
+            text: "This is my ____ family.",
+            textExtra: "Это семья моего друга.",
+            options: { A: "friend's", B: "friends", C: "friend" },
+            correctAnswer: "A",
+            explanation: "семья друга → притяжательный падеж"
+          }
+        ]
+      }
+    ]
+  },
+  examA164V2: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "Mr. President is ____ clever.",
+            textExtra: "Мистер президент умный.",
+            options: { A: "a", B: "an", C: "--" },
+            correctAnswer: "C",
+            explanation: "перед одним прилагательным, без существительного артикль не нужен, если бы после прилагательного было существительное, тогда нужен был бы"
+          },
+          {
+            text: "I'm from Beijing. ____ is in China.",
+            textExtra: "Я из Пекина. Он в Китае.",
+            options: { A: "They", B: "It", C: "He", D: "She" },
+            correctAnswer: "B",
+            explanation: "Пекин — это город, про города говорим it (он)"
+          },
+          {
+            text: "My lamp is ____ the floor.",
+            textExtra: "Моя лампа на полу.",
+            options: { A: "on", B: "to", C: "in", D: "of" },
+            correctAnswer: "A",
+            explanation: "на поверхности → on (на полу)"
+          },
+          {
+            text: "one photo – two ____.",
+            textExtra: "одно фото — два фото",
+            options: { A: "photos", B: "photoes", C: "photo's" },
+            correctAnswer: "A",
+            explanation: "photo → photos (просто добавляем s, photoes — неправильно)"
+          },
+          {
+            text: "____? No, they aren't.",
+            textExtra: "Они учителя? Нет.",
+            options: { A: "Are they teachers?", B: "Are you from Italy?", C: "Is Mr Banning a teacher?", D: "Is this your phone?" },
+            correctAnswer: "A",
+            explanation: "в ответе they aren't (они не), значит вопрос про них → Are they teachers?"
+          },
+          {
+            text: "Her birthday is ____ 6th May, 1979.",
+            textExtra: "Её день рождения 6 мая 1979 года.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "C",
+            explanation: "с конкретной датой (число + месяц) → on"
+          },
+          {
+            text: "It's ____.",
+            textExtra: "Это вкусный апельсин.",
+            options: { A: "an orange delicious", B: "delicious orange", C: "delicious an orange", D: "a delicious orange" },
+            correctAnswer: "D",
+            explanation: "сначала артикль a, потом прилагательное delicious, потом существительное orange"
+          },
+          {
+            text: "Where are ____ bananas?",
+            textExtra: "Где те бананы?",
+            options: { A: "this", B: "those", C: "that", D: "a" },
+            correctAnswer: "B",
+            explanation: "бананов несколько (мн.ч.) и они вдалеке → those (те)"
+          },
+          {
+            text: "There aren't ____ here.",
+            textExtra: "Здесь нет банков.",
+            options: { A: "a banks", B: "any banks", C: "any bank", D: "a bank" },
+            correctAnswer: "B",
+            explanation: "отрицание (aren't) + банков несколько (мн.ч.) → any banks"
+          },
+          {
+            text: "A lot of ____ live in cities.",
+            textExtra: "Много людей живут в городах.",
+            options: { A: "people", B: "man", C: "person", D: "we" },
+            correctAnswer: "A",
+            explanation: "people — это уже 'люди' (множественное число)"
+          },
+          {
+            text: "I ____ tired.",
+            textExtra: "Я не устал.",
+            options: { A: "amn't", B: "am not", C: "don't", D: "aren't" },
+            correctAnswer: "B",
+            explanation: "I am not — правильное отрицание, amn't не существует"
+          },
+          {
+            text: "I only sleep ____ night.",
+            textExtra: "Я сплю только ночью.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "B",
+            explanation: "at night — ночью (устойчивое выражение)"
+          },
+          {
+            text: "____ football.",
+            textExtra: "Мы не часто играем в футбол.",
+            options: { A: "We not often play", B: "We don't often play", C: "We don't play often", D: "Often we don't play" },
+            correctAnswer: "B",
+            explanation: "often (часто) ставим перед глаголом play"
+          },
+          {
+            text: "I love ____ coffee.",
+            textExtra: "Я люблю кофе.",
+            options: { A: "a", B: "an", C: "--" },
+            correctAnswer: "C",
+            explanation: "кофе — неисчисляемое, артикль не нужен"
+          },
+          {
+            text: "Bob ____ in England.",
+            textExtra: "Боб живёт в Англии.",
+            options: { A: "live", B: "lives", C: "is live", D: "living" },
+            correctAnswer: "B",
+            explanation: "Боб — это он, к глаголу добавляем s → lives"
+          },
+          {
+            text: "Where is ____?",
+            textExtra: "Где кошка Джима?",
+            options: { A: "cat Jim's", B: "Jim cat", C: "Jim's cat", D: "cat's Jim" },
+            correctAnswer: "C",
+            explanation: "кошка принадлежит Джиму → сначала хозяин с апострофом 's, потом кошка"
+          },
+          {
+            text: "You're doctors. That's ____ hospital.",
+            textExtra: "Вы врачи. Это ваша больница.",
+            options: { A: "you", B: "your", C: "is", D: "the you" },
+            correctAnswer: "B",
+            explanation: "ваша больница → your hospital"
+          },
+          {
+            text: "There ____ people in my house.",
+            textExtra: "В моём доме есть люди.",
+            options: { A: "is some", B: "are some", C: "aren't some", D: "is any" },
+            correctAnswer: "B",
+            explanation: "люди (people) — это они → there are some"
+          },
+          {
+            text: "Look at his ____.",
+            textExtra: "Посмотри на его ноги.",
+            options: { A: "foots", B: "feet", C: "foot's", D: "feat" },
+            correctAnswer: "B",
+            explanation: "исключение: одна нога foot, две ноги feet"
+          },
+          {
+            text: "His name's Pete and that is Sylvia. ____ doctors from France.",
+            textExtra: "Его зовут Пит, а это Сильвия. Они врачи из Франции.",
+            options: { A: "I'm", B: "We're", C: "She's", D: "They're" },
+            correctAnswer: "D",
+            explanation: "Пит и Сильвия — это они (мн.ч.) → They're"
+          },
+          {
+            text: "He doesn't go ____ school.",
+            textExtra: "Он не ходит в школу.",
+            options: { A: "on", B: "to", C: "in", D: "of" },
+            correctAnswer: "B",
+            explanation: "идти в школу → go to school"
+          },
+          {
+            text: "The ____ names are Fred and Tom.",
+            textExtra: "Имена мальчиков — Фред и Том.",
+            options: { A: "boy is", B: "boys'", C: "boy's", D: "boys" },
+            correctAnswer: "B",
+            explanation: "мальчиков несколько → boys, апостроф после s → boys'"
+          },
+          {
+            text: "Where is Don? He ____ lunch.",
+            textExtra: "Где Дон? Он обедает.",
+            options: { A: "has", B: "is having", C: "having", D: "is have" },
+            correctAnswer: "B",
+            explanation: "действие происходит прямо сейчас → is having (Present Continuous)"
+          },
+          {
+            text: "We're coming ____ car.",
+            textExtra: "Мы едем на машине.",
+            options: { A: "with", B: "by", C: "for", D: "in" },
+            correctAnswer: "B",
+            explanation: "на машине (способ передвижения) → by car"
+          },
+          {
+            text: "one story – two ____.",
+            textExtra: "одна история — две истории",
+            options: { A: "storys", B: "storys", C: "stories" },
+            correctAnswer: "C",
+            explanation: "story → stories (y меняется на ies)"
+          },
+          {
+            text: "She ____ has a shower.",
+            textExtra: "Она никогда не принимает душ.",
+            options: { A: "never", B: "doesn't", C: "isn't", D: "doesn't never" },
+            correctAnswer: "A",
+            explanation: "never (никогда) уже означает 'не', двойное отрицание не нужно"
+          },
+          {
+            text: "How many cars _____?",
+            textExtra: "Сколько у тебя машин?",
+            options: { A: "are you having", B: "you have", C: "have you", D: "do you have" },
+            correctAnswer: "D",
+            explanation: "вопрос 'сколько у тебя' → How many... do you have?"
+          },
+          {
+            text: "His ____ name is Lory.",
+            textExtra: "Его сестру зовут Лори.",
+            options: { A: "sister's", B: "sister is", C: "of sister", D: "sister" },
+            correctAnswer: "A",
+            explanation: "имя сестры → sister's (притяжательный падеж)"
+          },
+          {
+            text: "“Are you smart?” – “Yes, ____”.",
+            textExtra: "— Ты умный? — Да.",
+            options: { A: "I do", B: "I have", C: "I'm", D: "I am" },
+            correctAnswer: "D",
+            explanation: "краткий ответ на Are you... → Yes, I am"
+          },
+          {
+            text: "He has a lot of ____.",
+            textExtra: "У него много детей.",
+            options: { A: "child", B: "childs", C: "children", D: "children's" },
+            correctAnswer: "C",
+            explanation: "один ребенок child, много детей children (исключение)"
+          },
+          {
+            text: "I ____ 25 years old.",
+            textExtra: "Мне 25 лет.",
+            options: { A: "have", B: "am", C: "has", D: "is" },
+            correctAnswer: "B",
+            explanation: "про возраст говорим I am ... years old"
+          },
+          {
+            text: "I ride my bike ____ Thursday morning.",
+            textExtra: "Я катаюсь на велосипеде в четверг утром.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "C",
+            explanation: "день недели + часть дня → on Thursday morning"
+          },
+          {
+            text: "Mary is married to John. He's her ____.",
+            textExtra: "Мэри замужем за Джоном. Он её муж.",
+            options: { A: "son", B: "husband", C: "wife", D: "boyfriend" },
+            correctAnswer: "B",
+            explanation: "мужчина, на котором жената Мэри → husband (муж)"
+          },
+          {
+            text: "She is my ____ sister.",
+            textExtra: "Она сестра моей мамы.",
+            options: { A: "mom's", B: "moms", C: "mom" },
+            correctAnswer: "A",
+            explanation: "сестра принадлежит маме → mom's (мамина)"
+          },
+          {
+            text: "“Hello! How are you?” – ____ .",
+            textExtra: "— Привет! Как дела? — У меня всё отлично.",
+            options: { A: "I'm fine", B: "I'm very", C: "I'm very fine", D: "Thanks" },
+            correctAnswer: "A",
+            explanation: "стандартный ответ на How are you? → I'm fine"
+          },
+          {
+            text: "Oh, ____ are my keys!",
+            textExtra: "О, вот мои ключи!",
+            options: { A: "this", B: "these", C: "that", D: "it" },
+            correctAnswer: "B",
+            explanation: "ключей несколько и они рядом → these (эти)"
+          },
+          {
+            text: "I'm Jeff Caine. Nice to ____ you, Mr Caine.",
+            textExtra: "Я Джефф Кейн. Приятно познакомиться, мистер Кейн.",
+            options: { A: "speak", B: "talk", C: "meet", D: "watch" },
+            correctAnswer: "C",
+            explanation: "при знакомстве говорим Nice to meet you (приятно познакомиться)"
+          },
+          {
+            text: "I want ____ orange, please.",
+            textExtra: "Я хочу апельсин, пожалуйста.",
+            options: { A: "a", B: "--", C: "an", D: "two" },
+            correctAnswer: "C",
+            explanation: "orange начинается с гласного звука (о) → an orange"
+          },
+          {
+            text: "Mandy is over there. She's ____ a blue T-shirt and jeans.",
+            textExtra: "Мэнди вон там. На ней синяя футболка и джинсы.",
+            options: { A: "having", B: "wearing", C: "doing", D: "walking" },
+            correctAnswer: "B",
+            explanation: "на ней надето → wearing (носить одежду)"
+          },
+          {
+            text: "I work late ____ Wednesdays.",
+            textExtra: "Я работаю допоздна по средам.",
+            options: { A: "in", B: "on", C: "at", D: "by" },
+            correctAnswer: "B",
+            explanation: "с днями недели → on"
+          },
+          {
+            text: "When are ____ birthdays?",
+            textExtra: "Когда у них дни рождения?",
+            options: { A: "they", B: "this", C: "their", D: "they're" },
+            correctAnswer: "C",
+            explanation: "их - their, this - этот один, they - они, they're они являются"
+          },
+          {
+            text: "This is your ___.",
+            textExtra: "Это твой экзамен.",
+            options: { A: "a exam", B: "an exam", C: "exam", D: "exams" },
+            correctAnswer: "C",
+            explanation: "после your (твой) артикль не нужен"
+          },
+          {
+            text: "We usually ____ shopping to a supermarket.",
+            textExtra: "Мы обычно ходим за покупками в супермаркет.",
+            options: { A: "make", B: "do", C: "have", D: "go" },
+            correctAnswer: "D",
+            explanation: "устройчивое выражение - go shopping — ходить за покупками"
+          },
+          {
+            text: "____ many hotels in Moscow.",
+            textExtra: "В Москве много отелей.",
+            options: { A: "It is", B: "There is", C: "There are", D: "This is" },
+            correctAnswer: "C",
+            explanation: "отели (мн.ч.) → there are (находятся, там имеются)"
+          },
+          {
+            text: "That awesome show starts ____ 6 or 7 pm.",
+            textExtra: "Концерт начинается в 6 или 7 вечера.",
+            options: { A: "in", B: "at", C: "on", D: "from" },
+            correctAnswer: "B",
+            explanation: "перед временем говорим at"
+          }
+        ]
+      }
+    ]
+  },
 
   test1V1: {
     mainDescription: "Let's find out the weak spots",
