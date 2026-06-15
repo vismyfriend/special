@@ -3253,21 +3253,21 @@ const GameTestsSeedData = {
         textScript: null,
         questions: [
           {
-            text: "The film starts ____ 9 o'clock.",
-            textExtra: "Фильм начинается в 9 часов.",
+            text: "The next film starts ____ 9 o'clock.",
+            textExtra: "Следующий фильм начнется в 9 часов.",
             options: { A: "in", B: "at", C: "on", D: "from" },
             correctAnswer: "B",
             explanation: "перед времене используем предлог at 21:00, at 9 PM)"
           },
           {
-            text: "We usually ____ shopping to a supermarket.",
-            textExtra: "Мы обычно ходим за покупками в супермаркет.",
+            text: "We usually ____ shopping to our favorite shop.",
+            textExtra: "Мы обычно ходим за покупками в наш любимый магазин.",
             options: { A: "make", B: "do", C: "have", D: "go" },
             correctAnswer: "D",
-            explanation: "go shopping — устойчивое выражение 'ходить за покупками'"
+            explanation: "go shopping — устойчивое выражение 'ходить за покупками' . Do shopping можно было бы если бы там было IN a shop"
           },
           {
-            text: "The ____ names are Gail and Cindy.",
+            text: "The ____ names are Polina and Annie.",
             textExtra: "Имена девочек — Гейл и Синди.",
             options: { A: "girl is", B: "girls'", C: "girl's", D: "girls" },
             correctAnswer: "B",
@@ -3275,59 +3275,59 @@ const GameTestsSeedData = {
           },
           {
             text: "____ are my bottles!",
-            textExtra: "Вот эти мои ,бутылки!",
+            textExtra: "Вот эти мои бутылки!",
             options: { A: "this", B: "that", C: "it", D: "these" },
             correctAnswer: "D",
             explanation: "this - это одно, that - то одно, these - эти несколько, those - те несколько"
           },
           {
-            text: "And this is your ____.",
-            textExtra: "А это твоя парта.",
-            options: { A: "desk", B: "desks", C: "a desk", D: "an desk" },
+            text: "And this is your ____ , and it looks great!",
+            textExtra: "А это твоё рабочее место и оно выглядит потрясающе.",
+            options: { A: "desk", B: "desks", C: "a desk", D: "an desk", E: "an desk" },
             correctAnswer: "A",
             explanation: "с притяжательными словами (your) не нужен артикль"
           },
           {
-            text: "I'm from Paris. ____ is in France.",
-            textExtra: "Я из Парижа. Он во Франции.",
+            text: "I'm from Vilnius. ____ is in Lithuania.",
+            textExtra: "Я из Вильнюса. Он во Франции.",
             options: { A: "They", B: "It", C: "He", D: "She" },
             correctAnswer: "B",
             explanation: "Париж — это город (it), неодушевлённый предмет"
           },
           {
             text: "____? No, he isn't.",
-            textExtra: "Мистер Баннинг — учитель? Нет.",
-            options: { A: "Are they teachers?", B: "Are you from Italy?", C: "Is Mr Banning a teacher?", D: "Is this your phone?" },
+            textExtra: "____? Нет, он не является им.",
+            options: { A: "Are they actors?", B: "Are you from Vilnius?", C: "Is Arnold an actor?", D: "Is this your Android?" },
             correctAnswer: "C",
             explanation: "в ответе he, значит вопрос про мужчину → Is Mr Banning a teacher?"
           },
           {
-            text: "A lot of ____ live in cities.",
-            textExtra: "Много людей живут в городах.",
+            text: "A lot of ____ live alone.",
+            textExtra: "Много людей живут одни.",
             options: { A: "people", B: "man", C: "person", D: "we" },
             correctAnswer: "A",
             explanation: "people — уже множественное число (люди), остальные не подходят"
           },
           {
-            text: "My name's Pete and this is Sylvia. ____ doctors from France.",
-            textExtra: "Меня зовут Пит, а это Сильвия. Мы врачи из Франции.",
+            text: "My name's Connor and this is Mike Tyson. ____ fighters.",
+            textExtra: "Меня зовут Конор, а это Майк Тайсон. Мы бойцы.",
             options: { A: "I'm", B: "We're", C: "She's", D: "They're" },
             correctAnswer: "B",
-            explanation: "говорит о себе и Сильвии → мы (We're)"
+            explanation: "Я говорю о себе - Коннор и о Майке  → мы (We're)"
           },
           {
-            text: "Her birthday is ____ 6th May 1979.",
+            text: "Her birthday is ____ the 5th of April 1998.",
             textExtra: "Её день рождения 6 мая 1979 года.",
             options: { A: "in", B: "at", C: "on", D: "from" },
             correctAnswer: "C",
-            explanation: "с конкретной датой используем предлог on (on 6th May)"
+            explanation: "с конкретной датой используем предлог ON"
           },
           {
             text: "“Hello! How are you?” – ____ .",
             textExtra: "— Привет! Как дела? — У меня всё отлично.",
-            options: { A: "I'm fine", B: "I'm very", C: "I'm very fine", D: "Thanks" },
+            options: { A: "I'm fine", B: "I'm very", C: "I'm very super fine", D: "Thanks", E: "Чего блин? Ай доунт спик Инглиш" },
             correctAnswer: "A",
-            explanation: "стандартный ответ на How are you? — I'm fine"
+            explanation: "стандартный ответ на How are you? — I'm fine. Остальные ответы глупенькие"
           },
           {
             text: "I want ____ omelet, please.",

@@ -1089,6 +1089,25 @@ const shortWordsData = {
     { id: 25, eng: "Are you blind?", ru: "Ты что, слепой?" },
     { id: 26, eng: "Is she blind?", ru: "Она что, слепая?" }
   ],
+  OnlyYouSong: [
+    { id: 1, eng: "only", ru: "только", hint: "/ОУнли/" },
+    { id: 2, eng: "make someone do something", ru: "заставить кого-то сделать что-то" },
+    { id: 17, eng: "he makes me sing songs", ru: "он заставляет меня петь песни" },
+    { id: 7, eng: "alone", ru: "в одиночесте", hint: "/элОУн/" },
+    { id: 4, eng: "it seems right", ru: "это кажется верным", hint: "/ит симс райт/" },
+    { id: 3, eng: "all this world", ru: "весь этот мир", hint: "/ол дыс уорлд/" },
+    { id: 5, eng: "darkness", ru: "темнота", hint: "/дАркнэс/" },
+    { id: 6, eng: "bright", ru: "яркий", hint: "/брайт/" },
+    { id: 8, eng: "thrill", ru: "взволновать, вызывать трепет", hint: "/thрил/" },
+    { id: 9, eng: "fill with love", ru: "наполнить любовью", hint: "/фил уиз лав/" },
+    { id: 10, eng: "the only one", ru: "единственный", hint: "/дэ оунли уан/" },
+    { id: 11, eng: "change", ru: "изменение", hint: "/чендж/" },
+    { id: 12, eng: "true", ru: "правдивый", hint: "/тру/" },
+    { id: 13, eng: "destiny", ru: "судьба, предназначение", hint: "/дЭстини/" },
+    { id: 14, eng: "hold", ru: "держать", hint: "/хОУлд/" },
+    { id: 15, eng: "magic", ru: "волшебство", hint: "/ˈмЭджик/" },
+    { id: 16, eng: "dreams come true", ru: "мечты сбываются", hint: "/дримз кам тру/" },
+  ],
 
   Vincent2025: [
     { id: 1, eng: "nonchalant", ru: "беспечный" },
