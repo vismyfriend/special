@@ -8,6 +8,11 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  test: [
+    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/"},
+    { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/"},
+
+  ],
 
   dev: [
     { id: 1, eng: "Cucumber", ru: "Огурец", hint: "/кьЮ кам бэр/",
@@ -1093,7 +1098,7 @@ const shortWordsData = {
     { id: 1, eng: "only", ru: "только", hint: "/ОУнли/" },
     { id: 2, eng: "make someone do something", ru: "заставить кого-то сделать что-то" },
     { id: 17, eng: "he makes me sing songs", ru: "он заставляет меня петь песни" },
-    { id: 7, eng: "alone", ru: "в одиночесте", hint: "/элОУн/" },
+    { id: 7, eng: "alone", ru: "в одиночестве", hint: "/элОУн/" },
     { id: 4, eng: "it seems right", ru: "это кажется верным", hint: "/ит симс райт/" },
     { id: 3, eng: "all this world", ru: "весь этот мир", hint: "/ол дыс уорлд/" },
     { id: 5, eng: "darkness", ru: "темнота", hint: "/дАркнэс/" },

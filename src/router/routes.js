@@ -14,6 +14,12 @@ const routes = [
         children: [
           { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
           {
+            path: '/leader-board',
+            component: () => import('src/pages/LeaderBoard.vue'),
+            // props: {time: 0, mistakes: 0},
+            props: true,
+          },
+          {
             path: '/phoneFramePattern',
             component: () => import('pages/PhoneFramePattern.vue'),
           },
@@ -267,12 +273,7 @@ const routes = [
         path: '/game-puzzle-squares',
         component: () => import('src/pages/gamePuzzleSquares.vue')
       },
-      {
-        path: '/leader-board',
-        component: () => import('src/pages/LeaderBoard.vue'),
-        // props: {time: 0, mistakes: 0},
-        props: true,
-      },
+
     ]
   },
     // http://192.168.0.21:9000/special/ localhost

@@ -25,7 +25,20 @@
 
         <!-- Кнопка свернуть/развернуть -->
         <button class="collapse-button" @click="goToRegistration">
-          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : 'agent:' + ' '+ displayUserName }}
+          {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '' }}
+          <span v-if="!isMenuCollapsed">
+    <strong class="agent-label">agent: </strong>
+    <span class="wave-text">
+      <span
+        v-for="(char, index) in displayUserName.split('')"
+        :key="index"
+        :style="{ animationDelay: `${index * 0.1}s` }"
+        class="wave-char"
+      >
+        {{ char === ' ' ? '\u00A0' : char }}
+      </span>
+    </span>
+  </span>
         </button>
       </div>
     </div>
@@ -125,11 +138,12 @@
 </template>
 
 <script setup>
-import {computed, inject, onMounted, ref} from 'vue';
+import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import LegendaryMode from '../components/LegendaryMode.vue';
 import { api } from 'src/api';
 import { useGameStore } from 'stores/example-store';
+import { watch } from 'vue';
 
 
 
@@ -148,6 +162,19 @@ const currentDiceNumber = ref(null);
 const showResult = ref(false);
 const diceResult = ref(1);
 
+const isBackendAvailable = ref(true);
+
+
+// Следим за открытием модального окна и автоматически бросаем кубик
+watch(showDiceModal, (newValue) => {
+  if (newValue) {
+    // Небольшая задержка для плавности открытия
+    setTimeout(() => {
+      rollDice();
+    }, 100);
+  }
+});
+
 const goToRegistration = () => {
   // router.push(-1) НЕ РАБОТАЕТ -1 если раскомментировтаь
   router.push("/registration")
@@ -158,20 +185,27 @@ const goToRegistration = () => {
 
 // Вычисляемое свойство для отображения имени
 const displayUserName = computed(() => {
-  // Если есть имя в store - показываем его (красивое имя без суффикса)
+  let name = '';
+
+  // 1. Проверяем store
   if (gameStore.agentName) {
-    // Извлекаем имя до символа # (если есть)
-    return gameStore.agentName.split('#')[0];
+    name = gameStore.agentName.split('#')[0];
+  } else {
+    // 2. Проверяем localStorage
+    const savedName = localStorage.getItem('agentName');
+    if (savedName) {
+      name = savedName;
+    } else {
+      name = 'Agent 404';
+    }
   }
 
-  // Если store пустой, но есть в localStorage (запасной вариант)
-  const savedName = localStorage.getItem('agentName');
-  if (savedName) {
-    return savedName;
+  // 3. Если бэкенд не доступен - добавляем (404)
+  if (!isBackendAvailable.value && name !== 'Agent 404') {
+    return `${name} (404)`;
   }
 
-  // Если ничего нет - Agent 404
-  return 'Agent 404';
+  return name;
 });
 
 // Функция загрузки имени пользователя из бэкенда
@@ -413,8 +447,17 @@ const changeSet = () => {
 };
 
 const otherGames = () => {
-  if (route.params.missionName) {
-    router.push(`/see-all-sets-of-words/${route.params.missionName}`);
+  // 1. Проверяем query параметры (из LeaderBoard)
+  const missionFromQuery = route.query.missionName;
+
+  // 2. Проверяем params маршрута
+  const missionFromParams = route.params.missionName;
+
+  // Используем первый найденный
+  const missionName = missionFromQuery || missionFromParams;
+
+  if (missionName) {
+    router.push(`/see-all-sets-of-words/${missionName}`);
   } else {
     router.push("/see-all-sets-of-words/");
   }
@@ -467,9 +510,9 @@ onMounted(async () => {
   cleanupOldVisits();
 
   // Пытаемся загрузить пользователя
-  const isBackendAvailable = await checkBackendConnection();
+  isBackendAvailable.value = await checkBackendConnection();
 
-  if (isBackendAvailable) {
+  if (isBackendAvailable.value) {
     // Бэкенд доступен - загружаем данные пользователя
     await loadUserFromBackend();
     console.log('Пользователь загружен:', displayUserName.value);
@@ -482,6 +525,8 @@ onMounted(async () => {
   console.log('All visits:', getAllVisitDates());
   console.log('User name:', displayUserName.value);
 });
+
+
 
 </script>
 
@@ -609,6 +654,9 @@ onMounted(async () => {
 }
 
 .collapse-button {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   position: absolute;
   bottom: -20px;
   left: 50%;
@@ -619,8 +667,6 @@ onMounted(async () => {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: none;
-  display: flex;
-  align-items: center;
   justify-content: center;
   font-size: 12px;
   color: #2c3e50;
@@ -632,7 +678,32 @@ onMounted(async () => {
 .collapse-button:hover {
   background: #f1f3f6;
 }
+.wave-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
 
+.wave-char {
+  display: inline-block;
+  animation: blurAnim 6s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes blurAnim {
+  0%, 100% {
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  15% {
+    filter: blur(2px);
+    transform: scale(1.1);
+  }
+  30% {
+    filter: blur(0px);
+    transform: scale(1);
+  }
+}
 .menu-button {
   padding: 8px 12px;
   border: none;

@@ -1,11 +1,19 @@
 <template>
   <!-- Основной контейнер результатов -->
   <div class="result">
-    <!-- Упрощенный вид результатов -->
-    <div class="simple-results" v-if="!showDetailed">
+    <!-- Если нет данных - показываем сообщение или ничего -->
+    <div v-if="!gameStore.lastGameResults || !gameStore.lastGameResults.time" class="no-data">
+      <p>Если вы видите это сообщение</p>
+      <p>скажите Винсенту об этом</p>
+      <button @click="goToGames" class="simple-btn try-again">Перейти к заданиям</button>
+    </div>
+    <template v-else>
+
+      <!-- Упрощенный вид результатов -->
+      <div class="simple-results" v-if="!showDetailed">
       <div class="simple-container">
         <div class="stat-item">
-          <span class="stat-label">time :</span>
+          <span class="stat-label noBold">my time is</span>
           <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
         </div>
         <!-- Анимированные слова -->
@@ -29,19 +37,85 @@
 
             <div class="simple-buttons">
 
-              <button class="simple-btn try-again" @click="tryAgain">ещё разок ! могу быстрее</button>
-<!--              <button class="simple-btn allMissions" @click="toAllMissions">другие задания</button>-->
-              <button class="simple-btn allMissions" @click="backToSameSet">другие задания</button>
-              <button class="simple-btn details-btn" @click="showDetailed = true">
-                 🌎 поделиться
+
+              <!-- Таблица лидеров -->
+              <div v-if="topPlayers && showLeaderboard" class="leaderboard-wrapper">
+                <div class="leaderboard-container">
+                  <div class="leaderboard">
+                    <table>
+                      <thead>
+                      <tr>
+                        <th>🏆</th>
+                        <th>Доска почёта для крутых Эйджэнтс</th>
+                        <th>⏰</th>
+                        <th>оши бок</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="(player, index) in visiblePlayers" :key="index" :class="{'highlight-row': yourPlace === index + 1}">
+                        <td>{{ index + 1 }}</td>
+                        <td>
+                    <span class="player-name">
+                      {{ getDisplayName(player.agent).name }}
+                      <span v-if="getDisplayName(player.agent).id" class="unique-id">
+                        ({{ getDisplayName(player.agent).id }})
+                      </span>
+                    </span>
+                        </td>
+                        <td>{{ player.time }}</td>
+                        <td>{{ player.mistakes }}</td>
+                      </tr>
+
+                      <tr v-if="yourPlace > visiblePlayers.length" class="highlight-row">
+                        <td>{{yourPlace}}</td>
+                        <td>
+                    <span class="player-name">
+                      {{ getDisplayName(gameStore.agentName).name }}
+                      <span v-if="getDisplayName(gameStore.agentName).id" class="unique-id">
+                        ({{ getDisplayName(gameStore.agentName).id }})
+                      </span>
+                      <span class="you-badge">(you)</span>
+                    </span>
+                        </td>
+                        <td>{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }}</td>
+                        <td>{{ gameStore.lastGameResults.mistakes }}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- кнопки -->
+
+              <button
+                v-if="shouldShowToggleButton"
+                class="simple-btn details-btn"
+                @click="toggleExpand"
+              >
+                {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
               </button>
+              <button class="simple-btn details-btn" @click="showDetailed = true">
+                подробнее статистика
+              </button>
+              <button class="simple-btn try-again"
+                      @click="tryAgain"
+                      @mouseenter="e => e.target.textContent = 'I can faster!'"
+                      @mouseleave="e => e.target.textContent = 'ещё разок ! могу быстрее'"
+              >
+                ещё разок ! могу быстрее</button>
+              <!--              <button class="simple-btn allMissions" @click="toAllMissions">другие задания</button>-->
+
+
+
             </div>
           </div>
         </transition>
       </div>
     </div>
-    <!-- Подробный вид (как было раньше) -->
-    <div class="detailed-results" v-else>
+      <!-- Подробный вид (как было раньше) -->
+      <div class="detailed-results" v-else>
       <!-- Блок с результатами игры -->
       <div class="congratulations-container">
         <h2 class="congratulations-title">Отправь скриншот Винсентику</h2>
@@ -99,7 +173,8 @@
           {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
         </button>
         <button class="try-again-btn" @click="tryAgain">Улучшить результат</button>
-        <button class="close-btn" @click="backToSameSet">Следующ. задание</button>
+        <button class="simple-btn allMissions" @click="backToSameSet">другие задания</button>
+
         <button class="games-btn" @click="goToGames">Другой набор слов</button>
         <button class="simple-btn next-mission" @click="seeAllWordsInSet">See all words</button>
 
@@ -118,7 +193,7 @@
                 <th>🏆</th>
                 <th>лучшие за всё время :</th>
                 <th>time</th>
-                <th>⚠️</th>
+                <th>⚠️ошибок</th>
               </tr>
               </thead>
               <tbody>
@@ -156,6 +231,8 @@
         </div>
       </div>
     </div>
+    </template>
+
   </div>
 </template>
 
@@ -176,12 +253,13 @@ const animationInterval = ref(null);
 
 // Массив слов для анимации
 const animationTexts = [
-  "Супер ! Super",
-  "Круто ! Cool",
-  "Отлично ! Great",
-  "Вау ! Wow",
-  "Офигенно ! Awesome",
-  "Браво ! Bravo",
+  "☝️",
+  // "Супер ! Super",
+  // "Круто ! Cool",
+  // "Отлично ! Great",
+  // "Вау ! Wow",
+  // "Офигенно ! Awesome",
+  // "Браво ! Bravo",
   ];
 
 // Случайное поздравление
@@ -207,11 +285,21 @@ const randomCompletionPhrase = computed(() => {
   return completionPhrases[randomIndex];
 });
 
+
+// ==================== КОНФИГУРАЦИЯ АНИМАЦИИ ====================
+const ANIMATION_CONFIG = {
+  WORD_INTERVAL: 400, // Интервал между появлением слов (мс)
+  FINAL_RESULT_DELAY: 4500, // Дополнительная задержка перед появлением финальных результатов (мс)
+  LEADERBOARD_DELAY: 500, // Задержка перед появлением таблицы лидеров (мс) - чтобы успеть назвать время
+};
+
 // Запуск анимации
 const startAnimation = () => {
   animatedWords.value = [];
   currentWordIndex.value = 0;
   showFinalResult.value = false;
+  showLeaderboard.value = false; // Добавляем новое состояние
+
 
   // Очищаем предыдущий интервал, если есть
   if (animationInterval.value) {
@@ -221,10 +309,11 @@ const startAnimation = () => {
   // Создаём массив слов для анимации
   const wordsToAnimate = [
     randomGreeting.value,
-    "скажи цифры вслух",
-    "_____________",
+    "скажи это вслух",
+    // "_____________",
 
-    timeInWords ,
+    // timeInWords ,
+    "( на английском )",
     "--------------",
 
     // randomCompletionPhrase.value,  // ← теперь рандомная фраза
@@ -238,12 +327,22 @@ const startAnimation = () => {
       animatedWords.value.push(wordsToAnimate[index]);
       index++;
     } else {
-      // Анимация завершена, показываем результат
+      // Анимация завершена
       clearInterval(animationInterval.value);
       animationInterval.value = null;
-      showFinalResult.value = true;
+
+      // Показываем финальные результаты с задержкой
+      setTimeout(() => {
+        showFinalResult.value = true;
+
+        // Показываем таблицу лидеров с дополнительной задержкой
+        setTimeout(() => {
+          showLeaderboard.value = true;
+        }, ANIMATION_CONFIG.LEADERBOARD_DELAY);
+
+      }, ANIMATION_CONFIG.FINAL_RESULT_DELAY);
     }
-  }, 300); // каждые 300 миллисекунд появляется новое слово
+  }, ANIMATION_CONFIG.WORD_INTERVAL);
 };
 
 
@@ -261,14 +360,129 @@ const yourPlace = ref();
 const isExpanded = ref(false);
 const showChangeNameButton = ref(gameStore.$state.agentName === null);
 const showDetailed = ref(false); // Управление отображением подробного вида
+const showLeaderboard = ref(false); // ← НОВОЕ: управление показом таблицы
 
 // Запасные данные для таблицы лидеров
 const fallbackPlayers = [
-  { agent: "Проблема с сервером", time: "000.00", mistakes: 0 },
-  { agent: "результаты других", time: "789.10", mistakes: 11 },
-  { agent: "можно увидеть позже", time: "1234.5", mistakes: 112 },
-
-
+  { agent: "потЭйто", time: "20067", mistakes: 3 },
+  { agent: "Cucumber", time: "13210", mistakes: 2 },
+  { agent: "кьЮкамбэ не кукумбер", time: "12340", mistakes: 1 },
+  { agent: "Улитка - snail", time: "9989070", mistakes: 0 },
+  // { agent: "Это агент с супер длинным именем для теста", time: "12340", mistakes: 1 },
+  //
+  // { agent: "SpeedDemon", time: "8900", mistakes: 0 },
+  // { agent: "TurboNinja", time: "9500", mistakes: 1 },
+  // { agent: "FlashMaster", time: "10200", mistakes: 0 },
+  // { agent: "LightningBolt", time: "11500", mistakes: 2 },
+  // { agent: "ThunderStrike", time: "12800", mistakes: 1 },
+  // { agent: "ShadowWalker", time: "13500", mistakes: 3 },
+  // { agent: "GhostRider", time: "14200", mistakes: 0 },
+  // { agent: "PhantomKing", time: "15100", mistakes: 2 },
+  // { agent: "EagleEye", time: "15900", mistakes: 1 },
+  // { agent: "HawkVision", time: "16800", mistakes: 3 },
+  // { agent: "LionHeart", time: "17500", mistakes: 2 },
+  // { agent: "TigerClaw", time: "18300", mistakes: 1 },
+  // { agent: "BearForce", time: "19200", mistakes: 4 },
+  // { agent: "WolfPack", time: "20100", mistakes: 2 },
+  // { agent: "FoxHunter", time: "20900", mistakes: 1 },
+  // { agent: "NightOwl", time: "21800", mistakes: 3 },
+  // { agent: "DarkKnight", time: "22600", mistakes: 0 },
+  // { agent: "SilverSurfer", time: "23500", mistakes: 2 },
+  // { agent: "GoldFinger", time: "24300", mistakes: 1 },
+  // { agent: "IronMan", time: "25200", mistakes: 4 },
+  // { agent: "SpiderMan", time: "26100", mistakes: 2 },
+  // { agent: "Batman", time: "26900", mistakes: 1 },
+  // { agent: "Superman", time: "27800", mistakes: 3 },
+  // { agent: "WonderWoman", time: "28600", mistakes: 0 },
+  // { agent: "FlashGordon", time: "29500", mistakes: 2 },
+  // { agent: "GreenLantern", time: "30300", mistakes: 1 },
+  // { agent: "Aquaman", time: "31200", mistakes: 3 },
+  // { agent: "Cyborg", time: "32100", mistakes: 2 },
+  // { agent: "Shazam", time: "32900", mistakes: 1 },
+  // { agent: "BlackPanther", time: "33800", mistakes: 4 },
+  // { agent: "DoctorStrange", time: "34600", mistakes: 2 },
+  // { agent: "StarLord", time: "35500", mistakes: 1 },
+  // { agent: "Gamora", time: "36300", mistakes: 3 },
+  // { agent: "Drax", time: "37200", mistakes: 0 },
+  // { agent: "Rocket", time: "38100", mistakes: 2 },
+  // { agent: "Groot", time: "38900", mistakes: 1 },
+  // { agent: "Mantis", time: "39800", mistakes: 3 },
+  // { agent: "Nebula", time: "40600", mistakes: 2 },
+  // { agent: "WarMachine", time: "41500", mistakes: 1 },
+  // { agent: "Falcon", time: "42300", mistakes: 4 },
+  // { agent: "WinterSoldier", time: "43200", mistakes: 2 },
+  // { agent: "Hawkeye", time: "44100", mistakes: 1 },
+  // { agent: "BlackWidow", time: "44900", mistakes: 3 },
+  // { agent: "ScarletWitch", time: "45800", mistakes: 0 },
+  // { agent: "Quicksilver", time: "46700", mistakes: 2 },
+  // { agent: "Vision", time: "47500", mistakes: 1 },
+  // { agent: "AntMan", time: "48400", mistakes: 3 },
+  // { agent: "Wasp", time: "49200", mistakes: 2 },
+  // { agent: "Hulk", time: "50100", mistakes: 5 },
+  // { agent: "Thor", time: "50900", mistakes: 2 },
+  // { agent: "Loki", time: "51800", mistakes: 1 },
+  // { agent: "Odin", time: "52600", mistakes: 3 },
+  // { agent: "Freya", time: "53500", mistakes: 0 },
+  // { agent: "Heimdall", time: "54300", mistakes: 2 },
+  // { agent: "Sif", time: "55200", mistakes: 1 },
+  // { agent: "Volstagg", time: "56100", mistakes: 4 },
+  // { agent: "Hogun", time: "56900", mistakes: 2 },
+  // { agent: "Fandral", time: "57800", mistakes: 1 },
+  // { agent: "Korg", time: "58600", mistakes: 3 },
+  // { agent: "Miek", time: "59500", mistakes: 2 },
+  // { agent: "Valkyrie", time: "60300", mistakes: 1 },
+  // { agent: "Surtur", time: "61200", mistakes: 4 },
+  // { agent: "Hela", time: "62100", mistakes: 2 },
+  // { agent: "Fenrir", time: "62900", mistakes: 1 },
+  // { agent: "Skurge", time: "63800", mistakes: 3 },
+  // { agent: "Kurse", time: "64600", mistakes: 0 },
+  // { agent: "Malekith", time: "65500", mistakes: 2 },
+  // { agent: "Laufey", time: "66300", mistakes: 1 },
+  // { agent: "Ymir", time: "67200", mistakes: 3 },
+  // { agent: "Surtr", time: "68100", mistakes: 2 },
+  // { agent: "Mimir", time: "68900", mistakes: 1 },
+  // { agent: "Baldur", time: "69800", mistakes: 4 },
+  // { agent: "Tyr", time: "70600", mistakes: 2 },
+  // { agent: "Bragi", time: "71500", mistakes: 1 },
+  // { agent: "Idun", time: "72300", mistakes: 3 },
+  // { agent: "Njord", time: "73200", mistakes: 0 },
+  // { agent: "Frey", time: "74100", mistakes: 2 },
+  // { agent: "Freyja", time: "74900", mistakes: 1 },
+  // { agent: "Gefion", time: "75800", mistakes: 3 },
+  // { agent: "Eir", time: "76600", mistakes: 2 },
+  // { agent: "Mordor", time: "77500", mistakes: 1 },
+  // { agent: "Gondor", time: "78300", mistakes: 4 },
+  // { agent: "Rohan", time: "79200", mistakes: 2 },
+  // { agent: "Shire", time: "80100", mistakes: 1 },
+  // { agent: "Rivendell", time: "80900", mistakes: 3 },
+  // { agent: "Lothlorien", time: "81800", mistakes: 0 },
+  // { agent: "Mirkwood", time: "82600", mistakes: 2 },
+  // { agent: "Erebor", time: "83500", mistakes: 1 },
+  // { agent: "IronHills", time: "84300", mistakes: 3 },
+  // { agent: "BlueMountains", time: "85200", mistakes: 2 },
+  // { agent: "MistyMountains", time: "86100", mistakes: 1 },
+  // { agent: "DeadMarshes", time: "86900", mistakes: 4 },
+  // { agent: "HelmsDeep", time: "87800", mistakes: 2 },
+  // { agent: "Isengard", time: "88600", mistakes: 1 },
+  // { agent: "MinasTirith", time: "89500", mistakes: 3 },
+  // { agent: "BaradDur", time: "90300", mistakes: 0 },
+  // { agent: "Orthanc", time: "91200", mistakes: 2 },
+  // { agent: "CirithUngol", time: "92100", mistakes: 1 },
+  // { agent: "ShelobsLair", time: "92900", mistakes: 3 },
+  // { agent: "Weathertop", time: "93800", mistakes: 2 },
+  // { agent: "AmonHen", time: "94600", mistakes: 1 },
+  // { agent: "ParthGal", time: "95500", mistakes: 4 },
+  // { agent: "Crickhollow", time: "96300", mistakes: 2 },
+  // { agent: "Bree", time: "97200", mistakes: 1 },
+  // { agent: "Archet", time: "98100", mistakes: 3 },
+  // { agent: "Combe", time: "98900", mistakes: 0 },
+  // { agent: "Staddle", time: "99800", mistakes: 2 },
+  // { agent: "MichelD", time: "100700", mistakes: 1 },
+  // { agent: "Tuckborough", time: "101500", mistakes: 3 },
+  // { agent: "Brandywine", time: "102400", mistakes: 2 },
+  // { agent: "Rivendell", time: "103300", mistakes: 1 },
+  // { agent: "GreyHavens", time: "104100", mistakes: 4 },
+  // { agent: "LoneLands", time: "105000", mistakes: 2 }
 ];
 
 
@@ -363,8 +577,8 @@ const generateUniqueId = () => {
  */
 const visiblePlayers = computed(() => {
   return isExpanded.value
-    ? topPlayers.value.slice(0, 100)
-    : topPlayers.value.slice(0, 8);
+    ? topPlayers.value.slice(0, 55)
+    : topPlayers.value.slice(0, 5);
 });
 
 // стоит ли показать кнопку Увидеть всех игроков
@@ -445,6 +659,7 @@ const wordSetNameSearch = (name) => {
 /**
  * Загрузка таблицы лидеров
  */
+// Загрузка таблицы лидеров
 const fetchLeaderboard = async () => {
   try {
     const res = await api.scores.get(gameStore.gameName);
@@ -452,7 +667,23 @@ const fetchLeaderboard = async () => {
     topPlayers.value = Array.isArray(response) && response.length > 0 ? response : fallbackPlayers;
   } catch (error) {
     console.error("Ошибка при загрузке таблицы победителей:", error);
-    topPlayers.value = fallbackPlayers;
+    // СОЗДАЕМ ФОЛБЭК СПИСОК С ДОБАВЛЕНИЕМ ТЕКУЩЕГО ИГРОКА
+    const currentPlayerResult = {
+      agent: gameStore.$state.agentName || "Player",
+      time: gameStore.lastGameResults.time,
+      mistakes: gameStore.lastGameResults.mistakes
+    };
+
+    // Добавляем текущего игрока в фолбэк-список, если его там нет
+    const existingPlayer = fallbackPlayers.find(p => p.agent === currentPlayerResult.agent);
+    if (!existingPlayer) {
+      topPlayers.value = [...fallbackPlayers, currentPlayerResult];
+    } else {
+      // Обновляем результат существующего игрока
+      topPlayers.value = fallbackPlayers.map(p =>
+        p.agent === currentPlayerResult.agent ? currentPlayerResult : p
+      );
+    }
   }
 };
 
@@ -544,7 +775,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 /* Основные стили контейнера */
 .result {
-  padding: 20px 10px;
+  padding: 15px 5px;
   background: linear-gradient(145deg, #0870b5, #4096d3);
   color: white;
   border-radius: 15px;
@@ -566,7 +797,7 @@ onMounted(async () => {
 .simple-container {
   background: linear-gradient(135deg, #2c3e50, #4ca1af);
   border-radius: 20px;
-  padding: 1px 20px;
+  padding: 10px 20px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   color: white;
   text-align: center;
@@ -593,9 +824,11 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 10px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 5px;
+  gap: 10px; /* Добавляем отступ между элементами */
+
   &:last-child {
     border-bottom: none;
   }
@@ -606,6 +839,7 @@ onMounted(async () => {
   font-weight: 600;
   opacity: 0.9;
   font-family: Special_f1;
+
 }
 
 .stat-value {
@@ -641,12 +875,10 @@ onMounted(async () => {
 }
 
 .simple-btn {
-  padding: 15px 10px;
+  padding: 10px 10px;
   border: none;
   border-radius: 25px;
   font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -679,7 +911,7 @@ onMounted(async () => {
   backdrop-filter: blur(10px);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.3);
-
+  font-family: Special_f1;
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
@@ -879,7 +1111,6 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px auto;
   width: 100%;
   max-width: 800px;
 }
@@ -899,12 +1130,13 @@ onMounted(async () => {
   overflow-y: auto;
   margin-bottom: 10px;
 
+
   table {
     width: 100%;
     border-collapse: collapse;
     color: black;
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr 1fr;
+    grid-template-columns: 40px 3fr 1fr 1fr;
 
     thead, tbody, tr {
       display: contents;
@@ -915,6 +1147,10 @@ onMounted(async () => {
       text-align: center;
       border: 1px solid #ddd;
       word-wrap: break-word;
+      display: flex; /* ← Добавляем flex */
+      align-items: center; /* ← Выравниваем по центру по вертикали */
+      justify-content: center; /* ← Выравниваем по центру по горизонтали */
+
     }
 
     th {
@@ -923,6 +1159,7 @@ onMounted(async () => {
       position: sticky;
       top: 0;
       z-index: 1;
+
     }
 
     tr:nth-child(even) {
@@ -1166,89 +1403,9 @@ color: #faf624;
   100% { left: 120%; opacity: 0; }
 }
 
-/* Адаптивные стили */
-@media (max-width: 600px) {
-  .congratulations-container {
-    padding: 15px;
-  }
-
-  .congratulations-title {
-    font-size: 22px;
-  }
-
-  .result-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-
-  .result-label, .result-value {
-    font-size: 14px;
-
-  }
-
-  .name-wrapper {
-    flex-direction: column;
-    align-items: flex-end;
-    max-width: 100%;
-  }
-
-  .agent-name {
-    text-align: right;
-    justify-content: flex-start;
-
-    .unique-id {
-      font-size: 8px;
-    }
-  }
-
-  .change-name-btn {
-    padding: 6px 12px;
-    font-size: 14px;
-  }
-
-  .leaderboard {
-    max-height: 158vh;
-    padding: 10px;
-
-    table {
-      th, td {
-        padding: 8px 4px;
-        font-size: 0.9em;
-      }
-    }
-  }
-
-  .player-name {
-    .unique-id {
-      font-size: 8px;
-    }
-    .you-badge {
-      font-size: 10px;
-    }
-  }
-
-  .buttons-container {
-    flex-direction: column;
-  }
-
-
-  .try-again-btn,
-  .close-btn,
-  .toggle-btn {
-    width: 100%;
-    padding: 10px 0;
-    margin-bottom: 10px;
-  }
-
-  .toggle-btn {
-    order: -1; /* Перемещаем кнопку в начало на мобильных */
-  }
-}
-
 /* Стили для анимированных слов */
 .animated-words-container {
-  min-height: 150px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1327,4 +1484,101 @@ color: #faf624;
 .final-results {
   margin-top: 2px;
 }
+
+
+/* Адаптивные стили */
+@media (max-width: 600px) {
+  .congratulations-container {
+    padding: 15px;
+  }
+
+  .simple-buttons {
+    gap: 8px;
+  }
+
+  .congratulations-title {
+    font-size: 22px;
+  }
+  .stat-label  {
+    font-size: 15px;
+  }
+  .noBold {
+    font-weight: normal;
+  }
+
+
+  .result-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .result-label, .result-value {
+    font-size: 14px;
+
+  }
+
+  .name-wrapper {
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 100%;
+  }
+
+  .agent-name {
+    text-align: right;
+    justify-content: flex-start;
+
+    .unique-id {
+      font-size: 8px;
+    }
+  }
+
+  .change-name-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .leaderboard {
+    max-height: 158vh;
+    padding: 5px;
+
+    table {
+      th, td {
+        padding: 8px 4px;
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  .player-name {
+    .unique-id {
+      font-size: 8px;
+    }
+    .you-badge {
+      font-size: 10px;
+    }
+  }
+
+  .buttons-container {
+    flex-direction: column;
+  }
+
+
+  .try-again-btn,
+  .close-btn,
+  .toggle-btn {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+
+  .toggle-btn {
+    order: -1; /* Перемещаем кнопку в начало на мобильных */
+  }
+
+  .animated-word {
+    font-size: 18px;
+  }
+}
+
 </style>
