@@ -196,7 +196,7 @@ const displayUserName = computed(() => {
     if (savedName) {
       name = savedName;
     } else {
-      name = 'Agent 404';
+      name = 'нажми сюда';
     }
   }
 

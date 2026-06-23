@@ -8,7 +8,7 @@
     <div class="streak-info">
       <div class="current-streak">
         <span class="streak-number">{{ currentStreak }}</span>
-        <span class="streak-text">дней подряд</span>
+        <span class="streak-text">{{ declensionDays(currentStreak) }} подряд</span>
       </div>
       <p class="streak-description">
         {{ getStreakDescription() }}
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Календарь посещений -->
-    <div class="calendar-container">
+    <div v-if="!showYearView" class="calendar-container">
       <div class="calendar-header">
         <h3>{{ getCurrentMonthName() }} {{ currentYear }}</h3>
       </div>
@@ -62,6 +62,47 @@
         </div>
       </div>
     </div>
+
+    <div class="calendar-actions">
+      <button @click="showYearView = !showYearView" class="year-toggle-btn">
+        {{ showYearView ? '⬅️ Текущий месяц' : '📅 Весь год' }}
+      </button>
+    </div>
+
+    <!-- Годовой календарь -->
+    <div v-if="showYearView" class="year-calendar-container">
+      <div class="year-grid">
+        <div
+          v-for="(month, index) in yearCalendar"
+          :key="index"
+          class="month-card"
+          :class="{
+        'current-month': month.isCurrentMonth,
+        'past-month': month.isPast,
+        'future-month': month.isFuture
+      }"
+        >
+          <div class="month-name">
+            {{ month.name }}
+            <span v-if="month.year !== currentYear" class="month-year">{{ month.year }}</span>
+          </div>
+          <div class="month-days-grid">
+            <div
+              v-for="day in month.days"
+              :key="day.date"
+              class="month-day"
+              :class="{
+            'empty': !day.date,
+            'active': day.isActive
+          }"
+            >
+              <span v-if="day.date">{{ day.date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Мотивирующий текст -->
     <div class="motivational-text">
@@ -96,6 +137,79 @@ const bestStreak = ref(0);
 const visitDates = ref([]);
 const currentYear = new Date().getFullYear();
 const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const showYearView = ref(false);
+
+// Генерация ограниченного календаря (4 месяца назад + текущий + 1 месяц вперед)
+const yearCalendar = computed(() => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const months = [];
+
+  // Начинаем с 4 месяцев назад
+  const startMonth = currentMonth - 4;
+  // Заканчиваем через 1 месяц вперед
+  const endMonth = currentMonth + 1;
+
+  for (let month = startMonth; month <= endMonth; month++) {
+    // Корректируем год, если месяц переходит через декабрь/январь
+    let year = currentYear;
+    let adjustedMonth = month;
+
+    if (month < 0) {
+      year = currentYear - 1;
+      adjustedMonth = 12 + month; // -1 -> 11 (декабрь), -2 -> 10 (ноябрь) и т.д.
+    } else if (month > 11) {
+      year = currentYear + 1;
+      adjustedMonth = month - 12;
+    }
+
+    const firstDay = new Date(year, adjustedMonth, 1);
+    const lastDay = new Date(year, adjustedMonth + 1, 0);
+    let firstDayOfWeek = firstDay.getDay();
+    if (firstDayOfWeek === 0) firstDayOfWeek = 7;
+
+    const days = [];
+
+    // Пустые дни в начале
+    for (let i = 1; i < firstDayOfWeek; i++) {
+      days.push({ date: null, isActive: false });
+    }
+
+    // Дни месяца
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      const dateStr = `${year}-${String(adjustedMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+      const isActive = visitDates.value.includes(dateStr);
+      days.push({
+        date: i,
+        isActive
+      });
+    }
+
+    months.push({
+      name: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'][adjustedMonth],
+      year: year,
+      isCurrentMonth: month === currentMonth,
+      isPast: month < currentMonth,
+      isFuture: month > currentMonth,
+      days
+    });
+  }
+
+  return months;
+});
+
+// Добавьте в script setup
+const declensionDays = (number) => {
+  const lastDigit = number % 10;
+  const lastTwoDigits = number % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) return 'дней';
+  if (lastDigit === 1) return 'день';
+  if (lastDigit >= 2 && lastDigit <= 4) return 'дня';
+  return 'дней';
+};
+
 
 // Загрузка данных
 function loadTrackerData() {
@@ -457,29 +571,168 @@ watch(() => props.currentDays, (newVal) => {
 .dev-button:nth-child(2) { background: #fff8e1; }
 .dev-button:nth-child(3) { background: #ffebee; }
 
-@media (max-width: 768px) {
-  .streak-number {
-    font-size: 36px;
+/* Кнопка переключения */
+.calendar-actions {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.year-toggle-btn {
+  padding: 8px 20px;
+  background: linear-gradient(145deg, #ff6b35, #f7931e);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  }
+}
+
+/* Годовой календарь */
+.year-calendar-container {
+  margin-top: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
   }
 
-  .calendar-day {
-    font-size: 12px;
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
   }
 
-  .stats-container {
-    padding: 10px;
+  &::-webkit-scrollbar-thumb {
+    background: #ff6b35;
+    border-radius: 10px;
+  }
+}
+
+/* Годовой календарь - всегда 3 месяца в столбце */
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.month-card {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 6px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+
+  /* Текущий месяц - подсветка */
+  &.current-month {
+    border: 2px solid #ff6b35;
+    background: #fff8f0;
+    box-shadow: 0 2px 10px rgba(255, 107, 53, 0.15);
   }
 
-  .stat-number {
-    font-size: 20px;
+  /* Прошлые месяцы - легкая затемненность */
+  &.past-month {
+    opacity: 0.85;
   }
 
-  .stat-label {
+  /* Будущие месяцы - более светлые */
+  &.future-month {
+    opacity: 0.7;
+
+    .month-day.active {
+      background: #d4d4d4;
+      color: #999;
+    }
+  }
+
+  .month-name {
+    text-align: center;
     font-size: 10px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e0e0e0;
+
+    .month-year {
+      font-size: 8px;
+      font-weight: normal;
+      color: #999;
+      margin-left: 2px;
+    }
   }
 
-  .dev-controls {
-    flex-direction: column;
+  .month-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+  }
+
+  .month-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #999;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+
+    &.empty {
+      background: transparent;
+    }
+
+    &.active {
+      background: #ff6b35;
+      color: white;
+      font-weight: bold;
+    }
+  }
+}
+
+/* Адаптив - просто уменьшаем отступы на мобильных */
+@media (max-width: 600px) {
+  .year-grid {
+    gap: 5px;
+  }
+
+  .month-card {
+    padding: 4px;
+    border-radius: 4px;
+
+    .month-name {
+      font-size: 8px;
+      margin-bottom: 3px;
+      padding-bottom: 2px;
+    }
+
+    .month-day {
+      font-size: 7px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .year-grid {
+    gap: 4px;
+  }
+
+  .month-card {
+    padding: 3px;
+
+    .month-name {
+      font-size: 7px;
+    }
+
+    .month-day {
+      font-size: 6px;
+    }
   }
 }
 </style>

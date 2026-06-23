@@ -96,9 +96,9 @@
               >
                 {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
               </button>
-              <button class="simple-btn details-btn" @click="showDetailed = true">
-                подробнее статистика
-              </button>
+<!--              <button class="simple-btn details-btn" @click="showDetailed = true">-->
+<!--                подробнее статистика-->
+<!--              </button>-->
               <button class="simple-btn try-again"
                       @click="tryAgain"
                       @mouseenter="e => e.target.textContent = 'I can faster!'"
@@ -725,11 +725,9 @@ onMounted(async () => {
       "Отчаянные домохозяйки",
       "Агент 69",
       "студент без имени",
-      "Patrick",
-      "Alex",
+      "не ввёл имя",
+      "не ввели имя",
       "NONAME",
-      "test",
-      "Professor"
     ];
     const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
     const uniqueId = generateUniqueId();

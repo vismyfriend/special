@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
-<!--      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">-->
+      <!--      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">-->
       <p class="bubble left think" id="intro-message">What is<br> your <br>name?</p>
       <img class="a-girl" src="../assets/images/special logo detective girl 2.png" alt="logo">
 
@@ -10,19 +10,19 @@
         <div class="registration-container">
           <div class="input-container">
             <input v-model="userName" type="text" :placeholder="placeholderText" class="name-input">
-            <q-btn
-              color="green-5"
-              :disable="isSubmitting"
-              @click="submitName"
-              class="ok-btn"
-            >
-              OK
-            </q-btn>
+            <!--            <q-btn-->
+            <!--              color="green-5"-->
+            <!--              :disable="isSubmitting"-->
+            <!--              @click="submitName"-->
+            <!--              class="ok-btn"-->
+            <!--            >-->
+            <!--              OK-->
+            <!--            </q-btn>-->
           </div>
 
           <!-- Предложенные имена (как на iPhone) -->
           <div v-if="suggestedNames.length > 0" class="suggested-names">
-<!--            <div class="suggested-title">💡 ПРЕДЛОЖЕННЫЕ:</div>-->
+            <!--            <div class="suggested-title">💡 ПРЕДЛОЖЕННЫЕ:</div>-->
             <div class="suggested-buttons">
               <button
                 v-for="name in suggestedNames"
@@ -52,20 +52,32 @@
               </button>
             </div>
             <div class="keyboard-row">
+              <button class="kboardbutton" @click="clearInput">Delete</button>
               <button class="kboardbutton" @click="deleteLastCharacter">⌫</button>
-              <button class="kboardbutton" @click="addCharacter(' ')">Space</button>
-              <button class="kboardbutton" @click="clearInput">Clear</button>
+              <button class="kboardbutton" @click="addCharacter(' ')">Space _</button>
+              <button class="kboardbutton" @click="clearInput">.</button>
+              <button
+                class="kboardbutton enter-btn"
+                :class="{ 'pulsing-enter': isInputFilled }"
+                @click="submitName"
+              >
+                enter
+              </button>
             </div>
           </div>
           <div v-if="isLoading" class="loading-container">
-            <div class="loading-message">loading ...  ( загрузка...)</div>
+            <div class="loading-message">loading ... ( загрузка...)</div>
 
-            <img src="../assets/images/loadingDuck.gif" alt="loading" class="loading-gif" />
+            <img src="../assets/images/loadingDuck.gif" alt="loading" class="loading-gif"/>
           </div>
           <div class="button-group-bottom">
-<!--            <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад</q-btn>-->
-<!--            <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>-->
-            <q-btn color="purple-5" @click="showAllAgents" class="agents-btn">👥 ВСЕ АГЕНТЫ</q-btn>
+            <!--            <q-btn push color="brown-5" @click="backToPreviousPage" class="back-btn">📷 назад</q-btn>-->
+            <!--            <q-btn color="blue-5" @click="continueAsGuest" class="guest-btn">Я анонимно хочу!</q-btn>-->
+            <q-btn v-if="!isInputFilled"
+                   color="purple-5"
+                   @click="showAllAgents"
+                   class="agents-btn">СПИСОК ВСЕХ АГЕНТОВ 👥
+            </q-btn>
           </div>
           <!-- Модальное окно со списком агентов -->
           <div v-if="showAgentsModal" class="agents-modal-overlay" @click="closeAgentsModal">
@@ -95,24 +107,28 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
-import { ref } from "vue";
-import { api } from "src/api";
-import { useQuasar } from "quasar";
-import { onMounted } from "vue";
+import {useRoute} from 'vue-router';
+import {useRouter} from 'vue-router';
+import {computed, ref} from "vue";
+import {api} from "src/api";
+import {useQuasar} from "quasar";
+import {onMounted} from "vue";
 import {useGameStore} from "stores/example-store";
 
 const placeholderText = ref("My name |");
 const suggestedNames = ref([]);
 
+// В script setup добавьте
+const isInputFilled = computed(() => {
+  return userName.value && userName.value.trim().length > 0;
+});
 // Добавь после других ref
 const showAgentsModal = ref(false);
 const agentsList = ref([]);
 
 const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const row3 = ["Z", "X", "C", "V", "B", "N", "M", "?"];
+const row3 = ["Z", "X", "C", "V", "B", "N", "M", "!"];
 
 const addCharacter = (char) => {
   userName.value += char;
@@ -144,9 +160,9 @@ const introQuestions = [
 
 // Случайные слова для суффиксов
 const randomSuffixes = [
-  "Great", "Super", "Awesome", "Brave", "Smart", "Cool", "Fast",
-  "Strong", "Wise", "Bold", "Calm", "Sharp", "Swift", "Mighty",
-  "Epic", "Legend", "Hero", "Star", "King", "Queen", "Master"
+  "Great", "Super", "Awesome", "Brave", "Smart", "Cool", "Fast", "Котлета",
+  "Strong", "Wise", "Calm", "Sharp", "Swift", "Fantastic", "Poop",
+  "Epic", "Legend", "Hero", "Star", "King", "Master", "90 Lvl",
 ];
 
 // Переменная для хранения случайного вопроса
@@ -160,9 +176,181 @@ function getRandomIntroQuestion() {
 
 }
 
+
+// Функция для получения простого названия устройства
+const getDeviceSuggestion = () => {
+  const ua = navigator.userAgent;
+
+  if (/iPhone/.test(ua)) return 'iPhone';
+  if (/iPad/.test(ua)) return 'iPad';
+  if (/Android/.test(ua)) return 'Android';
+  if (/Windows/.test(ua)) return 'Windows';
+  if (/Mac/.test(ua)) return 'MacBook';
+  if (/Linux/.test(ua)) return 'Linux';
+  return 'Компьютер';
+};
+
+// Функция для сбора всей информации о системе
+const logSystemInfo = () => {
+  console.log('🖥️ ===== ИНФОРМАЦИЯ О СИСТЕМЕ =====');
+
+  // 1. Браузер и ОС
+  console.log('📱 Браузер/ОС:', navigator.userAgent);
+
+  // 2. Платформа
+  console.log('💻 Платформа:', navigator.platform);
+
+  // 3. Язык
+  console.log('🌐 Язык:', navigator.language);
+  console.log('🌐 Доступные языки:', navigator.languages);
+
+  // 4. Размер экрана
+  console.log('📐 Размер экрана:', {
+    width: window.screen.width,
+    height: window.screen.height,
+    availWidth: window.screen.availWidth,
+    availHeight: window.screen.availHeight,
+    colorDepth: window.screen.colorDepth,
+    pixelDepth: window.screen.pixelDepth
+  });
+
+  // 5. Размер окна браузера
+  console.log('🪟 Размер окна:', {
+    innerWidth: window.innerWidth,
+    innerHeight: window.innerHeight,
+    outerWidth: window.outerWidth,
+    outerHeight: window.outerHeight
+  });
+
+  // 6. Информация о батарее (если доступна)
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(battery => {
+      console.log('🔋 Батарея:', {
+        charging: battery.charging,
+        level: Math.round(battery.level * 100) + '%',
+        chargingTime: battery.chargingTime,
+        dischargingTime: battery.dischargingTime
+      });
+    }).catch(err => console.log('❌ Батарея не доступна'));
+  } else {
+    console.log('❌ Батарея не поддерживается');
+  }
+
+  // 7. Информация о сети
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection) {
+    console.log('📶 Сеть:', {
+      type: connection.effectiveType,
+      downlink: connection.downlink + ' Mbps',
+      rtt: connection.rtt + ' ms',
+      saveData: connection.saveData
+    });
+  } else {
+    console.log('❌ Информация о сети не доступна');
+  }
+
+  // 8. Информация о времени
+  console.log('⏰ Время:', {
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    hour: new Date().getHours(),
+    minutes: new Date().getMinutes(),
+    date: new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString()
+  });
+
+  // 9. Аппаратное обеспечение
+  console.log('🖥️ Аппаратное обеспечение:', {
+    hardwareConcurrency: navigator.hardwareConcurrency || 'не известно',
+    deviceMemory: navigator.deviceMemory || 'не известно',
+    maxTouchPoints: navigator.maxTouchPoints || 'не известно'
+  });
+
+  // 10. Определение типа устройства (расшифровка userAgent)
+  const ua = navigator.userAgent;
+  let deviceType = 'Неизвестно';
+  let os = 'Неизвестно';
+  let browser = 'Неизвестно';
+
+  // Определяем ОС
+  if (/Windows NT 10.0/.test(ua)) os = 'Windows 10/11';
+  else if (/Windows NT 6.1/.test(ua)) os = 'Windows 7';
+  else if (/Windows NT 6.2/.test(ua)) os = 'Windows 8';
+  else if (/Mac OS X/.test(ua)) os = 'macOS';
+  else if (/iPhone/.test(ua)) os = 'iOS (iPhone)';
+  else if (/iPad/.test(ua)) os = 'iOS (iPad)';
+  else if (/Android/.test(ua)) os = 'Android';
+  else if (/Linux/.test(ua)) os = 'Linux';
+
+  // Определяем браузер
+  if (/Chrome/.test(ua) && !/Edge/.test(ua)) browser = 'Chrome';
+  else if (/Firefox/.test(ua)) browser = 'Firefox';
+  else if (/Safari/.test(ua) && !/Chrome/.test(ua)) browser = 'Safari';
+  else if (/Edge/.test(ua)) browser = 'Edge';
+  else if (/Opera/.test(ua)) browser = 'Opera';
+
+  // Определяем тип устройства
+  if (/iPhone/.test(ua)) deviceType = 'iPhone';
+  else if (/iPad/.test(ua)) deviceType = 'iPad';
+  else if (/Android/.test(ua)) deviceType = 'Android телефон/планшет';
+  else if (/Windows/.test(ua)) deviceType = 'Компьютер (Windows)';
+  else if (/Mac/.test(ua)) deviceType = 'Компьютер (Mac)';
+  else if (/Linux/.test(ua)) deviceType = 'Компьютер (Linux)';
+
+  console.log('📱 Тип устройства:', deviceType);
+  console.log('💿 Операционная система:', os);
+  console.log('🌍 Браузер:', browser);
+
+  // 11. Определяем модель (для мобильных)
+  let model = 'Неизвестно';
+  if (/iPhone/.test(ua)) {
+    if (/iPhone 15/.test(ua)) model = 'iPhone 15';
+    else if (/iPhone 14/.test(ua)) model = 'iPhone 14';
+    else if (/iPhone 13/.test(ua)) model = 'iPhone 13';
+    else if (/iPhone 12/.test(ua)) model = 'iPhone 12';
+    else if (/iPhone SE/.test(ua)) model = 'iPhone SE';
+    else model = 'iPhone';
+  } else if (/SM-/.test(ua)) {
+    const match = ua.match(/SM-[A-Z0-9]+/);
+    model = match ? match[0] : 'Samsung';
+  } else if (/iPad/.test(ua)) {
+    model = 'iPad';
+  }
+  console.log('📱 Модель устройства:', model);
+
+  // 12. Доступ к файловой системе (если есть)
+  if ('storage' in navigator && 'estimate' in navigator.storage) {
+    navigator.storage.estimate().then(estimate => {
+      console.log('💾 Хранилище:', {
+        usage: Math.round(estimate.usage / (1024 * 1024)) + ' MB',
+        quota: Math.round(estimate.quota / (1024 * 1024)) + ' MB',
+        percentUsed: Math.round((estimate.usage / estimate.quota) * 100) + '%'
+      });
+    }).catch(() => console.log('❌ Информация о хранилище не доступна'));
+  }
+
+  // 13. Геолокация (с разрешения пользователя)
+  // if ('geolocation' in navigator) {
+  //   console.log('📍 Геолокация: запрос...');
+  //   navigator.geolocation.getCurrentPosition(
+  //     pos => {
+  //       console.log('📍 Координаты:', {
+  //         latitude: pos.coords.latitude,
+  //         longitude: pos.coords.longitude,
+  //         accuracy: pos.coords.accuracy + ' meters'
+  //       });
+  //     },
+  //     err => console.log('❌ Геолокация отклонена или не доступна:', err.message)
+  //   );
+  // }
+
+  console.log('🖥️ ===== КОНЕЦ ИНФОРМАЦИИ =====');
+};
+
 // Получаем случайный вопрос в момент монтирования компонента
 onMounted(() => {
 
+// Выводим информацию о системе
+  logSystemInfo();
 
   randomQuestion.value = getRandomIntroQuestion();
   const introMessageText = `${randomQuestion.value}`;
@@ -184,7 +372,7 @@ onMounted(() => {
 
   typeWriter();
   const togglePlaceholder = () => {
-    placeholderText.value = placeholderText.value === "My name |" ? "My name" : "My name |";
+    placeholderText.value = placeholderText.value === "My name is |" ? "My name is" : "My name is |";
     setTimeout(togglePlaceholder, 500); // продолжает мигать
   };
 
@@ -231,44 +419,39 @@ const submitName = async () => {
 
   // Генерируем уникальный суффикс
   const generateUniqueSuffix = () => {
-    // Вариант 1: Простой timestamp + случайные символы
-    const timestamp = Date.now().toString(36); // конвертируем время в 36-ричную систему
-    const random = Math.random().toString(36).substring(2, 6); // 4 случайных символа
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).substring(2, 6);
     return `${timestamp}${random}`;
-
-    // Вариант 2: Только короткий ID (для красоты)
-    // return Math.random().toString(36).substring(2, 8);
-
-    // Вариант 3: Имя пользователя + короткий ID
-    // const shortId = Math.random().toString(36).substring(2, 5);
-    // return `${userName.value}_${shortId}`;
   };
 
   const uniqueSuffix = generateUniqueSuffix();
   const uniqueAgentName = `${userName.value}#${uniqueSuffix}`;
 
+  // ✅ 1. СНАЧАЛА СОХРАНЯЕМ В LOCALSTORAGE (всегда!)
+  localStorage.setItem('agentName', userName.value);
+  localStorage.setItem('fullAgentName', uniqueAgentName);
+  localStorage.setItem('agentNamePending', 'true'); // Маркер, что нужно синхронизировать
+  gameStore.setAgentName(uniqueAgentName);
+
+  // ✅ 2. ПЫТАЕМСЯ ОТПРАВИТЬ НА БЭКЕНД
   try {
     const res = await api.auth.post(uniqueAgentName);
     localStorage.setItem('token', res.data.token);
-
-    // Сохраняем красивое имя для отображения
-    localStorage.setItem('agentName', userName.value);
-
-    // Сохраняем полное уникальное имя для бэкенда
-    localStorage.setItem('fullAgentName', uniqueAgentName);
-
-    gameStore.setAgentName(uniqueAgentName);
-
-    setNotify(`Hello, ${userName.value}! `);
-
-    await router.push("/see-all-sets-of-words/");
+    localStorage.removeItem('agentNamePending'); // Убираем маркер
+    setNotify(`Hello, ${userName.value}! 🎉`, 'green');
   } catch (error) {
-    setNotify("Registration failed. Please try again.", 'red');
-    console.error('Registration error:', error);
+    console.error('❌ Ошибка регистрации (бэкенд не доступен):', error);
+    // ✅ 3. ДАЖЕ ПРИ ОШИБКЕ - ИМЯ УЖЕ СОХРАНЕНО!
+    setNotify(`👋 Привет, ${userName.value}! (что-то с сервером...)`, 'orange');
+    // Сохраняем маркер, что нужно будет синхронизировать позже
+    localStorage.setItem('agentNamePending', 'true');
   } finally {
     isSubmitting.value = false;
     isLoading.value = false;
   }
+
+  // ✅ 4. ВСЕГДА ПЕРЕХОДИМ НА ГЛАВНУЮ
+  await router.push("/see-all-sets-of-words/");
 };
 
 // настроить режим анонимных пользователей
@@ -320,14 +503,24 @@ const loadSuggestedNames = () => {
     const nameWithoutSuffix = previousName.split(/#|_/)[0];
     const suffixVariant = `${nameWithoutSuffix}_${getRandomSuffix()}`;
 
-    // Добавляем, если не совпадает с оригиналом
     if (suffixVariant !== previousName) {
       suggestions.push(suffixVariant);
     }
   }
 
+  // ✅ Если нет предыдущего имени - добавляем предложения для нового пользователя
+  if (suggestions.length === 0) {
+    // Первое предложение - устройство
+    suggestions.push(getDeviceSuggestion());
+
+    // Второе предложение - классика
+    const classicNames = ['Blondie', 'Не скажу!', 'Аноним 007'];
+    suggestions.push(classicNames[Math.floor(Math.random() * classicNames.length)]);
+  }
+
   suggestedNames.value = suggestions; // ровно 2 предложения (или 0/1 если нет previousName)
 };
+
 
 // Функция для вывода всех агентов
 // Функция для показа всех агентов в модальном окне
@@ -363,10 +556,40 @@ const showAllAgents = async () => {
     console.error('Ошибка при получении списка агентов:', error);
     // Показываем демо-данные в модалке
     agentsList.value = [
-      'Vincent#abc123',
-      'Alex#def456',
-      'Maria#ghi789',
-      'John#jkl012'
+      'Vincent 007',
+      'Don Carleone',
+      'Russel',
+      'Shally',
+      'Polina',
+      'Andrew',
+      'Мохиндер Сюреш',
+      'Ollie',
+      'Mirra',
+      'Alex',
+      'Aleks',
+      'Sandy',
+      'Nadin',
+      'Valery',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
+      '🔒отказано в доступе',
     ];
     showAgentsModal.value = true;
   }
@@ -390,9 +613,8 @@ const continueAsGuest = async () => {
 };
 </script>
 
+
 <style lang="scss" scoped>
-
-
 
 
 .inside-phone-frame {
@@ -415,20 +637,19 @@ const continueAsGuest = async () => {
   position: relative;
   height: 655px;
   width: 310px;
-  background:
-    linear-gradient(
-        to top,
-        #fff -250%,
-        #000000 150%
-    );
+  background: linear-gradient(
+      to top,
+      #fff -250%,
+      #000000 150%
+  );
   margin: 5px auto;
   border-radius: 2em;
   border: solid 5px #6a6a6a;
-  box-shadow:
-    inset 0 0 2px 7px #000,
-    inset 0 0 3px 7px #000,
-    0 150px 200px -80px #000;
+  box-shadow: inset 0 0 2px 7px #000,
+  inset 0 0 3px 7px #000,
+  0 150px 200px -80px #000;
   overflow: auto;
+
 }
 
 .registration-container {
@@ -436,13 +657,11 @@ const continueAsGuest = async () => {
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  margin-top: 20px;
 }
 
 .input-container {
   display: flex;
   justify-content: space-between;
-  width: 90%;
   gap: 10px;
   align-items: center;
 
@@ -452,7 +671,6 @@ const continueAsGuest = async () => {
   padding: 5px 10px;
   border-radius: 10px;
   border: 2px solid #6a6a6a;
-  width: 165px;
   font-size: 22px;
   cursor: none;
 
@@ -496,23 +714,23 @@ const continueAsGuest = async () => {
 
     &:before {
       border-radius: 0 0 100%;
-      box-shadow:
-        -2px -2px 0 0 #000 inset,
-        -23px 0 0 0 #fff inset,
-        -25px -2px 0 0 #000 inset;
+      box-shadow: -2px -2px 0 0 #000 inset,
+      -23px 0 0 0 #fff inset,
+      -25px -2px 0 0 #000 inset;
       left: 0;
     }
 
   }
+
   &.right {
     float: right;
     margin: 10px 10px 60px 10px;
+
     &:before {
       border-radius: 0 0 0 100%;
-      box-shadow:
-        2px -2px 0 0 #000 inset,
-        23px 0 0 0 #fff inset,
-        25px -2px 0 0 #000 inset;
+      box-shadow: 2px -2px 0 0 #000 inset,
+      23px 0 0 0 #fff inset,
+      25px -2px 0 0 #000 inset;
       right: 0;
     }
   }
@@ -525,27 +743,28 @@ const continueAsGuest = async () => {
       border-radius: 100%;
       background: #fff;
     }
+
     &.left:before {
       left: 50px;
-      box-shadow:
-        0 0 0 7px white,
-        0 0 0 10px black,
-        -20px 15px 0 5px white,
-        -20px 15px 0 8px black,
-        -40px 20px 0 2px white,
-        -40px 20px 0 5px black;
+      box-shadow: 0 0 0 7px white,
+      0 0 0 10px black,
+      -20px 15px 0 5px white,
+      -20px 15px 0 8px black,
+      -40px 20px 0 2px white,
+      -40px 20px 0 5px black;
     }
+
     &.right:before {
       right: 50px;
-      box-shadow:
-        0 0 0 7px white,
-        0 0 0 10px black,
-        20px 15px 0 5px white,
-        20px 15px 0 8px black,
-        40px 20px 0 2px white,
-        40px 20px 0 5px black;
+      box-shadow: 0 0 0 7px white,
+      0 0 0 10px black,
+      20px 15px 0 5px white,
+      20px 15px 0 8px black,
+      40px 20px 0 2px white,
+      40px 20px 0 5px black;
     }
   }
+
   &.yell {
     &:before {
       height: 0px;
@@ -554,6 +773,7 @@ const continueAsGuest = async () => {
       border-radius: 0;
       background: #fff;
     }
+
     &:after {
       content: '';
       position: absolute;
@@ -561,59 +781,58 @@ const continueAsGuest = async () => {
       height: 20px;
       width: 59px;
     }
+
     &.left {
       &:before {
         transform: skew(-45deg);
         left: 50px;
-        box-shadow:
-          //0 0 0 7px white,
+        box-shadow: //0 0 0 7px white,
           0 -3px 0 5px white,
           0 0 0 5px white,
           0 8px 0 5px white,
           8px 8px 0 5px white,
           16px 8px 0 5px white,
           24px 8px 0 5px white,
-
           0 0 0 8px black,
           0 8px 0 8px black,
           8px 8px 0 8px black,
           16px 8px 0 8px black,
           24px 8px 0 8px black;
       }
+
       &:after {
         border-radius: 0 0 60%;
         transform: skew(-45deg);
-        box-shadow:
-          -3px -2px 0 0 #000 inset,
-          -14px 0 0 0 #fff inset,
-          -17px -2px 0 0 #000 inset;
+        box-shadow: -3px -2px 0 0 #000 inset,
+        -14px 0 0 0 #fff inset,
+        -17px -2px 0 0 #000 inset;
         left: 0;
       }
     }
+
     &.right {
       &:before {
         transform: skew(45deg);
         right: 50px;
-        box-shadow:
-          0 -3px 0 5px white,
-          0 0 0 5px white,
-          0 8px 0 5px white,
-          -8px 8px 0 5px white,
-          -16px 8px 0 5px white,
-          -24px 8px 0 5px white,
-          0 0 0 8px black,
-          0 8px 0 8px black,
-          -8px 8px 0 8px black,
-          -16px 8px 0 8px black,
-          -24px 8px 0 8px black;
+        box-shadow: 0 -3px 0 5px white,
+        0 0 0 5px white,
+        0 8px 0 5px white,
+        -8px 8px 0 5px white,
+        -16px 8px 0 5px white,
+        -24px 8px 0 5px white,
+        0 0 0 8px black,
+        0 8px 0 8px black,
+        -8px 8px 0 8px black,
+        -16px 8px 0 8px black,
+        -24px 8px 0 8px black;
       }
+
       &:after {
         border-radius: 0 0 0 60%;
         transform: skew(45deg);
-        box-shadow:
-          3px -2px 0 0 #000 inset,
-          14px 0 0 0 #fff inset,
-          17px -2px 0 0 #000 inset;
+        box-shadow: 3px -2px 0 0 #000 inset,
+        14px 0 0 0 #fff inset,
+        17px -2px 0 0 #000 inset;
         right: 0;
       }
     }
@@ -633,10 +852,12 @@ const continueAsGuest = async () => {
   display: flex;
   gap: 2px;
 }
+
 .q-btn {
   cursor: none;
 
 }
+
 .kboardbutton {
   padding: 7px;
   font-size: 18px;
@@ -650,6 +871,41 @@ const continueAsGuest = async () => {
 .kboardbutton:hover {
   background-color: #555;
 }
+
+/* Зеленая кнопка Enter */
+.enter-btn {
+  background-color: #4CAF50;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:active {
+    background-color: #3d8b40;
+  }
+}
+
+/* Пульсация кнопки Enter (уменьшение) */
+.enter-btn.pulsing-enter {
+  animation: pulseEnter 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes pulseEnter {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+  }
+  50% {
+    transform: scale(0.92);
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+}
+
 .loading-message {
   text-align: center;
   font-size: 18px;
@@ -658,6 +914,7 @@ const continueAsGuest = async () => {
   font-weight: bold;
   font-family: "Permanent Marker";
 }
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -691,10 +948,14 @@ const continueAsGuest = async () => {
 .suggested-buttons {
   display: flex;
   gap: 8px;
-  flex-wrap: nowrap;           /* 👈 Запрещаем перенос */
-  overflow-x: auto;            /* 👈 Добавляем горизонтальную прокрутку */
+  flex-wrap: nowrap; /* 👈 Запрещаем перенос */
+  overflow-x: auto; /* 👈 Добавляем горизонтальную прокрутку */
+  overflow-y: hidden; /* ← Скрываем вертикальный скролл */
+  padding: 5px 0; /* ← Добавляем отступы, чтобы кнопки не обрезались */
+
+
   -webkit-overflow-scrolling: touch; /* 👈 Плавный скролл на iOS */
-  scrollbar-width: thin;       /* 👈 Тонкий скроллбар */
+  scrollbar-width: thin; /* 👈 Тонкий скроллбар */
   justify-content: center;
 
 }
@@ -723,17 +984,51 @@ const continueAsGuest = async () => {
   cursor: none;
   transition: all 0.2s ease;
   font-family: 'Courier New', monospace;
-  white-space: nowrap;         /* 👈 Текст не переносится */
-  flex-shrink: 0;              /* 👈 Кнопки не сжимаются */
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  // 🆕 Добавляем анимацию пульсации
+  animation: pulseSuggestion 3s ease-in-out infinite;
+
+  &:hover {
+    background: #d1d1d6;
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
-.suggested-btn:hover {
-  background: #d1d1d6;
-  transform: scale(1.02);
+// Каждый элемент получает свою задержку через :nth-child
+.suggested-btn:nth-child(1) {
+  animation-delay: 0s;
 }
 
-.suggested-btn:active {
-  transform: scale(0.98);
+.suggested-btn:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.suggested-btn:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes pulseSuggestion {
+  0%, 100% {
+    transform: scale(1);
+    background: #e5e5ea;
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
+  }
+  10% {
+    transform: scale(1.05);
+    background: #d1d1d6;
+    box-shadow: 0 0 15px 5px rgba(0, 122, 255, 0.2);
+  }
+  20% {
+    transform: scale(1);
+    background: #e5e5ea;
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
+  }
 }
 
 /* Стили для группы кнопок внизу */
@@ -754,6 +1049,7 @@ const continueAsGuest = async () => {
 /* Стиль для кнопки агентов */
 .agents-btn {
   background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  font-size: 10px;
 }
 
 /* Модальное окно для списка агентов */
