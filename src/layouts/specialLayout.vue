@@ -164,6 +164,22 @@ const diceResult = ref(1);
 
 const isBackendAvailable = ref(true);
 
+// Функция проверки, нужно ли показать Legendary Mode
+const shouldShowLegendaryOnVisit = () => {
+  const today = getTodayISO();
+  const lastLegendaryShow = localStorage.getItem('lastLegendaryShow');
+
+  // Если сегодня еще не показывали - показываем
+  return lastLegendaryShow !== today;
+};
+
+// Функция показа Legendary Mode
+const checkAndShowLegendary = () => {
+  if (shouldShowLegendaryOnVisit()) {
+    showLegendaryModal.value = true; // ← сразу показываем
+    localStorage.setItem('lastLegendaryShow', getTodayISO());
+  }
+};
 
 // Следим за открытием модального окна и автоматически бросаем кубик
 watch(showDiceModal, (newValue) => {
@@ -243,18 +259,16 @@ const loadUserFromBackend = async () => {
 };
 
 // Проверка соединения с бэкендом
+
+// И используйте метод health
 const checkBackendConnection = async () => {
   try {
-    // Пробуем сделать легкий запрос к бэкенду
-    const response = await fetch(`${process.env.API_URL || 'http://localhost:3000'}/health`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    return response.ok;
+    console.log('🔍 Проверка бэкенда...');
+    const response = await api.backEndTest.health(); // ✅ сохраняем ответ
+    console.log('✅ Бэкенд доступен:', response.status);
+    return true;
   } catch (error) {
-    console.log('Бэкенд не доступен');
+    console.log('❌ Бэкенд не доступен:', error.message);
     return false;
   }
 };
@@ -524,6 +538,10 @@ onMounted(async () => {
   console.log('Current streak:', legendaryDays.value);
   console.log('All visits:', getAllVisitDates());
   console.log('User name:', displayUserName.value);
+
+  // ✅ Показываем Legendary Mode при первом посещении за сегодня
+  checkAndShowLegendary();
+
 });
 
 

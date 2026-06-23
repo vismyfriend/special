@@ -1,12 +1,13 @@
 <template>
   <div class="legendary-mode-content">
     <div class="modal-header">
-      <h2>🔥 Legendary Mode</h2>
+      <h2>Legendary Mode</h2>
     </div>
 
     <!-- Блок с текущей серией -->
     <div class="streak-info">
       <div class="current-streak">
+        <span class="streak-text">Вы тренируетесь</span>
         <span class="streak-number">{{ currentStreak }}</span>
         <span class="streak-text">{{ declensionDays(currentStreak) }} подряд</span>
       </div>
@@ -21,13 +22,13 @@
         <span class="stat-number">{{ totalVisits }}</span>
         <span class="stat-label">всего посещений</span>
       </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ currentStreak }}</span>
-        <span class="stat-label">текущая серия</span>
-      </div>
+<!--      <div class="stat-item">-->
+<!--        <span class="stat-number">{{ currentStreak }}</span>-->
+<!--        <span class="stat-label">текущая серия</span>-->
+<!--      </div>-->
       <div class="stat-item">
         <span class="stat-number">{{ bestStreak }}</span>
-        <span class="stat-label">рекорд</span>
+        <span class="stat-label">прошлый рекорд</span>
       </div>
     </div>
 
@@ -65,7 +66,7 @@
 
     <div class="calendar-actions">
       <button @click="showYearView = !showYearView" class="year-toggle-btn">
-        {{ showYearView ? '⬅️ Текущий месяц' : '📅 Весь год' }}
+        {{ showYearView ? '⬅️ Текущий месяц' : '📅 Показать несколько месяцев' }}
       </button>
     </div>
 
@@ -136,7 +137,7 @@ const totalVisits = ref(0);
 const bestStreak = ref(0);
 const visitDates = ref([]);
 const currentYear = new Date().getFullYear();
-const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const weekDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 const showYearView = ref(false);
 
 // Генерация ограниченного календаря (4 месяца назад + текущий + 1 месяц вперед)
@@ -187,7 +188,7 @@ const yearCalendar = computed(() => {
     }
 
     months.push({
-      name: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'][adjustedMonth],
+      name: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][adjustedMonth],
       year: year,
       isCurrentMonth: month === currentMonth,
       isPast: month < currentMonth,
@@ -327,10 +328,10 @@ const forceReset = () => {
 
 // Вспомогательные методы
 const getStreakDescription = () => {
-  if (currentStreak.value === 1) return 'Начни свой легендарный путь!';
-  if (currentStreak.value < 7) return 'Отличное начало! Продолжай в том же духе!';
-  if (currentStreak.value < 30) return 'Неделя за неделей - ты становишься сильнее!';
-  if (currentStreak.value < 100) return 'Месяц за месяцем - ты настоящий герой!';
+  if (currentStreak.value === 1) return 'Вижу цель - не вижу преград!';
+  if (currentStreak.value < 7) return 'Дальше будет круче!';
+  if (currentStreak.value < 30) return 'День за днём - приходит уверенность!';
+  if (currentStreak.value < 100) return 'Винсент будет тобой гордиться!';
   return 'Ты легенда! Продолжай свой путь!';
 };
 
@@ -347,8 +348,8 @@ const getMotivationalText = () => {
 
 const getCurrentMonthName = () => {
   const months = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
   return months[new Date().getMonth()];
 };
@@ -376,7 +377,8 @@ watch(() => props.currentDays, (newVal) => {
 
 .modal-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  font-family: Special_f1;
 }
 
 .modal-header h2 {
@@ -387,7 +389,7 @@ watch(() => props.currentDays, (newVal) => {
 
 .streak-info {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .current-streak {
@@ -395,7 +397,6 @@ watch(() => props.currentDays, (newVal) => {
   align-items: baseline;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
 .streak-number {
@@ -419,8 +420,8 @@ watch(() => props.currentDays, (newVal) => {
 .stats-container {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 25px;
-  padding: 15px;
+  margin-bottom: 5px;
+  padding: 5px;
   background: #f8f9fa;
   border-radius: 10px;
 }
@@ -429,7 +430,7 @@ watch(() => props.currentDays, (newVal) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 1px;
 }
 
 .stat-number {
@@ -450,7 +451,8 @@ watch(() => props.currentDays, (newVal) => {
 
 .calendar-header {
   text-align: center;
-  margin-bottom: 15px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .calendar-header h3 {
@@ -698,6 +700,11 @@ watch(() => props.currentDays, (newVal) => {
 
 /* Адаптив - просто уменьшаем отступы на мобильных */
 @media (max-width: 600px) {
+  .streak-text {
+    font-size: 16px;
+    color: #666;
+  }
+
   .year-grid {
     gap: 5px;
   }
