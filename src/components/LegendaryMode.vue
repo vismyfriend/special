@@ -110,6 +110,8 @@
       <p>{{ getMotivationalText() }}</p>
     </div>
 
+
+
     <!-- Кнопки для разработки -->
     <div v-if="isDevMode" class="dev-controls">
       <button @click="forceAddDay" class="dev-button">[DEV] +1 день</button>
@@ -211,27 +213,45 @@ const declensionDays = (number) => {
   return 'дней';
 };
 
+const calculateBestStreakFromHistory = (dates) => {
+  if (!dates || dates.length === 0) return 0;
 
+  // Сортируем даты
+  const sortedDates = [...dates].sort();
+  let currentStreak = 1;
+  let maxStreak = 1;
+
+  for (let i = 1; i < sortedDates.length; i++) {
+    const prevDate = new Date(sortedDates[i - 1]);
+    const currDate = new Date(sortedDates[i]);
+    const diffDays = Math.floor((currDate - prevDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+      currentStreak++;
+      maxStreak = Math.max(maxStreak, currentStreak);
+    } else if (diffDays > 1) {
+      currentStreak = 1;
+    }
+  }
+
+  return maxStreak;
+};
 // Загрузка данных
 function loadTrackerData() {
   try {
-    // Текущий streak передается через props
     currentStreak.value = props.currentDays;
 
-    // Загружаем остальные данные
     const savedVisits = localStorage.getItem('allVisits');
-    const savedBestStreak = localStorage.getItem('bestStreak');
 
     if (savedVisits) {
       visitDates.value = JSON.parse(savedVisits);
       totalVisits.value = visitDates.value.length;
+
+      // ✅ Пересчитываем bestStreak из истории каждый раз
+      bestStreak.value = calculateBestStreakFromHistory(visitDates.value);
+      localStorage.setItem('bestStreak', bestStreak.value.toString());
     }
 
-    if (savedBestStreak) {
-      bestStreak.value = parseInt(savedBestStreak);
-    }
-
-    // Обновляем лучший streak если текущий больше
     if (currentStreak.value > bestStreak.value) {
       bestStreak.value = currentStreak.value;
       localStorage.setItem('bestStreak', bestStreak.value.toString());
@@ -337,11 +357,11 @@ const getStreakDescription = () => {
 
 const getMotivationalText = () => {
   const texts = [
-    'Каждый день - это шаг к совершенству!',
+    'Каждый день по чуть-чуть!',
     'Систематичность - ключ к успеху!',
-    'Ты делаешь это каждый день - ты молодец!',
-    'Продолжай в том же духе!',
-    'Ты становишься лучше с каждым днем!'
+    'Сова из Дуолинго нам завидует!',
+    'Терпение и труд результаты дадут!',
+    'Вай вай какой студент! Молодец!'
   ];
   return texts[Math.floor(Math.random() * texts.length)];
 };
@@ -372,7 +392,7 @@ watch(() => props.currentDays, (newVal) => {
 <style scoped>
 .legendary-mode-content {
   max-width: 100%;
-  padding: 15px;
+  padding: 5px;
 }
 
 .modal-header {
@@ -421,7 +441,7 @@ watch(() => props.currentDays, (newVal) => {
   display: flex;
   justify-content: space-around;
   margin-bottom: 5px;
-  padding: 5px;
+  padding: 1px;
   background: #f8f9fa;
   border-radius: 10px;
 }
@@ -451,7 +471,7 @@ watch(() => props.currentDays, (newVal) => {
 
 .calendar-header {
   text-align: center;
-  margin-top: 2px;
+  margin-top: 10px;
   margin-bottom: 2px;
 }
 
@@ -531,10 +551,10 @@ watch(() => props.currentDays, (newVal) => {
 
 .motivational-text {
   text-align: center;
-  padding: 15px;
+  padding: 5px;
   background: #f8f9fa;
   border-radius: 8px;
-  margin-top: 20px;
+  line-height: 15px;
 }
 
 .motivational-text p {
@@ -576,7 +596,7 @@ watch(() => props.currentDays, (newVal) => {
 /* Кнопка переключения */
 .calendar-actions {
   text-align: center;
-  margin: 15px 0;
+  margin: 5px 0;
 }
 
 .year-toggle-btn {
@@ -700,6 +720,16 @@ watch(() => props.currentDays, (newVal) => {
 
 /* Адаптив - просто уменьшаем отступы на мобильных */
 @media (max-width: 600px) {
+
+  .calendar-container {
+    transform: scale(0.85);
+    margin-bottom: 5px;
+  }
+
+  .calendar-header h3 {
+    font-size: 14px;
+  }
+
   .streak-text {
     font-size: 16px;
     color: #666;
@@ -723,6 +753,7 @@ watch(() => props.currentDays, (newVal) => {
       font-size: 7px;
     }
   }
+
 }
 
 @media (max-width: 400px) {

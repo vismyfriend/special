@@ -134,6 +134,14 @@ import audioI from '/src/assets/audio/letters/i.mp3'
 import audioA from '/src/assets/audio/letters/A.mp3'
 import audioL from '/src/assets/audio/letters/L.mp3'
 
+import audioMonday from '/src/assets/audio/PressTuesday.mp3'
+import audioTuesday from '/src/assets/audio/PressTuesday.mp3'
+import audioWednesday from '/src/assets/audio/PressThursday.mp3'
+import audioThursday from '/src/assets/audio/PressThursday.mp3'
+import audioFriday from '/src/assets/audio/PressTuesday.mp3'
+import audioSaturday from '/src/assets/audio/PressTuesday.mp3'
+import audioSunday from '/src/assets/audio/PressTuesday.mp3'
+
 import DetectivePreloader from '/src/pages/intros/preloader1.vue'
 
 export default {
@@ -146,31 +154,22 @@ export default {
   // ==================== DATA ====================
   data() {
     return {
-      // ----- Прелоадер -----
       showPreloader: true,
       contentReady: false,
       audioPreloaded: false,
-
-      // ----- Технические флаги -----
       isTouchDevice: false,
       lastActionTime: 0,
       blockKeyRelease: false,
-
-      // ----- Настройки -----
       platform: 'perplexity',
       theme: 'dark',
       muted: false,
-
-      // ----- Капча -----
       captcha: {
         message: '',
         status: 'waiting',
         targetKey: '',
         targetKeyName: ''
       },
-      oneKeyPressCount: 0, // Секретный счетчик
-
-      // ----- Клавиши -----
+      oneKeyPressCount: 0,
       keys: {
         one: { pressed: false, travel: 26 },
         two: { pressed: false, travel: 26, text: 'S' },
@@ -181,16 +180,23 @@ export default {
         seven: { pressed: false, travel: 18, text: 'A' },
         eight: { pressed: false, travel: 18, text: 'L' }
       },
-
-      // ----- Аудио -----
       clickAudio: null,
       letterAudios: {},
-
-      // ----- Изображения -----
       images: {
         aiBase: aiBaseImage,
         keypadSingle: keypadSingleImage
-      }
+      },
+      challengeType: 'letters',
+      days: [
+        { id: 'two', label: 'Пн', day: 'Monday' },
+        { id: 'three', label: 'Вт', day: 'Tuesday' },
+        { id: 'four', label: 'Ср', day: 'Wednesday' },
+        { id: 'five', label: 'Чт', day: 'Thursday' },
+        { id: 'six', label: 'Пт', day: 'Friday' },
+        { id: 'seven', label: 'Сб', day: 'Saturday' },
+        { id: 'eight', label: 'Вс', day: 'Sunday' }
+      ],
+      currentDayAudio: null,
     }
   },
 
@@ -224,8 +230,26 @@ export default {
     this.initializeContent()
     this.setupKeyListeners()
     this.updateDocumentTheme()
-    this.generateCaptcha()
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
+    // Временно - только дни недели для тестирования
+    this.challengeType = 'days'
+    console.log(`🎯 Выбрана проверка: ${this.challengeType}`)
+
+    if (this.challengeType === 'letters') {
+      this.generateCaptcha()
+    } else {
+      this.generateDaysCaptcha()
+    }
+    // // ✅ Случайный выбор проверки
+    // this.challengeType = Math.random() > 0.5 ? 'letters' : 'days'
+    // console.log(`🎯 Выбрана проверка: ${this.challengeType}`)
+    //
+    // if (this.challengeType === 'letters') {
+    //   this.generateCaptcha()
+    // } else {
+    //   this.generateDaysCaptcha()
+    // }
   },
 
   beforeUnmount() {
@@ -320,7 +344,6 @@ export default {
       this.clickAudio = this.createOptimizedAudio(keySoundPress)
       this.clickAudio.muted = this.muted
       this.clickAudio.volume = 0.4
-
     },
 
     initializeLetterAudios() {
@@ -341,25 +364,30 @@ export default {
 
     // ---------- 3. ВОСПРОИЗВЕДЕНИЕ ЗВУКОВ ----------
     playTargetLetterSound() {
-      if (this.captcha.status === 'waiting' && this.captcha.targetKey) {
-        const audio = this.letterAudios[this.captcha.targetKey]
-        if (audio && !this.muted) {
-          audio.volume = 0.4
-          audio.currentTime = 0
-          const playPromise = audio.play()
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.warn(`⚠️ Ошибка воспроизведения буквы ${this.captcha.targetKey}:`, error)
-              if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
-                setTimeout(() => {
-                  this.letterAudios[this.captcha.targetKey] = this.createOptimizedAudio(
-                    this.getAudioSrcByKey(this.captcha.targetKey)
-                  )
-                }, 100)
-              }
-            })
+      if (this.challengeType === 'days') {
+        this.playTargetDaySound()
+      } else {
+        if (this.captcha.status === 'waiting' && this.captcha.targetKey) {
+          const audio = this.letterAudios[this.captcha.targetKey]
+          if (audio && !this.muted) {
+            audio.volume = 0.4
+            audio.currentTime = 0
+            const playPromise = audio.play()
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.warn(`⚠️ Ошибка воспроизведения буквы ${this.captcha.targetKey}:`, error)
+              })
+            }
           }
         }
+      }
+    },
+
+    playTargetDaySound() {
+      if (this.captcha.status === 'waiting' && this.currentDayAudio) {
+        const audio = new Audio(this.currentDayAudio)
+        audio.volume = 0.4
+        audio.play().catch(() => {})
       }
     },
 
@@ -435,6 +463,7 @@ export default {
         if (keyId === 'one') {
           this.cyclePlatformAndTheme()
         } else {
+          // ✅ ВЫЗЫВАЕМ checkCaptcha - ОН ЕСТЬ НИЖЕ
           this.checkCaptcha(keyId)
         }
       })
@@ -443,6 +472,39 @@ export default {
     releaseKey(keyId) {
       if (!this.blockKeyRelease) {
         this.keys[keyId].pressed = false
+      }
+    },
+
+    // ✅ ========== ОСНОВНОЙ МЕТОД checkCaptcha ==========
+    checkCaptcha(keyId) {
+      if (this.challengeType === 'days') {
+        this.checkDaysCaptcha(keyId)
+      } else {
+        // Логика для букв
+        if (this.captcha.status !== 'waiting') return
+
+        const pressedKey = this.keys[keyId].text.toLowerCase()
+
+        if (pressedKey === this.captcha.targetKey) {
+          this.captcha.status = 'success'
+          this.captcha.message = '✅ тест IQ пройден !'
+          this.blockKeyRelease = false
+          console.log('🎉 Правильно! Запускаем анимацию успеха')
+          this.playSuccessAnimation()
+        } else {
+          this.captcha.status = 'failed'
+          this.captcha.message = '❌ недостаточный IQ ... <br> слушайте снова'
+          this.blockKeyRelease = true
+          this.keys[keyId].pressed = true
+
+          console.log(`❌ Неправильно: нажата ${pressedKey}, ожидалась ${this.captcha.targetKey}`)
+
+          setTimeout(() => {
+            this.blockKeyRelease = false
+            this.keys[keyId].pressed = false
+            this.generateCaptcha()
+          }, 3000)
+        }
       }
     },
 
@@ -476,12 +538,41 @@ export default {
       console.log(`🎮 Новое задание: буква ${randomKey.key} (${randomKey.name})`)
     },
 
-    checkCaptcha(keyId) {
+    // 🆕 Генерация капчи для дней недели
+    generateDaysCaptcha() {
+      // Только Tuesday и Thursday
+      const targetPairs = [
+        { day: 'Tuesday', audio: audioTuesday },
+        { day: 'Thursday', audio: audioThursday }
+      ]
+
+      const random = targetPairs[Math.floor(Math.random() * targetPairs.length)]
+
+      this.captcha.targetKey = random.day.toLowerCase()
+      this.captcha.targetKeyName = random.day
+      this.captcha.targetDay = random.day
+      this.currentDayAudio = random.audio
+
+      this.captcha.message = `нажми <u>сюда</u> и услышь, чего делать дальше`
+      this.captcha.status = 'waiting'
+
+      // Меняем текст на клавишах на дни недели
+      this.days.forEach(day => {
+        this.keys[day.id].text = day.label
+        this.keys[day.id].day = day.day
+      })
+
+      console.log(`🎮 Новое задание (дни): нажми ${random.day}`)
+    },
+
+    // ✅ Проверка для дней недели
+    checkDaysCaptcha(keyId) {
       if (this.captcha.status !== 'waiting') return
 
-      const pressedKey = this.keys[keyId].text.toLowerCase()
+      const pressedDay = this.keys[keyId].day
+      const targetDay = this.captcha.targetDay
 
-      if (pressedKey === this.captcha.targetKey) {
+      if (pressedDay === targetDay) {
         this.captcha.status = 'success'
         this.captcha.message = '✅ тест IQ пройден !'
         this.blockKeyRelease = false
@@ -489,16 +580,20 @@ export default {
         this.playSuccessAnimation()
       } else {
         this.captcha.status = 'failed'
-        this.captcha.message = '❌ недостаточный IQ ... <br> попробуйте снова'
+        this.captcha.message = '❌ недостаточный IQ ... <br> слушайте снова'
         this.blockKeyRelease = true
         this.keys[keyId].pressed = true
 
-        console.log(`❌ Неправильно: нажата ${pressedKey}, ожидалась ${this.captcha.targetKey}`)
+        console.log(`❌ Неправильно: нажат ${pressedDay}, ожидался ${targetDay}`)
 
         setTimeout(() => {
           this.blockKeyRelease = false
           this.keys[keyId].pressed = false
-          this.generateCaptcha()
+          if (this.challengeType === 'days') {
+            this.generateDaysCaptcha()
+          } else {
+            this.generateCaptcha()
+          }
         }, 3000)
       }
     },
@@ -539,21 +634,20 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms))
     },
 
-    // ---------- 7. СЕКРЕТНАЯ МЕХАНИКА (КЛАВИША ONE) ----------
+    // ---------- 7. СЕКРЕТНАЯ МЕХАНИКА ----------
     cyclePlatformAndTheme() {
-      this.oneKeyPressCount++
+      this.oneKeyPressCount++ // ✅ счетчик увеличивается
       console.log(`🔄 Нажатие #${this.oneKeyPressCount} на клавишу ONE`)
 
-      if (this.oneKeyPressCount >= 7) {
-        console.log('🎯 СЕКРЕТКА: 7 нажатий! Автоматическое прохождение капчи')
+      if (this.oneKeyPressCount >= 7) { // ✅ после 7 нажатий
+        console.log('🎯 СЕКРЕТКА: 7 нажатий!')
         this.oneKeyPressCount = 0
 
-        if (this.captcha.status === 'waiting') {
+        if (this.captcha.status === 'waiting') { // ✅ проверяет статус
           this.captcha.status = 'success'
           this.captcha.message = '✅ тест IQ пройден !<br> ( секретный способ )'
           this.blockKeyRelease = false
-          console.log('🎉 Секретное прохождение! Запускаем анимацию успеха')
-          this.playSuccessAnimation()
+          this.playSuccessAnimation() // ✅ запускает анимацию
         }
       }
 

@@ -50,7 +50,12 @@
           :current-days="legendaryDays"
           @update-days="updateLegendaryDays"
         />
-        <button @click="showLegendaryModal = false" class="close-legendary-modal">Закрыть</button>
+<!--        <button @click="showLegendaryModal = false" class="close-legendary-modal">Закрыть</button>-->
+
+        <!-- Кнопка OK - наклонная, справа -->
+        <button class="ok-legendary-btn" @click="showLegendaryModal = false">
+          OKay!
+        </button>
       </div>
     </div>
 
@@ -1092,5 +1097,60 @@ onMounted(async () => {
   z-index: -1;
 }
 
+.legendary-modal-content {
+  background: white;
+  padding: 20px 20px 30px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: visible; /* ← Добавляем, чтобы кнопка не обрезалась */
+  position: relative;
+}
 
+/* Кнопка OK - как в мобильных играх */
+.ok-legendary-btn {
+  position: sticky;
+  bottom: 5px;
+  float: right;
+  padding: 14px 36px;
+  background: linear-gradient(145deg, #ff6b35, #f7931e);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: Special_f1;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transform: rotate(-6deg);
+  box-shadow:
+    0 8px 25px rgba(255, 107, 53, 0.5),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  margin-top: -1px;
+  margin-right: -30px;
+  z-index: 5;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: rotate(-6deg) scale(1.05);
+    box-shadow:
+      0 12px 35px rgba(255, 107, 53, 0.6),
+      inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: rotate(-6deg) scale(0.95);
+    box-shadow:
+      0 4px 15px rgba(255, 107, 53, 0.4),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Очистка после floated кнопки */
+.legendary-modal-content::after {
+  content: '';
+  display: table;
+  clear: both;
+}
 </style>
