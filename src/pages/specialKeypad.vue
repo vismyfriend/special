@@ -24,7 +24,7 @@
           <span class="key__mask">
             <span class="key__content">
               <span class="key__text">
-                <span data-key="perplexity">you are</span>
+                <span data-key="perplexity">?️</span>
                 <span data-key="macos">⌘</span>
                 <span data-key="gemini">
                   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -80,8 +80,8 @@
     >
       <!-- КРУЖОК С УХОМ - кликабельный указатель -->
       <div class="captcha-ear-icon" @click.stop="playTargetLetterSound">
-        <span class="ear-emoji">👂</span>
-        <span class="ear-tooltip">нажми, чтобы услышать букву</span>
+        <span class="ear-emoji">{{ earEmoji }}</span>
+        <span class="ear-tooltip">нажми, чтобы услышать звук</span>
       </div>
 
       <div class="captcha-message" v-html="captcha.message"></div>
@@ -142,6 +142,14 @@ import audioFriday from '/src/assets/audio/PressTuesday.mp3'
 import audioSaturday from '/src/assets/audio/PressTuesday.mp3'
 import audioSunday from '/src/assets/audio/PressTuesday.mp3'
 
+import audioOne from '/src/assets/audio/PressThursday.mp3'
+import audioTwo from '/src/assets/audio/PressThursday.mp3'
+import audioThree from '/src/assets/audio/PressThursday.mp3'
+import audioFour from '/src/assets/audio/PressThursday.mp3'
+import audioFive from '/src/assets/audio/PressThursday.mp3'
+import audioSix from '/src/assets/audio/PressThursday.mp3'
+import audioSeven from '/src/assets/audio/PressThursday.mp3'
+
 import DetectivePreloader from '/src/pages/intros/preloader1.vue'
 
 export default {
@@ -154,6 +162,7 @@ export default {
   // ==================== DATA ====================
   data() {
     return {
+      earEmoji: '👂', // По умолчанию ухо
       showPreloader: true,
       contentReady: false,
       audioPreloaded: false,
@@ -172,13 +181,13 @@ export default {
       oneKeyPressCount: 0,
       keys: {
         one: { pressed: false, travel: 26 },
-        two: { pressed: false, travel: 26, text: 'S' },
-        three: { pressed: false, travel: 18, text: 'P' },
-        four: { pressed: false, travel: 18, text: 'E' },
-        five: { pressed: false, travel: 18, text: 'C' },
-        six: { pressed: false, travel: 18, text: 'I' },
-        seven: { pressed: false, travel: 18, text: 'A' },
-        eight: { pressed: false, travel: 18, text: 'L' }
+        two: { pressed: false, travel: 26, text: 'S', digit: null },
+        three: { pressed: false, travel: 18, text: 'P', digit: null },
+        four: { pressed: false, travel: 18, text: 'E', digit: null },
+        five: { pressed: false, travel: 18, text: 'C', digit: null },
+        six: { pressed: false, travel: 18, text: 'I', digit: null },
+        seven: { pressed: false, travel: 18, text: 'A', digit: null },
+        eight: { pressed: false, travel: 18, text: 'L', digit: null }
       },
       clickAudio: null,
       letterAudios: {},
@@ -197,6 +206,22 @@ export default {
         { id: 'eight', label: 'Вс', day: 'Sunday' }
       ],
       currentDayAudio: null,
+      digits: [
+        { id: 'two', label: '20', value: 1 },
+        { id: 'three', label: '12', value: 2 },
+        { id: 'four', label: '30', value: 3 },
+        { id: 'five', label: '13', value: 4 },
+        { id: 'six', label: '80', value: 5 },
+        { id: 'seven', label: '18', value: 6 },
+        { id: 'eight', label: '19', value: 7 }
+      ],
+      currentDigitAudio: null,
+
+      challengeProgress: {
+        currentIndex: 0,
+        completedChallenges: []
+      },
+      challengeList: ['days', 'letters','digits',], // Порядок капч
     }
   },
 
@@ -232,24 +257,20 @@ export default {
     this.updateDocumentTheme()
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
 
-    // Временно - только дни недели для тестирования
-    this.challengeType = 'days'
-    console.log(`🎯 Выбрана проверка: ${this.challengeType}`)
+    // ✅ Загружаем прогресс
+    this.loadChallengeProgress()
+
+    // ✅ Получаем следующую капчу
+    this.challengeType = this.getNextChallenge()
+    console.log(`🎯 Выбрана капча: ${this.challengeType}`)
 
     if (this.challengeType === 'letters') {
       this.generateCaptcha()
-    } else {
+    } else if (this.challengeType === 'days') {
       this.generateDaysCaptcha()
+    } else {
+      this.generateDigitsCaptcha()
     }
-    // // ✅ Случайный выбор проверки
-    // this.challengeType = Math.random() > 0.5 ? 'letters' : 'days'
-    // console.log(`🎯 Выбрана проверка: ${this.challengeType}`)
-    //
-    // if (this.challengeType === 'letters') {
-    //   this.generateCaptcha()
-    // } else {
-    //   this.generateDaysCaptcha()
-    // }
   },
 
   beforeUnmount() {
@@ -364,9 +385,28 @@ export default {
 
     // ---------- 3. ВОСПРОИЗВЕДЕНИЕ ЗВУКОВ ----------
     playTargetLetterSound() {
+
+      // Меняем эмодзи на колонку
+      this.earEmoji = '🔊'
+      // Меняем текст на 3 секунды
+      const originalMessage = this.captcha.message
+      this.captcha.message = 'если не слышно прибавьте звук +'
+
+      setTimeout(() => {
+        // Возвращаем ухо
+        this.earEmoji = '👂'
+        // Возвращаем исходный текст, если капча все еще ожидает
+        if (this.captcha.status === 'waiting') {
+          this.captcha.message = originalMessage
+        }
+      }, 3000)
+
       if (this.challengeType === 'days') {
         this.playTargetDaySound()
+      } else if (this.challengeType === 'digits') {
+        this.playTargetDigitSound()
       } else {
+        // Существующая логика для букв
         if (this.captcha.status === 'waiting' && this.captcha.targetKey) {
           const audio = this.letterAudios[this.captcha.targetKey]
           if (audio && !this.muted) {
@@ -479,6 +519,8 @@ export default {
     checkCaptcha(keyId) {
       if (this.challengeType === 'days') {
         this.checkDaysCaptcha(keyId)
+      } else if (this.challengeType === 'digits') {
+        this.checkDigitsCaptcha(keyId)
       } else {
         // Логика для букв
         if (this.captcha.status !== 'waiting') return
@@ -490,6 +532,9 @@ export default {
           this.captcha.message = '✅ тест IQ пройден !'
           this.blockKeyRelease = false
           console.log('🎉 Правильно! Запускаем анимацию успеха')
+          // ✅ Отмечаем капчу как пройденную
+          this.markChallengeAsCompleted(this.challengeType)
+
           this.playSuccessAnimation()
         } else {
           this.captcha.status = 'failed'
@@ -509,6 +554,86 @@ export default {
     },
 
     // ---------- 5. ЛОГИКА КАПЧИ ----------
+
+    // 🆕 Генерация капчи для цифр
+    generateDigitsCaptcha() {
+      const targetDigits = [
+        { digit: '1', audio: audioOne },
+        { digit: '2', audio: audioTwo },
+        { digit: '3', audio: audioThree },
+        { digit: '4', audio: audioFour },
+        { digit: '5', audio: audioFive },
+        { digit: '6', audio: audioSix },
+        { digit: '7', audio: audioSeven }
+      ]
+
+      const random = targetDigits[Math.floor(Math.random() * targetDigits.length)]
+
+      this.captcha.targetKey = random.digit
+      this.captcha.targetKeyName = random.digit
+      this.captcha.targetDigit = random.digit
+      this.currentDigitAudio = random.audio
+
+      this.captcha.message = `нажми <u>сюда</u> и услышь, чего делать дальше`
+      this.captcha.status = 'waiting'
+
+      // Меняем текст на клавишах на цифры
+      this.digits.forEach(digit => {
+        this.keys[digit.id].text = digit.label
+        this.keys[digit.id].digit = digit.value
+      })
+
+      console.log(`🎮 Новое задание (цифры): нажми ${random.digit}`)
+    },
+
+// 🆕 Воспроизведение звука для цифр
+    playTargetDigitSound() {
+      if (this.captcha.status === 'waiting' && this.currentDigitAudio) {
+        const audio = new Audio(this.currentDigitAudio)
+        audio.volume = 0.4
+        audio.play().catch(() => {})
+      }
+    },
+
+// 🆕 Проверка для цифр
+    checkDigitsCaptcha(keyId) {
+      if (this.captcha.status !== 'waiting') return
+
+      const pressedDigit = this.keys[keyId].digit
+      const targetDigit = parseInt(this.captcha.targetDigit)
+
+      if (pressedDigit === targetDigit) {
+        this.captcha.status = 'success'
+        this.captcha.message = '✅ тест IQ пройден !'
+        this.blockKeyRelease = false
+        console.log('🎉 Правильно! Запускаем анимацию успеха')
+
+        // ✅ Отмечаем капчу как пройденную
+        this.markChallengeAsCompleted(this.challengeType)
+
+        this.playSuccessAnimation()
+      } else {
+        this.captcha.status = 'failed'
+        this.captcha.message = '❌ недостаточный IQ ... <br> слушайте снова'
+        this.blockKeyRelease = true
+        this.keys[keyId].pressed = true
+
+        console.log(`❌ Неправильно: нажата ${pressedDigit}, ожидалась ${targetDigit}`)
+
+        setTimeout(() => {
+          this.blockKeyRelease = false
+          this.keys[keyId].pressed = false
+          if (this.challengeType === 'digits') {
+            this.generateDigitsCaptcha()
+          } else if (this.challengeType === 'days') {
+            this.generateDaysCaptcha()
+          } else {
+            this.generateCaptcha()
+          }
+        }, 3000)
+      }
+    },
+
     generateCaptcha() {
       const availableKeys = [
         { key: 's', name: 'эс' }, { key: 'p', name: 'пи' },
@@ -577,6 +702,9 @@ export default {
         this.captcha.message = '✅ тест IQ пройден !'
         this.blockKeyRelease = false
         console.log('🎉 Правильно! Запускаем анимацию успеха')
+        // ✅ Отмечаем капчу как пройденную
+        this.markChallengeAsCompleted(this.challengeType)
+
         this.playSuccessAnimation()
       } else {
         this.captcha.status = 'failed'
@@ -667,8 +795,75 @@ export default {
       this.oneKeyPressCount = 0
       console.log('🔄 Счетчик клавиши ONE сброшен')
     },
+    // ---------- 8. УПРАВЛЕНИЕ ПРОГРЕССОМ ----------
+    saveChallengeProgress() {
+      try {
+        const data = {
+          currentIndex: this.challengeProgress.currentIndex,
+          completedChallenges: this.challengeProgress.completedChallenges,
+          timestamp: Date.now()
+        }
+        localStorage.setItem('challengeProgress', JSON.stringify(data))
+        console.log('💾 Прогресс капч сохранен:', data)
+      } catch (e) {
+        console.warn('⚠️ Ошибка сохранения прогресса:', e)
+      }
+    },
 
-    // ---------- 8. ВСПОМОГАТЕЛЬНЫЕ ----------
+    loadChallengeProgress() {
+      try {
+        const saved = localStorage.getItem('challengeProgress')
+        if (saved) {
+          const data = JSON.parse(saved)
+          this.challengeProgress.currentIndex = data.currentIndex || 0
+          this.challengeProgress.completedChallenges = data.completedChallenges || []
+          console.log('📂 Прогресс капч загружен:', data)
+          return true
+        }
+      } catch (e) {
+        console.warn('⚠️ Ошибка загрузки прогресса:', e)
+      }
+      return false
+    },
+
+    getNextChallenge() {
+      // Если все капчи пройдены - начинаем заново
+      if (this.challengeProgress.completedChallenges.length >= this.challengeList.length) {
+        this.challengeProgress.completedChallenges = []
+        this.challengeProgress.currentIndex = 0
+        this.saveChallengeProgress()
+      }
+
+      // Находим следующую непройденную капчу
+      let nextIndex = this.challengeProgress.currentIndex
+      let attempts = 0
+
+      while (attempts < this.challengeList.length) {
+        const challenge = this.challengeList[nextIndex % this.challengeList.length]
+        if (!this.challengeProgress.completedChallenges.includes(challenge)) {
+          this.challengeProgress.currentIndex = nextIndex % this.challengeList.length
+          return challenge
+        }
+        nextIndex++
+        attempts++
+      }
+
+      // Если все пройдены (защита от бесконечного цикла)
+      this.challengeProgress.completedChallenges = []
+      this.challengeProgress.currentIndex = 0
+      this.saveChallengeProgress()
+      return this.challengeList[0]
+    },
+
+    markChallengeAsCompleted(challengeType) {
+      if (!this.challengeProgress.completedChallenges.includes(challengeType)) {
+        this.challengeProgress.completedChallenges.push(challengeType)
+        this.challengeProgress.currentIndex = (this.challengeProgress.currentIndex + 1) % this.challengeList.length
+        this.saveChallengeProgress()
+        console.log(`✅ Капча "${challengeType}" пройдена! Следующая: ${this.challengeList[this.challengeProgress.currentIndex]}`)
+      }
+    },
+    // ---------- 9. ВСПОМОГАТЕЛЬНЫЕ ----------
     updateDocumentTheme() {
       document.documentElement.dataset.theme = this.theme
       document.documentElement.dataset.platform = this.platform

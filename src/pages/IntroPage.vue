@@ -703,7 +703,7 @@ calc(var(--fadeStart) * 100%) {
   /* font-family: 'Neucha', sans-serif; */
   font-size: 17px;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 3px;
 
   &::after {
     content: '';
