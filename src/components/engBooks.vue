@@ -1,0 +1,634 @@
+<template>
+  <div class="reader-container" :class="currentTheme">
+    <!-- Верхняя фиксированная панель -->
+    <div class="reader-header">
+      <div class="header-top">
+        <h1 class="book-title">{{ bookData.mainTitleOfTheText || bookData.title }}</h1>
+        <p class="book-author" v-if="bookData.author">{{ bookData.author }}</p>
+      </div>
+
+      <!-- Управление в одну строку -->
+      <div class="controls-row">
+        <div class="progress-wrapper">
+          <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+          </div>
+          <span class="progress-text">{{ Math.round(progressPercent) }}%</span>
+        </div>
+
+        <div class="controls-group">
+          <!-- Переключатель темы -->
+          <button class="theme-toggle" @click="toggleTheme" :title="currentTheme === 'light' ? 'Ночной режим' : 'Дневной режим'">
+            {{ currentTheme === 'light' ? '🌙' : '☀️' }}
+          </button>
+
+          <!-- Ползунок размера шрифта -->
+          <div class="font-size-control">
+            <div class="slider-wrapper">
+              <span class="font-size-value">{{ fontSize }}</span>
+              <input
+                type="range"
+                v-model="fontSize"
+                min="10"
+                max="20"
+                step="1"
+                @input="updateFontSize"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="reader-content">
+      <!-- Проходим по каждой главе -->
+      <div v-for="(chapter, chapterIndex) in bookData.chapters" :key="chapterIndex" class="chapter-wrapper">
+        <!-- Заголовок главы с переводом -->
+        <h2 class="chapter-title" v-if="chapter.title">
+          <span
+            class="text-part with-translation"
+            :class="{ 'translation-open': getTitleTranslationState(chapterIndex) }"
+            @click="toggleTitleTranslation(chapterIndex)"
+          >
+            {{ getTitleText(chapter.title) }}
+            <span v-if="getTitleTranslationState(chapterIndex)" class="inline-translation">
+              ➥ {{ getTitleTranslation(chapter.title) }}
+            </span>
+          </span>
+        </h2>
+
+        <!-- Параграфы главы -->
+        <div v-for="(paragraph, pIndex) in getChapterParagraphs(chapterIndex)" :key="pIndex" class="paragraph-wrapper">
+          <div class="paragraph">
+            <template v-for="(part, index) in getPartsForParagraph(chapterIndex, pIndex, paragraph)" :key="index">
+              <!-- Текст с переводом -->
+              <span
+                v-if="part.hasTranslation"
+                class="text-part with-translation"
+                :class="{ 'translation-open': part.showTranslation }"
+                @click="toggleTranslation(part)"
+              >
+                {{ part.text }}
+                <span v-if="part.showTranslation" class="inline-translation">
+                  ➥ {{ part.translation }}
+                </span>
+              </span>
+              <!-- Обычный текст -->
+              <span v-else class="text-part">{{ part.text }}</span>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount, reactive, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import engBooksData from '../dataForGames/engBooksData';
+
+const route = useRoute();
+
+const missionName = computed(() => route.params.missionName);
+
+const bookData = computed(() => {
+  if (engBooksData[missionName.value]) {
+    return engBooksData[missionName.value];
+  }
+  return engBooksData.learningRevolution;
+});
+
+const currentTheme = ref('light');
+const fontSize = ref(16);
+const allParts = ref({});
+const scrollProgress = ref(0);
+const titleTranslations = ref({}); // Хранит состояния переводов заголовков
+
+// Прогресс скролла
+const progressPercent = computed(() => {
+  return scrollProgress.value;
+});
+
+const updateScrollProgress = () => {
+  const scrollTop = window.scrollY;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+  if (scrollHeight > 0) {
+    scrollProgress.value = (scrollTop / scrollHeight) * 100;
+  } else {
+    scrollProgress.value = 0;
+  }
+};
+
+// Получаем параграфы для конкретной главы
+const getChapterParagraphs = (chapterIndex) => {
+  const content = bookData.value.chapters[chapterIndex].content;
+  return content.split('\n\n');
+};
+
+// Парсим части для конкретной главы и параграфа
+const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
+  const cacheKey = `${chapterIndex}_${pIndex}`;
+
+  if (allParts.value[cacheKey]) {
+    return allParts.value[cacheKey];
+  }
+
+  const regex = /([^()]*?)\(\(([^)]*?)\)\)/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(paragraph)) !== null) {
+    if (match.index > lastIndex) {
+      const textBefore = paragraph.slice(lastIndex, match.index);
+      if (textBefore.trim()) {
+        parts.push({ text: textBefore, hasTranslation: false });
+      }
+    }
+
+    const englishText = match[1].trim();
+    const translation = match[2].trim();
+    if (englishText) {
+      parts.push(reactive({
+        text: englishText,
+        translation: translation,
+        hasTranslation: true,
+        showTranslation: false
+      }));
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < paragraph.length) {
+    const remaining = paragraph.slice(lastIndex);
+    if (remaining.trim()) {
+      parts.push({ text: remaining, hasTranslation: false });
+    }
+  }
+
+  allParts.value[cacheKey] = parts;
+  return parts;
+};
+
+// Функции для работы с переводами заголовков
+const getTitleText = (title) => {
+  const match = title.match(/^(.*?)(?:\(\(([^)]*?)\)\))?$/);
+  return match ? match[1].trim() : title;
+};
+
+const getTitleTranslation = (title) => {
+  const match = title.match(/\(\(([^)]*?)\)\)$/);
+  return match ? match[1].trim() : null;
+};
+
+const getTitleTranslationState = (chapterIndex) => {
+  return titleTranslations.value[chapterIndex] || false;
+};
+
+const toggleTitleTranslation = (chapterIndex) => {
+  titleTranslations.value[chapterIndex] = !titleTranslations.value[chapterIndex];
+};
+
+const toggleTranslation = (part) => {
+  part.showTranslation = !part.showTranslation;
+};
+
+const toggleTheme = () => {
+  currentTheme.value = currentTheme.value === 'light' ? 'dark' : 'light';
+  localStorage.setItem('readerTheme', currentTheme.value);
+};
+
+const applyFontSize = (size) => {
+  document.documentElement.style.setProperty('--reader-font-size', size + 'px');
+
+  // Обновляем параграфы
+  const paragraphs = document.querySelectorAll('.paragraph');
+  paragraphs.forEach(el => {
+    el.style.fontSize = size + 'px';
+  });
+
+  // ✅ Обновляем заголовки глав
+  const titles = document.querySelectorAll('.chapter-title');
+  titles.forEach(el => {
+    el.style.fontSize = size  + 'px';
+  });
+
+  localStorage.setItem('readerFontSize', size);
+};
+
+const updateFontSize = () => {
+  applyFontSize(fontSize.value);
+};
+
+watch(fontSize, (newVal) => {
+  applyFontSize(newVal);
+});
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('readerTheme');
+  if (savedTheme) currentTheme.value = savedTheme;
+
+  const savedFontSize = localStorage.getItem('readerFontSize');
+  if (savedFontSize) {
+    fontSize.value = parseInt(savedFontSize);
+    setTimeout(() => {
+      applyFontSize(fontSize.value);
+    }, 100);
+  }
+
+  window.addEventListener('scroll', updateScrollProgress);
+  setTimeout(updateScrollProgress, 500);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', updateScrollProgress);
+});
+</script>
+
+
+<style scoped>
+.reader-container {
+  --reader-font-size: 16px;
+  --reader-line-height: 1.6;
+
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 20px 40px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  font-family: 'Georgia', serif;
+}
+
+/* ========== ТЕМЫ ========== */
+.reader-container.light {
+  background: #f5f0eb;
+  color: #2c2c2c;
+}
+
+.reader-container.dark {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* ========== ХЕДЕР - ФИКСИРОВАННЫЙ ========== */
+.reader-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 8px 0 6px;
+  background: inherit;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+}
+
+.dark .reader-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.header-top {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.book-title {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0 0 2px;
+}
+
+.book-author {
+  font-size: 13px;
+  opacity: 0.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ========== ОДНА СТРОКА УПРАВЛЕНИЯ ========== */
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 30px;
+}
+
+.dark .progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 11px;
+  font-weight: bold;
+  opacity: 0.6;
+  min-width: 32px;
+  text-align: right;
+}
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ========== КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМ ========== */
+.theme-toggle {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  background: #0000004a;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dark .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* ========== ПОЛЗУНОК РАЗМЕРА ШРИФТА ========== */
+.font-size-control {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  position: relative;
+}
+
+.slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.font-size-value {
+  font-size: 11px;
+  font-weight: bold;
+  opacity: 0.6;
+  color: inherit;
+  margin-bottom: 5px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.font-size-control input[type="range"] {
+  width: 50px;
+  height: 3px;
+  -webkit-appearance: none;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.dark .font-size-control input[type="range"] {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.font-size-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.font-size-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.dark .font-size-control input[type="range"]::-webkit-slider-thumb {
+  background: #66BB6A;
+}
+
+.font-size-control input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.dark .font-size-control input[type="range"]::-moz-range-thumb {
+  background: #66BB6A;
+}
+
+/* ========== КОНТЕНТ ========== */
+.reader-content {
+  padding: 5px 0 30px;
+}
+
+.chapter-wrapper {
+  margin-bottom: 40px;
+}
+
+.chapter-wrapper:last-child {
+  margin-bottom: 0;
+}
+
+.chapter-title {
+  font-size: calc(var(--reader-font-size) + 6px);
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark .chapter-title {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.paragraph-wrapper {
+  margin-bottom: 8px;
+}
+
+.paragraph {
+  font-size: var(--reader-font-size);
+  line-height: var(--reader-line-height);
+  margin-bottom: 0;
+  text-align: justify;
+}
+
+/* ========== ТЕКСТ ========== */
+.text-part {
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  padding: 1px 0;
+}
+
+.text-part.with-translation {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.text-part.with-translation:hover {
+  background: rgba(255, 222, 0, 0.37);
+}
+
+.text-part.with-translation.translation-open {
+  border-bottom: 2px solid rgba(76, 175, 80, 0.4);
+}
+
+.text-part.with-translation.translation-open:hover {
+  background: rgba(76, 175, 80, 0.18);
+}
+
+.dark .text-part.with-translation.translation-open {
+  border-bottom-color: rgba(76, 175, 80, 0.5);
+}
+
+/* ========== ВСТРОЕННЫЙ ПЕРЕВОД ========== */
+.inline-translation {
+  display: block;
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  background: rgba(76, 175, 80, 0.08);
+  border-radius: 6px;
+  border-left: 3px solid #4CAF50;
+  font-size: 0.9em;
+  line-height: 1.5;
+  animation: slideDown 0.25s ease;
+}
+
+.dark .inline-translation {
+  background: rgba(76, 175, 80, 0.12);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ========== */
+@media (max-width: 600px) {
+  .book-title {
+    font-size: 16px;
+  }
+
+  .book-author {
+    font-size: 13px;
+  }
+
+  .chapter-title {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .controls-row {
+    gap: 6px;
+  }
+
+  .progress-text {
+    font-size: 10px;
+    min-width: 28px;
+  }
+
+  .theme-toggle {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .font-size-control input[type="range"] {
+    width: 40px;
+  }
+
+  .font-size-value {
+    font-size: 10px;
+    min-width: 22px;
+  }
+
+  .inline-translation {
+    padding: 4px 10px;
+    font-size: 0.85em;
+  }
+
+  .reader-header {
+    padding: 6px 0 4px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .chapter-title {
+    font-size: 16px;
+  }
+
+  .controls-row {
+    gap: 4px;
+  }
+
+  .progress-text {
+    font-size: 9px;
+    min-width: 24px;
+  }
+
+  .theme-toggle {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+
+  .font-size-control input[type="range"] {
+    width: 35px;
+  }
+
+  .font-size-value {
+    font-size: 9px;
+    min-width: 18px;
+  }
+
+  .inline-translation {
+    padding: 3px 8px;
+    font-size: 0.8em;
+  }
+}
+</style>

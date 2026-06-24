@@ -37,6 +37,10 @@ const routes = [
                 component: () => import('components/GameStoriesAndWords.vue')
               },
               {
+                path: 'books',
+                component: () => import('components/engBooks.vue')
+              },
+              {
                 path: 'this-game-is-coming-soon',
                 component: () => import('components/ThisGameIsComingSoon.vue')
               },

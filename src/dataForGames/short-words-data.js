@@ -8,6 +8,20 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  superPowers: [
+    { id: 1, eng: "invisibility", ru: "невидимость", hint: "/ин ви зи БИ ли ти/" },
+    { id: 2, eng: "immortality", ru: "бессмертие", hint: "/им мор ТА ли ти/" },
+    { id: 3, eng: "invulnerability", ru: "неуязвимость", hint: "/ин вал нэ ра БИ ли ти/" },
+    { id: 4, eng: "time control", ru: "управление временем", hint: "/ТАЙМ кон трол/" },
+    { id: 5, eng: "strength", ru: "сила", hint: "/стрэн г th/" },
+    { id: 6, eng: "telepathy", ru: "телепатия", hint: "/тэ ЛЭ пэ thи/" },
+    { id: 7, eng: "shape shifting", ru: "перевоплощение", hint: "/шЭЙп шиф тин/" },
+    { id: 8, eng: "x-ray vision", ru: "рентгеновское зрение", hint: "/ЭКС рэй ви жн/" },
+    { id: 9, eng: "telekinesis", ru: "телекинез", hint: "/те ле ки НЭ зис/" },
+    { id: 10, eng: "teleportation", ru: "телепортация", hint: "/те ле пор ТЕЙ шн/" },
+    { id: 11, eng: "flying", ru: "полёт", hint: "/ФЛАЙ инг/" },
+    { id: 12, eng: "verbal fluency", ru: "красноречие / словесная беглость", hint: "/вЁр бал флю эн си/" }
+  ],
   test: [
     { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/"},
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/"},

@@ -23,6 +23,15 @@ export const allGamesAndSetsOfWordsList =
         },
         {
           type: "hardcodedLink",
+          path: "/see-all-sets-of-words/pattern/books",
+          missionVisibleName: "Книга Accelerated",
+          missionDescription: "Book Revolution",
+          id: 1001,
+          active: true,
+          gameIcon: "🤷‍♂️"
+        },
+        {
+          type: "hardcodedLink",
           path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
           missionVisibleName: "Никогда не учили",
           missionDescription: "знаю нессколько слов",
@@ -349,6 +358,14 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/emoji/find-pairs-hard",
       missionVisibleName: "Миссия 2.0 Соедини пары",
       missionDescription: "Мишн ту - конЭкт пЭарз",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/superPowers/find-pairs-easy",
+      missionVisibleName: "superPowers",
+      missionDescription: "super Powers",
       id: 1001,
       active: true,
     },
