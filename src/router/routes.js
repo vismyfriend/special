@@ -36,10 +36,10 @@ const routes = [
                 path: 'stories',
                 component: () => import('components/GameStoriesAndWords.vue')
               },
-              {
-                path: 'books',
-                component: () => import('components/engBooks.vue')
-              },
+              // {
+              //   path: 'books',
+              //   component: () => import('components/engBooks.vue')
+              // },
               {
                 path: 'this-game-is-coming-soon',
                 component: () => import('components/ThisGameIsComingSoon.vue')
@@ -357,6 +357,12 @@ const routes = [
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
           },
+          {
+            path: '/see-all-sets-of-words/:missionName/books',
+            component: () => import('components/engBooks.vue')
+          },
+
+
           {
             path: '/pixelArt',
             component: () => import('pages/PixelArtEditor.vue')

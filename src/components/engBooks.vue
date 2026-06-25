@@ -25,12 +25,12 @@
           <!-- Ползунок размера шрифта -->
           <div class="font-size-control">
             <div class="slider-wrapper">
-              <span class="font-size-value">{{ fontSize }}</span>
+              <span class="font-size-value">size - {{ fontSize }}</span>
               <input
                 type="range"
                 v-model="fontSize"
-                min="10"
-                max="20"
+                min="13"
+                max="21"
                 step="1"
                 @input="updateFontSize"
               />
@@ -69,13 +69,13 @@
                 :class="{ 'translation-open': part.showTranslation }"
                 @click="toggleTranslation(part)"
               >
-                {{ part.text }}
-                <span v-if="part.showTranslation" class="inline-translation">
-                  ➥ {{ part.translation }}
-                </span>
-              </span>
+  <span v-html="part.text"></span>
+  <span v-if="part.showTranslation" class="inline-translation">
+    ➥ {{ part.translation }}
+  </span>
+</span>
               <!-- Обычный текст -->
-              <span v-else class="text-part">{{ part.text }}</span>
+              <span v-else class="text-part" v-html="part.text"></span>
             </template>
           </div>
         </div>
@@ -253,11 +253,13 @@ onBeforeUnmount(() => {
 <style scoped>
 .reader-container {
   --reader-font-size: 16px;
-  --reader-line-height: 1.6;
+  --reader-line-height: 1.45;
 
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 20px 40px;
+  padding-top: 70px; /* ← добавляем отступ сверху */
+
   min-height: 100vh;
   transition: all 0.3s ease;
   font-family: 'Georgia', serif;
@@ -314,6 +316,8 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 
 .progress-wrapper {
@@ -366,7 +370,7 @@ onBeforeUnmount(() => {
   border: 2px solid rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   background: #0000004a;
-  cursor: pointer;
+  cursor: none;
   font-size: 12px;
   transition: all 0.3s ease;
   display: flex;
@@ -409,7 +413,7 @@ onBeforeUnmount(() => {
 }
 
 .font-size-control input[type="range"] {
-  width: 50px;
+  width: 100px;
   height: 3px;
   -webkit-appearance: none;
   background: rgba(0, 0, 0, 0.2);
@@ -428,7 +432,7 @@ onBeforeUnmount(() => {
   height: 12px;
   background: #4CAF50;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.2s;
 }
 
@@ -445,7 +449,7 @@ onBeforeUnmount(() => {
   height: 12px;
   background: #4CAF50;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: none;
   border: none;
 }
 
@@ -498,7 +502,7 @@ onBeforeUnmount(() => {
 }
 
 .text-part.with-translation {
-  cursor: pointer;
+  cursor: none;
   position: relative;
   transition: all 0.2s ease;
 }
@@ -528,7 +532,7 @@ onBeforeUnmount(() => {
   border-radius: 6px;
   border-left: 3px solid #4CAF50;
   font-size: 0.9em;
-  line-height: 1.5;
+  line-height: 1.25;
   animation: slideDown 0.25s ease;
 }
 
@@ -545,6 +549,49 @@ onBeforeUnmount(() => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+/* ========== СТИЛИ ДЛЯ ВЫДЕЛЕНИЙ В ТЕКСТЕ ========== */
+.paragraph strong {
+  font-weight: 700;
+  color: #ff6b35;
+}
+
+.paragraph em {
+  font-style: italic;
+  color: #4CAF50;
+}
+
+.paragraph mark {
+  background: #ffdd57;
+  color: #2c2c2c;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.paragraph u {
+  text-decoration: underline;
+  text-decoration-color: #4CAF50;
+  text-decoration-thickness: 2px;
+}
+
+.paragraph span[style] {
+  /* Стили для span с инлайн-стилями */
+}
+
+/* Для темной темы */
+.dark .paragraph mark {
+  background: #ffdd57;
+  color: #1a1a1a;
+}
+
+.dark .paragraph strong {
+  color: #ff8a65;
+}
+
+.dark .paragraph em {
+  color: #81C784;
 }
 
 /* ========== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ========== */
@@ -564,7 +611,9 @@ onBeforeUnmount(() => {
 
   .controls-row {
     gap: 6px;
+    padding-top: 15px;
   }
+
 
   .progress-text {
     font-size: 10px;
@@ -578,7 +627,7 @@ onBeforeUnmount(() => {
   }
 
   .font-size-control input[type="range"] {
-    width: 40px;
+    width: 75px;
   }
 
   .font-size-value {
@@ -617,9 +666,7 @@ onBeforeUnmount(() => {
     font-size: 10px;
   }
 
-  .font-size-control input[type="range"] {
-    width: 35px;
-  }
+
 
   .font-size-value {
     font-size: 9px;

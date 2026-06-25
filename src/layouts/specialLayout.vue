@@ -23,6 +23,11 @@
             </span>
         </button>
 
+
+        <button class="menu-button dice-button" @click="showDiceModal = true">
+          <img :src="diceImage" alt="Dice" class="dice-icon" />
+        </button>
+
         <!-- Кнопка свернуть/развернуть -->
         <button class="collapse-button" @click="goToRegistration">
           {{ isMenuCollapsed ? 's.p.e.c.i.a.l.' : '' }}
@@ -106,10 +111,9 @@
     <router-view />
 
     <!-- Контейнер для кнопок справа -->
-    <div class="right-buttons-container">
-      <button class="infoButton" @click="showInstructions"></button>
-      <button class="diceButton" @click="showDiceModal = true"></button>
-    </div>
+<!--    <div class="right-buttons-container">-->
+<!--      <button class="infoButton" @click="showInstructions"></button>-->
+<!--    </div>-->
 
     <div v-if="isInstructionsVisible" class="overlay" @click="hideInstructions">
       <div class="instructions">
@@ -150,6 +154,7 @@ import { api } from 'src/api';
 import { useGameStore } from 'stores/example-store';
 import { watch } from 'vue';
 
+import diceImage from '../assets/images/dice-image.png'; // или путь к вашей картинке
 
 
 const route = useRoute()
@@ -1018,7 +1023,7 @@ onMounted(async () => {
 /* Стили LegendaryMode */
 .legendary-button {
   position: relative;
-  padding-left: 40px !important;
+  padding-left: 25px !important;
 }
 
 .legendary-visual {
@@ -1153,4 +1158,38 @@ onMounted(async () => {
   display: table;
   clear: both;
 }
+
+/* Кнопка кубика в меню */
+.dice-button {
+  padding: 2px 6px !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f1f3f6 100%) !important;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: linear-gradient(145deg, #f1f3f6 0%, #e6e9f0 100%) !important;
+    transform: translateY(-1px) scale(1.05);
+  }
+}
+
+.dice-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Для темной темы */
+.dark .dice-button {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%) !important;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 100%) !important;
+  }
+}
+
 </style>

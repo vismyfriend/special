@@ -1,11 +1,112 @@
 const engBooksData = {
+  componentBookManualDocumentation: {
+    id: 'componentBookManualDocumentation',
+    mainTitleOfTheText: "📖 Библиотека примеров",
+    author: "Vincent & Polina",
+    chapters: [
+       {
+        title: "1. Жирный, курсив и подчеркивание ((Bold, Italic and Underline))",
+        content: `Это пример <strong>жирного текста</strong> (strong). Используется для выделения важных слов.
+
+Это пример <em>курсивного текста</em> (em).((this is an example of cursive)) Используется для акцента или иностранных слов.
+
+Это пример <u>подчеркнутого текста</u> (u). Используется для указания на что-то важное.
+
+Комбинация: <strong><em>жирный + курсив</em></strong> и <u><em>подчеркнутый + курсив</em></u>.`
+      },
+      {
+        title: "2. Выделение цветом и фоном ((Color and Background Highlight))",
+        content: `Это пример <span style="color: #ff6b35;">текста оранжевого цвета</span>.
+
+Это пример <span style="color: #4CAF50;">текста зеленого цвета</span>.
+
+Это пример <span style="color: #2196F3;">текста синего цвета</span>.
+
+Это пример <span style="background: #ffdd57; padding: 0 4px; border-radius: 3px;">текста с желтым фоном</span>.
+
+Это пример <span style="background: #ff6b35; color: white; padding: 0 4px; border-radius: 3px;">текста с оранжевым фоном</span>.`
+      },
+      {
+        title: "3. Выделение маркером ((Mark Highlight))",
+        content: `Это пример <mark>текста выделенного маркером</mark> (mark).
+
+Можно выделять <mark>важные фрагменты</mark> в тексте, чтобы <mark>привлечь внимание</mark> читателя.
+
+В темной теме маркер остается желтым, но текст становится темнее для контраста.`
+      },
+      {
+        title: "4. Списки с маркерами ((Bullet Lists))",
+        content: `В тексте можно использовать списки с маркерами. Для этого нужно начинать строку с символа • (Option+8 на Mac или Alt+7 на Windows):
+
+• Первый пункт списка((First bullet point))
+• Второй пункт списка((Second bullet point))
+• Третий пункт списка с <strong>жирным</strong> текстом((Third bullet point with bold text))
+
+Каждый пункт автоматически отображается с новой строки и с отступом.`
+      },
+      {
+        title: "5. Перевод предложений ((Sentence Translation))",
+        content: `Для перевода предложений используется специальный синтаксис:
+
+Английский текст((Перевод на русский язык))
+
+Например:
+Welcome to the revolution.((Добро пожаловать в революцию.))
+
+<strong>Важно:</strong> перевод отображается при клике на предложение.`
+
+      },
+      {
+        title: "6. Комбинирование стилей ((Combining Styles))",
+        content: `Можно комбинировать разные стили в одном предложении:
+
+<strong><em><span style="color: #ff6b35;">Важное и выделенное</span></em></strong> слово в тексте.
+
+<mark><strong><u>Максимальное выделение</u></strong></mark> для самых важных моментов.
+
+<span style="background: #ffdd57; padding: 0 4px; border-radius: 3px;"><strong><em>Жирный курсив на желтом фоне</em></strong></span>.`
+      },
+      {
+        title: "7. Заголовки и структура ((Headers and Structure))",
+        content: `Заголовки глав автоматически отображаются крупным шрифтом.
+
+Их тоже можно переводить:
+How This Changed Brian Tracy's Life((Как это изменило жизнь Брайана Трейси))
+
+Заголовки <strong>не</strong> имеют подчеркивания по умолчанию, но становятся кликабельными при наведении.`
+      },
+      {
+        title: "8. Технические детали ((Technical Details))",
+        content: `📌 <strong>Как это работает:</strong>
+
+• Текст хранится в data с HTML-тегами
+• Для отображения используется v-html
+• Все стили описаны в CSS
+
+📌 <strong>Доступные теги:</strong>
+
+• <strong>strong</strong> — жирный текст
+• <em>em</em> — курсив
+• <u>u</u> — подчеркивание
+• <mark>mark</mark> — выделение маркером
+• <span style="...">span</span> — произвольные стили
+
+📌 <strong>Синтаксис перевода:</strong>
+Английский текст((Перевод на русский))
+
+📌 <strong>Маркированные списки:</strong>
+• Пункт списка((Перевод пункта))`
+      }
+    ]
+  },
+
   learningRevolution: {
     mainTitleOfTheText: "THE LEARNING REVOLUTION",
     author: "By Brian Tracy & Colin Rose",
     chapters: [
       {
         title: null,
-        content: `Welcome to the revolution.((Добро пожаловать в революцию.)) We've entered into the most turbulent time in all of human history, with changes happening more often, more rapidly, and more unpredictably than ever before.((Мы вступили в самое неспокойное время во всей истории человечества, когда перемены происходят чаще, быстрее и непредсказуемее, чем когда-либо прежде.)) And the only thing we know about the future is that it will be faster, changing, and more unpredictable than the present.((И единственное, что мы знаем о будущем — оно будет быстрее, изменчивее и непредсказуемее, чем настоящее.))
+        content: `Welcome to the revolution.((Добро пожаловать в революцию.)) We've entered into the most <em>turbulent</em> time in all of human history, with changes happening more often, more rapidly, and more unpredictably than ever before.((Мы вступили в самое неспокойное время во всей истории человечества, когда перемены происходят чаще, быстрее и непредсказуемее, чем когда-либо прежде.)) And the only thing we know about the future is that it will be faster, changing, and more unpredictable than the present.((И единственное, что мы знаем о будущем — оно будет быстрее, изменчивее и непредсказуемее, чем настоящее.))
 
 Your job is to learn how to survive and thrive in the months and years ahead, and this program is designed to help you do exactly that.((Ваша задача — научиться выживать и процветать в предстоящие месяцы и годы, и эта программа создана, чтобы помочь вам именно в этом.))`
       },
@@ -71,11 +172,19 @@ I moved from a rented apartment to a condominium, to a home, to an even bigger h
       }
     ]
   },
-  WizardOfOz: {
-    title: "THE WIZARD OF OZ",
-    author: null,
-    chapters: []
-  }
+
+  test: {
+    mainTitleOfTheText: "📖 Test",
+    author: "Vincent",
+    chapters: [
+      {
+        title: "From test to test ((От теста к тесту))",
+        content: `It is a test of a new unknown word. And this is a test of the translated sentence. Everything is here. It is hilarious, but yet very useful`
+      },
+    ]
+  },
+
+
 };
 
 export default engBooksData;
