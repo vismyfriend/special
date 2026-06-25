@@ -127,10 +127,58 @@ const updateScrollProgress = () => {
 };
 
 // Получаем параграфы для конкретной главы
+// Получаем параграфы для конкретной главы
+// Получаем параграфы для конкретной главы
+// Получаем параграфы для конкретной главы
 const getChapterParagraphs = (chapterIndex) => {
   const content = bookData.value.chapters[chapterIndex].content;
-  return content.split('\n\n');
+
+  // Разбиваем по переносам строк
+  const lines = content.split('\n');
+
+  const paragraphs = [];
+  let currentParagraph = '';
+
+  for (let line of lines) {
+    // Проверяем, является ли строка элементом списка
+    const trimmed = line.trim();
+    const isListItem = /^[•\-]|^\d+[\.\)]|^[a-zA-Z][\.\)]/.test(trimmed);  // ← добавлена поддержка букв
+    const isEmpty = trimmed === '';
+
+    // Пустая строка — разделитель
+    if (isEmpty) {
+      if (currentParagraph.trim()) {
+        paragraphs.push(currentParagraph.trim());
+        currentParagraph = '';
+      }
+      continue;
+    }
+
+    // Элемент списка — отдельный параграф
+    if (isListItem) {
+      if (currentParagraph.trim()) {
+        paragraphs.push(currentParagraph.trim());
+        currentParagraph = '';
+      }
+      paragraphs.push(trimmed);
+    } else {
+      // Обычный текст — добавляем к текущему абзацу
+      if (currentParagraph) {
+        currentParagraph += ' ' + trimmed;
+      } else {
+        currentParagraph = trimmed;
+      }
+    }
+  }
+
+  // Добавляем последний абзац
+  if (currentParagraph.trim()) {
+    paragraphs.push(currentParagraph.trim());
+  }
+
+  return paragraphs;
 };
+
 
 // Парсим части для конкретной главы и параграфа
 const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
@@ -146,14 +194,16 @@ const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
   let match;
 
   while ((match = regex.exec(paragraph)) !== null) {
+    // Текст ДО перевода (с пробелами!)
     if (match.index > lastIndex) {
       const textBefore = paragraph.slice(lastIndex, match.index);
-      if (textBefore.trim()) {
+      if (textBefore) {  // ← убрал .trim() чтобы сохранить пробелы
         parts.push({text: textBefore, hasTranslation: false});
       }
     }
 
-    const englishText = match[1].trim();
+    // Сам перевод
+    const englishText = match[1];  // ← убрал .trim() чтобы сохранить пробелы
     const translation = match[2].trim();
     if (englishText) {
       parts.push(reactive({
@@ -167,9 +217,10 @@ const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
     lastIndex = match.index + match[0].length;
   }
 
+  // Текст ПОСЛЕ последнего перевода (с пробелами!)
   if (lastIndex < paragraph.length) {
     const remaining = paragraph.slice(lastIndex);
-    if (remaining.trim()) {
+    if (remaining) {  // ← убрал .trim() чтобы сохранить пробелы
       parts.push({text: remaining, hasTranslation: false});
     }
   }
