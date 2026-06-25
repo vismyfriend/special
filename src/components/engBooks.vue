@@ -9,19 +9,7 @@
 
       <!-- Управление в одну строку -->
       <div class="controls-row">
-        <div class="progress-wrapper">
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
-          </div>
-          <span class="progress-text">{{ Math.round(progressPercent) }}%</span>
-        </div>
-
         <div class="controls-group">
-          <!-- Переключатель темы -->
-          <button class="theme-toggle" @click="toggleTheme" :title="currentTheme === 'light' ? 'Ночной режим' : 'Дневной режим'">
-            {{ currentTheme === 'light' ? '🌙' : '☀️' }}
-          </button>
-
           <!-- Ползунок размера шрифта -->
           <div class="font-size-control">
             <div class="slider-wrapper">
@@ -36,6 +24,18 @@
               />
             </div>
           </div>
+        </div>
+
+        <!-- Переключатель темы -->
+        <button class="theme-toggle" @click="toggleTheme" :title="currentTheme === 'light' ? 'Ночной режим' : 'Дневной режим'">
+          {{ currentTheme === 'light' ? '🌙' : '☀️' }}
+        </button>
+
+        <div class="progress-wrapper">
+          <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+          </div>
+          <span class="progress-text">{{ Math.round(progressPercent) }}%</span>
         </div>
       </div>
     </div>
@@ -58,6 +58,11 @@
           </span>
         </h2>
 
+        <!-- Картинка главы (один раз после заголовка) -->
+        <div v-if="chapter.picture" class="chapter-image">
+          <img :src="chapter.picture" alt="Chapter illustration" />
+        </div>
+
         <!-- Параграфы главы -->
         <div v-for="(paragraph, pIndex) in getChapterParagraphs(chapterIndex)" :key="pIndex" class="paragraph-wrapper">
           <div class="paragraph">
@@ -69,11 +74,11 @@
                 :class="{ 'translation-open': part.showTranslation }"
                 @click="toggleTranslation(part)"
               >
-  <span v-html="part.text"></span>
-  <span v-if="part.showTranslation" class="inline-translation">
-    ➥ {{ part.translation }}
-  </span>
-</span>
+                <span v-html="part.text"></span>
+                <span v-if="part.showTranslation" class="inline-translation">
+                  ➥ {{ part.translation }}
+                </span>
+              </span>
               <!-- Обычный текст -->
               <span v-else class="text-part" v-html="part.text"></span>
             </template>
@@ -83,10 +88,9 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, reactive, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import {ref, computed, onMounted, onBeforeUnmount, reactive, watch} from 'vue';
+import {useRoute} from 'vue-router';
 import engBooksData from '../dataForGames/engBooksData';
 
 const route = useRoute();
@@ -145,7 +149,7 @@ const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
     if (match.index > lastIndex) {
       const textBefore = paragraph.slice(lastIndex, match.index);
       if (textBefore.trim()) {
-        parts.push({ text: textBefore, hasTranslation: false });
+        parts.push({text: textBefore, hasTranslation: false});
       }
     }
 
@@ -166,7 +170,7 @@ const getPartsForParagraph = (chapterIndex, pIndex, paragraph) => {
   if (lastIndex < paragraph.length) {
     const remaining = paragraph.slice(lastIndex);
     if (remaining.trim()) {
-      parts.push({ text: remaining, hasTranslation: false });
+      parts.push({text: remaining, hasTranslation: false});
     }
   }
 
@@ -214,7 +218,7 @@ const applyFontSize = (size) => {
   // ✅ Обновляем заголовки глав
   const titles = document.querySelectorAll('.chapter-title');
   titles.forEach(el => {
-    el.style.fontSize = size  + 'px';
+    el.style.fontSize = size + 'px';
   });
 
   localStorage.setItem('readerFontSize', size);
@@ -594,8 +598,35 @@ onBeforeUnmount(() => {
   color: #81C784;
 }
 
+
+/* ========== КАРТИНКИ В КНИГЕ ========== */
+.chapter-image {
+  margin: 20px 0;
+  text-align: center;
+
+}
+
+.chapter-image img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  display: inline-block; /* ← чтобы работало с text-align: center */
+
+}
+
+
+.dark .chapter-image img {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
 /* ========== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ========== */
 @media (max-width: 600px) {
+  .chapter-image img {
+    max-height: 200px;
+    border-radius: 8px;
+  }
   .book-title {
     font-size: 16px;
   }
@@ -665,7 +696,6 @@ onBeforeUnmount(() => {
     height: 22px;
     font-size: 10px;
   }
-
 
 
   .font-size-value {

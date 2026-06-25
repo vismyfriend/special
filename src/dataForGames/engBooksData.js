@@ -6,14 +6,17 @@ const engBooksData = {
     chapters: [
        {
         title: "1. Жирный, курсив и подчеркивание ((Bold, Italic and Underline))",
-        content: `Это пример <strong>жирного текста</strong> (strong). Используется для выделения важных слов.
+
+         content: `Это пример <strong>жирного текста</strong> (strong). Используется для выделения важных слов.
 
 Это пример <em>курсивного текста</em> (em).((this is an example of cursive)) Используется для акцента или иностранных слов.
 
 Это пример <u>подчеркнутого текста</u> (u). Используется для указания на что-то важное.
 
-Комбинация: <strong><em>жирный + курсив</em></strong> и <u><em>подчеркнутый + курсив</em></u>.`
-      },
+Комбинация: <strong><em>жирный + курсив</em></strong> и <u><em>подчеркнутый + курсив</em></u>.`,
+         picture: new URL("../assets/images/ielts_listening_7.png", import.meta.url).href
+
+       },
       {
         title: "2. Выделение цветом и фоном ((Color and Background Highlight))",
         content: `Это пример <span style="color: #ff6b35;">текста оранжевого цвета</span>.
@@ -112,6 +115,7 @@ Your job is to learn how to survive and thrive in the months and years ahead, an
       },
       {
         title: "From Failure to Success ((От провала к успеху))",
+
         content: `I have studied, practiced, and taught in the area of human potential development for more than 30 years.((Я изучал, практиковал и преподавал в области развития человеческого потенциала более 30 лет.))
 
 I left high school without graduating and worked at laboring jobs, drifting from place to place until well into my 20s.((Я бросил школу, не закончив её, и работал на работах требующих физической активности, скитаясь с места на место до глубоких двадцати лет.)) The turning point came for me when I was about 24.((Поворотный момент наступил, когда мне было около 24 лет.)) I began to ask the question:((Я начал задавать вопрос:))
@@ -124,6 +128,7 @@ And at the same time, why is it that the great majority are frustrated and unhap
       },
       {
         title: "The First Breakthrough: The Success Secret",
+
         content: `The Bible says:((В Библии сказано:))
 
 "Seek and ye shall find, for all who seek findeth."((«Ищите и найдете, ибо всякий ищущий находит.»))
@@ -143,27 +148,37 @@ Their success had very little to do with luck or being at the right place at the
 This discovery changed my life.((Это открытие изменило мою жизнь.)) I had been spinning my wheels in sales for a year.((Я топтался на месте в продажах в течение года.)) When I learned this secret, I immediately began:((Когда я узнал этот секрет, я немедленно начал:))
 
 • Interviewing the top salespeople((• Интервьюировать лучших продавцов))
+
 • Reading books written by the top salespeople((• Читать книги, написанные лучшими продавцами))
+
 • Listening to audio tapes produced by top salespeople((• Слушать аудиозаписи, созданные лучшими продавцами))
+
 • Attending seminars given by top salespeople((• Посещать семинары, проводимые лучшими продавцами))
 
 In one more year, I was at the top of my sales force and earning more money than I'd ever dreamed possible.((Ещё через год я был на вершине моего отдела продаж и зарабатывал больше денег, чем когда-либо мог мечтать.))
 
-As a Sales Manager:((Как менеджер по продажам:))
+---
 
-I applied the same principles:((Я применил те же принципы:))
+As a Sales Manager.((Как менеджер по продажам:)) I applied the same principles:((Я применил те же принципы:))
 
 - I talked to other successful sales managers((• Я разговаривал с другими успешными менеджерами по продажам))
+
 - I read books on management((• Я читал книги по управлению))
+
 - I listened to tapes and took courses on management((• Я слушал записи и проходил курсы по управлению))
 
 In no time, I had 95 people working for me, and I was in charge of six countries.((В мгновение ока у меня работало 95 человек, и я отвечал за шесть стран.)) The amount of money I was earning was more than I had ever expected.((Сумма денег, которую я зарабатывал, была больше, чем я когда-либо ожидал.))
 
+---
+
 In Real Estate Development((В сфере развития недвижимости)) I applied the same principles:((Я применил те же принципы:))
 
 • I read all the books, articles, and magazines I could find((• Я прочитал все книги, статьи и журналы, которые мог найти))
+
 • I talked to other people who were successful in real estate development((• Я разговаривал с другими людьми, которые были успешны в развитии недвижимости))
+
 • I attended lectures given by experts in real estate((• Я посещал лекции экспертов в сфере недвижимости))
+
 • I took courses and got a real estate license((• Я проходил курсы и получил лицензию на недвижимость))
 
 Over the next few years, I bought, developed, leased, sold, and otherwise disposed of more than $50 million worth of real estate.((В течение следующих нескольких лет я купил, развил, сдал в аренду, продал и иным образом распорядился недвижимостью на сумму более 50 миллионов долларов.))
