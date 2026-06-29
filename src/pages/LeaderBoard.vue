@@ -584,7 +584,7 @@ const visiblePlayers = computed(() => {
 // стоит ли показать кнопку Увидеть всех игроков
 
 const shouldShowToggleButton = computed(() => {
-  return topPlayers.value && topPlayers.value.length > 8;
+  return topPlayers.value && topPlayers.value.length > 5;
 });
 // Методы
 

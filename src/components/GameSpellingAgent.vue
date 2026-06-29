@@ -416,8 +416,11 @@ const loadNextWordFromQueue = () => {
 
   if (wordsToRepeat.value.length === 0) {
     isGameFinished.value = true;
+
     if (timerInterval) clearInterval(timerInterval);
     isLoadingNext = false;
+    finishGame();
+
     return;
   }
 
@@ -459,7 +462,10 @@ const loadWord = () => {
   if (currentWordIndex.value >= gameWords.value.length) {
     isGameFinished.value = true;
     if (timerInterval) clearInterval(timerInterval);
+    finishGame();
+
     return;
+
   }
 
   currentWord.value = gameWords.value[currentWordIndex.value];

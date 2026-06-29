@@ -19,7 +19,7 @@ const shortWordsData = {
     { id: 8, eng: "x-ray vision", ru: "рентгеновское зрение", hint: "/ЭКС рэй ви жн/" },
     { id: 9, eng: "telekinesis", ru: "телекинез", hint: "/те ле ки НЭ зис/" },
     { id: 10, eng: "teleportation", ru: "телепортация", hint: "/те ле пор ТЕЙ шн/" },
-    { id: 11, eng: "flying", ru: "полёт", hint: "/ФЛАЙ инг/" },
+    { id: 11, eng: "flying", ru: "полёт", hint: "/флА инг/" },
     { id: 12, eng: "verbal fluency", ru: "красноречие / словесная беглость", hint: "/вЁр бал флю эн си/" }
   ],
   test: [

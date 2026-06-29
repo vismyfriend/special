@@ -1054,6 +1054,17 @@ export const allGamesAndSetsOfWordsList =
 
     },
 
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/littleRedRidingHood/books",
+      missionVisibleName: "Красная Шапочка",
+      missionDescription: "A little red riding hood",
+      id: 1001,
+      active: true,
+      lvl: ["lvl1"],
+
+    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examA164V1/tests-and-exams",
