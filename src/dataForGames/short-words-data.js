@@ -8,6 +8,81 @@ const shortWordsData = {
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
   ],
+  howAreYouListening101: [
+    {
+      id: 1,
+      eng: "hi",
+      ru: "привет (коротко)",
+      hint: "/ хай /"
+    },
+    {
+      id: 2,
+      eng: "how are you?",
+      ru: "как вы? как ты?",
+      hint: "/ хау а: ю? /"
+    },
+    {
+      id: 3,
+      eng: "hello",
+      ru: "здравствуйте",
+      hint: "/ хэлОу /"
+    },
+    {
+      id: 4,
+      eng: "hey",
+      ru: "здарова!",
+      hint: "/ хэй /"
+    },
+    {
+      id: 5,
+      eng: "I am good",
+      ru: "я хорошо",
+      hint: "/ ай эм гуд /"
+    },
+    {
+      id: 6,
+      eng: "I am great",
+      ru: "я великолепно",
+      hint: "/ ай эм грэйт /"
+    },
+    {
+      id: 7,
+      eng: "I am wonderful",
+      ru: "я замечательно",
+      hint: "/ ай эм вАндэрфул /"
+    },
+    {
+      id: 8,
+      eng: "I am tired",
+      ru: "я уставший",
+      hint: "/ ай эм тАйэрд /"
+    },
+    {
+      id: 9,
+      eng: "I am hungry",
+      ru: "я голоден",
+      hint: "/ ай эм хАнгри /"
+    },
+    {
+      id: 10,
+      eng: "I am not so good",
+      ru: "я не так хорошо",
+      hint: "/ ай эм нот соу гуд /"
+    },
+    {
+      id: 11,
+      eng: "I am late",
+      ru: "я опоздавший",
+      hint: "/ ай эм лэйт /"
+    },
+    {
+      id: 12,
+      eng: "I am happy",
+      ru: "я счастлив",
+      hint: "/ ай эм хЭпи /"
+    },
+  ],
+
   superPowers: [
     { id: 1, eng: "invisibility", ru: "невидимость", hint: "/ин ви зи БИ ли ти/" },
     { id: 2, eng: "immortality", ru: "бессмертие", hint: "/им мор ТА ли ти/" },

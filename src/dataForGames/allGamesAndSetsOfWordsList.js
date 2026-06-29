@@ -21,15 +21,7 @@ export const allGamesAndSetsOfWordsList =
           active: true,
           gameIcon: "🤷‍♂️"
         },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/pattern/books",
-          missionVisibleName: "Книга Accelerated",
-          missionDescription: "Book Revolution",
-          id: 1001,
-          active: true,
-          gameIcon: "🤷‍♂️"
-        },
+
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/checkMyLevel001/brainstorm",
@@ -1093,8 +1085,20 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "A little red riding hood",
       id: 1001,
       active: true,
-      lvl: ["lvl1"],
+      gameIcon: "A2-B1",
 
+      lvl: ["lvlBooks"],
+
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/acceleratedLearningInAction/books",
+      missionVisibleName: "Learning Revolution 1",
+      missionDescription: "Accelerated Learning 1",
+      id: 1001,
+      active: true,
+      lvl: ["lvlBooks"],
+      gameIcon: "B2-C1"
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

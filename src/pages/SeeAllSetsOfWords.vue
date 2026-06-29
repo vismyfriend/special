@@ -360,7 +360,7 @@
 
           <!-- Змейка -->
           <div
-            v-if="currentLevel === 'lvlAll' || currentLevel === 'lvl365'"
+            v-if="currentLevel === 'noLvl' || currentLevel === 'lvlAll'"
 
             class="v-card-choose tooltip-wrapper glassMorphism3"
             role="button"
@@ -664,6 +664,7 @@ const currentSetToUnlock = ref(null);         // Текущий набор дл�
 const shake = ref(false);                    // Анимация тряски
 const savedScrollPosition = ref(0);          // Сохраненная позиция скролла
 
+
 // ==================== СОСТОЯНИЯ РАСКРЫТИЙ ====================
 // 👤 ПОЛЬЗОВАТЕЛЬСКИЕ - сохраняются в localStorage
 const userExpandedSubTasks = ref(new Set());
@@ -734,8 +735,9 @@ const levels = [
   { id: 'lvl2', label: '2' },
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '🔓' },
+  { id: 'noLvl', label: '?' },
+  { id: 'lvlBooks', label: '📚' },
   { id: 'lvlAll', label: 'все' },
-  { id: 'lvl365', label: '365' },
 
   // { id: 'lvl6', label: '6' },
   // { id: 'lvl7', label: '7' }
@@ -752,11 +754,11 @@ const setLevel = (levelId) => {
 const matchesLevel = (item) => {
 
   // Если выбран lvlDev - показываем всё без исключения
-  if (currentLevel.value === 'lvl365') {
+  if (currentLevel.value === 'lvlAll') {
     return true;
   }
   if (!item.lvl) {
-    return currentLevel.value === 'lvlAll';
+    return currentLevel.value === 'noLvl';
   }
 
   if (Array.isArray(item.lvl)) {
@@ -836,7 +838,7 @@ const filteredOrderedMissions = computed(() => {
 
   const processItem = (item, parentSubTask = null, parentUnderSubTask = null) => {
     if (!item.active) return;
-// Добавляем проверку уровня
+// Добавляем проверку уровня (если нужно чтобы искал только в этой вкладке и на этом уровне)
     if (!matchesLevel(item)) return;
 
 
@@ -1037,6 +1039,7 @@ const filterByCategory = (categoryName) => {
   return AllSetsOfWords.value.filter(set =>
     set.active &&
     hasCategory(set, categoryName) &&
+
     matchesLevel(set)  // ← добавить проверку уровня
   );
 };
@@ -1417,6 +1420,30 @@ watch(searchQuery, (newQuery) => {
 
   autoExpandParentCategoriesForSearch(normalizeString(newQuery).replace(/\//g, ''));
 });
+
+// 🆕 НОВЫЙ WATCH - переключение на noLvl при поиске
+// Добавь переменную
+const previousLevel = ref('noLvl');
+
+// Модифицированный watch
+watch(searchQuery, (newQuery) => {
+  const query = newQuery?.trim();
+
+  if (query && query.length > 0) {
+    // Запоминаем текущий уровень перед переключением
+    if (currentLevel.value !== 'lvlAll') {
+      previousLevel.value = currentLevel.value;
+      currentLevel.value = 'lvlAll';
+      localStorage.setItem('userLevel', 'lvlAll');
+    }
+  } else {
+    // Если поиск очищен - возвращаемся на предыдущий уровень
+    if (currentLevel.value === 'lvlAll' && previousLevel.value !== 'lvlAll') {
+      currentLevel.value = previousLevel.value;
+      localStorage.setItem('userLevel', previousLevel.value);
+    }
+  }
+}, { debounce: 300 });
 
 // ==================== LIFECYCLE HOOKS ====================
 onMounted(() => {
@@ -3042,13 +3069,15 @@ onBeforeRouteLeave((to, from, next) => {
 /* Простые стили для кнопок уровней */
 .level-buttons-container {
   display: flex;
+  justify-content: center;
   gap: 5px;
-  margin: 5px 0 10px 0;
-  padding: 0 10px;
+  margin: 10px 0 10px 0;
+  padding: 0 2px;
 }
 
 .level-btn {
-  flex: 1;
+  flex: 0 auto;
+  min-width: 20px;
   padding: 8px 2px;
   border: 2px solid #000;
   border-radius: 20px;
