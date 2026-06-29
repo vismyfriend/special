@@ -208,6 +208,7 @@ export const allGamesAndSetsOfWordsList =
       lvl: "lvl365",
       active: true,
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
@@ -584,6 +585,7 @@ export const allGamesAndSetsOfWordsList =
           active: true,
 
         },
+
         {
           type: "hardcodedLink",
           path: "/see-all-sets-of-words/digits09/game-translate",
@@ -680,6 +682,35 @@ export const allGamesAndSetsOfWordsList =
       ]
     },
 
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions1ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 1</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      lvl: "lvl0",
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions2ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 2</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbsFromProfessions/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>глаголы</i>',
+      missionDescription: 'profession verbs',
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+
+    },
 
     // 365 days of English
     {
@@ -1159,11 +1190,12 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/possessivePronounsA00/find-pairs-hard",
-      missionVisibleName: "Х.З. whose ? ХУЗ ? Это чьё ? ",
+      missionVisibleName: "ХЗ - whose ? <b> ХУЗ ? </b> чьё ? ",
       missionDescription: "притяжательные слова",
       id: 1001,
       active: true,
-      gameIcon: '🙈'
+      gameIcon: '🙈',
+      lvl: ["lvl0"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1172,7 +1204,9 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "to be и порядок слов",
       id: 1001,
       active: true,
-      gameIcon: '🙉'
+      gameIcon: '🙉',
+      lvl: ["lvl0"],
+
     },
 
     {
@@ -1183,6 +1217,8 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'🙊',
+      lvl: ["lvl0"],
+
     },
     {
       type: "hardcodedLink",
@@ -1191,7 +1227,9 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "what is it?",
       id: 1001,
       active: true,
-      gameIcon: '🐶'
+      gameIcon: '🐶',
+      lvl: ["lvl0"],
+
     },
 
 
