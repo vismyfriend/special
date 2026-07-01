@@ -79,7 +79,9 @@ module.exports = configure(function (/* ctx */) {
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
-      distDir: "docs",
+      // distDir: "docs", до того как подключили кастомный домен было так
+      distDir: "docs/special",  // <- меняем здесь!
+
 
       env: {
         DEEPSEEK_API_KEY: JSON.stringify(process.env.DEEPSEEK_API_KEY)
@@ -87,12 +89,12 @@ module.exports = configure(function (/* ctx */) {
         commonjsOptions: {
     ignoreTryCatch: true
   },
-  
+
   // 2. Настройки Rollup для игнорирования ошибок резолвинга
   rollupOptions: {
     onwarn(warning, warn) {
       // Игнорируем предупреждения о неразрешенных импортах (case sensitivity)
-      if (warning.code === 'UNRESOLVED_IMPORT' || 
+      if (warning.code === 'UNRESOLVED_IMPORT' ||
           warning.message.includes('Could not resolve') ||
           warning.message.includes('Failed to resolve import')) {
         return;
