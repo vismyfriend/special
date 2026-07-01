@@ -72,15 +72,17 @@ module.exports = configure(function (/* ctx */) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: '/special/',
+      // publicPath: '/special/', до того как подключили кастомный домен было так
+      publicPath: '/',
+      distDir: "docs",
+      // distDir: "docs/special",  // <- пробовали вот так поменять пути для гитхаба при добавлении кастомного домена
+
       // analyze: true,
       // env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
-      // distDir: "docs", до того как подключили кастомный домен было так
-      distDir: "docs/special",  // <- меняем здесь!
 
 
       env: {
