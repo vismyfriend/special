@@ -19,7 +19,7 @@ const shortWordsData = {
       id: 2,
       eng: "how are you?",
       ru: "как вы? как ты?",
-      hint: "/ хау а: ю? /"
+      hint: "/ хау а ю? /"
     },
     {
       id: 3,
