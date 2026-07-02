@@ -702,14 +702,14 @@ Above all, in the sessions ahead, you will learn a new system for enhancing and 
   acceleratedLearningInAction2: {
     mainTitleOfTheText: "YOU ARE A GENIOUS / джИ ни ус / гений",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть вторая.",
-    audioUrl: new URL('../assets/audio/02 - You Are A Genius.mp3', import.meta.url).href,
+    audioUrl: new URL('../assets/audio/02-YouAreAGenius.mp3', import.meta.url).href,
 
     chapters: [
 
       // ===== ГЛАВА 38 =====
       {
         title: "The Bottom Line ((Суть))",
-        content: `You are a <em>potential /\u00A0потЭн\u00A0шиал\u00A0/</em> genius.((Ты — потенциальный гений.)) You have the mental <em>capacity</em> to be, have and do anything you really want in life.((У тебя есть умственный потенциал, чтобы быть, иметь и делать всё, что ты действительно хочешь в жизни.)) By <em>harnessing</em> your amazing mental powers you can <em>accomplish</em> any goal, <em>overcome</em> any obstacle and solve any problem.((Используя свои удивительные умственные силы, ты можешь достичь любой цели, преодолеть любое препятствие и решить любую проблему.))
+        content: `You are a <em>potential /\u00A0потЭн\u00A0шиал\u00A0/</em> genius.((Ты — потенциальный гений.)) You have the mental <em>capacity</em> to be, have and do anything you really want in life.((У тебя есть умственный потенциал-емкость, чтобы быть, иметь и делать всё, что ты действительно хочешь в жизни.)) By <em>harnessing</em> your amazing mental powers you can <em>accomplish</em> any goal, <em>overcome</em> any obstacle and solve any problem.((Обуздав свои удивительные умственные силы, ты можешь достичь любой цели, преодолеть любое препятствие и решить любую проблему.))
 
 We are learning more today about the <em>incredible /\u00A0ин\u00A0крЭ\u00A0дэ\u00A0бэл/ potential</em>  of your brain, than we ever learned before in human history.((Сегодня мы узнаём об невероятном потенциале твоего мозга больше, чем когда-либо прежде за всю историю человечества.)) And all of it is good.((И всё из этого — хорошие новости.))
 
