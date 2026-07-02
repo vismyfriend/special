@@ -161,14 +161,14 @@ const rewind = (seconds) => {
 // === ИКОНКА ДЛЯ КНОПКИ АУДИО ===
 const getAudioButtonIcon = computed(() => {
   if (!isAudioVisible.value) {
-    return '🎵'; // Плеер скрыт — показываем ноты
+    return '🎵'; // Плеер скрыт
   }
 
   if (isAudioPlaying.value) {
-    return '🔇'; // Плеер виден и играет — квадрат (стоп)
+    return '🔇'; // Плеер виден и играет
   }
 
-  return '🔊'; // Плеер виден, но на паузе — пауза
+  return '🔊'; // Плеер виден, но на паузе
 });
 
 const toggleAudio = async () => {
