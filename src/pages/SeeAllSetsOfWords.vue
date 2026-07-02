@@ -643,6 +643,10 @@
 </template>
 <script setup>
 import { useQuasar } from 'quasar';
+import { useMeta } from 'quasar';
+
+
+
 import { ref, computed, watch } from 'vue';
 import { onMounted, onBeforeUnmount } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
@@ -655,6 +659,51 @@ const ANIMATION_SPEED = 150;
 // ==================== COMPOSABLES ====================
 const $q = useQuasar();
 const router = useRouter();
+
+
+// ==================== META-TAGS для OG ====================
+useMeta({
+  title: 'Все наборы слов — Vismyfriend',
+  titleTemplate: title => `${title} | Vismyfriend`,
+  meta: {
+    'og:title': {
+      property: 'og:title',
+      content: 'Все наборы слов для изучения английского'
+    },
+    'og:description': {
+      property: 'og:description',
+      content: 'Выбери миссию и show your best result'
+    },
+    'og:image': {
+      property: 'og:image',
+      content: 'https://www.vismyfriend.ru/images/og-default.jpeg'
+    },
+    'og:url': {
+      property: 'og:url',
+      content: 'https://www.vismyfriend.ru/see-all-sets-of-words'
+    },
+    'og:type': {
+      property: 'og:type',
+      content: 'website'
+    },
+    'twitter:card': {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    'twitter:title': {
+      name: 'twitter:title',
+      content: 'Все наборы слов для изучения английского'
+    },
+    'twitter:description': {
+      name: 'twitter:description',
+      content: 'Выбери набор слов и начинай учить английский с играми Vismyfriend'
+    },
+    'twitter:image': {
+      name: 'twitter:image',
+      content: 'https://www.vismyfriend.ru/images/og-default.jpeg'
+    }
+  }
+});
 
 // ==================== БАЗОВЫЕ СОСТОЯНИЯ ====================
 const searchQuery = ref('');                    // Поисковый запрос
@@ -1481,6 +1530,8 @@ onBeforeRouteLeave((to, from, next) => {
   saveUserExpandedState();
   next();
 });
+
+
 
 </script>
 

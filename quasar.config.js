@@ -138,7 +138,29 @@ module.exports = configure(function (/* ctx */) {
       //
       // components: [],
       // directives: [],
+      meta: {
+        title: 'Vismyfriend — учи английский с играми',
+        titleTemplate: title => `${title} | Vismyfriend`,
+        description: 'Интерактивные игры и упражнения для изучения английского языка с Винсентом',
 
+        // Open Graph для соцсетей и мессенджеров
+        og: {
+          title: 'Vismyfriend — учи английский с играми',
+          description: 'Интерактивные игры и упражнения для изучения английского языка с Винсентом',
+          image: 'https://www.vismyfriend.ru/images/og-default.jpeg',
+          url: 'https://www.vismyfriend.ru',
+          type: 'website',
+          site_name: 'Vismyfriend'
+        },
+
+        // Для Twitter/X
+        twitter: {
+          card: 'summary_large_image',
+          title: 'Vismyfriend — учи английский с играми',
+          description: 'Интерактивные игры и упражнения для изучения английского языка с Винсентом',
+          image: 'https://www.vismyfriend.ru/images/og-default.jpg'
+        }
+      },
       // Quasar plugins
       plugins: ['Cookies', 'LocalStorage', 'Notify', 'Meta', 'AppFullscreen', 'Dialog'],
     },
