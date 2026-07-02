@@ -1093,8 +1093,18 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/acceleratedLearningInAction/books",
-      missionVisibleName: "Learning Revolution 1",
+      missionVisibleName: "AL 1 - Learning revolution",
       missionDescription: "Accelerated Learning 1",
+      id: 1001,
+      active: true,
+      lvl: ["lvlBooks"],
+      gameIcon: "B2-C1"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/acceleratedLearningInAction2/books",
+      missionVisibleName: "AL 2 - You are a genius",
+      missionDescription: "Accelerated Learning 2",
       id: 1001,
       active: true,
       lvl: ["lvlBooks"],

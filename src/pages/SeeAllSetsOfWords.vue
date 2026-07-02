@@ -733,14 +733,13 @@ const focusSearch = () => {
 const currentLevel = ref('lvl0');
 
 const levels = [
-
+  { id: 'lvlBooks', label: '📚' },
   { id: 'lvl0', label: '0' },
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '🔓' },
   { id: 'noLvl', label: '?' },
-  { id: 'lvlBooks', label: '📚' },
   { id: 'lvlAll', label: 'все' },
 
   // { id: 'lvl6', label: '6' },
