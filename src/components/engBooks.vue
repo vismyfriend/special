@@ -33,7 +33,7 @@
           @click="toggleAudio"
           :title="isAudioVisible ? 'Скрыть плеер' : 'Показать плеер'"
         >
-          🎵
+          {{ getAudioButtonIcon }}
         </button>
 
         <!-- Переключатель темы -->
@@ -52,17 +52,27 @@
 
       <!-- Аудиоплеер (появляется под controls-row) -->
       <div v-if="isAudioVisible && bookData.audioUrl" class="audio-player-wrapper">
-        <audio
-          ref="audioPlayer"
-          :src="bookData.audioUrl"
-          controls
-          preload="metadata"
-          controlslist="nodownload noremoteplayback noplaybackrate"
-          @play="onPlay"
-          @pause="onPause"
-          @ended="onEnded"
-        ></audio>
+        <div class="audio-controls">
+
+          <audio
+            ref="audioPlayer"
+            :src="bookData.audioUrl"
+            controls
+            preload="metadata"
+            controlslist="nodownload noremoteplayback noplaybackrate"
+            @play="onPlay"
+            @pause="onPause"
+            @ended="onEnded"
+          ></audio>
+          <button class="rewind-btn" @click="rewind(-5)" title="Назад 5 секунд">
+            ⏪ <br>-5
+          </button>
+          <button class="forward-btn" @click="rewind(5)" title="Вперед 5 секунд">
+            ⏩ <br>+5
+          </button>
+        </div>
       </div>
+
 
     </div>
 
@@ -141,6 +151,25 @@ const titleTranslations = ref({}); // Хранит состояния перев
 const audioPlayer = ref(null);
 const isAudioVisible = ref(false);
 const isAudioPlaying = ref(false);
+
+const rewind = (seconds) => {
+  if (audioPlayer.value) {
+    audioPlayer.value.currentTime += seconds;
+  }
+};
+
+// === ИКОНКА ДЛЯ КНОПКИ АУДИО ===
+const getAudioButtonIcon = computed(() => {
+  if (!isAudioVisible.value) {
+    return '🎵'; // Плеер скрыт — показываем ноты
+  }
+
+  if (isAudioPlaying.value) {
+    return '🔇'; // Плеер виден и играет — квадрат (стоп)
+  }
+
+  return '🔊'; // Плеер виден, но на паузе — пауза
+});
 
 const toggleAudio = async () => {
   isAudioVisible.value = !isAudioVisible.value;
@@ -524,45 +553,113 @@ onBeforeUnmount(() => {
   background: rgba(76, 175, 80, 0.15);
 }
 
-
-/* === АУДИОПЛЕЕР === */
+/* === АУДИОПЛЕЕР С КНОПКАМИ === */
+/* Аудиоплеер — прижат к низу отдельно */
 .audio-player-wrapper {
-  padding: 6px 0 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  margin-top: 4px;
-  animation: slideDown 0.3s ease;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 8px 16px 12px;
+  background: inherit;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .dark .audio-player-wrapper {
-  border-top-color: rgba(255, 255, 255, 0.06);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.audio-player-wrapper audio {
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
+}
+
+.audio-controls audio {
+  flex: 1;
   height: 36px;
   outline: none;
-  background: transparent;
   border-radius: 8px;
+  min-width: 0; /* важно для flex-элемента */
+}
+
+.rewind-btn,
+.forward-btn {
+  width: 44px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b5563;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.dark .rewind-btn,
+.dark .forward-btn {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d1d5db;
+}
+
+.rewind-btn:hover,
+.forward-btn:hover {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: #4CAF50;
+  transform: scale(1.05);
+}
+
+.rewind-btn:active,
+.forward-btn:active {
+  transform: scale(0.95);
 }
 
 /* Скрываем кнопку скачивания у аудио */
-.audio-player-wrapper audio::-webkit-media-controls-download-button {
+.audio-controls audio::-webkit-media-controls-download-button {
   display: none !important;
 }
 
-.audio-player-wrapper audio::-webkit-media-controls-enclosure {
+.audio-controls audio::-webkit-media-controls-enclosure {
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.04);
 }
 
-.dark .audio-player-wrapper audio::-webkit-media-controls-enclosure {
+.dark .audio-controls audio::-webkit-media-controls-enclosure {
   background: rgba(255, 255, 255, 0.04);
 }
 
 /* Firefox */
-.audio-player-wrapper audio::-moz-media-controls-download-button {
+.audio-controls audio::-moz-media-controls-download-button {
   display: none !important;
 }
+
+/* Скрываем кнопку AirPlay в Safari */
+.audio-controls audio::-webkit-media-controls-remote-playback-button {
+  display: none !important;
+}
+
+/* Скрываем кнопку AirPlay в других браузерах */
+.audio-controls audio::-webkit-media-controls-remote-playback-button {
+  display: none !important;
+}
+
+/* Полный набор для Safari */
+.audio-controls audio::-webkit-media-controls-panel {
+  -webkit-appearance: none;
+}
+
+
 
 /* ========== КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМ ========== */
 .theme-toggle {
