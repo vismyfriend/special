@@ -702,7 +702,7 @@ Above all, in the sessions ahead, you will learn a new system for enhancing and 
   acceleratedLearningInAction2: {
     mainTitleOfTheText: "YOU ARE A GENIOUS / джИ ни ус / гений",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть вторая.",
-    audioUrl: new URL('../assets/Audio/02 - You Are A Genius.mp3', import.meta.url).href,
+    audioUrl: new URL('../assets/audio/02 - You Are A Genius.mp3', import.meta.url).href,
 
     chapters: [
 
