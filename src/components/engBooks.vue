@@ -26,6 +26,16 @@
           </div>
         </div>
 
+        <!-- Кнопка аудио (показывается только если есть аудио) -->
+        <button
+          v-if="bookData.audioUrl"
+          class="audio-toggle"
+          @click="toggleAudio"
+          :title="isAudioVisible ? 'Скрыть плеер' : 'Показать плеер'"
+        >
+          🎵
+        </button>
+
         <!-- Переключатель темы -->
         <button class="theme-toggle" @click="toggleTheme" :title="currentTheme === 'light' ? 'Ночной режим' : 'Дневной режим'">
           {{ currentTheme === 'light' ? '🌙' : '☀️' }}
@@ -38,6 +48,22 @@
           <span class="progress-text">{{ Math.round(progressPercent) }}%</span>
         </div>
       </div>
+
+
+      <!-- Аудиоплеер (появляется под controls-row) -->
+      <div v-if="isAudioVisible && bookData.audioUrl" class="audio-player-wrapper">
+        <audio
+          ref="audioPlayer"
+          :src="bookData.audioUrl"
+          controls
+          preload="metadata"
+          controlslist="nodownload noremoteplayback noplaybackrate"
+          @play="onPlay"
+          @pause="onPause"
+          @ended="onEnded"
+        ></audio>
+      </div>
+
     </div>
 
     <!-- Основной контент -->
@@ -89,7 +115,7 @@
   </div>
 </template>
 <script setup>
-import {ref, computed, onMounted, onBeforeUnmount, reactive, watch} from 'vue';
+import {ref, computed, onMounted, onBeforeUnmount, reactive, watch, nextTick} from 'vue';
 import {useRoute} from 'vue-router';
 import engBooksData from '../dataForGames/engBooksData';
 
@@ -109,6 +135,49 @@ const fontSize = ref(16);
 const allParts = ref({});
 const scrollProgress = ref(0);
 const titleTranslations = ref({}); // Хранит состояния переводов заголовков
+
+
+// === АУДИОПЛЕЕР ===
+const audioPlayer = ref(null);
+const isAudioVisible = ref(false);
+const isAudioPlaying = ref(false);
+
+const toggleAudio = async () => {
+  isAudioVisible.value = !isAudioVisible.value;
+
+  if (isAudioVisible.value) {
+    // Ждём рендера аудиоэлемента
+    await nextTick();
+    if (audioPlayer.value) {
+      audioPlayer.value.volume = 0.3; // Громкость 50%
+      try {
+        await audioPlayer.value.play();
+        isAudioPlaying.value = true;
+      } catch (err) {
+        // Автоплей может быть заблокирован браузером
+        console.log('Auto-play blocked, user must click play manually');
+      }
+    }
+  } else {
+    // Останавливаем при скрытии
+    if (audioPlayer.value) {
+      audioPlayer.value.pause();
+      isAudioPlaying.value = false;
+    }
+  }
+};
+
+const onPlay = () => {
+  isAudioPlaying.value = true;
+};
+
+const onPause = () => {
+  isAudioPlaying.value = false;
+};
+
+const onEnded = () => {
+  isAudioPlaying.value = false;
+};
 
 // Прогресс скролла
 const progressPercent = computed(() => {
@@ -301,6 +370,11 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', updateScrollProgress);
+
+  // Останавливаем аудио при уходе
+  if (audioPlayer.value) {
+    audioPlayer.value.pause();
+  }
 });
 </script>
 
@@ -416,6 +490,78 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+}
+
+
+/* === КНОПКА АУДИО === */
+.audio-toggle {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dark .audio-toggle {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.audio-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.audio-toggle.active {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.15);
+}
+
+
+/* === АУДИОПЛЕЕР === */
+.audio-player-wrapper {
+  padding: 6px 0 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 4px;
+  animation: slideDown 0.3s ease;
+}
+
+.dark .audio-player-wrapper {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+.audio-player-wrapper audio {
+  width: 100%;
+  height: 36px;
+  outline: none;
+  background: transparent;
+  border-radius: 8px;
+}
+
+/* Скрываем кнопку скачивания у аудио */
+.audio-player-wrapper audio::-webkit-media-controls-download-button {
+  display: none !important;
+}
+
+.audio-player-wrapper audio::-webkit-media-controls-enclosure {
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.dark .audio-player-wrapper audio::-webkit-media-controls-enclosure {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Firefox */
+.audio-player-wrapper audio::-moz-media-controls-download-button {
+  display: none !important;
 }
 
 /* ========== КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМ ========== */
