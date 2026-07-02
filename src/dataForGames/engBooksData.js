@@ -703,6 +703,7 @@ Above all, in the sessions ahead, you will learn a new system for enhancing and 
     mainTitleOfTheText: "YOU ARE A GENIOUS / джИ ни ус / гений",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть вторая.",
     audioUrl: new URL('../assets/audio/02-YouAreAGenius.mp3', import.meta.url).href,
+    // audioUrl: new URL('../assets/audio/A2_giving_directions.mp3', import.meta.url).href,
 
     chapters: [
 
