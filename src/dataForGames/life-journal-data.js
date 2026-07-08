@@ -442,7 +442,7 @@ export const lifeJournalPosts = [
       },
       {
         type: 'image',
-        value: new URL("../assets/audio/songs/life_is_good2.jpg", import.meta.url).href,
+        value: new URL("../assets/audio/songs/life_is_good.jpg", import.meta.url).href,
         caption: 'Кофе в моей любимой кружке'
       },
       {
@@ -454,11 +454,38 @@ export const lifeJournalPosts = [
         value: 'https://www.youtube.com/watch?v=example',
         caption: 'Вот видос, где я подсмотрел технику'
       },
+
       {
         type: 'audio',
         value: new URL('../assets/audio/songs/I love my life.mp3', import.meta.url).href,
         caption: 'Мой плейлист для утра (ставлю фоном когда готовлю)'
       }
+    ]
+  },
+  {
+    id: '2026-07-08-vibe-coding',
+    date: '8 июля 2026',
+    title: 'Покодил немного',
+    // mood: '😊 солнечно',
+    // location: 'Дома',
+    content: [
+      {
+        type: 'text',
+        value: 'Добавил для vinstagram поддержку видео постов, \n\nТеперь можно сохранять видосы свои (а в будущем можно добавить возможность и со сторонних сервисов видео вставлять и смотреть. Если конечно РКН их не замедлит...'
+      },
+      {
+        type: 'video',
+        value: new URL("../assets/videos/hamburger.mp4", import.meta.url).href,
+        caption: 'I would like to buy a hamburger',
+        poster: new URL("../assets/images/Bender.jpeg", import.meta.url).href // опционально
+      },
+      {
+        type: 'video',
+        value: new URL("../assets/videos/juicePayPrank.mp4", import.meta.url).href,
+        caption: 'Juice Pay Prank',
+        poster: new URL("../assets/images/Bender.jpeg", import.meta.url).href // опционально
+      },
+
     ]
   },
 ];

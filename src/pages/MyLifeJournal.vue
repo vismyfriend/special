@@ -151,6 +151,15 @@
                 </div>
               </div>
 
+              <!-- Видео (ленивая загрузка) -->
+              <LazyVideo
+                v-if="item.type === 'video'"
+                :src="item.value"
+                :caption="item.caption"
+                :poster="item.poster"
+                :isDarkMode="isDarkMode"
+              />
+
               <!-- Ссылка -->
               <div v-if="item.type === 'link'" class="content-link">
                 <a :href="item.value" target="_blank" rel="noopener" class="link-button" :class="{ 'dark-link': isDarkMode }">
@@ -335,6 +344,8 @@ import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { lifeJournalPosts } from '../dataForGames/life-journal-data';
 import PhotoGallery from './MyLifeJournalPhotoGallery.vue';
+import LazyVideo from './LazyVideo.vue';
+
 
 import LazyAudio from './LazyAudio.vue';
 
