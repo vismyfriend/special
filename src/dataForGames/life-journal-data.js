@@ -481,7 +481,7 @@ export const lifeJournalPosts = [
       },
       {
         type: 'video',
-        value: new URL("../assets/videos/juicePayPrank.mp4", import.meta.url).href,
+        value: new URL("../assets/videos/juicePayPrank.MP4", import.meta.url).href,
         caption: 'Juice Pay Prank',
         poster: new URL("../assets/images/Bender.jpeg", import.meta.url).href // опционально
       },
