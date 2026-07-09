@@ -1,9 +1,22 @@
 <template>
   <div class="story-dice-wrapper">
     <div class="story-dice-container">
-      <h2 class="dice-title">🎲 STORY DICE</h2>
+      <!-- ============================================ -->
+      <!-- ЗАГОЛОВОК С КНОПКОЙ TASK -->
+      <!-- ============================================ -->
+      <div class="header-wrapper">
+        <h2 class="dice-title">🎲 STORY DICE</h2>
+        <button class="task-btn" @click="openTaskModal">
+          <span class="task-icon">🎲</span>
+          TASK
+          <span class="pulse-ring"></span>
+          <span class="glint"></span>
+        </button>
+      </div>
 
-      <!-- Поле с кубиками -->
+      <!-- ============================================ -->
+      <!-- ПОЛЕ С КУБИКАМИ -->
+      <!-- ============================================ -->
       <div class="dice-area">
         <div
           v-for="(dice, index) in dices"
@@ -16,12 +29,19 @@
             :src="dice.image"
             :alt="'Dice ' + (index + 1)"
             class="dice-image"
-            :class="{ 'rolling': isRolling }"
+            :class="[
+              { 'rolling': isRolling },
+              diceBgIndex[index] === 1 ? 'bg-green' : '',
+              diceBgIndex[index] === 2 ? 'bg-pink' : ''
+            ]"
+            @click="toggleBackground(index)"
           />
         </div>
       </div>
 
-      <!-- Текстовое поле для истории -->
+      <!-- ============================================ -->
+      <!-- ТЕКСТОВОЕ ПОЛЕ ДЛЯ ИСТОРИИ -->
+      <!-- ============================================ -->
       <div class="story-input-wrapper">
         <textarea
           v-model="storyText"
@@ -32,10 +52,10 @@
         ></textarea>
       </div>
 
-
-      <!-- Кнопка управления + текстовое поле + кнопка Share -->
+      <!-- ============================================ -->
+      <!-- КНОПКИ УПРАВЛЕНИЯ -->
+      <!-- ============================================ -->
       <div class="controls-wrapper">
-        <!-- Кнопка Share появляется справа от ROLL AGAIN -->
         <button
           v-if="storyText.length > 3"
           class="share-btn"
@@ -48,8 +68,34 @@
           <span v-if="!isRolling">🎲 ROLL AGAIN</span>
           <span v-else>🌀I'M ROLLING... ROLLING</span>
         </button>
+      </div>
 
+      <!-- ============================================ -->
+      <!-- МОДАЛЬНОЕ ОКНО С ЗАДАНИЯМИ -->
+      <!-- ============================================ -->
+      <div v-if="showTaskModal" class="modal-overlay" @click.self="showTaskModal = false">
+        <div class="modal-content">
+          <button class="modal-close" @click="showTaskModal = false">✕</button>
+          <h3 class="modal-title">🎯 CHOOSE YOUR TASK</h3>
+          <p class="modal-subtitle">Pick one of these random challenges for your story!</p>
 
+          <div class="task-list">
+            <div
+              v-for="(task, index) in randomTasks"
+              :key="index"
+              class="task-item"
+              @click="selectTask(task)"
+            >
+              <span class="task-number">{{ index + 1 }}</span>
+              <span class="task-text">{{ task }}</span>
+              <span class="task-arrow">→</span>
+            </div>
+          </div>
+
+          <button class="reshuffle-btn" @click="generateRandomTasks">
+            🔄 SHUFFLE TASKS
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -60,8 +106,43 @@ export default {
   name: 'StoryDice',
   data() {
     return {
+      // ===== СОСТОЯНИЕ =====
       isRolling: false,
       storyText: '',
+      showTaskModal: false,
+
+      // ===== ФОН КАЖДОГО КУБИКА =====
+      diceBgIndex: [], // 0=исходный, 1=зелёный, 2=розовый
+
+      // ===== ВСЕ ЗАДАНИЯ =====
+      allTasks: [
+        'Make it a horror movie trailer 👻',
+        'Просто переведи все картинки 👻',
+        'Расскажите где и когда последний раз вы видели эти вещи ⏰',
+        "Write a story about your best friend's birthday 🎂",
+        'Create a fairy tale 🧚',
+        'Tell a story about your English teacher 🦹',
+        'Write a news report about a strange event 📰',
+        'Create a story about a time traveller ⏰',
+        'Write a love story with a sad ending 💔',
+        'Just tell what color those objects are 🐾',
+        'Write a story about a detective movie 🔍',
+        'Create a story that takes place on a space ship 🚀',
+        'Use pictures to continue the story: "It was a dark and stormy night..." 🌩️',
+        'Create a story about your city ✨',
+        'Write a story about two lovers 💭',
+        'Create a story about a secret mission 🕵️',
+        'Write a story about your neighbours 🏴‍☠️',
+        'Use your imagination and tell any story with those pictures 🤖',
+        'Write a story about a parallel universe 🌌',
+        'Tell a lie about your yesterday 🦸',
+        'Tell a lie about your plans for tomorrow 💭',
+        'Write a story about a letter to Santa Clause 💌',
+        'Create a story about your parents 🦁',
+      ],
+      randomTasks: [],
+
+      // ===== КАРТИНКИ ДЛЯ КУБИКОВ =====
       diceImages: [
         new URL('../assets/images/storyDice/story_dice1.png', import.meta.url).href,
         new URL('../assets/images/storyDice/story_dice2.png', import.meta.url).href,
@@ -119,21 +200,32 @@ export default {
       animations: []
     };
   },
+
   mounted() {
     this.initDices();
     this.generateRandomAnimations();
+    this.generateRandomTasks();
   },
+
   methods: {
+    // ============================================
+    // 🔥 ИНИЦИАЛИЗАЦИЯ КУБИКОВ
+    // ============================================
     initDices() {
       this.dices = this.getRandomSelection();
+      this.diceBgIndex = this.dices.map(() => 0);
     },
 
+    // ============================================
+    // 🔥 БРОСОК КУБИКОВ
+    // ============================================
     rollDices() {
       if (this.isRolling) return;
 
       this.isRolling = true;
       this.generateRandomAnimations();
       this.dices = this.getRandomSelection();
+      this.diceBgIndex = this.dices.map(() => 0); // Сбрасываем фон при броске
 
       setTimeout(() => {
         this.isRolling = false;
@@ -204,35 +296,61 @@ export default {
       };
     },
 
-    // 🔥 АВТО-РАСШИРЕНИЕ TEXTAREA
+    // ============================================
+    // 🔥 ПЕРЕКЛЮЧЕНИЕ ФОНА КУБИКА ПО КЛИКУ
+    // ============================================
+    toggleBackground(index) {
+      this.diceBgIndex[index] = (this.diceBgIndex[index] + 1) % 3;
+    },
+
+    // ============================================
+    // 🔥 ОСТАЛЬНЫЕ МЕТОДЫ (БЕЗ ИЗМЕНЕНИЙ)
+    // ============================================
     adjustTextareaHeight(event) {
       const textarea = event.target;
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 'px';
     },
 
-    // 🔥 ОСНОВНАЯ ФУНКЦИЯ SHARE
+    openTaskModal() {
+      this.generateRandomTasks();
+      this.showTaskModal = true;
+    },
+
+    generateRandomTasks() {
+      const shuffled = [...this.allTasks];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      this.randomTasks = shuffled.slice(0, 3);
+    },
+
+    selectTask(task) {
+      this.storyText = `📋 Task: ${task}\n\n`;
+      this.showTaskModal = false;
+      this.$nextTick(() => {
+        const textarea = document.querySelector('.story-input');
+        if (textarea) {
+          textarea.focus();
+          textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+      });
+    },
+
     shareStory() {
       if (this.storyText.length < 3) return;
 
       const message = `📖 My story based on dice:\n\n${this.storyText}\n\n 🎲 Thank you for reading my story`;
 
-      // 1. Копируем в буфер обмена
       this.copyToClipboard(message);
-
-      // 2. Выводим в консоль
       console.log('📖 Story Dice Story:');
       console.log(message);
       console.log('---');
-
-      // 3. Отправляем в Telegram
       this.sendToTelegram(message);
-
-      // 4. Показываем уведомление
       this.showNotification('✅ Story copied to clipboard & sent to Telegram!');
     },
 
-    // Копирование в буфер обмена
     copyToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).catch(() => {
@@ -243,7 +361,6 @@ export default {
       }
     },
 
-    // Fallback для старых браузеров
     fallbackCopy(text) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -255,21 +372,13 @@ export default {
       document.body.removeChild(textarea);
     },
 
-    // 🔥 ОТПРАВКА В TELEGRAM
     sendToTelegram(message) {
-      // Кодируем сообщение для URL
       const encodedMessage = encodeURIComponent(message);
-
-      // Создаём ссылку для открытия Telegram
       const telegramUrl = `https://t.me/vismyfriend?text=${encodedMessage}`;
-
-      // Открываем Telegram в новом окне/вкладке
       window.open(telegramUrl, '_blank');
     },
 
-    // Простое уведомление
     showNotification(text) {
-      // Если есть Quasar Notify — используем его
       if (this.$q && this.$q.notify) {
         this.$q.notify({
           message: text,
@@ -278,7 +387,6 @@ export default {
           timeout: 3000
         });
       } else {
-        // Иначе используем alert
         alert(text);
       }
     }
@@ -287,13 +395,18 @@ export default {
 </script>
 
 <style scoped>
+/* ============================================ */
 /* 🔥 ОБЁРТКА — ПРЕДОТВРАЩАЕТ СКРОЛЛ НА ДЕСКТОПЕ */
+/* ============================================ */
 .story-dice-wrapper {
   overflow: hidden;
   border-radius: 32px;
   margin: 0 auto;
 }
 
+/* ============================================ */
+/* 🔥 ОСНОВНОЙ КОНТЕЙНЕР */
+/* ============================================ */
 .story-dice-container {
   display: flex;
   flex-direction: column;
@@ -304,14 +417,27 @@ export default {
   box-shadow: 0 20px 60px rgba(0,0,0,0.12);
   font-family: 'Arial', sans-serif;
   border: 2px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+/* ============================================ */
+/* 🔥 ЗАГОЛОВОК С КНОПКОЙ TASK */
+/* ============================================ */
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
 }
 
 .dice-title {
   color: #2d3436;
   font-size: 32px;
   letter-spacing: 4px;
-  margin-bottom: 10px;
-  margin-top: 0;
+  margin: 0;
   font-weight: 900;
   text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
   background: linear-gradient(135deg, #6c5ce7, #fd79a8);
@@ -320,6 +446,119 @@ export default {
   background-clip: text;
 }
 
+/* ============================================ */
+/* 🔥 КНОПКА TASK */
+/* ============================================ */
+.task-btn {
+  position: relative;
+  padding: 6px 16px 6px 12px;
+  background: linear-gradient(135deg, #fd79a8, #e17055);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(225, 112, 85, 0.35);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  z-index: 2;
+  animation: zoomPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes zoomPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(225, 112, 85, 0.35);
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 8px 35px rgba(225, 112, 85, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(225, 112, 85, 0.35);
+  }
+}
+
+.task-btn:hover {
+  animation: none;
+  transform: scale(1.15) !important;
+  box-shadow: 0 8px 40px rgba(225, 112, 85, 0.7) !important;
+}
+
+.task-btn:active {
+  transform: scale(0.95) !important;
+}
+
+.task-icon {
+  font-size: 16px;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 34px;
+  border: 2px solid rgba(225, 112, 85, 0.4);
+  animation: pulseRing 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.glint {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: glintMove 3s ease-in-out infinite;
+}
+
+@keyframes glintMove {
+  0% {
+    transform: translate(-30%, -30%) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(30%, 30%) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================ */
+/* 🔥 ПОЛЕ С КУБИКАМИ */
+/* ============================================ */
 .dice-area {
   position: relative;
   width: 100%;
@@ -342,6 +581,9 @@ export default {
   position: relative;
 }
 
+/* ============================================ */
+/* 🔥 СТИЛЬ КУБИКОВ */
+/* ============================================ */
 .dice-image {
   width: 100%;
   max-width: 130px;
@@ -352,13 +594,14 @@ export default {
   background: white;
   padding: 8px;
   box-sizing: border-box;
-  /* 🔥 ОСНОВНЫЕ ЭФФЕКТЫ ДЛЯ ОБЪЁМА */
   box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.15),
     0 2px 8px rgba(0, 0, 0, 0.06),
     inset 0 -4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 4px 12px rgba(255, 255, 255, 0.9);  transition: transform 0.3s ease;
+    inset 0 4px 12px rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
   user-select: none;
+  cursor: pointer;
 }
 
 .dice-image:hover {
@@ -366,7 +609,29 @@ export default {
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* АНИМАЦИЯ ПАДЕНИЯ СВЕРХУ С ХАОТИЧНЫМ ВРАЩЕНИЕМ */
+/* 🔥 ФОН №1 — ПАСТЕЛЬНО-ЗЕЛЁНЫЙ (ПОСЛЕ 1-ГО КЛИКА) */
+.dice-image.bg-green {
+  background: linear-gradient(145deg, #d4edda, #b7e4c7) !important;
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 4px 12px rgba(255, 255, 255, 0.9);
+}
+
+/* 🔥 ФОН №2 — ПАСТЕЛЬНО-РОЗОВЫЙ (ПОСЛЕ 2-ГО КЛИКА) */
+.dice-image.bg-pink {
+  background: linear-gradient(145deg, #f8d7da, #f5c6cb) !important;
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 4px 12px rgba(255, 255, 255, 0.9);
+}
+
+/* ============================================ */
+/* 🔥 АНИМАЦИЯ ПАДЕНИЯ КУБИКОВ */
+/* ============================================ */
 .animate-fall .dice-image {
   animation: chaoticFall var(--duration, 1.2s) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   animation-delay: var(--delay, 0s);
@@ -394,7 +659,6 @@ export default {
   }
 }
 
-/* Дополнительное вращение во время броска */
 .rolling {
   animation: spinChaotic 0.6s ease-in-out infinite;
 }
@@ -408,9 +672,8 @@ export default {
 }
 
 /* ============================================ */
-/* 🔥 НОВЫЕ СТИЛИ ДЛЯ УПРАВЛЕНИЯ */
+/* 🔥 КНОПКИ УПРАВЛЕНИЯ */
 /* ============================================ */
-
 .controls-wrapper {
   display: flex;
   align-items: center;
@@ -421,7 +684,6 @@ export default {
   width: 100%;
 }
 
-/* Кнопка ROLL AGAIN */
 .roll-btn {
   padding: 18px 40px;
   background: linear-gradient(135deg, #6c5ce7, #a29bfe);
@@ -454,7 +716,6 @@ export default {
   background: linear-gradient(135deg, #b2bec3, #dfe6e9);
 }
 
-/* 🔥 НОВАЯ КНОПКА SHARE */
 .share-btn {
   padding: 18px 40px;
   background: linear-gradient(135deg, #00b894, #00cec9);
@@ -492,7 +753,9 @@ export default {
   }
 }
 
-/* 🔥 ТЕКСТОВОЕ ПОЛЕ ДЛЯ ИСТОРИИ */
+/* ============================================ */
+/* 🔥 ТЕКСТОВОЕ ПОЛЕ */
+/* ============================================ */
 .story-input-wrapper {
   width: 100%;
   max-width: 600px;
@@ -527,19 +790,219 @@ export default {
   font-style: italic;
 }
 
-/* Адаптив */
+/* ============================================ */
+/* 🔥 МОДАЛЬНОЕ ОКНО */
+/* ============================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  border-radius: 28px;
+  padding: 35px 40px 30px;
+  max-width: 550px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #b2bec3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0 8px;
+}
+
+.modal-close:hover {
+  color: #2d3436;
+  transform: rotate(90deg);
+}
+
+.modal-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  color: #2d3436;
+  letter-spacing: 1px;
+}
+
+.modal-subtitle {
+  color: #636e72;
+  font-size: 15px;
+  margin: 0 0 22px 0;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.task-item:hover {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-color: #6c5ce7;
+  transform: translateX(4px);
+}
+
+.task-item:active {
+  transform: scale(0.98);
+}
+
+.task-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 15px;
+  color: #2d3436;
+  font-weight: 500;
+}
+
+.task-arrow {
+  color: #b2bec3;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.task-item:hover .task-arrow {
+  color: #6c5ce7;
+  transform: translateX(4px);
+}
+
+.reshuffle-btn {
+  margin-top: 18px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #fdcb6e, #f39c12);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.reshuffle-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+}
+
+.reshuffle-btn:active {
+  transform: scale(0.97);
+}
+
+/* ============================================ */
+/* 🔥 АДАПТИВ */
+/* ============================================ */
 @media (max-width: 600px) {
   .story-dice-container {
     padding: 25px 15px;
   }
 
-  .dice-area {
-    gap: 12px;
-    padding: 15px;
+  .header-wrapper {
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .dice-title {
     font-size: 24px;
+  }
+
+  .task-btn {
+    font-size: 12px;
+    padding: 5px 12px 5px 10px;
+  }
+
+  .task-icon {
+    font-size: 13px;
+  }
+
+  .modal-content {
+    padding: 25px 20px 20px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .task-text {
+    font-size: 13px;
+  }
+
+  .dice-area {
+    gap: 12px;
+    padding: 15px;
   }
 
   .controls-wrapper {
@@ -570,6 +1033,11 @@ export default {
     font-size: 14px;
     padding: 14px 16px;
     min-height: 60px;
+  }
+
+  .reshuffle-btn {
+    font-size: 13px;
+    padding: 10px 20px;
   }
 }
 </style>
