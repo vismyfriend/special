@@ -601,7 +601,7 @@ export default {
     inset 0 4px 12px rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
   user-select: none;
-  cursor: pointer;
+  cursor: none;
 }
 
 .dice-image:hover {
@@ -693,7 +693,7 @@ export default {
   letter-spacing: 2px;
   border: none;
   border-radius: 60px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
   box-shadow: 0 8px 30px rgba(108, 92, 231, 0.3);
   text-transform: uppercase;
@@ -849,7 +849,7 @@ export default {
   border: none;
   font-size: 26px;
   color: #b2bec3;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.3s ease;
   padding: 0 8px;
 }
@@ -885,7 +885,7 @@ export default {
   gap: 14px;
   padding: 12px 16px;
   border-radius: 14px;
-  cursor: pointer;
+  cursor: none;
   transition: all 0.25s ease;
   border: 1px solid #f0f0f0;
 }

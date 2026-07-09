@@ -1111,6 +1111,16 @@ export const allGamesAndSetsOfWordsList =
       gameIcon: "B2-C1"
     },
     {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/acceleratedLearningInAction3/books",
+      missionVisibleName: "AL 3 - Stages of learning",
+      missionDescription: "Accelerated Learning 3",
+      id: 1001,
+      active: true,
+      lvl: ["lvlBooks"],
+      gameIcon: "B2-C1"
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examA164V1/tests-and-exams",
       missionVisibleName: "Почувствуй себя умным!",
