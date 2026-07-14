@@ -295,6 +295,10 @@ const routes = [
         component: () => import('src/pages/storyDice.vue')
       },
       {
+        path: '/alternativeUse',
+        component: () => import('src/pages/alternativeUse.vue')
+      },
+      {
         path: '/neat',
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },

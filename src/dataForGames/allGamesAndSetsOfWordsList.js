@@ -1080,6 +1080,18 @@ export const allGamesAndSetsOfWordsList =
 
     {
       type: "hardcodedLink",
+      path: "/alternativeUse",
+      missionVisibleName: "Imagination trainer",
+      missionDescription: "Тренировка воображения",
+      id: 1001,
+      active: true,
+      lvl: ["lvlBooks"],
+      gameIcon: "💡",
+
+
+    },
+    {
+      type: "hardcodedLink",
       path: "/see-all-sets-of-words/littleRedRidingHood/books",
       missionVisibleName: "Красная Шапочка",
       missionDescription: "A little red riding hood",
