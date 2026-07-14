@@ -299,6 +299,10 @@ const routes = [
         component: () => import('src/pages/alternativeUse.vue')
       },
       {
+        path: '/whackAnEmoji',
+        component: () => import('src/pages/whackAnEmoji.vue')
+      },
+      {
         path: '/neat',
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },
