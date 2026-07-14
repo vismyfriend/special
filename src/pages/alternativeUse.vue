@@ -6,9 +6,7 @@
       <!-- ============================================ -->
       <div class="header-wrapper">
         <h2 class="title">💡 ALTERNATIVE USE FOR :</h2>
-        <div class="timer-wrapper" v-if="isRunning">
-          <!-- Песочные часы CSS (ретро форма) -->
-          <!-- Песочные часы CSS (ретро форма) -->
+        <div class="timer-wrapper" :class="{ 'hidden': !isRunning && !isPausedByUser }">
           <div
             class="hourglass"
             :class="{ 'running': isRunning, 'paused': isPausedByUser }"
@@ -22,8 +20,9 @@
             </div>
             <div class="hourglass-waist"></div>
           </div>
-          <span class="timer-text" v-if="!isPausedByUser">{{ Math.ceil(timeLeft) }}s</span>
-          <span class="timer-text paused-text" v-else>⏸</span>
+          <span class="timer-text" v-if="!isPausedByUser && isRunning">{{ Math.ceil(timeLeft) }}s</span>
+          <span class="timer-text paused-text" v-else-if="isPausedByUser">⏸</span>
+          <span class="timer-text" v-else-if="showResults">✅</span>
         </div>
       </div>
 
@@ -41,20 +40,19 @@
           <span>🎲</span>
         </div>
 
-        <!-- 🔥 БЛОК С РАЗМЫТЫМ НАЗВАНИЕМ -->
         <div class="item-name-wrapper">
           <span
             class="item-name"
             :class="{ 'blurred': !showItemName }"
             @click="showItemName = !showItemName"
           >
-            {{ showItemName ? currentItem.name : 'Click to reveal' }}
+            {{ showItemName ? currentItem.name : 'Click to see a hint' }}
           </span>
         </div>
       </div>
 
       <!-- ============================================ -->
-      <!-- ПОЛЕ ДЛЯ ВВОДА ИДЕЙ -->
+      <!-- ПОЛЕ ДЛЯ ВВОДА -->
       <!-- ============================================ -->
       <div class="input-wrapper">
         <input
@@ -113,81 +111,70 @@ export default {
   name: 'Imagination Trainer',
   data() {
     return {
-      // ============================================
-      // 🔥 СОСТОЯНИЕ
-      // ============================================
-      isPaused: false,        // 🔥 Остановлен ли таймер
-      isPausedByUser: false,  // 🔥 Остановлен ли пользователем (для сброса)
-      showItemName: false,        // Показывать ли название предмета (blur)
-      isRunning: false,           // Идёт ли игра
-      timeLeft: 55,               // Оставшееся время (в секундах)
-      totalTime: 55,              // Общее время (для анимации песочных часов)
-      currentIdea: '',            // Текущая идея в поле ввода
-      userIdeas: [],              // Идеи, придуманные пользователем
-      showResults: false,         // Показывать ли результаты
-      currentItem: null,          // Текущий предмет (картинка + название)
-      hasStarted: false,          // Был ли первый ввод
+      isPaused: false,
+      isPausedByUser: false,
+      showItemName: false,
+      isRunning: false,
+      timeLeft: 200,
+      totalTime: 200,
+      currentIdea: '',
+      userIdeas: [],
+      showResults: false,
+      currentItem: null,
+      hasStarted: false,
 
-      // ============================================
-      // 🔥 ПРЕДМЕТЫ (те же картинки, что в Story Dice)
-      // ============================================
       items: [
-        { name: 'a rocket or a spaceship or a toy', image: new URL('../assets/images/storyDice/story_dice1.png', import.meta.url).href },
-        { name: 'a bottle or a container', image: new URL('../assets/images/storyDice/story_dice2.png', import.meta.url).href },
-        { name: 'a key or a lock opener', image: new URL('../assets/images/storyDice/story_dice3.png', import.meta.url).href },
-        { name: 'a shoe or a boot', image: new URL('../assets/images/storyDice/story_dice4.png', import.meta.url).href },
-        { name: 'a hat or a headwear', image: new URL('../assets/images/storyDice/story_dice5.png', import.meta.url).href },
-        { name: 'a cup or a mug', image: new URL('../assets/images/storyDice/story_dice6.png', import.meta.url).href },
-        { name: 'a book or a diary', image: new URL('../assets/images/storyDice/story_dice7.png', import.meta.url).href },
-        { name: 'a chair or a seat', image: new URL('../assets/images/storyDice/story_dice8.png', import.meta.url).href },
-        { name: 'a lamp or a light', image: new URL('../assets/images/storyDice/story_dice9.png', import.meta.url).href },
-        { name: 'a clock or a watch', image: new URL('../assets/images/storyDice/story_dice10.png', import.meta.url).href },
-        { name: 'an umbrella or a canopy', image: new URL('../assets/images/storyDice/story_dice11.png', import.meta.url).href },
-        { name: 'scissors or a cutter', image: new URL('../assets/images/storyDice/story_dice12.png', import.meta.url).href },
-        { name: 'a phone or a device', image: new URL('../assets/images/storyDice/story_dice13.png', import.meta.url).href },
-        { name: 'a mirror or a reflector', image: new URL('../assets/images/storyDice/story_dice14.png', import.meta.url).href },
-        { name: 'a box or a container', image: new URL('../assets/images/storyDice/story_dice15.png', import.meta.url).href },
-        { name: 'a rope or a cord', image: new URL('../assets/images/storyDice/story_dice16.png', import.meta.url).href },
-        { name: 'a ball or a sphere', image: new URL('../assets/images/storyDice/story_dice17.png', import.meta.url).href },
-        { name: 'glasses or eyewear', image: new URL('../assets/images/storyDice/story_dice18.png', import.meta.url).href },
-        { name: 'a coin or a token', image: new URL('../assets/images/storyDice/story_dice19.png', import.meta.url).href },
-        { name: 'a stick or a rod', image: new URL('../assets/images/storyDice/story_dice20.png', import.meta.url).href },
-        { name: 'a stone or a rock', image: new URL('../assets/images/storyDice/story_dice21.png', import.meta.url).href },
-        { name: 'a feather or a quill', image: new URL('../assets/images/storyDice/story_dice22.png', import.meta.url).href },
-        { name: 'a leaf or a greenery', image: new URL('../assets/images/storyDice/story_dice23.png', import.meta.url).href },
-        { name: 'a thread or a string', image: new URL('../assets/images/storyDice/story_dice24.png', import.meta.url).href },
-        { name: 'a needle or a pin', image: new URL('../assets/images/storyDice/story_dice25.png', import.meta.url).href },
-        { name: 'a button or a fastener', image: new URL('../assets/images/storyDice/story_dice26.png', import.meta.url).href },
-        { name: 'a chain or a link', image: new URL('../assets/images/storyDice/story_dice27.png', import.meta.url).href },
-        { name: 'a ring or a band', image: new URL('../assets/images/storyDice/story_dice28.png', import.meta.url).href },
-        { name: 'a candle or a wax light', image: new URL('../assets/images/storyDice/story_dice29.png', import.meta.url).href },
-        { name: 'a brush or a cleaner', image: new URL('../assets/images/storyDice/story_dice30.png', import.meta.url).href },
-        { name: 'a comb or a hair tool', image: new URL('../assets/images/storyDice/story_dice31.png', import.meta.url).href },
-        { name: 'a basket or a container', image: new URL('../assets/images/storyDice/story_dice32.png', import.meta.url).href },
-        { name: 'a bowl or a dish', image: new URL('../assets/images/storyDice/story_dice33.png', import.meta.url).href },
-        { name: 'a pot or a container', image: new URL('../assets/images/storyDice/story_dice34.png', import.meta.url).href },
-        { name: 'a pan or a skillet', image: new URL('../assets/images/storyDice/story_dice35.png', import.meta.url).href },
-        { name: 'a plate or a platter', image: new URL('../assets/images/storyDice/story_dice36.png', import.meta.url).href },
-        { name: 'a fork or a utensil', image: new URL('../assets/images/storyDice/story_dice37.png', import.meta.url).href },
-        { name: 'a spoon or a utensil', image: new URL('../assets/images/storyDice/story_dice38.png', import.meta.url).href },
-        { name: 'a knife or a blade', image: new URL('../assets/images/storyDice/story_dice39.png', import.meta.url).href },
-        { name: 'a board or a plank', image: new URL('../assets/images/storyDice/story_dice40.png', import.meta.url).href },
-        { name: 'a shell or a seashell', image: new URL('../assets/images/storyDice/story_dice41.png', import.meta.url).href },
-        { name: 'a star or a celestial body', image: new URL('../assets/images/storyDice/story_dice42.png', import.meta.url).href },
-        { name: 'a moon or a satellite', image: new URL('../assets/images/storyDice/story_dice43.png', import.meta.url).href },
-        { name: 'a cloud or a weather sign', image: new URL('../assets/images/storyDice/story_dice44.png', import.meta.url).href },
-        { name: 'a rainbow or a colorful arc', image: new URL('../assets/images/storyDice/story_dice45.png', import.meta.url).href },
-        { name: 'a flower or a blossom', image: new URL('../assets/images/storyDice/story_dice46.png', import.meta.url).href },
-        { name: 'a tree or a plant', image: new URL('../assets/images/storyDice/story_dice47.png', import.meta.url).href },
-        { name: 'a rock or a stone', image: new URL('../assets/images/storyDice/story_dice48.png', import.meta.url).href },
-        { name: 'sand or grains', image: new URL('../assets/images/storyDice/story_dice49.png', import.meta.url).href },
-        { name: 'water or a liquid', image: new URL('../assets/images/storyDice/story_dice50.png', import.meta.url).href },
-        { name: 'fire or flame', image: new URL('../assets/images/storyDice/story_dice51.png', import.meta.url).href },
+        { name: 'a rocket\na spaceship\na toy', image: new URL('../assets/images/storyDice/story_dice1.png', import.meta.url).href },
+        { name: 'an umbrella ', image: new URL('../assets/images/storyDice/story_dice2.png', import.meta.url).href },
+        { name: 'a 1.5 volt battery ', image: new URL('../assets/images/storyDice/story_dice3.png', import.meta.url).href },
+        { name: 'a robot', image: new URL('../assets/images/storyDice/story_dice4.png', import.meta.url).href },
+        { name: 'a pencil', image: new URL('../assets/images/storyDice/story_dice5.png', import.meta.url).href },
+        { name: 'a toilet', image: new URL('../assets/images/storyDice/story_dice6.png', import.meta.url).href },
+        { name: 'a snake', image: new URL('../assets/images/storyDice/story_dice7.png', import.meta.url).href },
+        { name: 'a cactus', image: new URL('../assets/images/storyDice/story_dice8.png', import.meta.url).href },
+        { name: 'a drone\na camera', image: new URL('../assets/images/storyDice/story_dice9.png', import.meta.url).href },
+        { name: 'a debit card\n credit card', image: new URL('../assets/images/storyDice/story_dice10.png', import.meta.url).href },
+        { name: 'a deck of cards\ncards', image: new URL('../assets/images/storyDice/story_dice11.png', import.meta.url).href },
+        { name: 'a dead fish', image: new URL('../assets/images/storyDice/story_dice12.png', import.meta.url).href },
+        { name: 'an envelop', image: new URL('../assets/images/storyDice/story_dice13.png', import.meta.url).href },
+        { name: 'newspaper', image: new URL('../assets/images/storyDice/story_dice14.png', import.meta.url).href },
+        { name: 'a bicycle', image: new URL('../assets/images/storyDice/story_dice15.png', import.meta.url).href },
+        { name: 'a yacht\na ship\na boat', image: new URL('../assets/images/storyDice/story_dice16.png', import.meta.url).href },
+        { name: 'a pair of glasses\nglasses', image: new URL('../assets/images/storyDice/story_dice17.png', import.meta.url).href },
+        { name: 'a vacuum cleaner', image: new URL('../assets/images/storyDice/story_dice18.png', import.meta.url).href },
+        { name: 'a mug\na glass', image: new URL('../assets/images/storyDice/story_dice19.png', import.meta.url).href },
+        { name: 'a mouse trap', image: new URL('../assets/images/storyDice/story_dice20.png', import.meta.url).href },
+        { name: 'a hamburger', image: new URL('../assets/images/storyDice/story_dice21.png', import.meta.url).href },
+        { name: 'headsets\nheadphones', image: new URL('../assets/images/storyDice/story_dice22.png', import.meta.url).href },
+        { name: 'a sofa\na couch', image: new URL('../assets/images/storyDice/story_dice23.png', import.meta.url).href },
+        { name: 'a double deck bus\na bus', image: new URL('../assets/images/storyDice/story_dice24.png', import.meta.url).href },
+        { name: 'a plate\na fork\na knife', image: new URL('../assets/images/storyDice/story_dice25.png', import.meta.url).href },
+        { name: 'a jaw in a glass of water', image: new URL('../assets/images/storyDice/story_dice26.png', import.meta.url).href },
+        { name: 'a slice of pizza', image: new URL('../assets/images/storyDice/story_dice27.png', import.meta.url).href },
+        { name: 'an underwear\nmaybe dirty', image: new URL('../assets/images/storyDice/story_dice28.png', import.meta.url).href },
+        { name: 'a lamp\na bulb', image: new URL('../assets/images/storyDice/story_dice29.png', import.meta.url).href },
+        { name: 'a ladder', image: new URL('../assets/images/storyDice/story_dice30.png', import.meta.url).href },
+        { name: 'a car', image: new URL('../assets/images/storyDice/story_dice31.png', import.meta.url).href },
+        { name: 'an ice-cream\na cone of ice-cream', image: new URL('../assets/images/storyDice/story_dice32.png', import.meta.url).href },
+        { name: 'a comb\na hairbrush', image: new URL('../assets/images/storyDice/story_dice33.png', import.meta.url).href },
+        { name: 'some paper\ndocuments', image: new URL('../assets/images/storyDice/story_dice34.png', import.meta.url).href },
+        { name: 'a banana', image: new URL('../assets/images/storyDice/story_dice35.png', import.meta.url).href },
+        { name: 'a mouse\ndead or alive', image: new URL('../assets/images/storyDice/story_dice36.png', import.meta.url).href },
+        { name: 'a ball', image: new URL('../assets/images/storyDice/story_dice37.png', import.meta.url).href },
+        { name: 'a laptop', image: new URL('../assets/images/storyDice/story_dice38.png', import.meta.url).href },
+        { name: 'a phone', image: new URL('../assets/images/storyDice/story_dice39.png', import.meta.url).href },
+        { name: 'an award\na cup\na trophy', image: new URL('../assets/images/storyDice/story_dice40.png', import.meta.url).href },
+        { name: 'a pin\na hair clip\na bobby pin', image: new URL('../assets/images/storyDice/story_dice42.png', import.meta.url).href },
+        { name: 'a chair', image: new URL('../assets/images/storyDice/story_dice44.png', import.meta.url).href },
+        { name: 'pliers\ntweezers', image: new URL('../assets/images/storyDice/story_dice45.png', import.meta.url).href },
+        { name: 'a guitar\nan acoustic guitar', image: new URL('../assets/images/storyDice/story_dice46.png', import.meta.url).href },
+        { name: 'binos\nbinoculars\nfield glasses', image: new URL('../assets/images/storyDice/story_dice47.png', import.meta.url).href },
+        { name: 'a book\na notebook', image: new URL('../assets/images/storyDice/story_dice48.png', import.meta.url).href },
+        { name: 'a doormat\na rug\na welcome sign', image: new URL('../assets/images/storyDice/story_dice49.png', import.meta.url).href },
+        { name: 'a band aid\na patch\na plaster', image: new URL('../assets/images/storyDice/story_dice50.png', import.meta.url).href },
+        { name: 'a drill\nan electric drill', image: new URL('../assets/images/storyDice/story_dice51.png', import.meta.url).href },
       ],
 
-      // ============================================
-      // 🔥 ВСЕ ГОТОВЫЕ ОТВЕТЫ (из них выбираются 4 случайных)
-      // ============================================
       allPresetIdeas: [
         'Just look at it and enjoy its beauty',
         'Paint a graffiti of it on a wall',
@@ -229,7 +216,6 @@ export default {
         'Turn it into a clock',
         'Use it as a letter opener',
         'Turn it into a piggy bank',
-        'Use it as a bookmark',
         'Turn it into a wall hanging',
         'Use it as a fridge magnet',
         'Turn it into a mobile phone case',
@@ -263,36 +249,27 @@ export default {
         'Turn it into a pipe cleaner',
         'Use it as a whistle',
       ],
-      presetIdeas: [],            // 4 случайных готовых ответа для текущей игры
-      timerInterval: null,        // Интервал таймера
-      storageKey: 'creative_thinking_ideas', // Ключ для localStorage
-
-      waitingForIdea: false,      // Ожидание завершения последней идеи
-      isTyping: false,            // Пользователь печатает
-      finishCheckInterval: null,  // Интервал проверки завершения
+      presetIdeas: [],
+      timerInterval: null,
+      storageKey: 'creative_thinking_ideas',
+      waitingForIdea: false,
+      isTyping: false,
+      finishCheckInterval: null,
     };
   },
 
-  // ============================================
-  // 🔥 ВЫЧИСЛЯЕМЫЕ СВОЙСТВА
-  // ============================================
   computed: {
-    // Все идеи (пользовательские + готовые)
     allIdeas() {
       return [...this.userIdeas, ...this.presetIdeas];
     },
-    // Сортировка по алфавиту
     sortedIdeas() {
       return [...this.allIdeas].sort((a, b) => a.localeCompare(b));
     },
   },
 
-  // ============================================
-  // 🔥 ЖИЗНЕННЫЙ ЦИКЛ
-  // ============================================
   mounted() {
-    this.loadFromStorage(); // Загружаем сохранённые идеи
-    this.pickRandomItem();  // Выбираем случайный предмет
+    this.loadFromStorage();
+    this.pickRandomItem();
   },
 
   beforeDestroy() {
@@ -302,21 +279,14 @@ export default {
   },
 
   methods: {
-    // ============================================
-    // 🔥 ВЫБОР СЛУЧАЙНОГО ПРЕДМЕТА
-    // ============================================
     pickRandomItem() {
       const randomIndex = Math.floor(Math.random() * this.items.length);
       this.currentItem = this.items[randomIndex];
     },
 
-    // ============================================
-    // 🔥 СТАРТ ИГРЫ (вызывается при первом вводе)
-    // ============================================
     startGame() {
       if (this.isRunning) return;
 
-      // Выбираем 4 случайных готовых ответа
       this.presetIdeas = this.getRandomPresetIdeas(4);
 
       this.isRunning = true;
@@ -324,8 +294,8 @@ export default {
       this.userIdeas = [];
       this.waitingForIdea = false;
       this.isTyping = false;
-      this.isPaused = false;        // 🔥 Сбрасываем паузу
-      this.isPausedByUser = false;  // 🔥 Сбрасываем флаг
+      this.isPaused = false;
+      this.isPausedByUser = false;
       this.timeLeft = this.totalTime;
 
       this.$nextTick(() => {
@@ -333,7 +303,6 @@ export default {
         if (input) input.focus();
       });
 
-      // Запускаем таймер
       this.timerInterval = setInterval(() => {
         this.timeLeft -= 0.1;
         if (this.timeLeft <= 0) {
@@ -343,31 +312,21 @@ export default {
       }, 100);
     },
 
-    // ============================================
-    // 🔥 ПАУЗА / ПЕРЕЗАПУСК ТАЙМЕРА ПО КЛИКУ НА ЧАСЫ
-    // ============================================
     toggleTimer() {
-      // Если таймер уже остановлен пользователем — перезапускаем игру
+      if (this.showResults) return;
+      if (!this.isRunning && !this.isPausedByUser) return;
+
       if (this.isPausedByUser) {
         this.tryAgain();
         return;
       }
 
-      // Если игра не запущена — ничего не делаем
-      if (!this.isRunning || this.showResults) return;
-
-      // Ставим на паузу
       this.isPaused = true;
       this.isPausedByUser = true;
       clearInterval(this.timerInterval);
-
-      // Меняем цвет песка на зелёный через CSS класс
-      document.querySelector('.hourglass').classList.add('paused');
+      this.timerInterval = null;
     },
 
-    // ============================================
-    // 🔥 ПОЛУЧЕНИЕ N СЛУЧАЙНЫХ ГОТОВЫХ ОТВЕТОВ
-    // ============================================
     getRandomPresetIdeas(count) {
       const shuffled = [...this.allPresetIdeas];
       for (let i = shuffled.length - 1; i > 0; i--) {
@@ -377,62 +336,57 @@ export default {
       return shuffled.slice(0, count);
     },
 
-    // ============================================
-    // 🔥 ОТСЛЕЖИВАНИЕ ВВОДА
-    // ============================================
     onInput() {
       this.isTyping = this.currentIdea.trim().length > 0;
 
-      // Запуск таймера при первом вводе
       if (!this.hasStarted && this.currentIdea.trim().length > 0) {
         this.hasStarted = true;
         this.startGame();
       }
     },
 
-    // ============================================
-    // 🔥 ПОТЕРЯ ФОКУСА — завершаем, если ждём идею
-    // ============================================
     onBlur() {
+      if (this.showResults) return;
       if (this.waitingForIdea && this.currentIdea.trim().length === 0) {
         this.completeGame();
       }
     },
 
-    // ============================================
-    // 🔥 ЗАВЕРШЕНИЕ ИГРЫ (проверка на последнюю идею)
-    // ============================================
     finishGame() {
-      // Если пользователь пишет идею (больше 3 символов)
+      if (this.showResults) return;
+
       if (this.currentIdea.trim().length > 3) {
+        if (this.waitingForIdea) return;
+
         this.waitingForIdea = true;
-        // Проверяем каждые 500мс: если поле пустое или меньше 3 символов — завершаем
         this.finishCheckInterval = setInterval(() => {
+          if (this.showResults) {
+            clearInterval(this.finishCheckInterval);
+            this.finishCheckInterval = null;
+            return;
+          }
+
           if (this.currentIdea.trim().length === 0 || this.currentIdea.trim().length < 3) {
             this.completeGame();
           }
         }, 500);
         return;
       }
-      // Идея короткая — завершаем сразу
+
       this.completeGame();
     },
 
-    // ============================================
-    // 🔥 ДОБАВЛЕНИЕ ИДЕИ
-    // ============================================
     addIdea() {
       const idea = this.currentIdea.trim();
 
       if (!idea) return;
-      if (!this.isRunning && !this.waitingForIdea) return;
       if (this.showResults) return;
+      if (!this.isRunning && !this.waitingForIdea) return;
 
       this.userIdeas.push(idea);
       this.currentIdea = '';
       this.isTyping = false;
 
-      // Если игра уже завершена, но мы ждали идею — завершаем
       if (this.waitingForIdea) {
         this.completeGame();
         return;
@@ -444,45 +398,44 @@ export default {
       });
     },
 
-    // ============================================
-    // 🔥 ЗАВЕРШЕНИЕ ИГРЫ (ФИНАЛЬНОЕ)
-    // ============================================
     completeGame() {
+      clearInterval(this.timerInterval);
+      clearInterval(this.finishCheckInterval);
+
       this.isRunning = false;
       this.showResults = true;
       this.waitingForIdea = false;
       this.isTyping = false;
+      this.isPaused = false;
+      this.isPausedByUser = false;
+
+      this.timerInterval = null;
+      this.finishCheckInterval = null;
+
+      this.saveToStorage();
+    },
+
+    tryAgain() {
       clearInterval(this.timerInterval);
       clearInterval(this.finishCheckInterval);
 
-      // Сохраняем в localStorage
-      this.saveToStorage();
-
-      // Логи убраны, чтобы не спамить в консоль
-    },
-
-    // ============================================
-    // 🔥 TRY AGAIN
-    // ============================================
-    tryAgain() {
-      this.saveToStorage();
+      this.timerInterval = null;
+      this.finishCheckInterval = null;
 
       this.isRunning = false;
       this.showResults = false;
+      this.waitingForIdea = false;
+      this.isTyping = false;
+      this.isPaused = false;
+      this.isPausedByUser = false;
+      this.hasStarted = false;
       this.userIdeas = [];
       this.currentIdea = '';
       this.timeLeft = this.totalTime;
-      this.hasStarted = false;
       this.showItemName = false;
-      this.waitingForIdea = false;
-      this.isTyping = false;
-      this.isPaused = false;        // 🔥 Сбрасываем паузу
-      this.isPausedByUser = false;  // 🔥 Сбрасываем флаг
-      clearInterval(this.timerInterval);
-      clearInterval(this.finishCheckInterval);
+      this.presetIdeas = [];
 
       this.pickRandomItem();
-      this.presetIdeas = [];
 
       this.$nextTick(() => {
         const input = this.$refs.ideaInput;
@@ -490,16 +443,10 @@ export default {
       });
     },
 
-    // ============================================
-    // 🔥 ПРОВЕРКА, ЧТО ИДЕЯ ПРИНАДЛЕЖИТ ПОЛЬЗОВАТЕЛЮ
-    // ============================================
     isUserIdea(idea) {
       return this.userIdeas.includes(idea);
     },
 
-    // ============================================
-    // 🔥 LOCALSTORAGE
-    // ============================================
     saveToStorage() {
       if (this.userIdeas.length > 0) {
         const data = {
@@ -518,18 +465,13 @@ export default {
           const data = JSON.parse(saved);
           console.log('📦 Loaded from storage:', data);
         }
-      } catch (e) {
-        // Нет сохранённых данных
-      }
+      } catch (e) {}
     },
   },
 };
 </script>
 
 <style scoped>
-/* ============================================ */
-/* 🔥 ОБЩИЕ СТИЛИ */
-/* ============================================ */
 .creative-thinking-wrapper {
   overflow: hidden;
   border-radius: 32px;
@@ -551,9 +493,6 @@ export default {
   min-height: 500px;
 }
 
-/* ============================================ */
-/* 🔥 ЗАГОЛОВОК С ТАЙМЕРОМ */
-/* ============================================ */
 .header-wrapper {
   display: flex;
   align-items: center;
@@ -575,6 +514,14 @@ export default {
   display: flex;
   align-items: center;
   gap: 12px;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.3s ease;
+}
+
+.timer-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .timer-text {
@@ -586,9 +533,10 @@ export default {
   font-variant-numeric: tabular-nums;
 }
 
-/* ============================================ */
-/* 🔥 ПЕСОЧНЫЕ ЧАСЫ — РЕТРО ФОРМА */
-/* ============================================ */
+.paused-text {
+  color: #00b894;
+}
+
 .hourglass {
   position: relative;
   width: 40px;
@@ -597,6 +545,24 @@ export default {
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
+  cursor: pointer;
+}
+
+.hourglass:not(.running):not(.paused) {
+  cursor: default;
+}
+
+.hourglass.running:not(.paused):hover {
+  opacity: 0.8;
+}
+
+.hourglass.paused {
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.hourglass.paused:hover {
+  opacity: 1;
 }
 
 .hourglass-top,
@@ -621,7 +587,6 @@ export default {
   border-top: none;
 }
 
-/* Талия песочных часов */
 .hourglass-waist {
   position: relative;
   width: 12px;
@@ -643,7 +608,6 @@ export default {
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
-/* Песок в верхней части (падает) */
 .sand-falling {
   position: absolute;
   bottom: 0;
@@ -661,9 +625,7 @@ export default {
 .hourglass.running .sand-falling {
   animation-play-state: running;
 }
-/* ============================================ */
-/* 🔥 ПАУЗА — ЗЕЛЁНЫЙ ПЕСОК */
-/* ============================================ */
+
 .hourglass.paused .sand-falling {
   background: linear-gradient(180deg, #55efc4, #00b894) !important;
   animation-play-state: paused !important;
@@ -672,31 +634,6 @@ export default {
 .hourglass.paused .sand-filled {
   background: linear-gradient(0deg, #55efc4, #00b894) !important;
   animation-play-state: paused !important;
-}
-
-.hourglass.paused {
-  cursor: pointer;
-  opacity: 0.85;
-}
-
-.hourglass.paused:hover {
-  opacity: 1;
-}
-
-/* 🔥 Подсказка при наведении */
-.hourglass:not(.paused):not(.running) {
-  cursor: default;
-}
-
-.hourglass.running:not(.paused) {
-  cursor: pointer;
-}
-
-.hourglass.running:not(.paused):hover {
-  opacity: 0.8;
-}
-.paused-text {
-  color: #00b894;
 }
 
 @keyframes sandFall {
@@ -710,7 +647,6 @@ export default {
   }
 }
 
-/* Песок в нижней части (заполняется) */
 .sand-filled {
   position: absolute;
   bottom: 0;
@@ -739,9 +675,6 @@ export default {
   }
 }
 
-/* ============================================ */
-/* 🔥 КАРТИНКА С ПРЕДМЕТОМ */
-/* ============================================ */
 .image-area {
   display: flex;
   flex-direction: column;
@@ -777,9 +710,6 @@ export default {
   border: 2px dashed #dfe6e9;
 }
 
-/* ============================================ */
-/* 🔥 НАЗВАНИЕ ПРЕДМЕТА — С РАЗМЫТИЕМ */
-/* ============================================ */
 .item-name-wrapper {
   display: flex;
   flex-direction: column;
@@ -803,11 +733,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: pre-line; /* 🔥 Позволяет переносить строки */
+
 }
 
-/* Размытое состояние */
 .item-name.blurred {
-  filter: blur(6px);
+  filter: blur(2.5px);
   color: #636e72;
   background: rgba(0, 0, 0, 0.03);
   cursor: pointer;
@@ -819,9 +750,6 @@ export default {
   background: rgba(0, 0, 0, 0.06);
 }
 
-/* ============================================ */
-/* 🔥 ПОЛЕ ДЛЯ ВВОДА */
-/* ============================================ */
 .input-wrapper {
   display: flex;
   align-items: center;
@@ -890,9 +818,6 @@ export default {
   cursor: not-allowed;
 }
 
-/* ============================================ */
-/* 🔥 КНОПКИ УПРАВЛЕНИЯ */
-/* ============================================ */
 .controls-wrapper {
   display: flex;
   gap: 12px;
@@ -927,9 +852,6 @@ export default {
   transform: scale(0.97);
 }
 
-/* ============================================ */
-/* 🔥 РЕЗУЛЬТАТЫ */
-/* ============================================ */
 .results-wrapper {
   width: 100%;
   max-width: 550px;
@@ -1007,7 +929,6 @@ export default {
   flex: 1;
 }
 
-/* 🔥 ОТВЕТЫ ПОЛЬЗОВАТЕЛЯ — ПАСТЕЛЬНО-ЖЕЛТО-ОРАНЖЕВЫЙ ГРАДИЕНТ */
 .result-item.user-idea {
   background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
   border-left: 3px solid #fdd835;
@@ -1031,9 +952,6 @@ export default {
   letter-spacing: 0.5px;
 }
 
-/* ============================================ */
-/* 🔥 АДАПТИВ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
-/* ============================================ */
 @media (max-width: 600px) {
   .creative-thinking-container {
     padding: 25px 16px;
