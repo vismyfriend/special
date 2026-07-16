@@ -175,6 +175,15 @@ export const allGamesAndSetsOfWordsList =
     },
     // определить уровень
     {
+      type: "hardcodedLink",
+      path: "/yearGuesser",
+      missionVisibleName: "Какой это год ? (speaking)",
+      missionDescription: "What year is it ?",
+      id: 1001,
+      active: true,
+      gameIcon:'🕵️',
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/ai1",
       missionVisibleName: "Новая миссия",
