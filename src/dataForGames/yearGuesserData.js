@@ -109,6 +109,12 @@ const yearGuesserData = [
     description: 'Banksy\'s "Girl with Balloon" — a graffiti of a girl reaching for a heart-shaped balloon, first appeared in London in 2002. In 2018, a framed copy sold at Sotheby\'s for £1,042,000 — and then self-destructed. A hidden shredder Banksy had built into the frame activated right after the hammer fell, partially destroying the artwork. It was renamed "Love is in the Bin". In 2021, the shredded piece sold again for a record-breaking £18 million.'
   },
   {
+    id: 19,
+    picture: new URL("../assets/images/yearGuesserPics/agents2025.jpeg", import.meta.url).href,
+    date: 2025,
+    description: 'Maybe it was in 2024... Vincent has a fish memory))) He doesn`t remember exactly. But in this picture you see special agents AKA students who helped their teacher during a photo-shoot (фотосессия) Russel, Synthia, Shally, Tyler - HUGE THANKS TO YOU! Appreciate it.'
+  },
+  {
     id: 50,
     picture: new URL("../assets/images/yearGuesserPics/Oct.png", import.meta.url).href,
     date: 2024,
