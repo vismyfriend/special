@@ -413,7 +413,7 @@ const routes = [
     component: () => import('src/pages/tablitsaRef.vue')
   },
   {
-    path: '/yearGuesser',
+    path: '/yearGuesser/:id?',  // 🔥 :id? — необязательный параметр, это сылка на конкретную фотографию с которой начнется игра
     component: () => import('src/pages/gameYearGuesser.vue')
   },
 

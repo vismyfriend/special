@@ -52,7 +52,7 @@ const yearGuesserData = [
     id: 9,
     picture: new URL("../assets/images/yearGuesserPics/brezhnevKiss.jpg", import.meta.url).href,
     date: 1979,
-    description: 'The famous "Brotherly Kiss" photo. Here you can see Leonid Brezhnev — the Soviet Union leader who was known for the "Era of Stagnation". And another man is Erich Honecker — the leader of East Germany, whose regime fell (устаревшее слово - режим пал). In this photo we see so-called "socialist brotherly kiss" — a traditional greeting between leaders of socialist countries, symbolizing trust, friendship, and solidarity. The shot was taken in 1979 at Moscow\'s Sheremetyevo Airport, during a meeting to celebrate the 30th anniversary of East Germany\'s founding (основание). In 1990, inspired by this image, artist Dmitri Vrubel created a famous graffiti on the Berlin Wall, titled "My God, Help Me to Survive This Deadly Love." It became one of the most iconic symbols of the Cold War.'
+    description: 'The famous "Brotherly Kiss" photo. Here you can see Leonid Brezhnev — the Soviet Union leader who was known for the "Era of Stagnation". And another man is Erich Honecker — the leader of East Germany. In this photo we see so-called "socialist brotherly kiss" — a traditional greeting between leaders of socialist countries, symbolizing trust, friendship, and solidarity. В те времена это было традиционное партийное приветствие, символизирующее высшую степень доверия, дружбы и солидарности между лидерами социалистических стран.'
   },
   {
     id: 10,
@@ -111,8 +111,14 @@ const yearGuesserData = [
   {
     id: 19,
     picture: new URL("../assets/images/yearGuesserPics/agents2025.jpeg", import.meta.url).href,
-    date: 2025,
+    date: 2023,
     description: 'Maybe it was in 2024... Vincent has a fish memory))) He doesn`t remember exactly. But in this picture you see special agents AKA students who helped their teacher during a photo-shoot (фотосессия) Russel, Synthia, Shally, Tyler - HUGE THANKS TO YOU! Appreciate it.'
+  },
+  {
+    id: 20,
+    picture: new URL("../assets/images/yearGuesserPics/ShallyPhoto.jpeg", import.meta.url).href,
+    date: 2018,
+    description: 'The Golden Bridge in Vietnam was built in 2018. The architector wanted to show a beautiful view from God\'s hands. As a result this creation attracted many tourists from all over the world to Vietnam. Do you want to visit this place?'
   },
   {
     id: 50,

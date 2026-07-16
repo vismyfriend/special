@@ -9,7 +9,28 @@
       <!-- Polaroid-стиль для фотографии -->
       <div class="polaroid">
         <div class="photo-wrapper">
-          <img :src="currentPhoto.picture" alt="Историческая фотография" class="photo">
+          <!-- 🔥 ПЛЕЙСХОЛДЕР ВО ВРЕМЯ ЗАГРУЗКИ -->
+          <div v-if="isPhotoLoading" class="photo-placeholder">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">{{ currentLoadingPhrase }}</p>
+          </div>
+
+          <!-- Фото -->
+          <img
+            v-show="!isPhotoLoading && !photoLoadError"
+            :src="currentPhoto.picture"
+            alt="Историческая фотография"
+            class="photo"
+            @load="handlePhotoLoad"
+            @error="handlePhotoError"
+          >
+
+          <!-- 🔥 ОШИБКА ЗАГРУЗКИ -->
+          <div v-if="photoLoadError" class="photo-error">
+            <span>❌</span>
+            <p>Не удалось загрузить фото</p>
+          </div>
+
           <!-- Затемнение и описание поверх фото -->
           <div v-if="isAnswerChecked" class="photo-overlay" :class="{ 'dimmed': isDescriptionDimmed }" @click="toggleDescriptionDim">
             <div class="photo-description-overlay">
@@ -21,7 +42,7 @@
           <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
           <div class="result-info">
             <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель, какого года это фото?' }}</div>
-            <div class="text-bold">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>            <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
+            <div class="text-bold highlight">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>            <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
             <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
           </div>
         </div>
@@ -144,7 +165,7 @@ import { getShuffledData, getAllData } from '../dataForGames/yearGuesserData';
 // ==================== //
 const route = useRoute();
 const router = useRouter();
-const startFromPhotoId = route.query.photo ? parseInt(route.query.photo) : null;
+const startFromPhotoId = route.params.id ? parseInt(route.params.id) : null;
 
 // ==================== //
 // Состояние игры
@@ -164,12 +185,60 @@ const correctYear = ref(0);
 const showRangeHighlight = ref(false);
 const backgroundImage = new URL("../assets/images/background1.jpg", import.meta.url).href;
 
+const isPhotoLoading = ref(false);
+const photoLoadError = ref(false);
+
 const isDescriptionDimmed = ref(false);
 const revealedDescriptions = ref([]);
 
 const isFirstVisit = ref(true);
 
 
+// ==================== //
+// Фразы для загрузки
+// ==================== //
+const loadingPhrases = [
+  '🕵️ Ищем фотографию специально для вас...',
+  '📸 Достаём фото из архивов...',
+  '🔍 Сканируем исторические хроники...',
+  '📖 Перелистываем страницы истории...',
+  '🕰️ Переносимся в прошлое...',
+  '🧐 Увеличиваем детали...',
+  '✨ Почти готово...',
+];
+
+const currentLoadingPhrase = ref(loadingPhrases[0]);
+const loadingStartTime = ref(0);
+const MIN_LOADING_TIME = 2000; // 2 секунды
+// ==================== //
+// Смена фразы загрузки
+// ==================== //
+const updateLoadingPhrase = () => {
+  const randomIndex = Math.floor(Math.random() * loadingPhrases.length);
+  currentLoadingPhrase.value = loadingPhrases[randomIndex];
+};
+// ==================== //
+// Обработка загрузки фото
+// ==================== //
+const handlePhotoLoad = () => {
+  const elapsed = Date.now() - loadingStartTime.value;
+  const remaining = Math.max(0, MIN_LOADING_TIME - elapsed);
+
+  // 🔥 ЖДЁМ МИНИМУМ 2 СЕКУНДЫ
+  setTimeout(() => {
+    isPhotoLoading.value = false;
+    photoLoadError.value = false;
+
+    const photoUrl = currentPhoto.value.picture;
+    const fileName = photoUrl.substring(photoUrl.lastIndexOf('/') + 1);
+    console.log(`📸 Photo loaded: ${fileName} (Round ${currentRound.value}/5)`);
+  }, remaining);
+};
+
+const handlePhotoError = () => {
+  isPhotoLoading.value = false;
+  photoLoadError.value = true;
+};
 // ==================== //
 // Анимация лупы при первом посещении
 // ==================== //
@@ -429,6 +498,8 @@ const calculatePoints = (correctYear, guessedYear) => {
 };
 
 const checkAnswer = () => {
+  isPhotoLoading.value = false; // 🔥 СКРЫВАЕМ ПЛЕЙСХОЛДЕР
+
   correctYear.value = parseInt(currentPhoto.value.date);
   lastGuess.value = parseInt(selectedYear.value);
   lastPoints.value = calculatePoints(correctYear.value, lastGuess.value);
@@ -456,6 +527,12 @@ const toggleDescriptionReveal = (index) => {
 const nextPhoto = () => {
   if (currentRound.value < 5) {
     currentRound.value++;
+
+    // 🔥 ОБНОВЛЯЕМ ФРАЗУ И ЗАПОМИНАЕМ ВРЕМЯ
+    updateLoadingPhrase();
+    loadingStartTime.value = Date.now();
+    isPhotoLoading.value = true; // 🔥 ПОКАЗЫВАЕМ ЗАГРУЗКУ
+
     selectedYear.value = 1965;
     sliderPosition.value = '50%';
     isAnswerChecked.value = false;
@@ -521,6 +598,10 @@ const resetGame = () => {
   allPhotos.value = allData.sort(() => Math.random() - 0.5);
 
   updateShuffledHints();
+  updateLoadingPhrase();
+  loadingStartTime.value = Date.now();
+  isPhotoLoading.value = true; // 🔥 ПОКАЗЫВАЕМ ЗАГРУЗКУ
+  photoLoadError.value = false;
 };
 
 const preventScroll = (e) => {
@@ -536,6 +617,12 @@ onMounted(() => {
   // 🔥 ПЕРЕМЕШИВАЕМ ВСЕ ФОТО ПРИ ЗАГРУЗКЕ
   const allData = getAllData();
   allPhotos.value = allData.sort(() => Math.random() - 0.5);
+
+
+  updateLoadingPhrase();
+  loadingStartTime.value = Date.now();
+  isPhotoLoading.value = true; // 🔥 ПОКАЗЫВАЕМ ЗАГРУЗКУ
+
 
   updateShuffledHints();
 
@@ -706,7 +793,7 @@ onBeforeUnmount(() => {
 .description-text {
   color: #ffffff;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 700;
   text-align: center;
   line-height: 1.6;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
@@ -1038,7 +1125,11 @@ onBeforeUnmount(() => {
 .photo-description:not(.blurred) {
   filter: blur(0);
 }
-
+.highlight {
+  background-color: rgba(52, 152, 219, 0.25); /* Синий с прозрачностью */
+  padding: 2px 6px;
+  border-radius: 4px;
+}
 .click-hint {
   font-size: 15px;
   color: #999;
@@ -1066,6 +1157,75 @@ onBeforeUnmount(() => {
   font-size: 50px;
   color: palevioletred;
   font-family: Special_f1
+}
+
+/* ==================== */
+/* Плейсхолдер загрузки фото */
+/* ==================== */
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  width: 500px;
+  background: linear-gradient(135deg, #2d3436, #636e72);
+  border-radius: 4px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.loader-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #fdcb6e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loader-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  text-align: center;
+  animation: pulseText 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ==================== */
+/* Ошибка загрузки фото */
+/* ==================== */
+.photo-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  max-height: 500px;
+  width: 100%;
+  background: #2d3436;
+  border-radius: 4px;
+  padding: 40px;
+  box-sizing: border-box;
+  color: #ff6b6b;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+}
+
+.photo-error span {
+  font-size: 48px;
+  margin-bottom: 12px;
 }
 /* ==================== */
 /* Адаптация для мобильных */
@@ -1102,6 +1262,14 @@ onBeforeUnmount(() => {
     font-size: 18px;
 
   }
+
+  .photo-placeholder {
+
+    height: 270px;
+    width: 270px;
+
+  }
+
   .photo-description {
 
     line-height: 16px;
