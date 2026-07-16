@@ -167,6 +167,80 @@ const backgroundImage = new URL("../assets/images/background1.jpg", import.meta.
 const isDescriptionDimmed = ref(false);
 const revealedDescriptions = ref([]);
 
+const isFirstVisit = ref(true);
+
+
+// ==================== //
+// Анимация лупы при первом посещении
+// ==================== //
+const animateMagnifier = () => {
+  // Стартуем с середины
+  selectedYear.value = 1965;
+  sliderPosition.value = '50%';
+
+  // Анимация: влево на 30 лет → вправо → обратно в середину
+  const steps = [
+    { year: 1935, duration: 900, easing: 'ease-out' },    // влево на 30 лет
+    { year: 1995, duration: 700, easing: 'ease-in-out' },  // вправо на 60 лет (быстрее)
+    { year: 1965, duration: 300, easing: 'ease-in' }       // обратно в середину
+  ];
+
+  let currentStep = 0;
+
+  const animateStep = () => {
+    if (currentStep >= steps.length || !isFirstVisit.value) {
+      isFirstVisit.value = false;
+      return;
+    }
+
+    const step = steps[currentStep];
+    const startYear = selectedYear.value;
+    const endYear = step.year;
+    const startTime = Date.now();
+    const duration = step.duration;
+
+    const update = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Применяем easing
+      let easedProgress;
+      switch (step.easing) {
+        case 'ease-out':
+          easedProgress = 1 - Math.pow(1 - progress, 3);
+          break;
+        case 'ease-in':
+          easedProgress = Math.pow(progress, 3);
+          break;
+        default:
+          easedProgress = progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      }
+
+      const currentYear = startYear + (endYear - startYear) * easedProgress;
+      selectedYear.value = Math.round(currentYear);
+      const percentage = (selectedYear.value - 1900) / 130;
+      sliderPosition.value = `${percentage * 100}%`;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        selectedYear.value = endYear;
+        const finalPercentage = (selectedYear.value - 1900) / 130;
+        sliderPosition.value = `${finalPercentage * 100}%`;
+        currentStep++;
+        // Небольшая пауза между шагами
+        setTimeout(animateStep, 150);
+      }
+    };
+
+    update();
+  };
+
+  // Запускаем анимацию
+  setTimeout(animateStep, 300);
+};
 // ==================== //
 // Цвет кнопки в зависимости от разницы
 // ==================== //
@@ -469,10 +543,14 @@ onMounted(() => {
   rulerTrack.value.addEventListener('click', handleTrackClick);
   updatePosition(window.innerWidth / 2);
   window.addEventListener('touchmove', preventScroll, { passive: false });
+
+
+  // 🔥 ЗАПУСКАЕМ АНИМАЦИЮ ЛУПЫ
+  animateMagnifier();
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keypress', handleKeyPress);
+  window.removeEventListener('keydown', handleKeyPress); // ✅
   rulerTrack.value?.removeEventListener('click', handleTrackClick);
   stopDrag();
   window.removeEventListener('touchmove', preventScroll);

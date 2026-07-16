@@ -1,9 +1,10 @@
 const yearGuesserData = [
+
   {
     id: 1,
-    picture: new URL("../assets/images/yearGuesserPics/Febr.png", import.meta.url).href,
-    date: 2025,
-    description: 'Fur Fur Fur February in Siberia! Vincent`s wife Polina is showing off with her new furcoat. Pretty and playful as always'
+    picture: new URL("../assets/images/yearGuesserPics/dinosaur.jpeg", import.meta.url).href,
+    date: 2026,
+    description: 'This photo is a joke from Vincent. And it is the only picture that is made by Ai here. All other photos are real. Vincent created this photo in 2026 in July'
   },
   {
     id: 2,
@@ -45,13 +46,13 @@ const yearGuesserData = [
     id: 8,
     picture: new URL("../assets/images/yearGuesserPics/lunchNewYork1932.png", import.meta.url).href,
     date: 1932,
-    description: 'It’s hard to believe that this photo is real. But it is real and it is legendary! 11 construction workers on their lunch break. They are eating, chatting and smoking on a steel beam 200 metres above Manhattan. The 69th floor of the Rockerfeller Centre'
+    description: 'It’s hard to believe that this photo is real. But it is real and it is legendary! 11 construction workers on their lunch break. They are eating, chatting and smoking on a steel beam 200 (two hundred) metres above Manhattan. The 69th floor of the Rockerfeller Centre'
   },
   {
     id: 9,
     picture: new URL("../assets/images/yearGuesserPics/brezhnevKiss.jpg", import.meta.url).href,
     date: 1979,
-    description: 'The famous "Brezhnev and Honecker Kiss". This photo was taken in 1979. Photographer Barbara Klemm captured this historic moment completely by accident — she was never supposed to be at that place at that time. Because of a mix-up with her travel documents, she ended up in Frankfurt (East Germany) instead of Frankfurt (West Germany). Also this image became worldwide famous when the artist Dmitri Vrubel painted a graffiti on the Berlin Wall. It is one of the most iconic symbols of the Cold War era.'
+    description: 'The famous "Brotherly Kiss" photo. Here you can see Leonid Brezhnev — the Soviet Union leader who was known for the "Era of Stagnation". And another man is Erich Honecker — the leader of East Germany, whose regime fell (устаревшее слово - режим пал). In this photo we see so-called "socialist brotherly kiss" — a traditional greeting between leaders of socialist countries, symbolizing trust, friendship, and solidarity. The shot was taken in 1979 at Moscow\'s Sheremetyevo Airport, during a meeting to celebrate the 30th anniversary of East Germany\'s founding (основание). In 1990, inspired by this image, artist Dmitri Vrubel created a famous graffiti on the Berlin Wall, titled "My God, Help Me to Survive This Deadly Love." It became one of the most iconic symbols of the Cold War.'
   },
   {
     id: 10,
@@ -63,7 +64,7 @@ const yearGuesserData = [
     id: 11,
     picture: new URL("../assets/images/yearGuesserPics/nagasaki.jpg", import.meta.url).href,
     date: 1945,
-    description: '"Nagasaki Mushroom Cloud" - This image captures the atomic bomb explosion over Nagasaki, Japan, just three days after Hiroshima. The blast killed an estimated 40,000 people instantly, with tens of thousands more dying from radiation exposure in the following months. It remains one of the most powerful and haunting images of the nuclear age.'
+    description: '"Nagasaki Mushroom Cloud" - This image catches the atomic bomb explosion over Nagasaki, Japan, just three days after Hiroshima. The blast killed an estimated 40,000 people (forty thousand) instantly, with tens of thousands more dying from radiation exposure in the following months. It is still one of the most powerful and haunting images of the nuclear age.'
   },
   {
     id: 12,
@@ -112,7 +113,13 @@ const yearGuesserData = [
     picture: new URL("../assets/images/yearGuesserPics/Oct.png", import.meta.url).href,
     date: 2024,
     description: 'Catober = Cat + october. This is the first photo that Vincent uploaded to this App when he was creating it. It is Polina and Cassey.'
-  }
+  },
+  {
+    id: 51,
+    picture: new URL("../assets/images/yearGuesserPics/Febr.png", import.meta.url).href,
+    date: 2025,
+    description: 'Fur Fur Fur February in Siberia! Vincent`s wife Polina is showing off with her new furcoat. Pretty and playful as always'
+  },
 ];
 
 // Функция для перемешивания массива
