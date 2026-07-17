@@ -41,7 +41,7 @@
         <div class="polaroid-label">
           <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
           <div class="result-info">
-            <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель, какого года это фото?' }}</div>
+            <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель и тренируйте речь:' }}</div>
             <div class="text-bold highlight">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>            <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
             <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
           </div>
@@ -59,6 +59,9 @@
             >>></div>
           <div class="magnifier-handle"></div>
         </div>
+
+        <!-- ГОД СЛОВАМИ ПОД ЛУПОЙ -->
+        <div class="year-words">{{ yearToWords(selectedYear) }}</div>
 
         <!-- Линейка с делениями -->
         <div class="ruler-track" ref="rulerTrack">
@@ -102,7 +105,7 @@
     color: isAnswerChecked ? buttonTextColor : '#ffffff'
   }"
           @click="isAnswerChecked ? nextPhoto() : checkAnswer()"
-          :disabled="isDragging"
+          :disabled="isDragging || isPhotoLoading"
         >
           {{ isAnswerChecked ? 'Next Picture (Enter)' : 'Проверить (Enter)' }}
         </button>
@@ -114,9 +117,9 @@
       </div>
 
       <!-- Отображение текущего счета -->
-      <div class="score-display">
-        Текущий счет: {{ currentScore }}
-      </div>
+<!--      <div class="score-display">-->
+<!--        Текущий счет: {{ currentScore }}-->
+<!--      </div>-->
     </div>
   </div>
 
@@ -239,6 +242,50 @@ const handlePhotoError = () => {
   isPhotoLoading.value = false;
   photoLoadError.value = true;
 };
+
+// ==================== //
+// Преобразование года в текст
+// ==================== //
+const yearToWords = (year) => {
+  const num = parseInt(year);
+  if (isNaN(num) || num < 1900 || num > 2030) return String(year);
+
+  const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+    'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  // 1900-1999 — "nineteen ninety"
+  if (num >= 1900 && num < 2000) {
+    const rest = num - 1900;
+    if (rest === 0) return 'nineteen hundred';
+    if (rest < 20) return 'nineteen ' + ones[rest];
+    const ten = Math.floor(rest / 10);
+    const one = rest % 10;
+    return 'nineteen ' + tens[ten] + (one > 0 ? '-' + ones[one] : '');
+  }
+
+  // 2000-2009 — "two thousand and X"
+  if (num >= 2000 && num < 2010) {
+    const rest = num - 2000;
+    if (rest === 0) return 'two thousand';
+    return 'two thousand and ' + ones[rest];
+  }
+
+  // 2010-2099 — "twenty X"
+  if (num >= 2010 && num < 2100) {
+    const rest = num - 2000;
+    // 🔥 ДЛЯ 2010-2019 ИСПОЛЬЗУЕМ ones
+    if (rest < 20) {
+      return 'twenty ' + ones[rest];
+    }
+    const ten = Math.floor(rest / 10);
+    const one = rest % 10;
+    return 'twenty ' + tens[ten] + (one > 0 ? '-' + ones[one] : '');
+  }
+
+  return String(year);
+};
+
 // ==================== //
 // Анимация лупы при первом посещении
 // ==================== //
@@ -713,14 +760,19 @@ onBeforeUnmount(() => {
   position: relative;
   display: inline-block;
   max-width: 100%;
+  display: flex; /* 🔥 МЕНЯЕМ НА FLEX */
+  justify-content: center; /* 🔥 ЦЕНТРИРУЕМ ПО ГОРИЗОНТАЛИ */
+  align-items: center; /* 🔥 ЦЕНТРИРУЕМ ПО ВЕРТИКАЛИ */
 }
 
 .photo {
   width: auto;
-  max-height: 500px;
+  max-height: 400px;
   max-width: 100%;
   display: block;
   border: 1px solid #ddd;
+  object-fit: contain; /* 🔥 СОХРАНЯЕМ ПРОПОРЦИИ */
+
 }
 
 /* ==================== */
@@ -838,14 +890,33 @@ onBeforeUnmount(() => {
   margin: 2px 0;
 }
 
-/* ==================== */
-/* Стили временной шкалы */
-/* ==================== */
+/* ============================================ */
+/* 🔥 ВРЕМЕННАЯ ШКАЛА — ИСПРАВЛЕННАЯ ВЕРСИЯ */
+/* ============================================ */
 .timeline-ruler {
   position: relative;
-  margin: 100px 0 1px;
-  height: 120px;
+  height: 100px; /* 🔥 ВЫСОТА ДЛЯ ЛУПЫ + ТЕКСТА */
   cursor: pointer;
+}
+
+/* ==================== */
+/* ГОД СЛОВАМИ ПОД ЛУПОЙ */
+/* ==================== */
+.year-words {
+  position: absolute;
+  bottom: 0; /* 🔥 ПРИЖИМАЕМ К НИЖНЕЙ ЧАСТИ КОНТЕЙНЕРА */
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  color: #5D2906;
+  letter-spacing: 1px;
+  font-weight: 600;
+  min-height: 24px;
+  transition: all 0.2s ease;
+  padding: 0 10px;
+  pointer-events: none; /* 🔥 ЧТОБЫ НЕ МЕШАЛ КЛИКАМ ПО ШКАЛЕ */
 }
 
 .ruler-track {
@@ -854,7 +925,7 @@ onBeforeUnmount(() => {
   border-radius: 3px;
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin-top: 80px;
+  margin-top: 75px; /* 🔥 РАССТОЯНИЕ ОТ ЛУПЫ ДО ШКАЛЫ */
 }
 
 .range-highlight {
@@ -867,7 +938,7 @@ onBeforeUnmount(() => {
 
 .magnifier {
   position: absolute;
-  top: -30px;
+  top: -30px; /* 🔥 ЛУПА НА ШКАЛЕ */
   transform: translateX(-50%);
   z-index: 4;
   cursor: grab;
@@ -903,10 +974,10 @@ onBeforeUnmount(() => {
 
 .magnifier-handle {
   width: 4px;
-  height: 60px;
+  height: 20px; /* 🔥 УМЕНЬШИЛ ДЛИНУ РУЧКИ */
   background: #5D2906;
   position: absolute;
-  bottom: -60px;
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -923,6 +994,20 @@ onBeforeUnmount(() => {
   border-radius: 50%;
 }
 
+.current-year {
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bolder;
+  font-size: 20px;
+  min-width: 70px;
+  text-align: center;
+  margin-bottom: -1px;
+}
+
+/* ============================================ */
+/* 🔥 ДЕЛЕНИЯ НА ШКАЛЕ */
+/* ============================================ */
 .ruler-mark {
   position: absolute;
   transform: translateX(-50%);
@@ -955,6 +1040,9 @@ onBeforeUnmount(() => {
   margin-bottom: -20px;
 }
 
+/* ============================================ */
+/* 🔥 ПОДПИСИ ГОДОВ */
+/* ============================================ */
 .year-label {
   position: absolute;
   top: -90px;
@@ -982,17 +1070,6 @@ onBeforeUnmount(() => {
   top: -75px;
 }
 
-.current-year {
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-weight: bolder;
-  font-size: 20px;
-  min-width: 70px;
-  text-align: center;
-  margin-bottom: -1px;
-}
-
 /* ==================== */
 /* Управление игрой     */
 /* ==================== */
@@ -1012,11 +1089,11 @@ onBeforeUnmount(() => {
   border-radius: 4px;
   font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.5s ease; /* 🔥 ПЛАВНЫЙ ПЕРЕХОД */
+  transition: background-color 0.5s ease;
 }
 
 .submit-btn:hover {
-  filter: brightness(0.85); /* 🔥 НЕМНОГО ТЕМНЕЕ ПРИ НАВЕДЕНИИ */
+  filter: brightness(0.85);
 }
 
 .submit-btn:disabled {
@@ -1125,11 +1202,13 @@ onBeforeUnmount(() => {
 .photo-description:not(.blurred) {
   filter: blur(0);
 }
+
 .highlight {
-  background-color: rgba(52, 152, 219, 0.25); /* Синий с прозрачностью */
+  background-color: rgba(52, 152, 219, 0.25);
   padding: 2px 6px;
   border-radius: 4px;
 }
+
 .click-hint {
   font-size: 15px;
   color: #999;
@@ -1153,10 +1232,11 @@ onBeforeUnmount(() => {
 .play-again-btn:hover {
   background: #8B4513;
 }
+
 .h2 {
   font-size: 50px;
   color: palevioletred;
-  font-family: Special_f1
+  font-family: Special_f1;
 }
 
 /* ==================== */
@@ -1227,6 +1307,7 @@ onBeforeUnmount(() => {
   font-size: 48px;
   margin-bottom: 12px;
 }
+
 /* ==================== */
 /* Адаптация для мобильных */
 /* ==================== */
@@ -1235,7 +1316,6 @@ onBeforeUnmount(() => {
     padding: 0;
   }
   .polaroid {
-    margin-bottom: -20px;
     padding: 5px 5px;
   }
   .polaroid::before {
@@ -1281,12 +1361,10 @@ onBeforeUnmount(() => {
   }
 
   .timeline-ruler {
-    height: 40px;
+    height: 75px;
   }
 
-  .ruler-track {
-    margin-top: 60px;
-  }
+
 
   .magnifier-glass {
     width: 60px;
@@ -1337,7 +1415,6 @@ onBeforeUnmount(() => {
   }
   .submit-btn {
     display: block;
-    margin: 20px auto 20px;
     padding: 6px 10px;
     background: #5D2906;
     font-size: 15px;

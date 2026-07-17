@@ -1509,7 +1509,7 @@ const shortWordsData = {
       { id: 3, eng: "fat", ru: "жирный жирная", hint: "/ фЭт /" },
       { id: 4, eng: "ugly", ru: "уродливый уродливая", hint: "/ Агли /" },
       { id: 5, eng: "fit", ru: "подтянутый подтянутая", hint: "/ фИт /" },
-      { id: 6, eng: "slim", ru: "стройный стройная", hint: "/ фИт /" },
+      { id: 6, eng: "slim", ru: "стройный стройная", hint: "/ слим /" },
       { id: 7, eng: "short", ru: "низкий низкая", hint: "/ шОрт /" },
       { id: 8, eng: "skinny", ru: "тощий тощая", hint: "/ скИни /" },
       { id: 9, eng: "usual", ru: "обычный обычная", hint: "/ Южал /" },
