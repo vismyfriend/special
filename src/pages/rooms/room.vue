@@ -5,8 +5,8 @@
   <!-- Фон -->
   <img
     class="backgroundImg"
-    :src="backgroundImage"
-    alt="Фон спэшл"
+    src="/src/assets/images/specialRoomIphone.jpg"
+    alt="Фон спэшл 1"
   >
 
   <!-- Контент поверх фона -->
@@ -94,7 +94,6 @@ import { useRouter } from 'vue-router';
 import Preloader from '/src/components/SpecialPreloader.vue';
 
 const router = useRouter();
-const backgroundImage = new URL("../assets/images/SpecialRoomGreen.jpg", import.meta.url).href;
 const agentName = ref('');
 const isLoginMode = ref(false);
 const isRegistered = ref(false);
