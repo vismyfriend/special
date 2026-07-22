@@ -6,7 +6,7 @@
   <img
     class="backgroundImg"
     src="../../assets/images/specialRoomIphone.jpg"
-    alt="Фон спэшл 1"
+    alt="Фон спэшл 2"
   >
 
   <!-- Контент поверх фона -->
