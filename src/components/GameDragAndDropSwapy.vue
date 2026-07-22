@@ -627,6 +627,7 @@ export default {
 .drag-game {
   max-width: 800px;
   margin: 30px auto;
+  margin-top: 75px;
   padding: 5px;
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

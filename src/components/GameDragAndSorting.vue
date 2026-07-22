@@ -448,6 +448,7 @@ export default {
   max-width: 1000px;
   min-width: 460px;
   margin: 30px auto;
+  margin-top: 75px;
   padding: 10px;
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

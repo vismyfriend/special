@@ -364,6 +364,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  margin-top: 75px;
 }
 
 #phoneFrame {

@@ -1717,7 +1717,7 @@ onBeforeRouteLeave((to, from, next) => {
         #000000 150%
     );
   margin: 5px auto;
-  margin-top: 10px;
+  margin-top: 75px;
   border-radius: 2em;
   border: solid 5px #6a6a6a;
   box-shadow:
@@ -2111,7 +2111,6 @@ onBeforeRouteLeave((to, from, next) => {
   text-align: right;
   white-space: nowrap;
 }
-
 
 
 

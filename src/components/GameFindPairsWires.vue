@@ -1,5 +1,6 @@
 <template>
-  <div class="progress-container">
+  <div class="marginTop75">
+    <div class="progress-container">
     <div class="progress-bar">
       <div
         v-for="(isFirst, index) in firstTryCorrect"
@@ -20,7 +21,7 @@
     </div>
   </div>
 
-  <div class="game-visual-wrapper">
+    <div class="game-visual-wrapper">
     <svg class="lines-overlay" ref="svgLines" style="width: 100%; height: 100%;"></svg>
 
     <div class="game-container">
@@ -63,10 +64,11 @@
     </div>
   </div>
 
-  <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
-  <div class="image-container">
+    <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
+    <div class="image-container">
     <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
     <button class="action-button" @click="handleButtonClick">Режь правильный провод!!!</button>
+  </div>
   </div>
 </template>
 
@@ -696,5 +698,8 @@ line-height: 0.9;
   white-space: nowrap;
   z-index: 10;
   text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); // Свечение для лучшей видимости
+}
+.marginTop75 {
+  margin-top: 75px;
 }
 </style>

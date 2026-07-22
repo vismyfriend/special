@@ -782,6 +782,7 @@ onMounted(async () => {
   font-family: 'Arial', sans-serif;
   line-height: 1.1;
   min-height: 400px;
+  margin-top: 75px;
 }
 
 /* Стили для упрощенного вида */

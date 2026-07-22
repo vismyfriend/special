@@ -632,24 +632,31 @@ const continueAsGuest = async () => {
   right: 0;
   bottom: 0;
 }
+.relative {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  margin-top: 75px;
+}
 
 #phoneFrame {
   position: relative;
   height: 655px;
   width: 310px;
-  background: linear-gradient(
-      to top,
-      #fff -250%,
-      #000000 150%
-  );
+  background:
+    linear-gradient(
+        to top,
+        #fff -250%,
+        #000000 150%
+    );
   margin: 5px auto;
   border-radius: 2em;
   border: solid 5px #6a6a6a;
-  box-shadow: inset 0 0 2px 7px #000,
-  inset 0 0 3px 7px #000,
-  0 150px 200px -80px #000;
+  box-shadow:
+    inset 0 0 2px 7px #000,
+    inset 0 0 3px 7px #000,
+    0 150px 200px -80px #000;
   overflow: auto;
-
 }
 
 .registration-container {

@@ -188,7 +188,7 @@ onMounted(() => {
 
 
 .row {
-  margin-top: 30px;
+  margin-top: 75px;
 }
 
 .col {

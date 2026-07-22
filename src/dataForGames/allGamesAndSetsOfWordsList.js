@@ -249,6 +249,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examYA165E/tests-and-exams",
+      missionVisibleName: "Любимая Некромантка",
+      missionDescription: "For Nadine",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examY2V2/tests-and-exams",
       missionVisibleName: "В этом тесте grammar сложнее",
       missionDescription: "This test is harder",

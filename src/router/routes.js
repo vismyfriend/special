@@ -4,6 +4,9 @@ const routes = [
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
       { path: '',
+        component: () => import('pages/rooms/room.vue')
+      },
+      { path: '/intro',
         component: () => import('pages/IntroPage.vue')
       },
 
@@ -281,7 +284,12 @@ const routes = [
     ]
   },
     // http://192.168.0.21:9000/special/ localhost
-
+  { path: '/pre',
+    component: () => import('src/components/SpecialPreloader.vue')
+  },
+  { path: '/mainLayout',
+    component: () => import('src/layouts/MainLayout.vue')
+  },
   {
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),

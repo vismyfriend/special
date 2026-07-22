@@ -519,7 +519,9 @@ onMounted(() => {
     }
   }
 }
-
+.relative {
+  margin-top: 75px;
+}
 #phoneFrame {
   position: relative; // Устанавливает элемент относительно его нормального положения
   height: 655px; // Высота элемента

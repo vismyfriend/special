@@ -416,7 +416,6 @@ onBeforeUnmount(() => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 20px 40px;
-  padding-top: 70px; /* ← добавляем отступ сверху */
 
   min-height: 100vh;
   transition: all 0.3s ease;
@@ -452,6 +451,7 @@ onBeforeUnmount(() => {
 .header-top {
   text-align: center;
   margin-bottom: 4px;
+  padding-top: 75px;
 }
 
 .book-title {

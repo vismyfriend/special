@@ -438,8 +438,8 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
     height: 400px;
+    margin-top: 75px;
 }
 .side-buttons {
   display: flex;

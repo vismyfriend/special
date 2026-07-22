@@ -84,7 +84,7 @@ const backgrounds = ref([
   { day: 0, img: new URL("../assets/images/background1.jpg", import.meta.url).href },
   { day: 1, img: new URL("../assets/images/background2.jpg", import.meta.url).href },
   { day: 2, img: new URL("../assets/images/background8.jpg", import.meta.url).href },
-  { day: 3, img: new URL("../assets/images/background4.jpg", import.meta.url).href },
+  { day: 3, img: new URL("../assets/images/SpecialRoomGreen.jpg", import.meta.url).href },
   { day: 4, img: new URL("../assets/images/background5.jpg", import.meta.url).href },
   { day: 5, img: new URL("../assets/images/background6.jpg", import.meta.url).href },
   { day: 6, img: new URL("../assets/images/background7.jpg", import.meta.url).href },
@@ -96,7 +96,7 @@ const backgrounds = ref([
 onMounted(() => {
   const currentDay = new Date().getDay();
   currentBackgroundDay.value = backgrounds.value.find(el => el.day === currentDay);
-  console.log(currentDay);
+  console.log('какой сегодня день -',currentDay);
 });
 
 defineExpose({ audio });
@@ -108,7 +108,6 @@ defineExpose({ audio });
 .main-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 75px;
 
   .wrapper {
     min-width: 350px;

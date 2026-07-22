@@ -3244,6 +3244,551 @@ const GameTestsSeedData = {
       }
     ]
   },
+  examYA165E: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "We go to work ____ train.",
+            textExtra: "Мы ездим на работу на поезде.",
+            options: {
+              A: "with",
+              B: "by",
+              C: "for",
+              D: "in"
+            },
+            correctAnswer: "B",
+            explanation: "С видами транспорта используем предлог by: by train, by car, by bus."
+          },
+          {
+            text: "Are you going to the party? – Yes, I ____",
+            textExtra: "Ты идешь на вечеринку? – Да, я иду.",
+            options: {
+              A: "do",
+              B: "is",
+              C: "am",
+              D: "are"
+            },
+            correctAnswer: "C",
+            explanation: "В ответе на вопрос с глаголом to be используем соответствующую форму: I am."
+          },
+          {
+            text: "There aren't ____ here.",
+            textExtra: "Здесь нет ресторанов.",
+            options: {
+              A: "a restaurants",
+              B: "any restaurants",
+              C: "any restaurant",
+              D: "a restaurant"
+            },
+            correctAnswer: "B",
+            explanation: "В отрицании с исчисляемыми во множественном числе используем any + существительное во множественном числе."
+          },
+          {
+            text: "I'm from Paris. ____ is in France.",
+            textExtra: "Я из Парижа. Он во Франции.",
+            options: {
+              A: "They",
+              B: "It",
+              C: "He",
+              D: "She"
+            },
+            correctAnswer: "B",
+            explanation: "Город — неодушевленный предмет, поэтому используем местоимение It."
+          },
+          {
+            text: "____ are my cups!",
+            textExtra: "Это мои чашки!",
+            options: {
+              A: "this",
+              B: "that",
+              C: "it",
+              D: "these"
+            },
+            correctAnswer: "D",
+            explanation: "Для множественного числа и близких предметов используем these."
+          },
+          {
+            text: "____? No, he isn't.",
+            textExtra: "Мистер Баннинг учитель? Нет, он не учитель.",
+            options: {
+              A: "Are they teachers?",
+              B: "Are you from Italy?",
+              C: "Is Mr Banning a teacher?",
+              D: "Is this your phone?"
+            },
+            correctAnswer: "C",
+            explanation: "Короткий ответ No, he isn't соответствует вопросу с he (мужской род, единственное число)."
+          },
+          {
+            text: "What is ____?",
+            textExtra: "Какая работа у Мэри?",
+            options: {
+              A: "job Mary",
+              B: "Mary job",
+              C: "Mary's job",
+              D: "job's Mary"
+            },
+            correctAnswer: "C",
+            explanation: "Принадлежность выражается с помощью притяжательного падежа: Mary's job."
+          },
+          {
+            text: "When do you play tennis? ____ Mondays.",
+            textExtra: "Когда ты играешь в теннис? По понедельникам.",
+            options: {
+              A: "On",
+              B: "In",
+              C: "At",
+              D: "By"
+            },
+            correctAnswer: "A",
+            explanation: "С днями недели используем предлог On."
+          },
+          {
+            text: "My name's Pete and this is Sylvia. ____ doctors from France.",
+            textExtra: "Меня зовут Пит, а это Сильвия. Мы врачи из Франции.",
+            options: {
+              A: "I'm",
+              B: "We're",
+              C: "She's",
+              D: "They're"
+            },
+            correctAnswer: "B",
+            explanation: "Говорящий представляет себя и Сильвию, поэтому используем We're (мы)."
+          },
+          {
+            text: "I don't have ____ meat.",
+            textExtra: "У меня нет мяса.",
+            options: {
+              A: "many",
+              B: "much"
+            },
+            correctAnswer: "B",
+            explanation: "Meat — неисчисляемое существительное, поэтому используем much (many — для исчисляемых)."
+          },
+          {
+            text: "It's ____.",
+            textExtra: "Это дорогой отель.",
+            options: {
+              A: "a hotel expensive",
+              B: "expensive hotel",
+              C: "expensive a hotel",
+              D: "an expensive hotel"
+            },
+            correctAnswer: "D",
+            explanation: "Порядок слов: артикль + прилагательное + существительное. Hotel начинается с гласного звука, поэтому an."
+          },
+          {
+            text: "____ like tea or coffee?",
+            textExtra: "Не хотите ли чай или кофе?",
+            options: {
+              A: "You",
+              B: "Would you",
+              C: "You do"
+            },
+            correctAnswer: "B",
+            explanation: "Вежливое предложение начинается с Would you like...?"
+          },
+          {
+            text: "This is my ____ family.",
+            textExtra: "Это семья моего друга.",
+            options: {
+              A: "friend's",
+              B: "friends",
+              C: "friend"
+            },
+            correctAnswer: "A",
+            explanation: "Принадлежность (семья друга) — притяжательный падеж friend's."
+          },
+          {
+            text: "____ they live in London?",
+            textExtra: "Они живут в Лондоне?",
+            options: {
+              A: "Are",
+              B: "Is",
+              C: "Do",
+              D: "Does"
+            },
+            correctAnswer: "C",
+            explanation: "Вопросительная форма Present Simple для they — Do."
+          },
+          {
+            text: "How ____ carrots do they have?",
+            textExtra: "Сколько у них морковок?",
+            options: {
+              A: "many",
+              B: "a lot of",
+              C: "much",
+              D: "lots of"
+            },
+            correctAnswer: "A",
+            explanation: "Carrots — исчисляемое во множественном числе, поэтому How many."
+          },
+          {
+            text: "Sorry, I ____ you at the moment.",
+            textExtra: "Извините, я не могу помочь вам сейчас.",
+            options: {
+              A: "can't help",
+              B: "don't can help",
+              C: "can't helping",
+              D: "can't helps"
+            },
+            correctAnswer: "A",
+            explanation: "Модальный глагол can + инфинитив без to. Отрицание: can't help."
+          },
+          {
+            text: "And this is your ____.",
+            textExtra: "А это ваш стол.",
+            options: {
+              A: "desk",
+              B: "desks",
+              C: "a desk",
+              D: "an desk"
+            },
+            correctAnswer: "A",
+            explanation: "После this is your всегда идет существительное в единственном числе без артикля."
+          },
+          {
+            text: "____ to the cinema.",
+            textExtra: "Мы не часто ходим в кино.",
+            options: {
+              A: "We not often go",
+              B: "We don't go often",
+              C: "We don't often go",
+              D: "Often we don't go"
+            },
+            correctAnswer: "C",
+            explanation: "Правильный порядок: подлежащее + don't + наречие частоты (often) + основной глагол."
+          },
+          {
+            text: "What ____ do after school today?",
+            textExtra: "Что ты собираешься делать после школы сегодня?",
+            options: {
+              A: "are you going to",
+              B: "are you",
+              C: "do you",
+              D: "you"
+            },
+            correctAnswer: "A",
+            explanation: "Конструкция be going to для выражения планов на будущее."
+          },
+          {
+            text: "____ two airports in the city.",
+            textExtra: "В городе есть два аэропорта.",
+            options: {
+              A: "It is",
+              B: "There is",
+              C: "There are",
+              D: "This is"
+            },
+            correctAnswer: "C",
+            explanation: "Конструкция there are для множественного числа (two airports)."
+          },
+          {
+            text: "Roy ____ in our company.",
+            textExtra: "Рой работает в нашей компании.",
+            options: {
+              A: "work",
+              B: "works",
+              C: "is work",
+              D: "working"
+            },
+            correctAnswer: "B",
+            explanation: "Roy — 3-е лицо единственное число, поэтому добавляем -s: works."
+          },
+          {
+            text: "I have a lot of ____.",
+            textExtra: "У меня много зубов.",
+            options: {
+              A: "tooths",
+              B: "tooth",
+              C: "teeth",
+              D: "toothes"
+            },
+            correctAnswer: "C",
+            explanation: "Множественное число от tooth — teeth (исключение)."
+          },
+          {
+            text: "Where's Steve? He ____ a shower.",
+            textExtra: "Где Стив? Он принимает душ.",
+            options: {
+              A: "has",
+              B: "is having",
+              C: "having",
+              D: "is have"
+            },
+            correctAnswer: "B",
+            explanation: "Действие происходит прямо сейчас (сейчас принимает душ) — Present Continuous."
+          },
+          {
+            text: "Her birthday is ____ 6th May 1979.",
+            textExtra: "Ее день рождения 6 мая 1979 года.",
+            options: {
+              A: "in",
+              B: "at",
+              C: "on",
+              D: "from"
+            },
+            correctAnswer: "C",
+            explanation: "С конкретной датой (с числом) используем предлог On."
+          },
+          {
+            text: "She ____ speaks on the phone.",
+            textExtra: "Она никогда не говорит по телефону.",
+            options: {
+              A: "never",
+              B: "doesn't",
+              C: "isn't",
+              D: "doesn't never"
+            },
+            correctAnswer: "A",
+            explanation: "В английском языке не используется двойное отрицание. She never speaks — единственный правильный вариант."
+          },
+          {
+            text: "His friends are ____.",
+            textExtra: "Его друзья — мужчины.",
+            options: {
+              A: "man",
+              B: "men",
+              C: "mans",
+              D: "men's"
+            },
+            correctAnswer: "B",
+            explanation: "Множественное число от man — men."
+          },
+          {
+            text: "Who are ____ people?",
+            textExtra: "Кто эти люди?",
+            options: {
+              A: "this",
+              B: "those",
+              C: "that",
+              D: "a"
+            },
+            correctAnswer: "B",
+            explanation: "Для множественного числа и удаленных предметов используем those."
+          },
+          {
+            text: "How many brothers and sisters _____?",
+            textExtra: "Сколько у тебя братьев и сестер?",
+            options: {
+              A: "are you having",
+              B: "you have",
+              C: "have you",
+              D: "do you have"
+            },
+            correctAnswer: "D",
+            explanation: "Вопрос в Present Simple с глаголом have — Do you have."
+          },
+          {
+            text: "Mary is married to John. He's her ____",
+            textExtra: "Мэри замужем за Джоном. Он ее муж.",
+            options: {
+              A: "son",
+              B: "husband",
+              C: "wife",
+              D: "boyfriend"
+            },
+            correctAnswer: "B",
+            explanation: "Мужчина, на котором жената женщина — это husband."
+          },
+          {
+            text: "There ____ windows in my room.",
+            textExtra: "В моей комнате есть окна.",
+            options: {
+              A: "are some",
+              B: "is some",
+              C: "aren't some",
+              D: "is any"
+            },
+            correctAnswer: "A",
+            explanation: "Windows — множественное число, в утверждении используем there are some."
+          },
+          {
+            text: "My aunt is going ____ me on Sunday.",
+            textExtra: "Моя тетя собирается навестить меня в воскресенье.",
+            options: {
+              A: "to visiting",
+              B: "visit",
+              C: "visiting",
+              D: "to visit"
+            },
+            correctAnswer: "D",
+            explanation: "После be going to всегда идет инфинитив с частицей to: to visit."
+          },
+          {
+            text: "The film starts ____ 9 o'clock.",
+            textExtra: "Фильм начинается в 9 часов.",
+            options: {
+              A: "in",
+              B: "at",
+              C: "on",
+              D: "from"
+            },
+            correctAnswer: "B",
+            explanation: "С точным временем (часами) используем предлог At."
+          },
+          {
+            text: "We have ____ sugar in the kitchen.",
+            textExtra: "У нас есть немного сахара на кухне.",
+            options: {
+              A: "a",
+              B: "some",
+              C: "any",
+              D: "many"
+            },
+            correctAnswer: "B",
+            explanation: "В утвердительном предложении с неисчисляемым существительным используем some."
+          },
+          {
+            text: "one potato - two ____.",
+            textExtra: "одна картофелина - две картофелины.",
+            options: {
+              A: "potatoes",
+              B: "potatos",
+              C: "potato's"
+            },
+            correctAnswer: "A",
+            explanation: "Множественное число от potato — potatoes (добавляется -es)."
+          },
+          {
+            text: "I don't have ____ milk.",
+            textExtra: "У меня нет молока.",
+            options: {
+              A: "a",
+              B: "some",
+              C: "any",
+              D: "many"
+            },
+            correctAnswer: "C",
+            explanation: "В отрицании с неисчисляемым существительным используем any."
+          },
+          {
+            text: "Excuse me, ____ is the T-shirt? It's ₤25.99.",
+            textExtra: "Извините, сколько стоит футболка? Она стоит 25.99 фунтов.",
+            options: {
+              A: "what expensive",
+              B: "how much",
+              C: "how many",
+              D: "how price"
+            },
+            correctAnswer: "B",
+            explanation: "Спрашиваем цену (неисчисляемое) — How much."
+          },
+          {
+            text: "____ leave early today.",
+            textExtra: "Я хотел бы уйти пораньше сегодня.",
+            options: {
+              A: "I like",
+              B: "I'd like to",
+              C: "I like to"
+            },
+            correctAnswer: "B",
+            explanation: "Выражение желания — I'd like to (I would like to)."
+          },
+          {
+            text: "We usually ____ shopping to a supermarket.",
+            textExtra: "Мы обычно ходим за покупками в супермаркет.",
+            options: {
+              A: "make",
+              B: "do",
+              C: "have",
+              D: "go"
+            },
+            correctAnswer: "D",
+            explanation: "Устойчивое выражение go shopping."
+          },
+          {
+            text: "I'd like ____ omelet, please.",
+            textExtra: "Я хотел бы омлет, пожалуйста.",
+            options: {
+              A: "a",
+              B: "an",
+              C: "two"
+            },
+            correctAnswer: "B",
+            explanation: "Omelet начинается с гласного звука, поэтому используем an."
+          },
+          {
+            text: "Do you like French ____?",
+            textExtra: "Тебе нравится французская еда?",
+            options: {
+              A: "kitchen",
+              B: "meal",
+              C: "food",
+              D: "cook"
+            },
+            correctAnswer: "C",
+            explanation: "French food — французская еда/кухня (в значении еда)."
+          },
+          {
+            text: "Your bag is ____ the table.",
+            textExtra: "Твоя сумка на столе.",
+            options: {
+              A: "on",
+              B: "to",
+              C: "in",
+              D: "of"
+            },
+            correctAnswer: "A",
+            explanation: "Предмет находится на поверхности — предлог on."
+          },
+          {
+            text: "I'm Jeff Caine. Nice to ____ you, Mr Caine.",
+            textExtra: "Я Джефф Кейн. Приятно познакомиться с вами, мистер Кейн.",
+            options: {
+              A: "speak",
+              B: "talk",
+              C: "meet",
+              D: "watch"
+            },
+            correctAnswer: "C",
+            explanation: "При знакомстве используется Nice to meet you."
+          },
+          {
+            text: "She's only four years old but she ____.",
+            textExtra: "Ей всего четыре года, но она умеет читать.",
+            options: {
+              A: "can read",
+              B: "cans read",
+              C: "can reads",
+              D: "can to read"
+            },
+            correctAnswer: "A",
+            explanation: "Модальный глагол can + инфинитив без частицы to."
+          },
+          {
+            text: "My sister wants ____ a dancer.",
+            textExtra: "Моя сестра хочет стать танцовщицей.",
+            options: {
+              A: "be",
+              B: "to being",
+              C: "to be",
+              D: "to is"
+            },
+            correctAnswer: "C",
+            explanation: "После want всегда идет инфинитив с частицей to: to be."
+          },
+          {
+            text: "Mandy is over there. She's ____ a blue T-shirt and jeans.",
+            textExtra: "Мэнди вон там. На ней синяя футболка и джинсы.",
+            options: {
+              A: "having",
+              B: "wearing",
+              C: "doing",
+              D: "walking"
+            },
+            correctAnswer: "B",
+            explanation: "Глагол wear используется, когда речь идет об одежде, которая надета на человеке."
+          }
+        ]
+      }
+    ]
+  },
   examA164V1: {
     mainDescription: 'Можно кликать на несколько ответов и...',
     tasks: [

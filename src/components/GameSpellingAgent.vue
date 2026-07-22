@@ -972,6 +972,7 @@ onBeforeUnmount(() => {
   background-position: center;
   padding: 20px;
   min-height: 100vh;
+  margin-top: 75px;
 }
 
 .progress-container {

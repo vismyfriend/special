@@ -41,7 +41,7 @@
         <div class="polaroid-label">
           <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
           <div class="result-info">
-            <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель и тренируйте речь:' }}</div>
+            <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель и читайте вслух:' }}</div>
             <div class="text-bold highlight">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>            <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
             <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
           </div>
@@ -101,7 +101,7 @@
         <button
           class="submit-btn"
           :style="{
-    backgroundColor: isAnswerChecked ? buttonColor : '#5D2906',
+    backgroundColor: isAnswerChecked ? buttonColor : '#88b9e3',
     color: isAnswerChecked ? buttonTextColor : '#ffffff'
   }"
           @click="isAnswerChecked ? nextPhoto() : checkAnswer()"

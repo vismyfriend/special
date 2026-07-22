@@ -668,6 +668,7 @@ calc(var(--fadeStart) * 100%) {
 
 .bubble-wrapper {
   position: relative; /* точка отсчета для абсолютного позиционирования */
+  margin-top: 75px;
 }
 
 

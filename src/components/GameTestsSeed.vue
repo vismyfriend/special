@@ -2000,6 +2000,8 @@ const rainbowColors = [
 .exercise-container {
   max-width: 56rem;
   margin: 2px 2px;
+  margin-top: 75px;
+
   padding: 15px;
   background-color: white;
   border-radius: 15px;

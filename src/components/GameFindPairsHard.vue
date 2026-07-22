@@ -256,6 +256,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   padding: 20px;
+  margin-top: 75px;
 
 }
 
@@ -418,4 +419,5 @@ onMounted(() => {
   border-color: red !important;
   z-index: 3;
 }
+
 </style>

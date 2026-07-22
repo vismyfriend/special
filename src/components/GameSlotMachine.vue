@@ -854,6 +854,7 @@ onMounted(() => {
   max-width: 500px;
   width: 100%;
   margin: 5px auto;
+  margin-top: 75px;
   padding: 12px;
   background: linear-gradient(145deg, #1a2639, #0f172a);
   border-radius: 28px;
