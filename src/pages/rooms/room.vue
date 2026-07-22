@@ -94,7 +94,7 @@ import { useRouter } from 'vue-router';
 import Preloader from '/src/components/SpecialPreloader.vue';
 
 const router = useRouter();
-const backgroundImage = new URL("/src/assets/images/specialRoomIphone.jpg", import.meta.url).href;
+const backgroundImage = new URL("/src/assets/images/SpecialRoomGreen.jpg", import.meta.url).href;
 const agentName = ref('');
 const isLoginMode = ref(false);
 const isRegistered = ref(false);
