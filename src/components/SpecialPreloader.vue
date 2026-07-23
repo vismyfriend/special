@@ -76,7 +76,7 @@ const TIMING = {
 // ============================================================
 
 // Слова для каждого цикла
-const WORDS = ['loading', 'special', 'english'];
+const WORDS = ['you `re', 'special', 'loading'];
 
 const emit = defineEmits(['loaded']);
 

@@ -92,26 +92,38 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Preloader from '/src/components/SpecialPreloader.vue';
+import { useGameStore } from 'stores/example-store';
+import { api } from 'src/api';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
+const $q = useQuasar();
+const gameStore = useGameStore();
+
 const agentName = ref('');
 const isLoginMode = ref(false);
 const isRegistered = ref(false);
 const suggestedNames = ref([]);
-
-// Добавь переменную для отслеживания фокуса
 const isInputFocused = ref(false);
 
-// Добавь методы для управления показом
 const onInputFocus = () => {
   isInputFocused.value = true;
 };
 
 const onInputBlur = () => {
-  // Даем небольшую задержку, чтобы успело сработать нажатие на кнопку
   setTimeout(() => {
     isInputFocused.value = false;
   }, 200);
+};
+
+// Уведомления
+
+
+// Генерация уникального суффикса
+const generateUniqueSuffix = () => {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 6);
+  return `${timestamp}${random}`;
 };
 
 // Случайные суффиксы
@@ -171,6 +183,8 @@ const loadSuggestedNames = () => {
 const useSuggestedName = (name) => {
   agentName.value = name;
   localStorage.setItem('agentName', name);
+  // Сохраняем в store
+  gameStore.setAgentName(name);
 };
 
 const startGame = () => {
@@ -198,10 +212,30 @@ const handleRegister = () => {
   console.log('🟢 Регистрация агента:');
   console.log(`📝 Имя: ${agentName.value}`);
   console.log('⏰ Время:', new Date().toLocaleString());
-  console.log('✅ Агент зарегистрирован в системе');
 
-  // Сохраняем имя в localStorage
-  localStorage.setItem('agentName', agentName.value);
+  const trimmedName = agentName.value.trim();
+  const uniqueSuffix = generateUniqueSuffix();
+  const uniqueAgentName = `${trimmedName}#${uniqueSuffix}`;
+
+  // ✅ 1. Сохраняем в localStorage (всегда!)
+  localStorage.setItem('agentName', trimmedName);
+  localStorage.setItem('fullAgentName', uniqueAgentName);
+  localStorage.setItem('agentNamePending', 'true');
+
+  // ✅ 2. Сохраняем в store
+  gameStore.setAgentName(uniqueAgentName);
+
+  // ✅ 3. Пытаемся отправить на бэкенд
+  api.auth.post(uniqueAgentName)
+    .then(res => {
+      localStorage.setItem('token', res.data.token);
+      localStorage.removeItem('agentNamePending');
+      console.log('✅ Агент зарегистрирован на бэкенде');
+    })
+    .catch(error => {
+      console.error('❌ Ошибка регистрации (бэкенд не доступен):', error);
+      localStorage.setItem('agentNamePending', 'true');
+    });
 
   isRegistered.value = true;
 };
@@ -221,6 +255,8 @@ onMounted(() => {
   loadSuggestedNames();
 });
 </script>
+
+
 <style scoped lang="scss">
 // Фон
 .backgroundImg {
