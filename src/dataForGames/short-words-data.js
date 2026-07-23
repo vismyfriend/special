@@ -321,7 +321,7 @@ const shortWordsData = {
   ],
   up6: [
     { id: 1, eng: "So, what is next ?", ru: "Итак, что дальше?", hint: "/соу уот из нэкст/" },
-    { id: 2, eng: "Where to press ?", ru: "Итак, куда нажимать?", hint: "/уЭэ ту прэс/" },
+    { id: 2, eng: "Where to press ?", ru: "Куда нажимать?", hint: "/уЭэ ту прэс/" },
     { id: 3, eng: "How to do it ?", ru: "Как это делается? Как сделать это?", hint: "/хау ту ду ит/" },
     { id: 4, eng: "I see some thing", ru: "Я вижу какую-то штуку", hint: "/ай си сАм Thын/" },
     { id: 5, eng: "I don't see it", ru: "Мне не видно этого", hint: "/ай дОУнт си ит/" },

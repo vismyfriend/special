@@ -330,10 +330,19 @@ const isSpace = (char) => char === ' ';
 const isLetter = (char) => /[A-Za-z]/i.test(char);
 const isDigit = (char) => /[0-9]/.test(char);
 
+// Функция для очистки слова от разделителей
+const cleanWord = (word) => {
+  // Удаляем запятые, точки, точки с запятой и лишние пробелы
+  return word.replace(/[,;.]/g, '').trim();
+};
+
+// Функция для парсинга структуры слова
 const parseWordStructure = (word) => {
+  // ✅ Очищаем слово от запятых и других разделителей
+  const clean = cleanWord(word);
   const structure = [];
-  for (let i = 0; i < word.length; i++) {
-    const char = word[i];
+  for (let i = 0; i < clean.length; i++) {
+    const char = clean[i];
     if (isSpace(char)) {
       structure.push({ char: ' ', isSpace: true });
     } else {
@@ -362,13 +371,14 @@ const generateAvailableItems = (word) => {
   const itemsOnly = [];
   for (let i = 0; i < word.length; i++) {
     const char = word[i];
-    if (!isSpace(char)) {
+    // ✅ Пропускаем запятые и другие разделители
+    if (!isSpace(char) && char !== ',' && char !== '.' && char !== ';') {
       itemsOnly.push(char.toUpperCase());
     }
   }
   let firstLetter = null;
   for (let i = 0; i < word.length; i++) {
-    if (!isSpace(word[i])) {
+    if (!isSpace(word[i]) && word[i] !== ',' && word[i] !== '.' && word[i] !== ';') {
       firstLetter = word[i].toUpperCase();
       break;
     }

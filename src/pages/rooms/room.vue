@@ -5,7 +5,7 @@
   <!-- Фон -->
   <img
     class="backgroundImg"
-    src="../../assets/images/specialRoomIphone.jpg"
+    src="../../assets/images/specialRoom1.jpg"
     alt="Фон спэшл 2"
   >
 
