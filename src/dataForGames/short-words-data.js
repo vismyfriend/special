@@ -1552,13 +1552,13 @@ const shortWordsData = {
 
     ],
     professions2ER: [
-      { id: 17, eng: "farmers", ru: "фермеры", hint: "/ фАрмэрз /" },
-      { id: 18, eng: "painters", ru: "художники", hint: "/ пЭйнтэрз /" },
-      { id: 19, eng: "bakers", ru: "пекари", hint: "/ бЭйкэрз /" },
-      { id: 21, eng: "gardeners", ru: "садовники", hint: "/ гАрднэрз /" },
-      { id: 22, eng: "waiters", ru: "официанты", hint: "/ уЭйтэрз /" },
-      { id: 23, eng: "barbers", ru: "парикмахеры", hint: "/ бАрбэрз /" },
-      { id: 25, eng: "cleaners", ru: "уборщики", hint: "/ клИнэрз /" },
+      { id: 17, eng: "farmers", ru: "фермеры", hint: "/ фАрм эрз /" },
+      { id: 18, eng: "painters", ru: "художники", hint: "/ пЭйн тэрз /" },
+      { id: 19, eng: "bakers", ru: "пекари", hint: "/ бЭй кэрз /" },
+      { id: 21, eng: "gardeners", ru: "садовники", hint: "/ гАр дэ нэрз /" },
+      { id: 22, eng: "waiters", ru: "официанты", hint: "/ уЭй тэрз /" },
+      { id: 23, eng: "barbers", ru: "парикмахеры", hint: "/ бАр бэрз /" },
+      { id: 25, eng: "cleaners", ru: "уборщики", hint: "/ клИ нэрз /" },
       { id: 30, eng: "programmers", ru: "программисты", hint: "/ прОуграмэрз /" },
     ],
     verbsFromProfessions: [

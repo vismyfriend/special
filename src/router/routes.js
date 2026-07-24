@@ -11,6 +11,7 @@ const routes = [
       },
 
 
+
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
@@ -47,6 +48,7 @@ const routes = [
                 path: 'this-game-is-coming-soon',
                 component: () => import('components/ThisGameIsComingSoon.vue')
               },
+
               {
                 path: 'print-all-words2',
                 component: () => import('components/GameHWNotebook.vue')
@@ -376,6 +378,9 @@ const routes = [
           {
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
+          },
+          { path: '/see-all-sets-of-words/:missionName/sd',
+            component: () => import('src/components/SpaceDetective.vue')
           },
           {
             path: '/see-all-sets-of-words/:missionName/books',

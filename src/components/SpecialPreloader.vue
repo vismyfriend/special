@@ -1,5 +1,6 @@
 <template>
   <div v-if="isVisible" class="preloader-overlay">
+
     <div class="logo-loader" :class="{ 'fade-out': isFadingOut }">
       <!-- Верхняя строка: 0 1 1 0 0 0 0 (кубики на позициях 2 и 3) -->
       <div class="cube-row row-2">

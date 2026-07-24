@@ -8,22 +8,23 @@ const yearGuesserData = [
   },
   {
     id: 2,
-    picture: new URL("../assets/images/yearGuesserPics/June.png", import.meta.url).href,
-    date: 2025,
-    description: 'We tried to sup-board down the river in Big Goloustnoe (Baikal Lake region) but we stuck on the rocks because the river was not deep enough. Shallow - мелко - недостаточно глубоко, поверхностно'
+    picture: new URL("../assets/images/yearGuesserPics/Screenshot2026fifa.png", import.meta.url).href,
+    date: 2026,
+    description: 'Spainish team are the champions of 2026 FIFA (Federation International Football Association) cup. And Donald Trump was asked to leave the photo but he rejected and stayed in the photo'
   },
   {
     id: 3,
-    picture: new URL("../assets/images/yearGuesserPics/May.png", import.meta.url).href,
-    date: 2025,
-    description: 'It was the first time when Vincent was in the St.P. metro. We went to celebrate my nephew`s 25th anniversary. He is 25 in the year 2025, sounds cool, right? '
+    picture: new URL("../assets/images/yearGuesserPics/uranus.jpg", import.meta.url).href,
+    date: 2020,
+    description: 'Who knew? When teacher Vincent wrote this on the board he didn`t know what was gonna happen in 2022... But there is one more funny thing in this photo: Can you show me Uranus? ;)'
   },
   {
     id: 4,
-    picture: new URL("../assets/images/yearGuesserPics/Nov.png", import.meta.url).href,
-    date: 2024,
-    description: 'Sweet November and Phoebe is baking buns'
+    picture: new URL("../assets/images/yearGuesserPics/uazLegend.jpg", import.meta.url).href,
+    date: 1958,
+    description: 'Some things in life need evolution to become perfect. But the God created Perfect Ideal car right from his first attempt. Буханку Бог сразу создал идеальной! С первой попытки'
   },
+
   {
     id: 5,
     picture: new URL("../assets/images/yearGuesserPics/endOfWorldWar2 1945 august 14.png", import.meta.url).href,
@@ -119,6 +120,24 @@ const yearGuesserData = [
     picture: new URL("../assets/images/yearGuesserPics/ShallyPhoto.jpeg", import.meta.url).href,
     date: 2018,
     description: 'The Golden Bridge in Vietnam was built in 2018. The architector wanted to show a beautiful view from God\'s hands. As a result this creation attracted many tourists from all over the world to Vietnam. Do you want to visit this place?'
+  },
+  {
+    id: 21,
+    picture: new URL("../assets/images/yearGuesserPics/June.png", import.meta.url).href,
+    date: 2025,
+    description: 'We tried to sup-board down the river in Big Goloustnoe (Baikal Lake region) but we stuck on the rocks because the river was not deep enough. Shallow - мелко - недостаточно глубоко, поверхностно'
+  },
+  {
+    id: 22,
+    picture: new URL("../assets/images/yearGuesserPics/May.png", import.meta.url).href,
+    date: 2025,
+    description: 'It was the first time when Vincent was in the St.P. metro. We went to celebrate my nephew`s 25th anniversary. He is 25 in the year 2025, sounds cool, right? '
+  },
+  {
+    id: 23,
+    picture: new URL("../assets/images/yearGuesserPics/Nov.png", import.meta.url).href,
+    date: 2024,
+    description: 'Sweet November and Phoebe is baking buns'
   },
   {
     id: 50,

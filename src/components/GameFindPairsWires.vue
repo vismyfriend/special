@@ -67,7 +67,7 @@
     <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
     <div class="image-container">
     <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
-    <button class="action-button" @click="handleButtonClick">Режь правильный провод!!!</button>
+    <button class="action-button" @click="handleButtonClick">Режь правильный провод!</button>
   </div>
   </div>
 </template>

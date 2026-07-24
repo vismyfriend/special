@@ -1,116 +1,117 @@
 <template>
   <div class="legendary-mode-content">
-    <div class="modal-header">
+    <div v-if="showYearView">
+      <div class="modal-header">
       <h2>Legendary Mode</h2>
     </div>
 
-    <!-- Блок с текущей серией -->
-    <div class="streak-info">
+      <!-- Блок с текущей серией -->
+      <div class="streak-info">
       <div class="current-streak">
         <span class="streak-text">Вы тренируетесь</span>
         <span class="streak-number">{{ currentStreak }}</span>
         <span class="streak-text">{{ declensionDays(currentStreak) }} подряд</span>
       </div>
-      <p class="streak-description">
-        {{ getStreakDescription() }}
+      <p class="streak-description"
+         v-html="getStreakDescription()">
       </p>
     </div>
 
-    <!-- Статистика -->
-    <div class="stats-container">
+      <!-- Статистика -->
+      <div class="stats-container">
       <div class="stat-item">
         <span class="stat-number">{{ totalVisits }}</span>
-        <span class="stat-label">всего посещений</span>
+        <span class="stat-label">всего <br>занятий</span>
       </div>
-<!--      <div class="stat-item">-->
-<!--        <span class="stat-number">{{ currentStreak }}</span>-->
-<!--        <span class="stat-label">текущая серия</span>-->
-<!--      </div>-->
+        <div class="stat-item">
+          <span class="stat-number">{{ currentStreak }}</span>
+          <span class="stat-label">{{ declensionDays(currentStreak) }} без <br>пропусков</span>
+        </div>
       <div class="stat-item">
         <span class="stat-number">{{ bestStreak }}</span>
-        <span class="stat-label">прошлый рекорд</span>
+        <span class="stat-label">прошлый <br> рекорд</span>
       </div>
     </div>
-
-    <!-- Календарь посещений -->
-    <div v-if="!showYearView" class="calendar-container">
-      <div class="calendar-header">
-        <h3>{{ getCurrentMonthName() }} {{ currentYear }}</h3>
-      </div>
-
-      <div class="calendar-grid">
-        <!-- Дни недели -->
-        <div class="calendar-days-header">
-          <div v-for="day in weekDays" :key="day" class="day-header">{{ day }}</div>
+    </div>
+    <!-- Календарь (кликабельный) -->
+    <div
+      class="calendar-container"
+      @click="toggleCalendarView"
+      :class="{ 'clickable': true }"
+    >
+      <!-- Режим: текущий месяц -->
+      <div v-if="!showYearView" class="month-view">
+        <div class="calendar-header">
+          <h3>{{ getCurrentMonthName() }} {{ currentYear }}</h3>
         </div>
 
-        <!-- Ячейки календаря -->
-        <div class="calendar-days">
-          <div
-            v-for="day in calendarDays"
-            :key="day.date"
-            class="calendar-day"
-            :class="{
-              'empty': !day.date,
-              'active': day.isActive,
-              'today': day.isToday,
-              'future': day.isFuture
-            }"
-          >
-            <span v-if="day.date">{{ day.date }}</span>
-            <span v-if="day.isActive" class="fire-icon">🔥</span>
+        <div class="calendar-grid">
+          <div class="calendar-days-header">
+            <div v-for="day in weekDays" :key="day" class="day-header">{{ day }}</div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="calendar-actions">
-      <button @click="showYearView = !showYearView" class="year-toggle-btn">
-        {{ showYearView ? '⬅️ Текущий месяц' : '📅 Показать несколько месяцев' }}
-      </button>
-    </div>
-
-    <!-- Годовой календарь -->
-    <div v-if="showYearView" class="year-calendar-container">
-      <div class="year-grid">
-        <div
-          v-for="(month, index) in yearCalendar"
-          :key="index"
-          class="month-card"
-          :class="{
-        'current-month': month.isCurrentMonth,
-        'past-month': month.isPast,
-        'future-month': month.isFuture
-      }"
-        >
-          <div class="month-name">
-            {{ month.name }}
-            <span v-if="month.year !== currentYear" class="month-year">{{ month.year }}</span>
-          </div>
-          <div class="month-days-grid">
+          <div class="calendar-days">
             <div
-              v-for="day in month.days"
+              v-for="day in calendarDays"
               :key="day.date"
-              class="month-day"
+              class="calendar-day"
               :class="{
-            'empty': !day.date,
-            'active': day.isActive
-          }"
+                'empty': !day.date,
+                'active': day.isActive,
+                'today': day.isToday,
+                'future': day.isFuture
+              }"
             >
               <span v-if="day.date">{{ day.date }}</span>
+              <span v-if="day.isActive" class="fire-icon">🔥</span>
             </div>
           </div>
         </div>
+        <!-- Подсказка для переключения -->
+        <div class="toggle-hint">👆 нажмите, чтобы увидеть подробнее</div>
+      </div>
+
+      <!-- Режим: несколько месяцев -->
+      <div v-else class="year-calendar-container">
+        <div class="year-grid">
+          <div
+            v-for="(month, index) in yearCalendar"
+            :key="index"
+            class="month-card"
+            :class="{
+              'current-month': month.isCurrentMonth,
+              'past-month': month.isPast,
+              'future-month': month.isFuture
+            }"
+          >
+            <div class="month-name">
+              {{ month.name }}
+              <span v-if="month.year !== currentYear" class="month-year">{{ month.year }}</span>
+            </div>
+            <div class="month-days-grid">
+              <div
+                v-for="day in month.days"
+                :key="day.date"
+                class="month-day"
+                :class="{
+                  'empty': !day.date,
+                  'active': day.isActive
+                }"
+              >
+                <span v-if="day.date">{{ day.date }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Подсказка для переключения -->
+        <div class="toggle-hint">👆 нажмите, чтобы вернуться к текущему месяцу</div>
       </div>
     </div>
 
-
     <!-- Мотивирующий текст -->
     <div class="motivational-text">
-      <p>{{ getMotivationalText() }}</p>
+      <p v-html="getMotivationalText()">
+      </p>
     </div>
-
-
 
     <!-- Кнопки для разработки -->
     <div v-if="isDevMode" class="dev-controls">
@@ -131,6 +132,9 @@ const props = defineProps({
   }
 });
 
+// 🆕 Эмит для обновления дней (если нужно)
+const emit = defineEmits(['updateDays']);
+
 const isDevMode = import.meta.env.DEV;
 
 // Основные данные
@@ -140,7 +144,14 @@ const bestStreak = ref(0);
 const visitDates = ref([]);
 const currentYear = new Date().getFullYear();
 const weekDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+// 🆕 По умолчанию показываем несколько месяцев (false)
 const showYearView = ref(false);
+
+// 🆕 Функция переключения режима
+const toggleCalendarView = () => {
+  showYearView.value = !showYearView.value;
+};
 
 // Генерация ограниченного календаря (4 месяца назад + текущий + 1 месяц вперед)
 const yearCalendar = computed(() => {
@@ -149,19 +160,16 @@ const yearCalendar = computed(() => {
   const currentMonth = today.getMonth();
   const months = [];
 
-  // Начинаем с 4 месяцев назад
   const startMonth = currentMonth - 4;
-  // Заканчиваем через 1 месяц вперед
   const endMonth = currentMonth + 1;
 
   for (let month = startMonth; month <= endMonth; month++) {
-    // Корректируем год, если месяц переходит через декабрь/январь
     let year = currentYear;
     let adjustedMonth = month;
 
     if (month < 0) {
       year = currentYear - 1;
-      adjustedMonth = 12 + month; // -1 -> 11 (декабрь), -2 -> 10 (ноябрь) и т.д.
+      adjustedMonth = 12 + month;
     } else if (month > 11) {
       year = currentYear + 1;
       adjustedMonth = month - 12;
@@ -174,12 +182,10 @@ const yearCalendar = computed(() => {
 
     const days = [];
 
-    // Пустые дни в начале
     for (let i = 1; i < firstDayOfWeek; i++) {
       days.push({ date: null, isActive: false });
     }
 
-    // Дни месяца
     for (let i = 1; i <= lastDay.getDate(); i++) {
       const dateStr = `${year}-${String(adjustedMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
       const isActive = visitDates.value.includes(dateStr);
@@ -190,7 +196,7 @@ const yearCalendar = computed(() => {
     }
 
     months.push({
-      name: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][adjustedMonth],
+      name: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][adjustedMonth],
       year: year,
       isCurrentMonth: month === currentMonth,
       isPast: month < currentMonth,
@@ -202,7 +208,6 @@ const yearCalendar = computed(() => {
   return months;
 });
 
-// Добавьте в script setup
 const declensionDays = (number) => {
   const lastDigit = number % 10;
   const lastTwoDigits = number % 100;
@@ -216,7 +221,6 @@ const declensionDays = (number) => {
 const calculateBestStreakFromHistory = (dates) => {
   if (!dates || dates.length === 0) return 0;
 
-  // Сортируем даты
   const sortedDates = [...dates].sort();
   let currentStreak = 1;
   let maxStreak = 1;
@@ -236,6 +240,7 @@ const calculateBestStreakFromHistory = (dates) => {
 
   return maxStreak;
 };
+
 // Загрузка данных
 function loadTrackerData() {
   try {
@@ -247,7 +252,6 @@ function loadTrackerData() {
       visitDates.value = JSON.parse(savedVisits);
       totalVisits.value = visitDates.value.length;
 
-      // ✅ Пересчитываем bestStreak из истории каждый раз
       bestStreak.value = calculateBestStreakFromHistory(visitDates.value);
       localStorage.setItem('bestStreak', bestStreak.value.toString());
     }
@@ -276,12 +280,10 @@ function generateCalendarDays() {
 
   const days = [];
 
-  // Пустые дни в начале
   for (let i = 1; i < firstDayOfWeek; i++) {
     days.push({ date: null, isActive: false, isToday: false, isFuture: false });
   }
 
-  // Дни месяца
   for (let i = 1; i <= lastDay.getDate(); i++) {
     const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
     const isToday = i === currentDate;
@@ -308,31 +310,32 @@ const forceAddDay = () => {
   const yesterdayStr = yesterday.toISOString().slice(0, 10);
   const todayStr = today.toISOString().slice(0, 10);
 
-  // Эмулируем вчерашнее посещение
   if (!visitDates.value.includes(yesterdayStr)) {
     visitDates.value.push(yesterdayStr);
   }
 
-  // Увеличиваем streak
   currentStreak.value += 1;
   totalVisits.value = visitDates.value.length;
 
-  // Сохраняем
   localStorage.setItem('allVisits', JSON.stringify(visitDates.value));
   localStorage.setItem('currentStreak', currentStreak.value.toString());
 
+  // Обновляем bestStreak
+  bestStreak.value = calculateBestStreakFromHistory(visitDates.value);
+  localStorage.setItem('bestStreak', bestStreak.value.toString());
+
+  emit('updateDays', currentStreak.value);
   alert(`День добавлен! Текущая серия: ${currentStreak.value} дней`);
 };
 
 const forceSkipDay = () => {
-  // Сбрасываем streak до 1
   currentStreak.value = 1;
   localStorage.setItem('currentStreak', '1');
+  emit('updateDays', currentStreak.value);
   alert('Серия сброшена!');
 };
 
 const forceReset = () => {
-  // Полный сброс
   currentStreak.value = 1;
   visitDates.value = [];
   totalVisits.value = 0;
@@ -343,12 +346,14 @@ const forceReset = () => {
   localStorage.setItem('bestStreak', '0');
   localStorage.removeItem('lastVisitDate');
 
+  emit('updateDays', currentStreak.value);
   alert('Все данные сброшены!');
 };
 
 // Вспомогательные методы
 const getStreakDescription = () => {
-  if (currentStreak.value === 1) return 'Вижу цель - не вижу преград!';
+  if (currentStreak.value === 1) return '"Дорога длиною в 1000 миль<br> начинается с первого шага!"';
+  if (currentStreak.value === 2) return 'Вижу цель - не вижу преград!';
   if (currentStreak.value < 7) return 'Дальше будет круче!';
   if (currentStreak.value < 30) return 'День за днём - приходит уверенность!';
   if (currentStreak.value < 100) return 'Винсент будет тобой гордиться!';
@@ -359,7 +364,7 @@ const getMotivationalText = () => {
   const texts = [
     'Каждый день по чуть-чуть!',
     'Систематичность - ключ к успеху!',
-    'Сова из Дуолинго нам завидует!',
+    'Сова из Дуолинго нам позавидует!',
     'Терпение и труд результаты дадут!',
     'Вай вай какой студент! Молодец!'
   ];
@@ -368,11 +373,12 @@ const getMotivationalText = () => {
 
 const getCurrentMonthName = () => {
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'Джэ нью э ри', 'Фэ бру э ри', 'Марч', 'Эй прил', 'Мэй', 'Джун',
+    'Джу лай', 'О гэст', 'Сэп тэм бэр', 'Ок тоу бэр', 'Ноу вэм бэр', 'Ди сэм бэр'
   ];
   return months[new Date().getMonth()];
 };
+
 
 // Computed
 const calendarDays = computed(generateCalendarDays);
@@ -465,8 +471,36 @@ watch(() => props.currentDays, (newVal) => {
   text-align: center;
 }
 
+/* 🆕 Календарь кликабельный */
 .calendar-container {
+  cursor: pointer;
   margin-bottom: 25px;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.calendar-container:hover {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.calendar-container:active {
+  transform: scale(0.99);
+}
+
+/* 🆕 Подсказка для переключения */
+.toggle-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  margin-top: 6px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  user-select: none;
+}
+
+.calendar-container:hover .toggle-hint {
+  opacity: 1;
 }
 
 .calendar-header {
@@ -479,6 +513,8 @@ watch(() => props.currentDays, (newVal) => {
   margin: 0;
   color: #333;
   font-size: 18px;
+  font-family: Special_f1;
+  padding-bottom: 15px;
 }
 
 .calendar-grid {
@@ -531,10 +567,15 @@ watch(() => props.currentDays, (newVal) => {
   background: linear-gradient(145deg, #ff6b35, #f7931e);
   color: white;
   font-weight: bold;
+  border-radius: 7px;
+
 }
 
 .calendar-day.today {
-  border: 2px solid #ff6b35;
+  border: 2px solid #090909;
+  background: linear-gradient(145deg, #f7931e, #ed4f15);
+  border-radius: 7px;
+
   font-weight: bold;
 }
 
@@ -593,31 +634,9 @@ watch(() => props.currentDays, (newVal) => {
 .dev-button:nth-child(2) { background: #fff8e1; }
 .dev-button:nth-child(3) { background: #ffebee; }
 
-/* Кнопка переключения */
-.calendar-actions {
-  text-align: center;
-  margin: 5px 0;
-}
-
-.year-toggle-btn {
-  padding: 8px 20px;
-  background: linear-gradient(145deg, #ff6b35, #f7931e);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-  }
-}
-
 /* Годовой календарь */
 .year-calendar-container {
-  margin-top: 15px;
+  margin-top: 5px;
   max-height: 400px;
   overflow-y: auto;
   padding-right: 5px;
@@ -637,7 +656,6 @@ watch(() => props.currentDays, (newVal) => {
   }
 }
 
-/* Годовой календарь - всегда 3 месяца в столбце */
 .year-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -651,19 +669,16 @@ watch(() => props.currentDays, (newVal) => {
   border: 1px solid #e0e0e0;
   transition: all 0.3s ease;
 
-  /* Текущий месяц - подсветка */
   &.current-month {
     border: 2px solid #ff6b35;
     background: #fff8f0;
     box-shadow: 0 2px 10px rgba(255, 107, 53, 0.15);
   }
 
-  /* Прошлые месяцы - легкая затемненность */
   &.past-month {
     opacity: 0.85;
   }
 
-  /* Будущие месяцы - более светлые */
   &.future-month {
     opacity: 0.7;
 
@@ -718,16 +733,16 @@ watch(() => props.currentDays, (newVal) => {
   }
 }
 
-/* Адаптив - просто уменьшаем отступы на мобильных */
+/* Адаптив */
 @media (max-width: 600px) {
-
   .calendar-container {
     transform: scale(0.85);
     margin-bottom: 5px;
+    transform-origin: top center;
   }
 
   .calendar-header h3 {
-    font-size: 14px;
+    font-size: 20px;
   }
 
   .streak-text {
@@ -754,6 +769,9 @@ watch(() => props.currentDays, (newVal) => {
     }
   }
 
+  .toggle-hint {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -771,6 +789,10 @@ watch(() => props.currentDays, (newVal) => {
     .month-day {
       font-size: 6px;
     }
+  }
+
+  .calendar-container {
+    transform: scale(0.8);
   }
 }
 </style>
