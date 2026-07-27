@@ -67,7 +67,7 @@
     <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
     <div class="image-container">
     <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
-    <button class="action-button" @click="handleButtonClick">Режь правильный провод!</button>
+    <button class="action-button" @click="handleButtonClick">Режь правильный провод!!</button>
   </div>
   </div>
 </template>
@@ -176,9 +176,9 @@ const drawLines = () => {
     const answerRect = el.getBoundingClientRect();
 
     // Координаты центра слова и центра ответа
-    const x1 = leftRect.right - leftRect.width / 4 - svgRect.left;
+    const x1 = leftRect.right - 5 - svgRect.left;  // Правая сторона левого слова с отступом
     const y1 = leftRect.top + leftRect.height / 2 - svgRect.top;
-    const x2 = answerRect.left + answerRect.width / 4 - svgRect.left;
+    const x2 = answerRect.left + 5 - svgRect.left;  // Левая сторона карточки ответа с отступом
     const y2 = answerRect.top + answerRect.height / 2 - svgRect.top;
 
     // Создаём SVG-линию
@@ -471,6 +471,8 @@ onMounted(() => {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-right: 15px;
+
 }
 
 .wordCard {
@@ -479,7 +481,7 @@ onMounted(() => {
   background-color: #f9f9f9;
   border: 2px solid #e90e0e;
   border-radius: 20px;
-  height: 50px;
+  height: 61px;
   padding: 5px;
   display: flex;
   justify-content: center;
@@ -488,11 +490,11 @@ onMounted(() => {
 
   cursor: none ;
   margin: 1.5px;
-  margin-right: 25px;
+  margin-right: 15px;
   user-select: none;
   color: black;
   transition: opacity 0.5s ease;
-  width: 145px;
+  width: 155px;
 }
 .hint {
   font-size: 14px;

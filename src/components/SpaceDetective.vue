@@ -65,20 +65,32 @@
           </div>
 
           <!-- Варианты ответов (на русском) -->
-          <div class="answers-grid">
+          <div class="answers-section">
+            <!-- Кнопка подсказки - теперь показывает hint -->
             <button
-              v-for="(answer, index) in answers"
-              :key="index"
-              class="answer-btn"
-              :class="{
-                'correct-answer': showCorrect && answer === currentWord?.ru,
-                'wrong-answer': showWrong && answer === selectedAnswer && selectedAnswer !== currentWord?.ru
-              }"
-              @click="checkAnswer(answer)"
+              v-if="currentWord?.hint"
+              class="hint-btn"
+              @click="showHint"
               :disabled="isProcessing || gameOver"
             >
-              {{ answer }}
+              {{ currentWord.hint }}
             </button>
+
+            <div class="answers-grid">
+              <button
+                v-for="(answer, index) in answers"
+                :key="index"
+                class="answer-btn"
+                :class="{
+                  'correct-answer': showCorrect && answer === currentWord?.ru,
+                  'wrong-answer': showWrong && answer === selectedAnswer && selectedAnswer !== currentWord?.ru
+                }"
+                @click="checkAnswer(answer)"
+                :disabled="isProcessing || gameOver"
+              >
+                {{ answer }}
+              </button>
+            </div>
           </div>
 
           <!-- Game Over Modal -->
@@ -273,6 +285,17 @@ const updateLastWords = (word) => {
 // ============================================================
 //  МЕТОДЫ ИГРЫ
 // ============================================================
+
+// ============================================================
+//  МЕТОД ПОДСКАЗКИ
+// ============================================================
+const showHint = () => {
+  if (!currentWord.value?.hint) return;
+  console.log('🔍 Подсказка для слова:', currentWord.value.eng);
+  console.log('📝 Подсказка:', currentWord.value.hint);
+  // Здесь можно будет добавить логику показа подсказки позже
+};
+
 const spawnAsteroid = () => {
   if (gameOver.value) return;
 
@@ -410,7 +433,7 @@ const checkAnswer = (answer) => {
 
 const resetGame = () => {
   score.value = 0;
-  lives.value = 3;
+  lives.value = 4;
   hits.value = 0;
   totalAttempts.value = 0;
   gameOver.value = false;
@@ -775,18 +798,63 @@ onBeforeUnmount(() => {
 // ============================================================
 //  ОТВЕТЫ (СЕТКА 2×2)
 // ============================================================
-.answers-grid {
+// ============================================================
+//  СЕКЦИЯ ОТВЕТОВ С ПОДСКАЗКОЙ
+// ============================================================
+.answers-section {
   position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   z-index: 10;
   width: 92%;
   max-width: 300px;
 }
+
+.hint-btn {
+  width: 100%;
+  padding: 8px 14px;
+  background: rgba(255, 215, 0, 0.06);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: 12px;
+  color: rgb(253, 253, 253);
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  cursor: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  user-select: none;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    transform: scale(1.02);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+}
+
+.answers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
 
 .answer-btn {
   padding: 12px 14px;
@@ -951,14 +1019,18 @@ onBeforeUnmount(() => {
 // ============================================================
 @media (max-width: 380px) {
   #phoneFrame {
-    height: 620px;
+    height: 550px;
     width: 300px;
+    padding-top: 20px;
+    margin-top: 40px;
   }
 
   .asteroid-word {
     font-size: 18px;
   }
-
+  .asteroid-container {
+    top: 40%;
+  }
   .answer-btn {
     font-size: 12px;
     padding: 10px 10px;
