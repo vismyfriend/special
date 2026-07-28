@@ -298,6 +298,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/SayVsTell/sd",
+      missionVisibleName: "Say VS Tell️",
+      missionDescription: "Say and Tell",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/SarahAndHerDay1/print-all-words",
       missionVisibleName: "Sarah's day️",
       missionDescription: "Сарин день (День Сары)",
