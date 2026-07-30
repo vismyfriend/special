@@ -1092,10 +1092,10 @@ const shortWordsData = {
     // ===== TELL (передавать информацию КОМУ-ТО) =====
     { id: 24, eng: "tell nobody", ru: "не говори никому" },
     { id: 25, eng: "tell jokes", ru: "рассказывать анекдоты" },
-    { id: 26, eng: "tell smb what to do", ru: "учить жить, давать (непрошенные) советы" },
+    { id: 26, eng: "tell somebody what to do", ru: "учить жить, давать (непрошенные) советы" },
     { id: 27, eng: "tell the truth", ru: "говорить правду" },
     { id: 28, eng: "tell lies", ru: "говорить ложь" },
-    { id: 29, eng: "tell smb off", ru: "отчитывать, ругать кого-то" },
+    { id: 29, eng: "tell somebody off", ru: "отчитывать, ругать кого-то" },
     { id: 30, eng: "tell the difference", ru: "различать" },
     { id: 31, eng: "tell the future", ru: "предсказывать будущее" },
     { id: 32, eng: "tell a story", ru: "рассказывать историю" },

@@ -1,47 +1,48 @@
 <template>
   <div v-if="isVisible" class="preloader-overlay">
 
+    <!-- ЛОГОТИП С КУБИКАМИ -->
     <div class="logo-loader" :class="{ 'fade-out': isFadingOut }">
       <!-- Верхняя строка: 0 1 1 0 0 0 0 (кубики на позициях 2 и 3) -->
       <div class="cube-row row-2">
-  <span v-for="n in 7" :key="'r1-'+n"
-        class="cube"
-        :class="{
-          'cube-empty': ![2, 3].includes(n)
-        }"
-        :style="{
-          animationDelay: (n * 0.08 + 0.6) + 's',
-          background: `linear-gradient(135deg, ${capColors.top}, ${lightenColor(capColors.top, 30)})`,
-          boxShadow: `0 0 10px ${capColors.top}33`
-        }">
-  </span>
+        <span v-for="n in 7" :key="'r1-'+n"
+              class="cube"
+              :class="{
+                'cube-empty': ![2, 3].includes(n)
+              }"
+              :style="{
+                animationDelay: (n * 0.08 + 0.6) + 's',
+                background: `linear-gradient(135deg, ${capColors.top}, ${lightenColor(capColors.top, 30)})`,
+                boxShadow: `0 0 10px ${capColors.top}33`
+              }">
+        </span>
       </div>
 
       <!-- Средняя строка: 1 1 1 1 0 0 0 (кубики на позициях 1-4) -->
       <div class="cube-row row-4">
-  <span v-for="n in 7" :key="'r2-'+n"
-        class="cube"
-        :class="{
-          'cube-empty': ![1, 2, 3, 4].includes(n)
-        }"
-        :style="{
-          animationDelay: (n * 0.08 + 0.3) + 's',
-          background: `linear-gradient(135deg, ${capColors.top}, ${lightenColor(capColors.top, 30)})`,
-          boxShadow: `0 0 10px ${capColors.top}33`
-        }">
-  </span>
+        <span v-for="n in 7" :key="'r2-'+n"
+              class="cube"
+              :class="{
+                'cube-empty': ![1, 2, 3, 4].includes(n)
+              }"
+              :style="{
+                animationDelay: (n * 0.08 + 0.3) + 's',
+                background: `linear-gradient(135deg, ${capColors.top}, ${lightenColor(capColors.top, 30)})`,
+                boxShadow: `0 0 10px ${capColors.top}33`
+              }">
+        </span>
       </div>
 
       <!-- Нижняя строка: 1 1 1 1 1 1 1 (все кубики) -->
       <div class="cube-row row-7">
-  <span v-for="n in 7" :key="'r3-'+n"
-        class="cube"
-        :style="{
-          animationDelay: (n * 0.08) + 's',
-          background: `linear-gradient(135deg, ${capColors.bottom}, ${lightenColor(capColors.bottom, 30)})`,
-          boxShadow: `0 0 10px ${capColors.bottom}4D`
-        }">
-  </span>
+        <span v-for="n in 7" :key="'r3-'+n"
+              class="cube"
+              :style="{
+                animationDelay: (n * 0.08) + 's',
+                background: `linear-gradient(135deg, ${capColors.bottom}, ${lightenColor(capColors.bottom, 30)})`,
+                boxShadow: `0 0 10px ${capColors.bottom}4D`
+              }">
+        </span>
       </div>
 
       <!-- Отдельная строка для букв под кубиками -->
@@ -56,11 +57,33 @@
         </span>
       </div>
     </div>
+
+    <!-- ФРАЗЫ ВЫНЕСЕНЫ ЗА ПРЕДЕЛЫ LOGO-LOADER -->
+    <div class="phrases-wrapper">
+      <TransitionGroup
+        name="phrase"
+        tag="div"
+        class="phrase-container"
+        :css="false"
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @leave="onLeave"
+      >
+        <div
+          v-if="showPhrase"
+          :key="currentPhrase"
+          class="phrase"
+        >
+          {{ currentPhrase }}
+        </div>
+      </TransitionGroup>
+    </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // ============================================================
 //  НАСТРОЙКИ ВРЕМЕНИ ПРЕЛОАДЕРА (меняй здесь!)
@@ -72,15 +95,37 @@ const TIMING = {
   FADE_DURATION: 0.8,
   CYCLES_BEFORE_HIDE: 2,
   INITIAL_DELAY: 0.3,
-  CYCLE_PAUSE: 0.3
+  CYCLE_PAUSE: 0.3,
+  PHRASE_INTERVAL: 0.6 // Интервал смены фраз (в секундах)
 };
 // ============================================================
 
 // Слова для каждого цикла
 const WORDS = ['you `re', 'special', 'loading'];
 
+// Фразы для нижнего блока
+const PHRASES = [
+  'загружаю слова',
+  'загружаю произношение',
+  'выбираю кепку',
+  'подключаю аудио',
+  'вспоминаем прошлый урок',
+  'наводим порядок',
+  'проверяю домашку',
+  'вспоминаем времена',
+  'приветики от Винсентика',
+  'настраиваем звук',
+  'убираем посторонние шумы',
+  'тренируем / про нан си эй шэн /',
+  '@ohpolich is awesome ',
+  'fallout is the best',
+];
+
 const emit = defineEmits(['loaded']);
 
+// ============================================================
+//  СОСТОЯНИЕ ПРЕЛОАДЕРА
+// ============================================================
 const isVisible = ref(true);
 const showLetters = ref(false);
 const isFadingOut = ref(false);
@@ -88,22 +133,123 @@ const currentWord = ref('special');
 const cycleCount = ref(0);
 
 // ============================================================
+//  СОСТОЯНИЕ ФРАЗ (ПОЛНОСТЬЮ НЕЗАВИСИМО)
+// ============================================================
+const currentPhrase = ref(PHRASES[0]);
+const showPhrase = ref(false);
+let phraseInterval = null;
+let remainingPhrases = [];
+let lastPhrase = null;
+
+// Функция для перемешивания массива
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Инициализация очереди фраз
+const initPhraseQueue = () => {
+  let shuffled = shuffleArray(PHRASES);
+
+  // Если есть последняя фраза, убеждаемся что она не будет первой
+  if (lastPhrase && shuffled[0] === lastPhrase) {
+    const swapIndex = Math.floor(Math.random() * (shuffled.length - 1)) + 1;
+    [shuffled[0], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[0]];
+    console.log(`🔄 Защита от повтора: "${lastPhrase}" перемещена`);
+  }
+
+  remainingPhrases = shuffled;
+  console.log('🔄 Новая очередь фраз:', remainingPhrases);
+};
+
+// Получение следующей фразы с гарантией уникальности в текущем цикле
+const getNextPhrase = () => {
+  // Если очередь пуста - создаем новую
+  if (remainingPhrases.length === 0) {
+    initPhraseQueue();
+    console.log('🔄 Новый цикл фраз начат');
+  }
+
+  // Берем следующую фразу
+  const nextPhrase = remainingPhrases.shift();
+  lastPhrase = nextPhrase;
+
+  return nextPhrase;
+};
+
+// ============================================================
+//  УПРАВЛЕНИЕ ФРАЗАМИ
+// ============================================================
+const startPhraseRotation = () => {
+  if (phraseInterval) {
+    clearInterval(phraseInterval);
+    phraseInterval = null;
+  }
+
+  // Сбрасываем при первом запуске
+  lastPhrase = null;
+  initPhraseQueue();
+
+  // Показываем первую фразу
+  currentPhrase.value = getNextPhrase();
+  showPhrase.value = true;
+  console.log(`📝 Фраза: "${currentPhrase.value}" (осталось: ${remainingPhrases.length})`);
+
+  // Запускаем ротацию
+  phraseInterval = setInterval(() => {
+    const nextPhrase = getNextPhrase();
+    currentPhrase.value = nextPhrase;
+
+    showPhrase.value = false;
+    setTimeout(() => {
+      showPhrase.value = true;
+    }, 50);
+
+    console.log(`📝 Фраза: "${nextPhrase}" (осталось: ${remainingPhrases.length})`);
+  }, TIMING.PHRASE_INTERVAL * 1000);
+};
+
+const stopPhraseRotation = () => {
+  if (phraseInterval) {
+    clearInterval(phraseInterval);
+    phraseInterval = null;
+    console.log('⏹ Ротация фраз остановлена');
+  }
+};
+
+// Анимации для TransitionGroup
+const onBeforeEnter = (el) => {
+  el.style.opacity = 0;
+  el.style.transform = 'translateY(15px) scale(0.95)';
+};
+
+const onEnter = (el, done) => {
+  el.offsetHeight;
+  el.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  el.style.opacity = 1;
+  el.style.transform = 'translateY(0) scale(1)';
+  setTimeout(done, 400);
+};
+
+const onLeave = (el, done) => {
+  el.style.transition = 'all 0.3s ease-in';
+  el.style.opacity = 0;
+  el.style.transform = 'translateY(-15px) scale(0.95)';
+  setTimeout(done, 300);
+};
+
+// ============================================================
 //  ЦВЕТА КЕПКИ
 // ============================================================
 const getRandomColor = () => {
   const colors = [
-    '#EE4040', // красный
-    '#2196F3', // синий
-    '#4CAF50', // зеленый
-    '#FF9800', // оранжевый
-    '#9C27B0', // фиолетовый
-    '#00BCD4', // голубой
-    '#FF5722', // оранжево-красный
-    '#E91E63', // розовый
-    '#3F51B5', // индиго
-    '#009688', // бирюзовый
-    '#ffffff', // белый
-    '#fffb00', // желтый
+    '#EE4040', '#2196F3', '#4CAF50', '#FF9800', '#9C27B0',
+    '#00BCD4', '#FF5722', '#E91E63', '#3F51B5', '#009688',
+    '#ffffff', '#fffb00',
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
@@ -123,49 +269,25 @@ const capColors = ref({
   top: '#888888'
 });
 
-const generateNewCapColors = () => {
-  // Первый цикл — всегда красный + серый
-  if (cycleCount.value === 0) {
-    capColors.value = {
-      bottom: '#EE4040',
-      top: '#888888'
-    };
-    return;
-  }
-
-  // Для остальных — рандом
-  const bottomColor = getRandomColor();
-  let topColor;
-  do {
-    topColor = getRandomColor();
-  } while (topColor === bottomColor);
-
-  capColors.value = {
-    bottom: bottomColor,
-    top: topColor
-  };
-};
-
 const getLetter = (position, word) => {
   const letters = word.split('');
   return letters[position - 1] || '';
 };
 
-// Запуск анимационной последовательности
+// ============================================================
+//  ЛОГИКА ПРЕЛОАДЕРА
+// ============================================================
 const startAnimationSequence = () => {
   isFadingOut.value = false;
   showLetters.value = false;
 
-  // ✅ Генерируем цвета ДО увеличения cycleCount
-  // Проверяем: если это первый запуск (cycleCount === 0) — красный + серый
   if (cycleCount.value === 0) {
     capColors.value = {
       bottom: '#EE4040',
       top: '#888888'
     };
-    console.log(`🎨 Цикл #${cycleCount.value + 1} — КЛАССИКА: красный + серый`);
+    console.log(`🎨 Цикл #${cycleCount.value + 1} — КЛАССИКА`);
   } else {
-    // Для остальных — рандом
     const bottomColor = getRandomColor();
     let topColor;
     do {
@@ -176,15 +298,13 @@ const startAnimationSequence = () => {
       bottom: bottomColor,
       top: topColor
     };
-    console.log(`🎨 Цикл #${cycleCount.value + 1} — РАНДОМ: ${capColors.value.bottom} + ${capColors.value.top}`);
+    console.log(`🎨 Цикл #${cycleCount.value + 1} — РАНДОМ`);
   }
 
-  // Теперь увеличиваем счетчик
   cycleCount.value++;
 
   const wordIndex = (cycleCount.value - 1) % WORDS.length;
   currentWord.value = WORDS[wordIndex];
-
 
   setTimeout(() => {
     setTimeout(() => {
@@ -196,6 +316,7 @@ const startAnimationSequence = () => {
 
       setTimeout(() => {
         if (cycleCount.value >= TIMING.CYCLES_BEFORE_HIDE) {
+          stopPhraseRotation();
           isVisible.value = false;
           emit('loaded');
         } else {
@@ -208,9 +329,17 @@ const startAnimationSequence = () => {
   }, TIMING.INITIAL_DELAY * 1000);
 };
 
+// ============================================================
+//  ЖИЗНЕННЫЙ ЦИКЛ
+// ============================================================
 onMounted(() => {
   console.log('🚀 Прелоадер запущен');
+  startPhraseRotation();
   setTimeout(startAnimationSequence, TIMING.INITIAL_DELAY * 1000);
+});
+
+onBeforeUnmount(() => {
+  stopPhraseRotation();
 });
 </script>
 
@@ -222,11 +351,13 @@ onMounted(() => {
   right: 0;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(12px);
   z-index: 9999;
+  gap: 20px;
 }
 
 .logo-loader {
@@ -266,7 +397,6 @@ onMounted(() => {
   position: relative;
 }
 
-// Пустые позиции (невидимые кубики)
 .cube-empty {
   background: transparent !important;
   box-shadow: none !important;
@@ -276,7 +406,6 @@ onMounted(() => {
   pointer-events: none;
 }
 
-// Отдельная строка для букв
 .letter-row {
   display: flex;
   gap: 4px;
@@ -306,7 +435,34 @@ onMounted(() => {
   transform: translateY(0) scale(1);
 }
 
-// Плавное исчезновение букв
+.phrases-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  position: relative;
+}
+
+.phrase-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-top: 135px;
+}
+
+.phrase {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  position: absolute;
+  white-space: nowrap;
+}
+
 @keyframes letterFadeAway {
   0% {
     opacity: 1;
@@ -318,7 +474,6 @@ onMounted(() => {
   }
 }
 
-// Плавное исчезновение кубиков
 @keyframes fadeAway {
   0% {
     opacity: 1;
@@ -348,8 +503,11 @@ onMounted(() => {
   }
 }
 
-// Адаптация размера кубиков под экран
 @media (max-width: 600px) {
+  .preloader-overlay {
+    gap: 15px;
+  }
+
   .cube {
     width: 24px;
     height: 24px;
@@ -370,6 +528,13 @@ onMounted(() => {
     gap: 3px;
     margin-top: 6px;
   }
-}
 
+  .phrases-wrapper {
+    height: 24px;
+  }
+
+  .phrase {
+    font-size: 13px;
+  }
+}
 </style>

@@ -23,7 +23,7 @@
       <div class="card-content">
         <h1 class="title">/ эй джэ нт /</h1>
 
-        <!-- 👇 НОВЫЙ КОНТЕЙНЕР ДЛЯ ПОЛЯ + КНОПКИ -->
+        <!-- Контейнер для поля + кнопки -->
         <div class="input-with-btn">
           <!-- Поле ввода -->
           <div class="input-group">
@@ -40,7 +40,7 @@
 
           <!-- Кнопка "войти" теперь справа -->
           <button class="register-btn secondary" @click="handleRegister">
-            <span class="btn-text ">ok</span>
+            <span class="btn-text">ok</span>
             <span class="btn-hover-text">ок</span>
           </button>
         </div>
@@ -74,14 +74,21 @@
         <h1 class="welcome-title">hello, <span class="agent-name-display">{{ agentName }}</span></h1>
 
         <div class="welcome-buttons">
+          <button class="welcome-btn yellow" @click="openZoomMeeting">
+            <span class="btn-text">🎥  подключиться к созвону</span>
+            <span class="btn-hover-text">join the call</span>
+          </button>
+          <button class="welcome-btn secondary" @click="changeName">
+            <span class="btn-text">🕵️ это не я - сменить имя</span>
+            <span class="btn-hover-text">change name</span>
+          </button>
           <button class="welcome-btn primary" @click="goToSelfStudy">
             <span class="btn-text">заниматься самостоятельно</span>
             <span class="btn-hover-text">выбрать миссию</span>
           </button>
-          <button class="welcome-btn secondary" @click="openZoomMeeting">
-            <span class="btn-text">🎥 🕵️ подключиться к созвону</span>
-            <span class="btn-hover-text">join the call</span>
-          </button>
+
+
+
         </div>
       </div>
     </div>
@@ -105,6 +112,7 @@ const isLoginMode = ref(false);
 const isRegistered = ref(false);
 const suggestedNames = ref([]);
 const isInputFocused = ref(false);
+const hasExistingAgent = ref(false);
 
 const onInputFocus = () => {
   isInputFocused.value = true;
@@ -115,9 +123,6 @@ const onInputBlur = () => {
     isInputFocused.value = false;
   }, 200);
 };
-
-// Уведомления
-
 
 // Генерация уникального суффикса
 const generateUniqueSuffix = () => {
@@ -157,39 +162,84 @@ const getRandomSuffix = () => {
 };
 
 // Загрузка предложенных имён
+// Загрузка предложенных имён
 const loadSuggestedNames = () => {
   const previousName = getPreviousAgentName();
   const suggestions = [];
 
   if (previousName) {
+    // Если есть предыдущее имя - показываем его и варианты с суффиксами
     suggestions.push(previousName);
     const nameWithoutSuffix = previousName.split(/#|_/)[0];
-    const suffixVariant = `${nameWithoutSuffix}_${getRandomSuffix()}`;
-    if (suffixVariant !== previousName) {
-      suggestions.push(suffixVariant);
+
+    // Добавляем вариант с разными суффиксами
+    const suffix1 = `${nameWithoutSuffix}_${getRandomSuffix()}`;
+    // const suffix2 = `${nameWithoutSuffix}_${getRandomSuffix()}`;
+
+    if (suffix1 !== previousName) {
+      suggestions.push(suffix1);
     }
+    // if (suffix2 !== previousName && suffix2 !== suffix1) {
+    //   suggestions.push(suffix2);
+    // }
   }
 
+  // Если нет предыдущего имени (первое посещение) - показываем 3 варианта
   if (suggestions.length === 0) {
+    // Вариант 1: название устройства
     suggestions.push(getDeviceSuggestion());
-    const classicNames = ['No name', 'Shrek', 'Гость 007'];
+
+    // Вариант 2: классическое имя
+    const classicNames = ['No name', 'Shrek', 'Гость 007', 'Agent', 'Explorer', 'Pioneer'];
     suggestions.push(classicNames[Math.floor(Math.random() * classicNames.length)]);
+
+    // Вариант 3: еще одно случайное имя
+    const moreNames = ['Странник', 'Искатель', 'Путешественник', 'Dreamer', 'Challenger'];
+    suggestions.push(moreNames[Math.floor(Math.random() * moreNames.length)]);
   }
 
-  suggestedNames.value = suggestions;
+  // Ограничиваем до 3 предложений
+  suggestedNames.value = suggestions.slice(0, 3);
 };
 
 // Использовать предложенное имя
 const useSuggestedName = (name) => {
   agentName.value = name;
   localStorage.setItem('agentName', name);
-  // Сохраняем в store
   gameStore.setAgentName(name);
 };
 
 const startGame = () => {
-  console.log('🎮 Нажата кнопка Start! Переключаем на форму входа');
-  isLoginMode.value = true;
+  console.log('🎮 Нажата кнопка Start!');
+
+  // Проверяем, есть ли сохраненное имя
+  const savedName = getPreviousAgentName();
+
+  if (savedName) {
+    // Если есть сохраненное имя - сразу показываем приветствие
+    console.log(`👤 Найдено сохраненное имя: ${savedName}`);
+    agentName.value = savedName;
+    hasExistingAgent.value = true;
+
+    // Проверяем, есть ли полное имя в localStorage
+    const fullName = localStorage.getItem('fullAgentName');
+    if (fullName) {
+      gameStore.setAgentName(fullName);
+    } else {
+      // Если нет полного имени - генерируем
+      const uniqueSuffix = generateUniqueSuffix();
+      const uniqueAgentName = `${savedName}#${uniqueSuffix}`;
+      localStorage.setItem('fullAgentName', uniqueAgentName);
+      gameStore.setAgentName(uniqueAgentName);
+    }
+
+    isRegistered.value = true;
+    isLoginMode.value = true;
+  } else {
+    // Если нет сохраненного имени - показываем форму входа
+    console.log('👤 Сохраненное имя не найдено, показываем форму входа');
+    isLoginMode.value = true;
+  }
 };
 
 const goBackToStart = () => {
@@ -201,6 +251,7 @@ const goBackToStart = () => {
 const goBackToLogin = () => {
   console.log('↩️ Возврат к экрану входа');
   isRegistered.value = false;
+  hasExistingAgent.value = false;
 };
 
 const handleRegister = () => {
@@ -217,15 +268,15 @@ const handleRegister = () => {
   const uniqueSuffix = generateUniqueSuffix();
   const uniqueAgentName = `${trimmedName}#${uniqueSuffix}`;
 
-  // ✅ 1. Сохраняем в localStorage (всегда!)
+  // Сохраняем в localStorage
   localStorage.setItem('agentName', trimmedName);
   localStorage.setItem('fullAgentName', uniqueAgentName);
   localStorage.setItem('agentNamePending', 'true');
 
-  // ✅ 2. Сохраняем в store
+  // Сохраняем в store
   gameStore.setAgentName(uniqueAgentName);
 
-  // ✅ 3. Пытаемся отправить на бэкенд
+  // Пытаемся отправить на бэкенд
   api.auth.post(uniqueAgentName)
     .then(res => {
       localStorage.setItem('token', res.data.token);
@@ -238,6 +289,26 @@ const handleRegister = () => {
     });
 
   isRegistered.value = true;
+};
+
+// Функция для смены имени
+const changeName = () => {
+  console.log('🔄 Смена имени');
+  // Очищаем сохраненное имя
+  localStorage.removeItem('agentName');
+  localStorage.removeItem('fullAgentName');
+  localStorage.removeItem('agentNamePending');
+
+  // Очищаем store
+  gameStore.setAgentName('');
+
+  // Возвращаемся к форме входа
+  isRegistered.value = false;
+  agentName.value = '';
+  hasExistingAgent.value = false;
+
+  // Перезагружаем предложенные имена
+  loadSuggestedNames();
 };
 
 const goToSelfStudy = () => {
@@ -253,9 +324,16 @@ const openZoomMeeting = () => {
 
 onMounted(() => {
   loadSuggestedNames();
+
+  // Проверяем, есть ли сохраненное имя при загрузке
+  const savedName = getPreviousAgentName();
+  if (savedName) {
+    console.log(`👤 Найдено сохраненное имя при загрузке: ${savedName}`);
+    agentName.value = savedName;
+    hasExistingAgent.value = true;
+  }
 });
 </script>
-
 
 <style scoped lang="scss">
 // Фон
@@ -451,6 +529,19 @@ onMounted(() => {
   }
 }
 
+
+.red {
+  background: rgba(255, 100, 100, 0.10) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 100, 100, 0.15) !important;
+
+  &:hover {
+    background: rgba(255, 100, 100, 0.25) !important;
+    box-shadow: 0 8px 32px rgba(255, 100, 100, 0.15) !important;
+    color: #ffffff !important;
+  }
+}
+
 // Кнопка "войти" — компактная версия для размещения справа
 .register-btn {
   background: rgba(255, 255, 255, 0.08);
@@ -586,6 +677,8 @@ onMounted(() => {
   }
 }
 
+
+
 .welcome-btn.secondary {
   background: rgba(43, 181, 115, 0.15);
   color: rgba(255, 255, 255, 0.85);
@@ -595,6 +688,26 @@ onMounted(() => {
     background: rgba(43, 181, 115, 0.3);
     box-shadow: 0 8px 32px rgba(43, 181, 115, 0.15);
     color: #ffffff;
+  }
+
+  .btn-hover-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+
+.welcome-btn.yellow {
+  background: rgba(255, 215, 0, 0.10);
+  color: #ffffff;
+
+  border-color: rgba(255, 215, 0, 0.20);
+
+  &:hover {
+    background: rgba(255, 215, 0, 0.25);
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.20);
+    border-color: rgba(255, 215, 0, 0.40);
   }
 
   .btn-hover-text {
