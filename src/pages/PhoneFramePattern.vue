@@ -423,6 +423,7 @@ watch(filteredQuestions, () => {
 }
 
 #phoneFrame {
+
   position: relative;
   height: 655px;
   width: 310px;
