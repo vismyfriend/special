@@ -1151,7 +1151,160 @@ In the coming sessions, you will discover your most <b><em>efficient</b> /\u00A0
       }
     ]
   },
+  jokes: {
+    mainTitleOfTheText: "Jokes [\u00A0джОУкс\u00A0] in Инглиш",
+    author: "Нажимай на предложения, чтобы увидеть перевод если затупил и не понимаешь ;-)",
+    description: "Here are some funny jokes in English for Russian learners. Read, laugh, and learn! / Здесь собраны смешные шутки на английском для русских изучающих. Читай, смейся и учись!",
+    chapters: [
 
+      // ===== НА СОБЕСЕДОВАНИИ =====
+      {
+        title: "At a job Interview / На собеседовании",
+        content: `<i>/ 'ин тэ вью ер аскс /</i> ((тот, кто проводит собеседование задает вопрос))
+
+Interviewer asks: ((тот, кто проводит собеседование спрашивает))
+
+"What is your greatest weakness?"
+<i>/\u00A0уик\u00A0нэс\u00A0/</i> ((Интервьюер спрашивает: "Какой ваш главный недостаток?"))
+
+The candidate answers: "Honesty." <i>/\u00A0о\u00A0нэс\u00A0ти\u00A0/</i>((Кандидат отвечает: "Честность."))
+
+Interviewer says: "I don't think honesty is a weakness." ((Интервьюер говорит: "Я не думаю, что честность - это недостаток."))
+
+The candidate says: "I don't give a f#@k what you think." ((Кандидат говорит: "Мне плевать, что вы думаете."))`
+      },
+
+
+      // ===== ШУТКА 3: ПРО БОГА В ВАННОЙ =====
+      {
+        title: "Where does God live? / Где живет Бог?",
+        content: `A teacher of young children asks his class: "Where does God live?" ((Учитель спрашивает детей: "Где живет Бог?"))
+
+One little boy answers: "I think God lives in our bathroom!" ((Маленький мальчик отвечает: "Я думаю, он живет в нашей ванной!"))
+
+Teacher is surprised: "Why do you say so?" ((Учитель удивлен: "Почему ты так говоришь?"))
+
+The boy says: "Because every morning my dad knocks on the door and shouts: 'God, are you still in there?!'" ((Мальчик говорит: "Потому что каждое утро мой папа колотит в дверь и кричит: 'Господи, ты ещё здесь?!'"))`
+      },
+
+
+
+      // ===== ШУТКА 2: ПРО КОШКУ И СОБАКУ =====
+      {
+        title: "Tell the difference / дИ фе ренс /",
+        content: `Can you tell the difference <b>between dogs and cats</b>? ((Можете сказать разницу между собаками и кошками?))
+
+A dog thinks: "A man feeds me, loves me, <b>looks after me</b>... He must be a GOD!" ((Собака думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, он БОГ!"))
+
+A cat thinks: "A man feeds me, loves me, <b>looks after me</b>... I must be GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
+      },
+
+// ===== ШУТКА 1: ПРО СОБАКУ =====
+      {
+        title: "Lost Dog / Потерянная собака",
+        content: `A man lost his dog. ((Мужчина потерял свою собаку.)) And he tells his friend: "I've lost my dog!!!" /\u00A0АЙВ\u00A0лост\u00A0май\u00A0дог\u00A0/ ((Он говорит его другу: "Я потерял свою собаку!!!"))
+
+His friend says:
+
+"You should make a post in <b>social media</b>, and <b>ads /эдс/</b> in the newspaper." ((Его друг говорит: "Тебе следует разместит пост в соц сетях и объявления в газете."))
+
+The man says:
+
+"That's a stupid idea! <b>Cuz\u00A0/\u00A0коз\u00A0/ </b> My dog can't read!" ((Мужчина отвечает: "Это наитупейшая идея! Потому что моя собака не умеет читать!"))`
+      },
+      // ===== ШУТКА 4: ПРО СТАРИКА И ВРАЧА =====
+      {
+        title: "Old Man and His Doctor / Старик и его врач",
+        content: `An 80-year-old man came to his doctor. ((Восьмидесятилетний мужчина пришел к своему врачу.))
+
+The man says: "I'm getting married next week, Doc." ((Мужчина говорит: "Я собираюсь жениться на следующей неделе, доктор."))
+
+The doctor says: "That's great! How old is your bride?" ((Врач говорит: "Очень хорошо! Сколько лет вашей невесте?"))
+
+The man replies: "Eighteen." ((Мужчина отвечает: "Восемнадцать."))
+
+The doctor is shocked: "Good Lord! I must warn you, any sexual activity could be fatal!" ((Врач в шоке: "Господи! Я должен предупредить вас, любая активность в постели может стать смертельной!"))
+
+The old man calmly says: "Well... if she dies, she dies..." ((Старик спокойно говорит: "Ну что же... если она умрет, значит, она умрет..."))`
+      },
+
+      // ===== ШУТКА 5: ПРО НЕМЕЦКИЙ ЯЗЫК =====
+      {
+        title: "Learning Languages / Изучение языков",
+        content: `I first learnt German by telling jokes to people in my awful German. ((Я начал учить немецкий, рассказывая анекдоты людям на моем ужасном немецком.))
+
+But I quickly progressed and now I'm pretty fluent – and know lots of great jokes as well. ((Но я быстро прогрессировал и теперь говорю довольно бегло – и знаю много отличных шуток тоже.))`
+      },
+
+      // ===== ШУТКА 7: ПРО ВРЕМЯ =====
+      {
+        title: "What time is it? / Который час?",
+        content: `A man is walking down the street. ((Мужчина идет по улице.))
+
+A tourist stops him: "Excuse me, what time is it?" ((Турист останавливает его: "Извините, который час?"))
+
+The man looks at his watch: "It's 3:15." ((Мужчина смотрит на часы: "15:15."))
+
+The tourist says: "Oh! I thought it was 3:20!" ((Турист говорит: "О! Я думал, было 15:20!"))
+
+The man replies: "Well, my watch is a little slow." ((Мужчина отвечает: "Ну, мои часы немного отстают."))
+
+Tourist asks: "How slow?" ((Турист спрашивает: "На сколько отстают?"))
+
+The man says: "About five minutes." ((Мужчина говорит: "Примерно на пять минут."))
+
+Tourist: "So it's actually 3:20?" ((Турист: "Значит, на самом деле 15:20?"))
+
+Man: "No, it's 3:15. My watch is five minutes slow. So it's 3:20 now. But it's been 3:20 for the last five minutes!" ((Мужчина: "Нет, 15:15. Мои часы отстают на пять минут. Значит, сейчас 15:20. Но уже пять минут как 15:20!"))`
+      },
+
+      // ===== ШУТКА 8: ПРО ВРАЧА И ПАЦИЕНТА =====
+      {
+        title: "Doctor's Visit / Визит к врачу",
+        content: `A man visits his doctor. ((Мужчина приходит к врачу.))
+
+The doctor asks: "What seems to be the problem?" ((Врач спрашивает: "На что жалуетесь?"))
+
+The man says: "I think I'm a dog!" ((Мужчина говорит: "Я думаю, я собака!"))
+
+The doctor is confused: "A dog? How long have you felt this way?" ((Врач в замешательстве: "Собака? И как долго вы так себя чувствуете?"))
+
+The man replies: "Ever since I was a puppy!" ((Мужчина отвечает: "С самого детства, когда я был щенком!"))`
+      },
+
+      // ===== ШУТКА 9: ПРО ОЧКИ =====
+      {
+        title: "Where are my glasses? / Где мои очки?",
+        content: `An old man is looking for his glasses. ((Старик ищет свои очки.))
+
+His wife sees him searching and asks: "What are you looking for?" ((Его жена видит, как он ищет, и спрашивает: "Что ты ищешь?"))
+
+The old man says: "My glasses! I can't find them anywhere!" ((Старик говорит: "Мои очки! Я нигде не могу их найти!"))
+
+His wife points at his face: "Honey... they're on your nose." ((Его жена указывает на его лицо: "Дорогой... они у тебя на носу."))
+
+The old man touches his nose and says: "Oh! That's why I could see you so clearly!" ((Старик трогает свой нос и говорит: "О! Вот почему я так ясно тебя видел!"))`
+      },
+
+      // ===== ШУТКА 10: ПРО МОРКОВКУ =====
+      {
+        title: "Why did the carrot... / Почему морковка...",
+        content: `Why did the carrot go to the doctor? ((Почему морковка пошла к врачу?))
+
+Because it wasn't peeling well! ((Потому что она плохо себя чувствовала (очищалась)!))
+
+Wait... no. Let me try again: ((Подожди... нет. Давай попробую снова:))
+
+What is a carrot's favourite vegetable? ((Какой любимый овощ у морковки?))
+
+None! It's a carrot! ((Никакой! Она сама морковка!))
+
+Actually... what did the carrot say to the potato? ((На самом деле... что морковка сказала картошке?))
+
+"Don't be so mashed up!" (("Не будь такой раздавленной!"))`
+      }
+    ]
+  },
   readAndDraw: {
     mainTitleOfTheText: "Read and draw [\u00A0рид\u00A0эн\u00A0дро\u00A0] Читайте\u00A0и\u00A0рисуйте",
     author: "Нажимай на предложения, чтобы увидеть перевод",

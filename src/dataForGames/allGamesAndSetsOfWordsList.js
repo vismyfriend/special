@@ -1129,6 +1129,18 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
+      path: "/see-all-sets-of-words/jokes/books",
+      missionVisibleName: '<b>Книга</b> "Шутки ин инглиш"',
+      missionDescription: "Jokes in English",
+      id: 1001,
+      active: true,
+      gameIcon: "B1",
+
+      lvl: ["lvlBooks"],
+
+    },
+    {
+      type: "hardcodedLink",
       path: "/see-all-sets-of-words/littleRedRidingHood/books",
       missionVisibleName: "Красная Шапочка",
       missionDescription: "A little red riding hood",
