@@ -140,6 +140,12 @@ const yearGuesserData = [
     description: 'Sweet November and Phoebe is baking buns'
   },
   {
+    id: 24,
+    picture: new URL("../assets/images/yearGuesserPics/linoleumTJPG.jpg", import.meta.url).href,
+    date: 2026,
+    description: 'Vincent ordered 50 squared metres of Linoleum. But the length was 4 metres! It was impossible to bring it up to the 4th floor in a very narrow hallway. So, Vincent had an idea to cut the pieces of linoleum on a parking lot. All neighbours were watching and smiling.'
+  },
+  {
     id: 50,
     picture: new URL("../assets/images/yearGuesserPics/Oct.png", import.meta.url).href,
     date: 2024,

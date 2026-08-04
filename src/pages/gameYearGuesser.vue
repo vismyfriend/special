@@ -8,42 +8,41 @@
     <div class="detective-board">
       <!-- Polaroid-стиль для фотографии -->
       <div class="polaroid">
-        <div class="photo-wrapper">
-          <!-- 🔥 ПЛЕЙСХОЛДЕР ВО ВРЕМЯ ЗАГРУЗКИ -->
-          <div v-if="isPhotoLoading" class="photo-placeholder">
-            <div class="loader-spinner"></div>
-            <p class="loader-text">{{ currentLoadingPhrase }}</p>
-          </div>
-
-          <!-- Фото -->
-          <img
-            v-show="!isPhotoLoading && !photoLoadError"
-            :src="currentPhoto.picture"
-            alt="Историческая фотография"
-            class="photo"
-            @load="handlePhotoLoad"
-            @error="handlePhotoError"
-          >
-
-          <!-- 🔥 ОШИБКА ЗАГРУЗКИ -->
-          <div v-if="photoLoadError" class="photo-error">
-            <span>❌</span>
-            <p>Не удалось загрузить фото</p>
-          </div>
-
-          <!-- Затемнение и описание поверх фото -->
-          <div v-if="isAnswerChecked" class="photo-overlay" :class="{ 'dimmed': isDescriptionDimmed }" @click="toggleDescriptionDim">
-            <div class="photo-description-overlay">
-              <p class="description-text" :class="{ 'dimmed-text': isDescriptionDimmed }">{{ currentPhoto.description || 'Описание отсутствует' }}</p>
+        <div class="polaroid-content">
+          <!-- Левая часть: ФОТО -->
+          <div class="photo-wrapper">
+            <div v-if="isPhotoLoading" class="photo-placeholder">
+              <div class="loader-spinner"></div>
+              <p class="loader-text">{{ currentLoadingPhrase }}</p>
+            </div>
+            <img
+              v-show="!isPhotoLoading && !photoLoadError"
+              :src="currentPhoto.picture"
+              alt="Историческая фотография"
+              class="photo"
+              @load="handlePhotoLoad"
+              @error="handlePhotoError"
+            >
+            <div v-if="photoLoadError" class="photo-error">
+              <span>❌</span>
+              <p>Не удалось загрузить фото</p>
+            </div>
+            <div v-if="isAnswerChecked" class="photo-overlay" :class="{ 'dimmed': isDescriptionDimmed }" @click="toggleDescriptionDim">
+              <div class="photo-description-overlay">
+                <p class="description-text" :class="{ 'dimmed-text': isDescriptionDimmed }">{{ currentPhoto.description || 'Описание отсутствует' }}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="polaroid-label">
-          <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
-          <div class="result-info">
-            <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель и читайте вслух:' }}</div>
-            <div class="text-bold highlight">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>            <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
-            <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
+
+          <!-- Правая часть: ИНФОРМАЦИЯ -->
+          <div class="polaroid-label">
+            <div class="photo-counter">Архивное фото №{{ currentRound }}/5</div>
+            <div class="result-info">
+              <div>{{ isAnswerChecked ? 'Вы ответили : ' + lastGuess : 'Двигайте указатель и читайте вслух:' }}</div>
+              <div class="text-bold highlight">{{ isAnswerChecked ? 'Правильный ответ : ' + currentPhoto.date : currentHint }}</div>
+              <div>{{ isAnswerChecked ? 'Разница - Difference : ' + Math.abs(lastGuess - parseInt(currentPhoto.date)) + ' лет' : '_________' }}</div>
+              <div>{{ isAnswerChecked ? 'Очков за догадку + ' + lastPoints : 'двигайте лупу 🔎 влево/вправо' }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -739,7 +738,12 @@ onBeforeUnmount(() => {
   transform: rotate(-1deg);
   margin: 0 auto 30px;
   width: fit-content;
+  max-width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .polaroid:before {
@@ -754,15 +758,25 @@ onBeforeUnmount(() => {
 }
 
 /* ==================== */
+/* Обёртка для фото и информации */
+/* ==================== */
+.polaroid-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+/* ==================== */
 /* Обёртка для фото с оверлеем */
 /* ==================== */
 .photo-wrapper {
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   max-width: 100%;
-  display: flex; /* 🔥 МЕНЯЕМ НА FLEX */
-  justify-content: center; /* 🔥 ЦЕНТРИРУЕМ ПО ГОРИЗОНТАЛИ */
-  align-items: center; /* 🔥 ЦЕНТРИРУЕМ ПО ВЕРТИКАЛИ */
 }
 
 .photo {
@@ -771,8 +785,7 @@ onBeforeUnmount(() => {
   max-width: 100%;
   display: block;
   border: 1px solid #ddd;
-  object-fit: contain; /* 🔥 СОХРАНЯЕМ ПРОПОРЦИИ */
-
+  object-fit: contain;
 }
 
 /* ==================== */
@@ -891,20 +904,17 @@ onBeforeUnmount(() => {
 }
 
 /* ============================================ */
-/* 🔥 ВРЕМЕННАЯ ШКАЛА — ИСПРАВЛЕННАЯ ВЕРСИЯ */
+/* ВРЕМЕННАЯ ШКАЛА */
 /* ============================================ */
 .timeline-ruler {
   position: relative;
-  height: 100px; /* 🔥 ВЫСОТА ДЛЯ ЛУПЫ + ТЕКСТА */
+  height: 100px;
   cursor: pointer;
 }
 
-/* ==================== */
-/* ГОД СЛОВАМИ ПОД ЛУПОЙ */
-/* ==================== */
 .year-words {
   position: absolute;
-  bottom: 0; /* 🔥 ПРИЖИМАЕМ К НИЖНЕЙ ЧАСТИ КОНТЕЙНЕРА */
+  bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
@@ -916,7 +926,7 @@ onBeforeUnmount(() => {
   min-height: 24px;
   transition: all 0.2s ease;
   padding: 0 10px;
-  pointer-events: none; /* 🔥 ЧТОБЫ НЕ МЕШАЛ КЛИКАМ ПО ШКАЛЕ */
+  pointer-events: none;
 }
 
 .ruler-track {
@@ -925,7 +935,7 @@ onBeforeUnmount(() => {
   border-radius: 3px;
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin-top: 75px; /* 🔥 РАССТОЯНИЕ ОТ ЛУПЫ ДО ШКАЛЫ */
+  margin-top: 75px;
 }
 
 .range-highlight {
@@ -938,7 +948,7 @@ onBeforeUnmount(() => {
 
 .magnifier {
   position: absolute;
-  top: -30px; /* 🔥 ЛУПА НА ШКАЛЕ */
+  top: -30px;
   transform: translateX(-50%);
   z-index: 4;
   cursor: grab;
@@ -974,7 +984,7 @@ onBeforeUnmount(() => {
 
 .magnifier-handle {
   width: 4px;
-  height: 20px; /* 🔥 УМЕНЬШИЛ ДЛИНУ РУЧКИ */
+  height: 20px;
   background: #5D2906;
   position: absolute;
   bottom: -20px;
@@ -1006,7 +1016,7 @@ onBeforeUnmount(() => {
 }
 
 /* ============================================ */
-/* 🔥 ДЕЛЕНИЯ НА ШКАЛЕ */
+/* ДЕЛЕНИЯ НА ШКАЛЕ */
 /* ============================================ */
 .ruler-mark {
   position: absolute;
@@ -1033,7 +1043,8 @@ onBeforeUnmount(() => {
   background: #666;
 }
 
-.first-mark, .last-mark {
+.first-mark,
+.last-mark {
   height: 70px;
   width: 4px;
   background: #000;
@@ -1041,7 +1052,7 @@ onBeforeUnmount(() => {
 }
 
 /* ============================================ */
-/* 🔥 ПОДПИСИ ГОДОВ */
+/* ПОДПИСИ ГОДОВ */
 /* ============================================ */
 .year-label {
   position: absolute;
@@ -1064,7 +1075,8 @@ onBeforeUnmount(() => {
   top: -45px;
 }
 
-.first-label, .last-label {
+.first-label,
+.last-label {
   font-size: 16px;
   font-weight: bold;
   top: -75px;
@@ -1266,8 +1278,12 @@ onBeforeUnmount(() => {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loader-text {
@@ -1279,8 +1295,13 @@ onBeforeUnmount(() => {
 }
 
 @keyframes pulseText {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ==================== */
@@ -1309,52 +1330,212 @@ onBeforeUnmount(() => {
 }
 
 /* ==================== */
-/* Адаптация для мобильных */
+/* Адаптация для горизонтальных экранов (планшеты, маленькие ноутбуки) */
+/* ==================== */
+@media (orientation: landscape) and (max-height: 900px),
+(min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
+  .polaroid {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 15px;
+    gap: 20px;
+    width: 95%;
+    max-width: 95%;
+    transform: rotate(0deg);
+  }
+
+  .polaroid-content {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .photo-wrapper {
+    flex: 0 0 auto;
+    max-width: 55%;
+  }
+
+  .photo-wrapper .photo {
+    max-height: 500px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .polaroid-label {
+    flex: 1;
+    text-align: left;
+    margin-top: 0;
+    padding: 10px 15px 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 200px;
+  }
+
+  .polaroid-label .photo-counter {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .polaroid-label .result-info {
+    font-size: 15px;
+  }
+
+  .polaroid-label .result-info div {
+    margin: 6px 0;
+  }
+
+  .photo-overlay .description-text {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .photo-placeholder {
+    height: 400px;
+    width: 100%;
+    min-width: 300px;
+  }
+
+  .photo-placeholder .loader-text {
+    font-size: 14px;
+  }
+}
+
+/* ==================== */
+/* Дополнительно для очень маленьких экранов в горизонтальном режиме */
+/* ==================== */
+@media (orientation: landscape) and (max-height: 600px) {
+  .polaroid {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .polaroid-content {
+    gap: 12px;
+  }
+
+  .photo-wrapper .photo {
+    max-height: 300px;
+  }
+
+  .polaroid-label {
+    padding: 5px 10px 5px 0;
+  }
+
+  .polaroid-label .photo-counter {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .polaroid-label .result-info {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .polaroid-label .result-info div {
+    margin: 3px 0;
+  }
+
+  .photo-placeholder {
+    height: 280px;
+    width: 100%;
+    min-width: 200px;
+  }
+
+  .photo-placeholder .loader-text {
+    font-size: 12px;
+  }
+
+  .photo-overlay .description-text {
+    font-size: 13px;
+  }
+
+  .game-container {
+    padding: 10px;
+  }
+
+  .detective-board {
+    padding: 10px;
+  }
+}
+
+/* ==================== */
+/* Исправление для iPad и планшетов в горизонтальном режиме */
+/* ==================== */
+@media (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
+  .game-container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .polaroid {
+    padding: 20px;
+  }
+
+  .photo-wrapper .photo {
+    max-height: 450px;
+  }
+
+  .polaroid-label .result-info {
+    font-size: 16px;
+  }
+}
+
+/* ==================== */
+/* Адаптация для мобильных (вертикальный режим) */
 /* ==================== */
 @media (max-width: 768px) {
   .game-container {
     padding: 0;
   }
+
   .polaroid {
-    padding: 5px 5px;
+    padding: 10px 10px 30px 10px;
   }
+
   .polaroid::before {
     display: none;
+  }
+
+  .polaroid-content {
+    flex-direction: column;
   }
 
   .polaroid-label {
     font-size: 12px;
     padding: 3px;
+    text-align: center;
   }
 
   .photo-wrapper {
     display: flex;
-    justify-content: center; /* 🔥 ЦЕНТРИРУЕМ ФОТО ВНУТРИ ОБЁРТКИ */
+    justify-content: center;
   }
-  .photo {
+
+  .photo-wrapper .photo {
     max-height: 300px;
-
-  }
-  .result-info, .actual-result {
-    font-size: 11px;
-  }
-  .final-score {
-    font-size: 18px;
-
+    width: auto;
   }
 
   .photo-placeholder {
-
     height: 270px;
     width: 270px;
+  }
 
+  .result-info,
+  .actual-result {
+    font-size: 11px;
+  }
+
+  .final-score {
+    font-size: 18px;
   }
 
   .photo-description {
-
     line-height: 16px;
-
   }
+
   .description-text {
     font-size: 14px;
     line-height: 14px;
@@ -1363,8 +1544,6 @@ onBeforeUnmount(() => {
   .timeline-ruler {
     height: 75px;
   }
-
-
 
   .magnifier-glass {
     width: 60px;
@@ -1409,31 +1588,37 @@ onBeforeUnmount(() => {
     top: -50px;
   }
 
-  .first-label, .last-label {
+  .first-label,
+  .last-label {
     font-size: 14px;
     top: -65px;
   }
+
   .submit-btn {
     display: block;
     padding: 6px 10px;
     background: #5D2906;
     font-size: 15px;
   }
+
   .back-btn {
     display: block;
     margin: 20px auto 20px;
     padding: 6px 10px;
     font-size: 15px;
   }
+
   .result-polaroid {
     display: flex;
     gap: 10px;
     align-items: center;
     text-align: left;
   }
+
   .result-polaroid img {
     width: 100px;
   }
+
   .h2 {
     font-size: 20px;
   }
