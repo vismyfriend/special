@@ -428,6 +428,7 @@ watch(filteredQuestions, () => {
   width: 310px;
   background: linear-gradient(to top, #fff -250%, #000000 150%);
   margin: 5px auto;
+  margin-top: 70px;
   border-radius: 2em;
   border: solid 5px #6a6a6a;
   box-shadow:

@@ -1152,6 +1152,192 @@ In the coming sessions, you will discover your most <b><em>efficient</b> /\u00A0
     ]
   },
 
+  readAndDraw: {
+    mainTitleOfTheText: "Read and draw [\u00A0рид\u00A0эн\u00A0дро\u00A0] Читайте\u00A0и\u00A0рисуйте",
+    author: "Нажимай на предложения, чтобы увидеть перевод",
+    description: "This is a story about 7 people in one family. Read and draw a family tree in your notebook! / Это история о 7 людях в одной семье. Читай и рисуй семейное дерево в тетради!",
+    chapters: [
+      // ===== ВВЕДЕНИЕ =====
+      {
+        content: `It is a story about one family. / фЭ ми ли / (( Это история про одну семью ))
+The family name is Special. / спэшл / (( Фамилия этой семьи "Особенные" ))
+
+Seven persons live in this family. (( 7 человек живет в этой семье  )) And we can draw them all, if we have a pen or a pencil. ((И мы сможем нарисовать их всех, если у нас есть ручка или карандаш.)) But if we don't have a pen or a pencil, we can't draw them all. ((Но если у нас нет ручки или карандаша, мы не сможем нарисовать их всех.))
+
+Who is who / Ху из ху / ? <i>пробуйте сами переводить, а затем нажимайте на предложения чтобы проверить себя</i> (( Кто есть кто ))`
+      },
+
+      // ===== SALLY =====
+      {
+        title: "My grandmother Sally ((Моя бабушка сЭлли))",
+        content: `Sally is my granny. ((cЭлли - моя бабуля.))
+She is very good, and she is very friendly. ((Она очень добрая и очень дружелюбная))
+Sally has a big round belly. ((У Салли большой круглый животик))
+Her belly is big and round. ((Её животик большой и круглый))
+But Sally is happy with her belly. ((Но Салли счастлива со своим животиком))
+She smiles every day. ((Она улыбается каждый день))
+
+🎨 В тетради:
+
+нарисуй сЭлли большим круглым кружочком!
+Write her name: SALLY`
+      },
+
+// ===== PATRICK =====
+      {
+        title: "My grandfather Patrick ((Мой дедушка Пэтрик))",
+        content: `Patrick is my grandpa. ((Пэтрик - мой дедуля))
+He loves Sally very much. ((Он очень сильно любит сЭлли.))
+I love my grandpa and my granny. ((Я люблю своего дедулю и свою бабулю.))
+Patrick has yellow pants /пЭнтс/. ((У Патрика жёлтые штаны.))
+His pants are old. ((Его штаны старые.))
+And his pants are square\u00A0/\u00A0с\u00A0ку\u00A0Ээ\u00A0/. ((И его штаны квадратные.))
+Patrick is very strong. ((Патрик очень сильный.))
+All his body is square\u00A0/\u00A0с\u00A0ку\u00A0Ээ\u00A0/. ((Всё его тело квадратное:))
+He has a square head, ((у него квадратная голова,))
+a square nose, ((квадратный нос,))
+and square arms. ((и квадратные руки.))
+Patrick is a builder /бИлдэр/. ((Патрик - строитель.))
+He loves playing Minecraft and Roblox. (Он любит играть в Манкрафт и Роблокс)
+
+💙 В тетради:
+
+нарисуй Пэтрика рядом с сЭлли и сделай его максимально квадратным!
+Напиши его имя и нарисуй сердечко heart\u00A0/\u00A0харт\u00A0/ между ним и сЭлли.`
+      },
+
+// ===== Elon =====
+      {
+        title: "My father Elon / Илон / ((Мой отец Илон))",
+        content: `<i> ударение на букву <b>И</b> </i>- Elon is my dad. ((Илон - мой папа.))
+Elon is cool. ((Илон крутой.))
+He is rich. ((Он богат.))
+Elon is a big boss in a big company. ((Илон является большим боссом в большой компании.))
+Elon has green eyes /айз/ ((У Илона зелёные глаза.))
+Elon is tall and skinny. ((Илон высокий и тощий.))
+Elon loves Hip-Hop music very much. ((Илон очень любит Хип-Хоп музыку.))
+He is a very good father. ((Он очень хороший отец.))
+Letter E is the first letter in his name ((Буква И - первая буква в его имени))
+
+🔺 В тетради:
+
+нарисуй высокий треугольник! А внутри треугольника напиши букву которая произносится <i><u>И-И-И-И</u></i> -> <b>E</b>.
+Write his name: <u>E</u>lon`
+      },
+
+// ===== CARL =====
+      {
+        title: "Who is Carl ? ((Кто такой Карл?))",
+        content: `Carl is my uncle <b>/анкл/.</b> ((Карл - мой дядя.))
+Uncle Carl is very short. ((Дядя Карл очень низкий))
+Carl has dark hair / хЭа /. ((У Карла темные волосы))
+My uncle Carl has a black car. ((У моего дяди Карла черная тачка.))
+Carl's car is old ((Машина Карла старая))
+Carl's car has a scar on right door. ((Машина Карла имеет шрам - царапину на правой двери))
+Uncle Carl always drives his car. ((Дядя Карл всегда водит его машину))
+Now my uncle car is sitting in his car. ((Сейчас мой дядя Карл сидит в его машине))
+
+🚓 В тетради:
+
+6 клеток в длинну и две в высоту нарисуй машину Карла! И царапину на двери.
+Подпиши:  <b><u>Carl's</u> car</b> - принадлежащая Карлу Машина`
+      },
+
+// ===== IREEN =====
+      {
+        title: "iPhone and Ireen ((Айфон и Айрин))",
+        content: `iPhone and Android are phones. ((Айфон и Андроид - это телефоны)) Ireen is my aunt /ант/. ((Айрин - моя тётя.))
+Ireen likes iPhones, but I like Androids. ((Айрин нравятся айфоны, а мне нравятся Андроиды))
+And I like my aunt Ireen. ((И мне нравится моя тётя Айрин))
+And my aunt Ireen likes me too. ((И я нравлюсь своей тёте Айрин))
+Ireen has green eyes /айз/. ((У Айрин зелёные глаза.))
+But Ireen doesn't like green color. ((Но Айрин не нравится зелёный цвет))
+It is strange! ((Это странно)) Why is it strange? ((Почему это странно?))
+Because Ireen's iphone is green! ((Потому что Айринов Айфон зеленого цвета!))
+
+📱 В тетради:
+
+нарисуй прямоугольник с антенной или современный телефон. И напиши : It is Ireen's iphone`
+      },
+
+// ===== ACE =====
+      {
+        title: "Ace /Эйс/ ((переводится как Ас - профессионал - туз - мастер своего дела))",
+        content: `Ace is my sister. ((Эйс - моя сестра.))
+But she is not a real sister. ((Но он не настоящяя сестра.))
+She is imaginary / имэ джэ нэ ри /. ((Она - воображаемая.))
+Ace is very lazy. ((Эйс очень ленивая.))
+We always fight. ((Мы всегда деремся.))
+When I beat my Lazy Ace - I am happy. ((Когда я побеждаю свою Ленивую Асю я счастлив.))
+Lazy Ace doesn't help me! ((Ленивая Ася не помогает мне!))
+She never helps! And she never works! ((Она никогда не помогает и она никогда не работает!))
+I blame Lazy Ace in all situations. ((Я во всех ситуациях виню Ленивую Асю))
+My imaginary sister has a big bottom. ((У моей воображаемой сестры большая попа))
+
+🍑 В тетради:
+
+Докажи, что ты не <b>лЭйзи Эйс</b> - <i>Ленивая Ася</i>! Нарисуй два круга рядом. В одном напиши <b>Lazy</b> в другом <b>Ace</b>!`
+      },
+
+// ===== LOVE =====
+      {
+        title: "Love /лав/ ((Любовь))",
+        content: `Love is very very extra ordinary. ((Лав - очень очень необычная - экстраординарная.))
+She is my real and good cousin ((Она моя настоящая и хорошая двоюродная сестра))
+She is a daughter of Elon and Ireen. ((Она дочь Илона и Айрин.))
+She has a big <b>heart\u00A0/\u00A0харт\u00A0/.<b> ((У неё большое сердце.))
+Her heart is <b>kind\u00A0/\u00A0кАйнд\u00A0/.<b> ((Её сердце доброе))
+Love is very smart. ((Лав очень умная.))
+She has many books. ((У неё много книг.))
+She doesn't have problems. ((У неё нет проблем.))
+She loves pelmenis very much! ((Она очень любит пельмени))
+She doesn't love mayo! ((Она не любит майонез))
+She can eat many pelmenis! ((Она может съесть много пельменей!))
+She is funny. ((Она смешная - забавная))
+Love helps everybody in our family. ((Лав помогает всем в нашей семье.))
+Everybody needs love. ((Всем нужна любовь.))
+
+💜 В тетради:
+
+нарисуй Лав! Ты догадаешься как ее нарисовать ;-)`
+      },
+
+      // ===== FAMILY TREE =====
+      {
+        title: "S.P.E.C.I.A.L.",
+        content: `Назови имена всех членов семьи СПЭШЛ. А если сложить первые буквы всех в твоей семье, то какие буквы получатся?`
+      },
+
+
+      // ===== FUN FACTS =====
+      {
+        picture: new URL("../assets/images/special_family_TJPEG.jpg", import.meta.url).href,
+        title: "Fun Facts / Забавные Факты",
+        content: `
+
+⭕ Sally has a big belly!
+
+🟩 Patrick has a square body!
+
+🔺 Elon doesn't have "i" in his name!
+
+🚓 Carl has a scar on his car.
+
+🎨 Ireen doesn't have an android. She has an iphone.
+
+🍑 Ace is lazy.
+
+🎵 Love is very very extra ordinary
+
+Who is your favorite? - Кто тебе нравится больше всех?
+
+<b>ПОЗДРАВЛЯЮ !!!</b> Вы закончили одну из первых английских книг! Ура ура ура!
+
+<b>You are a super agent! /Эйджэнт/ ((вы супер агент))</b>`
+      }
+    ]
+  },
+
   littleRedRidingHood: {
     mainTitleOfTheText: "Little Red Riding Hood",
     author: "Brothers Grimm",
@@ -1167,7 +1353,7 @@ In the coming sessions, you will discover your most <b><em>efficient</b> /\u00A0
       {
 
         title: "The Little Red Hood ((Красная шапочка))",
-        content: `Once upon a time there was a sweet little girl. (("Однажды жила-была милая маленькая девочка". {Не нужно переводить каждое слово по отдельности - запоминайте фразу целиком как она есть, а не отдельные слова. Именно с такой фразы - начинаются почти все сказки и смысл его такой - УАНС АПОН Э ТАЙМ ДЭЭ ВОЗ Э СВИТ ЛИТЛ ГЁРЛ - вы справитесь! Винсент в Вас верит!} )) Everyone who saw her liked her, but most of all her grandmother, who did not know what to give her as a present next. ((Все, кто её видел, любили её, но больше всех — её бабушка, которая не знала, что ещё подарить ребёнку.)) Once she gave her as a present - a little hat, that was made of red velvet. ((Однажды она подарила ей шапочку из красного бархата.)) Because it suited her so well, and she wanted to wear it all the time, everybody started calling her Little Red Riding Hood. ((Поскольку она так хорошо ей шла, и она хотела носить её всё время, каждый стал называть её Красной Шапочкой.))
+        content: `Однажды... /уанс апон э тайм.../ Once upon a time... A little girl lived in a village. (("Маленькая девочка жила в деревне". {Не нужно переводить каждое слово по отдельности - запоминайте фразу целиком как она есть, а не отдельные слова. Именно с такой фразы - начинаются почти все сказки и смысл его такой - УАНС АПОН Э ТАЙМ - вы справитесь! Винсент в Вас верит!} )) Everybody who saw her liked her. ((Все, кто её видел, любили её)) But most of all her grandmother, who didn't know what to give her as a present. ((Но больше всех — её бабушка, которая не знала, что ещё ей подарить.)) Once she gave her as a present - a little hat. ((Однажды она подарила ей маленькую шапочку)) That hat looked like a hood, and it was made of red velvet. (( Та шапочка была похожа на капюшон-накидку и сделана она была из красного бархата.)) Because this hat looked like a hood, and because it suited her so well - she wanted to wear it all the time. ((Из-за того что шапка была похожа на капюшон и так как она хорошо ей подошла, она хотела носить её всё время.)) And everybody started calling her Little Red Riding Hood. (( Каждый стал называть её Красной Шапочкой или Красным Капюшончиком.))
 
 One day her mother said to her: ((Однажды её мама сказала ей:)) "Come Little Red Riding Hood. ((«Иди, Красная Шапочка.)) Here is a piece of cake and a bottle of wine. ((Вот кусок пирога и бутылка вина.)) Take them to your grandmother. ((Отнеси их своей бабушке.)) She is sick and weak, and they will do her well. ((Она больна и слаба, и это поможет ей.)) Mind your manners and give her my greetings. ((Веди себя прилично и передай ей мой привет.)) Behave yourself on the way, and do not leave the path, or you might fall down and break the glass, and then there will be nothing for your sick grandmother." ((Веди себя хорошо в дороге и не сходи с тропинки, иначе ты можешь упасть и разбить бутылку, и тогда твоей больной бабушке ничего не достанется.»))
 

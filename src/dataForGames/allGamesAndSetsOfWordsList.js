@@ -1117,6 +1117,18 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
+      path: "/see-all-sets-of-words/readAndDraw/books",
+      missionVisibleName: '<b>Книга</b> " Рид эн дро "',
+      missionDescription: "Read and draw",
+      id: 1001,
+      active: true,
+      gameIcon: "A1",
+
+      lvl: ["lvlBooks"],
+
+    },
+    {
+      type: "hardcodedLink",
       path: "/see-all-sets-of-words/littleRedRidingHood/books",
       missionVisibleName: "Красная Шапочка",
       missionDescription: "A little red riding hood",

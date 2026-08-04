@@ -1068,7 +1068,7 @@ const shortWordsData = {
 
   SayVsTell: [
     // ===== SAY (просто произносить слова, фразы) =====
-    { id: 1, eng: "say Vincent", ru: "сказать: 'Винсент!'" },
+    { id: 1, eng: "say Vincent", ru: "скажи: 'Винсент!'" },
     { id: 2, eng: "say goodbye", ru: "попрощатья" },
     { id: 3, eng: "say hello", ru: "поздороваться" },
     { id: 4, eng: "say sorry", ru: "извиниться" },
@@ -1090,7 +1090,7 @@ const shortWordsData = {
     { id: 20, eng: "Who said it?", ru: "Кто это сказал?" },
 
     // ===== TELL (передавать информацию КОМУ-ТО) =====
-    { id: 24, eng: "tell nobody", ru: "не говори никому" },
+    { id: 24, eng: "don't say it", ru: "не произноси этого" },
     { id: 25, eng: "tell jokes", ru: "рассказывать анекдоты" },
     { id: 26, eng: "tell somebody what to do", ru: "учить жить, давать (непрошенные) советы" },
     { id: 27, eng: "tell the truth", ru: "говорить правду" },
@@ -1109,6 +1109,11 @@ const shortWordsData = {
     { id: 40, eng: "I told you so", ru: "А я же тебе говорил" },
     { id: 45, eng: "Who told you that", ru: "Кто тебе это сказал" },
     { id: 46, eng: "What did I tell you?", ru: "Что я тебе говорил?" },
+    { id: 46, eng: "Tell Vincent", ru: "расскажи Винсенту" },
+    { id: 47, eng: "Tell nobody", ru: "не говори никому" },
+    { id: 48, eng: "Tell everybody", ru: "Расскажи всем" },
+    { id: 48, eng: "Tell us pls", ru: "Расскажи нам пжлст" },
+
   ],
   verbGet: [
   // 1. Получить, приобрести
