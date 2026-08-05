@@ -1082,12 +1082,12 @@ const shortWordsData = {
     { id: 12, eng: "say the magic word", ru: "сказать волшебное слово" },
 
     // ===== SAY — РАЗГОВОРНЫЕ КОРОТКИЕ ФРАЗЫ =====
-    { id: 13, eng: "Say what?", ru: "Чего? (выражение удивления/неверия)" },
-    { id: 15, eng: "Say no more", ru: "Понял! Без лишних слов" },
-    { id: 16, eng: "Just say", ru: "Просто скажи" },
+    { id: 13, eng: "say what?", ru: "Чего? (выражение удивления/неверия)" },
+    { id: 15, eng: "say no more", ru: "Понял! Без лишних слов" },
+    { id: 16, eng: "just say", ru: "Просто скажи" },
     { id: 19, eng: "I'd say so", ru: "Я б так сказал" },
-    { id: 20, eng: "I wouldn't say so", ru: "Я бы так не сказал" },
-    { id: 20, eng: "Who said it?", ru: "Кто это сказал?" },
+    { id: 20, eng: "I would not say so", ru: "Я бы так не сказал" },
+    { id: 20, eng: "who said it?", ru: "Кто это сказал?" },
 
     // ===== TELL (передавать информацию КОМУ-ТО) =====
     { id: 24, eng: "don't say it", ru: "не произноси этого" },
@@ -1104,15 +1104,15 @@ const shortWordsData = {
     { id: 35, eng: "tell more", ru: "расскажи побольше" },
 
     // ===== TELL — РАЗГОВОРНЫЕ КОРОТКИЕ ФРАЗЫ =====
-    { id: 38, eng: "Tell who", ru: "Кому рассказать" },
-    { id: 39, eng: "Tell me later", ru: "Расскажи мне позже" },
+    { id: 38, eng: "tell who", ru: "Кому рассказать" },
+    { id: 39, eng: "tell me later", ru: "Расскажи мне позже" },
     { id: 40, eng: "I told you so", ru: "А я же тебе говорил" },
-    { id: 45, eng: "Who told you that", ru: "Кто тебе это сказал" },
-    { id: 46, eng: "What did I tell you?", ru: "Что я тебе говорил?" },
-    { id: 46, eng: "Tell Vincent", ru: "расскажи Винсенту" },
-    { id: 47, eng: "Tell nobody", ru: "не говори никому" },
-    { id: 48, eng: "Tell everybody", ru: "Расскажи всем" },
-    { id: 48, eng: "Tell us pls", ru: "Расскажи нам пжлст" },
+    { id: 45, eng: "who told you that", ru: "Кто тебе это сказал" },
+    { id: 46, eng: "what did I tell you?", ru: "Что я тебе говорил?" },
+    { id: 46, eng: "tell Vincent", ru: "расскажи Винсенту" },
+    { id: 47, eng: "tell nobody", ru: "не говори никому" },
+    { id: 48, eng: "tell everybody", ru: "Расскажи всем" },
+    { id: 48, eng: "tell us pls", ru: "Расскажи нам пжлст" },
 
   ],
   verbGet: [
@@ -1131,8 +1131,8 @@ const shortWordsData = {
   // 3. Понять
   { id: 12, eng: "get the joke", ru: "понять шутку" },
   { id: 13, eng: "get what I mean", ru: "понять что я имею в виду" },
-  { id: 14, eng: "She doesn't get it", ru: "она не врубается! (не понимает)" },
-  { id: 15, eng: "He gets the point", ru: "суть он улавливает" },
+  { id: 14, eng: "she doesn't get it", ru: "она не врубается! (не понимает)" },
+  { id: 15, eng: "he gets the point", ru: "суть он улавливает" },
 
   // 4. Стать, становиться (о состоянии)
   { id: 16, eng: "it is getting dark", ru: "темнеет" },

@@ -1171,13 +1171,16 @@ The candidate answers: "Honesty." <i>/\u00A0о\u00A0нэс\u00A0ти\u00A0/</i>(
 
 Interviewer says: "I don't think honesty is a weakness." ((Интервьюер говорит: "Я не думаю, что честность - это недостаток."))
 
-The candidate says: "I don't give a f#@k what you think." ((Кандидат говорит: "Мне плевать, что вы думаете."))`
+The candidate says: "I don't give a f#@k what you think." ((Кандидат говорит: "Мне плевать, что вы думаете."))`,
+        picture: new URL("../assets/images/honestyTPNG.png", import.meta.url).href,
+
       },
 
 
       // ===== ШУТКА 3: ПРО БОГА В ВАННОЙ =====
       {
-        title: "Where does God live? / Где живет Бог?",
+        title: "[ уЭэ даз гАд лив ] - Где живет Бог?",
+        picture: new URL("../assets/images/godTPNG.png", import.meta.url).href,
         content: `A teacher of young children asks his class: "Where does God live?" ((Учитель спрашивает детей: "Где живет Бог?"))
 
 One little boy answers: "I think God lives in our bathroom!" ((Маленький мальчик отвечает: "Я думаю, он живет в нашей ванной!"))
@@ -1194,9 +1197,9 @@ The boy says: "Because every morning my dad knocks on the door and shouts: 'God,
         title: "Tell the difference / дИ фе ренс /",
         content: `Can you tell the difference <b>between dogs and cats</b>? ((Можете сказать разницу между собаками и кошками?))
 
-A dog thinks: "A man feeds me, loves me, <b>looks after me</b>... He must be a GOD!" ((Собака думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, он БОГ!"))
+A dog says: "A man feeds me, loves me, <b>looks after me</b>... He must be a GOD!" ((Собака думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, он БОГ!"))
 
-A cat thinks: "A man feeds me, loves me, <b>looks after me</b>... I must be GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
+A cat says: "A man feeds me, loves me, <b>looks after me</b>... I must be GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
       },
 
 // ===== ШУТКА 1: ПРО СОБАКУ =====
@@ -1214,53 +1217,33 @@ The man says:
       },
       // ===== ШУТКА 4: ПРО СТАРИКА И ВРАЧА =====
       {
-        title: "Old Man and His Doctor / Старик и его врач",
-        content: `An 80-year-old man came to his doctor. ((Восьмидесятилетний мужчина пришел к своему врачу.))
+        title: "80-ty and 18-teen /\u00A0эй\u00A0ти\u00A0ЭНД\u00A0эйти-и-и-н /",
+        content: `An 80-year-old man comes to his doctor. ((Восьмидесятилетний мужчина приходит к своему врачу.))
 
-The man says: "I'm getting married next week, Doc." ((Мужчина говорит: "Я собираюсь жениться на следующей неделе, доктор."))
+The old man says: "I'm getting married next week, Doc." ((Мужчина говорит: "Я собираюсь жениться на следующей неделе, доктор."))
 
-The doctor says: "That's great! How old is your bride?" ((Врач говорит: "Очень хорошо! Сколько лет вашей невесте?"))
+The doctor says: "That's great! How old is your bride? / брайд /" ((Врач говорит: "Очень хорошо! Сколько лет вашей невесте?"))
 
-The man replies: "Eighteen." ((Мужчина отвечает: "Восемнадцать."))
+The man answers: "Eighteen." ((Мужчина отвечает: "Восемнадцать."))
 
-The doctor is shocked: "Good Lord! I must warn you, any sexual activity could be fatal!" ((Врач в шоке: "Господи! Я должен предупредить вас, любая активность в постели может стать смертельной!"))
+The doctor is shocked: "Oh My God! I must warn you: any sexual activity could be fatal!" ((Врач в шоке: "Господи! Я должен предупредить вас, любая активность в постели может стать смертельной!"))
 
 The old man calmly says: "Well... if she dies, she dies..." ((Старик спокойно говорит: "Ну что же... если она умрет, значит, она умрет..."))`
       },
 
-      // ===== ШУТКА 5: ПРО НЕМЕЦКИЙ ЯЗЫК =====
+      // ===== ШУТКА ПРО ИЗУЧЕНИЕ ЯЗЫКОВ =====
       {
         title: "Learning Languages / Изучение языков",
-        content: `I first learnt German by telling jokes to people in my awful German. ((Я начал учить немецкий, рассказывая анекдоты людям на моем ужасном немецком.))
+        content: `I started to learn English by telling jokes to people in my awful\u00A0/\u00A0оу\u00A0фул\u00A0/\u00A0English. ((Я начал учить английский, рассказывая анекдоты людям на моем ужасном английском.))
 
-But I quickly progressed and now I'm pretty fluent – and know lots of great jokes as well. ((Но я быстро прогрессировал и теперь говорю довольно бегло – и знаю много отличных шуток тоже.))`
+Now I speak English very well, and I understand why people didn't smile at my jokes... I made so many mistakes... for example: i helped grandmother - i TRANSLATED her across road. ((Теперь я хорошо говорю на английском и понимаю почему люди не смеялись над моими шутками, ведь я говорил дичь вроде: я ПЕРЕВЁЛ бабушку через дорогу.))`
       },
 
-      // ===== ШУТКА 7: ПРО ВРЕМЯ =====
+
+
+      // ===== ПРО ВРАЧА И ПАЦИЕНТА =====
       {
-        title: "What time is it? / Который час?",
-        content: `A man is walking down the street. ((Мужчина идет по улице.))
-
-A tourist stops him: "Excuse me, what time is it?" ((Турист останавливает его: "Извините, который час?"))
-
-The man looks at his watch: "It's 3:15." ((Мужчина смотрит на часы: "15:15."))
-
-The tourist says: "Oh! I thought it was 3:20!" ((Турист говорит: "О! Я думал, было 15:20!"))
-
-The man replies: "Well, my watch is a little slow." ((Мужчина отвечает: "Ну, мои часы немного отстают."))
-
-Tourist asks: "How slow?" ((Турист спрашивает: "На сколько отстают?"))
-
-The man says: "About five minutes." ((Мужчина говорит: "Примерно на пять минут."))
-
-Tourist: "So it's actually 3:20?" ((Турист: "Значит, на самом деле 15:20?"))
-
-Man: "No, it's 3:15. My watch is five minutes slow. So it's 3:20 now. But it's been 3:20 for the last five minutes!" ((Мужчина: "Нет, 15:15. Мои часы отстают на пять минут. Значит, сейчас 15:20. Но уже пять минут как 15:20!"))`
-      },
-
-      // ===== ШУТКА 8: ПРО ВРАЧА И ПАЦИЕНТА =====
-      {
-        title: "Doctor's Visit / Визит к врачу",
+        title: "/ синс / Since I was a puppy",
         content: `A man visits his doctor. ((Мужчина приходит к врачу.))
 
 The doctor asks: "What seems to be the problem?" ((Врач спрашивает: "На что жалуетесь?"))
@@ -1269,40 +1252,8 @@ The man says: "I think I'm a dog!" ((Мужчина говорит: "Я дума
 
 The doctor is confused: "A dog? How long have you felt this way?" ((Врач в замешательстве: "Собака? И как долго вы так себя чувствуете?"))
 
-The man replies: "Ever since I was a puppy!" ((Мужчина отвечает: "С самого детства, когда я был щенком!"))`
+The man answers: "Ever since I was a puppy!" ((Мужчина отвечает: "Прямо с самого детства, когда я был щенком!"))`
       },
-
-      // ===== ШУТКА 9: ПРО ОЧКИ =====
-      {
-        title: "Where are my glasses? / Где мои очки?",
-        content: `An old man is looking for his glasses. ((Старик ищет свои очки.))
-
-His wife sees him searching and asks: "What are you looking for?" ((Его жена видит, как он ищет, и спрашивает: "Что ты ищешь?"))
-
-The old man says: "My glasses! I can't find them anywhere!" ((Старик говорит: "Мои очки! Я нигде не могу их найти!"))
-
-His wife points at his face: "Honey... they're on your nose." ((Его жена указывает на его лицо: "Дорогой... они у тебя на носу."))
-
-The old man touches his nose and says: "Oh! That's why I could see you so clearly!" ((Старик трогает свой нос и говорит: "О! Вот почему я так ясно тебя видел!"))`
-      },
-
-      // ===== ШУТКА 10: ПРО МОРКОВКУ =====
-      {
-        title: "Why did the carrot... / Почему морковка...",
-        content: `Why did the carrot go to the doctor? ((Почему морковка пошла к врачу?))
-
-Because it wasn't peeling well! ((Потому что она плохо себя чувствовала (очищалась)!))
-
-Wait... no. Let me try again: ((Подожди... нет. Давай попробую снова:))
-
-What is a carrot's favourite vegetable? ((Какой любимый овощ у морковки?))
-
-None! It's a carrot! ((Никакой! Она сама морковка!))
-
-Actually... what did the carrot say to the potato? ((На самом деле... что морковка сказала картошке?))
-
-"Don't be so mashed up!" (("Не будь такой раздавленной!"))`
-      }
     ]
   },
   readAndDraw: {
@@ -1315,7 +1266,7 @@ Actually... what did the carrot say to the potato? ((На самом деле...
         content: `It is a story about one family. / фЭ ми ли / (( Это история про одну семью ))
 The family name is Special. / спэшл / (( Фамилия этой семьи "Особенные" ))
 
-Seven persons live in this family. (( 7 человек живет в этой семье  )) And we can draw them all, if we have a pen or a pencil. ((И мы сможем нарисовать их всех, если у нас есть ручка или карандаш.)) But if we don't have a pen or a pencil, we can't draw them all. ((Но если у нас нет ручки или карандаша, мы не сможем нарисовать их всех.))
+Seven persons / пЁр сонс / live in this family. (( 7 человек живет в этой семье  )) We can draw / дро / all persons. ((Мы можем нарисовать всех персон - членов семьи.)) If we have a pen or a pencil. ((Если у нас есть ручка или карандаш.)) If we don't have a pen, we can't draw / дро /. ((Но если у нас нет ручки, мы не сможем нарисовать.)) Do you have a pen or a pencil ? ((У тебя есть ручка или карандаш?)) <i>Читаем уверенно :</i>
 
 Who is who / Ху из ху / ? <i>пробуйте сами переводить, а затем нажимайте на предложения чтобы проверить себя</i> (( Кто есть кто ))`
       },
@@ -1385,10 +1336,11 @@ Write his name: <u>E</u>lon`
 Uncle Carl is very short. ((Дядя Карл очень низкий))
 Carl has dark hair / хЭа /. ((У Карла темные волосы))
 My uncle Carl has a black car. ((У моего дяди Карла черная тачка.))
-Carl's car is old ((Машина Карла старая))
-Carl's car has a scar on right door. ((Машина Карла имеет шрам - царапину на правой двери))
+Carl's car is old.((Машина Карла старая))
+And his car has a scar on right door. ((Машина Карла имеет шрам - царапину на правой двери))
 Uncle Carl always drives his car. ((Дядя Карл всегда водит его машину))
-Now my uncle car is sitting in his car. ((Сейчас мой дядя Карл сидит в его машине))
+Carl's car is not fast.((Машина Карла не быстрая))
+Now my uncle Carl is sitting in his car. ((Сейчас мой дядя Карл сидит в его машине))
 
 🚓 В тетради:
 
@@ -1435,9 +1387,9 @@ My imaginary sister has a big bottom. ((У моей воображаемой с�
 // ===== LOVE =====
       {
         title: "Love /лав/ ((Любовь))",
-        content: `Love is very very extra ordinary. ((Лав - очень очень необычная - экстраординарная.))
-She is my real and good cousin ((Она моя настоящая и хорошая двоюродная сестра))
-She is a daughter of Elon and Ireen. ((Она дочь Илона и Айрин.))
+        content: `Love is very, very, very extra ordinary. ((Лав - очень очень необычная - экстраординарная.))
+She is my real cousin /кАзин/ ((Она моя настоящая двоюродная сестра))
+She is a daughter\u00A0/\u00A0дО\u00A0тэр\u00A0/ of Elon and Ireen. ((Она дочь Илона и Айрин.))
 She has a big <b>heart\u00A0/\u00A0харт\u00A0/.<b> ((У неё большое сердце.))
 Her heart is <b>kind\u00A0/\u00A0кАйнд\u00A0/.<b> ((Её сердце доброе))
 Love is very smart. ((Лав очень умная.))
@@ -1468,19 +1420,19 @@ Everybody needs love. ((Всем нужна любовь.))
         title: "Fun Facts / Забавные Факты",
         content: `
 
-⭕ Sally has a big belly!
+⭕ _ _ _ _ _ has a big belly!
 
-🟩 Patrick has a square body!
+🟩 _ _ _ _ _ _ _ has a square body!
 
-🔺 Elon doesn't have "i" in his name!
+🔺 _ _ _ _ doesn't have "i" in his name!
 
-🚓 Carl has a scar on his car.
+🚓 _ _ _ _ has a scar on his car.
 
-🎨 Ireen doesn't have an android. She has an iphone.
+🎨 _ _ _ _ _ doesn't have an android. She has an iphone. Her eyes /айз/ are green.
 
-🍑 Ace is lazy.
+🍑 _ _ _ is lazy.
 
-🎵 Love is very very extra ordinary
+🎵 _ _ _ _ is very very extra ordinary
 
 Who is your favorite? - Кто тебе нравится больше всех?
 
