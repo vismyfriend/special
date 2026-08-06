@@ -1176,8 +1176,15 @@ The candidate says: "I don't give a f#@k what you think." ((Кандидат г�
 
       },
 
+      // ===== ШУТКА ПРО ЯЙЦО =====
+      {
+        title: "A Day Off / Выходной",
+        content: `Why did the chicken egg not go to the work yesterday? ((Почему куринное яйцо не вышло на работу вчера?))
 
-      // ===== ШУТКА 3: ПРО БОГА В ВАННОЙ =====
+Because it was FRY day. ((Потому что была Пятница - FRIDAY - созвучно с день жарки яиц))`
+      },
+
+      // ===== ШУТКА ПРО БОГА В ВАННОЙ =====
       {
         title: "[ уЭэ даз гАд лив ] - Где живет Бог?",
         picture: new URL("../assets/images/godTPNG.png", import.meta.url).href,
@@ -1190,9 +1197,15 @@ Teacher is surprised: "Why do you say so?" ((Учитель удивлен: "П�
 The boy says: "Because every morning my dad knocks on the door and shouts: 'God, are you still in there?!'" ((Мальчик говорит: "Потому что каждое утро мой папа колотит в дверь и кричит: 'Господи, ты ещё здесь?!'"))`
       },
 
+      // ===== ШУТКА ПРО ИЗУЧЕНИЕ ЯЗЫКОВ =====
+      {
+        title: "How vincent was learning languages",
+        content: `I started to learn English by telling jokes to people in my awful\u00A0/\u00A0оу\u00A0фул\u00A0/\u00A0English. ((Я начал учить английский, рассказывая анекдоты людям на моем ужасном английском.))
 
+Now I speak English very well, and I understand why people didn't smile at my jokes... I made so many mistakes... for example: i helped grandmother - i TRANSLATED her across road. ((Теперь я хорошо говорю на английском и понимаю почему люди не смеялись над моими шутками, ведь я говорил дичь вроде: я ПЕРЕВЁЛ бабушку через дорогу.))`
+      },
 
-      // ===== ШУТКА 2: ПРО КОШКУ И СОБАКУ =====
+      // ===== ШУТКА ПРО КОШКУ И СОБАКУ =====
       {
         title: "Tell the difference / дИ фе ренс /",
         content: `Can you tell the difference <b>between dogs and cats</b>? ((Можете сказать разницу между собаками и кошками?))
@@ -1202,7 +1215,7 @@ A dog says: "A man feeds me, loves me, <b>looks after me</b>... He must be a GOD
 A cat says: "A man feeds me, loves me, <b>looks after me</b>... I must be GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
       },
 
-// ===== ШУТКА 1: ПРО СОБАКУ =====
+// ===== ШУТКА ПРО СОБАКУ =====
       {
         title: "Lost Dog / Потерянная собака",
         content: `A man lost his dog. ((Мужчина потерял свою собаку.)) And he tells his friend: "I've lost my dog!!!" /\u00A0АЙВ\u00A0лост\u00A0май\u00A0дог\u00A0/ ((Он говорит его другу: "Я потерял свою собаку!!!"))
@@ -1215,7 +1228,7 @@ The man says:
 
 "That's a stupid idea! <b>Cuz\u00A0/\u00A0коз\u00A0/ </b> My dog can't read!" ((Мужчина отвечает: "Это наитупейшая идея! Потому что моя собака не умеет читать!"))`
       },
-      // ===== ШУТКА 4: ПРО СТАРИКА И ВРАЧА =====
+      // ===== ПРО СТАРИКА И ВРАЧА =====
       {
         title: "80-ty and 18-teen /\u00A0эй\u00A0ти\u00A0ЭНД\u00A0эйти-и-и-н /",
         content: `An 80-year-old man comes to his doctor. ((Восьмидесятилетний мужчина приходит к своему врачу.))
@@ -1231,13 +1244,7 @@ The doctor is shocked: "Oh My God! I must warn you: any sexual activity could be
 The old man calmly says: "Well... if she dies, she dies..." ((Старик спокойно говорит: "Ну что же... если она умрет, значит, она умрет..."))`
       },
 
-      // ===== ШУТКА ПРО ИЗУЧЕНИЕ ЯЗЫКОВ =====
-      {
-        title: "Learning Languages / Изучение языков",
-        content: `I started to learn English by telling jokes to people in my awful\u00A0/\u00A0оу\u00A0фул\u00A0/\u00A0English. ((Я начал учить английский, рассказывая анекдоты людям на моем ужасном английском.))
 
-Now I speak English very well, and I understand why people didn't smile at my jokes... I made so many mistakes... for example: i helped grandmother - i TRANSLATED her across road. ((Теперь я хорошо говорю на английском и понимаю почему люди не смеялись над моими шутками, ведь я говорил дичь вроде: я ПЕРЕВЁЛ бабушку через дорогу.))`
-      },
 
 
 
@@ -1253,6 +1260,64 @@ The man says: "I think I'm a dog!" ((Мужчина говорит: "Я дума
 The doctor is confused: "A dog? How long have you felt this way?" ((Врач в замешательстве: "Собака? И как долго вы так себя чувствуете?"))
 
 The man answers: "Ever since I was a puppy!" ((Мужчина отвечает: "Прямо с самого детства, когда я был щенком!"))`
+      },
+      // ===== ШУТКА ПРО ВЕТРЯКИ =====
+      {
+        title: "Windmill / ветряная мельница",
+        content: `Two windmills were standing on a hill. ((Две ветряные мельницы стояли на холме.))
+
+One asks the other: "Do you have a favorite music genre?" ((Одна спрашивает другую: "У тебя есть любимый жанр музыки?"))
+
+The other replies: "Well... all my life I have been a heavy metal fan." ((Другая отвечает: "Ну... всю свою жизнь я была фанаткой хэви-метала. - игра слов FAN вентилятор, пропеллер"))`
+      },
+
+      // ===== ШУТКА ПРО СТАРИКА И КОЛОДЕЦ =====
+      {
+        title: "A wish well / Колодец с желаниями",
+        content: `Why did the old man fall down the well? ((Почему старик упал в колодец?))
+
+He couldn't see that well. ((Он не очень хорошо видел. - Игра слов: "well" - это и "колодец", и "хорошо"))
+`
+      },
+
+      // ===== ШУТКА ПРО БАНК =====
+      {
+        title: "Bank customer / Клиент банка",
+        content: `Today at the bank, an old lady asked me to check her balance... ((Сегодня в банке одна пожилая женщина попросила меня проверить её баланс...))
+
+So I pushed her over. ((Так что я её толкнул.))`
+      },
+
+      // ===== ШУТКА ПРО ШТУРМОВИКОВ =====
+      {
+        title: "Storm Troopers / Штурмовики из Звездных войн",
+        content: `How many storm troopers does it take to change a lightbulb? ((Сколько штурмовиков нужно, чтобы заменить лампочку?))
+
+None, because they are all on the dark side. ((Ни одного, потому что они служат на темной стороне. Отсылка к легендарному фильму))`
+      },
+
+      // ===== ШУТКА ПРО ХОЛОДНЫЙ ДОМ =====
+      {
+        title: "Cold House / Холодный дом",
+        content: `If your house is cold, just stand in the corner. ((Если в твоем доме холодно, просто встань в углу.))
+
+It's always 90 degrees there. ((Там всегда 90 градусов.))`
+      },
+
+      // ===== ШУТКА ПРО КЛИФФА =====
+      {
+        title: "Mr. Cliff's joke",
+        content: `Hi, I'm Cliff. Drop over sometime. ((Привет, я Клифф. Заходи как-нибудь. - Игра слов: "Cliff" - это имя, но также "cliff" означает "обрыв". "Drop over" - "заходить в гости", но "drop" также означает "падать"))`
+      },
+
+
+
+      // ===== ШУТКА ПРО APPLE STORE =====
+      {
+        title: "Apple Store / Магазин Apple",
+        content: `What must you never do in Apple store? ((Что нельзя делать в магазине Apple?))
+
+You mustn't fart, because they don't have windows. ((Нельзя пукать, потому что у них нет окон. - Игра слов: "Windows" - это и "окна", и операционная система Windows - конкурент Apple))`
       },
     ]
   },
