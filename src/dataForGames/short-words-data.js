@@ -1066,6 +1066,16 @@ const shortWordsData = {
     { id: 8, eng: "beard", ru: "борода", hint: "/ БИЭРД /" },
   ],
 
+  topMistakes: [
+    { id: 1, eng: "tell me", ru: "say me", hint: "скажи мне" },
+    { id: 2, eng: "I don't have", ru: "I haven't", hint: "у меня нет" },
+    { id: 3, eng: "he doesn't have", ru: "he hasn't", hint: "у него нет" },
+    { id: 4, eng: "we don't have", ru: "we doesn't have", hint: "у нас нет" },
+    { id: 5, eng: "don't understand", ru: "no understand", hint: "не понимаю" },
+    { id: 6, eng: "I am okay", ru: "I am normal", hint: "нормально" },
+
+  ],
+
   SayVsTell: [
     // ===== SAY (просто произносить слова, фразы) =====
     { id: 1, eng: "say Vincent", ru: "скажи: 'Винсент!'" },

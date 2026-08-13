@@ -942,7 +942,7 @@ const GameTestsSeedData = {
             explanation: "The correct negative form is 'can't help'."
           },
           {
-            text: "Welcome to your new room, and this is your ____.",
+            text: "Welcome to your new room, and this is your ____ (новый рабочий стол).",
             options: {
               A: "new desk",
               B: "the new desk",
@@ -3819,11 +3819,11 @@ const GameTestsSeedData = {
             explanation: "если множественное число оканчивается на s, то запятая сверху (она же опостроф - притяжательный падеж) ставится после s"
           },
           {
-            text: "____ are my bottles!",
+            text: "____ are my bottles! /ботлз/ бутылки",
             textExtra: "Вот эти мои бутылки!",
             options: { A: "this", B: "that", C: "it", D: "these" },
             correctAnswer: "D",
-            explanation: "this - это одно, that - то одно, these - эти несколько, those - те несколько"
+            explanation: "Вот эти мои бутылки! this - это одно, that - то одно, these - эти несколько, those - те несколько"
           },
           {
             text: "And this is your ____ , and it looks great!",
@@ -3847,7 +3847,7 @@ const GameTestsSeedData = {
             explanation: "в ответе he, значит вопрос про мужчину → Is Mr Banning a teacher?"
           },
           {
-            text: "A lot of ____ live alone.",
+            text: "A lot of ____ live alone (в одиночестве).",
             textExtra: "Много людей живут одни.",
             options: { A: "people", B: "man", C: "person", D: "we" },
             correctAnswer: "A",
@@ -3956,7 +3956,7 @@ const GameTestsSeedData = {
             textExtra: "Мы едем на поезде.",
             options: { A: "with", B: "by", C: "for", D: "in" },
             correctAnswer: "B",
-            explanation: "способ передвижения → by train (by car, by bus)"
+            explanation: "способ передвижения → by train (by car, by bus) Мы приедем НА поезде - а не мы приедем В поезде"
           },
           {
             text: "one potato - two ____.",
@@ -4029,8 +4029,8 @@ const GameTestsSeedData = {
             explanation: "на поверхности → on the desk"
           },
           {
-            text: "I'm Jeff Caine. Nice to ____ you, Mr Caine.",
-            textExtra: "Я Джефф Кейн. Приятно познакомиться, мистер Кейн.",
+            text: "I'm Boris Johnson. Nice to ____ you, Mr. Johnson.",
+            textExtra: "Я Борис Джонсон. Приятно познакомиться, мистер Джонсон.",
             options: { A: "speak", B: "talk", C: "meet", D: "watch" },
             correctAnswer: "C",
             explanation: "при знакомстве → Nice to meet you"

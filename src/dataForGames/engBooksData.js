@@ -103,8 +103,8 @@ How This Changed Brian Tracy's Life((Как это изменило жизнь �
     ]
   },
 
-  acceleratedLearningInAction: {
-    mainTitleOfTheText: "THE LEARNING REVOLUTION",
+  acceleratedLearningInAction1: {
+    mainTitleOfTheText: "THE LEARNING REVOLUTION 1",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть первая.",
     chapters: [
 
@@ -123,38 +123,38 @@ And this S.P.E.C.I.A.L. program is designed to help you do exactly that.((И э�
 <strong>The great breakthrough in your life comes when you realize that you can learn anything you need to learn to accomplish any goal that you can set for yourself.((Великий прорыв в вашей жизни наступает, когда вы осознаёте, что можете научиться всему, чему вам нужно научиться, чтобы достичь любой цели, которую вы перед собой ставите.))</strong>`
       },
       {
-        title: "From Failure to Success ((От провала к успеху))",
+        title: "This is the story of Brian Tracy ((Это история Брайана Трэйси))",
 
-        content: `This is the story of Brian Tracy((Это история Брайана Трэйси )). Let's listen to what he says about his life experience.((Давайте полсушаем что он говорит о его жизненном опыте.)) I have studied, practiced, and taught in the area of human potential development for more than 30 years.((Я изучал, практиковал и преподавал в области развития человеческого потенциала более 30 лет.))
+        content: `I have studied, practiced, and taught in the <i> area of human potential development</i> for more than 30 years.((Я изучал, практиковал и преподавал в области развития человеческого потенциала более 30 лет.))
 
-I left high school without graduating and worked at laboring jobs, drifting from place to place until well into my 20s.((Я бросил школу, не закончив её, и работал на работах требующих физической активности, скитаясь с места на место до глубоких двадцати лет.)) The turning point came for me when I was about 24.((Поворотный момент наступил, когда мне было около 24 лет.)) I began to ask the question:((Я начал задавать вопрос:))
+I left high school without graduating and worked at laboring jobs, drifting from place to place.((Я бросил школу, не закончив её, и работал на работах требующих физической активности, скитаясь с места на место.)) The turning point came for me when I began to ask myself right questions.((Поворотный момент наступил, когда я начал задавать себе правильные вопросы.))
 
-"Why is it that some people are more successful than others?"((«Почему одни люди более успешны, чем другие?»))
+"Why is it ? Why are some people <b>more successful / сак сэс фул /</b> than others?"((«Почему так? Почему одни люди более успешны, чем другие?»))
 
 Why is it that some people make more money, have nicer homes and cars, and enjoy better lives and relationships, have better health and seem to get far more satisfaction out of life?((Почему некоторые люди зарабатывают больше денег, имеют более красивые дома и машины, наслаждаются лучшей жизнью и отношениями, имеют лучшее здоровье и, кажется, получают гораздо больше удовлетворения от жизни?))
 
 And at the same time, why is it that the great majority are frustrated and unhappy with their current levels of achievement?((И в то же время, почему подавляющее большинство разочарованы и недовольны своим текущим уровнем достижений?)) Why is it that so few people realize their full potentials for living?((Почему так мало людей реализуют свой полный жизненный потенциал?))`
       },
       {
-        title: "The First Breakthrough: The Success Secret",
+        title: "The First Insight / инсайт / ((первое озарение))",
 
-        content: `The Bible says:((В Библии сказано:))
+        content: `If you look for something - you will find it. ((Если вы что-то ищите, то вы найдете это)) Even The Bible says it:((Даже в Библии сказано про это:))
 
 "Seek and ye shall find, for all who seek findeth."((«Ищите и найдете, ибо всякий ищущий находит.»))
 
-Searching for the answer to the question about success led to my first breakthrough.((Поиски ответа на вопрос об успехе привели к моему первому прорыву.)) I learned that:((Я понял, что:))
+My searching for the answer to the question about <b>success / сак сэс /</b> led to my first <b>breakthrough.</b>((Поиски ответа на вопрос об успехе привели к моему первому прорыву.)) I learned that:((Я понял, что:))
 
-<strong>If you could find out what the most successful people did in any area, and then you did the same thing over and over, you would eventually get the same results as they do.</strong>((Если бы вы могли узнать, что делали самые успешные люди в любой области, и затем делали бы то же самое снова и снова, вы бы в итоге получили те же результаты, что и они.))
+<b>If you could find out what the most successful people did in any area, and then you did the same thing over and over, you would </b> /вуд ивЭнчули/ <strong> eventually get the same results as they do.</strong>((Если бы вы могли узнать, что делали самые успешные люди в любой области, и затем делали бы то же самое снова и снова, вы бы в итоге получили те же результаты, что и они.))
 
 This idea is so simple that most people have passed it over without noticing it.((Эта идея настолько проста, что большинство людей прошли мимо, не заметив её.)) Yet in every field, the people at the top were once at the bottom.((И всё же в каждой области люди на вершине когда-то были внизу.)) When they were at the bottom, they studied the people at the top and they did what they were doing.((Когда они были внизу, они изучали людей на вершине и делали то, что делали они.)) As a result, they moved ahead rapidly and eventually they were at the top themselves.((В результате они быстро продвигались вперед и в конце концов сами оказывались на вершине.))
 
-Their success had very little to do with luck or being at the right place at the right time.((Их успех имел очень мало общего с удачей или оказанием в нужном месте в нужное время.)) People create their own success by learning what they need to learn and then by practicing it until they become proficient at it.((Люди создают свой собственный успех, изучая то, что им нужно изучить, и затем практикуя это до тех пор, пока не становятся в этом искусными.)) It's no miracle.((Это не чудо.))`
+Their success had very little to do with luck or being at the right place at the right time.((Их успех имел очень мало общего с удачей или оказанием в нужном месте в нужное время.)) They are just people. ((Они всего лишь люди)) And you and I are people too. ((Вы и я - мы тоже люди)) We create our own success by learning what we need to learn. ((Мы создаем свой собственный успех, изучая то, что нам нужно изучить)) And then by practicing it until we become /про фИшэнт/ proficient at it.(( И затем практикуя это до тех пор, пока не станем в этом искусными.)) It's no miracle.((Это не чудо.))`
       },
       {
-        title: "How This Changed Brian Tracy's Life",
-        content: `In Sales:((В продажах:))
+        title: "How This Changed Brian's Life",
+        content: `--
 
-This discovery changed my life.((Это открытие изменило мою жизнь.)) I had been spinning my wheels in sales for a year.((Я топтался на месте в продажах в течение года.)) When I learned this secret, I immediately began:((Когда я узнал этот секрет, я немедленно начал:))
+Being at a junior position in sales: ((Будучи на начальной позиции в продажах)) This discovery did change my life.((Это открытие действительно изменило мою жизнь.)) I was stuck in sales without progress for a year.((Я топтался на месте в продажах в течение года.)) When I looked and learned what top-managers were doing, I immediately began:((Когда я посмотрел и изучил, что топ-менеджеры делали, я немедленно начал:))
 
 • Interviewing the top salespeople((• Интервьюировать лучших продавцов))
 
@@ -168,7 +168,7 @@ In one more year, I was at the top of my sales force and earning more money than
 
 ---
 
-As a Sales Manager.((Как менеджер по продажам:)) I applied the same principles:((Я применил те же принципы:))
+As a middle Sales Manager.((В качестве мидл-позиции менеджера по продажам:)) I applied the same principles:((Я применил те же принципы:))
 
 1. I talked to other successful sales managers((• Я разговаривал с другими успешными менеджерами по продажам))
 2. I read books on management((• Я читал книги по управлению))
@@ -190,6 +190,8 @@ In Real Estate Development((В сфере развития недвижимос�
 
 Over the next few years, I bought, developed, leased, sold, and otherwise disposed of more than $50 million worth of real estate.((В течение следующих нескольких лет я купил, развил, сдал в аренду, продал и иным образом распорядился недвижимостью на сумму более 50 миллионов долларов.))
 
+--
+
 I moved from a rented apartment to a condominium, to a home, to an even bigger home.((Я переехал из съемной квартиры в кондоминиум, затем в дом, затем в ещё больший дом.)) I went from driving an old car to a new car and then to a new Mercedes.((Я перешел от вождения старой машины к новой, а затем к новому Мерседесу.)) I went from traveling by car and staying with friends to traveling by jet and staying in the best hotels.((Я перешел от путешествий на машине и остановок у друзей к путешествиям на реактивных самолетах и проживанию в лучших отелях.))`
       },
       {
@@ -206,16 +208,30 @@ Wow! ((Вау!)) This means that there are no limits on what you can be, have, o
 
 It may take you a week or a month or a year, but your success is inevitable using this simple approach. ((Это может занять неделю, месяц или год, но ваш успех неизбежен при использовании этого простого подхода.))`
       },
-
-      // ===== ГЛАВА 6 =====
       {
-        title: "Colin Rose and Accelerated Learning ((Колин Роуз и ускоренное обучение))",
-        content: `I became so impressed with the power of learning to change a person's life that in 1980 I began studying the subject of learning in greater depth.((Я был настолько впечатлён силой обучения, способной изменить жизнь человека, что в 1980 году начал изучать тему обучения более глубоко.)) I studied:((Я изучал:))
+        title: `The end of Part 1`,
+        content: `Questions to discuss :
+
+        -- Who are top successful people in your field of work?
+        -- Did you watch the interviews with those people?
+        -- Do you have goals to achieve this year? What are they? (any goals at all - not only connected with the work, maybe sport goals, relationships, habits, dreams, desires, share anything that comes to your mind)
+        `,
+      },
+    ]
+  },
+  acceleratedLearningInAction2: {
+    mainTitleOfTheText: "THE LEARNING REVOLUTION 2",
+    author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть вторая.",
+    chapters: [
+
+      {
+        title: "Colin Rose and / эк сэ ли рэй тид / Accelerated Learning ((Колин Роуз и ускоренное обучение))",
+        content: `I became so impressed with the power of accelerated learning to change a person's life. ((Я был настолько впечатлён силой ускоренного обучения, способной изменить жизнь человека)) And I began studying the subject of learning in greater depth. ((И я начал изучать тему обучения более глубоко.)) I studied:((Я изучал:))
 
 • Sales((• Продажи))
 • Management((• Управление))
-• Psychology((• Психологию))
-• Philosophy((• Философию))
+• Psychology / сай кОлоджи/ ((• Психологию))
+• Philosophy / фи лОсофи /((• Философию))
 • History((• Историю))
 • Metaphysics((• Метафизику))
 • The workings of the human mind((• Работу человеческого разума))
@@ -234,7 +250,6 @@ I began practicing concepts of accelerated learning, including:((Я начал �
 I soon found that I could read, learn, remember, apply, and get better results faster using these methods than I ever could before.((Вскоре я обнаружил, что могу читать, учиться, запоминать, применять и получать лучшие результаты быстрее, используя эти методы, чем когда-либо раньше.))`
       },
 
-      // ===== ГЛАВА 7 =====
       {
         title: "Colin Rose Speaks ((Колин Роуз говорит))",
         content: `"Hello, I'm Colin Rose, and I'd like to tell you how accelerated learning developed and what it will do for you.((«Здравствуйте, я Колин Роуз, и я хотел бы рассказать вам, как развивалось ускоренное обучение и что оно даст вам.))
@@ -262,7 +277,7 @@ If the way that information reaches you exactly matches the way that you prefer 
       // ===== ГЛАВА 9 =====
       {
         title: "Colin Rose's Goal ((Цель Колина Роуза))",
-        content: `"I have a goal which I'm determined to reach.((«У меня есть цель, которую я полон решимости достичь.)) I want to see everyone, from children to adults, acquire the tools and the motivation to realise their dreams.((Я хочу, чтобы каждый — от детей до взрослых — приобрёл инструменты и мотивацию для реализации своих мечтаний.)) I've seen the incredible impact that accelerated learning has on people's lives and I hope that when you've experienced it too, you'll be just as excited as I am about this dynamic breakthrough in personal achievement."((Я видел невероятное влияние, которое ускоренное обучение оказывает на жизнь людей, и я надеюсь, что когда вы тоже испытаете это, вы будете так же взволнованы, как и я, этим динамичным прорывом в личных достижениях.»))`
+        content: `"I have a goal which I'm determined to reach.((«У меня есть цель, которую я полон решимости достичь.)) I want to see everyone, from children to adults, acquire the tools and the motivation to realise their dreams.((Я хочу, чтобы каждый — от детей до взрослых — приобрёл инструменты и мотивацию для реализации своих мечтаний.)) I've seen the incredible impact that accelerated learning has on people's lives and I hope that when you've experienced it too, you'll be just as excited as I am about this dynamic / дай нэмик/ breakthrough in personal achievement."((Я видел невероятное влияние, которое ускоренное обучение оказывает на жизнь людей, и я надеюсь, что когда вы тоже испытаете это, вы будете так же взволнованы, как и я, этим динамичным прорывом в личных достижениях.»))`
       },
 
       // ===== ГЛАВА 10 =====
@@ -286,7 +301,7 @@ In the information age, knowledge is king.((В эпоху информации �
 
 • Tom Peters: "Continuous learning may be the only real source of sustainable competitive advantage for individuals and corporations."((• Том Питерс: «Непрерывное обучение может быть единственным реальным источником устойчивого конкурентного преимущества для отдельных людей и корпораций.»))
 
-• Peter Senge (author of The Fifth Discipline): "Only learning organizations, those organizations that are capable of taking in new information, adapting it, and using it faster than their competitors, will survive in the fast-changing competitive world of tomorrow."((• Питер Сенге (автор «Пятой дисциплины»): «Только обучающиеся организации — те организации, которые способны воспринимать новую информацию, адаптировать её и использовать быстрее, чем их конкуренты — выживут в быстро меняющемся конкурентном мире завтрашнего дня.»))`
+• Peter Senge - author of The Fifth Discipline: "Only learning organizations, those organizations that are capable of taking in new information, adapting it, and using it faster than their competitors, will survive in the fast-changing competitive world of tomorrow."((• Питер Сенге - автор «Пятой дисциплины»: «Только обучающиеся организации — те организации, которые способны воспринимать новую информацию, адаптировать её и использовать быстрее, чем их конкуренты — выживут в быстро меняющемся конкурентном мире завтрашнего дня.»))`
       },
 
       // ===== ГЛАВА 12 =====
@@ -391,9 +406,9 @@ And the great opportunity for you, an almost unlimited opportunity, comes from l
 
 Life was divided into three parts:((Жизнь была разделена на три части:))
 
-1. Learning Years (until about age 20) — you got your education((1. Годы обучения (примерно до 20 лет) — вы получали образование))
-2. Earning Years (until about age 65) — you worked((2. Годы заработка (примерно до 65 лет) — вы работали))
-3. Yearning Years (retirement) — paid for by social security, savings, and pensions((3. Годы тоски (пенсия) — оплачиваемые социальным обеспечением, сбережениями и пенсиями))
+1. Learning Years (until about age 20) — you got your education((1. Годы обучения - примерно до 20 лет — вы получали образование))
+2. Earning Years (until about age 65) — you worked((2. Годы заработка - примерно до 65 лет — вы работали))
+3. Yearning Years (retirement) — paid for by social security, savings, and pensions((3. Годы тоски - пенсия — оплачиваемые социальным обеспечением, сбережениями и пенсиями))
 
 In this old model, learning was something that you did during your formative years, and then you never had to do it again.((В этой старой модели обучение было тем, что вы делали в годы своего становления, а затем вам никогда не нужно было делать это снова.))
 
@@ -699,7 +714,8 @@ Above all, in the sessions ahead, you will learn a new system for enhancing and 
 
     ]
   },
-  acceleratedLearningInAction2: {
+
+  acceleratedLearningInAction3: {
     mainTitleOfTheText: "YOU ARE A GENIOUS / джИ ни ус / гений",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть вторая.",
     audioUrl: new URL('../assets/audio/02-YouAreAGenius.mp3', import.meta.url).href,
@@ -1212,7 +1228,7 @@ Now I speak English very well, and I understand why people didn't smile at my jo
 
 A dog says: "A man feeds me, loves me, <b>looks after me</b>... He must be a GOD!" ((Собака думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, он БОГ!"))
 
-A cat says: "A man feeds me, loves me, <b>looks after me</b>... I must be GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
+A cat says: "A man feeds me, loves me, <b>looks after me</b>... I must be a GOD!" ((Кошка думает: "Человек кормит меня, любит меня, заботится обо мне... Должно быть, я БОГ!"))`
       },
 
 // ===== ШУТКА ПРО СОБАКУ =====
@@ -1525,7 +1541,7 @@ Who is your favorite? - Кто тебе нравится больше всех?
         title: "The Little Red Hood ((Красная шапочка))",
         content: `Однажды... /уанс апон э тайм.../ Once upon a time... A little girl lived in a village. (("Маленькая девочка жила в деревне". {Не нужно переводить каждое слово по отдельности - запоминайте фразу целиком как она есть, а не отдельные слова. Именно с такой фразы - начинаются почти все сказки и смысл его такой - УАНС АПОН Э ТАЙМ - вы справитесь! Винсент в Вас верит!} )) Everybody who saw her liked her. ((Все, кто её видел, любили её)) But most of all her grandmother, who didn't know what to give her as a present. ((Но больше всех — её бабушка, которая не знала, что ещё ей подарить.)) Once she gave her as a present - a little hat. ((Однажды она подарила ей маленькую шапочку)) That hat looked like a hood, and it was made of red velvet. (( Та шапочка была похожа на капюшон-накидку и сделана она была из красного бархата.)) Because this hat looked like a hood, and because it suited her so well - she wanted to wear it all the time. ((Из-за того что шапка была похожа на капюшон и так как она хорошо ей подошла, она хотела носить её всё время.)) And everybody started calling her Little Red Riding Hood. (( Каждый стал называть её Красной Шапочкой или Красным Капюшончиком.))
 
-One day her mother said to her: ((Однажды её мама сказала ей:)) "Come Little Red Riding Hood. ((«Иди, Красная Шапочка.)) Here is a piece of cake and a bottle of wine. ((Вот кусок пирога и бутылка вина.)) Take them to your grandmother. ((Отнеси их своей бабушке.)) She is sick and weak, and they will do her well. ((Она больна и слаба, и это поможет ей.)) Mind your manners and give her my greetings. ((Веди себя прилично и передай ей мой привет.)) Behave yourself on the way, and do not leave the path, or you might fall down and break the glass, and then there will be nothing for your sick grandmother." ((Веди себя хорошо в дороге и не сходи с тропинки, иначе ты можешь упасть и разбить бутылку, и тогда твоей больной бабушке ничего не достанется.»))
+One day her mother said to her: ((Однажды её мама сказала ей:)) "Come Little Red Riding Hood. ((«Иди, Красная Шапочка.)) I have a piece of cake and a bottle of wine. ((Вот у меня кусок пирога и бутылка вина.)) Take them and go to your grandmother. ((Возьми их и отнеси своей бабушке.)) She is sick and weak, and they will do her well. ((Она больна и слаба, и это поможет ей.)) Mind your manners and give her my greetings. ((Веди себя прилично и передай ей мой привет.)) Behave yourself on the way, and do not leave the path, or you might fall down and break the glass, and then there will be nothing for your sick grandmother." ((Веди себя хорошо в дороге и не сходи с тропинки, иначе ты можешь упасть и разбить бутылку, и тогда твоей больной бабушке ничего не достанется.»))
 
 Little Red Riding Hood promised to obey her mother. ((Красная Шапочка пообещала слушаться свою маму.))`
       },
@@ -1533,30 +1549,73 @@ Little Red Riding Hood promised to obey her mother. ((Красная Шапоч�
       // ===== ГЛАВА 2 =====
       {
         title: "The Wolf ((Волк Волчара - перевод от Винсента))",
-        content: `The grandmother lived deep in the woods, a half hour from the village. ((Бабушка жила глубоко в лесу, в получасе ходьбы от деревни.)) When Little Red Riding Hood entered the woods a wolf came to her. ((Когда Красная Шапочка вошла в лес, к ней подошёл волк.)) She did not know what a wicked animal he was, and she was not afraid of him. ((Она не знала, какой он злой зверь, и не боялась его.)) "Good day to you, Little Red Riding Hood." ((«Добрый день тебе, Красная Шапочка.»)) - "Thank you, wolf." ((«Спасибо, волк.»)) - "Where are you going so early, Little Red Riding Hood?" ((«Куда ты так рано идёшь, Красная Шапочка?»)) - "To grandmother's." ((«К бабушке.»)) - "And what are you carrying under your apron?" ((«А что ты несёшь под фартуком?»)) - "Grandmother is sick and weak, and I am taking her some cake and wine. ((«Бабушка больна и слаба, и я несу ей пирог и вино.)) We baked yesterday, and they should give her strength." ((Мы испекли вчера, и это должно придать ей сил.»)) - "Little Red Riding Hood, just where does your grandmother live?" ((«Красная Шапочка, а где именно живёт твоя бабушка?»)) - "Her house is a quarter of an hour from here, in the woods, under the three large oak trees. ((«Её дом в четверти часа ходьбы отсюда в лесу, под тремя большими дубами.)) There's a hedge of hazel bushes there. ((Там есть живая изгородь из орешника.)) You must know the place," said Little Red Riding Hood. ((Ты должен знать это место,» — сказала Красная Шапочка.))
+        content: `The grandmother lived deep in the woods, a half hour from the village. ((Бабушка жила глубоко в лесу, в получасе ходьбы от деревни.)) When Little Red Riding Hood entered the woods a wolf came to her. ((Когда Красная Шапочка вошла в лес, к ней подошёл волк.)) She didn't know what a tricky animal he was.((Она не знала, какой он хитрый зверь)) And she was not afraid of him. ((И она не боялась его.))
 
-The wolf thought to himself: ((Волк подумал про себя:)) "Now there is a tasty bite for me. ((«Вот теперь для меня есть вкусный кусочек.)) Just how are you going to catch her?" ((«Как бы мне её поймать?»)) Then he said: ((Затем он сказал:)) "Listen, Little Red Riding Hood, haven't you seen the beautiful flowers that are blossoming in the woods? ((«Послушай, Красная Шапочка, разве ты не видела красивые цветы, которые цветут в лесу?)) Why don't you go and take a look? ((Почему бы тебе не пойти и не посмотреть?)) And I don't believe you can hear how beautifully the birds are singing. ((И я не верю, что ты слышишь, как красиво поют птицы.)) This road is a little longer, but you can pick flowers for your granny. ((Эта дорога немного длиннее, но ты сможешь набрать цветочков для бабули.)) It is very beautiful in the woods." ((В лесу очень красиво.»))`
+        - "Good day to you, Little Red Riding Hood." ((«Добрый день тебе, Красная Шапочка.»))
+
+        - "Thank you, wolf." ((«Спасибо, волк.»))
+
+        - "Where are you going so early, Little Red Riding Hood?" ((«Куда ты так рано идёшь, Красная Шапочка?»))
+
+        - "To grandmother's." ((«К бабушке.»))
+
+        - "And what are you carrying under your apron?" ((«А что ты несёшь под фартуком?»))
+
+        - "Grandmother is sick and weak, and I have some cake and wine for her. ((«Бабушка больна и слаба, и у меня для нее пирог и вино.)) We baked yesterday, and they should give her strength." ((Мы испекли вчера, и это должно придать ей сил.»))
+
+        - "Little Red Riding Hood, where does your grandmother live?" ((«Красная Шапочка, а где именно живёт твоя бабушка?»))
+
+        - "Her house is a quarter of an hour from here, in the woods, under the three large oak trees. ((«Её дом в четверти часа ходьбы отсюда в лесу, под тремя большими дубами.)) There's a fence of bushes there. ((Там есть забор изгородь из кустов.)) You must know the place," said Little Red Riding Hood. ((Ты должен знать это место,» — сказала Красная Шапочка.))
+
+        The wolf thought to himself: ((Волк подумал про себя:)) "It sounds tasty... ((«Звучит вкусно и прям деликатесно!)) Then he said: ((Затем он сказал:))
+
+        - "Listen, Little Red Riding Hood, haven't you seen the beautiful flowers that are blossoming in the woods? ((«Послушай, Красная Шапочка, разве ты не видела красивые цветы, которые цветут в лесу?)) Why don't you go and take a look? ((Почему бы тебе не пойти и не посмотреть?)) And I don't believe you can hear how beautifully the birds are singing. ((И я не верю, что ты слышишь, как красиво поют птицы.)) This road is a little longer, but you can pick flowers for your granny. ((Эта дорога немного длиннее, но ты сможешь набрать цветочков для бабули.)) It is very beautiful in the woods." ((В лесу очень красиво.»))`
       },
 
       // ===== ГЛАВА 3 =====
       {
-        title: "The Wolf Eats Grandmother ((Волк съедает бабушку))",
+        title: "A trap ((Ловушка))",
         content: `Little Red Riding Hood opened her eyes and saw the sunlight breaking through the trees, and how the ground was covered with beautiful flowers. ((Красная Шапочка открыла глаза и увидела, как солнечный свет пробивается сквозь деревья и как земля покрыта красивыми цветами.)) She thought: ((Она подумала:)) "If a take a bouquet to grandmother, she will be very pleased. ((«Если я отнесу букет бабушке, она будет очень довольна.)) Anyway, it is still early, and I'll be home on time." ((В любом случае, ещё рано, и я вернусь домой вовремя.»)) And she ran off into the woods looking for flowers. ((И она побежала в лес искать цветы.)) Each time she picked one she thought that she could see an even more beautiful one a little way off, and she ran after it, going further and further into the woods. ((Каждый раз, когда она срывала один, ей казалось, что она видит ещё более красивый чуть поодаль, и она бежала за ним, заходя всё дальше и дальше в лес.))
 
-But the wolf ran straight to the grandmother's house and knocked on the door. ((Но волк побежал прямо к дому бабушки и постучал в дверь.)) "Who's there?" ((«Кто там?»)) - "Little Red Riding Hood. ((«Красная Шапочка.)) I'm bringing you some cake and wine. ((Я несу тебе пирог и вино.)) Open the door for me." ((Открой мне дверь.»)) - "Just press the latch," called out the grandmother. ((«Просто нажми на засов,» — крикнула бабушка.)) "I'm too weak to get up." ((«Я слишком слаба, чтобы встать.»)) The wolf pressed the latch, and the door opened. ((Волк нажал на засов, и дверь открылась.)) He stepped inside, went straight to the grandmother's bed, and ate her up. ((Он вошёл внутрь, подошёл прямо к бабушкиной кровати и съел её.)) Then he took her clothes, put them on, and put her hat on his head. ((Затем он взял её одежду, надел её и надел её шапочку себе на голову.)) He got into her bed and pulled the curtains shut. ((Он лёг в её кровать и задёрнул занавески.))`
+        But the wolf ran straight to the grandmother's house and knocked on the door. ((Но волк побежал прямо к дому бабушки и постучал в дверь.))
+
+        - "Who's there?" ((«Кто там?»))
+
+        - "Little Red Riding Hood. ((«Красная Шапочка.)) I'm bringing you some cake and wine. ((Я несу тебе пирог и вино.)) Open the door for me." ((Открой мне дверь.»))
+
+        - "Just pull the rope," called out the grandmother. ((«Просто потяни за веревочку,» — крикнула бабушка.)) "I'm too weak to get up." ((«Я слишком слаба, чтобы встать.»))
+
+        The wolf pulled the rope, and the door opened. ((Волк нажал на засов, и дверь открылась.)) He stepped inside, went straight to the grandmother's bed, and ate her! ((Он вошёл внутрь, подошёл прямо к бабушкиной кровати и сожрал её.)) Then he took her clothes, put them on, and put her hat on his head. ((Затем он взял её одежду, надел её и надел её шапочку себе на голову.)) He got into her bed and pulled the curtains shut. ((Он лёг в её кровать и задёрнул занавески.))`
       },
 
       // ===== ГЛАВА 4 =====
       {
-        title: "Little Red Riding Hood Arrives ((Красная Шапочка приходит))",
-        content: `Little Red Riding Hood had run after flowers, and did not continue on her way to grandmother's until she had gathered all that she could carry. ((Красная Шапочка бегала за цветами и не продолжила путь к бабушке, пока не набрала столько, сколько могла унести.)) When she arrived, she found, to her surprise, that the door was open. ((Когда она пришла, она с удивлением обнаружила, что дверь открыта.)) She walked into the parlor, and everything looked so strange that she thought: ((Она вошла в гостиную, и всё выглядело так странно, что она подумала:)) "Oh, my God, why am I so afraid? ((«О, Боже, почему мне так страшно?)) I usually like it at grandmother's." ((Обычно мне нравится у бабушки.»)) Then she went to the bed and pulled back the curtains. ((Затем она подошла к кровати и отдёрнула занавески.)) Grandmother was lying there with her hat pulled down over her face and looking very strange. ((Бабушка лежала там с шапочкой, надвинутой на лицо, и выглядела очень странно.))
+        title: "Walking into a trap ((Заход в ловушку))",
+        content: `Little Red Riding Hood was running and picking flowers, and she did not continue her way to grandmother's until she collected all that she could carry. ((Красная Шапочка бегала за цветами и не продолжила путь к бабушке, пока не набрала столько, сколько могла унести.)) When she arrived, she found, to her surprise, that the door was open. ((Когда она пришла, она с удивлением обнаружила, что дверь открыта.)) She walked into the living room, and everything looked so strange that she thought: ((Она вошла в гостиную, и всё выглядело так странно, что она подумала:))
+        - "Oh, my God, why am I so afraid? ((«О, Боже, почему мне так страшно?)) I usually like it at grandmother's." ((Обычно мне нравится у бабушки.»)) Then she went to the bed and pulled back the curtains. ((Затем она подошла к кровати и отдёрнула занавески.)) Grandmother was lying there with her hat pulled down over her face and looking very strange. ((Бабушка лежала там с шапочкой, надвинутой на лицо, и выглядела очень странно.))
 
-"Oh, grandmother, what big ears you have!" ((«О, бабушка, какие у тебя большие уши!»)) - "All the better to hear you with." ((«Чтобы лучше слышать тебя.»)) - "Oh, grandmother, what big eyes you have!" ((«О, бабушка, какие у тебя большие глаза!»)) - "All the better to see you with." ((«Чтобы лучше видеть тебя.»)) - "Oh, grandmother, what big hands you have!" ((«О, бабушка, какие у тебя большие руки!»)) - "All the better to grab you with!" ((«Чтобы лучше схватить тебя!»)) - "Oh, grandmother, what a horribly big mouth you have!" ((«О, бабушка, какой у тебя ужасно большой рот!»)) - "All the better to eat you with!" ((«Чтобы лучше съесть тебя!»)) And with that he jumped out of bed, jumped on top of poor Little Red Riding Hood, and ate her up. ((И с этими словами он выпрыгнул из кровати, прыгнул на бедную Красную Шапочку и съел её.))`
+        - "Oh, grandmother, why do you have such big ears?" - she asked. ((«О, бабушка, какие у тебя большие уши!»))
+
+        - "It is to hear you better." - the wolf answered. ((«Чтобы лучше слышать тебя.»))
+
+        - "Oh, grandmother, why do you have such big eyes?" ((«О, бабушка, какие у тебя большие глаза!»))
+
+        - "It is to see you better." ((«Чтобы лучше видеть тебя.»))
+
+        - "Oh, grandmother, what big hands you have!" ((«О, бабушка, какие у тебя большие руки!»))
+
+        - "Because I want to hug you!" ((«Потому что я хочу тебя обнять!»))
+
+        - "Oh, grandmother, what a horribly big mouth you have!" ((«О, бабушка, какой у тебя ужасно большой рот!»))
+
+        - "That is because I wanna eat you!!!" ((«Чтобы лучше съесть тебя!»))
+
+        And with that he jumped out of bed, jumped on top of poor Little Red Riding Hood, and ate her as he ate her granny! ((И с этими словами он выпрыгнул из кровати, прыгнул на бедную Красную Шапочку и съел её как и ее бабулю.))`
       },
 
-      // ===== ГЛАВА 5 =====
+
       {
-        title: "The Huntsman Saves Them ((Охотник спасает их))",
+        title: "Hunters ((Охотники))",
         content: `As soon as the wolf had finished this tasty bite, he climbed back into bed, fell asleep, and began to snore very loudly. ((Как только волк закончил этот вкусный обед, он забрался обратно в кровать, заснул и начал очень громко храпеть.)) A huntsman was just passing by. ((Охотник как раз проходил мимо.)) He thought it strange that the old woman was snoring so loudly, so he decided to take a look. ((Он подумал, что странно, что старушка так громко храпит, и решил заглянуть.)) He stepped inside, and in the bed there lay the wolf that he had been hunting for such a long time. ((Он вошёл внутрь, и в кровати лежал тот самый волк, на которого он так долго охотился.)) "He has eaten the grandmother, but perhaps she still can be saved. ((«Он съел бабушку, но, возможно, её ещё можно спасти.)) I won't shoot him," thought the huntsman. ((«Я не буду в него стрелять,» — подумал охотник.)) So he took a pair of scissors and cut open his belly. ((Поэтому он взял ножницы и разрезал волку живот.)) He had cut only a few strokes when he saw the red hat shining through. ((Он сделал всего несколько разрезов, когда увидел, что сквозь шерсть блестит красная шапочка.)) He cut a little more, and the girl jumped out and cried: ((Он разрезал ещё немного, и девочка выпрыгнула и закричала:)) "Oh, I was so frightened! ((«О, как же мне было страшно!)) It was so dark inside the wolf's body!" ((«Так темно было внутри волчьего тела!»)) And then the grandmother came out alive as well. ((А затем вышла живой и бабушка.)) Then Little Red Riding Hood fetched some large heavy stones. ((Затем Красная Шапочка принесла большие тяжёлые камни.)) They filled the wolf's body with them, and when he woke up and tried to run away, the stones were so heavy that he fell down dead. ((Они заполнили волчий живот камнями, и когда он проснулся и попытался убежать, камни были такими тяжёлыми, что он упал замертво.))
 
 The three of them were happy. ((Все трое были счастливы.)) The huntsman took the wolf's pelt. ((Охотник снял с волка шкуру.)) The grandmother ate the cake and drank the wine that Little Red Riding Hood had brought. ((Бабушка съела пирог и выпила вино, которое принесла Красная Шапочка.)) And Little Red Riding Hood thought to herself: ((И Красная Шапочка подумала про себя:)) "As long as I live, I will never leave the path and run off into the woods by myself if mother tells me not to." ((«Пока я жива, я никогда не сойду с тропинки и не убегу в лес одна, если мама запретит мне.»))`

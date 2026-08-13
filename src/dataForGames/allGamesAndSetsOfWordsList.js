@@ -1129,8 +1129,20 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink",
+      path: "/see-all-sets-of-words/littleRedRidingHood/books",
+      missionVisibleName: "<b>Книга</b> Красная Шапочка",
+      missionDescription: "A little red riding hood",
+      id: 1001,
+      active: true,
+      gameIcon: "A2",
+
+      lvl: ["lvlBooks"],
+
+    },
+    {
+      type: "hardcodedLink",
       path: "/see-all-sets-of-words/jokes/books",
-      missionVisibleName: '<b>Книга</b> "Шутки ин инглиш"',
+      missionVisibleName: '<b>Книга</b> Шутки ин инглиш',
       missionDescription: "Jokes in English",
       id: 1001,
       active: true,
@@ -1139,21 +1151,10 @@ export const allGamesAndSetsOfWordsList =
       lvl: ["lvlBooks"],
 
     },
+
     {
       type: "hardcodedLink",
-      path: "/see-all-sets-of-words/littleRedRidingHood/books",
-      missionVisibleName: "Красная Шапочка",
-      missionDescription: "A little red riding hood",
-      id: 1001,
-      active: true,
-      gameIcon: "A2-B1",
-
-      lvl: ["lvlBooks"],
-
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/acceleratedLearningInAction/books",
+      path: "/see-all-sets-of-words/acceleratedLearningInAction1/books",
       missionVisibleName: "AL 1 - Learning revolution",
       missionDescription: "Accelerated Learning 1",
       id: 1001,
@@ -1164,7 +1165,7 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/acceleratedLearningInAction2/books",
-      missionVisibleName: "AL 2 - You are a genius",
+      missionVisibleName: "AL 2 - Learning revolution",
       missionDescription: "Accelerated Learning 2",
       id: 1001,
       active: true,
@@ -1174,12 +1175,31 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/acceleratedLearningInAction3/books",
-      missionVisibleName: "AL 3 - Stages of learning",
+      missionVisibleName: "AL 3 - You are a genius",
       missionDescription: "Accelerated Learning 3",
       id: 1001,
       active: true,
       lvl: ["lvlBooks"],
       gameIcon: "B2-C1"
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/acceleratedLearningInAction4/books",
+      missionVisibleName: "AL 4 - Stages of learning",
+      missionDescription: "Accelerated Learning 4",
+      id: 1001,
+      active: true,
+      lvl: ["lvlBooks"],
+      gameIcon: "B2-C1"
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/topMistakes/find-pairs-easy",
+      missionVisibleName: "Топ ошибки",
+      missionDescription: "Top mistakes",
+      id: 1001,
+      active: true,
+      lvl: ["lvl1"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
