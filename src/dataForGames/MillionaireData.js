@@ -34,6 +34,136 @@ const MillionaireData = {
       correctAnswer: "A",
     },
   ],
+  pronouns0: [
+    {
+      text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Двери / дорз / Doors",
+      options: {
+        A: "he",
+        B: "she",
+        C: "it",
+        D: "they"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Vincent / вИн сэнт /",
+      options: {
+        A: "he",
+        B: "she",
+        C: "it",
+        D: "we"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Машина / кар / Car",
+      options: {
+        E: "it",
+        F: "he",
+        G: "she",
+      },
+      correctAnswer: "E",
+    },
+    {
+      text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Окно / уин доу / Window",
+      options: {
+        E: "it",
+        F: "he",
+        G: "she",
+      },
+      correctAnswer: "E",
+    },
+    {
+      text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Глаза / айз / Eyes",
+      options: {
+        E: "it",
+        F: "we",
+        G: "they",
+        A: "you",
+        B: "I",
+      },
+      correctAnswer: "G",
+    },
+    {
+      text: "Как\u00A0на\u00A0английском сказать\u00A0местоимение\u00A0: Мы",
+      options: {
+        B: "you",
+        C: "we",
+        D: "they",
+        E: "it",
+
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Как\u00A0на\u00A0английском сказать\u00A0местоимение\u00A0: Вы",
+      options: {
+        B: "you",
+        C: "we",
+        D: "they",
+
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "В английском языке у слова\u00A0ВЫ\u00A0и слова ТЫ - одинаковый перевод, да?",
+      options: {
+        B: "да - yes",
+        C: "нет - no",
+        D: "наверное - maybe",
+        A: "не знаю - I don't know",
+
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Как\u00A0на\u00A0английском сказать\u00A0местоимение\u00A0: Я",
+      options: {
+        A: "I",
+        B: "you",
+        C: "we",
+        D: "they",
+        E: "it",
+        F: "he",
+        G: "she",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как\u00A0на\u00A0английском сказать\u00A0местоимение\u00A0: Это",
+      options: {
+        A: "I",
+        C: "we",
+        D: "they",
+        E: "it",
+      },
+      correctAnswer: "E",
+    },
+    {
+      text: "Как\u00A0на\u00A0английском сказать\u00A0местоимение\u00A0: Оно",
+      options: {
+        A: "I",
+        B: "you",
+        C: "we",
+        D: "they",
+        E: "it",
+        F: "he",
+        G: "she",
+      },
+      correctAnswer: "E",
+    },
+    {
+      text: " Вопрос на логику и внимательность - Сколько\u00A0дверей в предложении : Он стоял возле ДВЕри ?",
+      options: {
+        A: "1",
+        B: "2",
+        C: "3",
+        D: "не знаю",
+        E: "не понимаю",
+      },
+      correctAnswer: "A",
+    },
+  ],
   cards36: [
     {
       text: "Как на английском сказать 'Пиковый Туз'?",

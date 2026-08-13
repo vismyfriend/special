@@ -1130,7 +1130,7 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/littleRedRidingHood/books",
-      missionVisibleName: "<b>Книга</b> Красная Шапочка",
+      missionVisibleName: "<b>Book</b> Красная Шапочка",
       missionDescription: "A little red riding hood",
       id: 1001,
       active: true,
@@ -1142,7 +1142,7 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/jokes/books",
-      missionVisibleName: '<b>Книга</b> Шутки ин инглиш',
+      missionVisibleName: '<b>Э бук</b> Шутки ин инглиш',
       missionDescription: "Jokes in English",
       id: 1001,
       active: true,
