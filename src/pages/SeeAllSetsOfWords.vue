@@ -3322,6 +3322,7 @@ onBeforeRouteLeave((to, from, next) => {
   }
 
   &.active {
+
     background: #4CAF50;
     color: white;
     border-color: #45a049;
