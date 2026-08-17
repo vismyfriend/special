@@ -2,6 +2,62 @@
 
 export const allGamesAndSetsOfWordsList =
   [
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
+      missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',
+      missionDescription: 'Mission: "WHO?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/find-pairs-hard",
+      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(места)</i>',
+      missionDescription: 'Mission: "WHERE?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/digits09/spell-it",
+      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(цифры)</i>',
+      missionDescription: 'Mission: "WHEN?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronouns0/millionaire",
+      missionVisibleName: 'Ми шэн: <b>" ХУ "</b><i> (who?)</i>',
+      missionDescription: 'Mission: "WHO?"',
+      lvl: "lvl0",
+      stars: 3,
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/questionWords1/spell-it",
+      missionVisibleName: 'Ми шэн: <b>"УАЙ"</b><i> (why? вопросы)</i>',
+      missionDescription: 'Mission: "WHY?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronouns0/word-order-sortable",
+      missionVisibleName: 'Mission: <b>"Экзамен № 001"</b><i></i>',
+      missionDescription: 'Mission: "WHY?"',
+      lvl: "lvl0",
+      gameIcon: "🧠",
+      id: 1001,
+      active: true,
+    },
     //первая страница первый раздел
     {
       type: "subTasks",
@@ -210,34 +266,6 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
-      missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',
-      missionDescription: 'Mission: "WHO?"',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/prepositionsOfPlace0/find-pairs-hard",
-      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(места)</i>',
-      missionDescription: 'Mission: "WHERE?"',
-      stars: 2,
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/digits09/spell-it",
-      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(цифры)</i>',
-      missionDescription: 'Mission: "WHEN?"',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

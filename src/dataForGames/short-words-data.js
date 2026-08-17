@@ -82,7 +82,30 @@ const shortWordsData = {
       hint: "/ ай эм хЭпи /"
     },
   ],
-
+  buildingsA1: [
+    { id: 1, eng: "buildings", ru: "здания", hint: "/бИлдинз/" },
+    { id: 2, eng: "church", ru: "церковь", hint: "/чОрч/" },
+    { id: 3, eng: "castle", ru: "замок", hint: "/кАсл/" },
+    { id: 4, eng: "palace", ru: "дворец", hint: "/пЭлас/" },
+    { id: 5, eng: "cave", ru: "пещера", hint: "/кэйв/" },
+    { id: 6, eng: "house", ru: "дом", hint: "/хаус/" },
+    { id: 7, eng: "wigwam", ru: "вигвам", hint: "/вигвам/" },
+    { id: 8, eng: "warehouse", ru: "склад", hint: "/уЭрхаус/" },
+    { id: 9, eng: "tent", ru: "палатка", hint: "/тэнт/" },
+    { id: 10, eng: "villa", ru: "вилла", hint: "/вИлла/" },
+    { id: 11, eng: "igloo", ru: "иглу", hint: "/Иглу/" },
+    { id: 12, eng: "hut", ru: "хижина", hint: "/хАт/" },
+    { id: 13, eng: "factory", ru: "фабрика", hint: "/фЭктори/" },
+    { id: 14, eng: "mosque", ru: "мечеть", hint: "/мОск/" },
+    { id: 15, eng: "temple", ru: "храм", hint: "/тЭмпл/" },
+    { id: 16, eng: "apartment", ru: "квартира", hint: "/эпАртмэнт/" },
+    { id: 17, eng: "townhouse", ru: "городской дом", hint: "/тАун хаус/" },
+    { id: 18, eng: "countryhouse", ru: "загородный дом", hint: "/кАнтри хаус/" },
+    { id: 19, eng: "boathouse", ru: "дом на лодке", hint: "/бОУтхаус/" },
+    { id: 20, eng: "treehouse", ru: "дом на дереве", hint: "/трИхаус/" },
+    { id: 21, eng: "skyscraper", ru: "небоскрёб", hint: "/скАй скрЭЙпэ/" },
+    { id: 22, eng: "hospital", ru: "больница", hint: "/хОспитэл/" },
+  ],
   superPowers: [
     { id: 1, eng: "invisibility", ru: "невидимость", hint: "/ин ви зи БИ ли ти/" },
     { id: 2, eng: "immortality", ru: "бессмертие", hint: "/им мор ТА ли ти/" },
@@ -1545,6 +1568,7 @@ const shortWordsData = {
       {id: 4, eng: "on vacation", ru: "в отпуске", hint: "/ он вэ кЭй шэн /"},
       {id: 5, eng: "near by", ru: "рядом с", hint: "/ нИар бай /"},
       {id: 6, eng: "at school", ru: "в школе", hint: "/ эт скул /"},
+      {id: 7, eng: "behind garages", ru: "за гаражами", hint: "/ би хАйнд гарАжез /"},
     ],
 
     digits09: [
@@ -2053,6 +2077,7 @@ whatISitVideoMission: [
     { id: 7, eng: "What color", ru: "какого цвета", hint: "/ уот кала /" },
     { id: 8, eng: "What size", ru: "какого размера", hint: "/ уот сайз /" },
     { id: 9, eng: "Who", ru: "кто", hint: "/ ху /" },
+    { id: 10, eng: "What time", ru: "во сколько", hint: "/ уот тайм /" },
   ],
   hardCoded_questionWords1: [
     { id: 1, eng: "What is it?", ru: "что это?"},

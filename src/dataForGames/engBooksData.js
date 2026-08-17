@@ -1418,7 +1418,7 @@ He has a square head, ((у него квадратная голова,))
 a square nose, ((квадратный нос,))
 and square arms. ((и квадратные руки.))
 Patrick is a builder /бИлдэр/. ((Патрик - строитель.))
-He loves playing Minecraft and Roblox. (Он любит играть в Манкрафт и Роблокс)
+He loves playing Minecraft and Roblox. ((Он любит играть в Майнкрафт и Роблокс))
 
 💙 В тетради:
 
@@ -1504,7 +1504,7 @@ My imaginary sister has a big bottom. ((У моей воображаемой с�
       {
         title: "Love /лав/ ((Любовь))",
         content: `Love is very, very, very extra ordinary. ((Лав - очень очень необычная - экстраординарная.))
-She is my real cousin /кАзин/ ((Она моя настоящая двоюродная сестра))
+She is my real cousin /кАзин/. ((Она моя настоящая двоюродная сестра))
 She is a daughter\u00A0/\u00A0дО\u00A0тэр\u00A0/ of Elon and Ireen. ((Она дочь Илона и Айрин.))
 She has a big <b>heart\u00A0/\u00A0харт\u00A0/.<b> ((У неё большое сердце.))
 Her heart is <b>kind\u00A0/\u00A0кАйнд\u00A0/.<b> ((Её сердце доброе))
