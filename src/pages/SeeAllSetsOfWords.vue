@@ -36,27 +36,43 @@
           </div>
 
           <!-- КНОПКИ УРОВНЕЙ - ПРОСТАЯ КАРУСЕЛЬ -->
-          <!-- КНОПКИ УРОВНЕЙ - ПРОСТАЯ КАРУСЕЛЬ -->
-          <div
-            class="level-carousel"
-            ref="carouselRef"
-            @scroll="handleScroll"
-            @pointerdown="handleCarouselPointerDown"
-            @pointermove="handleCarouselPointerMove"
-            @pointerup="handleCarouselPointerUp"
-            @pointercancel="handleCarouselPointerUp"
-            @pointerleave="handleCarouselPointerLeave"
-          >
-            <button
-              v-for="level in levels"
-              :key="level.id"
-              class="level-btn"
-              :class="{ 'active': currentLevel === level.id }"
-              @pointerdown.stop="handleLevelPointerDown(level.id)"
-              @click="setLevel(level.id)"
-            >
-              {{ level.label }}
-            </button>
+          <div class="level-carousel-wrapper">
+            <!-- Левая стрелка - ВНЕ маски -->
+            <span class="carousel-indicator carousel-indicator-left"
+                  @click="scrollCarousel('left')"
+
+            >‹</span>
+
+            <!-- Карусель с маской -->
+            <div class="level-carousel-mask">
+              <div
+                class="level-carousel"
+                ref="carouselRef"
+                @scroll="handleScroll"
+                @pointerdown="handleCarouselPointerDown"
+                @pointermove="handleCarouselPointerMove"
+                @pointerup="handleCarouselPointerUp"
+                @pointercancel="handleCarouselPointerUp"
+                @pointerleave="handleCarouselPointerLeave"
+              >
+                <button
+                  v-for="level in levels"
+                  :key="level.id"
+                  class="level-btn"
+                  :class="{ 'active': currentLevel === level.id }"
+                  @pointerdown="(e) => handleLevelPointerDown(level.id, e)"
+                  @click="(e) => handleLevelClick(level.id, e)"
+                >
+                  {{ level.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Правая стрелка - ВНЕ маски -->
+            <span class="carousel-indicator carousel-indicator-right"
+                  @click="scrollCarousel('right')"
+
+            >›</span>
           </div>
         </div>
 
@@ -752,7 +768,10 @@ const levels = [
   { id: 'noLvl', label: '?' },
   { id: 'lvlAll', label: 'все' },
   { id: 'lvlBooks', label: '📚' },
-
+  { id: 'lvl5', label: '5' },
+  { id: 'lvl6', label: '6' },
+  { id: 'lvl7', label: '7' },
+  { id: 'lvl8', label: '8' },
 
   // { id: 'lvl6', label: '6' },
   // { id: 'lvl7', label: '7' }
@@ -788,35 +807,52 @@ const matchesLevel = (item) => {
 
 const carouselRef = ref(null);
 
-// Состояние desktop drag
+// Состояние drag
 const isCarouselDragging = ref(false);
 const hasCarouselDragged = ref(false);
-
 let carouselStartX = 0;
 let carouselStartScrollLeft = 0;
-
-// Порог движения, после которого это считается drag
 const DRAG_THRESHOLD = 5;
 
-// ⭐ Новый флаг: нажата ли кнопка уровня
-let isLevelButtonPressed = false;
-
-// Просто сохраняем позицию скролла
-const handleScroll = () => {
-  // Ничего специально не делаем
-};
+// Состояние для кнопок - определяем клик или drag
+let levelButtonPointerId = null;
+let levelButtonStartX = 0;
+let levelButtonStartY = 0;
+let levelButtonTargetId = null;
+let isLevelButtonDragging = false;
+let suppressNextLevelClick = false;
 
 // --------------------
-// MOUSE / POINTER DRAG
+// ОБРАБОТЧИКИ ДЛЯ ВСЕЙ КАРУСЕЛИ (фон)
 // --------------------
 
-const handleCarouselPointerDown = (event) => {
-  // На мобильных НЕ вмешиваемся в нативный свайп
-  if (event.pointerType !== 'mouse') return;
+
+const scrollCarousel = (direction) => {
   if (!carouselRef.value) return;
 
-  // Если нажата кнопка уровня - не начинаем drag
-  if (isLevelButtonPressed) return;
+  const container = carouselRef.value;
+  // Прокручиваем на 80% ширины видимой области
+  const scrollAmount = container.clientWidth * 0.8;
+
+  if (direction === 'left') {
+    container.scrollBy({
+      left: -scrollAmount,
+      behavior: 'smooth'
+    });
+  } else {
+    container.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
+
+const handleCarouselPointerDown = (event) => {
+  // Только если клик не по кнопке уровня
+  if (event.target.closest?.('.level-btn')) return;
+
+  if (event.pointerType !== 'mouse') return;
+  if (!carouselRef.value) return;
 
   isCarouselDragging.value = false;
   hasCarouselDragged.value = false;
@@ -829,23 +865,18 @@ const handleCarouselPointerDown = (event) => {
 };
 
 const handleCarouselPointerMove = (event) => {
-  // Только мышь
   if (event.pointerType !== 'mouse') return;
   if (!carouselRef.value) return;
 
-  // Если нажата кнопка уровня - игнорируем
-  if (isLevelButtonPressed) return;
+  // Если нажата кнопка - игнорируем
+  if (event.target.closest?.('.level-btn')) return;
 
-  // Кнопка мыши должна быть зажата
   if (event.buttons !== 1) return;
 
   const deltaX = event.clientX - carouselStartX;
 
   if (!isCarouselDragging.value) {
-    if (Math.abs(deltaX) < DRAG_THRESHOLD) {
-      return;
-    }
-
+    if (Math.abs(deltaX) < DRAG_THRESHOLD) return;
     isCarouselDragging.value = true;
     hasCarouselDragged.value = true;
     carouselRef.value.classList.add('is-dragging');
@@ -858,45 +889,108 @@ const handleCarouselPointerMove = (event) => {
 const handleCarouselPointerUp = (event) => {
   if (event.pointerType !== 'mouse') return;
   if (!carouselRef.value) return;
+  if (event.target.closest?.('.level-btn')) return;
 
   carouselRef.value.releasePointerCapture?.(event.pointerId);
   carouselRef.value.style.scrollBehavior = '';
   carouselRef.value.classList.remove('is-dragging');
-
   isCarouselDragging.value = false;
 };
 
-const handleCarouselPointerLeave = (event) => {
-  if (event.pointerType !== 'mouse') return;
-  // Ничего не делаем во время активного drag
+const handleCarouselPointerLeave = () => {
+  // Ничего не делаем
 };
 
 // --------------------
-// ОБРАБОТЧИК КНОПОК УРОВНЕЙ
+// ОБРАБОТЧИКИ ДЛЯ КНОПОК УРОВНЕЙ
 // --------------------
 
-const handleLevelPointerDown = (levelId) => {
-  // Запоминаем, что нажата кнопка уровня
-  isLevelButtonPressed = true;
+const handleLevelPointerDown = (levelId, event) => {
+  suppressNextLevelClick = false;
 
-  // Сбрасываем флаг через небольшой таймаут
-  setTimeout(() => {
-    isLevelButtonPressed = false;
-  }, 100);
+  // Сохраняем данные для определения клик/drag
+  levelButtonPointerId = event.pointerId;
+  levelButtonStartX = event.clientX;
+  levelButtonStartY = event.clientY;
+  levelButtonTargetId = levelId;
+  isLevelButtonDragging = false;
+
+  // Добавляем обработчики движения и отпускания на кнопку
+  const button = event.currentTarget;
+  button.addEventListener('pointermove', handleLevelPointerMove);
+  button.addEventListener('pointerup', handleLevelPointerUp);
+  button.addEventListener('pointercancel', handleLevelPointerUp);
+
+  // Захватываем указатель
+  button.setPointerCapture?.(event.pointerId);
 };
 
-// --------------------
-// CLICK ПО УРОВНЮ
-// --------------------
+const handleLevelPointerMove = (event) => {
+  if (!levelButtonTargetId) return;
 
-const handleLevelClick = (levelId) => {
-  // Если пользователь только что перетаскивал карусель - игнорируем
-  if (hasCarouselDragged.value) {
-    hasCarouselDragged.value = false;
-    return;
+  const deltaX = Math.abs(event.clientX - levelButtonStartX);
+  const deltaY = Math.abs(event.clientY - levelButtonStartY);
+  const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+  // Если переместились больше порога - это drag
+  if (distance > DRAG_THRESHOLD && !isLevelButtonDragging) {
+    isLevelButtonDragging = true;
+
+    // После drag следующий click браузера НЕ должен выбирать уровень
+    suppressNextLevelClick = true;
+
+    hasCarouselDragged.value = true;
+
+    const container = carouselRef.value;
+
+    if (container) {
+      carouselStartX = event.clientX;
+      carouselStartScrollLeft = container.scrollLeft;
+
+      container.classList.add('is-dragging');
+      container.style.scrollBehavior = 'auto';
+    }
   }
 
-  setLevel(levelId);
+  // Если это drag - двигаем карусель
+  if (isLevelButtonDragging && carouselRef.value) {
+    event.preventDefault();
+    const container = carouselRef.value;
+    const deltaX = event.clientX - carouselStartX;
+    container.scrollLeft = carouselStartScrollLeft - deltaX;
+  }
+};
+const handleLevelPointerUp = (event) => {
+  const button = event.currentTarget;
+
+  // Удаляем временные обработчики
+  button.removeEventListener('pointermove', handleLevelPointerMove);
+  button.removeEventListener('pointerup', handleLevelPointerUp);
+  button.removeEventListener('pointercancel', handleLevelPointerUp);
+
+  button.releasePointerCapture?.(event.pointerId);
+
+  // Если это был настоящий клик — выбираем уровень
+  if (!isLevelButtonDragging && levelButtonTargetId) {
+    setLevel(levelButtonTargetId);
+  }
+
+  // Если был drag — только завершаем drag
+  if (isLevelButtonDragging && carouselRef.value) {
+    carouselRef.value.classList.remove('is-dragging');
+    carouselRef.value.style.scrollBehavior = '';
+  }
+
+  // ВАЖНО:
+  // Здесь НЕ сбрасываем suppressNextLevelClick.
+  // Он должен дожить до последующего click.
+
+  // Сбрасываем состояние текущего drag
+  levelButtonPointerId = null;
+  levelButtonStartX = 0;
+  levelButtonStartY = 0;
+  levelButtonTargetId = null;
+  isLevelButtonDragging = false;
 };
 
 // --------------------
@@ -905,13 +999,10 @@ const handleLevelClick = (levelId) => {
 
 const scrollToActiveButton = () => {
   if (!carouselRef.value) return;
-
   const activeButton = carouselRef.value.querySelector('.level-btn.active');
-
   if (!activeButton) return;
 
   const container = carouselRef.value;
-
   const buttonLeft = activeButton.offsetLeft;
   const buttonWidth = activeButton.offsetWidth;
   const containerWidth = container.offsetWidth;
@@ -922,7 +1013,20 @@ const scrollToActiveButton = () => {
   });
 };
 
+// --------------------
+// ОБРАБОТЧИК КЛИКА ПО УРОВНЮ (через @click в шаблоне)
+// --------------------
 
+const handleLevelClick = (levelId, event) => {
+  // Если перед этим было перетаскивание —
+  // игнорируем click, который браузер генерирует автоматически
+  if (suppressNextLevelClick) {
+    suppressNextLevelClick = false;
+    return;
+  }
+
+  setLevel(levelId);
+};
 
 // ==================== СОСТОЯНИЯ КАТЕГОРИЙ ====================
 const categoryStates = ref({
@@ -1567,7 +1671,7 @@ const getLevelStars = (stars) => {
 // Вызываем после монтирования и при смене уровня
 watch(currentLevel, () => {
   // Даем время на рендер
-  setTimeout(scrollToActiveButton, 50);
+  setTimeout(scrollToActiveButton, 150);
 });
 
 watch(searchQuery, (newQuery) => {
@@ -1633,7 +1737,7 @@ onMounted(() => {
     typeWriter();
   }
   // Центрируем активную кнопку при загрузке
-  setTimeout(scrollToActiveButton, 100);
+  setTimeout(scrollToActiveButton, 150);
 });
 
 onBeforeUnmount(() => {
@@ -1657,8 +1761,8 @@ onBeforeRouteLeave((to, from, next) => {
 }
 /* ==================== STICKY SEARCH ==================== */
 .search-container {
-  margin: 0 0 10px 0;
-  padding: 0 10px;
+  margin: 0 0 2px 0;
+  padding: 0 5px;
 
   /* 🎯 STICKY - главное */
   position: sticky;
@@ -3234,20 +3338,64 @@ onBeforeRouteLeave((to, from, next) => {
 
 
 /* ==================== КАРУСЕЛЬ УРОВНЕЙ ==================== */
+/* ==================== КАРУСЕЛЬ УРОВНЕЙ ==================== */
+
 .level-carousel-wrapper {
   position: relative;
   width: 100%;
   margin: 10px 0 10px 0;
-  padding: 0 2px;
+  display: flex;
+  align-items: center;
+}
 
-  /* Маскируем края для плавного затухания */
-  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+/* ==================== МАСКА ТОЛЬКО ДЛЯ КАРУСЕЛИ ==================== */
+
+.level-carousel-mask {
+  flex: 1;
+  overflow: hidden;
+
+  /* 🎯 МАСКА ТОЛЬКО ЗДЕСЬ */
+  mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+  );
+}
+
+/* ==================== ВИЗУАЛЬНЫЕ СТРЕЛКИ (всегда видны) ==================== */
+
+.carousel-indicator {
+  position: relative;
+  flex-shrink: 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: rgba(253, 253, 253, 0.5);
+  user-select: none;
+
+  /* Левая стрелка */
+  &.carousel-indicator-left {
+    margin-right: 5px;
+  }
+
+  /* Правая стрелка */
+  &.carousel-indicator-right {
+    margin-left: 5px;
+  }
 }
 
 .level-carousel {
   display: flex;
   gap: 6px;
+
   overflow-x: auto;
   overflow-y: hidden;
   padding: 8px 0 10px 0;
@@ -3276,7 +3424,10 @@ onBeforeRouteLeave((to, from, next) => {
 
   /* Отключаем текстовый выделение при drag */
   -webkit-user-drag: none;
+
 }
+
+
 .level-carousel.is-dragging {
 
   cursor: grabbing;
@@ -3288,6 +3439,7 @@ onBeforeRouteLeave((to, from, next) => {
 .level-carousel.is-dragging .level-btn {
 
   cursor: grabbing;
+  transform: none;
 
 }
 /* Кнопки */
@@ -3300,7 +3452,7 @@ onBeforeRouteLeave((to, from, next) => {
   background: #f0f0f0;
   font-family: Special_f1;
   font-size: 14px;
-  cursor: pointer;
+  cursor: grab;
 
   /* ✨ КЛЮЧЕВОЕ: быстрые переходы, без transform на hover */
   transition:
