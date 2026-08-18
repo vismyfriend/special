@@ -475,6 +475,8 @@ export default {
   margin-bottom: 25px;
   font-size: 1.1rem;
   opacity: 0.9;
+  white-space: pre-line; /* 🆕 Добавить эту строку */
+
 }
 
 .words-container {
@@ -688,6 +690,8 @@ export default {
   .drag-sort-game {
     margin: 15px auto;
     padding: 10px 15px;
+    padding-top: 50px;
+
     min-width: auto;
   }
 

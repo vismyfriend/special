@@ -1164,7 +1164,6 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Тренировка воображения",
       id: 1001,
       active: true,
-      lvl: ["lvlBooks"],
       gameIcon: "💡",
 
 
@@ -1251,6 +1250,15 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/topMistakes/game-translate/RuEng",
       missionVisibleName: "Топ ошибки - Bad English",
       missionDescription: "Top mistakes",
+      id: 1001,
+      active: true,
+      lvl: ["lvl2"],
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/haveHas0/sorting",
+      missionVisibleName: "HAS <b>или</b> HAVE",
+      missionDescription: "HAS or HAVE",
       id: 1001,
       active: true,
       lvl: ["lvl2"],

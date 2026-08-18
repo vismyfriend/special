@@ -23,6 +23,7 @@ const sortingWordsData = {
   },
 
   amIsAre0: {
+
     columns: [
       { id: 'are', title: 'are' },
       { id: 'am', title: 'am' },
@@ -39,6 +40,46 @@ const sortingWordsData = {
       { id: 8, eng: 'you', ru: 'ты', correctColumn: 'are' },
       { id: 9, eng: 'we', ru: 'мы', correctColumn: 'are' },
       { id: 11, eng: 'they', ru: 'они', correctColumn: 'are' },
+    ]
+  },
+  haveHas0: {
+    instructions: 'Дословный перевод : "КТО ИМЕЕТ ЧТО" \n перетяни и переведи красиво\n "У КОГО ЕСТЬ ЧТО ?"',
+
+    columns: [
+      { id: 'has', title: 'has' },
+      { id: 'have', title: 'have' },
+    ],
+    items: [
+      // I / you / we / they → have
+      { id: 1, eng: 'I ___ a good teacher', ru: 'у меня хороший учитель', correctColumn: 'have' },
+      { id: 2, eng: 'you ___ cat', ru: 'у тебя/вас кошка', correctColumn: 'have' },
+      { id: 3, eng: 'you ___ a car', ru: 'у тебя/вас есть машина', correctColumn: 'have' },
+      { id: 4, eng: 'we ___ a car', ru: 'у нас есть машина', correctColumn: 'have' },
+      { id: 5, eng: 'they ___ a dog', ru: 'у них собака', correctColumn: 'have' },
+      { id: 6, eng: 'my friends ___ me', ru: 'у моих друзей есть я', correctColumn: 'have' },
+      { id: 7, eng: 'idiots ___ 0 problems', ru: 'у идиотов ноль проблем', correctColumn: 'have' },
+      { id: 8, eng: 'children ___ ice-cream', ru: 'у детей мороженое', correctColumn: 'have' },
+      { id: 9, eng: 'people ___ 1 life', ru: 'у людей 1 жизнь', correctColumn: 'have' },
+      { id: 10, eng: 'we ___ a notebook', ru: 'у нас есть тетрадь', correctColumn: 'have' },
+
+      // he / she / it → has
+      { id: 11, eng: 'he ___ a cat', ru: 'у него кошка', correctColumn: 'has' },
+      { id: 12, eng: 'she ___ 2 cats', ru: 'у нее две кошки', correctColumn: 'has' },
+      { id: 13, eng: 'it ___ eyes /айз/', ru: 'оно имеет глаза!', correctColumn: 'has' },
+      { id: 14, eng: 'my friend ___ me', ru: 'у моего друга есть я', correctColumn: 'has' },
+      { id: 15, eng: 'our boss ___ a secretary', ru: 'у нашего босса есть секретарь', correctColumn: 'has' },
+      { id: 16, eng: 'this phone ___ a good camera', ru: 'у этого телефона хорошая камера', correctColumn: 'has' },
+      { id: 17, eng: 'a dog ___ name', ru: 'у собаки есть имя', correctColumn: 'has' },
+      { id: 18, eng: 'child ___ a pet', ru: 'у ребёнка есть питомец', correctColumn: 'has' },
+      { id: 19, eng: 'somebody ___ a problem', ru: 'у кого-то проблема', correctColumn: 'has' },
+      { id: 20, eng: 'someone ___ a pen', ru: 'у кого-то есть ручка', correctColumn: 'has' },
+      { id: 21, eng: 'I ___ Vincent', ru: 'у меня есть Винсент', correctColumn: 'have' },
+      { id: 22, eng: 'Vincent ___ a wife', ru: 'у Ви есть жена', correctColumn: 'has' },
+      { id: 23, eng: 'She ___ 2 boyfriends', ru: 'у неё 2 бойфренда', correctColumn: 'has' },
+      { id: 24, eng: 'it ___ logic /лОджик/', ru: 'В этом есть логика', correctColumn: 'has' },
+      { id: 25, eng: 'a doctor ___ patients /пЭй шэнтс/', ru: 'У врача есть пациенты', correctColumn: 'has' },
+
+
     ]
   },
 
