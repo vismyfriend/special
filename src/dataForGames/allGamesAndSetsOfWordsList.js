@@ -4,6 +4,14 @@ export const allGamesAndSetsOfWordsList =
   [
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/iForgotEverything1/brainstorm",
+      missionVisibleName: 'Учили, но кажется всё забыли? "</b>',
+      missionDescription: "Вспомнить всё - total recall",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
       missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',
       missionDescription: 'Mission: "WHO?"',
@@ -58,13 +66,349 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
-    //первая страница первый раздел
+    {
+      type: "hardcodedLink",
+      path: "/yearGuesser",
+      missionVisibleName: "Какой это год ? (speaking)",
+      missionDescription: "What year is it ?",
+      id: 1001,
+      active: true,
+      lvl: ["lvlSpeaking","lvlDev"],
+      gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/ai1",
+      missionVisibleName: "Поговорить с Ai (DeepSeek)",
+      missionDescription: "Vincent's brain",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/level/A0/words",  // ← новый маршрут для просмотра всех слов уровня A0
+      missionVisibleName: "Все слова  A0",
+      missionDescription: "Все слова A0",
+      lvl: "lvl365",
+      id: 1000,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/level/CustomLevel/words",
+      missionVisibleName: "Мой кастомный уровень",
+      missionDescription: "Все слова CustomLevel",
+      lvl: "lvl365",
+      active: true,
+    },
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examY1V1/tests-and-exams",
+      missionVisibleName: "Давно мы тест не решали 💡",
+      missionDescription: "Long time without a test 💡",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examYA165E/tests-and-exams",
+      missionVisibleName: "Любимая Некромантка",
+      missionDescription: "For Nadine",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/examY2V2/tests-and-exams",
+      missionVisibleName: "В этом тесте grammar сложнее",
+      missionDescription: "This test is harder",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/valeryStory9/spell-it",
+      missionVisibleName: "Valery's story️",
+      missionDescription: "История Валерии",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/commonlyMispronouncedWords/listenAndspell",
+      missionVisibleName: "Commonly misspeled words️",
+      missionDescription: "Слова в кот. часто ошибаются",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/cards36",
+      missionVisibleName: "Колода карт  ♥️♣️🃏♦️♠️",
+      missionDescription: "A deck of cards",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/SayVsTell/sd",
+      missionVisibleName: "Say VS Tell️",
+      missionDescription: "Say and Tell",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/SarahAndHerDay1/print-all-words",
+      missionVisibleName: "Sarah's day️",
+      missionDescription: "Сарин день (День Сары)",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/howWasTheInterview/print-all-words",
+      missionVisibleName: "How was it 1",
+      missionDescription: "Как прошло?",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/cards52",
+      missionVisibleName: "Poker combinations",
+      missionDescription: "Poker Hands ♥️♣️♦️♠️",
+      id: 1001,
+      active: true,
+      gameIcon: '️🃏'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songHelloHowAreYou/songs",
+      missionVisibleName: "Миссия 1.0 Ван дэр фул",
+      missionDescription: "Mission 1.0 Wonderful",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/find-pairs-easy",
+      missionVisibleName: "Миссия 1.1 Обезвредить бомбу",
+      missionDescription: "Первое занятие",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/print-all-words",
+      missionVisibleName: "Миссия 1.2 Список фраз",
+      missionDescription: "Первое занятие - фразы",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/freeIntroLesson0/spell-it",
+      missionVisibleName: "Миссия 1.3 Пишы правельна",
+      missionDescription: "Напиши правильно",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/introTapButtonWords/spell-it",
+      missionVisibleName: "24 March 2026",
+      missionDescription: "the 24th of March 2026",
+      lvl: ["lvl365"],
+      id: 1001,
+      active: true,
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/emoji/find-pairs-hard",
+      missionVisibleName: "Миссия 2.0 Соедини пары",
+      missionDescription: "Мишн ту - конЭкт пЭарз",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/superPowers/find-pairs-easy",
+      missionVisibleName: "superPowers",
+      missionDescription: "super Powers",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/introMillionaire22/millionaire",
+      missionVisibleName: "Мишшн 2.1 Миллионер",
+      missionDescription: "Mission 2.1 a millionaire",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/helloEverybody/word-order-sortable",
+      missionVisibleName: "Мишшн 2.2 Спик Инглиш",
+      missionDescription: "Mission 2.2 speak English",
+      id: 1001,
+      active: true,
+    },
+
+    {
+      type: "hardcodedLink",
+      path: "/grammar/to-be",
+      missionVisibleName: "Мишн<b>3 Невидимки</b>Ар Эм Из",
+      missionDescription: "Are Am Is - невидимка to be",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/AreAmIs0/tests-and-exams",
+      missionVisibleName: "Mission 3.1 <b>Test</b> / тЭст /",
+      missionDescription: "Test - Are Am Is - to be",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
+      missionVisibleName: "Mission 3.2 Порядок слов 1",
+      missionDescription: "Mission 3.2 Word Order 1",
+      id: 1001,
+      active: true,
+    },
+
+    // {
+    //   type: "hardcodedLink",
+    //   path: "/tablitsaRef",
+    //   missionVisibleName: "тест таблица",
+    //   missionDescription: "ref",
+    //   id: 1001,
+    //   active: true,
+    // },
+    {
+      type: "hardcodedLink",
+      path: "/grammar/present-simple",
+      missionVisibleName: "Настоящее Простое Время",
+      missionDescription: "Present Simple",
+      id: 1001,
+      active: true,
+      lvl: ["lvl2"],
+
+    },
+
+    // {
+    //   type: "hardcodedLink",
+    //   path: "/grammar/present-continuous",
+    //   missionVisibleName: "Pr.Cont",
+    //   missionDescription: "NEW",
+    //   id: 1001,
+    //   active: true,
+    // },
+
+
+    {
+      missionVisibleName: "Разминка",
+      missionDescription: "Warm up",
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/",
+      active: true,
+      gameIcon:'🏠',
+      // id: 1001,
+
+    },
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/game-whatDoYouHear",
+      missionVisibleName: 'Диктант<b>/ ДИК тЭйшн /</b>',
+      missionDescription: '/ дик тЭйшн / Dictation  ',
+      lvl: "lvl1",
+      gameIcon: "🍆",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionToA1/print-all-words",
+      missionVisibleName: 'Предлог направления <b> ( to )</b>',
+      missionDescription: '/ пре по зи шн / preposition',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/adjectives0/print-all-words2",
+      missionVisibleName: 'Прилагательные <b>( КАКИЕ? )</b>',
+      missionDescription: '/ Э ДЖЭК ТИВЗ / adjectives',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbs0/print-all-words2",
+      missionVisibleName: 'Глаголы <b>( ЧТО ДЕЛАЮТ ? )</b>',
+      missionDescription: '/ вЁрбз / verbs',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbs0/print-all-words2",
+      missionVisibleName: 'Существительные <b>( ЧТО ? )</b>',
+      missionDescription: '/ нАунз / nouns ',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions1ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 1</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      lvl: "lvl1",
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions2ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 2</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      active: true,
+      lvl: "lvl1",
+
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbsFromProfessions/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>все глаголы</i>',
+      missionDescription: 'profession verbs',
+      id: 1001,
+      active: true,
+      lvl: "lvl1",
+
+    },
+    // начать с самого начала
     {
       type: "subTasks",
       missionVisibleName: "Определить свой уровень :",
       missionDescription: "мой уровень :",
       id: "subtasks-newSub",
-      lvl: "lvl365",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
       subTasks: [
@@ -229,418 +573,7 @@ export const allGamesAndSetsOfWordsList =
 
       ]
     },
-    // определить уровень
-    {
-      type: "hardcodedLink",
-      path: "/yearGuesser",
-      missionVisibleName: "Какой это год ? (speaking)",
-      missionDescription: "What year is it ?",
-      id: 1001,
-      active: true,
-      gameIcon:'🕵️',
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/ai1",
-      missionVisibleName: "Новая миссия",
-      missionDescription: "Vincent's brain",
-      lvl: "lvl365",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/level/A0/words",  // ← новый маршрут для просмотра всех слов уровня A0
-      missionVisibleName: "Все слова  A0",
-      missionDescription: "Все слова A0",
-      lvl: "lvl365",
-      id: 1000,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/level/CustomLevel/words",
-      missionVisibleName: "Мой кастомный уровень",
-      missionDescription: "Все слова CustomLevel",
-      lvl: "lvl365",
-      active: true,
-    },
 
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/examY1V1/tests-and-exams",
-      missionVisibleName: "Давно мы тест не решали 💡",
-      missionDescription: "Long time without a test 💡",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/examYA165E/tests-and-exams",
-      missionVisibleName: "Любимая Некромантка",
-      missionDescription: "For Nadine",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/examY2V2/tests-and-exams",
-      missionVisibleName: "В этом тесте grammar сложнее",
-      missionDescription: "This test is harder",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/valeryStory9/spell-it",
-      missionVisibleName: "Valery's story️",
-      missionDescription: "История Валерии",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/iForgotEverything1/brainstorm",
-      missionVisibleName: "Я кажется всё забыл(а) !️",
-      missionDescription: "I've forgotten everything!",
-      id: 1001,
-      active: true,
-    },
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/commonlyMispronouncedWords/listenAndspell",
-      missionVisibleName: "Commonly misspeled words️",
-      missionDescription: "Слова в кот. часто ошибаются",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/cards36",
-      missionVisibleName: "Колода карт  ♥️♣️🃏♦️♠️",
-      missionDescription: "A deck of cards",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/SayVsTell/sd",
-      missionVisibleName: "Say VS Tell️",
-      missionDescription: "Say and Tell",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/SarahAndHerDay1/print-all-words",
-      missionVisibleName: "Sarah's day️",
-      missionDescription: "Сарин день (День Сары)",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/howWasTheInterview/print-all-words",
-      missionVisibleName: "How was it 1",
-      missionDescription: "Как прошло?",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/cards52",
-      missionVisibleName: "Poker combinations",
-      missionDescription: "Poker Hands ♥️♣️♦️♠️",
-      id: 1001,
-      active: true,
-      gameIcon: '️🃏'
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/songHelloHowAreYou/songs",
-      missionVisibleName: "Миссия 1.0 Ван дэр фул",
-      missionDescription: "Mission 1.0 Wonderful",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/freeIntroLesson0/find-pairs-easy",
-      missionVisibleName: "Миссия 1.1 Обезвредить бомбу",
-      missionDescription: "Первое занятие",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/freeIntroLesson0/print-all-words",
-      missionVisibleName: "Миссия 1.2 Список фраз",
-      missionDescription: "Первое занятие - фразы",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/freeIntroLesson0/spell-it",
-      missionVisibleName: "Миссия 1.3 Пишы правельна",
-      missionDescription: "Напиши правильно",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/introTapButtonWords/spell-it",
-      missionVisibleName: "24 March 2026",
-      missionDescription: "the 24th of March 2026",
-      lvl: ["lvl365"],
-      id: 1001,
-      active: true,
-    },
-
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/emoji/find-pairs-hard",
-      missionVisibleName: "Миссия 2.0 Соедини пары",
-      missionDescription: "Мишн ту - конЭкт пЭарз",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/superPowers/find-pairs-easy",
-      missionVisibleName: "superPowers",
-      missionDescription: "super Powers",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/introMillionaire22/millionaire",
-      missionVisibleName: "Мишшн 2.1 Миллионер",
-      missionDescription: "Mission 2.1 a millionaire",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/helloEverybody/word-order-sortable",
-      missionVisibleName: "Мишшн 2.2 Спик Инглиш",
-      missionDescription: "Mission 2.2 speak English",
-      id: 1001,
-      active: true,
-    },
-
-    {
-      type: "hardcodedLink",
-      path: "/grammar/to-be",
-      missionVisibleName: "Мишн<b>3 Невидимки</b>Ар Эм Из",
-      missionDescription: "Are Am Is - невидимка to be",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/AreAmIs0/tests-and-exams",
-      missionVisibleName: "Mission 3.1 <b>Test</b> / тЭст /",
-      missionDescription: "Test - Are Am Is - to be",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink",
-      path: "/see-all-sets-of-words/toBe101/word-order-sortable",
-      missionVisibleName: "Mission 3.2 Порядок слов 1",
-      missionDescription: "Mission 3.2 Word Order 1",
-      id: 1001,
-      active: true,
-    },
-
-    {
-
-      type: "subTasks",
-      missionVisibleName: "Useful Phrases",
-      missionDescription: "Юсфул фрЭйzиз (полезные фр...)",
-      id: "subtasks-newSub",
-      style: "greenish", // Это ключевое значение для применения стиля
-      active: true,
-      subTasks: [
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up1/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 1",
-          missionDescription: "Юсфул фрЭйzиз 1",
-          id: 1001,
-          active: true,
-          stars: 3
-        },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up2/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 2",
-          missionDescription: "Юсфул фрЭйzиз 2",
-          id: 1001,
-          active: true,
-          stars: 3
-        },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up3/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 3",
-          missionDescription: "Юсфул фрЭйzиз 3",
-          id: 1001,
-          active: true,
-          stars: 3
-        },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up4/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 4",
-          missionDescription: "Юсфул фрЭйzиз 4",
-          id: 1001,
-          active: true,
-          stars: 3
-        }, {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up1_5/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 1-5",
-          missionDescription: "Юсфул фрЭйzиз 1-5",
-          id: 1001,
-          active: true,
-          stars: 3
-        },
-        {
-          type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up6/find-pairs-hard",
-          missionVisibleName: "Useful Phrases 6",
-          missionDescription: "Юсфул фрЭйzиз 6",
-          id: 1001,
-          active: true,
-          stars: 3
-        },
-      ]
-    },
-    // {
-    //   type: "hardcodedLink",
-    //   path: "/tablitsaRef",
-    //   missionVisibleName: "тест таблица",
-    //   missionDescription: "ref",
-    //   id: 1001,
-    //   active: true,
-    // },
-    {
-      type: "hardcodedLink",
-      path: "/grammar/present-simple",
-      missionVisibleName: "Настоящее Простое Время",
-      missionDescription: "Present Simple",
-      id: 1001,
-      active: true,
-      lvl: ["lvl3"],
-
-    },
-
-    // {
-    //   type: "hardcodedLink",
-    //   path: "/grammar/present-continuous",
-    //   missionVisibleName: "Pr.Cont",
-    //   missionDescription: "NEW",
-    //   id: 1001,
-    //   active: true,
-    // },
-
-
-    {
-      missionVisibleName: "Разминка",
-      missionDescription: "Warm up",
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/",
-      active: true,
-      gameIcon:'🏠',
-      // id: 1001,
-
-    },
-
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/prepositionsOfPlace0/game-whatDoYouHear",
-      missionVisibleName: 'Диктант<b>/ ДИК тЭйшн /</b>',
-      missionDescription: '/ дик тЭйшн / Dictation  ',
-      lvl: "lvl1",
-      gameIcon: "🍆",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/prepositionToA1/print-all-words",
-      missionVisibleName: 'Предлог направления <b> ( to )</b>',
-      missionDescription: '/ пре по зи шн / preposition',
-      lvl: "lvl1",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/adjectives0/print-all-words2",
-      missionVisibleName: 'Прилагательные <b>( КАКИЕ? )</b>',
-      missionDescription: '/ Э ДЖЭК ТИВЗ / adjectives',
-      lvl: "lvl1",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/verbs0/print-all-words2",
-      missionVisibleName: 'Глаголы <b>( ЧТО ДЕЛАЮТ ? )</b>',
-      missionDescription: '/ вЁрбз / verbs',
-      lvl: "lvl1",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/verbs0/print-all-words2",
-      missionVisibleName: 'Существительные <b>( ЧТО ? )</b>',
-      missionDescription: '/ нАунз / nouns ',
-      lvl: "lvl1",
-      id: 1001,
-      active: true,
-    },
-
-
-
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/professions1ER/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 1</i>',
-      missionDescription: 'Работа + ер',
-      id: 1001,
-      lvl: "lvl1",
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/professions2ER/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 2</i>',
-      missionDescription: 'Работа + ер',
-      id: 1001,
-      active: true,
-      lvl: "lvl1",
-
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/verbsFromProfessions/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>все глаголы</i>',
-      missionDescription: 'profession verbs',
-      id: 1001,
-      active: true,
-      lvl: "lvl1",
-
-    },
-    // начать с самого начала
     {
       type: "subTasks",
       missionVisibleName: "Хочу начать с самого начала",
@@ -791,7 +724,6 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl3"],
       subTasks: [
         {
           type: "hardcodedLink",
@@ -845,7 +777,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl7", "lvl3"],
+      // lvl: ["lvl5", "lvl7"],
 
       subTasks: [
         {
@@ -1204,6 +1136,71 @@ export const allGamesAndSetsOfWordsList =
       lvl: ["lvlBooks"],
 
     },
+    {
+
+      type: "subTasks",
+      missionVisibleName: "<b>Юс фул _ фрЭй зиз</b>",
+      missionDescription: "Полезные Фразы",
+      id: "subtasks-newSub",
+      style: "greenish", // Это ключевое значение для применения стиля
+      active: true,
+      lvl: ["lvlBooks"],
+      subTasks: [
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up1/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 1",
+          missionDescription: "Полезные фразы 1",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up2/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 2",
+          missionDescription: "Полезные фразы 2",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up3/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 3",
+          missionDescription: "Полезные фразы 3",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up4/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 4",
+          missionDescription: "Полезные фразы 4",
+          id: 1001,
+          active: true,
+          stars: 3
+        }, {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up1_5/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 1-5",
+          missionDescription: "Юсфул фрЭйzиз 1-5",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up6/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 6",
+          missionDescription: "Юсфул фрЭйzиз 6",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
+      ]
+    },
 
     {
       type: "hardcodedLink",
@@ -1257,11 +1254,29 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/haveHas0/sorting",
-      missionVisibleName: "HAS <b>или</b> HAVE",
+      missionVisibleName: "<b>HAS</b>или<b>HAVE</b>",
       missionDescription: "HAS or HAVE",
       id: 1001,
       active: true,
       lvl: ["lvl2"],
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/buildingsA1/find-pairs-hard",
+      missionVisibleName: "Здания, строения, сооружения",
+      missionDescription: "buildings and structures",
+      id: 1001,
+      active: true,
+      lvl: ["lvl3"],
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/buildingsA1_alias/spell-it/easy",
+      missionVisibleName: "<b>/ ГЕС / guess </b> the building",
+      missionDescription: "Отгадай здание",
+      id: 1001,
+      active: true,
+      lvl: ["lvl3"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1270,7 +1285,6 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "test year1",
       id: 1001,
       active: true,
-      lvl: ["lvl3"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1279,7 +1293,6 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "test year1 мфкшфте 2",
       id: 1001,
       active: true,
-      lvl: ["lvl3"],
     },
 
     // extra information

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mainContainer">
     <div class="row">
       <div class="col index-col">
         <div class="wordCard" v-for="(row, index) in rows" :key="index">
@@ -87,6 +87,10 @@ const focusNextField = (currentIndex, currentField) => {
 </script>
 
 <style lang="scss" scoped>
+
+.mainContainer {
+  margin-top: 80px;
+}
 .row {
   margin-top: 20px;
   display: flex;

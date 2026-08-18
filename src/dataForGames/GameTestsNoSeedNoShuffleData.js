@@ -652,7 +652,7 @@ const gameTestsNoSeedNoShuffleData = {
     ],
   },
   iForgotEverything1: {
-    mainDescription: 'Forgot? Не беда - ща вспомним что-нибудь"',
+    mainDescription: 'Forgot? Не беда! Мы now вспомним что-нибудь"',
     tasks: [
       {
         taskID: "multiple_choice",

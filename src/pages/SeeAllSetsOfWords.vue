@@ -79,22 +79,23 @@
         <!-- Используем единый список -->
         <div class="v-cards-choose">
 
-          <!-- Создать свой набор (всегда первый) -->
+
+          <!-- В самом верху списка набор -->
+
           <div
-            class="v-card-choose tooltip-wrapper create-special-set"
+            v-if="!hiddenOnLevels.includes(currentLevel)"
+
+            class="v-card-choose tooltip-wrapper random-set"
             role="button"
-            @click="showSpecialCardAlert"
+            @click="playRandomSet"
             :style="{
               '--offset-x': '5px',
               '--offset-y': '29.5px'
             }"
           >
-            Создать свой S.P.E.C.I.A.L. набор
-            <div class="custom-tooltip">
-              Vincent works hard for you
-            </div>
+            Случайный выбор 🎲
+            <div class="custom-tooltip">Random Set</div>
           </div>
-
           <!-- Единый список subTasks и обычных наборов в правильном порядке -->
           <div
             v-for="missionItem in filteredOrderedMissions"
@@ -232,7 +233,8 @@
                     </div>
                   </div>
                 </div>
-              </div>            </div>
+              </div>
+            </div>
 
             <!-- Если это обычный набор -->
             <div
@@ -279,23 +281,10 @@
           </div>
 
           <!-- Специальные карточки -->
-          <div
-            v-if="currentLevel !== 'lvl0' && currentLevel !== 'lvl1' && currentLevel !== 'lvl2' && currentLevel !== 'lvlBooks'"
 
-            class="v-card-choose tooltip-wrapper random-set"
-            role="button"
-            @click="playRandomSet"
-            :style="{
-              '--offset-x': '5px',
-              '--offset-y': '29.5px'
-            }"
-          >
-            Случайный набор слов 🎲
-            <div class="custom-tooltip">Random Set</div>
-          </div>
 
           <div
-            v-if="!hiddenLevels.includes(currentLevel)"
+            v-if="visibleOnLevels.includes(currentLevel)"
 
             class="v-card-choose tooltip-wrapper glassMorphism"
             role="button"
@@ -305,9 +294,9 @@
               '--offset-y': '29.5px'
             }"
           >
-            Разминка
+            Разминка - тапалка
             <div class="custom-tooltip">
-              Произношение
+              Произношение - чИсла
             </div>
           </div>
 
@@ -328,6 +317,24 @@
               Random Questions
             </div>
           </div>
+
+          <!-- Создать свой набор -->
+          <div
+            v-if="visibleOnLevels.includes(currentLevel)"
+            class="v-card-choose tooltip-wrapper create-special-set"
+            role="button"
+            @click="showSpecialCardAlert"
+            :style="{
+              '--offset-x': '5px',
+              '--offset-y': '29.5px'
+            }"
+          >
+            Создать свой S.P.E.C.I.A.L. набор
+            <div class="custom-tooltip">
+              Vincent works hard for you
+            </div>
+          </div>
+
 
           <!-- КАТЕГОРИЯ EXAMPLES -->
           <div
@@ -759,24 +766,23 @@ const focusSearch = () => {
 
 // ==================== УРОВНИ (LVL) ====================
 const currentLevel = ref('lvl0');
-const hiddenLevels = ['lvl0', 'lvl1', 'lvl2','lvlBooks'];
+const hiddenOnLevels = ['lvlDev','lvl0','lvl1', 'lvl2','lvl3','lvlBooks'];
+const visibleOnLevels = ['lvlDev','lvlAll'];
 
 const levels = [
+  { id: 'lvlDev', label: '🔓' },
   { id: 'lvl0', label: '0' },
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
   { id: 'lvlBooks', label: '📚' },
   { id: 'lvl3', label: '3' },
-  { id: 'lvl4', label: '🔓' },
-  { id: 'noLvl', label: '?' },
-  { id: 'lvlAll', label: 'все' },
+  { id: 'lvl4', label: '4' },
   { id: 'lvl5', label: '5' },
-  { id: 'lvl6', label: '6' },
-  { id: 'lvl7', label: '7' },
-  { id: 'lvl8', label: '8' },
+  { id: 'lvlSpeaking', label: '💬' },
+  { id: 'lvlAll', label: 'все' },
+  // { id: 'noLvl', label: '?' },
 
-  // { id: 'lvl6', label: '6' },
-  // { id: 'lvl7', label: '7' }
+
 
 
 ];
@@ -1611,7 +1617,7 @@ const playSnake = () => {
 const tapalka = () => {
   saveScrollPosition();
   saveUserExpandedState();
-  router.push('/');
+  router.push('/intro');
 };
 
 // ==================== ПРОИЗНОШЕНИЕ ====================
@@ -1691,7 +1697,6 @@ watch(searchQuery, (newQuery) => {
 });
 
 // 🆕 НОВЫЙ WATCH - переключение на noLvl при поиске
-// Добавь переменную
 const previousLevel = ref('noLvl');
 
 // Модифицированный watch
@@ -2457,7 +2462,6 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .create-special-set {
-  display: none;
   position: relative;
   overflow: hidden;
   margin: 1.5px;
