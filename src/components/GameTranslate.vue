@@ -20,13 +20,6 @@
             placeholder="Впиши слово или фразу"
             class="word-input"
           >
-<!--          <input-->
-<!--            v-model="difficultWord3"-->
-<!--            type="text"-->
-<!--            placeholder="Впиши слово или фразу"-->
-<!--            class="word-input"-->
-<!--          >-->
-
         </div>
 
         <button @click="closeModal">OK</button>
@@ -41,7 +34,11 @@
       <div class="main-content">
         <!-- Карточка со словом -->
         <div class="word-card" @click="toggleGameMode">
-          <div class="word" ref="wordText">{{ displayWord }}</div>
+          <div class="word-wrapper">
+            <div class="word" ref="wordText" :style="wordStyle">
+              {{ displayWord }}
+            </div>
+          </div>
           <!-- Блок с произношением -->
           <div v-if="currentHint" class="pronunciation-hint">
             {{ currentHint }}
@@ -99,14 +96,12 @@ const route = useRoute();
 // ==================== ПАРСИНГ НАПРАВЛЕНИЯ ИЗ URL ====================
 
 const parseDirectionFromRoute = () => {
-  // route.params.direction - параметр из URL
   const directionParam = route.params.direction;
 
-  if (!directionParam) return 'EngRu'; // По умолчанию английский -> русский
+  if (!directionParam) return 'EngRu';
 
   const direction = directionParam.toString().toLowerCase();
 
-  // Маппинг значений
   const directionMap = {
     'er': 'EngRu',
     're': 'RuEng',
@@ -129,38 +124,27 @@ const parseDirectionFromRoute = () => {
 
 // ==================== СОСТОЯНИЯ ====================
 
-// 🆕 Направление перевода
 const gameDirection = ref(parseDirectionFromRoute());
 
-// Данные игры
 const currentGameData = ref([]);
 const shuffledData = ref([]);
 const removedWords = ref([]);
 const currentWord = ref({});
 
-// Модалки
 const showModal = ref(false);
 const modalMessage = ref('');
 const showWordInputs = ref(false);
 
-// Поля для сложных слов
 const difficultWord1 = ref('');
 const difficultWord2 = ref('');
-const difficultWord3 = ref('');
 
-// Управление
 const nextCount = ref(0);
 const skipCount = ref(0);
 
-// 🆕 Глобальный режим игры - инициализируем из направления
-// true - показываем русский (RuEng)
-// false - показываем английский (EngRu)
 const gameMode = ref(gameDirection.value === 'RuEng');
 
-// Подсказки с буквами
 const revealedLetters = ref([]);
 
-// Состояние для задержки перед следующим словом
 const isWaitingForNext = ref(false);
 const nextTimeout = ref(null);
 
@@ -181,8 +165,38 @@ const wordsArray = computed(() => {
 });
 
 const currentHint = computed(() => {
-  // Показываем подсказку только когда отображается английское слово
   return !gameMode.value ? currentWord.value.hint : '';
+});
+
+// 🆕 ВЫЧИСЛЯЕМ РАЗМЕР ШРИФТА НА ОСНОВЕ ДЛИНЫ СЛОВА
+const wordStyle = computed(() => {
+  const text = displayWord.value || '';
+  const length = text.length;
+  const isMobile = window.innerWidth <= 600;
+
+  // Базовая логика размера
+  let fontSize;
+
+  if (isMobile) {
+    if (length <= 4) fontSize = 'clamp(28px, 10vw, 42px)';
+    else if (length <= 8) fontSize = 'clamp(24px, 8vw, 36px)';
+    else if (length <= 12) fontSize = 'clamp(20px, 6vw, 30px)';
+    else if (length <= 16) fontSize = 'clamp(18px, 5vw, 26px)';
+    else if (length <= 20) fontSize = 'clamp(16px, 4vw, 22px)';
+    else fontSize = 'clamp(14px, 3.5vw, 20px)';
+  } else {
+    if (length <= 4) fontSize = 'clamp(40px, 6vw, 70px)';
+    else if (length <= 8) fontSize = 'clamp(34px, 5vw, 58px)';
+    else if (length <= 12) fontSize = 'clamp(28px, 4.5vw, 48px)';
+    else if (length <= 16) fontSize = 'clamp(24px, 4vw, 40px)';
+    else if (length <= 20) fontSize = 'clamp(20px, 3.5vw, 34px)';
+    else fontSize = 'clamp(18px, 3vw, 28px)';
+  }
+
+  return {
+    fontSize: fontSize,
+    lineHeight: '1.1'
+  };
 });
 
 // Проверяем, открыта ли буква
@@ -197,6 +211,7 @@ const revealAllHintBoxes = () => {
   );
 };
 
+// 🆕 УПРОЩЁННАЯ ВЕРСИЯ fitText (только для крайних случаев)
 const fitText = () => {
   nextTick(() => {
     const container = wordText.value?.parentNode;
@@ -204,25 +219,24 @@ const fitText = () => {
 
     if (!container || !textEl) return;
 
-    const isMobile = window.innerWidth <= 600;
-    let fontSize = isMobile ? 36 : 58;
-    const lineHeight = isMobile ? 0.85 : 0.8;
-    const padding = isMobile ? 5 : 10;
+    // Проверяем, не вылезает ли текст даже с CSS-адаптацией
+    // Это страховка на случай очень длинных слов
+    const maxHeight = container.clientHeight * 0.95;
+    const maxWidth = container.clientWidth * 0.95;
 
-    textEl.style.fontSize = `${fontSize}px`;
-    textEl.style.lineHeight = lineHeight;
-    textEl.style.padding = `${padding}px`;
+    // Если текст всё ещё вылезает — уменьшаем шрифт принудительно
+    if (textEl.scrollHeight > maxHeight || textEl.scrollWidth > maxWidth) {
+      let currentSize = parseFloat(textEl.style.fontSize) || 58;
+      let attempts = 0;
 
-    while (
-      (textEl.scrollWidth > container.clientWidth ||
-        textEl.scrollHeight > container.clientHeight) &&
-      fontSize > 12
-      ) {
-      fontSize -= 1;
-      textEl.style.fontSize = `${fontSize}px`;
-
-      if (isMobile && fontSize < 24) {
-        fontSize -= 0.5;
+      while (
+        (textEl.scrollHeight > maxHeight || textEl.scrollWidth > maxWidth) &&
+        currentSize > 12 &&
+        attempts < 30
+        ) {
+        currentSize -= 0.5;
+        textEl.style.fontSize = `${currentSize}px`;
+        attempts++;
       }
     }
   });
@@ -240,30 +254,24 @@ const openFinalModal = () => {
   showWordInputs.value = true;
   difficultWord1.value = '';
   difficultWord2.value = '';
-  difficultWord3.value = '';
   modalMessage.value = 'Какие слова были сложными?<br>🎉<br>What words were difficult?';
   showModal.value = true;
 };
 
 // Обновленная функция закрытия модалки
 const closeModal = () => {
-  // Проверяем, были ли введены слова
-  const hasUserInput = difficultWord1.value.trim() || difficultWord2.value.trim() || difficultWord3.value.trim();
+  const hasUserInput = difficultWord1.value.trim() || difficultWord2.value.trim();
 
   if (hasUserInput) {
-    // Если пользователь что-то ввел
     modalMessage.value = 'Good job <br>💪<br> special agent!';
   } else {
-    // Если поля пустые, заполняем случайными словами
-    const randomWords = getRandomWords(3);
+    const randomWords = getRandomWords(2);
     difficultWord1.value = randomWords[0];
     difficultWord2.value = randomWords[1];
-    difficultWord3.value = randomWords[2];
 
     modalMessage.value = 'Многим вот эти кажутся сложными<br>📚<br>these seem difficult to many';
   }
 
-  // Показываем обновленное сообщение еще на секунду, потом закрываем
   setTimeout(() => {
     showModal.value = false;
     showWordInputs.value = false;
@@ -352,7 +360,7 @@ const resetRevealedLetters = () => {
   );
 };
 
-// Добавляем предотвращение зума
+// Предотвращение зума
 const preventZoom = (e) => {
   if (e.touches && e.touches.length > 1) {
     e.preventDefault();
@@ -378,7 +386,6 @@ onMounted(() => {
 
   if (shuffledData.value.length > 0) {
     currentWord.value = { ...shuffledData.value.pop() };
-    // gameMode уже установлен при инициализации (gameDirection.value === 'RuEng')
     resetRevealedLetters();
   }
 
@@ -401,7 +408,6 @@ onUnmounted(() => {
   }
 });
 </script>
-
 
 <style scoped>
 /* Добавляем глобальные стили для предотвращения зума */
@@ -447,7 +453,9 @@ html {
   width: 500px;
 }
 
-/* Фиксированные стили карточки слова */
+/* ======================================== */
+/* 🆕 ОБНОВЛЁННАЯ КАРТОЧКА СЛОВА */
+/* ======================================== */
 .word-card {
   width: 500px;
   height: 200px;
@@ -467,18 +475,36 @@ html {
   position: relative;
 }
 
+/* 🆕 ОБЁРТКА ДЛЯ ТЕКСТА — ГЛАВНЫЙ КОНТРОЛЛЁР РАЗМЕРА */
+.word-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 5px;
+}
+
+/* 🆕 ОБНОВЛЁННЫЙ ТЕКСТ — ТЕПЕРЬ НИКОГДА НЕ ОБРЕЗАЕТСЯ */
 .word {
-  font-size: 58px;
   font-weight: 700;
   color: #2c3e50;
   text-align: center;
-  user-select: none;
-  white-space: normal;
-  word-break: normal;
-  overflow-wrap: normal;
+  line-height: 1.1;
+
+  /* === ГЛАВНАЯ МАГИЯ === */
+  max-width: 100%;
   max-height: 100%;
-  padding: 10px;
-  line-height: 0.8;
+
+  /* Переносим длинные слова */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+
+  /* Защита от обрезания */
+  overflow: visible;
 }
 
 /* Стили для блока произношения */
@@ -490,9 +516,10 @@ html {
   text-align: center;
   position: relative;
   padding: 4px 12px;
+  flex-shrink: 0; /* Не даём сжиматься */
 }
 
-/* Добавляем пунктирную линию */
+/* Пунктирная линия */
 .pronunciation-hint::before {
   content: "";
   position: absolute;
@@ -528,25 +555,21 @@ html {
   margin-right: 20px;
   margin-left: 20px;
   margin-bottom: 8px;
-  /* Адаптивная ширина для длинных слов */
   max-width: 100%;
 }
 
-
-
 /* Буква-подсказка с адаптивным размером */
 .hint-box {
-  /* Используем flex-basis для более гибкого управления */
   flex: 1 1 auto;
-  min-width: 30px; /* Уменьшили минимальную ширину */
-  width: auto; /* Автоматическая ширина */
+  min-width: 30px;
+  width: auto;
   height: 40px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: none;
-  font-size: clamp(14px, 3vw, 20px); /* Адаптивный размер шрифта */
+  font-size: clamp(14px, 3vw, 20px);
   font-weight: 600;
   transition: all 0.3s ease;
   background: linear-gradient(145deg, #e0e5ec 0%, #ffffff 100%);
@@ -554,11 +577,10 @@ html {
   color: #7f8c8d;
   -webkit-tap-highlight-color: transparent;
   margin: 0;
-  /* Добавляем отступы для длинных букв (например, Щ) */
   padding: 0 2px;
 }
 
-/* Для очень длинных слов делаем буквы еще меньше */
+/* Для очень длинных слов делаем буквы меньше */
 .word-group[data-length="many"] .hint-box {
   min-width: 25px;
   font-size: clamp(12px, 2.5vw, 16px);
@@ -568,7 +590,7 @@ html {
   background: linear-gradient(145deg, #a5ffd6 0%, #79b4a9 100%);
   background: transparent;
   color: #2c3e50;
-  font-size: clamp(16px, 4vw, 28px); /* Адаптивный размер для открытых букв */
+  font-size: clamp(16px, 4vw, 28px);
   box-shadow: none;
 }
 
@@ -649,68 +671,7 @@ html {
   box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
 }
 
-/* Адаптивность для мобильных устройств */
-@media (max-width: 600px) {
-  .game-content-wrapper {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .main-content {
-    width: 100%;
-    padding: 0 15px;
-  }
-
-  .word-card {
-    width: 100%;
-    height: 180px;
-  }
-
-  .word {
-    font-size: 36px;
-  }
-
-  .pronunciation-hint {
-    font-size: 14px;
-    margin-top: 6px;
-    padding: 3px 8px;
-  }
-
-  .nav-button {
-    width: 100%;
-    height: 60px;
-    order: 1;
-  }
-
-  .hint-container {
-    min-height: 100px;
-  }
-
-  .word-group {
-    margin-right: 20px;
-    margin-left: 20px;
-    margin-bottom: 6px;
-    gap: 6px;
-  }
-
-  .hint-box {
-    min-width: 20px; /* Еще меньше для мобильных */
-    height: 35px;
-    font-size: clamp(10px, 3.5vw, 18px);
-  }
-
-  .hint-box.revealed {
-    font-size: clamp(10px, 3.5vw, 24px);
-  }
-
-  /* Для очень длинных слов на мобильных */
-  .word-group[data-length="many"] .hint-box {
-    min-width: 16px;
-    font-size: clamp(10px, 3vw, 14px);
-  }
-}
-
-/* Добавляем стили для полей ввода */
+/* Поля ввода */
 .word-inputs {
   display: flex;
   flex-direction: column;
@@ -733,11 +694,71 @@ html {
   box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
 }
 
-/* Адаптивность для мобильных */
+/* ======================================== */
+/* 🆕 АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+/* ======================================== */
 @media (max-width: 600px) {
+  .game-content-wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .word-card {
+    width: 100%;
+    height: 180px;
+    padding: 15px;
+  }
+
+  .word-wrapper {
+    padding: 3px;
+  }
+
+  .pronunciation-hint {
+    font-size: 14px;
+    margin-top: 6px;
+    padding: 3px 8px;
+  }
+
+  .nav-button {
+    width: 100%;
+    height: 60px;
+    order: 1;
+  }
+
+  .hint-container {
+    min-height: 100px;
+  }
+
+  .word-group {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 6px;
+  }
+
+  .hint-box {
+    min-width: 20px;
+    height: 35px;
+    font-size: clamp(10px, 3.5vw, 18px);
+  }
+
+  .hint-box.revealed {
+    font-size: clamp(10px, 3.5vw, 24px);
+  }
+
+  .word-group[data-length="many"] .hint-box {
+    min-width: 16px;
+    font-size: clamp(10px, 3vw, 14px);
+  }
+
   .word-input {
     font-size: 14px;
     padding: 8px 12px;
   }
 }
+
 </style>

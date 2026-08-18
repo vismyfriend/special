@@ -100,7 +100,7 @@ const shortWordsData = {
     { id: 15, eng: "temple", ru: "храм", hint: "/тЭмпл/" },
     { id: 16, eng: "apartment", ru: "квартира", hint: "/эпАртмэнт/" },
     { id: 17, eng: "townhouse", ru: "городской дом", hint: "/тАун хаус/" },
-    { id: 18, eng: "countryhouse", ru: "загородный дом", hint: "/кАнтри хаус/" },
+    { id: 18, eng: "country house", ru: "загородный дом", hint: "/кАнтри хаус/" },
     { id: 19, eng: "boathouse", ru: "дом на лодке", hint: "/бОУтхаус/" },
     { id: 20, eng: "treehouse", ru: "дом на дереве", hint: "/трИхаус/" },
     { id: 21, eng: "skyscraper", ru: "небоскрёб", hint: "/скАй скрЭЙпэ/" },
@@ -123,7 +123,7 @@ const shortWordsData = {
     { id: 14, eng: "temple", ru: "A place where Buddist people go to pray." },
     { id: 15, eng: "apartment", ru: "Many buildings have it. Many hotels have it. Rooms for living." },
     { id: 16, eng: "garages", ru: "A fantastic place to spend time with your friends, and to learn English, and to drink Coca-Cola." },
-    { id: 17, eng: "countryhouse", ru: "A nice cozy building with a garden. Our grandparents usually live there" },
+    { id: 17, eng: "country house", ru: "A nice cozy building with a garden. Our grandparents usually live there" },
     { id: 18, eng: "box", ru: "If you don't have a house or any other place to live in. You can always live under the bridge in this small, for 1 person, comfortable square object." },
     { id: 19, eng: "treehouse", ru: "I think all children like to build it and play in it. Because it is located above the grass usually. And you need to climb to go up there." },
     { id: 20, eng: "skyscraper", ru: "A building that looks awesome! It is so tall that you usually can't see the top of it. It has so many floors." },
@@ -1112,14 +1112,92 @@ const shortWordsData = {
     { id: 8, eng: "beard", ru: "борода", hint: "/ БИЭРД /" },
   ],
 
-  topMistakes: [
+  topMistakes1: [
     { id: 1, eng: "tell me", ru: "say me", hint: "скажи мне" },
     { id: 2, eng: "I don't have", ru: "I haven't", hint: "у меня нет" },
     { id: 3, eng: "he doesn't have", ru: "he hasn't", hint: "у него нет" },
     { id: 4, eng: "we don't have", ru: "we doesn't have", hint: "у нас нет" },
     { id: 5, eng: "don't understand", ru: "no understand", hint: "не понимаю" },
     { id: 6, eng: "I am okay", ru: "I am normal", hint: "нормально" },
+    { id: 7, eng: "see you at eight", ru: "see you in eight", hint: "увидимся в восемь" },
+    { id: 8, eng: "in 20 minutes", ru: "after 20 minutes", hint: "через 20 минут" },
+    { id: 9, eng: "I like her", ru: "I like she", hint: "она мне нравится" },
+    { id: 10, eng: "His eyes are blue", ru: "His eyes is blue", hint: "его глаза голубые" },
 
+  ],
+  topMistakes2: [
+    { id: 11, eng: "depends on", ru: "depends from", hint: "зависит от" },
+    { id: 12, eng: "in the photo", ru: "on the photo", hint: "на фотографии" },
+    { id: 13, eng: "listen to music", ru: "listen music", hint: "слушать музыку" },
+    { id: 14, eng: "look, they are coming", ru: "look, they coming", hint: "смотрите, они идут" },
+    { id: 15, eng: "look at", ru: "look on", hint: "посмотри на" },
+    { id: 16, eng: "at night", ru: "in the night", hint: "ночью" },
+    { id: 17, eng: "in the morning", ru: "at morning", hint: "утром" },
+    { id: 18, eng: "I like food", ru: "I like foot", hint: "мне нравится еда" },
+    { id: 19, eng: "I like her eyes", ru: "I like her ice", hint: "мне нравятся её глаза" },
+    { id: 20, eng: "explain it to me", ru: "explain me it", hint: "объясните мне это" },
+    { id: 21, eng: "I like it very much", ru: "I very like it", hint: "мне очень нравится" },
+
+
+
+
+
+
+  ],
+  topMistakes3: [
+
+    { id: 13, eng: "look at", ru: "look on", hint: "посмотри на" },
+    { id: 14, eng: "arrive at (place)", ru: "arrive to", hint: "приехать в" },
+    { id: 15, eng: "at night", ru: "in the night", hint: "ночью" }, // твоя тема!
+    { id: 16, eng: "in the morning", ru: "at morning", hint: "утром" },
+
+    // === ВРЕМЕНА ===
+    { id: 17, eng: "I have been waiting", ru: "I am waiting for 2 hours", hint: "я жду 2 часа" },
+    { id: 18, eng: "I have done", ru: "I did already", hint: "я уже сделал" },
+    { id: 19, eng: "I went", ru: "I have went", hint: "я пошёл" }, // неправильная форма
+    { id: 20, eng: "I have eaten", ru: "I ate already", hint: "я уже поел" },
+
+    // === ПАРНЫЕ СЛОВА (ПУТАЮТ ВСЕ) ===
+    { id: 21, eng: "say", ru: "tell", hint: "сказать (без адресата)" },
+    { id: 22, eng: "tell", ru: "say", hint: "сказать (кому-то)" },
+    { id: 23, eng: "know", ru: "can", hint: "знать" },
+    { id: 24, eng: "can", ru: "know", hint: "уметь/могу" },
+    { id: 25, eng: "remember", ru: "remind", hint: "помнить" },
+
+    // === МОДАЛЬНЫЕ ГЛАГОЛЫ ===
+    { id: 26, eng: "I can to do", ru: "I can do", hint: "я могу сделать" }, // наоборот
+    { id: 27, eng: "must", ru: "need", hint: "должен" },
+    { id: 28, eng: "should", ru: "must", hint: "следует (мягкий совет)" },
+
+    // === МНОЖЕСТВЕННОЕ ЧИСЛО ===
+    { id: 29, eng: "information", ru: "informations", hint: "информация (неисч.)" },
+    { id: 30, eng: "advice", ru: "advices", hint: "совет (неисч.)" },
+    { id: 31, eng: "money", ru: "monies", hint: "деньги (неисч.)" },
+    { id: 32, eng: "people", ru: "persons", hint: "люди (уже мн.ч.)" },
+
+    // === ПОРЯДОК СЛОВ ===
+    { id: 33, eng: "I like very much", ru: "I like it very much", hint: "мне очень нравится" },
+    { id: 34, eng: "always I", ru: "I always", hint: "я всегда" },
+    { id: 35, eng: "yesterday I went", ru: "I yesterday went", hint: "вчера я пошёл" },
+
+    // === OTHER CLASSIC GEMS ===
+    { id: 36, eng: "how is it called", ru: "what is it called", hint: "как это называется" },
+    { id: 37, eng: "it's depend", ru: "it depends", hint: "это зависит" },
+    { id: 38, eng: "I am agree", ru: "I agree", hint: "я согласен" },
+    { id: 39, eng: "I am born", ru: "I was born", hint: "я родился" },
+    { id: 40, eng: "discuss about", ru: "discuss", hint: "обсуждать (без about)" },
+    { id: 41, eng: "explain me", ru: "explain to me", hint: "объясни мне" },
+    { id: 42, eng: "answer to", ru: "answer", hint: "отвечать на (без to)" }, // I answer the question
+    { id: 43, eng: "ask a question", ru: "ask a question", hint: "спросить" },
+    { id: 44, eng: "I have 20 years", ru: "I am 20", hint: "мне 20 лет" },
+    { id: 45, eng: "make a photo", ru: "take a photo", hint: "сделать фото" },
+
+    // === ПРЕДЛОГИ ВРЕМЕНИ ===
+    { id: 46, eng: "on Monday", ru: "in Monday", hint: "в понедельник" },
+    { id: 47, eng: "at 5 o'clock", ru: "in 5 o'clock", hint: "в 5 часов" },
+    { id: 48, eng: "in 2025", ru: "on 2025", hint: "в 2025 году" },
+    { id: 49, eng: "in 2025", ru: "on 2025", hint: "в 2025 году" },
+    { id: 50, eng: "in 2025", ru: "on 2025", hint: "в 2025 году" },
   ],
 
   SayVsTell: [

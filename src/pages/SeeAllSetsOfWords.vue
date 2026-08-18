@@ -302,7 +302,7 @@
 
           <!-- Рандомные вопросы -->
           <div
-            v-if="currentLevel !== 'lvl0' && currentLevel !== 'lvlBooks'"
+            v-if="currentLevel !== 'lvl0' && currentLevel !== 'lvlBooks' && currentLevel !== 'lvl2'"
 
             class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
@@ -3310,6 +3310,10 @@ onBeforeRouteLeave((to, from, next) => {
 .undersubtask-greenish {
   border-left-color: #88ff06 !important;
   background: rgba(68, 255, 6, 0.99);
+}
+.undersubtask-purple {
+  border-left-color: #7e06ff !important;
+  background: rgba(122, 37, 191, 0.99);
 }
 
 .undersubtask-grammar {

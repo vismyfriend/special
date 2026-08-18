@@ -357,6 +357,7 @@ const disableAudioDownload = () => {
 .stories-container {
   max-width: 56rem;
   margin: 2px auto;
+  margin-top: 70px;
   padding: 15px;
   background-color: #1a1a1a;
   color: #e0e0e0;

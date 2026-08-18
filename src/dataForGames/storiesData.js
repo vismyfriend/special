@@ -70,6 +70,36 @@ const storiesAndWordsData = {
 
     ]
   },
+  testQuicklyData1: {
+    mainDescription: "Впиши 'are' или 'am' или 'is' там где нужно. А где не нужно оставь пустоту или прочерк '-'",
+    listOfStories: [
+      {
+        storyTitle: null,
+        taskID: "stories_task",
+        usefulWords: "I - am, You We They - are, It He She - is",
+        audio: null,
+        taskPicture: new URL("../assets/images/areAmIsOrNothing.png", import.meta.url).href,
+        text: "Винсент _ (is) мой учитель Английского. Я _ (-) думаю, что я _ (am) хороший ученик. И Винсент _ (-) тоже так считает. Я _ (-) учусь с ним несколько месяцев. Мы _ (-) занимаемся 2 раза в неделю и мы _ (-) играем в игру словно мы _ (are) секретные агенты. \n" +
+              '\n' +
+              "А что насчет тебя? _ (-) ты желаешь изучать Английский? Иностранные языки _ (are) прикольные. Китайский _ (is) сложный, а вот Английский и Испанский _ (are) легкие для меня. Может потому что я _ (am) не ленивый и потому что я _ (am) секретный агент. А может потому что Винсент и я _ (are) друзья и я _ (-) люблю наши занятия. Они _ (-) радуют меня и они _ (are) интересные.",
+        hintsOrFeedback: 'ответы здесь : \n' +
+          '\n' +
+          'Vincent is my teacher of English.\n' +
+          'I think that I am a good student, and Vincent thinks the same.\n' +
+          'I study/learn with him for some months.\n' +
+          'We study twice a week (two times a week), and we play a game like we are secret agents.\n' +
+          '\n' +
+          'What about you?\n' +
+          'Do you want to learn English? Foreign languages are cool.\n' +
+          'Chinese is hard, but English and Spanish are easy for me.\n' +
+          'Maybe it is because I am not lazy, or because I am a secret agent.\n' +
+          'Or maybe it is because Vincent and I are friends, and I love our lessons.\n' +
+          'They make me happy, and they are interesting.\n' +
+          '\n' +
+          'Нужно просто больше практики и всё запомнится и получится!',
+      },
+    ]
+  },
 }
 
 export default storiesAndWordsData
