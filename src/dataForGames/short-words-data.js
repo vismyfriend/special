@@ -1571,6 +1571,21 @@ const shortWordsData = {
       {id: 7, eng: "behind garages", ru: "за гаражами", hint: "/ би хАйнд гарАжез /"},
     ],
 
+    prepositionToA1: [
+      {id: 1, eng: "to France", ru: "во Францию", hint: "/ ту фрЭнс /"},
+      {id: 2, eng: "to work", ru: "на работу", hint: "/ ту ворк /"},
+      {id: 3, eng: "to hospital", ru: "в больницу", hint: "/ ту э хоспитал /"},
+      {id: 4, eng: "to me", ru: "ко мне", hint: "/ ту ми /"},
+      {id: 5, eng: "to Vncent", ru: "к Винсенту", hint: "/ нИар бай /"},
+      {id: 6, eng: "to school", ru: "в школу", hint: "/ ту скул /"},
+      {id: 7, eng: "to garages", ru: "за гаражи", hint: "/ ту гарАжез /"},
+      {id: 8, eng: "to Santa Claus", ru: "Санта Клаусу", hint: "/ ту сЭнта клОз /"},
+      {id: 9, eng: "to Kamchatka", ru: "на Камчатку", hint: "/ ту камчАтка /"},
+      {id: 10, eng: "to you", ru: "к тебе", hint: "/ ту ю /"},
+
+
+    ],
+
     digits09: [
       { id: 1, eng: "one", ru: "один", hint: "/ уан /" },
       { id: 2, eng: "two", ru: "два", hint: "/ ту /" },
@@ -1625,24 +1640,26 @@ const shortWordsData = {
       { id: 8, eng: "drivers", ru: "водители", hint: "/ дрАйвэрз /" },
       { id: 9, eng: "singers", ru: "певцы", hint: "/ сИнгэрз /" },
       { id: 10, eng: "builders", ru: "строители", hint: "/ бИлдэрз /" },
-      { id: 11, eng: "sportsmen", ru: "спортсмены", hint: "/ спОртсмен /" },
-      { id: 12, eng: "runners", ru: "бегуны", hint: "/ рАннэрз /" },
-      { id: 13, eng: "jumpers", ru: "прыгуны", hint: "/ джАмпэрз /" },
-      { id: 14, eng: "swimmers", ru: "пловцы (плаватели)", hint: "/ свИммэрз /" },
-      { id: 15, eng: "managers", ru: "менеджеры", hint: "/ мЭнэджэрз /" },
-      { id: 16, eng: "workers", ru: "рабочие", hint: "/ уОркэрз /" },
+      { id: 11, eng: "runners", ru: "бегуны", hint: "/ рАннэрз /" },
+      { id: 12, eng: "jumpers", ru: "прыгуны", hint: "/ джАмпэрз /" },
+      { id: 13, eng: "swimmers", ru: "пловцы (плаватели)", hint: "/ свИммэрз /" },
+
 
     ],
     professions2ER: [
-      { id: 17, eng: "farmers", ru: "фермеры", hint: "/ фАрм эрз /" },
-      { id: 18, eng: "painters", ru: "художники", hint: "/ пЭйн тэрз /" },
-      { id: 19, eng: "bakers", ru: "пекари", hint: "/ бЭй кэрз /" },
-      { id: 21, eng: "gardeners", ru: "садовники", hint: "/ гАр дэ нэрз /" },
-      { id: 22, eng: "waiters", ru: "официанты", hint: "/ уЭй тэрз /" },
-      { id: 23, eng: "barbers", ru: "парикмахеры", hint: "/ бАр бэрз /" },
-      { id: 25, eng: "cleaners", ru: "уборщики", hint: "/ клИ нэрз /" },
-      { id: 30, eng: "programmers", ru: "программисты", hint: "/ прОуграмэрз /" },
+      { id: 14, eng: "sportsmen", ru: "спортсмены", hint: "/ спОртсмен /" },
+      { id: 15, eng: "farmers", ru: "фермеры", hint: "/ фАрм эрз /" },
+      { id: 16, eng: "painters", ru: "художники", hint: "/ пЭйн тэрз /" },
+      { id: 17, eng: "bakers", ru: "пекари", hint: "/ бЭй кэрз /" },
+      { id: 18, eng: "gardeners", ru: "садовники", hint: "/ гАр дэ нэрз /" },
+      { id: 19, eng: "waiters", ru: "официанты", hint: "/ уЭй тэрз /" },
+      { id: 20, eng: "barbers", ru: "парикмахеры", hint: "/ бАр бэрз /" },
+      { id: 21, eng: "cleaners", ru: "уборщики", hint: "/ клИ нэрз /" },
+      { id: 22, eng: "programmers", ru: "программисты", hint: "/ прОуграмэрз /" },
+      { id: 23, eng: "managers", ru: "управляющие", hint: "/ мЭнэджэрз /" },
+      { id: 24, eng: "workers", ru: "рабочие", hint: "/ уОркэрз /" },
     ],
+
     verbsFromProfessions: [
       { id: 1, eng: "teach", ru: "обучать", hint: "/ тич /" },
       { id: 2, eng: "study", ru: "изучать", hint: "/ стАди /" },
@@ -1665,6 +1682,7 @@ const shortWordsData = {
       { id: 20, eng: "code", ru: "кодить", hint: "/ коуд /" },
       { id: 21, eng: "do sport", ru: "заниматься спортом", hint: "/ ду спорт /" },
       { id: 22, eng: "do yoga", ru: "заниматься йогой", hint: "/ ду йога /" },
+      { id: 23, eng: "wait", ru: "ждать", hint: "/ уЭйт /" },
 
     ],
     numbers10to1000: [

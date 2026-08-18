@@ -99,9 +99,11 @@ const routes = [
                 path: 'find-pairs-easy',
                 component: () => import('src/components/GameFindPairsWires.vue')
               },
+              // 🆕 Маршрут для Spell-it с уровнем в URL
               {
-                path: 'spell-it',
-                component: () => import('src/components/GameSpellingAgent.vue')
+                path: 'spell-it/:level?',  // :level? - необязательный параметр
+                component: () => import('src/components/GameSpellingAgent.vue'),
+                props: true // Позволяет передавать level как пропс
               },
               {
                 path: 'listenAndSpell',
@@ -180,10 +182,11 @@ const routes = [
                 path: 'definitions-game',
                 component: () => import('components/GameDefinitions.vue')
               },
-
+              // 🆕 Маршрут для карточек с направлением перевода
               {
-                path: 'game-translate',
-                component: () => import('src/components/GameTranslate.vue')
+                path: 'game-translate/:direction?',  // :direction? - необязательный параметр
+                component: () => import('src/components/GameTranslate.vue'),
+                props: true
               },
               {
                 path: 'game-pronunciation',

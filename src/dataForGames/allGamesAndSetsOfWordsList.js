@@ -22,7 +22,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/digits09/spell-it",
+      path: "/see-all-sets-of-words/digits09/spell-it/easy",
       missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(цифры)</i>',
       missionDescription: 'Mission: "WHEN?"',
       lvl: "lvl0",
@@ -536,7 +536,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Present Simple",
       id: 1001,
       active: true,
-      lvl: ["lvl2"],
+      lvl: ["lvl3"],
 
     },
 
@@ -562,25 +562,83 @@ export const allGamesAndSetsOfWordsList =
     },
 
 
-
-
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/game-whatDoYouHear",
+      missionVisibleName: 'Диктант<b>/ ДИК тЭйшн /</b>',
+      missionDescription: '/ дик тЭйшн / Dictation  ',
+      lvl: "lvl1",
+      gameIcon: "🍆",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionToA1/print-all-words",
+      missionVisibleName: 'Предлог направления <b> ( to )</b>',
+      missionDescription: '/ пре по зи шн / preposition',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/adjectives0/print-all-words2",
-      missionVisibleName: 'Mission: <b>"КАКОЙ"</b><i>(прилагательные)</i>',
-      missionDescription: 'какие, какая, какое, какой',
-      lvl: "lvl0",
+      missionVisibleName: 'Прилагательные <b>( КАКИЕ? )</b>',
+      missionDescription: '/ Э ДЖЭК ТИВЗ / adjectives',
+      lvl: "lvl1",
       id: 1001,
       active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/verbs0/print-all-words2",
-      missionVisibleName: 'Mission: <b>"ЧЁ ДЕЛАТЬ"</b><i>(глагол)</i>',
-      missionDescription: 'глагол на английском / вёрб /',
-      lvl: "lvl0",
+      missionVisibleName: 'Глаголы <b>( ЧТО ДЕЛАЮТ ? )</b>',
+      missionDescription: '/ вЁрбз / verbs',
+      lvl: "lvl1",
       id: 1001,
       active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbs0/print-all-words2",
+      missionVisibleName: 'Существительные <b>( ЧТО ? )</b>',
+      missionDescription: '/ нАунз / nouns ',
+      lvl: "lvl1",
+      id: 1001,
+      active: true,
+    },
+
+
+
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions1ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 1</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      lvl: "lvl1",
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/professions2ER/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 2</i>',
+      missionDescription: 'Работа + ер',
+      id: 1001,
+      active: true,
+      lvl: "lvl1",
+
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/verbsFromProfessions/print-all-words2",
+      missionVisibleName: 'Профессии <b>"ER"</b><i>все глаголы</i>',
+      missionDescription: 'profession verbs',
+      id: 1001,
+      active: true,
+      lvl: "lvl1",
+
     },
     // начать с самого начала
     {
@@ -590,7 +648,6 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl0"],
 
       subTasks: [
         {
@@ -625,7 +682,6 @@ export const allGamesAndSetsOfWordsList =
           path: "/see-all-sets-of-words/amIsAre0/sorting",
           missionVisibleName: 'Правило №1 порядок слов',
           missionDescription: 'ту би глагол to be (am, is, are)',
-          lvl: "lvl0",
           id: 1001,
           active: true,
 
@@ -727,36 +783,6 @@ export const allGamesAndSetsOfWordsList =
       ]
     },
 
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/professions1ER/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 1</i>',
-      missionDescription: 'Работа + ер',
-      id: 1001,
-      lvl: "lvl0",
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/professions2ER/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>часть 2</i>',
-      missionDescription: 'Работа + ер',
-      id: 1001,
-      active: true,
-      lvl: "lvl0",
-
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/verbsFromProfessions/print-all-words2",
-      missionVisibleName: 'Профессии <b>"ER"</b><i>глаголы</i>',
-      missionDescription: 'profession verbs',
-      id: 1001,
-      active: true,
-      lvl: "lvl0",
-
-    },
-
     // 365 days of English
     {
       type: "subTasks",
@@ -765,7 +791,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "greenish", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl2"],
+      lvl: ["lvl3"],
       subTasks: [
         {
           type: "hardcodedLink",
@@ -1222,12 +1248,12 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/topMistakes/find-pairs-easy",
-      missionVisibleName: "Топ ошибки",
+      path: "/see-all-sets-of-words/topMistakes/game-translate/RuEng",
+      missionVisibleName: "Топ ошибки - Bad English",
       missionDescription: "Top mistakes",
       id: 1001,
       active: true,
-      lvl: ["lvl1"],
+      lvl: ["lvl2"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1236,7 +1262,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "test year1",
       id: 1001,
       active: true,
-      lvl: ["lvl1"],
+      lvl: ["lvl3"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1245,7 +1271,7 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "test year1 мфкшфте 2",
       id: 1001,
       active: true,
-      lvl: ["lvl1"],
+      lvl: ["lvl3"],
     },
 
     // extra information
@@ -1256,7 +1282,7 @@ export const allGamesAndSetsOfWordsList =
       id: "subtasks-newSub",
       style: "glassMorphism", // Это ключевое значение для применения стиля
       active: true,
-      lvl: ["lvl1"],
+      lvl: ["lvlBooks"],
       subTasks: [
         {
           type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
@@ -1328,7 +1354,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon: '🙈',
-      lvl: ["lvl0"],
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1338,7 +1363,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon: '🙉',
-      lvl: ["lvl0"],
 
     },
 
@@ -1350,7 +1374,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon:'🙊',
-      lvl: ["lvl0"],
 
     },
     {
@@ -1361,7 +1384,6 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       gameIcon: '🐶',
-      lvl: ["lvl0"],
 
     },
 

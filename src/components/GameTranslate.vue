@@ -83,6 +83,7 @@
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
+
 const getWordSet = (name) => {
   if (shortWordsData[name]) return shortWordsData[name];
   for (const level in shortWordsData) {
@@ -92,7 +93,44 @@ const getWordSet = (name) => {
   }
   return [];
 };
+
 const route = useRoute();
+
+// ==================== ПАРСИНГ НАПРАВЛЕНИЯ ИЗ URL ====================
+
+const parseDirectionFromRoute = () => {
+  // route.params.direction - параметр из URL
+  const directionParam = route.params.direction;
+
+  if (!directionParam) return 'EngRu'; // По умолчанию английский -> русский
+
+  const direction = directionParam.toString().toLowerCase();
+
+  // Маппинг значений
+  const directionMap = {
+    'er': 'EngRu',
+    're': 'RuEng',
+    'engru': 'EngRu',
+    'enru': 'EngRu',
+    'eng-ru': 'EngRu',
+    'en-ru': 'EngRu',
+    'eng_ru': 'EngRu',
+    'en_ru': 'EngRu',
+    'rueng': 'RuEng',
+    'ruen': 'RuEng',
+    'ru-eng': 'RuEng',
+    'ru-en': 'RuEng',
+    'ru_eng': 'RuEng',
+    'ru_en': 'RuEng'
+  };
+
+  return directionMap[direction] || 'EngRu';
+};
+
+// ==================== СОСТОЯНИЯ ====================
+
+// 🆕 Направление перевода
+const gameDirection = ref(parseDirectionFromRoute());
 
 // Данные игры
 const currentGameData = ref([]);
@@ -103,7 +141,7 @@ const currentWord = ref({});
 // Модалки
 const showModal = ref(false);
 const modalMessage = ref('');
-const showWordInputs = ref(false); // Показывать ли поля ввода
+const showWordInputs = ref(false);
 
 // Поля для сложных слов
 const difficultWord1 = ref('');
@@ -114,10 +152,12 @@ const difficultWord3 = ref('');
 const nextCount = ref(0);
 const skipCount = ref(0);
 
-// Глобальный режим игры (true - показываем русский, false - показываем английский)
-const gameMode = ref(false);
+// 🆕 Глобальный режим игры - инициализируем из направления
+// true - показываем русский (RuEng)
+// false - показываем английский (EngRu)
+const gameMode = ref(gameDirection.value === 'RuEng');
 
-// Подсказки с буквами - теперь храним как массив для каждого слова
+// Подсказки с буквами
 const revealedLetters = ref([]);
 
 // Состояние для задержки перед следующим словом
@@ -126,7 +166,8 @@ const nextTimeout = ref(null);
 
 const wordText = ref(null);
 
-// Вычисляемые поля для отображения
+// ==================== COMPUTED ====================
+
 const displayWord = computed(() => {
   return gameMode.value ? currentWord.value.ru : currentWord.value.eng;
 });
@@ -135,7 +176,6 @@ const displayRu = computed(() => {
   return gameMode.value ? currentWord.value.eng : currentWord.value.ru;
 });
 
-// Разбиваем текст на массив слов
 const wordsArray = computed(() => {
   return displayRu.value ? displayRu.value.split(' ') : [];
 });
@@ -338,7 +378,7 @@ onMounted(() => {
 
   if (shuffledData.value.length > 0) {
     currentWord.value = { ...shuffledData.value.pop() };
-    gameMode.value = false;
+    // gameMode уже установлен при инициализации (gameDirection.value === 'RuEng')
     resetRevealedLetters();
   }
 

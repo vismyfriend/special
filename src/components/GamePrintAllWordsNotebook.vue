@@ -37,7 +37,7 @@
           <div class="notebook-content" ref="contentRef">
             <!-- Заголовок урока -->
             <div class="lesson-title">
-              Homework - домашка
+              TRANSLATE - ТРАНЗ ЛЭЙТ
             </div>
 
             <div class="textInLine">
@@ -45,11 +45,11 @@
 <!--              <p class="textRight">" {{ currentMission }} "</p>-->
 <!--              <div class="lesson-title"></div>-->
 
-              <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="words-link"> <b>все WORDS</b></a> 👈 ссылка</p>
+              <p class="fontAm">1. Вслух прочитать <a href="#" @click.prevent="goToAnontherComponent" class="random-words-link"> <b>все WORDS</b></a> 👈 - ссылка</p>
               <div class="textInLine" v-if="!harderModeEnabled">
-                <p class="fontAm">2. Введи перевод
-                  <a href="#" @click.prevent="refreshRandomWords" class="random-words-link">случайных</a>
-                  3 слов/фраз:
+                <p class="fontAm">2. Ввести
+                  <a href="#" @click.prevent="refreshRandomWords" class="words-link"><b>перевод случайных</b></a>
+                  трёх слов/фраз:
                 </p>                <div class="lesson-title"></div>
               </div>
 
@@ -112,7 +112,7 @@
 
                 <div class="textInLine">
                   <div class="lesson-title"></div>
-                  <p class="fontAm">3. <b>Ручкой</b> на любой бумажке или в своей тетради <b>напиши</b> что-нибудь по-английски, <b>сфотографируй</b> и send to Винсенту.</p>
+                  <p class="fontAm">3. <b>Ручкой</b> на любой бумажке или в своей тетради <b>напиши</b> что-нибудь по-английски, <b>сфотографируй</b> и send to Винсенту. </p>
                 </div>
 
                 <div class="buttons-wrapper">

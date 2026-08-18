@@ -280,7 +280,8 @@
 
           <!-- Специальные карточки -->
           <div
-            v-if="currentLevel !== 'lvl0'"
+            v-if="currentLevel !== 'lvl0' && currentLevel !== 'lvl1' && currentLevel !== 'lvl2' && currentLevel !== 'lvlBooks'"
+
             class="v-card-choose tooltip-wrapper random-set"
             role="button"
             @click="playRandomSet"
@@ -294,7 +295,7 @@
           </div>
 
           <div
-            v-if="currentLevel !== 'lvl0'"
+            v-if="!hiddenLevels.includes(currentLevel)"
 
             class="v-card-choose tooltip-wrapper glassMorphism"
             role="button"
@@ -312,7 +313,7 @@
 
           <!-- Рандомные вопросы -->
           <div
-            v-if="currentLevel !== 'lvl0'"
+            v-if="currentLevel !== 'lvl0' && currentLevel !== 'lvlBooks'"
 
             class="v-card-choose tooltip-wrapper randomQuestions random-set"
             role="button"
@@ -758,16 +759,17 @@ const focusSearch = () => {
 
 // ==================== УРОВНИ (LVL) ====================
 const currentLevel = ref('lvl0');
+const hiddenLevels = ['lvl0', 'lvl1', 'lvl2','lvlBooks'];
 
 const levels = [
   { id: 'lvl0', label: '0' },
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
+  { id: 'lvlBooks', label: '📚' },
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '🔓' },
   { id: 'noLvl', label: '?' },
   { id: 'lvlAll', label: 'все' },
-  { id: 'lvlBooks', label: '📚' },
   { id: 'lvl5', label: '5' },
   { id: 'lvl6', label: '6' },
   { id: 'lvl7', label: '7' },

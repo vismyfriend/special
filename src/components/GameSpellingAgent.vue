@@ -159,6 +159,36 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useGameStore } from "stores/example-store";
 
+const router = useRouter();
+const route = useRoute();
+const gameStore = useGameStore();
+
+// ==================== ПАРСИНГ УРОВНЯ ИЗ URL ====================
+
+// Получаем уровень из параметров маршрута
+// Если параметр не указан - по умолчанию 2 (средний)
+const parseDifficultyFromRoute = () => {
+  // route.params.level - это то, что мы передали в URL
+  const levelParam = route.params.level;
+
+  if (!levelParam) return 2;
+
+  // Приводим к нижнему регистру
+  const level = levelParam.toString().toLowerCase();
+
+  // Маппинг значений
+  const levelMap = {
+    'easy': 1,
+    '1': 1,
+    'medium': 2,
+    '2': 2,
+    'hard': 3,
+    '3': 3,
+    'hardcore': 3
+  };
+
+  return levelMap[level] || 2;
+};
 
 // Добавьте после импортов
 const getWordSet = (name) => {
@@ -172,12 +202,9 @@ const getWordSet = (name) => {
 };
 
 
-const router = useRouter();
-const route = useRoute();
-const gameStore = useGameStore();
 
 // Уровни сложности - используем число, но из select приходит строка
-const difficultyLevel = ref(2);
+const difficultyLevel = ref(parseDifficultyFromRoute());
 const showFeedback = ref(false);
 let feedbackTimeout = null;
 
