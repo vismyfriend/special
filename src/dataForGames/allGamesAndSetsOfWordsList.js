@@ -1173,6 +1173,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       lvl: ["lvl2"],
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/SayVsTell/sd",
@@ -1183,6 +1184,15 @@ export const allGamesAndSetsOfWordsList =
       lvl: ["lvl2"],
 
     },
+  {
+    type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+    path: "/see-all-sets-of-words/doDoesSorting/sorting",
+    missionVisibleName: "<b>DOES</b>или<b>DO</b>",
+    missionDescription: "DOES or DO",
+    id: 1001,
+    active: true,
+    lvl: ["lvl2"],
+  },
     {
       missionVisibleName: "Топ ошибки - Bad English",
       missionDescription: "Top mistakes",

@@ -39,9 +39,11 @@
     </div>
 
     <!-- Слова для перетаскивания -->
-    <div ref="wordsContainer" class="words-container">
+    <div v-show="availableWords.length > 0"
+         ref="wordsContainer" class="words-container">
+      <!-- 🆕 Используем visibleWords вместо availableWords -->
       <div
-        v-for="item in availableWords"
+        v-for="item in visibleWords"
         :key="item.id"
         class="word-card"
         :data-id="item.id"
@@ -51,21 +53,42 @@
         <div class="word-eng">{{ item.eng }}</div>
         <div class="word-ru" :class="getHintClass(item.id)">{{ item.ru }}</div>
       </div>
+
+      <!-- 🆕 Индикатор количества оставшихся карточек -->
+      <div v-if="!showAllCards && remainingWordsCount > visibleWords.length" class="remaining-indicator">
+        left ({{ remainingWordsCount - visibleWords.length }}) осталось
+      </div>
     </div>
 
     <div class="game-controls">
+      <!-- 🆕 Кнопка "Показать все" / "Показать понемногу" -->
+      <button
+        v-if="!showAllCards && remainingWordsCount > visibleCount"
+        @click="showAllCardsHandler"
+        class="control-button show-all"
+      >
+        📋 All cards
+<!--        ({{ remainingWordsCount }})-->
+      </button>
 
+      <button
+        v-if="showAllCards"
+        @click="resetToStepMode"
+        class="control-button step-mode"
+      >
+        📋 Show some
+      </button>
 
       <button @click="checkAnswers" class="control-button check">
         ✅ поделиться
       </button>
+
       <button @click="toggleHints" class="control-button hints">
         {{ hintsHidden ? '👁️ Показать подсказки' : '🙈 Скрыть подсказки' }}
       </button>
     </div>
   </div>
 </template>
-
 <script>
 import Sortable from 'sortablejs'
 import { useRoute, useRouter } from 'vue-router'
@@ -88,6 +111,8 @@ export default {
 
   data() {
     return {
+      // 🆕 Константа для количества карточек
+      CARDS_PER_BATCH: 8, // ← сколько карточек видно в начале игры
       sortableInstances: [],
       currentGameData: {
         title: '',
@@ -108,6 +133,11 @@ export default {
       // Добавляем состояние подсказок
       hintsHidden: false,
       temporaryHints: new Set(),
+
+      visibleCount: 8,
+      showAllCards: false,
+      isAnimating: false,
+      hintTimers: {}
 
     }
   },
@@ -145,6 +175,24 @@ export default {
       })
 
       return duplicates
+    },
+
+    // Слова, которые видны в контейнере
+    visibleWords() {
+      if (this.showAllCards) {
+        return this.availableWords; // Показываем все
+      }
+      return this.availableWords.slice(0, this.visibleCount);
+    },
+
+    // Сколько всего слов осталось
+    remainingWordsCount() {
+      return this.availableWords.length;
+    },
+
+    // Показывать ли кнопку "Показать ещё"
+    showLoadMore() {
+      return !this.showAllCards && this.availableWords.length > this.visibleCount;
     }
   },
 
@@ -163,14 +211,19 @@ export default {
       this.completedItems = new Set()
       this.columnRefs = {}
       this.wordStatus = {}
+      this.temporaryHints = new Set()
+      this.hintTimers = {}
+
+      // 🆕 Сбрасываем новые состояния
+      this.visibleCount = this.CARDS_PER_BATCH;
+      this.showAllCards = false;
+      this.isAnimating = false;
 
       this.startTime = Date.now()
       this.mistakes = 0
       this.isDragging = false
       this.countedMistakes = new Set()
       this.hintsHidden = true
-      this.temporaryHints = new Set()
-      this.hintTimers = {}
 
       if (this.checkTimer) {
         clearInterval(this.checkTimer)
@@ -251,12 +304,16 @@ export default {
         },
         onEnd: () => {
           this.isDragging = false
-
+          // 🆕 Проверяем, нужно ли добавить новые карточки
+          this.$nextTick(() => {
+            this.checkAndAddMoreCards()
+          })
         }
 
 
       }
 
+      // Контейнер с карточками
       if (this.$refs.wordsContainer) {
         const wordsSortable = new Sortable(this.$refs.wordsContainer, {
           ...sortableOptions,
@@ -266,12 +323,17 @@ export default {
             delete this.columnAssignments[itemId]
             this.wordStatus[itemId] = null
             this.countedMistakes.delete(itemId)
-
+            // 🆕 Проверяем после добавления
+            this.$nextTick(() => {
+              this.checkAndAddMoreCards()
+            })
           }
         })
         this.sortableInstances.push(wordsSortable)
       }
 
+
+      // Колонки
       this.currentGameData.columns.forEach(column => {
         const columnElement = this.columnRefs[column.id]
         if (columnElement) {
@@ -280,11 +342,10 @@ export default {
             onAdd: (evt) => {
               const itemId = evt.item.getAttribute('data-id')
               this.columnAssignments[itemId] = column.id
-
-
-              // Обновляем высоты после добавления элемента
               this.$nextTick(() => {
                 this.updateAllColumnsHeight();
+                // 🆕 Проверяем после добавления в колонку
+                this.checkAndAddMoreCards()
               });
             }
           })
@@ -428,6 +489,50 @@ export default {
         }
       })
     },
+    checkAndAddMoreCards() {
+      // Если показаны все карточки - не добавляем
+      if (this.showAllCards) return;
+
+      // Если анимация уже идёт - пропускаем
+      if (this.isAnimating) return;
+
+      // Проверяем, есть ли свободные карточки
+      if (this.availableWords.length <= 0) return;
+
+      // Если в контейнере меньше visibleCount карточек - добавляем
+      const currentVisible = this.visibleWords.length;
+      if (currentVisible < this.visibleCount && this.availableWords.length > 0) {
+        this.isAnimating = true;
+        // Добавляем одну карточку
+        this.visibleCount += 1;
+
+        // Снимаем флаг анимации после появления
+        setTimeout(() => {
+          this.isAnimating = false;
+          // Рекурсивно проверяем, нужно ли добавить ещё
+          this.$nextTick(() => {
+            this.checkAndAddMoreCards();
+          });
+        }, 300);
+      }
+    },
+
+    // 🆕 Метод для показа всех карточек
+    showAllCardsHandler() {
+      this.showAllCards = true;
+      this.visibleCount = this.currentWords.length;
+      this.$forceUpdate(); // Принудительно обновляем
+      this.$nextTick(() => {
+        this.updateAllColumnsHeight();
+      });
+    },
+
+    // 🆕 Метод для сброса к пошаговому режиму
+    resetToStepMode() {
+      this.showAllCards = false;
+      this.visibleCount = this.CARDS_PER_BATCH;
+      this.$forceUpdate();
+    },
 
     resetGame() {
       this.initializeGame()
@@ -439,6 +544,8 @@ export default {
     if (this.checkTimer) {
       clearInterval(this.checkTimer)
     }
+    // 🆕 Очищаем таймеры подсказок
+    Object.values(this.hintTimers).forEach(timer => clearTimeout(timer))
   }
 }
 </script>
@@ -492,6 +599,38 @@ export default {
   border: 2px solid rgba(255, 255, 255, 0.15);
   min-height: 100px;
 }
+/* 🆕 Стили для индикатора оставшихся карточек */
+.remaining-indicator {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  animation: fadeInPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+/* 🆕 Стили для новых кнопок */
+.control-button.show-all {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.control-button.step-mode {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  color: white;
+}
 
 .word-card {
   background: white;
@@ -505,8 +644,20 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   color: #1f2937;
   min-width: 80px;
+  animation: cardAppear 0.4s ease-out;
+
 }
 
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 .word-card:hover {
   background: #4ade80;
   color: white;

@@ -82,7 +82,62 @@ const sortingWordsData = {
 
     ]
   },
+  doDoesSorting: {
+    instructions: 'ДУУУмай: "Ты, Мы ,Вы, Они, Я" \n --- подсказки ---\n ДАЗадолбало "Это, Он, Она, Оно, Это"',
 
+    columns: [
+      { id: 'do', title: 'do' },
+      { id: 'does', title: 'does' },
+    ],
+    items: [
+      // I / you / we / they → do
+      { id: 1, eng: '___ I know you?', ru: 'я знаю тебя?', correctColumn: 'do' },
+      { id: 2, eng: '___ you like pizza?', ru: 'ты любишь пиццу?', correctColumn: 'do' },
+      { id: 3, eng: '___ you speak English?', ru: 'ты говоришь по-английски?', correctColumn: 'do' },
+      { id: 4, eng: '___ we need a car?', ru: 'нам нужна машина?', correctColumn: 'do' },
+      { id: 5, eng: '___ they live here?', ru: 'они живут здесь?', correctColumn: 'do' },
+      { id: 6, eng: '___ your friends play football?', ru: 'твои друзья играют в футбол?', correctColumn: 'do' },
+      { id: 7, eng: '___ people eat meat?', ru: 'люди едят мясо?', correctColumn: 'do' },
+      { id: 8, eng: '___ children like sweets?', ru: 'дети любят сладости?', correctColumn: 'do' },
+      { id: 9, eng: '___ you understand?', ru: 'ты понимаешь?', correctColumn: 'do' },
+      { id: 10, eng: '___ we have a problem?', ru: 'у нас проблема?', correctColumn: 'do' },
+      { id: 11, eng: '___ your parents know?', ru: 'твои родители знают?', correctColumn: 'do' },
+      { id: 12, eng: '___ they want to go?', ru: 'они хотят пойти?', correctColumn: 'do' },
+      { id: 13, eng: '___ you see that?', ru: 'ты видишь это?', correctColumn: 'do' },
+      { id: 14, eng: '___ we have time?', ru: 'у нас есть время?', correctColumn: 'do' },
+
+      // he / she / it → does
+      { id: 15, eng: '___ he like coffee?', ru: 'он любит кофе?', correctColumn: 'does' },
+      { id: 16, eng: '___ she work here?', ru: 'она работает здесь?', correctColumn: 'does' },
+      { id: 17, eng: '___ it work?', ru: 'это работает?', correctColumn: 'does' },
+      { id: 18, eng: '___ your mother cook well?', ru: 'твоя мама хорошо готовит?', correctColumn: 'does' },
+      { id: 19, eng: '___ it have batteries?', ru: 'у этого есть батарейки?', correctColumn: 'does' },
+      { id: 20, eng: '___ he speak French?', ru: 'он говорит по-французски?', correctColumn: 'does' },
+      { id: 21, eng: '___ she have a car?', ru: 'у неё есть машина?', correctColumn: 'does' },
+      { id: 22, eng: '___ your father like sports?', ru: 'твой отец любит спорт?', correctColumn: 'does' },
+      { id: 23, eng: '___ the phone have internet?', ru: 'у телефона есть интернет?', correctColumn: 'does' },
+      { id: 24, eng: '___ he know the answer?', ru: 'он знает ответ?', correctColumn: 'does' },
+      { id: 25, eng: '___ she understand English?', ru: 'она понимает английский?', correctColumn: 'does' },
+      { id: 26, eng: '___ it matter?', ru: 'это имеет значение?', correctColumn: 'does' },
+      { id: 27, eng: '___ your sister like music?', ru: 'твоя сестра любит музыку?', correctColumn: 'does' },
+      { id: 28, eng: '___ he have money?', ru: 'у него есть деньги?', correctColumn: 'does' },
+      { id: 29, eng: '___ she know him?', ru: 'она знает его?', correctColumn: 'does' },
+      { id: 30, eng: '___ Vincent eat meat?', ru: 'Винсент ест мясо?', correctColumn: 'does' },
+
+      // Смешанные (для запутывания)
+      { id: 31, eng: '___ they work together?', ru: 'они работают вместе?', correctColumn: 'do' },
+      { id: 32, eng: '___ your boss know about this?', ru: 'твой босс знает об этом?', correctColumn: 'does' },
+      { id: 33, eng: '___ your friends like burgers?', ru: 'ваши друзьями любят бургеры?', correctColumn: 'do' },
+      { id: 34, eng: '___ all people understand it?', ru: 'все люди понимают это?', correctColumn: 'do' },
+      { id: 35, eng: '___ anybody know you?', ru: 'хоть кто-то знает тебя?', correctColumn: 'does' }, // anybody = he/she
+      { id: 36, eng: '___ we have a choice?', ru: 'у нас есть выбор?', correctColumn: 'do' },
+      { id: 37, eng: '___ he have a sister?', ru: 'у него есть сестра?', correctColumn: 'does' },
+      { id: 38, eng: '___ they have a house?', ru: 'у них есть дом?', correctColumn: 'do' },
+      { id: 39, eng: '___ she have a brother?', ru: 'у неё есть брат?', correctColumn: 'does' },
+      { id: 40, eng: '___ you have a pen?', ru: 'у тебя есть ручка?', correctColumn: 'do' },
+      { id: 41, eng: '___ your best friend smoke?', ru: 'твой лучший друг курит?', correctColumn: 'does' },
+    ]
+  },
   sortingArticlesTheAnA: {
     columns: [
       { id: 'a', title: '--- A --- говорим Э если 1-ый звук слова согласный ' },

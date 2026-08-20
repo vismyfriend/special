@@ -1679,7 +1679,7 @@ const shortWordsData = {
       {id: 4, eng: "to me", ru: "ко мне", hint: "/ ту ми /"},
       {id: 5, eng: "to Vncent", ru: "к Винсенту", hint: "/ нИар бай /"},
       {id: 6, eng: "to school", ru: "в школу", hint: "/ ту скул /"},
-      {id: 7, eng: "to garages", ru: "за гаражи", hint: "/ ту гарАжез /"},
+      {id: 7, eng: "to English", ru: "на Английский", hint: "/ ту Инглиш /"},
       {id: 8, eng: "to Santa Claus", ru: "Санта Клаусу", hint: "/ ту сЭнта клОз /"},
       {id: 9, eng: "to Kamchatka", ru: "на Камчатку", hint: "/ ту камчАтка /"},
       {id: 10, eng: "to you", ru: "к тебе", hint: "/ ту ю /"},
