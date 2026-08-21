@@ -1,6 +1,6 @@
 <template>
-  <!-- Прелоадер -->
-  <Preloader />
+  <!-- Прелоадер - временно отключен -->
+  <!-- <Preloader /> -->
 
   <!-- Фон -->
   <img
@@ -113,6 +113,84 @@ const isRegistered = ref(false);
 const suggestedNames = ref([]);
 const isInputFocused = ref(false);
 const hasExistingAgent = ref(false);
+
+
+// ===== СПИСОК ДОСТУПНЫХ КАПЧ =====
+const availableCaptchas = [
+  {
+    id: 'tic-tac-toe',
+    name: 'Крестики-нолики',
+    path: '/ttt' // tic-tac-toe капча
+  },
+  {
+    id: 'tapalka',
+    name: 'тапалка',
+    path: '/intro'
+  },
+  {
+    id: 'keycaps',
+    name: 'клавиатура',
+    path: '/keypad'
+  },
+
+];
+
+// ===== ФУНКЦИЯ ДЛЯ ВЫБОРА СЛУЧАЙНОЙ КАПЧИ =====
+const goToRandomCaptcha = () => {
+  console.log('🎯 Выбор случайной капчи...');
+
+  // Получаем последнюю капчу из localStorage
+  const lastCaptcha = localStorage.getItem('lastCaptcha');
+  console.log(`📝 Последняя капча: ${lastCaptcha || 'нет'}`);
+
+  // Если нет доступных капч - выходим
+  if (availableCaptchas.length === 0) {
+    console.warn('⚠️ Капчи не найдены!');
+    router.push('/see-all-sets-of-words');
+    return;
+  }
+
+  // Если только одна капча - всегда на неё
+  if (availableCaptchas.length === 1) {
+    const selected = availableCaptchas[0];
+    console.log(`🎯 Выбрана капча: ${selected.name}`);
+    localStorage.setItem('lastCaptcha', selected.id);
+    router.push(selected.path);
+    return;
+  }
+
+  // Фильтруем капчи, исключая последнюю
+  let filteredCaptchas = availableCaptchas;
+  if (lastCaptcha) {
+    filteredCaptchas = availableCaptchas.filter(captcha => captcha.id !== lastCaptcha);
+  }
+
+  // Если после фильтрации остались капчи - выбираем случайную
+  if (filteredCaptchas.length > 0) {
+    const randomIndex = Math.floor(Math.random() * filteredCaptchas.length);
+    const selected = filteredCaptchas[randomIndex];
+    console.log(`🎯 Выбрана капча: ${selected.name}`);
+    localStorage.setItem('lastCaptcha', selected.id);
+    router.push(selected.path);
+  } else {
+    // Если все капчи были исключены (например, только одна капча в списке)
+    // выбираем случайную из всех
+    const randomIndex = Math.floor(Math.random() * availableCaptchas.length);
+    const selected = availableCaptchas[randomIndex];
+    console.log(`🎯 Выбрана капча: ${selected.name}`);
+    localStorage.setItem('lastCaptcha', selected.id);
+    router.push(selected.path);
+  }
+};
+
+// ===== ФУНКЦИЯ ПЕРЕХОДА К САМОСТОЯТЕЛЬНОМУ ЗАНЯТИЮ =====
+const goToSelfStudy = () => {
+  console.log('📚 Агент выбрал самостоятельное занятие');
+  goToRandomCaptcha(); // Переходим к случайной капче
+  // router.push('/see-all-sets-of-words');
+}
+
+
 
 const onInputFocus = () => {
   isInputFocused.value = true;
@@ -311,10 +389,7 @@ const changeName = () => {
   loadSuggestedNames();
 };
 
-const goToSelfStudy = () => {
-  console.log('📚 Агент выбрал самостоятельное занятие');
-  router.push('/see-all-sets-of-words');
-};
+
 
 const openZoomMeeting = () => {
   const zoomMeetingUrl = 'https://us06web.zoom.us/j/9041113793?pwd=cmZpZlpQZXRhYkh4RW9JTzZoTTZXZz09';

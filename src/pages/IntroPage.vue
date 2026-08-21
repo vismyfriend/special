@@ -298,14 +298,14 @@ const backToIntroPage = async () => {
 
       // Небольшая задержка для плавности
       setTimeout(() => {
-        router.push("/keypad");
+        router.push("/see-all-sets-of-words");
         isNavigating.value = false;
       }, 300);
     } catch (error) {
       console.error('Error during speech:', error);
       isNavigating.value = false;
       // В случае ошибки все равно переходим
-      router.push("/keypad");
+      router.push("/see-all-sets-of-words");
     }
   } else {
     infoMessage.value = dynamicMessage.value;

@@ -184,7 +184,6 @@ import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
-
 const route = useRoute()
 const router = useRouter()
 const gameStore = useGameStore()
@@ -485,6 +484,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
 .container {
   width: 100vw;
   min-height: 100vh;
@@ -809,8 +810,8 @@ onMounted(async () => {
   background: transparent;
   border: none;
   outline: none;
-  font-family: 'Times New Roman', serif;
-  font-size: 16px;
+  font-family: 'Fira Code', serif;
+  font-size: 14px;
   line-height: 20px;
   color: #2c3e50;
   transition: all 0.3s;
@@ -1187,7 +1188,11 @@ onMounted(async () => {
   .modal-overlay {
     display: none !important;
   }
-
+  .message-input::placeholder,
+  .message-input-text::placeholder {
+    color: transparent !important;
+    opacity: 0 !important;
+  }
   .message-input,
   .message-input-text {
     border-bottom: 1px solid #ccc !important;

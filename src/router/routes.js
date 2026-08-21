@@ -328,6 +328,10 @@ const routes = [
         component: () => import('src/pages/whackAnEmoji.vue')
       },
       {
+        path: '/ttt',
+        component: () => import('src/pages/ticTacToe.vue')
+      },
+      {
         path: '/neat',
         component: () => import('src/pages/intros/neatDeskIntro.vue')
       },
