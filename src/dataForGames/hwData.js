@@ -62,6 +62,7 @@ export const homeworkData = {
       },
       {
         type: 'text',
+
         question: '2. - Это моя домашка',
         answers: ['It is my homework','This is my homework',],
         placeholder: 'нажмите чтобы писать...'
