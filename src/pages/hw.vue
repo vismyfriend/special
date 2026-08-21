@@ -12,9 +12,9 @@
         </span>
       </div>
       <div class="header-right">
-        <span class="progress-text">{{ getProgressText() }}</span>
+<!--        <span class="progress-text">{{ getProgressText() }}</span>-->
         <button class="print-button" @click="printPDF" title="Скачать PDF">
-          📄
+          🖨️
         </button>
       </div>
     </div>
@@ -100,7 +100,7 @@
                 <!-- Результат для конкретного задания -->
                 <div v-if="showResults && taskResults[index]" class="task-result">
                   <span class="result-icon">
-                    {{ taskResults[index].isCorrect ? '✅' : '🔄' }}
+<!--                    {{ taskResults[index].isCorrect ? '✅' : '🔄' }}-->
                   </span>
                   <span class="result-message" :class="taskResults[index].isCorrect ? 'correct-text' : 'incorrect-text'">
                     {{ taskResults[index].message }}
@@ -113,22 +113,22 @@
                 <button
                   class="check-button"
                   @click="checkAnswers"
-                  :disabled="isChecking"
+                  :disabled="isChecking || !isAnyAnswerFilled"
                 >
                   {{ isChecking ? 'Проверяем...' : showResults ? 'Я исправил, перепроверить' : 'Проверить' }}
                 </button>
               </div>
 
               <!-- Общий результат -->
-              <div v-if="showResults" class="results">
-                <div class="score">
-                  {{ correctAnswers }} из {{ totalTasks }} правильных
-                  <span class="score-percent">({{ Math.round((correctAnswers / totalTasks) * 100) }}%)</span>
-                </div>
-                <div class="score-message" :class="getScoreClass()">
-                  {{ getScoreMessage() }}
-                </div>
-              </div>
+<!--              <div v-if="showResults" class="results">-->
+<!--                <div class="score">-->
+<!--                  {{ correctAnswers }} из {{ totalTasks }} правильных-->
+<!--                  <span class="score-percent">({{ Math.round((correctAnswers / totalTasks) * 100) }}%)</span>-->
+<!--                </div>-->
+<!--                <div class="score-message" :class="getScoreClass()">-->
+<!--                  {{ getScoreMessage() }}-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
 
             <div v-else class="error-message">
@@ -209,6 +209,17 @@ const tempName = ref('')
 const showMissionsModal = ref(false)
 
 const isBackendAvailable = ref(true)
+
+// Вычисляемое свойство - проверяет, есть ли хотя бы 2 символа в любом поле
+const isAnyAnswerFilled = computed(() => {
+  if (!answers.value || answers.value.length === 0) return false;
+
+  // Проверяем, есть ли хоть одно поле с 2+ символами
+  return answers.value.some(answer =>
+    answer && answer.trim().length >= 2
+  );
+});
+
 const displayUserName = computed(() => {
   let name = '';
 
@@ -322,7 +333,7 @@ const checkSingleAnswer = (task, answer) => {
   if (!task.answers || task.answers.length === 0) {
     return {
       isCorrect: null,
-      message: '📝 Отправь скриншот учителю на проверку'
+      message: '📝 Эта часть не может быть проверена автоматически! - Отправь скриншот учителю на проверку'
     }
   }
 
@@ -333,7 +344,7 @@ const checkSingleAnswer = (task, answer) => {
 
   return {
     isCorrect: isCorrect,
-    message: isCorrect ? '✅ Верно!' : '🔄 Попробуй еще раз'
+    message: isCorrect ? '✅ super !' : '☝️ Странно выглядит... нажми чтобы исправить самостоятельно. \n Или отправь скриншот Винсенту - можно так сказать или нет, он проверит '
   }
 }
 
@@ -356,7 +367,7 @@ const checkAnswers = () => {
 
       if (result.isCorrect === null) {
         result.isCorrect = true
-        result.message = '📝 Отправь скриншот учителю на проверку'
+        result.message = '📝 Эта часть не может быть проверена автоматически! - Отправь скриншот учителю на проверку'
       }
 
       results.push(result)
@@ -366,7 +377,7 @@ const checkAnswers = () => {
     correctAnswers.value = correct
     showResults.value = true
     isChecking.value = false
-  }, 500)
+  }, 100)
 }
 
 const getProgressText = () => {
@@ -482,7 +493,6 @@ onMounted(async () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
 }
 
 .header {
@@ -651,7 +661,7 @@ onMounted(async () => {
   position: relative;
   z-index: 3;
   height: 100%;
-  padding: 0 15px 0 5px;
+  padding: 0 15px 0 15px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -676,13 +686,12 @@ onMounted(async () => {
 }
 
 .task-block {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   position: relative;
 }
 
 .question-text {
   display: block;
-  margin-bottom: 4px;
   font-size: 14px;
   color: #2c3e50;
   font-weight: 500;
@@ -693,7 +702,6 @@ onMounted(async () => {
 .hint-icon {
   display: inline-block;
   margin-left: 6px;
-  font-size: 16px;
   cursor: pointer;
   transition: transform 0.3s;
 
@@ -705,7 +713,6 @@ onMounted(async () => {
 .answer-flag {
   display: inline-block;
   margin-left: 6px;
-  font-size: 16px;
   cursor: pointer;
   transition: transform 0.3s;
 
@@ -754,11 +761,12 @@ onMounted(async () => {
 
 .input-wrapper {
   position: relative;
+
 }
 
 .message-input {
   width: 100%;
-  min-height: 40px;
+  min-height: 37px;
   background: transparent;
   border: none;
   outline: none;
@@ -767,7 +775,6 @@ onMounted(async () => {
   font-size: 16px;
   line-height: 20px;
   color: #2c3e50;
-  padding: 4px 0;
   box-shadow: none;
   border-radius: 0;
   background: transparent;
@@ -801,13 +808,11 @@ onMounted(async () => {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #d0d8e0;
   outline: none;
   font-family: 'Times New Roman', serif;
   font-size: 16px;
   line-height: 20px;
   color: #2c3e50;
-  padding: 4px 0;
   transition: all 0.3s;
 
   &::placeholder {
@@ -822,23 +827,20 @@ onMounted(async () => {
 
   &.input-correct {
     border-bottom-color: #27ae60;
-    background: rgba(46, 204, 113, 0.05);
+    background: rgba(26, 211, 79, 0.27);
   }
 
   &.input-incorrect {
     border-bottom-color: #f39c12;
-    background: rgba(243, 156, 18, 0.05);
+    background: rgba(243, 156, 18, 0.15);
   }
 }
 
 .task-result {
-  margin-top: 6px;
-  padding: 6px 10px;
   border-radius: 4px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
 }
 
 .result-icon {
@@ -848,18 +850,17 @@ onMounted(async () => {
 .result-message {
   font-size: 14px;
   font-weight: 500;
+  white-space: pre-wrap;
 
-  &.correct-text {
-    color: #27ae60;
-  }
+
 
   &.incorrect-text {
-    color: #f39c12;
+    color: #207cca;
   }
 }
 
 .button-wrapper {
-  margin-top: 16px;
+  margin-top: 45px;
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -969,7 +970,7 @@ onMounted(async () => {
 .gray-font {
   color: #666;
   font-style: italic;
-  margin: 0 0 20px 4px;
+  margin: 0 0 40px 4px;
   padding: 0;
   line-height: 20px;
   font-size: 15px;
@@ -978,7 +979,6 @@ onMounted(async () => {
 
 .notebook-wrapper::after {
   content: '';
-  position: absolute;
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
@@ -1127,10 +1127,14 @@ onMounted(async () => {
   .container {
     background: white !important;
     padding: 20px !important;
+    min-height: auto !important;
+    display: block !important;
+
   }
 
   .header {
     margin-bottom: 20px !important;
+
   }
 
   .notebook-wrapper {
@@ -1192,7 +1196,7 @@ onMounted(async () => {
 
   .task-block {
     page-break-inside: avoid;
-    margin-bottom: 20px !important;
+    margin-bottom: 18px !important;
   }
 
   .hints {
@@ -1206,10 +1210,26 @@ onMounted(async () => {
 
 /* Адаптивность */
 @media (max-width: 850px) {
+  .print-button {
+    display: none !important;
+  }
+  .notebook-cover {
+    padding: 10px;
+  }
+
   .notebook-wrapper, .header {
     width: 95%;
   }
 
+
+  .notebook-page {
+    padding: 20px 0 20px 30px;
+
+    &::before {
+
+      left: 30px;
+    }
+  }
   .header {
     flex-direction: column;
     gap: 10px;

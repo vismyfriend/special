@@ -1214,7 +1214,15 @@ export const allGamesAndSetsOfWordsList =
           type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
           path: "/see-all-sets-of-words/topMistakes2/game-translate/RuEng",
           missionVisibleName: "Топ ошибки 11 - 20",
-          missionDescription: "Top mistakes 12 - 20",
+          missionDescription: "Top mistakes 11 - 20",
+          id: 1001,
+          active: true,
+        },
+        {
+          type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+          path: "/see-all-sets-of-words/topMistakes3/game-translate/RuEng",
+          missionVisibleName: "Топ ошибки 21 - 30",
+          missionDescription: "Top mistakes 21 - 30",
           id: 1001,
           active: true,
         },

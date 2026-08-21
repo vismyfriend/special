@@ -1126,17 +1126,30 @@ const shortWordsData = {
 
   ],
   topMistakes2: [
-    { id: 11, eng: "depends on", ru: "depends from", hint: "зависит от" },
-    { id: 12, eng: "in the photo", ru: "on the photo", hint: "на фотографии" },
-    { id: 13, eng: "listen to music", ru: "listen music", hint: "слушать музыку" },
-    { id: 14, eng: "look, they are coming", ru: "look, they coming", hint: "смотрите, они идут" },
-    { id: 15, eng: "look at", ru: "look on", hint: "посмотри на" },
-    { id: 16, eng: "at night", ru: "in the night", hint: "ночью" },
-    { id: 17, eng: "in the morning", ru: "at morning", hint: "утром" },
-    { id: 18, eng: "I like food", ru: "I like foot", hint: "мне нравится еда" },
-    { id: 19, eng: "I like her eyes", ru: "I like her ice", hint: "мне нравятся её глаза" },
-    { id: 20, eng: "explain it to me", ru: "explain me it", hint: "объясните мне это" },
-    { id: 21, eng: "I like it very much", ru: "I very like it", hint: "мне очень нравится" },
+    { id: 11, eng: "13 - thirteen", ru: "13 - срИ тин", hint: "тринадцать" },
+    { id: 12, eng: "12 - twelve", ru: "12 - twenty", hint: "двенадцать" },
+    { id: 13, eng: "in the photo", ru: "on the photo", hint: "на фотографии" },
+    { id: 14, eng: "look at", ru: "look on", hint: "посмотри на" },
+    { id: 15, eng: "at night", ru: "in the night", hint: "ночью" },
+    { id: 16, eng: "in the morning", ru: "at morning", hint: "утром" },
+    { id: 17, eng: "I like food", ru: "I like foot", hint: "мне нравится еда" },
+    { id: 18, eng: "I like her eyes", ru: "I like her ice", hint: "мне нравятся её глаза" },
+    { id: 19, eng: "I like it very much", ru: "I very like it", hint: "мне очень нравится" },
+    { id: 20, eng: "15 - fifteen", ru: "15 - fifty", hint: "пятнадцать" },
+
+  ],
+  topMistakes3: [
+
+    { id: 21, eng: "I much money", ru: "I don't have many money", hint: "у меня нет много денег" },
+    { id: 22, eng: "I don't have much money", ru: "I don't have many money", hint: "у меня нет много денег" },
+    { id: 23, eng: "my favorite animal is a cat", ru: "my lovely animal is a cat", hint: "моё любимое животное - кошка" },
+    { id: 24, eng: "I am afraid", ru: "I afraid", hint: "я боюсь" },
+    { id: 25, eng: "depends on", ru: "depends from", hint: "зависит от" },
+    { id: 26, eng: "explain it to me", ru: "explain me it", hint: "объясните мне это" },
+    { id: 27, eng: "look, they are coming", ru: "look, they coming", hint: "смотрите, они идут" },
+    { id: 28, eng: "listen to music", ru: "listen music", hint: "слушать музыку" },
+    { id: 29, eng: "I am sure", ru: "I sure", hint: "я уверен" },
+    { id: 30, eng: "does he understand it ?", ru: "he understands it ?", hint: "он понимает это?" },
 
 
 
@@ -1144,7 +1157,7 @@ const shortWordsData = {
 
 
   ],
-  topMistakes3: [
+  topMistakes100: [
 
     { id: 13, eng: "look at", ru: "look on", hint: "посмотри на" },
     { id: 14, eng: "arrive at (place)", ru: "arrive to", hint: "приехать в" },
