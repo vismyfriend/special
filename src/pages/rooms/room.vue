@@ -83,8 +83,9 @@
             <span class="btn-hover-text">change name</span>
           </button>
           <button class="welcome-btn primary" @click="goToSelfStudy">
-            <span class="btn-text">/ чуз / choose a mission</span>
-            <span class="btn-hover-text">выбрать миссию</span>
+            <span class="btn-text">go to missions</span>
+<!--            <span class="btn-text">/ чуз / choose a mission</span>-->
+            <span class="btn-hover-text">перейти к миссиям</span>
           </button>
 
 
