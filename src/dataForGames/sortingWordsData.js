@@ -52,7 +52,7 @@ const sortingWordsData = {
     items: [
       // I / you / we / they → have
       { id: 1, eng: 'I ___ a good teacher', ru: 'у меня хороший учитель', correctColumn: 'have' },
-      { id: 2, eng: 'you ___ cat', ru: 'у тебя/вас кошка', correctColumn: 'have' },
+      { id: 2, eng: 'you ___ a cat', ru: 'у тебя/вас кошка', correctColumn: 'have' },
       { id: 3, eng: 'you ___ a car', ru: 'у тебя/вас есть машина', correctColumn: 'have' },
       { id: 4, eng: 'we ___ a car', ru: 'у нас есть машина', correctColumn: 'have' },
       { id: 5, eng: 'they ___ a dog', ru: 'у них собака', correctColumn: 'have' },

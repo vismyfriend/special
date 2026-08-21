@@ -31,6 +31,7 @@ const routes = [
             path: '/cards52',
             component: () => import('src/components/Game52Cards.vue')
           },
+
           {
             path: ':missionName',
             component: () => import('src/layouts/GameLayout.vue'),
@@ -163,7 +164,7 @@ const routes = [
                 component: () => import('src/components/GameScrambled.vue')
               },
               {
-                path: 'hw',
+                path: 'hw3',
                 component: () => import('src/components/GameHW.vue')
               },
               {
@@ -188,6 +189,7 @@ const routes = [
                 component: () => import('src/components/GameTranslate.vue'),
                 props: true
               },
+
               {
                 path: 'game-pronunciation',
                 component: () => import('src/components/GamePronunciation.vue')
@@ -286,6 +288,7 @@ const routes = [
         component: () => import('src/pages/gamePuzzleSquares.vue')
       },
 
+
     ]
   },
     // http://192.168.0.21:9000/special/ localhost
@@ -299,6 +302,15 @@ const routes = [
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
+      {
+        path: '/notebook2',
+        component: () => import('src/pages/intros/notebookBlank.vue')
+      },
+      {
+        path: '/hw/:missionName?',
+        name: 'Homework',
+        component: () => import('src/pages/hw.vue')
+      },
       {
         path: '/myLife',
         component: () => import('src/pages/MyLifeJournal.vue')
