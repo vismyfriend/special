@@ -1675,6 +1675,7 @@ const shortWordsData = {
       {id: 6, eng: "you", ru: "вы", hint: "/ ю /", level: "A0"},
       {id: 7, eng: "it", ru: "это", hint: "/ ит /", level: "A1"},
     ],
+
     iDoNotCare: [
       {
         id: 1,
