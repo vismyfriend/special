@@ -404,6 +404,11 @@ const routes = [
             component: () => import('src/components/GameDarts.vue')
           },
           {
+            path: '/see-all-sets-of-words/:missionName/flipCards/:cover?',  // :cover? - необязательный параметр
+            component: () => import('src/components/GameFlipCards.vue'),
+            props: true // Позволяет передавать cover как пропс
+          },
+          {
             path: '/see-all-sets-of-words/:missionName/bowling',
             component: () => import('src/components/GameBowling.vue')
           },

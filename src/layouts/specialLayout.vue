@@ -430,6 +430,8 @@ const rollDice = async () => {
 
 // Остальные методы остаются без изменений
 const showAboutGame = () => {
+
+  // Открываем модалку
   openModal(`
     <div style="text-align: center;">
       <p>Подробнее про <br>S.P.E.C.I.A.L.<br>и vismyfriend</p>
@@ -462,6 +464,32 @@ const showAboutGame = () => {
 
 const restartGame = () => {
   // router.go(0);
+  // Получаем текущий URL
+  let currentUrl = window.location.href;
+
+  // Заменяем localhost на vismyfriend.com для отправки студентам
+  if (currentUrl.includes('localhost:9000')) {
+    currentUrl = currentUrl.replace('localhost:9000', 'www.vismyfriend.ru');
+    console.log('🔄 URL заменен для студентов:', currentUrl);
+  }
+
+  // Копируем в буфер обмена
+  navigator.clipboard.writeText(currentUrl)
+    .then(() => {
+      console.log('✅ URL скопирован:', currentUrl);
+    })
+    .catch((err) => {
+      console.error('❌ Ошибка копирования:', err);
+      // Fallback для старых браузеров
+      const textarea = document.createElement('textarea');
+      textarea.value = currentUrl;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      console.log('✅ URL скопирован (fallback):', currentUrl);
+    });
+
   window.location.reload()
 
 };

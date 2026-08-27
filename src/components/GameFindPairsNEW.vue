@@ -163,8 +163,13 @@ const finishGame = () => {
   gameStore.setGameName("FindPairsEasy");
   gameStore.setWordSet(currentGameData.value);
 
-  router.push("/leader-board/");
-};
+
+  router.push({
+    path: "/leader-board/",
+    query: {
+      missionName: currentMission.value  // ← добавляем missionName
+    }
+  });};
 
 // В onMounted перемешиваем данные
 onMounted(() => {

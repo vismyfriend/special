@@ -3,10 +3,36 @@
 const shortWordsData = {
 
   testQuicklyData: [
-    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/"},
+    { id: 1, eng: "English", ru: "Английский", hint: "/Инглиш/", taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,},
     { id: 2, eng: "London", ru: "Лондон", hint: "/лАндан/"},
     { id: 3, eng: "Capital", ru: "Столица", hint: "/ кЭпитал /" },
     { id: 4, eng: "Special", ru: "Особенный", hint: "/ спЭшл /" },
+  ],
+  flipCards: [
+    {
+      id: 1, eng: "a red dart", ru: "красный дротик", hint: "/ э рэд дарт /",
+      engPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,
+      rusPicture: new URL("../assets/images/aRedDart.png", import.meta.url).href,
+    },
+    {
+      id: 2, eng: "a yellow dart", ru: "желтый дротик", hint: "/ э йЕлоу дарт /",
+      engPicture: new URL("../assets/images/aYellowDart.png", import.meta.url).href,
+      rusPicture: new URL("../assets/images/ancient_man.jpeg", import.meta.url).href,
+    },
+    {
+      id: 3, eng: "a red dart", ru: "красный дротик", hint: "/ э рэд дарт /",
+      rusPicture: new URL("../assets/images/aRedDart.png", import.meta.url).href,
+    },
+    {
+      id: 4, eng: "a yellow dart", ru: "желтый дротик", hint: "/ э йЕлоу дарт /",
+      engPicture: new URL("../assets/images/aYellowDart.png", import.meta.url).href,
+    },
+  ],
+  flipCards2: [
+    { id: 1, eng: null, ru: "Картинки", hint: "/ пик черз /", taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,},
+    { id: 2, eng: "Words", ru: "Слова", hint: "/ уордз /", taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,},
+    { id: 3, eng: "Digits", ru: null, hint: "/ ди джитс /", taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href},
+    { id: 4, eng: "Sentences", ru: "Предложения", hint: "/ сэн тэн сиз /" },
   ],
   howAreYouListening101: [
     {

@@ -1,5 +1,5 @@
 <template>
-  <div class="game-wrapper" :style="{ backgroundImage: 'url(/background.jpg)' }">
+  <div class="game-wrapper">
     <div class="progress-container">
       <div class="progress-bar" :style="{ width: progressWidth }"></div>
       <div class="progress-text" v-if="matchedPairs > 0">{{ progressPercentage }}%</div>
@@ -219,8 +219,13 @@ const finishGame = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value)
   gameStore.setGameName("FindPairsHard")
   gameStore.setWordSet(currentMission.value);
-  router.push("/leader-board/");
 
+  router.push({
+    path: "/leader-board/",
+    query: {
+      missionName: currentMission.value  // ← добавляем missionName
+    }
+  });
 };
 
 onMounted(() => {

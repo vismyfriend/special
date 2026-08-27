@@ -1,5 +1,5 @@
 <template>
-  <div class="game-wrapper" :style="{ backgroundImage: 'url(/background.jpg)' }">
+  <div class="game-wrapper">
     <!-- Подсказка о вводе с клавиатуры -->
     <div class="keyboard-hint">
       💡 Заметите ошибку - сообщите вИнсэту, ok?
@@ -854,8 +854,13 @@ const finishGame = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value);
   gameStore.setGameName(`SpellingAgent_${getDifficultyName()}`);
   gameStore.setWordSet(currentMission.value);
-  router.push("/leader-board/");
-};
+
+  router.push({
+    path: "/leader-board/",
+    query: {
+      missionName: currentMission.value  // ← добавляем missionName
+    }
+  });};
 
 const goToAllSets = () => {
   gameStore.setLastGameResults(time.value, mistakesCount.value);

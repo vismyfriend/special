@@ -166,8 +166,13 @@ const finishGame = () => {
 
   gameStore.setLastGameResults(time.value, 20)
   gameStore.setGameName("FindPairsHard")
-  router.push("/leader-board/");
 
+  router.push({
+    path: "/leader-board/",
+    query: {
+      missionName: currentMission.value  // ← добавляем missionName
+    }
+  });
 };
 
 onMounted(() => {
