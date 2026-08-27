@@ -1675,6 +1675,80 @@ const shortWordsData = {
       {id: 6, eng: "you", ru: "вы", hint: "/ ю /", level: "A0"},
       {id: 7, eng: "it", ru: "это", hint: "/ ит /", level: "A1"},
     ],
+    iDoNotCare: [
+      {
+        id: 1,
+        eng: "I don't care",
+        ru: "Пофиг! (не грубо)",
+        hint: "/ ай доунт кЭэ /"
+      },
+      {
+        id: 2,
+        eng: "Vincent doesn't care",
+        ru: "ему без разницы",
+        hint: "/ вИнсэнт дАзнт кЭэ /"
+      },
+      {
+        id: 3,
+        eng: "No one cares at all",
+        ru: "Всем пофиг вообще",
+        hint: "/ нОу уан кЭэз эт ол /"
+      },
+      {
+        id: 5,
+        eng: "I don't give a sh%t",
+        ru: "Мне нас...ть",
+        hint: "/ ай дОнт гИв э шИт /"
+      },
+      {
+        id: 6,
+        eng: "I don't give a f%#k",
+        ru: "Меня не ... (ГРУБО)",
+        hint: "/ ай дОнт гИв э фАк /"
+      },
+      {
+        id: 7,
+        eng: "I couldn't care less",
+        ru: "Нисколечко меня не волнует",
+        hint: "/ ай кУднт кЭэ лЭс /"
+      },
+      {
+        id: 8,
+        eng: "It's up to you",
+        ru: "Решайте сами",
+        hint: "/ итс Ап ту ю /"
+      },
+      {
+        id: 9,
+        eng: "I'm fine with anything",
+        ru: "Мне подойдет любой вариант",
+        hint: "/ айм фАйн уИд Энисин /"
+      },
+      {
+        id: 10,
+        eng: "Whatever",
+        ru: "Неважно что, неважно какой",
+        hint: "/ уотЭвэ /"
+      },
+      {
+        id: 11,
+        eng: "Whenever",
+        ru: "когда угодно",
+        hint: "/ уэнЭвэ /"
+      },
+      {
+        id: 12,
+        eng: "Wherever",
+        ru: "где угодно",
+        hint: "/ уэрЭвэ /"
+      },
+      {
+        id: 13,
+        eng: "Whoever",
+        ru: "Пофиг кто или кого",
+        hint: "/ хуЭвэр /"
+      }
+    ],
     prepositionsOfPlace0: [
       {id: 1, eng: "at work", ru: "на работе", hint: "/ эт ворк /"},
       {id: 2, eng: "home", ru: "дома", hint: "/ хОум /"},

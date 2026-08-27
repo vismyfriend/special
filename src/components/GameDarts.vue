@@ -25,23 +25,14 @@
     <!-- Информация о счете -->
     <div class="score-container">
       <div class="score-display">
-        <span class="score-label">🎯 Очки</span>
+        <span class="score-label"> Score 🎯 Баллы ( очки, счёт )</span>
         <span class="score-value">{{ score }}</span>
       </div>
       <div class="score-divider"></div>
-<!--      <div class="score-display">-->
-<!--        <span class="score-label">✅ Правильно</span>-->
-<!--        <span class="score-value">{{ correctAnswers }}</span>-->
-<!--      </div>-->
-<!--      <div class="score-divider"></div>-->
-<!--      <div class="score-display">-->
-<!--        <span class="score-label">❌ Ошибок</span>-->
-<!--        <span class="score-value">{{ totalMistakes }}</span>-->
-<!--      </div>-->
     </div>
 
-    <!-- Toggle для подсказок -->
-    <div class="hint-toggle-container">
+    <!-- Toggle для подсказок - показываем только если есть hint -->
+    <div v-if="hasAnyHint" class="hint-toggle-container">
       <label class="hint-toggle">
         <span class="hint-toggle-label">💡 Произношение</span>
         <input type="checkbox" v-model="showHints" />
@@ -120,7 +111,6 @@
               {{ line }}
             </tspan>
           </text>
-
           <!-- Текст подсказки - скрыт когда подсказки выключены -->
           <text
             v-if="showHints && answer.hint"
@@ -135,7 +125,7 @@
             dominant-baseline="middle"
           >
             <tspan
-              v-for="(line, lineIndex) in splitText(answer.hint, 8)"
+              v-for="(line, lineIndex) in splitText(cleanHint(answer.hint), 8)"
               :key="lineIndex"
               :x="getInnerTextPosition(index).x"
               :dy="lineIndex === 0 ? 0 : 16"
@@ -144,7 +134,6 @@
             </tspan>
           </text>
         </g>
-
 
         <!-- Разделительная линия между кольцами - показываем только если включены подсказки -->
         <circle
@@ -266,12 +255,9 @@
         />
       </svg>
 
-      <!-- Ошибки и правильные ответы -->
-      <div v-for="(error, index) in errorTexts" :key="'error-' + index" class="float-text error">
-        {{ error }}
-      </div>
-      <div v-for="(positive, index) in positiveTexts" :key="'positive-' + index" class="float-text positive">
-        {{ positive }}
+      <!-- Флоаты в центре -->
+      <div v-for="(text, idx) in feedbackTexts" :key="'feedback-' + idx" class="float-text" :class="feedbackType">
+        {{ text }}
       </div>
     </div>
 
@@ -283,7 +269,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, watch, nextTick, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useGameStore } from 'stores/example-store';
 import shortWordsData from '../dataForGames/short-words-data';
@@ -316,15 +302,15 @@ const mistakes = ref(0);
 const isGameFinished = ref(false);
 
 // Настройки
-const showHints = ref(false);
+const showHints = ref(true);
 const MAX_SECTORS = 8;
 
 // Анимации
 const showHitAnimation = ref(false);
 const hitColor = ref('#00ff00');
 const hitScale = ref(1);
-const errorTexts = ref([]);
-const positiveTexts = ref([]);
+const feedbackTexts = ref([]);
+const feedbackType = ref('positive');
 
 // Дротик
 const showDart = ref(false);
@@ -341,9 +327,7 @@ const errorWords = ['💥 Мимо!', '😅 Не угадал!', '🤔 Поду�
 const positiveWords = ['🎯 Точное попадание!', '💯 Отлично!', '🌟 Супер!', '🎉 Правильно!', '🏆 Гениально!'];
 
 const startTime = ref(null);
-
-const questionStartTime = ref(null); // Время начала текущего вопроса
-
+const questionStartTime = ref(null);
 
 // Вычисление прогресса
 const animateProgress = (target) => {
@@ -390,28 +374,6 @@ const generateAnswers = (correctAnswer) => {
 };
 
 // Функции для SVG секторов
-const getFullSectorPath = (index) => {
-  const total = answers.value.length || MAX_SECTORS;
-  const angle = (2 * Math.PI) / total;
-  const offset = -Math.PI / 2;
-  const startAngle = offset + index * angle;
-  const endAngle = startAngle + angle;
-
-  const r1 = 65;
-  const r2 = 230;
-
-  const x1 = 250 + r1 * Math.cos(startAngle);
-  const y1 = 250 + r1 * Math.sin(startAngle);
-  const x2 = 250 + r2 * Math.cos(startAngle);
-  const y2 = 250 + r2 * Math.sin(startAngle);
-  const x3 = 250 + r2 * Math.cos(endAngle);
-  const y3 = 250 + r2 * Math.sin(endAngle);
-  const x4 = 250 + r1 * Math.cos(endAngle);
-  const y4 = 250 + r1 * Math.sin(endAngle);
-
-  return `M ${x1} ${y1} L ${x2} ${y2} A 230 230 0 0 1 ${x3} ${y3} L ${x4} ${y4} A 65 65 0 0 0 ${x1} ${y1} Z`;
-};
-
 const getOuterSectorPath = (index) => {
   const total = answers.value.length || MAX_SECTORS;
   const angle = (2 * Math.PI) / total;
@@ -456,19 +418,6 @@ const getInnerSectorPath = (index) => {
   return `M ${x1} ${y1} L ${x2} ${y2} A 130 130 0 0 1 ${x3} ${y3} L ${x4} ${y4} A 65 65 0 0 0 ${x1} ${y1} Z`;
 };
 
-const getFullTextPosition = (index) => {
-  const total = answers.value.length || MAX_SECTORS;
-  const angle = (2 * Math.PI) / total;
-  const offset = -Math.PI / 2;
-  const midAngle = offset + index * angle + angle / 2;
-  const radius = 147;
-
-  return {
-    x: 250 + radius * Math.cos(midAngle),
-    y: 250 + radius * Math.sin(midAngle)
-  };
-};
-
 const getOuterTextPosition = (index) => {
   const total = answers.value.length || MAX_SECTORS;
   const angle = (2 * Math.PI) / total;
@@ -511,7 +460,17 @@ const getTextRotation = (index) => {
 };
 
 
-// Добавь эти функции в script
+// Очистка транскрипции от косых скобок и лишних пробелов
+const cleanHint = (hint) => {
+  if (!hint) return '';
+  // Убираем косые скобки в начале и конце
+  let cleaned = hint.replace(/^\/+|\/+$/g, '');
+  // Убираем лишние пробелы внутри
+  cleaned = cleaned.trim();
+  // Заменяем множественные пробелы на один
+  cleaned = cleaned.replace(/\s+/g, ' ');
+  return cleaned;
+};
 
 // Разбивка текста на строки
 const splitText = (text, maxLength) => {
@@ -529,7 +488,6 @@ const splitText = (text, maxLength) => {
       if (currentLine) {
         lines.push(currentLine);
       }
-      // Если слово само по себе длиннее maxLength, разбиваем его
       if (word.length > maxLength) {
         for (let i = 0; i < word.length; i += maxLength) {
           lines.push(word.slice(i, i + maxLength));
@@ -548,10 +506,10 @@ const splitText = (text, maxLength) => {
 };
 
 const FONT_SIZE_CONFIG = {
-  default: 25,      // Базовый размер для eng слов
-  hint: 20,         // Базовый размер для подсказок
-  minSize: 18,      // Минимальный размер
-  maxLines: 10      // Максимальное количество символов в строке
+  default: 25,
+  hint: 20,
+  minSize: 18,
+  maxLines: 10
 };
 
 // Определение размера шрифта
@@ -561,7 +519,6 @@ const getFontSize = (text, isHint = false) => {
   const baseSize = isHint ? FONT_SIZE_CONFIG.hint : FONT_SIZE_CONFIG.default;
   const length = text.length;
 
-  // Плавное уменьшение размера
   if (length <= 5) return baseSize;
   if (length <= 8) return baseSize - 1;
   if (length <= 12) return baseSize - 2;
@@ -571,25 +528,22 @@ const getFontSize = (text, isHint = false) => {
 };
 
 // Обработка клика по центру (подсказка)
+// Обработка клика по центру (подсказка)
 const handleCenterClick = (event) => {
   event.stopPropagation();
   if (isProcessing.value || selectedAnswer.value !== null) return;
 
-  // Показываем дротик в центре
   showDart.value = true;
   dartPosition.value = {
     x: 250,
     y: 250 - 10
   };
 
-  // Показываем подсказку
-  const hintText = currentWord.value.hint || `Попробуй найти "${currentWord.value.eng}"`;
-  positiveTexts.value = [hintText];
-
-  // Добавляем очки за подсказку
+  const hintText = currentWord.value.hint ? cleanHint(currentWord.value.hint) : `это же "${currentWord.value.eng}"`;
+  feedbackTexts.value = [hintText];
+  feedbackType.value = 'hint';
   score.value += 5;
 
-  // Показываем зеленую анимацию
   hitColor.value = '#00ff00';
   showHitAnimation.value = true;
   hitScale.value = 1;
@@ -602,7 +556,7 @@ const handleCenterClick = (event) => {
 
   setTimeout(() => {
     showDart.value = false;
-    positiveTexts.value = [];
+    feedbackTexts.value = [];
   }, 1500);
 };
 
@@ -610,26 +564,35 @@ const handleCenterClick = (event) => {
 const handleSectorClick = (answer, index, event) => {
   if (isProcessing.value || selectedAnswer.value !== null) return;
 
-  // Получаем позицию текста по индексу
-  const textPos = showHints.value ? getOuterTextPosition(index) : getFullTextPosition(index);
+  const textPos = getOuterTextPosition(index);
 
-  // Показываем дротик над текстом
   showDart.value = true;
   dartPosition.value = {
     x: textPos.x,
     y: textPos.y - 10
   };
 
-  // Скрываем дротик через 2 секунды
   setTimeout(() => {
     showDart.value = false;
   }, 900);
 
-  // Вызываем проверку ответа
   checkAnswer(answer, index);
 };
 
-// Проверка ответа
+
+// Проверяем, есть ли хотя бы один hint в данных
+const hasAnyHint = computed(() => {
+  // Проверяем текущие answers
+  if (answers.value && answers.value.length > 0) {
+    return answers.value.some(item => item.hint && item.hint.trim() !== '');
+  }
+  // Проверяем все данные набора слов
+  if (currentGameData.value && currentGameData.value.length > 0) {
+    return currentGameData.value.some(item => item.hint && item.hint.trim() !== '');
+  }
+  return false;
+});
+
 // Проверка ответа
 const checkAnswer = (answer, index) => {
   if (isProcessing.value || selectedAnswer.value !== null) return;
@@ -651,7 +614,6 @@ const checkAnswer = (answer, index) => {
     matchedPairs.value++;
     correctAnswers.value++;
 
-    // Расчет бонуса за скорость
     const timeBonus = calculateTimeBonus();
     const totalPoints = 100 + timeBonus;
     score.value += totalPoints;
@@ -666,11 +628,24 @@ const checkAnswer = (answer, index) => {
       }, 500);
     }, 100);
 
-    const positiveText = positiveWords[Math.floor(Math.random() * positiveWords.length)];
-    positiveTexts.value[index] = positiveText;
+    // Случайно выбираем: похвала или произношение
+    const showPraise = Math.random() > 0.5;
+    let feedbackText;
+
+    if (showPraise) {
+      feedbackText = positiveWords[Math.floor(Math.random() * positiveWords.length)];
+      feedbackType.value = 'positive';
+    } else {
+      // Очищаем hint от скобок
+      feedbackText = currentWord.value.hint ? cleanHint(currentWord.value.hint) : currentWord.value.eng;
+      feedbackType.value = 'hint';
+    }
+
+    feedbackTexts.value = [feedbackText];
+
     setTimeout(() => {
-      positiveTexts.value[index] = '';
-    }, 1200);
+      feedbackTexts.value = [];
+    }, 1500);
 
     setTimeout(() => {
       currentQuestionIndex.value++;
@@ -692,7 +667,6 @@ const checkAnswer = (answer, index) => {
     }
 
     mistakes.value++;
-    // За неправильный ответ только 10 очков, без бонуса
     score.value += 10;
 
     hitColor.value = '#ff0000';
@@ -706,9 +680,11 @@ const checkAnswer = (answer, index) => {
     }, 100);
 
     const errorText = errorWords[Math.floor(Math.random() * errorWords.length)];
-    errorTexts.value[index] = errorText;
+    feedbackTexts.value = [errorText];
+    feedbackType.value = 'error';
+
     setTimeout(() => {
-      errorTexts.value[index] = '';
+      feedbackTexts.value = [];
     }, 1500);
 
     const sectors = document.querySelectorAll('.sector');
@@ -750,14 +726,11 @@ const loadQuestion = async () => {
   selectedAnswer.value = null;
   isCorrect.value = false;
   isProcessing.value = false;
-  errorTexts.value = [];
-  positiveTexts.value = [];
+  feedbackTexts.value = [];
 
-  // Сохраняем время начала вопроса
   questionStartTime.value = Date.now();
   await nextTick();
 };
-
 
 // Функция для расчета timeBonus
 const calculateTimeBonus = () => {
@@ -765,19 +738,12 @@ const calculateTimeBonus = () => {
 
   const elapsedMs = Date.now() - questionStartTime.value;
 
-  // Если ответ быстрее 2000 мс - максимальный бонус 30
   if (elapsedMs <= 2000) return 30;
-
-  // Если от 2000 до 17000 мс (2000 + 30*500 = 17000)
   if (elapsedMs <= 17000) {
-    // (elapsedMs - 2000) / 500 - сколько шагов по 500мс прошло
-    // 30 - Math.floor(шагов) - уменьшаем бонус
     const steps = Math.floor((elapsedMs - 2000) / 500);
     const bonus = Math.max(0, 30 - steps);
     return bonus;
   }
-
-  // Больше 17 секунд - бонуса нет
   return 0;
 };
 
@@ -992,9 +958,7 @@ onMounted(() => {
   aspect-ratio: 1;
   background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f1a 100%);
   border-radius: 50%;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    inset 0 2px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.05);
   cursor: pointer;
   overflow: visible;
 }
@@ -1009,11 +973,11 @@ onMounted(() => {
 .sector {
   transition: all 0.15s ease;
   cursor: pointer;
+}
 
-  &:hover {
-    opacity: 0.85;
-    filter: brightness(1.1);
-  }
+.sector:hover {
+  opacity: 0.85;
+  filter: brightness(1.1);
 }
 
 .sector-active {
@@ -1034,66 +998,98 @@ onMounted(() => {
 
 .sector-text {
   pointer-events: none;
-  text-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.8),
-    0 0 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   line-height: 1.2;
+}
 
-  tspan {
-    display: block;
-  }
+.sector-text tspan {
+  display: block;
 }
 
 .sector-hint {
   pointer-events: none;
-  text-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.8),
-    0 0 15px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 500;
   letter-spacing: 0.2px;
   line-height: 1.2;
+}
 
-  tspan {
-    display: block;
-  }
+.sector-hint tspan {
+  display: block;
 }
 
 .center-word {
-  text-shadow:
-    0 4px 20px rgba(233, 69, 96, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 20px rgba(233, 69, 96, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 800;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: transform 0.2s;
-  transform-origin: center; // чтобы по диагонали не смещалось привязываем к центру
-
-  &:hover {
-    transform: scale(1.15);
-  }
+  transform-origin: center;
 }
+
+.center-word:hover {
+  transform: scale(1.15);
+}
+
 .center-image {
-  pointer-events: none;
   object-fit: cover;
 }
 
-// Убедись, что круг не мешает кликам
-circle {
-  pointer-events: none;
-}
 
-// А кликабельным делаем только внешний g
+
 g[style*="cursor: pointer;"] {
   cursor: pointer;
 }
+
 .hit-animation {
   animation: hitPulse 0.6s ease forwards;
   opacity: 0.6;
+}
+
+.float-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: bold;
+  pointer-events: none;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  animation: floatUpCenter 1.5s ease forwards;
+  z-index: 10;
+  text-align: center;
+}
+
+.float-text.positive {
+  color: #51cf66;
+}
+
+.float-text.hint {
+  color: #08f42f;
+  font-size: 36px;
+}
+
+.float-text.error {
+  color: #ff6b6b;
+}
+
+@keyframes floatUpCenter {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -80%) scale(1);
+  }
 }
 
 @keyframes dartThrow {
@@ -1139,37 +1135,6 @@ g[style*="cursor: pointer;"] {
   75% { transform: translateX(8px); }
 }
 
-.float-text {
-  position: absolute;
-  font-size: 32px;
-  font-weight: bold;
-  pointer-events: none;
-  text-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.8),
-    0 2px 8px rgba(0, 0, 0, 0.5);
-  animation: floatUp 1.2s ease forwards;
-  z-index: 10;
-}
-
-.float-text.error {
-  color: #ff6b6b;
-}
-
-.float-text.positive {
-  color: #51cf66;
-}
-
-@keyframes floatUp {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-80px) scale(1.5);
-  }
-}
-
 .action-button {
   display: block;
   margin: 25px auto 0;
@@ -1183,38 +1148,23 @@ g[style*="cursor: pointer;"] {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 30px rgba(233, 69, 96, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 }
 
-// Адаптивность для планшетов
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(233, 69, 96, 0.4);
+}
+
+.action-button:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
-  .darts-board {
-    max-width: 450px;
-  }
-
-  .sector-text {
-    font-size: 20px !important;
-  }
-
-  .sector-hint {
-    font-size: 12px !important;
-  }
 
   .center-word {
-    font-size: 18px !important;
+    font-size: 25px !important;
   }
 
-  .score-value {
-    font-size: 20px;
-  }
 }
 
 </style>

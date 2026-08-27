@@ -4,6 +4,14 @@ export const allGamesAndSetsOfWordsList =
   [
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/iDoNotCare/darts",
+      missionVisibleName: "no one cares",
+      missionDescription: "I don't care",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/iForgotEverything1/brainstorm",
       missionVisibleName: 'Учили, но кажется всё забыли? "</b>',
       missionDescription: "Вспомнить всё - total recall",
