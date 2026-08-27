@@ -9,9 +9,6 @@ const routes = [
       { path: '/intro',
         component: () => import('pages/IntroPage.vue')
       },
-
-
-
       {
         path: '/see-all-sets-of-words',
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
@@ -95,6 +92,10 @@ const routes = [
               {
                 path: 'find-pairs-hard',
                 component: () => import('src/components/GameFindPairsHard.vue')
+              },
+              {
+                path: 'darts2',
+                component: () => import('src/components/GameDarts.vue')
               },
               {
                 path: 'find-pairs-easy',
@@ -397,6 +398,14 @@ const routes = [
           {
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
+          },
+          {
+            path: '/see-all-sets-of-words/:missionName/darts',
+            component: () => import('src/components/GameDarts.vue')
+          },
+          {
+            path: '/see-all-sets-of-words/:missionName/bowling',
+            component: () => import('src/components/GameBowling.vue')
           },
           { path: '/see-all-sets-of-words/:missionName/sd',
             component: () => import('src/components/SpaceDetective.vue')

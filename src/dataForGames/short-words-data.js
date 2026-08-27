@@ -100,7 +100,7 @@ const shortWordsData = {
     { id: 15, eng: "temple", ru: "храм", hint: "/тЭмпл/" },
     { id: 16, eng: "apartment", ru: "квартира", hint: "/эпАртмэнт/" },
     { id: 17, eng: "townhouse", ru: "городской дом", hint: "/тАун хаус/" },
-    { id: 18, eng: "country house", ru: "загородный дом", hint: "/кАнтри хаус/" },
+    { id: 18, eng: "country house", ru: "загородный дом", hint: "/кАнтри хаус/", taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,},
     { id: 19, eng: "boathouse", ru: "дом на лодке", hint: "/бОУтхаус/" },
     { id: 20, eng: "treehouse", ru: "дом на дереве", hint: "/трИхаус/" },
     { id: 21, eng: "skyscraper", ru: "небоскрёб", hint: "/скАй скрЭЙпэ/" },
