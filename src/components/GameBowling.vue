@@ -1215,6 +1215,7 @@ onMounted(() => {
     font-size: 16px;
   }
 
+
   .mode-select {
     font-size: 12px;
     padding: 6px 12px;
