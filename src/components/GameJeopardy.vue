@@ -696,6 +696,7 @@ onMounted(() => {
     color: #fff;
   }
 
+
   .drag-drop-zone {
     border-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.4);
