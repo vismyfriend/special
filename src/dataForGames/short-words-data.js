@@ -1712,7 +1712,7 @@ const shortWordsData = {
       {
         id: 2,
         eng: "Vincent doesn't care",
-        ru: "ему без разницы",
+        ru: "Винсенту без разницы",
         hint: "/ вИнсэнт дАзнт кЭэ /"
       },
       {
@@ -1724,8 +1724,8 @@ const shortWordsData = {
       {
         id: 5,
         eng: "I don't give a sh%t",
-        ru: "Мне нас...ть",
-        hint: "/ ай дОнт гИв э шИт /"
+        ru: "Мне наслать",
+        hint: "/ ай дОнт гИв э щИт /"
       },
       {
         id: 6,

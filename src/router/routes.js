@@ -409,6 +409,11 @@ const routes = [
             props: true // Позволяет передавать cover как пропс
           },
           {
+            path: '/see-all-sets-of-words/:missionName/jeopardy/:style?',  // :style? - необязательный параметр
+            component: () => import('src/components/GameJeopardy.vue'),
+            props: true // Позволяет передавать стили и настройки игры как пропс
+          },
+          {
             path: '/see-all-sets-of-words/:missionName/bowling',
             component: () => import('src/components/GameBowling.vue')
           },
