@@ -1,5 +1,7 @@
 <template>
   <div class="jeopardy-container" :class="theme">
+    <SoundManager />
+
     <div class="jeopardy-header">
       <div class="header-left">
 <!--        <button class="back-btn" @click="goBack">← Back</button>-->
@@ -19,7 +21,7 @@
     </div>
 
     <div class="level-info" v-if="gameData">
-      <span class="level-badge">{{ gameData.level || 'A1' }}</span>
+      <span class="level-badge">{{ gameData.level || 'S.P.E.C.I.A.L.' }}</span>
 <!--      <span class="game-name">{{ missionName }}</span>-->
       <span class="game-desc">{{ gameData?.extraDescription || gameData?.mainDescription || 'Jeopardy' }}</span>
     </div>
@@ -111,7 +113,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button class="close-btn" @click="closeQuestion">✕</button>
-          <span class="question-value">${{ selectedQuestion.value }}</span>
+          <span class="question-value"
+                v-if="!showAnswer"
+
+          >${{ selectedQuestion.value }}</span>
         </div>
 
         <div class="question-body">
@@ -144,12 +149,15 @@
 
             <div v-else class="answer-display">
               <p class="answer-text">(answer:) {{ selectedQuestion.answer }}</p>
+
+
+
               <div class="action-buttons">
                 <button
                   class="correct-btn"
                   @click="handleCorrect"
                 >
-                  ✅ Guessed !!! (+{{ selectedQuestion.value }})
+                  ✅ Guessed !!!
                 </button>
                 <button
                   class="wrong-btn"
@@ -157,6 +165,19 @@
                 >
                   ❌ Oops
                 </button>
+              </div>
+              <!-- Поле для ввода очков -->
+              <div class="score-input-group">
+                <label for="scoreInput"> + $</label>
+                <input
+                  id="scoreInput"
+                  v-model.number="customScoreValue"
+                  type="number"
+                  class="score-input"
+                  min="0"
+                  step="10"
+                  @focus="$event.target.select()"
+                />
               </div>
             </div>
           </div>
@@ -309,6 +330,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import SoundManager from '../components/KeyboardSoundManager.vue';
+
 import gameJeopardyData from '../dataForGames/GameJeopardyData';
 
 const route = useRoute();
@@ -326,6 +349,8 @@ const activePlayer = ref(0); // 0 - это Vincent,  1 - Polina
 const playerMenuOpen = ref(null);
 const showWinnerModal = ref(false);
 const winnerPlayer = ref(null);
+const customScoreValue = ref(0);
+
 
 // Модалки
 const showNameEdit = ref(false);
@@ -519,6 +544,7 @@ const selectQuestion = (question) => {
   }
   selectedQuestion.value = question;
   showAnswer.value = false;
+  customScoreValue.value = question.value; // 👈 Устанавливаем значение по умолчанию = полная стоимость вопроса
 };
 
 const closeQuestion = () => {
@@ -534,7 +560,7 @@ const handleCorrect = () => {
 
   if (player) {
     const currentScore = Number(player.score) || 0;
-    const addValue = Number(question.value) || 0;
+    const addValue = Number(customScoreValue.value) || 0; // 👈 Используем customScoreValue
     player.score = currentScore + addValue;
   }
 
@@ -1208,16 +1234,16 @@ onMounted(() => {
 
 .player-avatar-wrapper {
   position: relative;
-  width: 85px;
-  height: 85px;
+  width: 105px;
+  height: 105px;
   flex-shrink: 0;
   margin-top: -60px;
   margin-bottom: 5px;
 }
 
 .player-avatar {
-  width: 85px;
-  height: 85px;
+  width: 105px;
+  height: 105px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.3);
@@ -1449,10 +1475,13 @@ onMounted(() => {
   font-size: 24px;
   margin: 20px 0;
   line-height: 1.5;
+  white-space: pre-line;
+
 }
 
 .answer-section {
   margin-top: 20px;
+  white-space: pre-line;
 }
 
 .show-answer-btn {
@@ -1586,6 +1615,65 @@ onMounted(() => {
   &.selected {
     border-color: #ffd93d;
     background: rgba(255, 217, 61, 0.1);
+  }
+}
+.score-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+
+  label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .score-input {
+    width: 80px;
+    padding: 6px 10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #ffd93d;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .max-score-hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.jeopardy-container.light {
+  .score-input-group {
+    label {
+      color: #1a1a2e;
+    }
+
+    .score-input {
+      background: #f5f5f5;
+      color: #1a1a2e;
+      border-color: #ddd;
+
+      &:focus {
+        border-color: #4a6fa5;
+      }
+    }
+
+    .max-score-hint {
+      color: rgba(0, 0, 0, 0.4);
+    }
   }
 }
 
@@ -1913,6 +2001,7 @@ onMounted(() => {
 
   .question-text {
     font-size: 20px;
+
   }
 
   .jeopardy-header {

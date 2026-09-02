@@ -390,6 +390,10 @@ const routes = [
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
           },
+          {
+            path: '/keyboardSoundManager',
+            component: () => import('src/components/KeyboardSoundManager.vue'),
+          },
           // НОВЫЙ МАРШРУТ БЕЗ ЛЕЙАУТА
           {
             path: '/direct-print/:missionName',
