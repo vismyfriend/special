@@ -241,13 +241,14 @@ const routes = [
         component: () => import('src/pages/extraPage.vue'),
       },
       {
-        path: '/registration',
-        component: () => import('src/pages/Registration.vue')
-      },
-      {
         path: '/vismycoder',
         component: () => import('src/pages/vismycoder.vue')
       },
+      {
+        path: '/registration',
+        component: () => import('src/pages/Registration.vue')
+      },
+
       {
         path: '/photos-of-agents',
         component: () => import('src/pages/PhotosOfAgents.vue')
@@ -365,6 +366,17 @@ const routes = [
       {
         path: '/keypad',
         component: () => import('src/pages/specialKeypad.vue')
+      },
+      // Обычный доступ (без данных)
+
+      {
+        path: '/wordCloud1',
+        component: () => import('src/components/WordCloudCapcha.vue')
+      },
+      // Доступ с данными из shortWordsData
+      {
+        path: '/see-all-sets-of-words/:missionName/wordCloud2',
+        component: () => import('src/components/WordCloudCapcha.vue')
       },
       {
         path: '/grammarDrill',
