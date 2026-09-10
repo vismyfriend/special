@@ -133,6 +133,11 @@ const availableCaptchas = [
     name: 'клавиатура',
     path: '/keypad'
   },
+  {
+    id: 'neatCaptcha',
+    name: 'рабочий стол ',
+    path: '/neat'
+  },
 
 ];
 

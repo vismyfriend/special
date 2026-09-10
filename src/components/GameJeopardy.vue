@@ -1,7 +1,9 @@
 <template>
+  <div class="jeopardy-fullscreen-overlay"></div>
+
   <div class="jeopardy-container" :class="theme">
     <SoundManager />
-
+    <QuickNotes />
     <div class="jeopardy-header">
       <div class="header-left">
 <!--        <button class="back-btn" @click="goBack">← Back</button>-->
@@ -23,7 +25,7 @@
     <div class="level-info" v-if="gameData">
       <span class="level-badge">{{ gameData.level || 'S.P.E.C.I.A.L.' }}</span>
 <!--      <span class="game-name">{{ missionName }}</span>-->
-      <span class="game-desc">{{ gameData?.extraDescription || gameData?.mainDescription || 'Jeopardy' }}</span>
+      <span class="game-desc">{{ gameData?.extraDescription || '/ Джэ пэ ди / Jeopardy' }}</span>
     </div>
 
     <div v-if="!gameData" class="error-message">
@@ -331,6 +333,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import SoundManager from '../components/KeyboardSoundManager.vue';
+import QuickNotes from '../components/QuickNotes.vue';
 
 import gameJeopardyData from '../dataForGames/GameJeopardyData';
 
@@ -642,12 +645,25 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+// 🔥 ЧЕРНЫЙ ЭКРАН-ЗАГЛУШКА
+.jeopardy-fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0a0a1a;  /* Или тот же цвет, что у твоей темной темы */
+  z-index: 0;           /* Должен быть под контентом, но над всем остальным */
+}
+
 .jeopardy-container {
+  position: relative;    /* Добавь, чтобы контент был поверх оверлея */
   max-width: 1200px;
   margin: 80px auto 20px;
   padding: 20px;
   min-height: calc(100vh - 100px);
   transition: all 0.3s ease;
+  border-radius: 10px;
 }
 
 // Стили для загрузки аватара
@@ -1943,6 +1959,7 @@ onMounted(() => {
     }
   }
 }
+
 
 @keyframes winnerSlideUp {
   from {

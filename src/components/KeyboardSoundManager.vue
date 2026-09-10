@@ -195,7 +195,7 @@ const soundConfigs = reactive([
     icon: '❌',
     key: '2',
     modifierKey: null,
-    defaultUrl: new URL("../assets/audio/KeyboardSoundManagerSounds/ohNo.mp3", import.meta.url).href,
+    defaultUrl: new URL("../assets/audio/KeyboardSoundManagerSounds/ohNoLong.mp3", import.meta.url).href,
     volume: 0.7,
     customUrl: null,
     loaded: false
@@ -219,7 +219,7 @@ const soundConfigs = reactive([
     icon: '👏',
     key: '1',
     modifierKey: 'Cmd/Ctrl',     // Cmd+1 или Ctrl+1
-    defaultUrl: new URL("../assets/audio/KeyboardSoundManagerSounds/ohNo.mp3", import.meta.url).href,
+    defaultUrl: new URL("../assets/audio/KeyboardSoundManagerSounds/ohNoLong.mp3", import.meta.url).href,
     volume: 0.9,
     customUrl: null,
     loaded: false
@@ -464,7 +464,7 @@ const getModifierDisplay = (modifier) => {
 // 🔥 ОБРАБОТЧИК КЛАВИШ
 const handleKeyPress = (event) => {
   // Backspace - остановить все звуки
-  if (event.key === 'Backspace') {
+  if (event.key === 'Escape') {
     event.preventDefault();
     stopAllSounds();
     return;

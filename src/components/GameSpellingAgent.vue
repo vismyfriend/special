@@ -15,9 +15,11 @@
         <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">
           <option value="1">🌟 выбран лёгкий уровень</option>
           <option value="2">⭐⭐ Средний уровень </option>
-          <option value="3">⭐⭐⭐ Уровень HardCore ! </option>
+          <option value="3">⭐⭐⭐ Сложный уровень </option>
+          <option value="4">⭐⭐⭐⭐ Профи уровень!  </option>
         </select>
 
+        <!-- СЛАЙДЕР (добавляем) -->
 
 
       </div>
@@ -69,7 +71,6 @@
 
 
       <!-- Буквы для выбора -->
-      <!--      <div class="letters-grid" v-if="difficultyLevel !== 3 || !showFeedback">-->
       <div class="letters-grid">
         <div
           v-for="(letter, index) in availableLetters"
@@ -84,23 +85,22 @@
 
       <!-- Панель управления -->
       <div class="control-panel">
-        <!--        <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">-->
-        <!--          <option value="1">🌟 Уровень 1 - Легкий </option>-->
-        <!--          <option value="2">⭐⭐ Уровень 2 - Средний </option>-->
-        <!--          <option value="3">⭐⭐⭐ Уровень 3 - Сложный </option>-->
-        <!--        </select>-->
+<!--               <button v-if="difficultyLevel === 3 || difficultyLevel === 4 " class="reset-button" @click="resetCurrentWord">-->
+<!--          Reset сбросить-->
+<!--        </button>-->
 
-        <button v-if="difficultyLevel === 3" class="reset-button" @click="resetCurrentWord">
-          Reset сбросить
-        </button>
 
-        <button v-if="difficultyLevel === 3" class="check-button" @click="checkWord">
-          ✓ check Проверить
+        <!-- 🆕 Кнопка проверки появляется только когда все слоты заполнены -->
+        <button
+          v-if="(difficultyLevel === 3 || difficultyLevel === 4) && isAllSlotsFilled"
+          class="check-button"
+          @click="checkWord"
+        >
+          ✓ Проверить
         </button>
       </div>
     </div>
 
-    <!-- Сообщение о завершении игры -->
     <!-- Модальное окно завершения игры -->
     <div v-if="isGameFinished" class="game-overlay">
       <div class="game-over-modal">
@@ -184,7 +184,10 @@ const parseDifficultyFromRoute = () => {
     '2': 2,
     'hard': 3,
     '3': 3,
-    'hardcore': 3
+    'hardcore': 3,
+    '4': 4,
+    'pro': 4,
+    'profile': 4
   };
 
   return levelMap[level] || 2;
@@ -305,6 +308,13 @@ const progressWidth = computed(() => `${(matchedPairs.value / totalWords.value) 
 const progressPercentage = computed(() => Math.round((matchedPairs.value / totalWords.value) * 100));
 const finalTime = computed(() => time.value);
 
+// 🆕 Проверка: все ли слоты заполнены (для 3 и 4 уровня)
+const isAllSlotsFilled = computed(() => {
+  if (difficultyLevel.value !== 3 && difficultyLevel.value !== 4) return false;
+  // Проверяем, что все слоты заполнены (не null и не пустая строка)
+  return filledSlots.value.every(slot => slot !== null && slot !== '');
+});
+
 const formatTime = (ms) => {
   if (typeof ms !== 'number' || isNaN(ms)) return '0 sec';
   const minutes = Math.floor(ms / 60000);
@@ -349,6 +359,7 @@ const getDifficultyName = () => {
     case 1: return 'Легкий';
     case 2: return 'Средний';
     case 3: return 'Сложный';
+    case 4: return 'Профи';
     default: return 'Средний';
   }
 };
@@ -410,6 +421,19 @@ const generateAvailableItems = (word) => {
       break;
     }
   }
+
+
+  // 🆕 УРОВЕНЬ 4: ВСЕ БУКВЫ АЛФАВИТА + СПЕЦСИМВОЛЫ (ОТСОРТИРОВАННЫЕ)
+  if (difficultyLevel.value === 4) {
+    const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    // Добавляем спецсимволы
+    const specialChars = ["'", '.', '?', '-'];
+    // Сортируем: сначала буквы A-Z, потом спецсимволы
+    const allChars = [...allLetters, ...specialChars];
+    // НЕ перемешиваем, оставляем отсортированными
+    return allChars.map(item => ({ value: item, used: false }));
+  }
+
   if (difficultyLevel.value === 1) {
     const shuffledItems = smartShuffle(itemsOnly, firstLetter);
     return shuffledItems.map(item => ({ value: item, used: false }));
@@ -438,7 +462,7 @@ const selectRandomWords = (data, count) => {
   return shuffled.slice(0, count);
 };
 
-// Инициализация 3 уровня (только для первого запуска)
+// Инициализация 3 и 4 уровня (только для первого запуска)
 const initLevel3 = () => {
   originalWordsList.value = [...gameWords.value];
   wordsToRepeat.value = [...gameWords.value];
@@ -487,8 +511,7 @@ const loadNextWordFromQueue = () => {
 };
 // Загрузка слова для уровней 1 и 2
 const loadWord = () => {
-  if (difficultyLevel.value === 3) {
-    // Если на 3 уровне, но ещё не инициализирована очередь
+  if (difficultyLevel.value === 3 || difficultyLevel.value === 4) {
     if (wordsToRepeat.value.length === 0 && !currentWord.value && !isGameFinished.value) {
       initLevel3();
     }
@@ -540,12 +563,19 @@ const highlightItem = (itemValue) => {
 
 // Удаление буквы из слота (только 3 уровень)
 const removeLetterFromSlot = (slotIndex) => {
-  if (difficultyLevel.value !== 3) return;
+  if (difficultyLevel.value !== 3 && difficultyLevel.value !== 4) return;
   if (showFeedback.value) return;
   if (wordStructure.value[slotIndex].isSpace) return;
 
   const currentLetter = filledSlots.value[slotIndex];
   if (currentLetter === null || currentLetter === ' ') return;
+
+
+  // Для 4 уровня: просто удаляем букву, не возвращаем в available
+  if (difficultyLevel.value === 4) {
+    filledSlots.value[slotIndex] = null;
+    return;
+  }
 
   const letterToReturn = availableLetters.value.find(
     letter => letter.value === currentLetter && letter.used === true
@@ -560,6 +590,16 @@ const removeLetterFromSlot = (slotIndex) => {
 // Выбор буквы
 const selectLetter = (itemObj) => {
   if (isGameFinished.value || itemObj.used || showFeedback.value) return;
+
+
+  // 🔥 УРОВЕНЬ 4: буквы и символы НЕ исчезают
+  if (difficultyLevel.value === 4) {
+    const firstEmptyIndex = filledSlots.value.findIndex(slot => slot === null);
+    if (firstEmptyIndex === -1) return;
+    // Просто вставляем символ, НЕ меняем used
+    filledSlots.value[firstEmptyIndex] = itemObj.value;
+    return;
+  }
 
   if (difficultyLevel.value === 3) {
     const firstEmptyIndex = filledSlots.value.findIndex(slot => slot === null);
@@ -614,7 +654,7 @@ const selectLetter = (itemObj) => {
 // Проверка слова (только 3 уровень)
 // Проверка слова (только 3 уровень)
 const checkWord = () => {
-  if (difficultyLevel.value !== 3) return;
+  if (difficultyLevel.value !== 3 && difficultyLevel.value !== 4) return;
 
   const isComplete = filledSlots.value.every(slot => slot !== null);
   if (!isComplete) {
@@ -633,13 +673,18 @@ const checkWord = () => {
   }
 
   setTimeout(() => {
-    showFeedback.value = true;  // Это активирует подсветку правильных/неправильных
+    showFeedback.value = true;
 
     if (allCorrect) {
       if (currentWord.value?.audio) playAudio();
       setTimeout(() => {
         showFeedback.value = false;
-        loadNextWordFromQueue();
+        if (difficultyLevel.value === 4) {
+          // Для 4 уровня просто загружаем следующее слово
+          loadNextWordFromQueue();
+        } else {
+          loadNextWordFromQueue();
+        }
       }, 500);
     } else {
       playRandomWrongAnswerSound();
@@ -648,7 +693,6 @@ const checkWord = () => {
       }
       mistakesCount.value++;
 
-      // Добавляем слово в конец очереди, если его там ещё нет
       const isAlreadyInQueue = wordsToRepeat.value.some(w => w.id === currentWord.value.id);
       if (!isAlreadyInQueue) {
         wordsToRepeat.value.push(currentWord.value);
@@ -656,7 +700,12 @@ const checkWord = () => {
 
       setTimeout(() => {
         showFeedback.value = false;
-        loadNextWordFromQueue();
+        if (difficultyLevel.value === 4) {
+          // Для 4 уровня просто загружаем следующее слово
+          loadNextWordFromQueue();
+        } else {
+          loadNextWordFromQueue();
+        }
       }, 2000);
     }
   }, 800);
@@ -682,13 +731,13 @@ const handleKeyPress = (event) => {
 
   if (event.key === 'Enter') {
     event.preventDefault();
-    if (difficultyLevel.value === 3) checkWord();
+    if (difficultyLevel.value === 3 || difficultyLevel.value === 4) checkWord();
     return;
   }
 
   if (event.key === 'Backspace') {
     event.preventDefault();
-    if (difficultyLevel.value !== 3) return;
+    if (difficultyLevel.value !== 3 && difficultyLevel.value !== 4) return;
 
     let lastFilledIndex = -1;
     for (let i = filledSlots.value.length - 1; i >= 0; i--) {
@@ -700,17 +749,23 @@ const handleKeyPress = (event) => {
 
     if (lastFilledIndex !== -1) {
       const currentLetter = filledSlots.value[lastFilledIndex];
-      const letterToReturn = availableLetters.value.find(
-        letter => letter.value === currentLetter && letter.used === true
-      );
-      if (letterToReturn) {
-        letterToReturn.used = false;
+      // Для 4 уровня просто удаляем, не возвращаем в available
+      if (difficultyLevel.value === 4) {
         filledSlots.value[lastFilledIndex] = null;
-        const slotElement = document.querySelectorAll('.letter-slot')[lastFilledIndex];
-        if (slotElement) {
-          slotElement.classList.add('remove-pulse');
-          setTimeout(() => slotElement.classList.remove('remove-pulse'), 200);
+      } else {
+        // Для 3 уровня возвращаем букву
+        const letterToReturn = availableLetters.value.find(
+          letter => letter.value === currentLetter && letter.used === true
+        );
+        if (letterToReturn) {
+          letterToReturn.used = false;
+          filledSlots.value[lastFilledIndex] = null;
         }
+      }
+      const slotElement = document.querySelectorAll('.letter-slot')[lastFilledIndex];
+      if (slotElement) {
+        slotElement.classList.add('remove-pulse');
+        setTimeout(() => slotElement.classList.remove('remove-pulse'), 200);
       }
     }
     return;
@@ -722,12 +777,35 @@ const handleKeyPress = (event) => {
   if (key === '`' || key === "'" || key === '´' || key === '’' || key === '‘') key = "'";
   key = convertToEnglish(key);
 
-  const isValidChar = /[A-Za-z0-9\s'`´"\-!@#$%&*()+=?/\\|,.;:§±~]/.test(key);
+  // 🔥 Расширяем допустимые символы для 4 уровня
+  let isValidChar = /[A-Za-z0-9\s'`´"\-!@#$%&*()+=?/\\|,.;:§±~]/.test(key);
+
+  // На 4 уровне разрешаем все символы
+  if (difficultyLevel.value === 4) {
+    // Разрешаем буквы, цифры и основные знаки препинания
+    isValidChar = /[A-Za-z0-9\s'`´"\-!@#$%&*()+=?/\\|,.;:§±~]/.test(key);
+  }
+
   if (isValidChar && key.length === 1) {
     event.preventDefault();
     let processedKey = key;
     if (isLetter(key)) processedKey = key.toUpperCase();
 
+    // Для 4 уровня: ищем любой доступный символ (не важно used)
+    if (difficultyLevel.value === 4) {
+      // Ищем символ в availableLetters (всегда доступны)
+      const itemToSelect = availableLetters.value.find(item => item.value === processedKey);
+      if (itemToSelect) {
+        selectLetter(itemToSelect);
+      } else {
+        // Если символа нет в списке - ошибка
+        mistakesCount.value++;
+        triggerEarthquake();
+      }
+      return;
+    }
+
+    // Для остальных уровней стандартная логика
     const itemToSelect = availableLetters.value.find(item => !item.used && isCharMatch(processedKey, item.value));
     if (itemToSelect) {
       selectLetter(itemToSelect);
@@ -744,7 +822,6 @@ const handleKeyPress = (event) => {
   }
 };
 
-
 // Смена уровня - сохраняем прогресс
 const onDifficultyChange = (event) => {
   const newLevel = parseInt(event.target.value, 10);
@@ -757,17 +834,16 @@ const onDifficultyChange = (event) => {
   isHintBlurred.value = false;  // 🆕 Добавить сброс blur
 
 
-  // Случай 1: Переключаемся на 3 уровень с другого уровня
-  if (newLevel === 3 && oldLevel !== 3) {
-    // Создаём очередь из оставшихся слов
+  // Случай 1: Переключаемся на 3 или 4 уровень с другого уровня
+  if ((newLevel === 3 || newLevel === 4) && oldLevel !== 3 && oldLevel !== 4) {    // Создаём очередь из оставшихся слов
     originalWordsList.value = [...gameWords.value];
     // Очередь = слова, которые ещё не пройдены
     wordsToRepeat.value = gameWords.value.slice(currentWordIndex.value);
     // Загружаем первое слово из очереди
     loadNextWordFromQueue();
   }
-  // Случай 2: Переключаемся с 3 уровня на другой
-  else if (oldLevel === 3 && newLevel !== 3) {
+  // Случай 2: Переключаемся с 3 или 4 уровня на другой
+  else if ((oldLevel === 3 || oldLevel === 4) && newLevel !== 3 && newLevel !== 4) {
     // Находим текущее слово в оригинальном списке
     const currentWordId = currentWord.value?.id;
     if (currentWordId !== undefined) {
@@ -792,46 +868,37 @@ const onDifficultyChange = (event) => {
 
 // Попробовать уровень сложнее
 const tryHarderLevel = () => {
-  if (difficultyLevel.value === 3) return;
+  if (difficultyLevel.value === 4) return; // Максимум 4
 
   const oldLevel = difficultyLevel.value;
   const newLevel = oldLevel + 1;
   difficultyLevel.value = newLevel;
 
-  // Сбрасываем все игровые данные
   currentWordIndex.value = 0;
   mistakesCount.value = 0;
   time.value = 0;
   isGameFinished.value = false;
-  isHintBlurred.value = false;  // 🆕 Добавить сброс blur
+  isHintBlurred.value = false;
 
-
-  // Очищаем таймер и запускаем заново
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => { time.value += 10; }, 10);
 
-  // Получаем слова для текущей миссии
   const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
-    // Заново выбираем 10 случайных слов
     gameWords.value = selectRandomWords(allWords, 10);
 
-    // Если переключаемся на 3 уровень
-    if (newLevel === 3) {
-      // Создаём очередь из всех слов
+    if (newLevel === 3 || newLevel === 4) {
       originalWordsList.value = [...gameWords.value];
       wordsToRepeat.value = [...gameWords.value];
-      // Загружаем первое слово из очереди
       loadNextWordFromQueue();
     } else {
-      // Для 1 и 2 уровня - просто загружаем первое слово
       loadWord();
     }
   }
 
-  // Закрываем модальное окно
   isGameFinished.value = false;
 };
+
 const resetCurrentWord = () => {
   if (currentWord.value) {
     const englishWord = currentWord.value.eng;
@@ -884,7 +951,7 @@ const improveResult = () => {
   const allWords = getWordSet(currentMission.value);
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
-    if (difficultyLevel.value === 3) {
+    if (difficultyLevel.value === 3 || difficultyLevel.value === 4) {
       initLevel3();
     } else {
       loadWord();
@@ -902,8 +969,10 @@ const getSlotClass = (index, item) => {
   // Если слот пустой
   if (!filledSlots.value[index]) return '';
 
-  // На 3 уровне без фидбека - нейтральный цвет
-  if (difficultyLevel.value === 3 && !showFeedback.value) {
+
+  // Для 3 и 4 уровня без фидбека
+  if ((difficultyLevel.value === 3 || difficultyLevel.value === 4) && !showFeedback.value)
+  {
     return 'neutral-highlight';
   }
 
@@ -946,7 +1015,8 @@ onBeforeUnmount(() => {
 /* Добавляем стили для новых элементов */
 .control-panel {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 15px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -982,6 +1052,20 @@ onBeforeUnmount(() => {
   &:hover {
     background: #2e9b54;
     transform: scale(1.02);
+  }
+
+  // 🆕 Анимация появления
+  animation: fadeInButton 0.3s ease;
+}
+
+@keyframes fadeInButton {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -1237,7 +1321,23 @@ onBeforeUnmount(() => {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 }
+/* Стили для спецсимволов на 4 уровне */
+.letter-card.special-char {
+  background: #fff3e0;
+  border-color: #ff9800;
+  color: #e65100;
 
+  &:hover:not(.letter-disabled) {
+    background: #ffe0b2;
+    border-color: #f57c00;
+  }
+}
+
+.letter-slot.special-char-slot {
+  border-color: #ff9800;
+  background: #fff8e1;
+  color: #e65100;
+}
 .reset-button {
   display: block;
   width: 150px;

@@ -96,6 +96,8 @@
             <span v-else-if="currentBackStyle === 'l'" class="card-back-letters">{{ card.letters }}</span>
             <span v-else-if="currentBackStyle === 'n'" class="card-back-empty"></span>
 
+            <!-- 👇 ДОБАВЛЯЕМ НОВЫЙ СТИЛЬ -->
+            <span v-else-if="currentBackStyle === 'detective'" class="card-back-icon detective">🔍</span>
             <!-- Полные названия для совместимости -->
             <span v-else-if="currentBackStyle === 'question'" class="card-back-icon">?</span>
             <span v-else-if="currentBackStyle === 'vincent'" class="card-back-text">Vincent</span>
@@ -160,6 +162,7 @@ const backStyles = [
   { id: '100', name: 'thousand', preview: '1k' },
   { id: 'n', name: 'nothing', preview: '⬜' },
   { id: 'emoji', name: 'Эмодзи', preview: '🍦' },
+  { id: 'detective', name: 'Agent', preview: '🔍' },
   { id: 'l', name: 'letters (лэтэрз)', preview: 'L' },
   { id: '?', name: 'Вопросы', preview: '?' },
   { id: 'v', name: 'Vincent', preview: 'V' },
@@ -212,6 +215,7 @@ const normalizeStyle = (style) => {
     'number-0-24': '24',
     'number-11-99': '99',
     'letters': 'l',
+    'detective': 'detective',
     'none': 'n'
   };
 
@@ -1013,6 +1017,13 @@ onMounted(() => {
 
 .back-style-emoji .card-back {
   background: linear-gradient(135deg, #2d4059, #1a1a2e);
+}
+
+// 👇 ДОБАВЛЯЕМ СТИЛЬ ДЛЯ ДЕТЕКТИВА
+.back-style-detective .card-back {
+  background: linear-gradient(135deg, #1a1a2e, #2d1b3d);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.05);
 }
 
 .controls {

@@ -241,6 +241,195 @@ const gameJeopardyData = {
       }
     ]
   },
+  quickJ_1: {
+    mainDescription: "Цель игры: попрактиковаться and speak инглиш :",
+    level: "S.P.E.C.I.A.L",
+    categories: [
+      {
+        name: "Animals",
+        questions: [
+          {
+            value: 100,
+            question: "What does a cat say? \n(what sound)",
+            answer: 'A cat says "meow". \n \n+ extra 100 points \nif you guess what animal says "bark! bark!"',
+            // image: null,
+            // audio: new URL('../assets/audio/FaithYoungSheldonS1e3.mp3', import.meta.url).href,
+          },
+          {
+            value: 200,
+            question: "What sound does a pig make?\n (you can use google to find the answer)",
+            answer: 'in Russian pigs say "ХРЮ-хрю" \n in English pigs say "Oink-oink"',
+            // image: new URL("../assets/images/testPic1.png", import.meta.url).href
+          },
+          {
+            value: 300,
+            question: "What does a fisherman catch usually?",
+            answer: "fish"
+          },
+          {
+            value: 400,
+            question: "What animal has the longest neck?",
+            answer: "A giraffe"
+          },
+          {
+            value: 500,
+            question: "What animal poops cubes?\n It has square shape feces",
+            answer: "A wombat. If you don't believe it - google it now"
+          }
+        ]
+      },
+      {
+        name: "Food",
+        questions: [
+          {
+            value: 100,
+            question: "A name of a fruit and a big company?",
+            answer: "apple"
+          },
+          {
+            value: 200,
+            question: "What do people drink in the morning?",
+            answer: "coffee/tea/juice/water/milk/soda"
+          },
+          {
+            value: 300,
+            question: "Breakfast is in the morning. Dinner is in the evening. What is in the afternoon?",
+            answer: "lunch"
+          },
+          {
+            value: 400,
+            question: "What is the general name of something sweet, that people eat after meals?",
+            answer: "dessert"
+          },
+          {
+            value: 500,
+            question: "What is Italian most famous food ?",
+            answer: "pizza"
+          }
+        ]
+      },
+      {
+        name: "School",
+        questions: [
+          {
+            value: 100,
+            question: "What do you use to write in school?",
+            answer: "pen/pencil/markers"
+          },
+          {
+            value: 200,
+            question: "What subject teaches you about numbers?",
+            answer: "math/mathematics"
+          },
+          {
+            value: 300,
+            question: "Who teaches you at school?",
+            answer: "teacher"
+          },
+          {
+            value: 400,
+            question: "What do you carry your books in?",
+            answer: "backpack/bag"
+          },
+          {
+            value: 500,
+            question: "What is a place where you can borrow books?",
+            answer: "library"
+          }
+        ]
+      },
+      {
+        name: "Family",
+        questions: [
+          {
+            value: 100,
+            question: "What do you call your mother's brother?",
+            answer: "uncle"
+          },
+          {
+            value: 200,
+            question: "What do you call your father's mother?",
+            answer: "grandmother/granny"
+          },
+          {
+            value: 300,
+            question: "What is a girl child called?",
+            answer: "daughter"
+          },
+          {
+            value: 400,
+            question: "Who is married to your father?",
+            answer: "mother/mom"
+          },
+          {
+            value: 500,
+            question: "What is your sister's son called?",
+            answer: "nephew"
+          }
+        ]
+      },
+      {
+        name: "Colors",
+        questions: [
+          {
+            value: 100,
+            question: "What color is the sky?",
+            answer: "blue"
+          },
+          {
+            value: 200,
+            question: "What color are bananas?",
+            answer: "yellow"
+          },
+          {
+            value: 300,
+            question: "What color is grass?",
+            answer: "green"
+          },
+          {
+            value: 400,
+            question: "What color is milk?",
+            answer: "white"
+          },
+          {
+            value: 500,
+            question: "What color is an orange?",
+            answer: "orange"
+          }
+        ]
+      },
+      {
+        name: "Weather",
+        questions: [
+          {
+            value: 100,
+            question: "What is frozen water called?",
+            answer: "ice/snow"
+          },
+          {
+            value: 200,
+            question: "What comes from the sky and makes things wet?",
+            answer: "rain"
+          },
+          {
+            value: 300,
+            question: "What is a strong wind called?",
+            answer: "storm"
+          },
+          {
+            value: 400,
+            question: "What is the season when leaves fall?",
+            answer: "autumn/fall"
+          },
+          {
+            value: 500,
+            question: "What is a bright flash in the sky during a storm?",
+            answer: "lightning"
+          }
+        ]
+      }
+    ]
+  },
 
   A2Jeopardy: {
     mainDescription: "Intermediate English Jeopardy",

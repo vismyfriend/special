@@ -305,6 +305,10 @@ const routes = [
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
       {
+        path: '/desk1',
+        component: () => import('src/pages/intros/specialDesk1.vue')
+      },
+      {
         path: '/notebook2',
         component: () => import('src/pages/intros/notebookBlank.vue')
       },
@@ -336,6 +340,10 @@ const routes = [
       {
         path: '/neat',
         component: () => import('src/pages/intros/neatDeskIntro.vue')
+      },
+      {
+        path: '/patterns',
+        component: () => import('src/pages/SeeAllPatterns.vue')
       },
       {
         path: '/rain',
@@ -411,6 +419,8 @@ const routes = [
             path: '/direct-print/:missionName',
             component: () => import('src/components/GamePrintAllWordsNotebook.vue')
           },
+
+
           {
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')

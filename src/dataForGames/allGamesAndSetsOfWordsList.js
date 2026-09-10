@@ -27,6 +27,14 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/BackToSchoolJeopardy/jeopardy",
+      missionVisibleName: "Back to School",
+      missionDescription: "джЭ пэди",
+      id: 1001,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/iDoNotCare/darts",
       missionVisibleName: "no one cares",

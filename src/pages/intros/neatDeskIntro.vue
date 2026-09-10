@@ -51,10 +51,24 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import {useRoute, useRouter} from "vue-router";
+const router = useRouter();
+const route = useRoute();
 
 const customMessage = ref('') // Храним текст из поля ввода
 const hoverAnswer = ref(-1) // Отслеживаем наведение на кнопки
 
+// Функция для перехода по внутреннему маршруту
+const goToRoute = (path) => {
+  router.push(path);
+};
+// Функция для перехода по маршруту с параметрами
+const goToRouteWithParams = (path, params) => {
+  router.push({
+    path: path,
+    params: params
+  });
+};
 // Диалоговая система
 const dialogState = ref({
   currentStep: 'start',
@@ -65,33 +79,35 @@ const dialogState = ref({
 // Определяем все шаги диалога
 const dialogSteps = {
   start: {
-    text: 'Я хочу говорить на английском ?!',
+    text: '? тетрадь - это ноутбук notebook',
     answers: [
       {
-        text: 'Yes , I do',
+        text: 'yes',
         nextStep: 'lazy_question',
         type: 'yes'
       },
       {
-        text: 'No , I don\'t',
+        text: 'нет',
         nextStep: 'goodbye',
         type: 'no'
       }
     ]
   },
   lazy_question: {
-    text: 'Am I lazy ?',
+    text: 'Ну а компьютер "ноутбук" тогда как сказать ?',
     answers: [
       {
-        text: 'I am',
-        nextStep: 'question_3',
+        text: 'лэптоп',
+        // nextStep: 'question_3',
+        nextStep: 'final_1',
         type: 'yes',
         saveAs: 'lazyStatus', // Сохраняем ответ под этим ключом
         value: 'lazy'
       },
       {
-        text: 'I am not',
-        nextStep: 'question_3',
+        text: 'laptop',
+        // nextStep: 'question_3',
+        nextStep: 'final_1',
         type: 'no',
         saveAs: 'lazyStatus',
         value: 'not lazy'
@@ -99,24 +115,24 @@ const dialogSteps = {
     ]
   },
   question_3: {
-    text: 'Vincent is a good teacher',
+    text: 'How are you ?',
     answers: [
       {
-        text: 'he is',
+        text: 'хов ар ю',
         nextStep: 'name_input',
         type: 'yes',
         saveAs: 'question_3_answer',
         value: 'sure'
       },
       {
-        text: 'maybe',
+        text: 'ха ва ю',
         nextStep: 'name_input',
         type: 'no',
         saveAs: 'question_3_answer',
         value: 'notSure'
       },
       {
-        text: 'X.3.',
+        text: 'хау а ю',
         nextStep: 'name_input',
         type: 'maybe',
         saveAs: 'question_3_answer',
@@ -125,23 +141,35 @@ const dialogSteps = {
     ]
   },
   name_input: {
-    text: 'Okay :) Write your name please',
+    text: ' Прикол :) Ну ладно What is your name ?',
     answers: []
   },
   goodbye: {
-    text: 'Ну пока тогда , прощаемся ???',
+    text: 'неправильный ответ',
     answers: [
+      // {
+      //   text: 'ну и до свидания !',
+      //   action: 'redirect',
+      //   url: 'https://www.google.com',
+      //   type: 'yes'
+      // },
       {
-        text: 'Goodbye',
-        action: 'redirect',
-        url: 'https://www.google.com',
-        type: 'yes'
-      },
-      {
-        text: 'NO , It is a joke',
+        text: 'попробуй ещё раз',
         nextStep: 'start',
         type: 'no'
-      }
+      },
+
+    ]
+  },
+  final_1: {
+    text: 'Vincent гордится тобой!',
+    answers: [
+      {
+        text: "I know it ! I'm sexy",
+        action: 'route',
+        path: '/see-all-sets-of-words',
+        type: 'yes'
+      },
     ]
   }
 }
@@ -188,17 +216,31 @@ const handleAnswer = (answer) => {
     dialogState.value.userData[answer.saveAs] = answer.value
   }
 
-  // Добавляем в историю
   dialogState.value.history.push({
     step: dialogState.value.currentStep,
     answer: answer.text,
     value: answer.value
   })
 
-  // Выполняем действие или переходим к следующему шагу
+  // 🔥 ОБНОВЛЁННАЯ ОБРАБОТКА ДЕЙСТВИЙ
   if (answer.action === 'redirect') {
+    // Внешняя ссылка (открывается в новом окне)
     window.open(answer.url, '_blank')
-  } else if (answer.nextStep) {
+  }
+  else if (answer.action === 'route') {
+    // Внутренний маршрут (переход в приложении)
+    router.push(answer.path)
+  }
+  else if (answer.action === 'routeWithParams') {
+    // Внутренний маршрут с параметрами
+    router.push({
+      path: answer.path,
+      query: answer.params || {},
+      params: answer.params || {}
+    })
+  }
+  else if (answer.nextStep) {
+    // Обычный переход по шагам диалога
     dialogState.value.currentStep = answer.nextStep
   }
 }
@@ -290,7 +332,7 @@ onUnmounted(() => {
   padding: 15px 30px;
   border-radius: 10px;
   z-index: 10;
-  width: 240px;
+  width: 260px;
   font-family: Special_f1;
 }
 

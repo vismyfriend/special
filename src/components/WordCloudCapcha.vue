@@ -1,4 +1,6 @@
 <template>
+  <SoundManager />
+
   <div class="word-cloud-container">
     <!-- Прогресс -->
     <div class="progress-container">
@@ -76,6 +78,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
+import SoundManager from "components/KeyboardSoundManager.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -170,6 +173,7 @@ const title = computed(() => {
 const prepareWords = (words, shape = 'random') => {
   const withSizes = words.map((word, index) => {
     const text = word.eng || word.ru || 'word';
+    const ruText = word.ru || word.eng || 'translation';
     const length = text.length;
 
     let size;
@@ -181,7 +185,9 @@ const prepareWords = (words, shape = 'random') => {
     return {
       id: word.id || index,
       lang: text,
-      ru: word.ru || word.eng || 'translation',
+      ru: ruText,
+      originalLang: text,    // Сохраняем оригинал
+      originalRu: ruText,    // Сохраняем оригинал
       hint: word.hint || null,
       size: size,
       x: 0,
@@ -295,6 +301,14 @@ const onWordClick = (word) => {
   if (index !== -1) {
     displayedWords.value[index].learned = true;
     learnedWords.value++;
+    wordsSinceSwitch.value++;
+
+    // Проверяем, нужно ли сменить направление
+    if (wordsSinceSwitch.value >= SWITCH_AFTER) {
+      toggleDirection();
+      // Показываем уведомление о смене направления
+      showDirectionHint();
+    }
   }
 };
 
@@ -387,7 +401,28 @@ const finishGame = () => {
 const goBack = () => {
   router.back();
 };
+// ============ НАПРАВЛЕНИЕ ПЕРЕВОДА ============
+const isEnglishToRussian = ref(true); // true = eng→ru, false = ru→eng
+const wordsSinceSwitch = ref(0);
+const SWITCH_AFTER = 5; // Меняем направление после 5 кликов
 
+// Функция для смены направления
+const toggleDirection = () => {
+  isEnglishToRussian.value = !isEnglishToRussian.value;
+  wordsSinceSwitch.value = 0;
+
+  // Обновляем отображение слов
+  displayedWords.value = displayedWords.value.map(word => {
+    // Меняем местами lang и ru
+    const newLang = isEnglishToRussian.value ? word.originalLang : word.originalRu;
+    const newRu = isEnglishToRussian.value ? word.originalRu : word.originalLang;
+    return {
+      ...word,
+      lang: newLang,
+      ru: newRu,
+    };
+  });
+};
 // ============ ОЧИСТКА ПРИ РАЗМОНТИРОВАНИИ ============
 onUnmounted(() => {
   if (animationInterval) {
