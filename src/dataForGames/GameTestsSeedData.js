@@ -4443,7 +4443,500 @@ const GameTestsSeedData = {
       }
     ]
   },
-
+  examY4V1: {
+    mainDescription: 'Можно кликать на несколько ответов и...',
+    tasks: [
+      {
+        taskID: "multiple_choice",
+        taskDescription: "...или можно менять свой ответ после выбора",
+        textScript: null,
+        questions: [
+          {
+            text: "Don’t worry if I …. late tonight. I’m going to the gym after work",
+            options: {
+              A: "am",
+              B: "will be",
+              C: "would be",
+              D: "was"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "She …. obsessed with rock climbing at a young age.",
+            options: {
+              A: "becomes",
+              B: "became",
+              C: "has become",
+              D: "would become"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "I did it without spending …. money.",
+            options: {
+              A: "some",
+              B: "any"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "He doesn’t have …. experience.",
+            options: {
+              A: "much",
+              B: "many",
+              C: "few"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "He made him …. do it.",
+            options: {
+              A: "to",
+              B: "-"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "It …. a lot since I was here.",
+            options: {
+              A: "changed",
+              B: "has changed",
+              C: "is changing"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Can I make myself a cup of coffee? Of course. You …. to ask.",
+            options: {
+              A: "haven’t",
+              B: "mustn’t",
+              C: "needn’t",
+              D: "don’t have"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "I …. smoking.",
+            options: {
+              A: "used to",
+              B: "am used to"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "We …. tomorrow, I think.",
+            options: {
+              A: "will drop in",
+              B: "drop in",
+              C: "dropping in"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "I knew they …. come.",
+            options: {
+              A: "will",
+              B: "-",
+              C: "would"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "…. her last week?",
+            options: {
+              A: "have you seen",
+              B: "did you see",
+              C: "were you seen"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "She’s my old friend – I …. her for ages.",
+            options: {
+              A: "’ve known",
+              B: "knew",
+              C: "’ve been knowing"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "When she came in I knew I …. her before.",
+            options: {
+              A: "have seen",
+              B: "saw",
+              C: "had seen"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "His father …. at the railway station.",
+            options: {
+              A: "drop him off",
+              B: "saw him off",
+              C: "take him off"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Jon …. working on this project for a couple of months so he hasn’t made much progress yet.",
+            options: {
+              A: "is only",
+              B: "has only been",
+              C: "was only",
+              D: "had only been"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "She …. much better since she left the hospital last week.",
+            options: {
+              A: "is feeling",
+              B: "feels",
+              C: "felt",
+              D: "has been feeling"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "London is on ...... River Thames",
+            options: {
+              A: "----",
+              B: "a",
+              C: "the"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "The party was so boring I wish I …. there at all.",
+            options: {
+              A: "hadn't gone",
+              B: "wouldn't go",
+              C: "haven't gone",
+              D: "didn't go"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "I want to know ….",
+            options: {
+              A: "where are they",
+              B: "where they are"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Nobody called, …",
+            options: {
+              A: "didn’t they?",
+              B: "did they?",
+              C: "do they?"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Everybody … hungry, as nobody ... eaten.",
+            options: {
+              A: "are/ have",
+              B: "is / are",
+              C: "is/ have",
+              D: "is/has"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "He …. a therapist for several years so far.",
+            options: {
+              A: "has seen",
+              B: "has been seeing",
+              C: "saw",
+              D: "used to seeing"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "How long …. you had this car?",
+            options: {
+              A: "did",
+              B: "do",
+              C: "have",
+              D: "were"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "We've had to … our wedding until May.",
+            options: {
+              A: "take aback",
+              B: "put off",
+              C: "be over"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "He's having a huge house",
+            options: {
+              A: "correct",
+              B: "incorrect"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "We can't use the room now, because it....",
+            options: {
+              A: "is repairing",
+              B: "is repaired",
+              C: "is being repaired"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "Lena used to find work boring …. she became a nurse.",
+            options: {
+              A: "unless",
+              B: "until",
+              C: "if",
+              D: "since"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Are they having a good time?",
+            options: {
+              A: "correct",
+              B: "incorrect"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "The homework will …. by Tuesday.",
+            options: {
+              A: "have been done",
+              B: "be done",
+              C: "do",
+              D: "done"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "If I ... closer to my office, I could walk to work.",
+            options: {
+              A: "lived",
+              B: "would live",
+              C: "had lived",
+              D: "live"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "I am thinking you are a nice person.",
+            options: {
+              A: "correct",
+              B: "incorrect"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Maya …. her hand.",
+            options: {
+              A: "risen",
+              B: "rose",
+              C: "rise",
+              D: "raised"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "She …. always …. keys!!!",
+            options: {
+              A: "is losing",
+              B: "has been losing",
+              C: "lose",
+              D: "is loosing"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "Who are …. women?",
+            options: {
+              A: "this",
+              B: "those",
+              C: "that"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "I’ve got to be at work in five minutes. Don’t worry, I …. you a lift if you want.",
+            options: {
+              A: "give",
+              B: "am giving",
+              C: "’ll give",
+              D: "’m going to give"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "…. anywhere interesting recently?",
+            options: {
+              A: "Do you go",
+              B: "Have you been",
+              C: "Are you going",
+              D: "Will you go"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "He is …. clever man!",
+            options: {
+              A: "so",
+              B: "so a",
+              C: "such",
+              D: "such a"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "Why not …. give him a chance?",
+            options: {
+              A: "to",
+              B: "us",
+              C: "-"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "The lesson …. at 5.",
+            options: {
+              A: "will starts",
+              B: "start",
+              C: "starts"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "I …. for 2 hours and she’s not here yet.",
+            options: {
+              A: "have waited",
+              B: "have been waiting"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "It is tasting good",
+            options: {
+              A: "correct",
+              B: "incorrect"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Who … food in your family when your Mom is away?",
+            options: {
+              A: "cooks",
+              B: "is cook",
+              C: "does cook",
+              D: "cooked"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "He realized that he …. his car keys in the office.",
+            options: {
+              A: "left",
+              B: "has left",
+              C: "had left",
+              D: "was leaving"
+            },
+            correctAnswer: "C",
+            explanation: ""
+          },
+          {
+            text: "We couldn't fall asleep because our neighbours …. a lot of noise.",
+            options: {
+              A: "made",
+              B: "had made",
+              C: "have made",
+              D: "were making"
+            },
+            correctAnswer: "D",
+            explanation: ""
+          },
+          {
+            text: "We wouldn't have missed the bus if you …. to chat with Mary!",
+            options: {
+              A: "didn't stop",
+              B: "hadn't stopped",
+              C: "don't stop",
+              D: "wouldn't have stopped"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          },
+          {
+            text: "Did you see the film on ...TV last night?",
+            options: {
+              A: "----",
+              B: "a",
+              C: "the"
+            },
+            correctAnswer: "A",
+            explanation: ""
+          },
+          {
+            text: "A prize … to whoever solves this problem.",
+            options: {
+              A: "will be giving",
+              B: "will be given",
+              C: "will give"
+            },
+            correctAnswer: "B",
+            explanation: ""
+          }
+        ]
+      },
+    ],
+  },
   test1V1: {
     mainDescription: "Let's find out the weak spots",
     tasks: [
