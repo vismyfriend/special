@@ -67,7 +67,7 @@
     <!-- КОНТЕЙНЕР С КАРТИНКОЙ И КНОПКОЙ -->
     <div class="image-container">
     <img src="../assets/images/wiresPic.png" alt="Wire Cutter" class="cutter-image" />
-    <button class="action-button" @click="handleButtonClick">Режь правильный провод!!</button>
+    <button class="action-button" @click="handleButtonClick">Режь правильный провод!! <br>🧨 Обезвредь бомбу 🧨</button>
   </div>
   </div>
 </template>
@@ -381,7 +381,9 @@ const finishGame = () => {
   router.push({
     path: "/leader-board/",
     query: {
-      missionName: currentMission.value // Передаем текущую миссию
+      missionName: currentMission.value, // Передаем текущую миссию
+      from: "find-pairs-easy",   // / Передаем с какой игры (компонента) отправляемся в таблицу лидеров
+
     }
   });
 };

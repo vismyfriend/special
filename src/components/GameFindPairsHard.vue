@@ -223,7 +223,9 @@ const finishGame = () => {
   router.push({
     path: "/leader-board/",
     query: {
-      missionName: currentMission.value  // ← добавляем missionName
+      missionName: currentMission.value,  // ← добавляем missionName
+      from: "find-pairs-hard",   // / Передаем с какой игры (компонента) отправляемся в таблицу лидеров
+
     }
   });
 };

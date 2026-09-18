@@ -770,7 +770,6 @@ const hiddenOnLevels = ['lvlDev','lvl0','lvl1', 'lvl2','lvl3','lvlBooks'];
 const visibleOnLevels = ['lvlDev','lvlAll'];
 
 const levels = [
-  { id: 'lvlDev', label: '🔓' },
   { id: 'lvl0', label: '0' },
   { id: 'lvl1', label: '1' },
   { id: 'lvl2', label: '2' },
@@ -780,6 +779,8 @@ const levels = [
   { id: 'lvl5', label: '5' },
   { id: 'lvlSpeaking', label: '💬' },
   { id: 'lvlAll', label: 'все' },
+  { id: 'lvlDev', label: '🔓' },
+
   // { id: 'noLvl', label: '?' },
 
 

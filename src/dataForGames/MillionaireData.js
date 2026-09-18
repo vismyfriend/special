@@ -2,6 +2,38 @@
 const MillionaireData = {
 
 
+  dev: [
+    {
+      text: "2 + 2 x 2 = ?",
+      options: {
+        A: "8",
+        B: "12",
+        C: "6",
+        D: "14"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "My teacher's name is _______.",
+      options: {
+        A: "Winston",
+        B: "Vinsent",
+        C: "Wincent",
+        D: "Vincent",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: " Сколько дверей в предложении : Он стоял у ДВЕри ?",
+      options: {
+        A: "One door",
+        B: "Two doors",
+        C: "Many doors",
+        D: "ДВЕри - doors",
+      },
+      correctAnswer: "A",
+    },
+  ],
   pattern: [
     {
       text: "2 + 2 x 2 = ?",

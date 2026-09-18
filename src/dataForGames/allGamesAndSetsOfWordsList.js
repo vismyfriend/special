@@ -59,6 +59,15 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      missionName: "dev",
+      missionVisibleName: "Выбирай задание",
+      missionDescription: "Посмотреть все шаблоны",
+      id: 7,
+      active: true,
+      lvl: "lvl0",
+
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
       missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',

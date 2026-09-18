@@ -58,6 +58,7 @@ import dresserGameData from "src/dataForGames/dresserGameData";
 import songsData from "src/dataForGames/SongsData";
 import pdfPagesData from "src/dataForGames/pdfPagesData";
 import definitionsData from "src/dataForGames/definitions-data";
+import dataGame4Sentences from "src/dataForGames/game4SentencesData";
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
@@ -157,6 +158,14 @@ const AllGames = ref([
     name: "Millionaire",
     path: "millionaire",
     gameData: MillionaireData,
+    cardIcon: '💰', // Добавлена иконка
+    active: true
+  },
+  {
+    id: 12,
+    name: "game4Sent",
+    path: "4sentences",
+    gameData: dataGame4Sentences,
     cardIcon: '💰', // Добавлена иконка
     active: true
   },

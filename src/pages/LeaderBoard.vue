@@ -17,7 +17,7 @@
           <span class="stat-value time-value">{{ (gameStore.lastGameResults.time / 1000).toFixed(2) }} second(s)</span>
         </div>
         <!-- Анимированные слова -->
-        <div class="animated-words-container">
+        <div class="animated-words-container" v-if="!hideWords">
           <div class="animated-words">
             <div v-for="(word, idx) in animatedWords" :key="idx" class="animated-word" :style="{ animationDelay: idx * 0.05 + 's' }">
               {{ word }}
@@ -94,7 +94,7 @@
                 class="simple-btn details-btn"
                 @click="toggleExpand"
               >
-                {{ isExpanded ? 'Свернуть ▲' : 'Посмотреть всех ▼' }}
+                {{ isExpanded ? 'Свернуть ▼' : 'Посмотреть всех ▲' }}
               </button>
 <!--              <button class="simple-btn details-btn" @click="showDetailed = true">-->
 <!--                подробнее статистика-->
@@ -105,6 +105,12 @@
                       @mouseleave="e => e.target.textContent = 'ещё разок ! могу быстрее'"
               >
                 ещё разок ! могу быстрее</button>
+              <button
+                class="simple-btn next-mission"
+                @click="goToNextMission"
+              >
+                {{ nextGame ? 'Следующее задание →' : 'К другим играм →' }}
+              </button>
               <!--              <button class="simple-btn allMissions" @click="toAllMissions">другие задания</button>-->
 
 
@@ -176,6 +182,7 @@
         <button class="simple-btn allMissions" @click="backToSameSet">другие задания</button>
 
         <button class="games-btn" @click="goToGames">Другой набор слов</button>
+
         <button class="simple-btn next-mission" @click="seeAllWordsInSet">See all words</button>
 
         <!--        <button class="simple-view-btn" @click="showDetailed = false">-->
@@ -250,6 +257,7 @@ const animatedWords = ref([]);
 const currentWordIndex = ref(0);
 const showFinalResult = ref(false);
 const animationInterval = ref(null);
+const hideWords = ref(false);
 
 // Массив слов для анимации
 const animationTexts = [
@@ -286,6 +294,25 @@ const randomCompletionPhrase = computed(() => {
 });
 
 
+// ==================== ЦЕПОЧКА ИГР ====================
+// Порядок игр в цепочке
+const GAME_CHAIN = ['find-pairs-easy', 'find-pairs-hard', 'spell-it', ''];
+// Игра по умолчанию, если игрок пришёл по прямой ссылке (нет from)
+const DEFAULT_PREVIOUS_GAME = 'FindPairsEasy';
+
+// Игра, из которой пришёл игрок (если есть)
+const fromGame = computed(() => route.query.from || null);
+
+// Логически "предыдущая" игра: from из query ИЛИ дефолтная
+const previousGame = computed(() => fromGame.value || DEFAULT_PREVIOUS_GAME);
+
+// Следующая игра в цепочке (или null, если мы на последней)
+const nextGame = computed(() => {
+  const idx = GAME_CHAIN.indexOf(previousGame.value);
+  if (idx === -1 || idx === GAME_CHAIN.length - 1) return null;
+  return GAME_CHAIN[idx + 1];
+});
+
 // ==================== КОНФИГУРАЦИЯ АНИМАЦИИ ====================
 const ANIMATION_CONFIG = {
   WORD_INTERVAL: 400, // Интервал между появлением слов (мс)
@@ -299,7 +326,7 @@ const startAnimation = () => {
   currentWordIndex.value = 0;
   showFinalResult.value = false;
   showLeaderboard.value = false; // Добавляем новое состояние
-
+  hideWords.value = false;
 
   // Очищаем предыдущий интервал, если есть
   if (animationInterval.value) {
@@ -338,11 +365,14 @@ const startAnimation = () => {
         // Показываем таблицу лидеров с дополнительной задержкой
         setTimeout(() => {
           showLeaderboard.value = true;
+          hideWords.value = true;
+
         }, ANIMATION_CONFIG.LEADERBOARD_DELAY);
 
       }, ANIMATION_CONFIG.FINAL_RESULT_DELAY);
     }
   }, ANIMATION_CONFIG.WORD_INTERVAL);
+
 };
 
 
@@ -643,7 +673,26 @@ const seeAllWordsInSet = () => {
   }
 };
 
-const tryAgain = () => router.go(-1);
+// const tryAgain = () => router.go(-1);
+const tryAgain = () => {
+  // Явно возвращаем в ту игру, из которой пришли (или в дефолтную)
+  router.push(`/see-all-sets-of-words/${missionName.value}/${previousGame.value}`);
+};
+
+const goToNextMission = () => {
+  if (nextGame.value) {
+    // Есть следующая игра в цепочке — идём туда
+    router.push(`/see-all-sets-of-words/${missionName.value}/${nextGame.value}`);
+  } else {
+    // Последняя игра в цепочке — к списку игр (твоя существующая логика)
+    otherMissions();
+  }
+};
+
+const otherMissions = () => {
+    router.push("/see-all-sets-of-words/");
+};
+
 const toAllMissions = () =>     router.push("/see-all-sets-of-words/");
 const toggleExpand = () => isExpanded.value = !isExpanded.value;
 const handleChangeName = () => router.push("/registration");

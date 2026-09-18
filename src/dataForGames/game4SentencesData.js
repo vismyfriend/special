@@ -1,6 +1,26 @@
 // casinoData.js
+import MillionaireData from "src/dataForGames/MillionaireData";
+
 export const dataGame4Sentences = {
   // Урок 1: Местоимения + глагол to be + прилагательные
+  dev: {
+    name: "Lesson 1: I am big, You are small",
+    pronouns: [
+      { word: "I", ru: "Я", type: "pronoun" },
+      { word: "You", ru: "Ты/Вы", type: "pronoun" },
+      { word: "We", ru: "Мы", type: "pronoun" },
+      { word: "They", ru: "Они", type: "pronoun" }
+    ],
+    verbs: [
+      { word: "am", ru: "есть (я)", type: "verb", onlyWith: ["I"] },
+      { word: "are", ru: "есть (ты/мы/они)", type: "verb", onlyWith: ["You", "We", "They"] }
+    ],
+    adjectives: [
+      { word: "big", ru: "большой", type: "adjective" },
+      { word: "small", ru: "маленький", type: "adjective" },
+      { word: "good", ru: "хороший", type: "adjective" }
+    ]
+  },
   lesson1: {
     name: "Lesson 1: I am big, You are small",
     pronouns: [
@@ -100,3 +120,5 @@ export const dataGame4Sentences = {
     ],
   }
 };
+
+export default dataGame4Sentences
