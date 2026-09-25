@@ -11,6 +11,14 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/SevenDaysAWeek/find-pairs-easy",
+      missionVisibleName: "Seven days a week",
+      missionDescription: "7 days a week",
+      id: 1001,
+      active: true,
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/examY4V1/tests-and-exams",
       missionVisibleName: "Mr. compostello",
@@ -60,7 +68,7 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       missionName: "dev",
-      missionVisibleName: "Выбирай задание",
+      missionVisibleName: "Выбирай<strike><b> урок </b></strike>миссию ↓",
       missionDescription: "Посмотреть все шаблоны",
       id: 7,
       active: true,

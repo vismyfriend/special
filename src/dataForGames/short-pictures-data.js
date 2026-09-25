@@ -832,16 +832,7 @@ const shortPicturesData = {
       eng: "a chicken",
       rus: "курица"
     },
-    {
-      taskPicture: "🐣",
-      eng: "a chick",
-      rus: "цыплёнок"
-    },
-    {
-      taskPicture: "🐥",
-      eng: "a front-facing chick",
-      rus: "цыплёнок (анфас)"
-    },
+
     {
       taskPicture: "🐦",
       eng: "a bird",
@@ -918,11 +909,6 @@ const shortPicturesData = {
       rus: "муравей"
     },
     {
-      taskPicture: "🦗",
-      eng: "a cricket",
-      rus: "сверчок"
-    },
-    {
       taskPicture: "🕷️",
       eng: "a spider",
       rus: "паук"
@@ -953,16 +939,6 @@ const shortPicturesData = {
       taskPicture: "🐟",
       eng: "a fish",
       rus: "рыба"
-    },
-    {
-      taskPicture: "🐠",
-      eng: "a tropical fish",
-      rus: "тропическая рыба"
-    },
-    {
-      taskPicture: "🐡",
-      eng: "a blowfish",
-      rus: "рыба-шар"
     },
     {
       taskPicture: "🦀",
@@ -1031,19 +1007,15 @@ const shortPicturesData = {
       eng: "an elephant",
       rus: "слон"
     },
-    {
-      taskPicture: "🦣",
-      eng: "a mammoth",
-      rus: "мамонт"
-    },
+
     {
       taskPicture: "🦏",
-      eng: "a rhinoceros",
+      eng: "a rhino",
       rus: "носорог"
     },
     {
       taskPicture: "🦛",
-      eng: "a hippopotamus",
+      eng: "a hippo",
       rus: "бегемот"
     },
     {
@@ -1051,11 +1023,7 @@ const shortPicturesData = {
       eng: "a camel",
       rus: "верблюд"
     },
-    {
-      taskPicture: "🐫",
-      eng: "a two-hump camel",
-      rus: "двугорбый верблюд"
-    },
+
     {
       taskPicture: "🦒",
       eng: "a giraffe",
@@ -1081,11 +1049,7 @@ const shortPicturesData = {
       eng: "a skunk",
       rus: "скунс"
     },
-    {
-      taskPicture: "🦡",
-      eng: "a badger",
-      rus: "барсук"
-    },
+
     {
       taskPicture: "🐾",
       eng: "paw prints",
