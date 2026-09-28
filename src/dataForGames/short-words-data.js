@@ -1265,6 +1265,295 @@ const shortWordsData = {
     { id: 19, eng: "start over", ru: "начать заново", hint: "/ старт оУвэ /" },
     { id: 20, eng: "again", ru: "снова", hint: "/ эгэйн /" },
   ],
+  monsterManeskin: [
+    {
+      id: 1,
+      eng: "I wanna be your slave / слэйв /",
+      ru: "я хочу быть твоим рабом",
+    },
+    {
+      id: 2,
+      eng: "I wanna be your master",
+      ru: "я хочу быть твоим хозяином",
+    },
+    {
+      id: 3,
+      eng: "I wanna make your heart / харт / beat",
+      ru: "я хочу заставить твоё сердце стучать",
+    },
+    {
+      id: 35,
+      eng: "run like rollercoaster / ран лайк ролеркостэр /",
+      ru: "мчаться словно американские горки",
+    },
+    {
+      id: 4,
+      eng: "I wanna be a good boy",
+      ru: "я хочу быть хорошим парнем",
+    },
+    {
+      id: 5,
+      eng: "I wanna be a gangster",
+      ru: "я хочу быть гангстером",
+    },
+    {
+      id: 6,
+      eng: "You can be the beauty",
+      ru: "ты можешь быть красавицей",
+    },
+    {
+      id: 7,
+      eng: "I could be monster / ай куд би э мОнстэ /",
+      ru: "я мог бы быть чудовищем",
+    },
+    {
+      id: 8,
+      eng: "I love you since / синс / this morning",
+      ru: "я люблю тебя с утра",
+    },
+    {
+      id: 9,
+      eng: "I wanna touch your body / ай уона тач ё бади /",
+      ru: "я хочу прикоснуться к твоему телу",
+    },
+    {
+      id: 10,
+      eng: "I know you are scared of me",
+      ru: "я знаю ты боишься меня",
+    },
+    {
+      id: 11,
+      eng: "It’s pathetic / пэTHэтик /",
+      ru: "это стрёмно, низко, жалко",
+    },
+    {
+      id: 12,
+      eng: "I'm crying all my tears / айм крАин ол май тИаз /",
+      ru: "я выплакиваю все свои слёзы",
+    },
+    {
+      id: 13,
+      eng: "I wanna be a champion",
+      ru: "я хочу быть чемпионом",
+    },
+    {
+      id: 14,
+      eng: "I wanna be a loser / лУzэр /",
+      ru: "я хочу быть проигравшим, неудачником",
+    },
+    {
+      id: 15,
+      eng: "I'll even be a clown / айл ивэн би э клаун /",
+      ru: "я даже буду клоуном",
+    },
+    {
+      id: 16,
+      eng: "I wanna be your toy",
+      ru: "я хочу быть твоей игрушкой",
+    },
+    {
+      id: 17,
+      eng: "I wanna be your teacher",
+      ru: "я хочу быть твоей училкой",
+    },
+    {
+      id: 18,
+      eng: "I wanna be your sin / син /",
+      ru: "я хочу быть твоим грехом",
+    },
+    {
+      id: 19,
+      eng: "I wanna be a preacher / прИче /",
+      ru: "я хочу быть проповедником",
+    },
+    {
+      id: 20,
+      eng: "I wanna make you love me",
+      ru: "я хочу заставить тебя любить меня",
+    },
+    {
+      id: 21,
+      eng: "I wanna make you hungry",
+      ru: "я хочу заставить тебя проголодаться (сделать тебя голодной)",
+    },
+    {
+      id: 22,
+      eng: "I wanna feed ya / ай уона фид я /",
+      ru: "я хочу накормить тебя",
+    },
+    {
+      id: 23,
+      eng: "I wanna paint your face, like you're my Mona Lisa",
+      ru: " хочу нарисовать твоё лицо, словно ты моя Мона Лиза",
+    },
+    {
+      id: 24,
+      eng: "devil searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "дьявол ищущий искупления",
+    },
+    {
+      id: 25,
+      eng: "lawyer / лойер / searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "адвокат ищущий искупления",
+    },
+    {
+      id: 26,
+      eng: "I want to amuse ya / ай уонт ту эмьЮз я /",
+      ru: "я хочу развлечь тебя",
+    },
+    {
+      id: 27,
+      eng: "monster searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "чудовище ищущий искупления",
+    },
+    {
+      id: 28,
+      eng: "a bad boy searching for redemption / сёрчин фо редЭмпшен /",
+      ru: " плохой парень ищущий искупления",
+    },
+  ],
+  monsterManeskin2: [
+    {
+      id: 1,
+      eng: "I wanna be your slave / слэйв /",
+      ru: "я хочу быть твоим рабом",
+    },
+    {
+      id: 2,
+      eng: "I wanna be your master",
+      ru: "я хочу быть твоим хозяином",
+    },
+    {
+      id: 3,
+      eng: "I wanna make your heartbeat / хартбит / run like rollercoaster / ран лайк ролеркостэр /",
+      ru: "я хочу заставить твоё сердцебиение мчаться словно американские горки",
+    },
+    {
+      id: 4,
+      eng: "I wanna be a good boy",
+      ru: "я хочу быть хорошим парнем",
+    },
+    {
+      id: 5,
+      eng: "I wanna be a gangster",
+      ru: "я хочу быть гангстером",
+    },
+    {
+      id: 6,
+      eng: "You can be the beauty",
+      ru: "ты можешь быть красавицей",
+    },
+    {
+      id: 7,
+      eng: "I could be monster / ай куд би э мОнстэ /",
+      ru: "я мог бы быть чудовищем",
+    },
+    {
+      id: 8,
+      eng: "I love you since / синс / this morning",
+      ru: "я люблю тебя с утра",
+    },
+    {
+      id: 9,
+      eng: "I wanna touch your body / ай уона тач ё бади /",
+      ru: "я хочу прикоснуться к твоему телу",
+    },
+    {
+      id: 10,
+      eng: "I know you’re scared of me",
+      ru: "я знаю ты боишься меня",
+    },
+    {
+      id: 11,
+      eng: "It’s pathetic / пэTHэтик /",
+      ru: "это стрёмно, низко, жалко",
+    },
+    {
+      id: 12,
+      eng: "I'm crying all my tears / айм крАин ол май тИаз /",
+      ru: "я выплакиваю все свои слёзы",
+    },
+    {
+      id: 13,
+      eng: "I wanna be a champion",
+      ru: "я хочу быть чемпионом",
+    },
+    {
+      id: 14,
+      eng: "I wanna be a loser / лУzэр /",
+      ru: "я хочу быть проигравшим, неудачником",
+    },
+    {
+      id: 15,
+      eng: "I'll even be a clown / айл ивэн би э клаун /",
+      ru: "я даже буду клоуном",
+    },
+    {
+      id: 16,
+      eng: "I wanna be your toy",
+      ru: "я хочу быть твоей игрушкой",
+    },
+    {
+      id: 17,
+      eng: "I wanna be your teacher",
+      ru: "я хочу быть твоей училкой",
+    },
+    {
+      id: 18,
+      eng: "I wanna be your sin / син /",
+      ru: "я хочу быть твоим грехом",
+    },
+    {
+      id: 19,
+      eng: "I wanna be a preacher / прИче /",
+      ru: "я хочу быть проповедником",
+    },
+    {
+      id: 20,
+      eng: "I wanna make you love me",
+      ru: "я хочу заставить тебя любить меня",
+    },
+    {
+      id: 21,
+      eng: "I wanna make you hungry",
+      ru: "я хочу заставить тебя проголодаться (сделать тебя голодной)",
+    },
+    {
+      id: 22,
+      eng: "I wanna feed ya / ай уона фид я /",
+      ru: "я хочу накормить тебя",
+    },
+    {
+      id: 23,
+      eng: "I wanna paint your face, like you're my Mona Lisa",
+      ru: " хочу нарисовать твоё лицо, словно ты моя Мона Лиза",
+    },
+    {
+      id: 24,
+      eng: "I'm the devil searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "Я дьявол ищущий искупления",
+    },
+    {
+      id: 25,
+      eng: "I'm a lawyer / лойер / searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "я адвокат ищущий искупления",
+    },
+    {
+      id: 26,
+      eng: "I want to amuse ya / ай уонт ту эмьЮз я /",
+      ru: "я хочу развлечь тебя",
+    },
+    {
+      id: 27,
+      eng: "I'm a monster searching for redemption / сёрчин фо редЭмпшен /",
+      ru: "я чудовище, я монстр ищущий искупления",
+    },
+    {
+      id: 28,
+      eng: "And I'm a bad boy searching for redemption / сёрчин фо редЭмпшен /",
+      ru: " плохой парень ищущий искупления",
+    },
+  ],
 
   topMistakes1: [
     { id: 1, eng: "tell me", ru: "say me", hint: "скажи мне" },
