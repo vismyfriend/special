@@ -1409,7 +1409,7 @@ const shortWordsData = {
     {
       id: 28,
       eng: "a bad boy searching for redemption / сёрчин фо редЭмпшен /",
-      ru: " плохой парень ищущий искупления",
+      ru: "плохой парень ищущий искупления",
     },
   ],
   monsterManeskin2: [

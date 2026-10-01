@@ -101,6 +101,10 @@ const routes = [
                 path: 'find-pairs-easy',
                 component: () => import('src/components/GameFindPairsWires.vue')
               },
+              {
+                path: 'find-pairs-white',
+                component: () => import('src/components/GameFindPairsWhite.vue')
+              },
               // 🆕 Маршрут для Spell-it с уровнем в URL
               {
                 path: 'spell-it/:level?',  // :level? - необязательный параметр

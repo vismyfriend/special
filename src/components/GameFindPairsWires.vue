@@ -111,6 +111,7 @@ const progressWidth = computed(() => `${progressPercentage.value}%`);
 const handleButtonClick = () => {
   console.log("Кнопка нажата — резать провода!");
   // Здесь можно запускать доп. механику
+  router.push(`/see-all-sets-of-words/${currentMission.value}/find-pairs-white`);
 };
 // Изменяем функцию animateProgress для плавной анимации
 const animateProgress = (target) => {
