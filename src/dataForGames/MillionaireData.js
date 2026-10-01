@@ -66,6 +66,462 @@ const MillionaireData = {
       correctAnswer: "A",
     },
   ],
+  alphabetData: [
+    {
+      text: "/ ЭЙ / произношение какой буквы?",
+      options: {
+        A: "a",
+        B: "e",
+        C: "i",
+        D: "u"
+      },
+      correctAnswer: "A",
+    },
+
+    {
+      text: "/ ЭЙ / большая как пишется?",
+      options: {
+        A: "A",
+        B: "a",
+        C: "I",
+        D: "i",
+        E: "E"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ БИ / произношение какой буквы?",
+      options: {
+        A: "b",
+        B: "d",
+        C: "p",
+        D: "q"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ БИ / маленькая как пишется?",
+      options: {
+        A: "b",
+        B: "d",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ СИ / произношение какой буквы?",
+      options: {
+        A: "c",
+        B: "s",
+        C: "понятия не имею",
+        D: "а я откуда знаю"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ДИ / как пишется?",
+      options: {
+        A: "b",
+        B: "d",
+        C: "p",
+        D: "q"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ и / произношение какой буквы?",
+      options: {
+        A: "u",
+        B: "e",
+        C: "i",
+        D: "y"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ И / это произношение какой английской буквы?",
+      options: {
+        A: "U",
+        B: "E",
+        C: "I",
+        D: "Игрик",
+        E: "u",
+        F: "той которая с точкой сверху",
+        G: "И"
+      },
+      correctAnswer: "B",
+    },
+
+    {
+      text: "/ ДЖИ / произношение какой буквы?",
+      options: {
+        A: "g",
+        B: "j",
+        C: "y",
+        D: "q"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ДЖИ / большая как пишется ?",
+      options: {
+        A: "G",
+        B: "J",
+        C: "L",
+        D: "H"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ЭЙЧ / произношение какой буквы?",
+      options: {
+        A: "h",
+        B: "n",
+        C: "m",
+        D: "k"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "буква H английская как произносится?",
+      options: {
+        A: "это / ЭН /",
+        B: "это / АШ /",
+        C: "это / ЭЙЧ /",
+        D: "это / ХЭ /",
+        E: "это / НЭ /"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "/ АЙ / произношение какой буквы?",
+      options: {
+        A: "a",
+        B: "i",
+        C: "y",
+        D: "u"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ АЙ / большая как пишется?",
+      options: {
+        A: "A",
+        B: "I",
+        C: "Y",
+        D: "i",
+        E: "L"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "/ ДЖЕЙ / произношение какой буквы?",
+      options: {
+        A: "g",
+        B: "j",
+        C: "y",
+        D: "q"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ ДЖЕЙ / большая как пишется ?",
+      options: {
+        A: "G",
+        B: "J",
+        C: "L",
+        D: "Q"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ КЕЙ / произношение какой буквы?",
+      options: {
+        A: "c",
+        B: "s",
+        C: "k",
+        D: "x"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "/ ЭЛ / произношение какой английской буквы?",
+      options: {
+        A: "L",
+        B: "Л",
+        C: "J",
+        D: "H"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ЭМ / произношение какой буквы?",
+      options: {
+        A: "M",
+        B: "W",
+        C: "w",
+        D: "H"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ЭН / произношение какой буквы?",
+      options: {
+        A: "M",
+        B: "N",
+        C: "W",
+        D: "H"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ Эйч / маленькая как пишется?",
+      options: {
+        A: "g",
+        B: "h",
+        C: "i",
+        D: "q"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "как английская О произносится ?",
+      options: {
+        A: "ОУ",
+        B: "ЙОУ",
+        C: "Ё",
+        D: "просто О и всё",
+        E: "просто О и всё",
+        F: "ЧтО за вОпрОсы вООбще!?"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ОУ / произношение какой буквы?",
+      options: {
+        A: "O",
+        B: "U",
+        C: "A",
+        D: "Q",
+        E: "Y",
+        F: "W",
+        G: "E"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ПИ / произношение какой буквы?",
+      options: {
+        A: "b",
+        B: "d",
+        C: "p",
+        D: "q"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "/ КЬЮ / произношение какой буквы?",
+      options: {
+        A: "b",
+        B: "d",
+        C: "p",
+        D: "q"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "/ КЬЮ / большая как пишется?",
+      options: {
+        A: "K",
+        B: "G",
+        C: "k",
+        D: "Q"
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "/ АР / произношение какой буквы?",
+      options: {
+        A: "r",
+        B: "p",
+        C: "n",
+        D: "h"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Хитрый и коварный вопрос: какая буква английская произносится / А /",
+      options: {
+        A: "R",
+        B: "A",
+        C: "a",
+        D: "Что за бред... Картавые англичане...",
+        E: "i"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ЭС / произношение какой буквы?",
+      options: {
+        A: "c",
+        B: "s",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ ЭС / большая как пишется?",
+      options: {
+        A: "C",
+        B: "S",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ ТИ / произношение какой буквы?",
+      options: {
+        A: "t",
+        B: "f",
+        C: "g",
+        D: "x"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как произносится английская буква Т",
+      options: {
+        A: "ТЭ",
+        B: "ТИ",
+        C: "ТЫ",
+        D: "Т"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ Ю / произношение какой буквы?",
+      options: {
+        A: "u",
+        B: "o",
+        C: "y",
+        D: "i"
+      },
+      correctAnswer: "A",
+    },
+
+    {
+      text: "/ Ю / большая как пишется?",
+      options: {
+        A: "U",
+        B: "Y",
+        C: "I",
+        D: "V"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ВИ / произношение какой буквы?",
+      options: {
+        A: "W",
+        B: "V",
+        C: "U",
+        D: "E",
+        E: "B"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "/ ДАБЛ-Ю / произношение какой буквы?",
+      options: {
+        A: "m",
+        B: "y",
+        C: "w",
+        D: "v"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Как произносится W английская буква?",
+      options: {
+        A: "ВИ",
+        B: "ВЭ",
+        C: "ДАБЛ Ю",
+        D: "ЭМ",
+        E: "МЭ",
+        F: "В"
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "/ ЭКС / произношение какой буквы?",
+      options: {
+        A: "x",
+        B: "k",
+        C: "s",
+        D: "z"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Как произносится X английская буква?",
+      options: {
+        A: "ЭКС",
+        B: "ИКС",
+        C: "ХЭ",
+        D: "ХА",
+        E: "ХУ"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ УАЙ / произношение какой буквы?",
+      options: {
+        A: "y",
+        B: "i",
+        C: "u",
+        D: "j"
+      },
+      correctAnswer: "A",
+    },
+
+
+    {
+      text: "буква Y y как произносится ? ",
+      options: {
+        A: "Уай",
+        B: "Вай",
+        C: "И",
+        D: "Игрик",
+        E: "Как рУсская у",
+        F: "Не знаю",
+        G: "Йу",
+        H: "Ю"
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "/ ЗИ / произношение какой буквы?",
+      options: {
+        A: "s",
+        B: "z",
+        C: "c",
+        D: "нет такой буквы",
+        E: "x"
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Как произносится Z ?",
+      options: {
+        A: "только zЭд",
+        B: "только зи",
+        C: "двумя способами можно",
+      },
+      correctAnswer: "C",
+    },
+
+
+
+
+
+  ],
   pronouns0: [
     {
       text: "Каким\u00A0местоимением можно\u00A0заменить\u00A0это\u00A0слово\u00A0: Двери / дорз / Doors",

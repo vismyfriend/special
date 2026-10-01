@@ -13,7 +13,10 @@
     <div class="game-container" v-if="currentWord && !isGameFinished" :class="{ 'earthquake': earthquakeEffect }">
       <div class="control-panel">
         <!-- Кнопка прослушать аудио вместо выбора уровня сложности -->
-        <button class="audio-button" @click="handleAudioButtonClick" :disabled="!currentWord?.audio">
+<!--        <button class="audio-button" @click="handleAudioButtonClick" :disabled="!currentWord?.audio">-->
+<!--          🔊 Послушать ещё раз-->
+<!--        </button>-->
+        <button class="audio-button" @click="handleAudioButtonClick">
           🔊 Послушать ещё раз
         </button>
       </div>
@@ -149,6 +152,15 @@ import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useGameStore } from "stores/example-store";
+import { useSpeech } from '../composables/useSpeech'
+
+// Fallback TTS на случай, если у слова нет MP3
+const fallbackSpeech = useSpeech({
+  defaultVoice: 'alex',
+  randomByDefault: true,   // ← включаем рандом по умолчанию
+  filterLang: 'en',        // ← только английские голоса
+  rate: 0.9,
+})
 
 const getWordSet = (name) => {
   if (shortWordsData[name]) return shortWordsData[name];
@@ -172,16 +184,22 @@ const DIFFICULTY_LEVEL = 2; // средний уровень
 const closeInstructions = () => {
   if (showInstructions.value) {
     showInstructions.value = false;
-    // Запускаем таймер
     if (timerInterval) clearInterval(timerInterval);
     timerInterval = setInterval(() => { time.value += 10; }, 10);
-    // Воспроизводим первое слово, но НЕ разблюриваем
-    if (currentWord.value?.audio) {
-      setTimeout(() => {
+
+    setTimeout(() => {
+      if (currentWord.value?.audio) {
         const audio = new Audio(currentWord.value.audio);
-        audio.play().catch(e => console.log('Audio play failed:', e));
-      }, 100);
-    }
+        audio.play().catch(e => {
+          console.log('Audio play failed, using TTS fallback:', e);
+          if (currentWord.value?.eng) {
+            fallbackSpeech.speak(currentWord.value.eng, { random: true });
+          }
+        });
+      } else if (currentWord.value?.eng) {
+        fallbackSpeech.speak(currentWord.value.eng, { random: true });
+      }
+    }, 100);
   }
 };
 
@@ -414,17 +432,22 @@ const loadWord = () => {
 
 const startGame = () => {
   showInstructions.value = false;
-  // Запускаем таймер
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => { time.value += 10; }, 10);
-  // Воспроизводим первое слово, но НЕ разблюриваем
-  if (currentWord.value?.audio) {
-    setTimeout(() => {
+
+  setTimeout(() => {
+    if (currentWord.value?.audio) {
       const audio = new Audio(currentWord.value.audio);
-      audio.play().catch(e => console.log('Audio play failed:', e));
-      // Не разблюриваем при первом воспроизведении
-    }, 100);
-  }
+      audio.play().catch(e => {
+        console.log('Audio play failed, using TTS fallback:', e);
+        if (currentWord.value?.eng) {
+          fallbackSpeech.speak(currentWord.value.eng, { random: true });
+        }
+      });
+    } else if (currentWord.value?.eng) {
+      fallbackSpeech.speak(currentWord.value.eng, { random: true });
+    }
+  }, 100);
 };
 
 const triggerEarthquake = () => {
@@ -493,13 +516,25 @@ const selectLetter = (itemObj) => {
           loadWord();
 
           // Автоматически воспроизводим следующее слово
-          if (currentWordIndex.value < gameWords.value.length && gameWords.value[currentWordIndex.value]?.audio) {
-            setTimeout(() => {
-              const audio = new Audio(gameWords.value[currentWordIndex.value].audio);
-              audio.play().catch(e => console.log('Audio play failed:', e));
-            }, 300);
-          }
-        }, 50); // Маленькая задержка, чтобы размытие успело примениться
+          setTimeout(() => {
+            const nextWord = gameWords.value[currentWordIndex.value];
+            if (!nextWord) return;
+
+            if (nextWord.audio) {
+              // Есть MP3 — играем его
+              const audio = new Audio(nextWord.audio);
+              audio.play().catch(e => {
+                console.log('Audio play failed, using TTS fallback:', e);
+                if (nextWord.eng) {
+                  fallbackSpeech.speak(nextWord.eng, { random: true });
+                }
+              });
+            } else if (nextWord.eng) {
+              // Нет MP3 — TTS
+              fallbackSpeech.speak(nextWord.eng, { random: true });
+            }
+          }, 300);
+        }, 50);// Маленькая задержка, чтобы размытие успело примениться
       }, 700); // Пользователь видит перевод 0.7 секунды
     }
   } else {
@@ -516,20 +551,17 @@ const selectLetter = (itemObj) => {
 
 
 const handleAudioButtonClick = () => {
-  if (currentWord.value?.audio) {
-    playAudio();
-    // При клике на кнопку "Прослушать аудио" снимаем blur с произношения и перевода
-    isHintBlurred.value = false;
-    isTranslationBlurred.value = false;
-  }
+  if (!currentWord.value?.eng) return;   // ← проверяем только наличие слова
+
+  playAudio();   // ← playAudio уже с fallback
+  isHintBlurred.value = false;
+  isTranslationBlurred.value = false;
 };
 
 const handleHintClick = () => {
-  // При клике на произношение - проигрываем аудио и снимаем blur со всего
-  if (currentWord.value?.audio) {
-    playAudio();
-  }
-  // Снимаем blur с произношения и перевода при клике
+  if (!currentWord.value?.eng) return;
+
+  playAudio();   // ← playAudio уже с fallback
   isHintBlurred.value = false;
   isTranslationBlurred.value = false;
 };
@@ -605,13 +637,31 @@ const resetCurrentWord = () => {
   }
 };
 
+
+
 const playAudio = () => {
+  // 1. Если есть готовый MP3 — играем его
   if (currentWord.value?.audio) {
     const audio = new Audio(currentWord.value.audio);
-    audio.play().catch(e => console.log('Audio play failed:', e));
-    // Разблуриваем только если пользователь сам нажал на кнопку прослушать
-    // Заметка: isHintBlurred и isTranslationBlurred снимаются только по клику на кнопку или произношение
+    audio.play().catch(e => {
+      console.log('Audio play failed, using TTS fallback:', e);
+      // Если MP3 не проигрался — используем TTS
+      // Разблуриваем только если пользователь сам нажал на кнопку прослушать
+      // Заметка: isHintBlurred и isTranslationBlurred снимаются только по клику на кнопку или произношение
+      speakWithFallback();
+    });
+    return;
   }
+
+  // 2. Если MP3 нет — используем TTS
+  speakWithFallback();
+};
+
+// Отдельная функция для TTS
+const speakWithFallback = () => {
+  const text = currentWord.value?.eng;
+  if (!text) return;
+  fallbackSpeech.speak(text, { random: true });
 };
 
 const finishGame = () => {
@@ -664,7 +714,9 @@ const getSlotClass = (index, item) => {
   return 'filled';
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await fallbackSpeech.loadVoices()
+
   currentMission.value = route.params.missionName;
   const allWords = getWordSet(currentMission.value);
 

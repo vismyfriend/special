@@ -96,7 +96,6 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { useSpeech } from '../composables/useSpeech';
 
 
-
 // Русский — рандом ТОЛЬКО среди русских голосов
 const questionSpeech = useSpeech({
   defaultVoice: 'ru-google',
@@ -111,6 +110,8 @@ const answerSpeech = useSpeech({
   filterLang: 'en',        // ← только английские
   rate: 0.9,
 })
+
+
 
 const speakQuestion = () => {
   if (!currentWord.value?.ru) return

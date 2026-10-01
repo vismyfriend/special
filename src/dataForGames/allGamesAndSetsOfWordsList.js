@@ -3,6 +3,15 @@
 export const allGamesAndSetsOfWordsList =
   [
     {
+      missionName: "dev",
+      missionVisibleName: "Выбирай<strike><b> урок </b></strike>миссию ↓",
+      missionDescription: "Посмотреть все шаблоны",
+      id: 7,
+      active: true,
+      lvl: "lvl0",
+
+    },
+    {
       type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
       path: "/see-all-sets-of-words/AgentSMN/wordCloud2",
       missionVisibleName: "Agent SMN",
@@ -75,13 +84,24 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
-      missionName: "dev",
-      missionVisibleName: "Выбирай<strike><b> урок </b></strike>миссию ↓",
-      missionDescription: "Посмотреть все шаблоны",
-      id: 7,
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/alphabetData/millionaire",
+      missionVisibleName: "1 - Английский алфавит",
+      missionDescription: "1 - English alphabet",
+      id: 1001,
       active: true,
+      stars: 1,
+      gameIcon: "💰",
       lvl: "lvl0",
-
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/alphabetData/print-all-words2",
+      missionVisibleName: "2 - Английский алфавит",
+      missionDescription: "2 - English alphabet",
+      id: 1001,
+      active: true,
+      gameIcon: "Aa",
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -104,18 +124,19 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/digits09/spell-it/easy",
-      missionVisibleName: 'Миссия: <b>"КОГДА"</b><i>(цифры)</i>',
+      missionVisibleName: '<b>Мишшн: </b>"КОГДА"<i>(цифры)</i>',
       missionDescription: 'Mission: "WHEN?"',
       lvl: "lvl0",
       id: 1001,
       active: true,
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/millionaire",
       missionVisibleName: 'Ми шэн: <b>" ХУ "</b><i> (who?)</i>',
       missionDescription: 'Mission: "WHO?"',
-      lvl: "lvl0",
+      lvl: "lvl1",
       stars: 3,
       id: 1001,
       active: true,
@@ -125,14 +146,14 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/questionWords1/spell-it",
       missionVisibleName: 'Ми шэн: <b>"УАЙ"</b><i> (why? вопросы)</i>',
       missionDescription: 'Mission: "WHY?"',
-      lvl: "lvl0",
+      lvl: "lvl1",
       id: 1001,
       active: true,
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/word-order-sortable",
-      missionVisibleName: 'Mission: <b>"Экзамен № 001"</b><i></i>',
+      missionVisibleName: '<b>Mission:</b> "Экзамен № 001"<i></i>',
       missionDescription: 'Mission: "WHY?"',
       lvl: "lvl0",
       gameIcon: "🧠",
@@ -779,6 +800,7 @@ export const allGamesAndSetsOfWordsList =
         active: true,
         stars: 2
       },
+
       {
         type: "hardcodedLink",
         path: "/see-all-sets-of-words/numbers10to1000/game-translate",

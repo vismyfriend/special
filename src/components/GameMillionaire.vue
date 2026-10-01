@@ -71,15 +71,18 @@
 
     <!-- Подсказки - ОБНОВЛЕННЫЙ БЛОК -->
     <div class="hints-container" :class="{ compact: !shuffleEnabled }">
+
       <button
-        class="hint-button fifty-fifty"
-        @click="useFiftyFifty"
-        :disabled="fiftyFiftyUsed || hintsDisabled"
-        :title="fiftyFiftyUsed ? 'Уже использовано' : 'Убрать 2 неправильных ответа'"
+        class="hint-button phone-friend"
+        @click="usePhoneFriend"
+        :disabled="phoneFriendUsed || hintsDisabled"
+        :title="phoneFriendUsed ? 'Уже использовано' : 'Позвонить другу'"
       >
-        <div class="hint-icon">50/50</div>
-        <div class="hint-text">fifty фИфти</div>
+        <div class="hint-icon">📞</div>
+        <div class="hint-text">Звонок другу</div>
       </button>
+
+
 
       <button
         class="hint-button ask-audience"
@@ -92,13 +95,13 @@
       </button>
 
       <button
-        class="hint-button phone-friend"
-        @click="usePhoneFriend"
-        :disabled="phoneFriendUsed || hintsDisabled"
-        :title="phoneFriendUsed ? 'Уже использовано' : 'Позвонить другу'"
+        class="hint-button fifty-fifty"
+        @click="useFiftyFifty"
+        :disabled="fiftyFiftyUsed || hintsDisabled"
+        :title="fiftyFiftyUsed ? 'Уже использовано' : 'Убрать 2 неправильных ответа'"
       >
-        <div class="hint-icon">📞</div>
-        <div class="hint-text">Звонок другу</div>
+        <div class="hint-icon">50/50</div>
+        <div class="hint-text">fifty фИфти</div>
       </button>
     </div>
 
