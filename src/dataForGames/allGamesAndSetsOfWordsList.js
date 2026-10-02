@@ -2805,9 +2805,27 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songTechnologicBuyItUseItBreakItFixIt/songs",
+      missionVisibleName: "Technologic Daft Punk",
+      missionDescription: "Buy it Use it",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+  {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/songFaith/songs",
       missionVisibleName: "Faith",
       missionDescription: "Вера",
+      id: 1001,
+      active: true,
+      stars: '3'
+    },
+  {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/songTechnologicBuyItUseItBreakItFixIt/find-pairs-hard",
+      missionVisibleName: "Technologic Words",
+      missionDescription: "Technologic Words",
       id: 1001,
       active: true,
       stars: '3'

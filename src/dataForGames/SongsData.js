@@ -51,6 +51,47 @@ const songsData = {
 
     ],
   },
+  songTechnologicBuyItUseItBreakItFixIt: {
+    mainDescription: null,
+    tasks: [
+      {
+        taskDescription: null,
+        taskID: "listenCarefully",
+        usefulWords: null,
+        taskPicture: new URL("../assets/images/agents_TJPEG.jpeg", import.meta.url).href,
+        audio: new URL('../assets/audio/TechnologicDaftPunkLyricsBuyItUseIt.mp3', import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            singer: "Special Agent - Daft Punk",
+            audioName: null,
+            text: "Buy it, use it, break it, fix it\n" +
+              "Trash it, change it, mail – upgrade it\n" +
+              "Charge it, point it, zoom it, press it\n" +
+              "Snap it, work it, quick – erase it\n" +
+              "-\n" +
+              "Write it, cut it, paste it, save it\n" +
+              "Load it, check it, quick – rewrite it\n" +
+              "Plug it, play it, burn it, rip it\n" +
+              "Drag and drop it, zip – unzip it\n" +
+              "-\n" +
+              "Lock it, fill it, call it, find it\n" +
+              "View it, code it, jam – unlock it\n" +
+              "Surf it, scroll it, pause it, click it\n" +
+              "Cross it, crack it, switch – update it\n" +
+              "-\n" +
+              "Name it, read it, tune it, print it\n" +
+              "Scan it, send it, fax – rename it\n" +
+              "Touch it, bring it, pay it, watch it\n" +
+              "Turn it, leave it, start – format it\n" +
+              "-\n" +
+              "Technologic, technologic\n" +
+              "снова сверху ещё раз под супер бит\n"
+          },
+        ]
+      },
+    ],
+  },
   songImpossibleFallout: {
     mainDescription: null,
     tasks: [
