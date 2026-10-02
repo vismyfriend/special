@@ -12,9 +12,11 @@
           <div class="search-input-wrapper">
             <input
               v-model="searchQuery"
-              placeholder="🔎 вводи название миссии или листай"
+              placeholder="🔎 введи что хочешь изучить"
               class="search-input"
               @focus="focusSearch"
+              @keyup.enter="handleReversoSearch"
+
             />
             <button
               v-if="showPronunciationButton"
@@ -32,7 +34,14 @@
             >
               🎧
             </button>
-
+            <button
+              v-if="showPronunciationButton"
+              class="pronunciation-btn oxford-btn"
+              @click="handleOxfordSearch"
+              title="Открыть в Oxford Learner's Dictionaries"
+            >
+              📚
+            </button>
           </div>
 
           <!-- КНОПКИ УРОВНЕЙ - ПРОСТАЯ КАРУСЕЛЬ -->
@@ -742,6 +751,8 @@ const expandedUnderSubTasks = computed({
 
 
 // ==================== Нажатие на поиск - СКРОЛЛ К ВЕРХУ ====================
+const SCROLL_OFFSET_ON_FOCUS = 200; // ← сколько пикселей от верха оставляем
+
 const focusSearch = () => {
   // Для iOS нужно больше времени из-за анимации клавиатуры
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -752,7 +763,7 @@ const focusSearch = () => {
       // Пробуем оба метода для надежности
       try {
         phoneFrame.scrollTo({
-          top: 0,
+          top: SCROLL_OFFSET_ON_FOCUS,          // ← на сколько вверх проскролить
           behavior: isIOS ? 'auto' : 'smooth' // На iOS smooth ломается
         });
       } catch(e) {
@@ -1648,6 +1659,68 @@ const openYouglishSearch = (term) => {
   $q.notify({ message: `Youglish: ${term}`, color: 'primary', timeout: 2000 });
 };
 
+// ==================== OXFORD DICTIONARY ====================
+const handleOxfordSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+  openOxfordSearch(query);
+  searchQuery.value = '';
+};
+
+const openOxfordSearch = (term) => {
+  // Берём только первое слово (для устойчивых запросов типа "give up" можно оставить всё)
+  const cleanTerm = term
+    .replace(/[^\w\sа-яё-]/gi, '')  // убираем лишние символы
+    .trim()
+    .split(/\s+/)[0]                // берём первое слово
+    .toLowerCase();
+
+  if (!cleanTerm) return;
+
+  // Oxford Learner's Dictionaries — прямой переход на статью
+  window.open(
+    `https://www.oxfordlearnersdictionaries.com/definition/english/${encodeURIComponent(cleanTerm)}_1`,
+    '_blank'
+  );
+
+  $q.notify({
+    message: `Oxford: ${cleanTerm}`,
+    color: 'purple',
+    timeout: 2000
+  });
+};
+
+// ==================== REVERSO CONTEXT ====================
+const handleReversoSearch = () => {
+  const query = searchQuery.value.trim();
+  if (!query) return;
+  openReversoSearch(query);
+  searchQuery.value = '';
+};
+
+const openReversoSearch = (term) => {
+  // Reverso любит чистое слово без лишних символов
+  const cleanTerm = term
+    .replace(/[^\w\sа-яё-]/gi, '')  // убираем мусор, оставляем буквы/цифры/дефис
+    .trim()
+    .replace(/\s+/g, ' ');           // схлопываем пробелы
+
+  if (!cleanTerm) return;
+
+  // Reverso Context: прямой переход к странице перевода
+  // Формат: /перевод/английский-русский/<слово>
+  window.open(
+    `https://context.reverso.net/перевод/английский-русский/${encodeURIComponent(cleanTerm)}`,
+    '_blank'
+  );
+
+  $q.notify({
+    message: `Reverso: ${cleanTerm}`,
+    color: 'deep-orange',
+    timeout: 2000
+  });
+};
+
 // ==================== МОДАЛКА ПАРОЛЯ ====================
 const checkPassword = () => {
   if (passwordInput.value === currentSetToUnlock.value?.password) {
@@ -1821,7 +1894,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 .pronunciation-btn {
   position: absolute;
-  right: 12px;
+  right: 45px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   border: 2px solid #000000;
   border-radius: 50%;
@@ -1838,7 +1911,7 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .youglish-btn {
-  right: 45px; /* Сдвигаем вторую кнопку левее */
+  right: 78px; /* Сдвигаем вторую кнопку левее */
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
 }
 
@@ -1857,6 +1930,15 @@ onBeforeRouteLeave((to, from, next) => {
 
 .youglish-btn:hover {
   background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+}
+
+.oxford-btn {
+  right: 12px;
+  background: linear-gradient(135deg, rgba(21, 193, 1, 0.6), #00539b); /* фирменные цвета Oxford */
+}
+
+.oxford-btn:hover {
+  background: linear-gradient(135deg, #00539b, #002147);
 }
 
 @keyframes fadeInScale {

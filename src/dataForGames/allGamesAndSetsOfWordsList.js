@@ -86,8 +86,8 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/alphabetData/millionaire",
-      missionVisibleName: "1 - Английский алфавит",
-      missionDescription: "1 - English alphabet",
+      missionVisibleName: "Буквы",
+      missionDescription: "Алфавит",
       id: 1001,
       active: true,
       stars: 1,
@@ -97,39 +97,49 @@ export const allGamesAndSetsOfWordsList =
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/alphabetData/print-all-words2",
-      missionVisibleName: "2 - Английский алфавит",
-      missionDescription: "2 - English alphabet",
+      missionVisibleName: "Английский алфавит",
+      missionDescription: "English alphabet 2",
       id: 1001,
       active: true,
       gameIcon: "Aa",
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
-      missionVisibleName: 'Миссия: <b>"КТО"</b><i>(местоимения)</i>',
-      missionDescription: 'Mission: "WHO?"',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/see-all-sets-of-words/prepositionsOfPlace0/find-pairs-hard",
-      missionVisibleName: 'Миссия: <b>"ГДЕ"</b><i>(места)</i>',
-      missionDescription: 'Mission: "WHERE?"',
-      lvl: "lvl0",
-      id: 1001,
-      active: true,
-    },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/digits09/spell-it/easy",
-      missionVisibleName: '<b>Мишшн: </b>"КОГДА"<i>(цифры)</i>',
+      missionVisibleName: 'Цифры',
       missionDescription: 'Mission: "WHEN?"',
       lvl: "lvl0",
       id: 1001,
       active: true,
     },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/pronouns0/find-pairs-easy",
+      missionVisibleName: 'Mission: <b>"КТО"</b><i>(местоимения)</i>',
+      missionDescription: 'Mission: "WHO?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+    // {
+    //   type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+    //   path: "/see-all-sets-of-words/digits09/spell-it/easy",
+    //   missionVisibleName: '<b>Мишшн: </b>"КОГДА"<i>(цифры)</i>',
+    //   missionDescription: 'Mission: "WHEN?"',
+    //   lvl: "lvl0",
+    //   id: 1001,
+    //   active: true,
+    // },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace0/find-pairs-hard",
+      missionVisibleName: '<b>Мишшн: </b>"ГДЕ"<i>(места)</i>',
+      missionDescription: 'Mission: "WHERE?"',
+      lvl: "lvl0",
+      id: 1001,
+      active: true,
+    },
+
 
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -151,11 +161,21 @@ export const allGamesAndSetsOfWordsList =
       active: true,
     },
     {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/up1/find-pairs-white",
+      missionVisibleName: "Полезные фразы",
+      missionDescription: "Юс фул - фрэй зиз",
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+      gameIcon: "💬"
+    },
+    {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/pronouns0/word-order-sortable",
       missionVisibleName: '<b>Mission:</b> "Экзамен № 001"<i></i>',
       missionDescription: 'Mission: "WHY?"',
-      lvl: "lvl0",
+      lvl: "lvl1",
       gameIcon: "🧠",
       id: 1001,
       active: true,

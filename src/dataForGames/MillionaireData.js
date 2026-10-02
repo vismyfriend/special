@@ -211,7 +211,7 @@ const MillionaireData = {
         D: "i",
         E: "L"
       },
-      correctAnswer: "D",
+      correctAnswer: "B",
     },
     {
       text: "/ ДЖЕЙ / произношение какой буквы?",
@@ -333,7 +333,7 @@ const MillionaireData = {
       options: {
         A: "K",
         B: "G",
-        C: "k",
+        C: "q",
         D: "Q"
       },
       correctAnswer: "D",
@@ -476,7 +476,7 @@ const MillionaireData = {
         A: "y",
         B: "i",
         C: "u",
-        D: "j"
+        D: "a"
       },
       correctAnswer: "A",
     },

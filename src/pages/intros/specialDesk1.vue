@@ -28,26 +28,42 @@
         <div class="finder-header">
           <div class="window-controls">
             <button class="window-btn close" @click="closeModal"></button>
-            <button class="window-btn minimize"></button>
-            <button class="window-btn zoom"></button>
+            <button class="window-btn minimize" @click="handleMinimize"></button>
+            <button class="window-btn zoom" @click="handleZoom"></button>
           </div>
           <span class="finder-title">Finder</span>
           <div class="finder-spacer"></div>
         </div>
 
-        <!-- Боковая панель (имитация Finder) -->
+        <!-- Тело Finder -->
         <div class="finder-body">
+          <!-- Боковая панель -->
           <div class="sidebar">
-            <div class="sidebar-item favorite">
+            <div
+              class="sidebar-item"
+              :class="{ favorite: activeTab === 'disclaimer' }"
+              @click="activeTab = 'disclaimer'"
+            >
               <span class="sidebar-icon">⭐</span>
               <span>Дисклеймер</span>
             </div>
-            <div class="sidebar-item">
+
+            <div
+              class="sidebar-item"
+              :class="{ favorite: activeTab === 'important' }"
+              @click="activeTab = 'important'"
+            >
               <span class="sidebar-icon">📁</span>
               <span>Важно</span>
             </div>
+
             <div class="sidebar-divider"></div>
-            <div class="sidebar-item">
+
+            <div
+              class="sidebar-item"
+              :class="{ favorite: activeTab === 'devices' }"
+              @click="activeTab = 'devices'"
+            >
               <span class="sidebar-icon">💻</span>
               <span>Устройства</span>
             </div>
@@ -55,11 +71,15 @@
 
           <!-- Основное содержимое -->
           <div class="finder-content">
+            <!-- Заготовка под будущие вкладки -->
             <div class="content-header">
-              <span class="view-options">⬡ Список</span>
+              <div class="tabs-placeholder">
+                <!-- Сюда потом придут вкладки -->
+              </div>
             </div>
 
-            <div class="disclaimer-content">
+            <!-- ВКЛАДКА: ДИСКЛЕЙМЕР -->
+            <div v-if="activeTab === 'disclaimer'" class="tab-content">
               <div class="disclaimer-icon">📄</div>
               <h2 class="disclaimer-title">Добро пожаловать!</h2>
 
@@ -73,13 +93,55 @@
                 </ul>
               </div>
 
+              <!-- Чекбокс согласия -->
+              <label class="disclaimer-checkbox">
+                <input type="checkbox" v-model="isAgreed">
+                <span class="checkbox-box"></span>
+                <span class="checkbox-label">Я согласен с правилами</span>
+              </label>
+
               <div class="finder-actions">
-                <button class="finder-btn primary" @click="acceptAndStart">
-                  Согласен
+                <button
+                  class="finder-btn primary"
+                  :disabled="!isAgreed"
+                  @click="goToImportant"
+                >
+                  Продолжить
                 </button>
                 <button class="finder-btn secondary" @click="closeModal">
                   Выйти
                 </button>
+              </div>
+            </div>
+
+            <!-- ВКЛАДКА: ВАЖНО -->
+            <div v-else-if="activeTab === 'important'" class="tab-content">
+              <div class="disclaimer-icon">📁</div>
+              <h2 class="disclaimer-title">Важно</h2>
+
+              <div class="disclaimer-text">
+                <p>Это приложение для изучения английского языка.</p>
+                <ul>
+                  <li>🔹 Отключите автопереводчик страницы</li>
+                  <li>🔹 Не переводите слова через Google Translate</li>
+                  <li>🔹 Старайтесь понимать контекст сами</li>
+                  <li>🔹 Если совсем непонятно — используйте Oxford / Reverso</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- ВКЛАДКА: УСТРОЙСТВА -->
+            <div v-else-if="activeTab === 'devices'" class="tab-content">
+              <div class="disclaimer-icon">💻</div>
+              <h2 class="disclaimer-title">Устройства</h2>
+
+              <div class="disclaimer-text">
+                <ul>
+                  <li>🔹 💻 MacBook — рекомендуемое устройство</li>
+                  <li>🔹 📱 iPhone — поддерживается</li>
+                  <li>🔹 🖥️ Windows — поддерживается</li>
+                  <li>🔹 📱 Android — поддерживается</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -98,12 +160,21 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-const desktopBgImage = ref('/src/assets/images/specialMonitorHorizontalTJPEG.jpg');
-const mobileBgImage = ref('/src/assets/images/specialMonitorVerticalTJPEG2.jpg');
+// ==================== ФОНОВЫЕ КАРТИНКИ ====================
+// ВАЖНО: пути через new URL(...) считаются относительно ТЕКУЩЕГО файла,
+// поэтому тут нужно два ../ (компонент лежит глубже, чем корень src)
+const desktopBgImage = new URL('../../assets/images/specialMonitorHorizontalTJPEG.jpg', import.meta.url).href;
+const mobileBgImage  = new URL('../../assets/images/specialMonitorVerticalTJPEG2.jpg',  import.meta.url).href;
 
+// ==================== СОСТОЯНИЕ ====================
 const isMobile = ref(false);
 const isModalOpen = ref(false);
 
+// Finder: активная вкладка и галочка согласия
+const activeTab = ref('disclaimer'); // 'disclaimer' | 'important' | 'devices'
+const isAgreed = ref(false);
+
+// ==================== ОПРЕДЕЛЕНИЕ МОБИЛЬНОГО ====================
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768;
 };
@@ -123,27 +194,40 @@ const updateView = () => {
   toggleBodyClass();
 };
 
+// ==================== МОДАЛКА ====================
 const openModal = () => {
   isModalOpen.value = true;
-  document.body.style.overflow = 'hidden'; // Блокируем скролл
+  document.body.style.overflow = 'hidden';
+
+  // Сбрасываем состояние Finder при каждом открытии
+  activeTab.value = 'disclaimer';
+  isAgreed.value = false;
 };
 
 const closeModal = () => {
   isModalOpen.value = false;
-  document.body.style.overflow = ''; // Восстанавливаем скролл
+  document.body.style.overflow = '';
 };
 
-const acceptAndStart = () => {
-  console.log('User accepted! Starting game...');
-  // Здесь логика начала игры
-  // Например: router.push('/game')
-  closeModal();
+// ==================== КНОПКИ ОКНА ====================
+const handleMinimize = () => {
+  console.log('🟡 Жёлтая кнопка: свернуть окно');
+  // TODO: свернуть окно
 };
 
-const startGame = () => {
-  openModal();
+const handleZoom = () => {
+  console.log('🟢 Зелёная кнопка: развернуть окно');
+  // TODO: развернуть окно
 };
 
+// ==================== ПЕРЕХОД НА ВКЛАДКУ "ВАЖНО" ====================
+const goToImportant = () => {
+  if (!isAgreed.value) return;
+  console.log('✅ Пользователь согласен, переходим на "Важно"');
+  activeTab.value = 'important';
+};
+
+// ==================== ЖИЗНЕННЫЙ ЦИКЛ ====================
 onMounted(() => {
   updateView();
   window.addEventListener('resize', updateView);
@@ -156,6 +240,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+// ==================== ОБЩИЙ ФОН ====================
 .background-page {
   position: fixed;
   top: 0;
@@ -227,7 +312,7 @@ onUnmounted(() => {
   z-index: 2;
 }
 
-// ===== КНОПКА START =====
+// ==================== КНОПКА START ====================
 .start-wrapper {
   position: absolute;
   top: 50%;
@@ -325,7 +410,7 @@ onUnmounted(() => {
   }
 }
 
-// ===== MODAL FINDER =====
+// ==================== МОДАЛКА FINDER ====================
 .modal-overlay {
   position: absolute;
   top: 0;
@@ -482,6 +567,7 @@ onUnmounted(() => {
   &.favorite {
     color: #007aff;
     font-weight: 500;
+    background: rgba(0, 122, 255, 0.08);
   }
 }
 
@@ -512,21 +598,17 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   flex-shrink: 0;
+  min-height: 36px;
 }
 
-.view-options {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
+.tabs-placeholder {
+  display: flex;
+  gap: 8px;
+  /* сюда потом придут вкладки */
 }
 
-.disclaimer-content {
+// Содержимое вкладок
+.tab-content {
   flex: 1;
   padding: 30px 32px;
   display: flex;
@@ -579,6 +661,63 @@ onUnmounted(() => {
   }
 }
 
+// ==================== ЧЕКБОКС ====================
+.disclaimer-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .checkbox-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: transparent;
+      transition: background 0.2s ease;
+    }
+  }
+
+  input:checked + .checkbox-box {
+    border-color: #007aff;
+    background: #007aff;
+
+    &::after {
+      background: #fff;
+    }
+  }
+
+  &:hover .checkbox-box {
+    border-color: rgba(0, 122, 255, 0.6);
+  }
+
+  .checkbox-label {
+    font-size: 14px;
+    color: #3a3a3c;
+  }
+}
+
+// ==================== КНОПКИ ====================
 .finder-actions {
   display: flex;
   gap: 12px;
@@ -598,13 +737,20 @@ onUnmounted(() => {
     background: #007aff;
     color: white;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: #0066d9;
       transform: scale(1.02);
     }
 
-    &:active {
+    &:active:not(:disabled) {
       transform: scale(0.98);
+    }
+
+    &:disabled {
+      background: rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.3);
+      cursor: not-allowed;
+      transform: none;
     }
   }
 
@@ -618,7 +764,7 @@ onUnmounted(() => {
   }
 }
 
-// Футер Finder
+// ==================== ФУТЕР FINDER ====================
 .finder-footer {
   display: flex;
   justify-content: space-between;
@@ -631,7 +777,7 @@ onUnmounted(() => {
   min-height: 28px;
 }
 
-// Адаптив для мобильных
+// ==================== АДАПТИВ ====================
 @media (max-width: 768px) {
   .finder-window {
     width: 95%;
@@ -649,7 +795,7 @@ onUnmounted(() => {
     padding: 5px 12px;
   }
 
-  .disclaimer-content {
+  .tab-content {
     padding: 20px;
   }
 
@@ -670,5 +816,4 @@ onUnmounted(() => {
     font-size: 12px;
   }
 }
-
 </style>

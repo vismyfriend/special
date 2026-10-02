@@ -416,6 +416,10 @@ const loadWord = () => {
     if (timerInterval) clearInterval(timerInterval);
     return;
   }
+  // Всегда показываем подсказку и перевод размытыми для нового слова
+  isHintBlurred.value = true;
+  isTranslationBlurred.value = true;
+
 
   currentWord.value = gameWords.value[currentWordIndex.value];
   const englishWord = currentWord.value.eng;
@@ -425,9 +429,7 @@ const loadWord = () => {
   availableLetters.value = generateAvailableItems(englishWord);
   showFeedback.value = false;
 
-  // Всегда показываем подсказку и перевод размытыми для нового слова
-  isHintBlurred.value = true;
-  isTranslationBlurred.value = true;
+
 };
 
 const startGame = () => {
@@ -554,8 +556,8 @@ const handleAudioButtonClick = () => {
   if (!currentWord.value?.eng) return;   // ← проверяем только наличие слова
 
   playAudio();   // ← playAudio уже с fallback
-  isHintBlurred.value = false;
-  isTranslationBlurred.value = false;
+  isHintBlurred.value = true;
+  isTranslationBlurred.value = true;
 };
 
 const handleHintClick = () => {

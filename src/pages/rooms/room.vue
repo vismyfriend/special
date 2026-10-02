@@ -94,10 +94,68 @@
       </div>
     </div>
   </div>
+  <!-- Модалка обратного отсчёта перед Zoom -->
+  <div v-if="isZoomModalOpen" class="zoom-modal-overlay">
+    <div class="glass-card zoom-modal">
+      <!-- Крестик закрытия -->
+      <button class="close-btn" @click="closeZoomModal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="card-content">
+        <h2 class="zoom-modal-title">подключаемся</h2>
+
+        <!-- Кольцо с цифрой / кнопкой start -->
+        <div class="countdown-ring">
+          <svg class="ring-svg" viewBox="0 0 120 120">
+            <circle
+              class="ring-bg"
+              cx="60" cy="60" r="52"
+              fill="none"
+              stroke="rgba(255,255,255,0.1)"
+              stroke-width="4"
+            />
+            <circle
+              class="ring-spinner"
+              cx="60" cy="60" r="52"
+              fill="none"
+              stroke="url(#ringGradient)"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-dasharray="80 250"
+              :class="{ 'ring-spinner--stopped': countdown <= 1 }"
+            />
+            <defs>
+              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#70ff6b" />
+                <stop offset="100%" stop-color="#28a818" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <!-- Цифра, пока идёт отсчёт -->
+          <div v-if="countdown > 1" class="countdown-number">{{ countdown }}</div>
+
+          <!-- Кнопка start, когда отсчёт дошёл до 1 -->
+          <button
+            v-else
+            class="start-circle-btn"
+            @click="actuallyOpenZoom"
+          >
+            start
+          </button>
+        </div>
+
+        <!-- Этапы загрузки / подсказка -->
+        <p class="zoom-modal-hint">{{ loadingMessage }}</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Preloader from '/src/components/SpecialPreloader.vue';
 import { useGameStore } from 'stores/example-store';
@@ -395,14 +453,103 @@ const changeName = () => {
   loadSuggestedNames();
 };
 
+// ==================== ZOOM COUNTDOWN MODAL ====================
+const isZoomModalOpen = ref(false);
+const countdown = ref(7);
+let countdownTimer = null;
 
+// Фразы «загрузки» — меняются по мере отсчёта
+const loadingMessages = [
+  'проверяю соединение...',         //  countdown 7
+  'настраиваю камеру...',           // 6
+  'настраиваю микрофон...',         // 5
+  'настраиваю шумоподавление...',   // 4
+  'ищу тетрадь и ручку...',         // 3
+  'последний шанс сбежать 🏃',      // 2
+  'всё готово! Жми старт',      // 1
+];
 
-const openZoomMeeting = () => {
-  const zoomMeetingUrl = 'https://us06web.zoom.us/j/9041113793?pwd=cmZpZlpQZXRhYkh4RW9JTzZoTTZXZz09';
-  console.log(`🎥 Открываем Zoom: ${zoomMeetingUrl}`);
-  window.open(zoomMeetingUrl, '_blank');
+// Вычисляемая подсказка на основе текущего countdown
+const loadingMessage = computed(() => {
+  // countdown: 7 → индекс 0, 6 → 1, ... 1 → 6
+  const index = Math.max(0, Math.min(loadingMessages.length - 1, 7 - countdown.value));
+  return loadingMessages[index];
+});
+
+// Ваша базовая ссылка на Zoom
+const ZOOM_BASE_URL = 'https://us06web.zoom.us/j/9041113793?pwd=cmZpZlpQZXRhYkh4RW9JTzZoTTZXZz09';
+
+// Функция, которая создаёт ссылку с именем пользователя
+const buildZoomLinkWithName = (userName) => {
+  // Если имени нет, возвращаем обычную ссылку
+  if (!userName || !userName.trim()) return ZOOM_BASE_URL;
+
+  // Кодируем имя (чтобы пробелы и символы не ломали ссылку)
+  const encodedName = encodeURIComponent(userName.trim());
+
+  // Добавляем параметр un к ссылке
+  return `${ZOOM_BASE_URL}&un=${encodedName}`;
 };
 
+const openZoomMeeting = () => {
+  console.log('🎥 Открываем модалку обратного отсчёта');
+  isZoomModalOpen.value = true;
+  countdown.value = 7;
+  startZoomCountdown();
+};
+
+// Сам отсчёт
+const startZoomCountdown = () => {
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+  }
+
+  countdownTimer = setInterval(() => {
+    if (countdown.value > 1) {
+      countdown.value -= 1;
+      console.log(`⏱️ Осталось: ${countdown.value} — ${loadingMessage.value}`);
+    } else {
+      // Дошли до 1 — останавливаем таймер, показываем кнопку start
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      console.log('✅ Отсчёт завершён, ждём нажатия start');
+    }
+  }, 1000);
+};
+
+// Пользователь нажал start — закрываем модалку и открываем Zoom
+const actuallyOpenZoom = () => {
+  console.log('🚀 Пользователь нажал start, открываем Zoom');
+
+  // Закрываем модалку
+  isZoomModalOpen.value = false;
+  countdown.value = 7;
+
+  // Берём сохранённое имя и строим ссылку с ним
+  const savedName = localStorage.getItem('agentName');
+  const zoomLink = buildZoomLinkWithName(savedName);
+
+  // Небольшая задержка, чтобы модалка успела закрыться визуально
+  setTimeout(() => {
+    window.open(zoomLink, '_blank');
+  }, 150);
+};
+const closeZoomModal = () => {
+  console.log('❌ Пользователь закрыл модалку Zoom');
+  isZoomModalOpen.value = false;
+  countdown.value = 7;
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+};
+// Очистка таймера при размонтировании
+onUnmounted(() => {
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+});
 onMounted(() => {
   loadSuggestedNames();
 
@@ -1000,7 +1147,179 @@ onMounted(() => {
     display: block;
   }
 }
+// ==================== МОДАЛКА ZOOM ====================
+.zoom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: overlayFade 0.3s ease;
+  pointer-events: auto;
+}
 
+@keyframes overlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.zoom-modal {
+  padding: 40px 48px;
+  min-width: 380px;
+  animation: floatIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.zoom-modal-title {
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-transform: lowercase;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.zoom-modal-hint {
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: lowercase;
+}
+
+// ==================== КОЛЬЦО С ЦИФРОЙ ====================
+.countdown-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+}
+.ring-spinner {
+  animation: spinRing 2s linear infinite;
+  transform-origin: 60px 60px;
+  filter: drop-shadow(0 0 6px rgba(112, 255, 107, 0.5));
+  transition: opacity 0.4s ease;
+}
+
+.ring-spinner--stopped {
+  animation: none;
+  opacity: 0;
+}
+@keyframes spinRing {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.countdown-number {
+  position: relative;
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 200;
+  font-size: 52px;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -2px;
+  animation: numberPulse 1s ease-in-out infinite;
+  z-index: 1;
+  text-shadow: 0 0 20px rgba(112, 255, 107, 0.3);
+}
+
+@keyframes numberPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+}
+
+
+
+// ==================== КНОПКА START ВНУТРИ КОЛЬЦА ====================
+.start-circle-btn {
+  position: relative;
+  z-index: 1;
+
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+
+  background: rgba(112, 255, 107, 0.15);
+  border: 2px solid rgba(112, 255, 107, 0.6);
+
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.95);
+
+  cursor: pointer;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Пульсация — пользователь понимает, что это кнопка
+  animation: startPulse 1.6s ease-in-out infinite;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: rgba(112, 255, 107, 0.3);
+    transform: scale(1.06);
+    animation-play-state: paused;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    background: rgba(112, 255, 107, 0.45);
+  }
+}
+
+// Пульсация кнопки start
+@keyframes startPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(112, 255, 107, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(112, 255, 107, 0);
+    transform: scale(1.05);
+  }
+}
 // Адаптивность
 @media (max-width: 480px) {
   .login-screen,

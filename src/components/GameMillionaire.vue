@@ -898,7 +898,7 @@ const toggleShuffle = () => {
 .options-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 5px;
+  gap: 4px;
   margin-bottom: 30px;
 }
 
@@ -906,12 +906,13 @@ const toggleShuffle = () => {
   background: white;
   border: 3px solid #4a5568;
   border-radius: 15px;
-  padding: 20px;
+  padding: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  min-height: 80px;
+  min-height: 70px;
+  font-size: 12px;
 
   &:hover:not(.disabled) {
     transform: translateY(-2px);
@@ -939,7 +940,7 @@ const toggleShuffle = () => {
 }
 
 .option-text {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   color: #2d3748;
   line-height: 1.3;
@@ -1267,14 +1268,26 @@ const toggleShuffle = () => {
 
 
   .question-text {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .option-card {
-    padding: 10px;
-    min-height: 60px;
+    padding: 7px;
+    min-height: 48px;
+    font-size: 10px;
+
+  }
+  .option-label {
+    width: 20px;
+    height: 20px;
+
   }
 
+  .question-card {
+
+    padding: 12px 10px;
+
+  }
   .error-text, .positive-text {
     font-size: 40px;
   }
@@ -1330,9 +1343,7 @@ input:checked + .toggle-slider {
 
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
-  .shuffle-toggle {
-    padding: 8px 12px;
-  }
+
 
   .toggle-text {
     font-size: 12px;
@@ -1572,7 +1583,7 @@ input:checked + .toggle-slider {
   }
 
   .shuffle-toggle {
-    padding: 8px 12px;
+    padding: 4px 12px;
   }
 
   .toggle-text {
