@@ -72,8 +72,15 @@ const loadVoices = () => {
 
     synthesis.value = window.speechSynthesis;
 
+    // ← ТАЙМАУТ: если через 3 секунды голоса не загрузились — идём дальше
+    const timeout = setTimeout(() => {
+      console.warn('[SpeechSynthesizer] Таймаут загрузки голосов');
+      resolve(false);
+    }, 3000);
+
     const voices = synthesis.value.getVoices();
     if (voices.length) {
+      clearTimeout(timeout);
       availableVoices.value = voices;
       selectVoice(props.defaultVoice);
       isInitialized.value = true;
@@ -81,6 +88,7 @@ const loadVoices = () => {
       resolve(true);
     } else {
       window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(timeout);
         availableVoices.value = synthesis.value.getVoices();
         selectVoice(props.defaultVoice);
         isInitialized.value = true;
@@ -131,52 +139,66 @@ const setRandomVoice = () => {
 
 // Основная функция произношения текста
 const speak = (text, options = {}) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!text || !synthesis.value) {
-      reject(new Error('Speech synthesis not available'));
+      console.warn('[SpeechSynthesizer] speak вызван без synthesis — пропускаем');
+      resolve();   // ← resolve, а не reject
       return;
     }
 
-    // Если нужно менять голос каждый раз
     if (props.randomVoiceEachTime) {
       setRandomVoice();
     }
 
-    // Останавливаем текущую речь, если она идет
     if (isSpeaking.value) {
       stop();
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
 
-    // Применяем голос
     if (options.voice) {
       utterance.voice = options.voice;
     } else if (currentVoice.value) {
       utterance.voice = currentVoice.value;
     }
 
-    // Применяем настройки
     utterance.rate = options.rate ?? props.rate;
     utterance.pitch = options.pitch ?? props.pitch;
     utterance.volume = options.volume ?? props.volume;
 
-    // Обработчики событий
+    // ← ТАЙМАУТ: максимум 8 секунд на произношение
+    let isResolved = false;
+    const timeout = setTimeout(() => {
+      if (!isResolved) {
+        console.warn('[SpeechSynthesizer] Таймаут произношения — принудительный резолв');
+        isResolved = true;
+        isSpeaking.value = false;
+        resolve();  // ← резолвим, чтобы parent не завис
+      }
+    }, 8000);
+
     utterance.onstart = () => {
       isSpeaking.value = true;
       emit('speaking-start', text);
     };
 
     utterance.onend = () => {
+      if (isResolved) return;
+      isResolved = true;
+      clearTimeout(timeout);
       isSpeaking.value = false;
       emit('speaking-end', text);
       resolve();
     };
 
     utterance.onerror = (event) => {
+      if (isResolved) return;
+      isResolved = true;
+      clearTimeout(timeout);
       isSpeaking.value = false;
       emit('speaking-error', event);
-      reject(event);
+      // ← ВАЖНО: НЕ reject, а resolve — чтобы parent не сломался
+      resolve();
     };
 
     synthesis.value.speak(utterance);

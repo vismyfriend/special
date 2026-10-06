@@ -32,6 +32,7 @@
               type="text"
               class="glass-input"
               placeholder="введите ваше имя"
+              autofocus
               @keyup.enter="handleRegister"
               @focus="onInputFocus"
               @blur="onInputBlur"
@@ -1054,9 +1055,11 @@ onMounted(() => {
   text-align: center;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-    font-weight: 300;
+    color: rgba(255, 255, 255, 0.75);  // ← ярче
+    font-weight: 400;                  // ← жирнее
     text-align: center;
+    font-size: 18px;                   // ← чуть больше
+    letter-spacing: 0.5px;
   }
 
   &:focus {

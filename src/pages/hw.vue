@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <!-- Заголовок с именем агента -->
     <div class="header">
@@ -7,15 +6,20 @@
         <h1 class="agent-name" @click="openNameModal">
           {{ displayUserName }}
         </h1>
-        <span class="mission-badge" @click="openMissionsList">
-          {{ currentMission?.missionName || 'Миссия' }}
-        </span>
+<!--        <span class="mission-badge" @click="openMissionsList">-->
+<!--          {{ currentMission?.missionName || 'Миссия' }}-->
+<!--        </span>-->
       </div>
       <div class="header-right">
-<!--        <span class="progress-text">{{ getProgressText() }}</span>-->
+        <button class="print-button"
+                @click="checkAnswers"
+                title="Скачать PDF">
+          ✅
+        </button>
         <button class="print-button" @click="printPDF" title="Скачать PDF">
           🖨️
         </button>
+
       </div>
     </div>
 
@@ -25,6 +29,7 @@
           <div class="notebook-grid"></div>
 
           <div class="notebook-content" ref="contentRef">
+            <!-- ЕСЛИ МИССИЯ НАЙДЕНА -->
             <div v-if="currentMission" class="content-inner">
               <p class="gray-font">
                 {{ currentMission.description }}
@@ -44,7 +49,7 @@
                     :key="hint.index"
                     class="hint-icon"
                     @click="toggleHint(index, hint.index)"
-                   >
+                  >
                     💡
                   </span>
 
@@ -53,9 +58,9 @@
                     v-if="task.answers && task.answers.length > 0 && !showAnswerFlag[index]"
                     class="answer-flag"
                     @click="showCorrectAnswer(index)"
-                    >
-                   🏁
-                   </span>
+                  >
+                    🏁
+                  </span>
                 </div>
 
                 <!-- Подсказки -->
@@ -75,9 +80,46 @@
                   <span class="answer-text">{{ task.answers.join(' или ') }}</span>
                 </div>
 
-                <div class="input-wrapper">
+
+
+
+                <!-- === ТИП DO THE MAGIC (+ − ? o? a*) === -->
+
+
+
+                <div v-if="task.type === 'doTheMagic'" class="doTheMagic-block">
+                  <div class="doTheMagic-grid">
+                    <div
+                      v-for="(label, key) in task.labels"
+                      :key="key"
+                      class="doTheMagic-row"
+                    >
+                     <span
+                       class="doTheMagic-label"
+                       @dblclick.prevent="showAnswerHint(index, key, task)"
+                       :title="`Двойной клик — показать правильный ответ для «${label}»`"
+                     >
+  {{ label }}
+</span>
+                      <textarea
+                        class="doTheMagic-input"
+                        :class="[
+    getDoTheMagicClass(index, key),
+    { 'showing-hint': hintAnswer[`${index}_${key}`] }
+  ]"
+                        :placeholder="hintAnswer[`${index}_${key}`] || getDoTheMagicPlaceholder(key, index)"
+                        v-model="answers[index][key]"
+                        @input="adjustDoTheMagicHeight($event, index, key)"
+                        rows="1"
+                        :ref="el => setDoTheMagicRef(el, index, key)"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- === ОБЫЧНЫЙ TEXTAREA === -->
+                <div v-else-if="task.type === 'textarea'" class="input-wrapper">
                   <textarea
-                    v-if="task.type === 'textarea'"
                     class="message-input"
                     :class="getInputClass(index)"
                     :placeholder="task.placeholder"
@@ -86,9 +128,11 @@
                     :data-index="index"
                     rows="1"
                   ></textarea>
+                </div>
 
+                <!-- === ОБЫЧНЫЙ INPUT (TEXT) === -->
+                <div v-else class="input-wrapper">
                   <input
-                    v-else
                     class="message-input-text"
                     :class="getInputClass(index)"
                     :placeholder="task.placeholder"
@@ -98,14 +142,15 @@
                 </div>
 
                 <!-- Результат для конкретного задания -->
-                <div v-if="showResults && taskResults[index]" class="task-result">
-                  <span class="result-icon">
-<!--                    {{ taskResults[index].isCorrect ? '✅' : '🔄' }}-->
-                  </span>
-                  <span class="result-message" :class="taskResults[index].isCorrect ? 'correct-text' : 'incorrect-text'">
-                    {{ taskResults[index].message }}
-                  </span>
-                </div>
+<!--                <div v-if="showResults && taskResults[index]" class="task-result">-->
+<!--                  <span class="result-icon"></span>-->
+<!--                  <span-->
+<!--                    class="result-message"-->
+<!--                    :class="taskResults[index].isCorrect ? 'correct-text' : 'incorrect-text'"-->
+<!--                  >-->
+<!--                    {{ taskResults[index].message }}-->
+<!--                  </span>-->
+<!--                </div>-->
               </div>
 
               <!-- Кнопки -->
@@ -118,19 +163,9 @@
                   {{ isChecking ? 'Проверяем...' : showResults ? 'Я исправил, перепроверить' : 'Проверить' }}
                 </button>
               </div>
-
-              <!-- Общий результат -->
-<!--              <div v-if="showResults" class="results">-->
-<!--                <div class="score">-->
-<!--                  {{ correctAnswers }} из {{ totalTasks }} правильных-->
-<!--                  <span class="score-percent">({{ Math.round((correctAnswers / totalTasks) * 100) }}%)</span>-->
-<!--                </div>-->
-<!--                <div class="score-message" :class="getScoreClass()">-->
-<!--                  {{ getScoreMessage() }}-->
-<!--                </div>-->
-<!--              </div>-->
             </div>
 
+            <!-- ЕСЛИ МИССИЯ НЕ НАЙДЕНА -->
             <div v-else class="error-message">
               <span>📚</span>
               <p>Задание не найдено</p>
@@ -178,16 +213,18 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted, nextTick, computed, watch } from 'vue'
+<script setup>import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
+import { useSpellingCheck } from 'src/composables/specialSpellingCheck'
+
 const route = useRoute()
 const router = useRouter()
 const gameStore = useGameStore()
 
+// Composable для проверки ответов
+const { usualCheck } = useSpellingCheck()
 const missionName = computed(() => route.params.missionName || 'intro-1')
 const currentMission = ref(null)
 const answers = ref([])
@@ -198,7 +235,7 @@ const showResults = ref(false)
 const taskResults = ref([])
 const correctAnswers = ref(0)
 const totalTasks = ref(0)
-const showHint = ref([]) // Массив Set'ов с индексами показанных подсказок
+const showHint = ref([])
 const showAnswerFlag = ref([])
 const missionsList = ref([])
 
@@ -207,55 +244,164 @@ const showNameModal = ref(false)
 const tempName = ref('')
 const showMissionsModal = ref(false)
 
+// Refs для textarea в doTheMagic (чтобы управлять высотой)
+const doTheMagicRefs = ref({}) // { 'index_key': HTMLElement }
+
+const setDoTheMagicRef = (el, index, key) => {
+  if (el) {
+    doTheMagicRefs.value[`${index}_${key}`] = el
+  }
+}
+
+// Авто-высота для textarea в doTheMagic
+const adjustDoTheMagicHeight = (event, index, key) => {
+  const textarea = event.target
+  textarea.style.height = 'auto'
+  // Округляем до кратного 20px (клетке)
+  const scrollHeight = textarea.scrollHeight
+  const roundedHeight = Math.max(20, Math.ceil(scrollHeight / 20) * 20)
+  textarea.style.height = roundedHeight + 'px'
+}
+
+// Показ правильного ответа при клике на метку
+const hintAnswer = ref({}) // { 'taskIndex_key': 'правильный ответ' }
+const savedAnswers = ref({}) // { 'taskIndex_key': 'что было в поле' }
+const showAnswerHint = (taskIndex, key, task) => {
+  const hintKey = `${taskIndex}_${key}`
+
+  // Если уже показан — не показываем
+  if (hintAnswer.value[hintKey]) return
+
+  // Собираем правильный ответ
+  const correctList = task.correct?.[key]
+  if (!correctList || correctList.length === 0) return
+
+  // Показываем через /, если несколько
+  const answerText = correctList.join(' / ')
+
+  // Сохраняем текущий ввод студента
+  const savedAnswer = answers.value[taskIndex][key] || ''
+  savedAnswers.value[hintKey] = savedAnswer
+
+  // Очищаем поле — чтобы placeholder стал виден
+  answers.value[taskIndex][key] = ''
+// Сбрасываем высоту textarea до 20px (одна клетка)
+  nextTick(() => {
+    const refKey = `${taskIndex}_${key}`
+    if (doTheMagicRefs.value[refKey]) {
+      doTheMagicRefs.value[refKey].style.height = '20px'
+    }
+  })
+  // Показываем подсказку
+  hintAnswer.value = {
+    ...hintAnswer.value,
+    [hintKey]: answerText
+  }
+
+  // Через 2 секунды убираем
+  setTimeout(() => {
+    const currentValue = answers.value[taskIndex][key]
+    if (currentValue === '' || currentValue === undefined) {
+      answers.value[taskIndex][key] = savedAnswers.value[hintKey] || ''
+    }
+
+    // ← Пересчитываем высоту после возврата
+    nextTick(() => {
+      const refKey = `${taskIndex}_${key}`
+      const textarea = doTheMagicRefs.value[refKey]
+      if (textarea) {
+        textarea.style.height = 'auto'
+        const scrollHeight = textarea.scrollHeight
+        const roundedHeight = Math.max(20, Math.ceil(scrollHeight / 20) * 20)
+        textarea.style.height = roundedHeight + 'px'
+      }
+    })
+
+    // Убираем подсказку
+    const newHint = {...hintAnswer.value}
+    delete newHint[hintKey]
+    hintAnswer.value = newHint
+
+    // Очищаем сохранённое
+    const newSaved = {...savedAnswers.value}
+    delete newSaved[hintKey]
+    savedAnswers.value = newSaved
+  }, 2000)
+}
+
 const isBackendAvailable = ref(true)
 
-// Вычисляемое свойство - проверяет, есть ли хотя бы 2 символа в любом поле
+// ==================== ПРОВЕРКА: ЕСТЬ ЛИ ХОТЯ БЫ 2 СИМВОЛА ====================
 const isAnyAnswerFilled = computed(() => {
-  if (!answers.value || answers.value.length === 0) return false;
+  if (!answers.value || answers.value.length === 0) return false
 
-  // Проверяем, есть ли хоть одно поле с 2+ символами
-  return answers.value.some(answer =>
-    answer && answer.trim().length >= 2
-  );
-});
+  return answers.value.some(answer => {
+    // Если это строка (обычный ответ)
+    if (typeof answer === 'string') {
+      return answer.trim().length >= 2
+    }
+    // Если это объект (doTheMagic)
+    if (typeof answer === 'object' && answer !== null) {
+      return Object.values(answer).some(v => v && v.trim().length >= 2)
+    }
+    return false
+  })
+})
 
 const displayUserName = computed(() => {
-  let name = '';
+  let name = ''
 
   if (gameStore.agentName) {
-    name = gameStore.agentName.split('#')[0];
+    name = gameStore.agentName.split('#')[0]
   } else {
-    const savedName = localStorage.getItem('agentName');
+    const savedName = localStorage.getItem('agentName')
     if (savedName) {
-      name = savedName;
+      name = savedName
     } else {
-      name = 'нажми сюда';
+      name = 'нажми сюда'
     }
   }
 
   if (!isBackendAvailable.value && name !== 'Agent 404') {
-    return `${name} (404)`;
+    return `${name} (404)`
   }
 
-  return name;
-});
+  return name
+})
 
+// ==================== ЗАГРУЗКА МИССИИ ====================
 const loadMission = () => {
   const data = getHomework(missionName.value)
   currentMission.value = data
+
   if (data) {
-    answers.value = new Array(data.tasks.length).fill('')
-    // Создаем массив Set'ов для отслеживания показанных подсказок
+    // Создаём answers в зависимости от типа задания
+    answers.value = data.tasks.map(task => {
+      if (task.type === 'doTheMagic') {
+        // Для doTheMagic — объект с полями по ключам labels
+        const obj = {}
+        if (task.labels) {
+          Object.keys(task.labels).forEach(key => {
+            obj[key] = ''
+          })
+        }
+        return obj
+      }
+      // Для остальных — строка
+      return ''
+    })
+
     showHint.value = data.tasks.map(() => new Set())
     showAnswerFlag.value = new Array(data.tasks.length).fill(false)
     totalTasks.value = data.tasks.length
   }
+
   showResults.value = false
   taskResults.value = []
   missionsList.value = getAllMissions()
 }
 
-// Получить все подсказки для задачи с их индексами и текстом
+// ==================== ПОДСКАЗКИ ====================
 const getAllHintsWithIndex = (task) => {
   const hints = []
   if (task.hint1) hints.push({ text: task.hint1, index: 1 })
@@ -266,52 +412,36 @@ const getAllHintsWithIndex = (task) => {
   return hints
 }
 
-// Получить доступные подсказки для задачи (только те, которые еще не показаны)
 const getAvailableHints = (task, taskIndex) => {
   const allHints = getAllHintsWithIndex(task)
   const shownHints = showHint.value[taskIndex] || new Set()
-
-  // Возвращаем только те подсказки, которых нет в показанных
   return allHints.filter(hint => !shownHints.has(hint.index))
 }
 
-// Получить показанные подсказки для отображения
 const getShownHints = (task, taskIndex) => {
   const allHints = getAllHintsWithIndex(task)
   const shownHints = showHint.value[taskIndex] || new Set()
-
-  // Возвращаем текст подсказок, которые были показаны
   return allHints
     .filter(hint => shownHints.has(hint.index))
     .map(hint => hint.text)
 }
 
-// Переключить подсказку по ее индексу
 const toggleHint = (taskIndex, hintIndex) => {
-  // Убеждаемся, что Set для этой задачи существует
   if (!showHint.value[taskIndex]) {
     showHint.value[taskIndex] = new Set()
   }
-
-  // Добавляем индекс подсказки в показанные
   showHint.value[taskIndex].add(hintIndex)
-
-  // Триггерим обновление (для реактивности)
   showHint.value = [...showHint.value]
 }
 
-// Показать правильный ответ
 const showCorrectAnswer = (index) => {
-  if (currentMission.value.tasks[index].answers &&
-    currentMission.value.tasks[index].answers.length > 0) {
+  const task = currentMission.value.tasks[index]
+  if (task.answers && task.answers.length > 0) {
     showAnswerFlag.value[index] = true
   }
 }
 
-const calculateContentHeight = () => {
-  return 600
-}
-
+// ==================== АВТО-ВЫСОТА ====================
 const adjustTextareaHeight = async (event, index) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -322,13 +452,129 @@ const adjustInputHeight = async () => {
   // Ничего не делаем
 }
 
+// ==================== СТИЛИ ДЛЯ INPUT ====================
 const getInputClass = (index) => {
   if (!showResults.value) return ''
   if (!taskResults.value[index]) return ''
   return taskResults.value[index].isCorrect ? 'input-correct' : 'input-incorrect'
 }
 
+// ==================== DO THE MAGIC ====================
+const getDoTheMagicClass = (taskIndex, fieldKey) => {
+  if (!showResults.value) return ''
+  if (!taskResults.value[taskIndex]?.fields) return ''
+  return taskResults.value[taskIndex].fields[fieldKey] ? 'doTheMagic-correct' : 'doTheMagic-incorrect'
+}
+
+const getDoTheMagicPlaceholder = (key, taskIndex) => {
+  // Placeholder только для ПЕРВОГО задания
+  if (taskIndex !== 0) return ''
+
+  const placeholders = {
+    positive: 'Утверждение...',
+    negative: 'Отрицание...',
+    question: 'Вопрос yes/no',
+    openQuestion: 'Открытый вопрос...',
+    answer: 'Ответ (*необязательно)'
+  }
+  return placeholders[key] || ''
+}
+// ==================== ПРОВЕРКА ОТКРЫТОГО ВОПРОСА ====================
+const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell','what the hell',
+  'what', 'what time', 'how long', 'when', 'where', 'why', 'how',]
+
+/**
+ * Проверка открытого вопроса.
+ *
+ * Если в task.correct есть openQuestion — проверяем по нему.
+ * Если НЕТ — берём question (закрытый вопрос) и разрешаем любой wh-word спереди.
+ *
+ * Пример:
+ * - Студент пишет: "Why do you like English?"
+ * - В данных question: ["Do you like English?"], openQuestion нет.
+ * - Берём "Do you like English?", отделяем wh-word "why", остаток "do you like english".
+ * - Остаток студента (после "why"): "do you like english".
+ * - Совпадает → ✅
+ */
+const checkOpenQuestion = (userAnswer, task) => {
+  const userLower = (userAnswer || '').toLowerCase().trim()
+
+  // 1. Если в task.correct есть openQuestion — сначала проверяем по нему
+  if (task.correct?.openQuestion && task.correct.openQuestion.length > 0) {
+    if (usualCheck(userAnswer, task.correct.openQuestion)) return true
+  }
+
+  // 2. Определяем wh-word студента
+  const userWh = WH_WORDS.find(w => userLower.startsWith(w + ' '))
+  if (!userWh) return false
+
+  // 3. Извлекаем "остаток" студента (без wh-word)
+  const userRest = userLower.slice(userWh.length).trim()
+
+  // 4. Собираем список "закрытых вопросов" для сравнения
+  // Приоритет: openQuestion (если есть) + question (всегда)
+  const closedQuestions = []
+  if (task.correct?.question) {
+    closedQuestions.push(...task.correct.question)
+  }
+  if (task.correct?.openQuestion) {
+    closedQuestions.push(...task.correct.openQuestion)
+  }
+
+  // 5. Сравниваем "остаток" студента с каждым закрытым вопросом
+  return closedQuestions.some(correct => {
+    const correctLower = correct.toLowerCase().trim()
+
+    // Если правильный тоже начинается с wh-word — убираем его
+    const correctWh = WH_WORDS.find(w => correctLower.startsWith(w + ' '))
+    const correctRest = correctWh
+      ? correctLower.slice(correctWh.length).trim()
+      : correctLower
+
+    // Сравниваем "остатки" через usualCheck
+    return usualCheck(userRest, correctRest)
+  })
+}
+// ==================== ПРОВЕРКА ОДНОГО ОТВЕТА ====================
 const checkSingleAnswer = (task, answer) => {
+  // === DO THE MAGIC ===
+  if (task.type === 'doTheMagic') {
+    const results = {}
+    let allCorrect = true
+    let filledCount = 0
+    if (task.correct) {
+      Object.keys(task.correct).forEach(key => {
+        const userAnswer = (answer[key] || '').trim()
+        if (userAnswer.length > 0) filledCount++
+
+        let isFieldCorrect
+
+        // ← СПЕЦИАЛЬНАЯ ОБРАБОТКА ДЛЯ openQuestion
+        if (key === 'openQuestion') {
+          isFieldCorrect = checkOpenQuestion(userAnswer, task)
+        } else {
+          // ← ОБЫЧНАЯ ПРОВЕРКА
+          isFieldCorrect = usualCheck(userAnswer, task.correct[key])
+        }
+
+        results[key] = isFieldCorrect
+
+        if (!isFieldCorrect && userAnswer.length > 0) {
+          allCorrect = false
+        }
+      })
+    }
+
+    return {
+      isCorrect: allCorrect && filledCount > 0,
+      message: allCorrect && filledCount > 0
+        ? '✅ Отлично! Все формы верны'
+        : '⚠️ Проверь ещё раз — не все формы совпали',
+      fields: results
+    }
+  }
+
+  // === ОБЫЧНЫЕ ЗАДАНИЯ ===
   if (!task.answers || task.answers.length === 0) {
     return {
       isCorrect: null,
@@ -336,17 +582,20 @@ const checkSingleAnswer = (task, answer) => {
     }
   }
 
-  const normalizedAnswer = answer.trim().toLowerCase()
+  const normalizedAnswer = (answer || '').trim().toLowerCase()
   const isCorrect = task.answers.some(correct =>
     normalizedAnswer === correct.toLowerCase()
   )
 
   return {
     isCorrect: isCorrect,
-    message: isCorrect ? '✅ super !' : '☝️ Странно выглядит... нажми чтобы исправить самостоятельно. \n Или отправь скриншот Винсенту - можно так сказать или нет, он проверит '
+    message: isCorrect
+      ? '✅ super !'
+      : '☝️ Странно выглядит... нажми чтобы исправить самостоятельно. \n Или отправь скриншот Винсенту - можно так сказать или нет, он проверит '
   }
 }
 
+// ==================== ПРОВЕРКА ВСЕХ ОТВЕТОВ ====================
 const checkAnswers = () => {
   if (!currentMission.value || isChecking.value) return
 
@@ -357,7 +606,7 @@ const checkAnswers = () => {
     let correct = 0
 
     currentMission.value.tasks.forEach((task, index) => {
-      const answer = answers.value[index] || ''
+      const answer = answers.value[index]
       const result = checkSingleAnswer(task, answer)
 
       if (result.isCorrect === true) {
@@ -379,9 +628,16 @@ const checkAnswers = () => {
   }, 100)
 }
 
+// ==================== ПРОЧЕЕ ====================
 const getProgressText = () => {
   if (!currentMission.value) return ''
-  const answered = answers.value.filter(a => a && a.trim().length > 0).length
+  const answered = answers.value.filter(a => {
+    if (typeof a === 'string') return a && a.trim().length > 0
+    if (typeof a === 'object' && a !== null) {
+      return Object.values(a).some(v => v && v.trim().length > 0)
+    }
+    return false
+  }).length
   return `${answered} / ${totalTasks.value}`
 }
 
@@ -401,7 +657,7 @@ const getScoreClass = () => {
   return 'score-bad'
 }
 
-// Модалка имени
+// ==================== МОДАЛКА ИМЕНИ ====================
 const openNameModal = () => {
   tempName.value = gameStore.agentName || localStorage.getItem('agentName') || ''
   showNameModal.value = true
@@ -422,7 +678,7 @@ const saveName = () => {
   }
 }
 
-// Модалка списка миссий
+// ==================== МОДАЛКА МИССИЙ ====================
 const openMissionsList = () => {
   missionsList.value = getAllMissions()
   showMissionsModal.value = true
@@ -437,11 +693,12 @@ const goToMission = (missionId) => {
   router.push(`/hw/${missionId}`)
 }
 
-// Печать PDF
+// ==================== ПЕЧАТЬ ====================
 const printPDF = () => {
   window.print()
 }
 
+// ==================== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ====================
 const loadUserFromBackend = async () => {
   try {
     const token = localStorage.getItem('token')
@@ -469,6 +726,7 @@ const adjustNotebookHeight = async () => {
   notebookHeight.value = 600
 }
 
+// ==================== WATCH & MOUNT ====================
 watch(() => route.params.missionName, () => {
   loadMission()
   nextTick(() => {
@@ -642,15 +900,15 @@ onMounted(async () => {
     linear-gradient(90deg,
       transparent 0%,
       transparent 19px,
-      #e0e8e8 19px,
-      #e0e8e8 20px,
+      #eef2f2 19px,
+      #eef2f2 20px,
       transparent 20px
     ),
     linear-gradient(to bottom,
       transparent 0%,
       transparent 19px,
-      #e0e8e8 19px,
-      #e0e8e8 20px,
+      #eef2f2 19px,
+      #eef2f2 20px,
       transparent 20px
     );
   background-size: 20px 20px;
@@ -687,7 +945,7 @@ onMounted(async () => {
 }
 
 .task-block {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   position: relative;
 }
 
@@ -762,12 +1020,13 @@ onMounted(async () => {
 
 .input-wrapper {
   position: relative;
-
+  display: flex;         /* ← добавили */
+  align-items: center;   /* ← добавили */
 }
 
 .message-input {
   width: 100%;
-  min-height: 37px;
+  min-height: 40px;
   background: transparent;
   border: none;
   outline: none;
@@ -807,8 +1066,11 @@ onMounted(async () => {
 
 .message-input-text {
   width: 100%;
-  background: transparent;
+  height: 20px;           /* ← явная высота */
+  padding: 0;             /* ← убираем браузерный padding */
   border: none;
+  box-sizing: border-box; /* ← height включает padding/border */
+  background: transparent;
   outline: none;
   font-family: 'Fira Code', serif;
   font-size: 14px;
@@ -1123,6 +1385,95 @@ onMounted(async () => {
   }
 }
 
+/* ==================== DO THE MAGIC (+ − ? o? a*) ==================== */
+.doTheMagic-block {
+  margin: 0;
+  padding: 0;
+}
+
+.doTheMagic-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;                     /* ← без отступов, чтобы строки шли подряд */
+}
+
+.doTheMagic-row {
+  display: flex;
+  align-items: flex-start;    // ← вместо center как было у проста поля ввода (теперь это текст area)
+  gap: 2px;
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.doTheMagic-label {
+  user-select: none;
+  font-family: 'Fira Code', monospace;
+  font-weight: 500;
+  font-size: 14px;
+  color: #207cca;
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 20px;
+  padding-top: 0;           // ← на случай, если был padding
+  align-self: flex-start;   // ← прижимаем к верху
+}
+
+.doTheMagic-input {
+  flex: 1;
+  width: 100%;
+  min-height: 20px;           // ← минимум одна клетка
+  height: 20px;               // ← стартовая высота
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;               // ← запрещаем ручной resize
+  padding: 0;
+  margin: 0;
+  font-family: 'Fira Code', serif;
+  font-size: 16px;
+  line-height: 20px;          // ← ровно на клетку
+  color: #2c3e50;
+  caret-color: #2c3e50;
+  transition: background 0.3s, box-shadow 0.3s;
+  overflow: hidden;           // ← скрываем скроллбар
+  vertical-align: top;        // ← важно для textarea
+  box-sizing: border-box;     // ← чтобы padding не ломал высоту
+  word-break: break-word;     // ← перенос длинных слов
+  overflow-wrap: break-word;  // ← альтернативный перенос
+
+  &.showing-hint::placeholder {
+    color: #27ae60;
+    opacity: 0.85;
+    font-style: italic;
+    font-weight: 500;
+    animation: hintFadeIn 0.3s ease;
+  }
+
+  &::placeholder {
+    color: #95a5a6;
+    opacity: 0.6;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 -1px 0 0 #207cca;
+  }
+
+
+  &.doTheMagic-correct {
+    background: rgba(46, 204, 113, 0.08);
+    //box-shadow: inset 0 -1px 0 0 #27ae60;
+  }
+
+  &.doTheMagic-incorrect {
+    background: rgba(243, 156, 18, 0.08);
+    //box-shadow: inset 0 -1px 0 0 #f39c12;
+  }
+}
+
 /* Стили для печати */
 @media print {
   .container {
@@ -1201,7 +1552,7 @@ onMounted(async () => {
 
   .task-block {
     page-break-inside: avoid;
-    margin-bottom: 18px !important;
+    margin-bottom: 20px !important;
   }
 
   .hints {
@@ -1228,11 +1579,11 @@ onMounted(async () => {
 
 
   .notebook-page {
-    padding: 20px 0 20px 30px;
+    padding: 20px 0 20px 5px;
 
     &::before {
 
-      left: 30px;
+      left: 5px;
     }
   }
   .header {
@@ -1255,5 +1606,14 @@ onMounted(async () => {
     max-width: 95%;
     padding: 20px;
   }
+
+
+  .doTheMagic-input {
+
+    letter-spacing: -0.5px;
+    font-size: 14px;
+
+  }
+
 }
 </style>

@@ -1945,7 +1945,7 @@ const shortWordsData = {
   halloweenCharactersWeapons: [
     { id: 1, eng: "a weapon", ru: "оружие", hint:"уЭпон" },
     { id: 2, eng: "a crucifix", ru: "распятие", hint:"круси фикс" },
-    { id: 3, eng: "some garlic", ru: "немного чеснока", hint:"сам Галик" },
+    { id: 3, eng: "some garlic", ru: "немного чеснока", hint:"сам гАлик" },
     { id: 4, eng: "a silver sword", ru: "серебряный меч", hint:"сорд без в" },
     { id: 5, eng: "silver bullets", ru: "серебряные пули", hint:"бУллетс" },
     { id: 6, eng: "an axe", ru: "топор", hint:"эн экс" },

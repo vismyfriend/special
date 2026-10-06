@@ -317,6 +317,10 @@ const routes = [
         component: () => import('src/pages/intros/notebookBlank.vue')
       },
       {
+        path: '/specialSpellingCheck',
+        component: () => import('src/composables/specialSpellingCheckTest.vue')
+      },
+      {
         path: '/hw/:missionName?',
         name: 'Homework',
         component: () => import('src/pages/hw.vue')

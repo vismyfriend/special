@@ -13,7 +13,7 @@
     <div class="game-container" v-if="currentWord && !isGameFinished" :class="{ 'earthquake': earthquakeEffect }">
       <div class="control-panel">
         <select v-model="difficultyLevel" class="difficulty-select" @change="onDifficultyChange">
-          <option value="1">🌟 выбран лёгкий уровень</option>
+          <option value="1">🌟 Лёгкий уровень</option>
           <option value="2">⭐⭐ Средний уровень </option>
           <option value="3">⭐⭐⭐ Сложный уровень </option>
           <option value="4">⭐⭐⭐⭐ Профи уровень!  </option>

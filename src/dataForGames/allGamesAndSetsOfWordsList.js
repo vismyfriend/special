@@ -272,7 +272,7 @@ export const allGamesAndSetsOfWordsList =
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/cards36",
       missionVisibleName: "Колода карт  ♥️♣️🃏♦️♠️",
-      missionDescription: "A deck of cards",
+      missionDescription: "A deck of cards (карты)",
       id: 1001,
       active: true,
     },

@@ -152,16 +152,19 @@ const isSpeakingNow = ref(false);
 
 // Функция для произношения текста
 const speakText = async (text, options = {}) => {
-  if (speechSynthesizer.value) {
-    try {
-      await speechSynthesizer.value.speak(text, options);
-      return true;
-    } catch (error) {
-      console.error('Speech error:', error);
-      return false;
-    }
+  if (!speechSynthesizer.value) return false;
+
+  try {
+    // Гонка: либо речь завершится, либо таймаут 6 секунд
+    await Promise.race([
+      speechSynthesizer.value.speak(text, options),
+      new Promise((resolve) => setTimeout(resolve, 6000))
+    ]);
+    return true;
+  } catch (error) {
+    console.error('Speech error:', error);
+    return false;
   }
-  return false;
 };
 
 // Обработчики событий
