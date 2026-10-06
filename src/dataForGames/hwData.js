@@ -169,15 +169,7 @@ export const homeworkData = {
     title: 'Colors',
     description: 'Переведи на английский:',
     tasks: [
-      {
-        type: 'text',
-        question: 'Синий.',
-        hint1: 'Цвет неба',
-        hint2: '/ блу /',
-        answers: ['Blue', 'blue'],
-        placeholder: 'напишите перевод...'
-      },
-      {
+            {
         type: 'text',
         question: 'Синий.',
         hint1: 'Цвет неба',
