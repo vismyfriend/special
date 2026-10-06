@@ -195,6 +195,7 @@
   </div>
 
   <!-- Модалка со списком миссий -->
+
   <div v-if="showMissionsModal" class="modal-overlay" @click.self="closeMissionsModal">
     <div class="modal-content missions-modal">
       <h2>📚 Список домашних заданий</h2>
