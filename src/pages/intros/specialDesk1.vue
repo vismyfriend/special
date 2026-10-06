@@ -16,7 +16,10 @@
 
     <!-- Кнопка Start по центру -->
     <div class="start-wrapper" :class="{ hidden: isModalOpen }">
-      <button class="start-btn" @click="openModal">
+<!--      <button class="start-btn" @click="openModal">-->
+<!--        hi, Vincent !-->
+<!--      </button>  -->
+      <button class="start-btn" @click="goTo">
         hi, Vincent !
       </button>
     </div>
@@ -159,6 +162,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // ==================== ФОНОВЫЕ КАРТИНКИ ====================
 // ВАЖНО: пути через new URL(...) считаются относительно ТЕКУЩЕГО файла,
@@ -194,6 +200,9 @@ const updateView = () => {
   toggleBodyClass();
 };
 
+const goTo = () => {
+  router.push("/keypad");
+}
 // ==================== МОДАЛКА ====================
 const openModal = () => {
   isModalOpen.value = true;

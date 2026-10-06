@@ -776,6 +776,7 @@ onMounted(async () => {
       "студент без имени",
       "не ввёл имя",
       "не ввели имя",
+      "нажми сюда",
       "NONAME",
     ];
     const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];

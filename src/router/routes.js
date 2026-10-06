@@ -3,8 +3,11 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
+      // { path: '',
+      //   component: () => import('pages/rooms/room.vue')
+      // },
       { path: '',
-        component: () => import('pages/rooms/room.vue')
+        component: () => import('src/pages/intros/specialDesk1.vue')
       },
       { path: '/intro',
         component: () => import('pages/IntroPage.vue')
@@ -442,10 +445,16 @@ const routes = [
             component: () => import('src/components/GameFlipCards.vue'),
             props: true // Позволяет передавать cover как пропс
           },
+
           {
             path: '/see-all-sets-of-words/:missionName/jeopardy/:style?',  // :style? - необязательный параметр
             component: () => import('src/components/GameJeopardy.vue'),
             props: true // Позволяет передавать стили и настройки игры как пропс
+          },
+          {
+            path: '/see-all-sets-of-words/:missionName/passTheBomb/:style?',  // ← НОВАЯ СТРОКА
+            component: () => import('src/components/GamePassTheBomb.vue'),
+            props: true
           },
           {
             path: '/see-all-sets-of-words/:missionName/bowling',
