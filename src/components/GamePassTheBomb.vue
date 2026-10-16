@@ -128,7 +128,7 @@
       </div>
 
       <button class="start-fuse-btn" @click="startGame">
-        🔥 LIGHT THE FUSE 🔥
+        🔥 START speaking 🔥
       </button>
     </div>
 
@@ -180,7 +180,13 @@ import { useSpeech } from '../composables/useSpeech';
 const route = useRoute();
 const missionName = ref(route.params.missionName);
 const styleParam = ref(route.params.style);
-const theme = ref(styleParam.value || 'dark');
+// Тема: если style — это dark/light — берём его, иначе дефолт
+const theme = ref(
+  styleParam.value === 'light' ? 'light'
+    : styleParam.value === 'dark' ? 'dark'
+      : 'light'  // дефолт
+);
+
 
 // ============================================================
 // 🔧 НАСТРОЙКИ
@@ -340,8 +346,16 @@ const availableItems = [
   { id: 'virus', emoji: '🦠', label: 'Virus' },
   { id: 'poop', emoji: '💩', label: 'Poop' }
 ];
-const selectedItem = ref(availableItems[0]);
 
+// Определяем, что пришло в :style
+const styleIsItem = availableItems.some(item => item.id === styleParam.value);
+
+// Предмет по умолчанию: если style — это id предмета, выбираем его
+const selectedItem = ref(
+  styleIsItem
+    ? availableItems.find(i => i.id === styleParam.value)
+    : availableItems[0]
+);
 // ============================================================
 // ЛОГИКА ИГРЫ
 // ============================================================
@@ -849,9 +863,9 @@ onUnmounted(() => {
 /* ===== ПАНЕЛЬ УПРАВЛЕНИЯ ===== */
 .controls-panel {
   position: absolute;
-  bottom: 90px;
   width: 100%;
   max-width: 700px;
+  height: 260px;
   padding: 20px;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);

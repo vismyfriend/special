@@ -136,6 +136,66 @@ export const homeworkData = {
       }
     ]
   },
+  'doTheMagic2': {
+    missionName: 'Порядок если в ноутбук то порядок и in your head тоже',
+    description: 'Do the magic - мЭджик',
+    tasks: [
+      {
+        type: 'doTheMagic',
+        question: 'У меня хороший учитель',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["I have a good teacher"],
+          negative: ["I don't have a good teacher"],
+          question: ['Do I have a good teacher?'],
+          openQuestion: ['Who do I have?', 'What teacher do I have?'],
+          answer: ["His name is Vincent"]
+        }
+      },
+      {
+        type: 'doTheMagic',
+        question: 'У вас красивые руки',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["You have beautiful arms", "You have beautiful hands"],
+          negative: ["You don't have beautiful arms", "You don't have beautiful hands"],
+          question: ['Do you have beautiful arms?', "Do you have beautiful hands?"],
+          openQuestion: ['Why do you have beautiful arms?', "Why do you have beautiful hands?"],
+          answer: ['because I like English!']
+        }
+      },
+      {
+        type: 'doTheMagic',
+        question: 'Английский легкий',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ['English is easy'],
+          negative: ["English is not easy"],
+          question: ['is English easy?'],
+          openQuestion: ['Why is English easy?'],
+          answer: ['because I study it with Vincent']
+        }
+      }
+    ]
+  },
   'test': {
     missionName: 'Синигами:',
     agentName: 'Нажмите здесь и введите имя',
