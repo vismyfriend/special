@@ -31,8 +31,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
 import shortWordsData from '../dataForGames/short-words-data';
 import { useRoute } from 'vue-router';
+const { loadWords, loading, error } = whatGameDataToUse();
+
 
 const getWordSet = (name) => {
   if (shortWordsData[name]) return shortWordsData[name];
@@ -177,9 +180,11 @@ const isAnswerCorrect = (userAnswer, correctAnswer) => {
 
   return true;
 };
-onMounted(() => {
+onMounted(async () => {
   const missionName = route.params.missionName;
-  currentGameData.value = getWordSet(missionName);
+  // currentGameData.value = getWordSet(missionName);
+  currentGameData.value = await loadWords(missionName);
+  console.log('Загружено слов:', currentGameData.value.length);
   ruCards.value = splitCards("ru");
 });
 </script>

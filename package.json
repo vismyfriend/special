@@ -16,6 +16,7 @@
     "axios": "^1.8.4",
     "html2canvas": "^1.4.1",
     "pinia": "^2.0.11",
+    "public-google-sheets-parser": "^1.5.4",
     "quasar": "^2.16.0",
     "sortablejs": "^1.15.6",
     "vue": "^3.4.18",

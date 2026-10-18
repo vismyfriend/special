@@ -156,8 +156,11 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useGameStore } from "stores/example-store";
+const { loadWords, loading, error } = whatGameDataToUse();
 
 const router = useRouter();
 const route = useRoute();
@@ -987,9 +990,12 @@ const getSlotClass = (index, item) => {
   return 'filled';
 };
 
-onMounted(() => {
+onMounted(async () => {
   currentMission.value = route.params.missionName;
-  const allWords = getWordSet(currentMission.value);
+  // const allWords = getWordSet(currentMission.value);
+  // 🔥 Загружаем слова теперь через composable
+  const allWords = await loadWords(currentMission.value);
+
   if (allWords?.length > 0) {
     gameWords.value = selectRandomWords(allWords, 10);
     currentWordIndex.value = 0;

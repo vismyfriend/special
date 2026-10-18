@@ -39,7 +39,7 @@
 
 
               <!-- Таблица лидеров -->
-              <div v-if="topPlayers && showLeaderboard" class="leaderboard-wrapper">
+              <div v-if="topPlayers && showLeaderboard && !isGSheetMission" class="leaderboard-wrapper">
                 <div class="leaderboard-container">
                   <div class="leaderboard">
                     <table>
@@ -258,6 +258,13 @@ const currentWordIndex = ref(0);
 const showFinalResult = ref(false);
 const animationInterval = ref(null);
 const hideWords = ref(false);
+
+
+// 🔥 Это gsheet-миссия?
+const isGSheetMission = computed(() =>
+  gameStore.$state.wordSet?.startsWith('gsheet:') ||
+  route.query.missionName?.startsWith('gsheet:')
+);
 
 // Массив слов для анимации
 const animationTexts = [
@@ -799,21 +806,37 @@ onMounted(async () => {
 
   // Отправка результатов и загрузка таблицы лидеров
 
-  try {
-    await api.scores.post(
-      gameStore.$state.gameName,
-      gameStore.$state.lastGameResults.time,
-      gameStore.$state.lastGameResults.mistakes,
-      gameStore.$state.agentName,
-      gameStore.$state.wordSet,
-    );
-  } catch (error) {
-    console.error("Ошибка при отправке результатов:", error);
-    // Продолжаем выполнение, даже если не удалось отправить результаты
-  }
 
-  await fetchLeaderboard();
-  formatResult();
+  // 🔥 gsheet-миссия — не трогаем бэкенд
+  if (isGSheetMission.value) {
+    console.log('🟢 gsheet-миссия: бэкенд пропущен');
+
+    topPlayers.value = [
+      {
+        agent: gameStore.$state.agentName || 'Player',
+        time: (gameStore.lastGameResults.time / 1000).toFixed(2),
+        mistakes: gameStore.lastGameResults.mistakes,
+      },
+    ];
+    yourPlace.value = 1;
+  } else {
+    // Обычная миссия — всё как раньше
+    try {
+      await api.scores.post(
+        gameStore.$state.gameName,
+        gameStore.$state.lastGameResults.time,
+        gameStore.$state.lastGameResults.mistakes,
+        gameStore.$state.agentName,
+        gameStore.$state.wordSet,
+      );
+    } catch (error) {
+      console.error("Ошибка при отправке результатов:", error);
+      // Продолжаем выполнение, даже если не удалось отправить результаты
+    }
+
+    await fetchLeaderboard();
+    formatResult();
+  }
 
 });
 

@@ -3,6 +3,15 @@
 export const allGamesAndSetsOfWordsList =
   [
     {
+      missionVisibleName: "Dictionary of Dev",
+      missionDescription: "Dev's dictionary",
+      missionName: 'gsheet:1DfstM9cBffsyCKmE2RxzWRq5rENDWhRd1aWAoB5O6XA',
+      active: true,
+      lvl: 'lvlAll',
+      type: 'gsheet',
+      // category: 'students', // если хочешь отдельную категорию
+    },
+    {
       missionName: "dev",
       missionVisibleName: "Выбирай<strike><b> урок </b></strike>миссию ↓",
       missionDescription: "Посмотреть все шаблоны",

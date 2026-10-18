@@ -1564,6 +1564,9 @@ const goToChosenGame = (set) => {
     router.push(set.path);
   } else if (set.type === "externalLink") {
     window.open(set.url, set.target || '_blank');
+  } else if (set.type === "gsheet") {
+    // Сразу открываем SpellTen если это гугл таблица студента
+    router.push(`/see-all-sets-of-words/${encodeURIComponent(set.missionName)}/spell-ten`);
   } else {
     router.push(`/see-all-sets-of-words/${set.missionName}`);
   }

@@ -568,6 +568,10 @@ const routes = [
     component: () => import('components/AIChat.vue')
   },
   {
+    path: '/test-gsheet',
+    component: () => import('src/components/TestGoogleSheet.vue')
+  },
+  {
     path: '/ai-assistant',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
