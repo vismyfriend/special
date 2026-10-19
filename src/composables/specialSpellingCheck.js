@@ -46,7 +46,7 @@ export function useSpellingCheck(options = {}) {
   const normalizeAnswer = (answer) => {
     if (!answer || typeof answer !== 'string') return ''
 
-    return answer
+    let result = answer
       .toLowerCase()
       .replace(/\s+/g, ' ')
       .trim()
@@ -56,6 +56,15 @@ export function useSpellingCheck(options = {}) {
       .replace(/[`'‘’´]/g, "'")
       .replace(/\s+/g, ' ')
       .trim()
+
+    // === Внутренняя шутка: Verbs = Vincent = V ===
+    // Приводим к единому токену, чтобы все три режима считали их равными.
+    result = result
+      .replace(/\bverb\b/g, 'vincent')
+      .replace(/\bvincent\b/g, 'vincent')
+      .replace(/\bv\b/g, 'vincent')
+
+    return result
   }
 
   // ==================== ИСПРАВЛЕНИЕ ЧАСТЫХ ОПЕЧАТОК ====================

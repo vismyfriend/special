@@ -6,20 +6,26 @@
         <h1 class="agent-name" @click="openNameModal">
           {{ displayUserName }}
         </h1>
-<!--        <span class="mission-badge" @click="openMissionsList">-->
-<!--          {{ currentMission?.missionName || 'Миссия' }}-->
-<!--        </span>-->
       </div>
       <div class="header-right">
         <button class="print-button"
                 @click="checkAnswers"
-                title="Скачать PDF">
+                title="Проверить">
           ✅
         </button>
-        <button class="print-button" @click="printPDF" title="Скачать PDF">
+        <button class="print-button pdf-button" @click="printPDF" title="Скачать PDF">
           🖨️
         </button>
+        <button class="print-button"
+                @click="openClearConfirmModal"
+                title="Очистить">
+          🧹
+        </button>
 
+
+        <button class="print-button" @click="openMissionsList" title="Список заданий">
+          📚
+        </button>
       </div>
     </div>
 
@@ -40,6 +46,8 @@
                 :key="index"
                 class="task-block"
               >
+                <h3 v-if="task.title" class="task-title">{{ task.title }}</h3>
+
                 <div class="question-text">
                   {{ task.question }}
 
@@ -53,9 +61,9 @@
                     💡
                   </span>
 
-                  <!-- Флажок для показа правильного ответа -->
+                  <!-- Флажок для показа правильного ответа (кроме fillInTheBlank) -->
                   <span
-                    v-if="task.answers && task.answers.length > 0 && !showAnswerFlag[index]"
+                    v-if="task.type !== 'fillInTheBlank' && task.answers && task.answers.length > 0 && !showAnswerFlag[index]"
                     class="answer-flag"
                     @click="showCorrectAnswer(index)"
                   >
@@ -74,19 +82,16 @@
                   </div>
                 </div>
 
-                <!-- Показ правильного ответа -->
-                <div v-if="showAnswerFlag[index] && task.answers" class="correct-answer-display">
+                <!-- Показ правильного ответа (кроме fillInTheBlank) -->
+                <div
+                  v-if="task.type !== 'fillInTheBlank' && showAnswerFlag[index] && task.answers"
+                  class="correct-answer-display"
+                >
                   <span class="answer-label">Правильный ответ:</span>
                   <span class="answer-text">{{ task.answers.join(' или ') }}</span>
                 </div>
 
-
-
-
                 <!-- === ТИП DO THE MAGIC (+ − ? o? a*) === -->
-
-
-
                 <div v-if="task.type === 'doTheMagic'" class="doTheMagic-block">
                   <div class="doTheMagic-grid">
                     <div
@@ -94,19 +99,19 @@
                       :key="key"
                       class="doTheMagic-row"
                     >
-                     <span
-                       class="doTheMagic-label"
-                       @dblclick.prevent="showAnswerHint(index, key, task)"
-                       :title="`Двойной клик — показать правильный ответ для «${label}»`"
-                     >
-  {{ label }}
-</span>
+                      <span
+                        class="doTheMagic-label"
+                        @dblclick.prevent="showAnswerHint(index, key, task)"
+                        :title="`Двойной клик — показать правильный ответ для «${label}»`"
+                      >
+                        {{ label }}
+                      </span>
                       <textarea
                         class="doTheMagic-input"
                         :class="[
-    getDoTheMagicClass(index, key),
-    { 'showing-hint': hintAnswer[`${index}_${key}`] }
-  ]"
+                          getDoTheMagicClass(index, key),
+                          { 'showing-hint': hintAnswer[`${index}_${key}`] }
+                        ]"
                         :placeholder="hintAnswer[`${index}_${key}`] || getDoTheMagicPlaceholder(key, index)"
                         v-model="answers[index][key]"
                         @input="adjustDoTheMagicHeight($event, index, key)"
@@ -114,6 +119,27 @@
                         :ref="el => setDoTheMagicRef(el, index, key)"
                       ></textarea>
                     </div>
+                  </div>
+                </div>
+
+                <!-- === ТИП FILL IN THE BLANKS === -->
+                <div v-else-if="task.type === 'fillInTheBlank'" class="fill-blank-block">
+                  <div class="fill-blank-text">
+                    <template v-for="(segment, segIndex) in getFillSegments(task)" :key="segIndex">
+                      <span v-if="segment.type === 'text'">{{ segment.value }}</span>
+                      <span
+                        v-else
+                        class="fill-blank-wrapper"
+                        :class="getFillClass(index, segment.blankIndex)"
+                        :style="{ width: getFillWidth(segment.underscores) }"
+                      >
+                        <input
+                          type="text"
+                          class="fill-blank-input"
+                          v-model="answers[index][segment.blankIndex]"
+                        />
+                      </span>
+                    </template>
                   </div>
                 </div>
 
@@ -140,17 +166,6 @@
                     @input="adjustInputHeight"
                   />
                 </div>
-
-                <!-- Результат для конкретного задания -->
-<!--                <div v-if="showResults && taskResults[index]" class="task-result">-->
-<!--                  <span class="result-icon"></span>-->
-<!--                  <span-->
-<!--                    class="result-message"-->
-<!--                    :class="taskResults[index].isCorrect ? 'correct-text' : 'incorrect-text'"-->
-<!--                  >-->
-<!--                    {{ taskResults[index].message }}-->
-<!--                  </span>-->
-<!--                </div>-->
               </div>
 
               <!-- Кнопки -->
@@ -177,6 +192,21 @@
     </div>
   </div>
 
+  <!-- Модалка подтверждения очистки -->
+  <div v-if="showClearConfirmModal" class="modal-overlay" @click.self="closeClearConfirmModal">
+    <div class="modal-content clear-confirm-modal">
+      <div class="clear-confirm-icon">🧹</div>
+      <h2>Are you sure?</h2>
+      <p class="clear-confirm-text">
+        Вы уверены, что хотите очистить ваши записи с этого задания?
+      </p>
+      <div class="modal-buttons clear-confirm-buttons">
+        <button class="modal-btn cancel" @click="closeClearConfirmModal">No</button>
+        <button class="modal-btn save" @click="confirmClearAnswers">Yes</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Модалка для имени -->
   <div v-if="showNameModal" class="modal-overlay" @click.self="closeNameModal">
     <div class="modal-content">
@@ -194,8 +224,8 @@
     </div>
   </div>
 
-  <!-- Модалка со списком миссий -->
 
+  <!-- Модалка со списком миссий -->
   <div v-if="showMissionsModal" class="modal-overlay" @click.self="closeMissionsModal">
     <div class="modal-content missions-modal">
       <h2>📚 Список домашних заданий</h2>
@@ -213,8 +243,11 @@
       <button class="modal-btn save" @click="closeMissionsModal">Закрыть</button>
     </div>
   </div>
+
 </template>
-<script setup>import { ref, onMounted, nextTick, computed, watch } from 'vue'
+
+<script setup>
+import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
@@ -224,9 +257,12 @@ const route = useRoute()
 const router = useRouter()
 const gameStore = useGameStore()
 
-// Composable для проверки ответов
 const { usualCheck } = useSpellingCheck()
 const missionName = computed(() => route.params.missionName || 'intro-1')
+const firstDoTheMagicIndex = computed(() => {
+  if (!currentMission.value) return -1
+  return currentMission.value.tasks.findIndex(t => t.type === 'doTheMagic')
+})
 const currentMission = ref(null)
 const answers = ref([])
 const contentRef = ref(null)
@@ -244,87 +280,91 @@ const missionsList = ref([])
 const showNameModal = ref(false)
 const tempName = ref('')
 const showMissionsModal = ref(false)
+const showClearConfirmModal = ref(false)
 
-// Refs для textarea в doTheMagic (чтобы управлять высотой)
-const doTheMagicRefs = ref({}) // { 'index_key': HTMLElement }
-
+// Refs для textarea в doTheMagic
+const doTheMagicRefs = ref({})
 const setDoTheMagicRef = (el, index, key) => {
-  if (el) {
-    doTheMagicRefs.value[`${index}_${key}`] = el
-  }
+  if (el) doTheMagicRefs.value[`${index}_${key}`] = el
+}
+
+// ==================== FILL IN THE BLANKS ====================
+const getFillSegments = (task) => {
+  const parts = (task.text || '').split(/(_{1,})/g)
+  let blankIndex = 0
+  return parts
+    .filter(Boolean)
+    .map(part => /^_{1,}$/.test(part)
+      ? { type: 'blank', underscores: part.length, blankIndex: blankIndex++ }
+      : { type: 'text', value: part })
+}
+
+const getFillWidth = (n) => {
+  if (n >= 5) return '200px'
+  if (n === 4) return '160px'
+  if (n === 3) return '120px'
+  if (n === 2) return '80px'
+  if (n === 1) return '40px'
+  return '42px' // fallback на всякий случай
+}
+
+const getFillClass = (taskIndex, blankIndex) => {
+  if (!showResults.value) return ''
+  const res = taskResults.value[taskIndex]?.results
+  if (!res) return ''
+  const val = res[blankIndex]
+  if (val === undefined) return ''
+  return val ? 'fill-blank-correct' : 'fill-blank-incorrect'
 }
 
 // Авто-высота для textarea в doTheMagic
-const adjustDoTheMagicHeight = (event, index, key) => {
+const adjustDoTheMagicHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
-  // Округляем до кратного 20px (клетке)
-  const scrollHeight = textarea.scrollHeight
-  const roundedHeight = Math.max(20, Math.ceil(scrollHeight / 20) * 20)
+  const roundedHeight = Math.max(20, Math.ceil(textarea.scrollHeight / 20) * 20)
   textarea.style.height = roundedHeight + 'px'
 }
 
-// Показ правильного ответа при клике на метку
-const hintAnswer = ref({}) // { 'taskIndex_key': 'правильный ответ' }
-const savedAnswers = ref({}) // { 'taskIndex_key': 'что было в поле' }
+// Показ правильного ответа при двойном клике на метку
+const hintAnswer = ref({})
+const savedAnswers = ref({})
 const showAnswerHint = (taskIndex, key, task) => {
   const hintKey = `${taskIndex}_${key}`
-
-  // Если уже показан — не показываем
   if (hintAnswer.value[hintKey]) return
 
-  // Собираем правильный ответ
   const correctList = task.correct?.[key]
   if (!correctList || correctList.length === 0) return
 
-  // Показываем через /, если несколько
-  const answerText = correctList.join(' / ')
-
-  // Сохраняем текущий ввод студента
-  const savedAnswer = answers.value[taskIndex][key] || ''
-  savedAnswers.value[hintKey] = savedAnswer
-
-  // Очищаем поле — чтобы placeholder стал виден
+  savedAnswers.value[hintKey] = answers.value[taskIndex][key] || ''
   answers.value[taskIndex][key] = ''
-// Сбрасываем высоту textarea до 20px (одна клетка)
+
   nextTick(() => {
     const refKey = `${taskIndex}_${key}`
     if (doTheMagicRefs.value[refKey]) {
       doTheMagicRefs.value[refKey].style.height = '20px'
     }
   })
-  // Показываем подсказку
-  hintAnswer.value = {
-    ...hintAnswer.value,
-    [hintKey]: answerText
-  }
 
-  // Через 2 секунды убираем
+  hintAnswer.value = { ...hintAnswer.value, [hintKey]: correctList.join(' / ') }
+
   setTimeout(() => {
     const currentValue = answers.value[taskIndex][key]
     if (currentValue === '' || currentValue === undefined) {
       answers.value[taskIndex][key] = savedAnswers.value[hintKey] || ''
     }
-
-    // ← Пересчитываем высоту после возврата
     nextTick(() => {
       const refKey = `${taskIndex}_${key}`
       const textarea = doTheMagicRefs.value[refKey]
       if (textarea) {
         textarea.style.height = 'auto'
-        const scrollHeight = textarea.scrollHeight
-        const roundedHeight = Math.max(20, Math.ceil(scrollHeight / 20) * 20)
+        const roundedHeight = Math.max(20, Math.ceil(textarea.scrollHeight / 20) * 20)
         textarea.style.height = roundedHeight + 'px'
       }
     })
-
-    // Убираем подсказку
-    const newHint = {...hintAnswer.value}
+    const newHint = { ...hintAnswer.value }
     delete newHint[hintKey]
     hintAnswer.value = newHint
-
-    // Очищаем сохранённое
-    const newSaved = {...savedAnswers.value}
+    const newSaved = { ...savedAnswers.value }
     delete newSaved[hintKey]
     savedAnswers.value = newSaved
   }, 2000)
@@ -332,16 +372,11 @@ const showAnswerHint = (taskIndex, key, task) => {
 
 const isBackendAvailable = ref(true)
 
-// ==================== ПРОВЕРКА: ЕСТЬ ЛИ ХОТЯ БЫ 2 СИМВОЛА ====================
+// ==================== ПРОВЕРКА ЗАПОЛНЕННОСТИ ====================
 const isAnyAnswerFilled = computed(() => {
   if (!answers.value || answers.value.length === 0) return false
-
   return answers.value.some(answer => {
-    // Если это строка (обычный ответ)
-    if (typeof answer === 'string') {
-      return answer.trim().length >= 2
-    }
-    // Если это объект (doTheMagic)
+    if (typeof answer === 'string') return answer.trim().length >= 2
     if (typeof answer === 'object' && answer !== null) {
       return Object.values(answer).some(v => v && v.trim().length >= 2)
     }
@@ -349,48 +384,121 @@ const isAnyAnswerFilled = computed(() => {
   })
 })
 
+const hasSavedAnswers = computed(() => {
+  if (!answers.value || answers.value.length === 0) return false
+  return answers.value.some(answer => {
+    if (typeof answer === 'string') return answer.trim().length > 0
+    if (typeof answer === 'object' && answer !== null) {
+      return Object.values(answer).some(v => v && v.trim().length > 0)
+    }
+    return false
+  })
+})
+
+// ==================== LOCALSTORAGE ====================
+const STORAGE_PREFIX = 'hw_answers_'
+const getStorageKey = () => `${STORAGE_PREFIX}${missionName.value}`
+
+const saveAnswersToStorage = () => {
+  try {
+    localStorage.setItem(getStorageKey(), JSON.stringify(answers.value))
+  } catch (e) {
+    console.warn('Не удалось сохранить ответы:', e)
+  }
+}
+
+const loadAnswersFromStorage = (tasks) => {
+  try {
+    const raw = localStorage.getItem(getStorageKey())
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed) || parsed.length !== tasks.length) return null
+
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i]
+      const saved = parsed[i]
+      if (task.type === 'doTheMagic') {
+        if (typeof saved !== 'object' || saved === null) return null
+        const expectedKeys = Object.keys(task.labels || {})
+        const savedKeys = Object.keys(saved)
+        if (expectedKeys.length !== savedKeys.length) return null
+        if (!expectedKeys.every(k => savedKeys.includes(k))) return null
+      } else if (task.type === 'fillInTheBlank') {
+        if (!Array.isArray(saved) || saved.length !== (task.answers || []).length) return null
+        if (!saved.every(v => typeof v === 'string')) return null
+      } else {
+        if (typeof saved !== 'string') return null
+      }
+    }
+    return parsed
+  } catch (e) {
+    console.warn('Не удалось загрузить ответы:', e)
+    return null
+  }
+}
+
+const clearAnswersFromStorage = () => {
+  localStorage.removeItem(getStorageKey())
+}
+
+const isLoadingMission = ref(false)
+
 const displayUserName = computed(() => {
   let name = ''
-
   if (gameStore.agentName) {
     name = gameStore.agentName.split('#')[0]
   } else {
-    const savedName = localStorage.getItem('agentName')
-    if (savedName) {
-      name = savedName
-    } else {
-      name = 'нажми сюда'
-    }
+    name = localStorage.getItem('agentName') || 'нажми сюда'
   }
-
   if (!isBackendAvailable.value && name !== 'Agent 404') {
     return `${name} (404)`
   }
-
   return name
 })
 
 // ==================== ЗАГРУЗКА МИССИИ ====================
 const loadMission = () => {
+  isLoadingMission.value = true
   const data = getHomework(missionName.value)
   currentMission.value = data
 
   if (data) {
-    // Создаём answers в зависимости от типа задания
     answers.value = data.tasks.map(task => {
       if (task.type === 'doTheMagic') {
-        // Для doTheMagic — объект с полями по ключам labels
         const obj = {}
-        if (task.labels) {
-          Object.keys(task.labels).forEach(key => {
-            obj[key] = ''
-          })
-        }
+        Object.keys(task.labels || {}).forEach(key => { obj[key] = '' })
         return obj
       }
-      // Для остальных — строка
+      if (task.type === 'fillInTheBlank') {
+        return new Array((task.answers || []).length).fill('')
+      }
       return ''
     })
+
+    const saved = loadAnswersFromStorage(data.tasks)
+    if (saved) {
+      answers.value = saved
+      nextTick(() => {
+        data.tasks.forEach((task, index) => {
+          if (task.type === 'doTheMagic') {
+            Object.keys(task.labels || {}).forEach(key => {
+              const el = doTheMagicRefs.value[`${index}_${key}`]
+              if (el) {
+                el.style.height = 'auto'
+                const h = Math.max(20, Math.ceil(el.scrollHeight / 20) * 20)
+                el.style.height = h + 'px'
+              }
+            })
+          } else if (task.type === 'textarea') {
+            const el = contentRef.value?.querySelector(`textarea[data-index="${index}"]`)
+            if (el) {
+              el.style.height = 'auto'
+              el.style.height = el.scrollHeight + 'px'
+            }
+          }
+        })
+      })
+    }
 
     showHint.value = data.tasks.map(() => new Set())
     showAnswerFlag.value = new Array(data.tasks.length).fill(false)
@@ -400,6 +508,52 @@ const loadMission = () => {
   showResults.value = false
   taskResults.value = []
   missionsList.value = getAllMissions()
+  nextTick(() => { isLoadingMission.value = false })
+}
+
+// ==================== АВТОСОХРАНЕНИЕ ====================
+let saveTimer = null
+watch(answers, () => {
+  if (isLoadingMission.value) return
+  if (saveTimer) clearTimeout(saveTimer)
+  saveTimer = setTimeout(() => saveAnswersToStorage(), 400)
+}, { deep: true })
+
+// ==================== ОЧИСТКА ====================
+const clearAllAnswers = () => {
+  if (!currentMission.value) return
+  answers.value = currentMission.value.tasks.map(task => {
+    if (task.type === 'doTheMagic') {
+      const obj = {}
+      Object.keys(task.labels || {}).forEach(k => { obj[k] = '' })
+      return obj
+    }
+    if (task.type === 'fillInTheBlank') {
+      return new Array((task.answers || []).length).fill('')
+    }
+    return ''
+  })
+  showResults.value = false
+  taskResults.value = []
+  showAnswerFlag.value = new Array(currentMission.value.tasks.length).fill(false)
+  clearAnswersFromStorage()
+  nextTick(() => {
+    currentMission.value.tasks.forEach((task, index) => {
+      if (task.type === 'doTheMagic') {
+        Object.keys(task.labels || {}).forEach(key => {
+          const el = doTheMagicRefs.value[`${index}_${key}`]
+          if (el) el.style.height = '20px'
+        })
+      }
+    })
+  })
+}
+
+const openClearConfirmModal = () => { showClearConfirmModal.value = true }
+const closeClearConfirmModal = () => { showClearConfirmModal.value = false }
+const confirmClearAnswers = () => {
+  clearAllAnswers()
+  showClearConfirmModal.value = false
 }
 
 // ==================== ПОДСКАЗКИ ====================
@@ -414,23 +568,19 @@ const getAllHintsWithIndex = (task) => {
 }
 
 const getAvailableHints = (task, taskIndex) => {
-  const allHints = getAllHintsWithIndex(task)
-  const shownHints = showHint.value[taskIndex] || new Set()
-  return allHints.filter(hint => !shownHints.has(hint.index))
+  const all = getAllHintsWithIndex(task)
+  const shown = showHint.value[taskIndex] || new Set()
+  return all.filter(h => !shown.has(h.index))
 }
 
 const getShownHints = (task, taskIndex) => {
-  const allHints = getAllHintsWithIndex(task)
-  const shownHints = showHint.value[taskIndex] || new Set()
-  return allHints
-    .filter(hint => shownHints.has(hint.index))
-    .map(hint => hint.text)
+  const all = getAllHintsWithIndex(task)
+  const shown = showHint.value[taskIndex] || new Set()
+  return all.filter(h => shown.has(h.index)).map(h => h.text)
 }
 
 const toggleHint = (taskIndex, hintIndex) => {
-  if (!showHint.value[taskIndex]) {
-    showHint.value[taskIndex] = new Set()
-  }
+  if (!showHint.value[taskIndex]) showHint.value[taskIndex] = new Set()
   showHint.value[taskIndex].add(hintIndex)
   showHint.value = [...showHint.value]
 }
@@ -443,15 +593,12 @@ const showCorrectAnswer = (index) => {
 }
 
 // ==================== АВТО-ВЫСОТА ====================
-const adjustTextareaHeight = async (event, index) => {
+const adjustTextareaHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
   textarea.style.height = textarea.scrollHeight + 'px'
 }
-
-const adjustInputHeight = async () => {
-  // Ничего не делаем
-}
+const adjustInputHeight = () => {}
 
 // ==================== СТИЛИ ДЛЯ INPUT ====================
 const getInputClass = (index) => {
@@ -464,13 +611,15 @@ const getInputClass = (index) => {
 const getDoTheMagicClass = (taskIndex, fieldKey) => {
   if (!showResults.value) return ''
   if (!taskResults.value[taskIndex]?.fields) return ''
-  return taskResults.value[taskIndex].fields[fieldKey] ? 'doTheMagic-correct' : 'doTheMagic-incorrect'
+  const ok = taskResults.value[taskIndex].fields[fieldKey]
+  if (fieldKey === 'answer') {
+    return ok ? 'doTheMagic-correct' : 'doTheMagic-blue'
+  }
+  return ok ? 'doTheMagic-correct' : 'doTheMagic-incorrect'
 }
 
 const getDoTheMagicPlaceholder = (key, taskIndex) => {
-  // Placeholder только для ПЕРВОГО задания
-  if (taskIndex !== 0) return ''
-
+  if (taskIndex !== firstDoTheMagicIndex.value) return ''
   const placeholders = {
     positive: 'Утверждение...',
     negative: 'Отрицание...',
@@ -480,64 +629,87 @@ const getDoTheMagicPlaceholder = (key, taskIndex) => {
   }
   return placeholders[key] || ''
 }
+
 // ==================== ПРОВЕРКА ОТКРЫТОГО ВОПРОСА ====================
 const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell','what the hell',
-  'what', 'what time', 'how long', 'when', 'where', 'why', 'how',]
+  'what', 'what time', 'how long', 'when', 'where', 'why', 'how']
 
-/**
- * Проверка открытого вопроса.
- *
- * Если в task.correct есть openQuestion — проверяем по нему.
- * Если НЕТ — берём question (закрытый вопрос) и разрешаем любой wh-word спереди.
- *
- * Пример:
- * - Студент пишет: "Why do you like English?"
- * - В данных question: ["Do you like English?"], openQuestion нет.
- * - Берём "Do you like English?", отделяем wh-word "why", остаток "do you like english".
- * - Остаток студента (после "why"): "do you like english".
- * - Совпадает → ✅
- */
 const checkOpenQuestion = (userAnswer, task) => {
   const userLower = (userAnswer || '').toLowerCase().trim()
 
-  // 1. Если в task.correct есть openQuestion — сначала проверяем по нему
   if (task.correct?.openQuestion && task.correct.openQuestion.length > 0) {
     if (usualCheck(userAnswer, task.correct.openQuestion)) return true
   }
 
-  // 2. Определяем wh-word студента
   const userWh = WH_WORDS.find(w => userLower.startsWith(w + ' '))
   if (!userWh) return false
 
-  // 3. Извлекаем "остаток" студента (без wh-word)
   const userRest = userLower.slice(userWh.length).trim()
 
-  // 4. Собираем список "закрытых вопросов" для сравнения
-  // Приоритет: openQuestion (если есть) + question (всегда)
-  const closedQuestions = []
-  if (task.correct?.question) {
-    closedQuestions.push(...task.correct.question)
-  }
-  if (task.correct?.openQuestion) {
-    closedQuestions.push(...task.correct.openQuestion)
-  }
+  const closed = []
+  if (task.correct?.question) closed.push(...task.correct.question)
+  if (task.correct?.openQuestion) closed.push(...task.correct.openQuestion)
 
-  // 5. Сравниваем "остаток" студента с каждым закрытым вопросом
-  return closedQuestions.some(correct => {
+  return closed.some(correct => {
     const correctLower = correct.toLowerCase().trim()
-
-    // Если правильный тоже начинается с wh-word — убираем его
     const correctWh = WH_WORDS.find(w => correctLower.startsWith(w + ' '))
     const correctRest = correctWh
       ? correctLower.slice(correctWh.length).trim()
       : correctLower
-
-    // Сравниваем "остатки" через usualCheck
     return usualCheck(userRest, correctRest)
   })
 }
+
 // ==================== ПРОВЕРКА ОДНОГО ОТВЕТА ====================
 const checkSingleAnswer = (task, answer) => {
+  // === FILL IN THE BLANKS ===
+  if (task.type === 'fillInTheBlank') {
+    const res = []
+    let filled = 0
+
+    const correctList = (task.answers || []).map(item => {
+      if (Array.isArray(item)) return item.map(v => String(v ?? ''))
+      return [String(item ?? '')]
+    })
+
+    correctList.forEach((variants, i) => {
+      const user = String(answer?.[i] ?? '').trim()
+      if (user) filled++
+
+      const allowsEmpty = variants.some(v => {
+        const n = v.toLowerCase().trim()
+        return n === '' || n === '-'
+      })
+
+      let ok
+      if (user === '' || user === '-') {
+        ok = allowsEmpty
+      } else {
+        const nonEmpty = variants.filter(v => {
+          const n = v.toLowerCase().trim()
+          return n !== '' && n !== '-'
+        })
+        ok = nonEmpty.length > 0 && usualCheck(user, nonEmpty)
+      }
+      res[i] = ok
+    })
+
+    const allAllowEmpty = correctList.every(v =>
+      v.some(x => {
+        const n = x.toLowerCase().trim()
+        return n === '' || n === '-'
+      })
+    )
+    const isFilled = filled > 0 || allAllowEmpty
+    const allOk = res.every(Boolean)
+
+    return {
+      isCorrect: allOk && isFilled,
+      message: allOk && isFilled ? '✅ Верно' : '⚠️ Проверь ещё раз',
+      results: res
+    }
+  }
+
   // === DO THE MAGIC ===
   if (task.type === 'doTheMagic') {
     const results = {}
@@ -549,23 +721,15 @@ const checkSingleAnswer = (task, answer) => {
         if (userAnswer.length > 0) filledCount++
 
         let isFieldCorrect
-
-        // ← СПЕЦИАЛЬНАЯ ОБРАБОТКА ДЛЯ openQuestion
         if (key === 'openQuestion') {
           isFieldCorrect = checkOpenQuestion(userAnswer, task)
         } else {
-          // ← ОБЫЧНАЯ ПРОВЕРКА
           isFieldCorrect = usualCheck(userAnswer, task.correct[key])
         }
-
         results[key] = isFieldCorrect
-
-        if (!isFieldCorrect && userAnswer.length > 0) {
-          allCorrect = false
-        }
+        if (!isFieldCorrect && userAnswer.length > 0) allCorrect = false
       })
     }
-
     return {
       isCorrect: allCorrect && filledCount > 0,
       message: allCorrect && filledCount > 0
@@ -589,7 +753,7 @@ const checkSingleAnswer = (task, answer) => {
   )
 
   return {
-    isCorrect: isCorrect,
+    isCorrect,
     message: isCorrect
       ? '✅ super !'
       : '☝️ Странно выглядит... нажми чтобы исправить самостоятельно. \n Или отправь скриншот Винсенту - можно так сказать или нет, он проверит '
@@ -599,29 +763,19 @@ const checkSingleAnswer = (task, answer) => {
 // ==================== ПРОВЕРКА ВСЕХ ОТВЕТОВ ====================
 const checkAnswers = () => {
   if (!currentMission.value || isChecking.value) return
-
   isChecking.value = true
-
   setTimeout(() => {
     const results = []
     let correct = 0
-
     currentMission.value.tasks.forEach((task, index) => {
-      const answer = answers.value[index]
-      const result = checkSingleAnswer(task, answer)
-
-      if (result.isCorrect === true) {
-        correct++
-      }
-
+      const result = checkSingleAnswer(task, answers.value[index])
+      if (result.isCorrect === true) correct++
       if (result.isCorrect === null) {
         result.isCorrect = true
         result.message = '📝 Эта часть не может быть проверена автоматически! - Отправь скриншот учителю на проверку'
       }
-
       results.push(result)
     })
-
     taskResults.value = results
     correctAnswers.value = correct
     showResults.value = true
@@ -663,12 +817,10 @@ const openNameModal = () => {
   tempName.value = gameStore.agentName || localStorage.getItem('agentName') || ''
   showNameModal.value = true
 }
-
 const closeNameModal = () => {
   showNameModal.value = false
   tempName.value = ''
 }
-
 const saveName = () => {
   if (tempName.value.trim()) {
     const name = tempName.value.trim()
@@ -684,36 +836,24 @@ const openMissionsList = () => {
   missionsList.value = getAllMissions()
   showMissionsModal.value = true
 }
-
-const closeMissionsModal = () => {
-  showMissionsModal.value = false
-}
-
+const closeMissionsModal = () => { showMissionsModal.value = false }
 const goToMission = (missionId) => {
   closeMissionsModal()
   router.push(`/hw/${missionId}`)
 }
 
 // ==================== ПЕЧАТЬ ====================
-const printPDF = () => {
-  window.print()
-}
+const printPDF = () => window.print()
 
 // ==================== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ====================
 const loadUserFromBackend = async () => {
   try {
     const token = localStorage.getItem('token')
-    if (!token) {
-      console.log('Нет токена, пользователь не авторизован')
-      return false
-    }
-
+    if (!token) return false
     const fullAgentName = localStorage.getItem('fullAgentName')
     const agentName = localStorage.getItem('agentName')
-
     if (fullAgentName && agentName) {
       gameStore.setAgentName(fullAgentName)
-      console.log('Имя восстановлено из localStorage:', agentName)
       return true
     }
     return false
@@ -723,16 +863,12 @@ const loadUserFromBackend = async () => {
   }
 }
 
-const adjustNotebookHeight = async () => {
-  notebookHeight.value = 600
-}
+const adjustNotebookHeight = async () => { notebookHeight.value = 600 }
 
 // ==================== WATCH & MOUNT ====================
 watch(() => route.params.missionName, () => {
   loadMission()
-  nextTick(() => {
-    notebookHeight.value = 600
-  })
+  nextTick(() => { notebookHeight.value = 600 })
 })
 
 onMounted(async () => {
@@ -764,17 +900,8 @@ onMounted(async () => {
   padding: 0 10px;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+.header-left { display: flex; align-items: center; gap: 20px; }
+.header-right { display: flex; align-items: center; gap: 15px; }
 
 .agent-name {
   color: white;
@@ -788,23 +915,6 @@ onMounted(async () => {
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
-  }
-}
-
-.mission-badge {
-  color: #7db9e8;
-  font-size: 16px;
-  font-family: 'Special_f1', sans-serif;
-  background: rgba(125, 185, 232, 0.15);
-  padding: 5px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(125, 185, 232, 0.3);
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background: rgba(125, 185, 232, 0.25);
     transform: scale(1.05);
   }
 }
@@ -893,10 +1003,7 @@ onMounted(async () => {
 
 .notebook-grid {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background:
     linear-gradient(90deg,
       transparent 0%,
@@ -921,21 +1028,12 @@ onMounted(async () => {
   position: relative;
   z-index: 3;
   height: 100%;
-  padding: 0 15px 0 15px;
+  padding: 0 15px;
   overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #207cca;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: #207cca; border-radius: 2px; }
+  &::-webkit-scrollbar-track { background: transparent; }
 }
 
 .content-inner {
@@ -945,10 +1043,7 @@ onMounted(async () => {
   color: #25598e;
 }
 
-.task-block {
-  margin-bottom: 20px;
-  position: relative;
-}
+.task-block { margin-bottom: 20px; position: relative; }
 
 .question-text {
   display: block;
@@ -959,26 +1054,12 @@ onMounted(async () => {
   font-family: 'Special_f1', sans-serif;
 }
 
-.hint-icon {
+.hint-icon, .answer-flag {
   display: inline-block;
   margin-left: 6px;
   cursor: pointer;
   transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-}
-
-.answer-flag {
-  display: inline-block;
-  margin-left: 6px;
-  cursor: pointer;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.2);
-  }
+  &:hover { transform: scale(1.2); }
 }
 
 .hints {
@@ -994,10 +1075,7 @@ onMounted(async () => {
   color: #7f8c8d;
   padding: 2px 0;
   line-height: 20px;
-
-  &:not(:last-child) {
-    margin-bottom: 4px;
-  }
+  &:not(:last-child) { margin-bottom: 4px; }
 }
 
 .correct-answer-display {
@@ -1008,22 +1086,10 @@ onMounted(async () => {
   border-radius: 4px;
 }
 
-.answer-label {
-  font-weight: bold;
-  color: #27ae60;
-  margin-right: 8px;
-}
+.answer-label { font-weight: bold; color: #27ae60; margin-right: 8px; }
+.answer-text { color: #2c3e50; font-weight: 500; }
 
-.answer-text {
-  color: #2c3e50;
-  font-weight: 500;
-}
-
-.input-wrapper {
-  position: relative;
-  display: flex;         /* ← добавили */
-  align-items: center;   /* ← добавили */
-}
+.input-wrapper { position: relative; display: flex; align-items: center; }
 
 .message-input {
   width: 100%;
@@ -1036,41 +1102,22 @@ onMounted(async () => {
   font-size: 16px;
   line-height: 20px;
   color: #2c3e50;
-  box-shadow: none;
-  border-radius: 0;
-  background: transparent;
   caret-color: #2c3e50;
   transition: all 0.3s;
   overflow: hidden;
 
-  &::placeholder {
-    color: #95a5a6;
-    opacity: 0.7;
-    font-style: italic;
-  }
-
-  &:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0 0 0 1px rgba(74, 144, 226, 0.3);
-  }
-
-  &.input-correct {
-    background: rgba(46, 204, 113, 0.08);
-    border-bottom: 2px solid #27ae60;
-  }
-
-  &.input-incorrect {
-    background: rgba(243, 156, 18, 0.08);
-    border-bottom: 2px solid #f39c12;
-  }
+  &::placeholder { color: #95a5a6; opacity: 0.7; font-style: italic; }
+  &:focus { background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 0 0 1px rgba(74, 144, 226, 0.3); }
+  &.input-correct { background: rgba(46, 204, 113, 0.08); border-bottom: 2px solid #27ae60; }
+  &.input-incorrect { background: rgba(243, 156, 18, 0.08); border-bottom: 2px solid #f39c12; }
 }
 
 .message-input-text {
   width: 100%;
-  height: 20px;           /* ← явная высота */
-  padding: 0;             /* ← убираем браузерный padding */
+  height: 20px;
+  padding: 0;
   border: none;
-  box-sizing: border-box; /* ← height включает padding/border */
+  box-sizing: border-box;
   background: transparent;
   outline: none;
   font-family: 'Fira Code', serif;
@@ -1079,48 +1126,10 @@ onMounted(async () => {
   color: #2c3e50;
   transition: all 0.3s;
 
-  &::placeholder {
-    color: #95a5a6;
-    opacity: 0.7;
-    font-style: italic;
-  }
-
-  &:focus {
-    border-bottom-color: #207cca;
-  }
-
-  &.input-correct {
-    border-bottom-color: #27ae60;
-    background: rgba(26, 211, 79, 0.27);
-  }
-
-  &.input-incorrect {
-    border-bottom-color: #f39c12;
-    background: rgba(243, 156, 18, 0.15);
-  }
-}
-
-.task-result {
-  border-radius: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.result-icon {
-  font-size: 16px;
-}
-
-.result-message {
-  font-size: 14px;
-  font-weight: 500;
-  white-space: pre-wrap;
-
-
-
-  &.incorrect-text {
-    color: #207cca;
-  }
+  &::placeholder { color: #95a5a6; opacity: 0.7; font-style: italic; }
+  &:focus { border-bottom-color: #207cca; }
+  &.input-correct { border-bottom-color: #27ae60; background: rgba(26, 211, 79, 0.27); }
+  &.input-incorrect { border-bottom-color: #f39c12; background: rgba(243, 156, 18, 0.15); }
 }
 
 .button-wrapper {
@@ -1144,97 +1153,32 @@ onMounted(async () => {
   transition: all 0.3s;
   box-shadow: 0 4px 15px rgba(32, 124, 202, 0.3);
 
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(32, 124, 202, 0.4);
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-
-.results {
-  margin-top: 12px;
-  padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  border: 1px solid #e0e8e8;
-}
-
-.score {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 6px;
-}
-
-.score-percent {
-  color: #7f8c8d;
-  font-weight: normal;
-  font-size: 13px;
-}
-
-.score-message {
-  text-align: center;
-  font-size: 15px;
-  font-family: 'Times New Roman', serif;
-  padding: 6px;
-  border-radius: 4px;
-
-  &.score-excellent {
-    color: #27ae60;
-    background: rgba(46, 204, 113, 0.1);
-  }
-
-  &.score-good {
-    color: #3498db;
-    background: rgba(52, 152, 219, 0.1);
-  }
-
-  &.score-ok {
-    color: #f39c12;
-    background: rgba(243, 156, 18, 0.1);
-  }
-
-  &.score-bad {
-    color: #e74c3c;
-    background: rgba(231, 76, 60, 0.1);
-  }
+  &:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(32, 124, 202, 0.4); }
+  &:active:not(:disabled) { transform: translateY(0); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
 .error-message {
   text-align: center;
   padding: 40px 0;
-
-  span {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 20px;
-  }
-
-  p {
-    color: #e74c3c;
-    font-size: 24px;
-    margin: 0 0 10px 0;
-  }
-
-  small {
-    color: #95a5a6;
-    font-size: 14px;
-  }
+  span { font-size: 48px; display: block; margin-bottom: 20px; }
+  p { color: #e74c3c; font-size: 24px; margin: 0 0 10px 0; }
+  small { color: #95a5a6; font-size: 14px; }
 }
 
 .gray-font {
   color: #666;
   font-style: italic;
   margin: 0 0 40px 4px;
+  padding: 0;
+  line-height: 20px;
+  font-size: 15px;
+  font-family: Special_f1;
+}
+.task-title {
+  color: #666;
+  font-style: italic;
+  margin: 40px 0 20px 25px;
   padding: 0;
   line-height: 20px;
   font-size: 15px;
@@ -1255,10 +1199,7 @@ onMounted(async () => {
 /* Модальные окна */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
@@ -1278,14 +1219,8 @@ onMounted(async () => {
 }
 
 @keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-content h2 {
@@ -1305,10 +1240,7 @@ onMounted(async () => {
   outline: none;
   transition: border-color 0.3s;
   box-sizing: border-box;
-
-  &:focus {
-    border-color: #207cca;
-  }
+  &:focus { border-color: #207cca; }
 }
 
 .modal-buttons {
@@ -1330,33 +1262,17 @@ onMounted(async () => {
   &.save {
     background: linear-gradient(135deg, #207cca, #1e5799);
     color: white;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(32, 124, 202, 0.3);
-    }
+    &:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(32, 124, 202, 0.3); }
   }
-
   &.cancel {
     background: #e0e8e8;
     color: #2c3e50;
-
-    &:hover {
-      background: #d0d8e0;
-    }
+    &:hover { background: #d0d8e0; }
   }
 }
 
-/* Список миссий */
-.missions-modal {
-  max-width: 600px;
-}
-
-.missions-list {
-  max-height: 400px;
-  overflow-y: auto;
-  margin: 15px 0;
-}
+.missions-modal { max-width: 600px; }
+.missions-list { max-height: 400px; overflow-y: auto; margin: 15px 0; }
 
 .mission-item {
   display: flex;
@@ -1368,44 +1284,21 @@ onMounted(async () => {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
-
-  &:hover {
-    background: #e8f0fe;
-    transform: translateX(5px);
-  }
-
-  .mission-item-name {
-    font-family: 'Times New Roman', serif;
-    font-size: 16px;
-    color: #2c3e50;
-  }
-
-  .mission-item-badge {
-    color: #207cca;
-    font-size: 18px;
-  }
+  &:hover { background: #e8f0fe; transform: translateX(5px); }
+  .mission-item-name { font-family: 'Times New Roman', serif; font-size: 16px; color: #2c3e50; }
+  .mission-item-badge { color: #207cca; font-size: 18px; }
 }
 
-/* ==================== DO THE MAGIC (+ − ? o? a*) ==================== */
-.doTheMagic-block {
-  margin: 0;
-  padding: 0;
-}
-
-.doTheMagic-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0;                     /* ← без отступов, чтобы строки шли подряд */
-}
-
+/* DO THE MAGIC */
+.doTheMagic-block { margin: 0; padding: 0; }
+.doTheMagic-grid { display: flex; flex-direction: column; gap: 0; }
 .doTheMagic-row {
   display: flex;
-  align-items: flex-start;    // ← вместо center как было у проста поля ввода (теперь это текст area)
+  align-items: flex-start;
   gap: 2px;
   min-height: 20px;
   line-height: 20px;
 }
-
 .doTheMagic-label {
   user-select: none;
   font-family: 'Fira Code', monospace;
@@ -1416,64 +1309,110 @@ onMounted(async () => {
   text-align: center;
   flex-shrink: 0;
   line-height: 20px;
-  padding-top: 0;           // ← на случай, если был padding
-  align-self: flex-start;   // ← прижимаем к верху
+  align-self: flex-start;
 }
-
 .doTheMagic-input {
   flex: 1;
   width: 100%;
-  min-height: 20px;           // ← минимум одна клетка
-  height: 20px;               // ← стартовая высота
+  min-height: 20px;
+  height: 20px;
   background: transparent;
   border: none;
   outline: none;
-  resize: none;               // ← запрещаем ручной resize
+  resize: none;
   padding: 0;
   margin: 0;
   font-family: 'Fira Code', serif;
   font-size: 16px;
-  line-height: 20px;          // ← ровно на клетку
+  line-height: 20px;
   color: #2c3e50;
   caret-color: #2c3e50;
   transition: background 0.3s, box-shadow 0.3s;
-  overflow: hidden;           // ← скрываем скроллбар
-  vertical-align: top;        // ← важно для textarea
-  box-sizing: border-box;     // ← чтобы padding не ломал высоту
-  word-break: break-word;     // ← перенос длинных слов
-  overflow-wrap: break-word;  // ← альтернативный перенос
+  overflow: hidden;
+  vertical-align: top;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   &.showing-hint::placeholder {
     color: #27ae60;
     opacity: 0.85;
     font-style: italic;
     font-weight: 500;
-    animation: hintFadeIn 0.3s ease;
   }
-
-  &::placeholder {
-    color: #95a5a6;
-    opacity: 0.6;
-    font-style: italic;
-    font-size: 14px;
-  }
-
-  &:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0 -1px 0 0 #207cca;
-  }
-
-
-  &.doTheMagic-correct {
-    background: rgba(46, 204, 113, 0.08);
-    //box-shadow: inset 0 -1px 0 0 #27ae60;
-  }
-
-  &.doTheMagic-incorrect {
-    background: rgba(243, 156, 18, 0.08);
-    //box-shadow: inset 0 -1px 0 0 #f39c12;
+  &::placeholder { color: #95a5a6; opacity: 0.6; font-style: italic; font-size: 14px; }
+  &:focus { background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 -1px 0 0 #207cca; }
+  &.doTheMagic-correct { background: rgba(46, 204, 113, 0.08); }
+  &.doTheMagic-incorrect { background: rgba(243, 156, 18, 0.08); }
+  &.doTheMagic-blue {
+    // background: rgba(52, 152, 219, 0.12);
   }
 }
+
+/* ==================== FILL IN THE BLANKS ==================== */
+.fill-blank-block { margin: 0; padding: 0; }
+
+.fill-blank-text {
+  font-family: 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 20px;
+  color: #2c3e50;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Обёртка пропуска — именно она держит высоту строки и рисует подчёркивание */
+.fill-blank-wrapper {
+  display: inline-block;
+  vertical-align: baseline;
+  height: 20px;
+  line-height: 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #b0bec5;
+  margin: 0 2px;
+  transition: background 0.3s, border-bottom-color 0.3s;
+
+  &.fill-blank-correct {
+    background: rgba(46, 204, 113, 0.1);
+    border-bottom-color: #27ae60;
+  }
+  &.fill-blank-incorrect {
+    background: rgba(243, 156, 18, 0.1);
+    border-bottom-color: #f39c12;
+  }
+}
+
+/* Сам input растянут на 100% обёртки и не влияет на line box */
+.fill-blank-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'Fira Code', serif;
+  font-size: 15px;
+  line-height: 20px;
+  color: #2c3e50;
+  caret-color: #2c3e50;
+  box-sizing: border-box;
+  text-align: center;   /* ← добавили */
+
+}
+
+/* Модалка очистки */
+.clear-confirm-modal { max-width: 420px; text-align: center; }
+.clear-confirm-icon { font-size: 44px; line-height: 1; margin-bottom: 12px; }
+.clear-confirm-text {
+  margin: 0 0 8px 0;
+  color: #5a6b7b;
+  font-family: 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 22px;
+}
+.clear-confirm-buttons { justify-content: center; margin-top: 24px; }
+.clear-confirm-buttons .modal-btn { min-width: 110px; }
 
 /* Стили для печати */
 @media print {
@@ -1482,13 +1421,9 @@ onMounted(async () => {
     padding: 20px !important;
     min-height: auto !important;
     display: block !important;
-
   }
 
-  .header {
-    margin-bottom: 20px !important;
-
-  }
+  .header { margin-bottom: 20px !important; }
 
   .notebook-wrapper {
     width: 100% !important;
@@ -1500,33 +1435,18 @@ onMounted(async () => {
     background: white !important;
     box-shadow: none !important;
     padding: 0 !important;
-
-    &::before {
-      display: none !important;
-    }
+    &::before { display: none !important; }
   }
 
   .notebook-page {
     box-shadow: none !important;
     padding: 20px !important;
-
-    &::before {
-      display: none !important;
-    }
+    &::before { display: none !important; }
   }
 
-  .notebook-grid {
-    display: none !important;
-  }
-
-  .notebook-content {
-    overflow: visible !important;
-    height: auto !important;
-  }
-
-  .notebook-wrapper::after {
-    display: none !important;
-  }
+  .notebook-grid { display: none !important; }
+  .notebook-content { overflow: visible !important; height: auto !important; }
+  .notebook-wrapper::after { display: none !important; }
 
   .button-wrapper,
   .check-button,
@@ -1535,86 +1455,57 @@ onMounted(async () => {
   .hint-icon,
   .answer-flag,
   .print-button,
+  .pdf-button,
   .reset-button,
   .progress-text,
   .modal-overlay {
     display: none !important;
   }
+
   .message-input::placeholder,
   .message-input-text::placeholder {
     color: transparent !important;
     opacity: 0 !important;
   }
+
   .message-input,
   .message-input-text {
     border-bottom: 1px solid #ccc !important;
     min-height: 30px !important;
   }
 
-  .task-block {
-    page-break-inside: avoid;
-    margin-bottom: 20px !important;
-  }
+  .task-block { page-break-inside: avoid; margin-bottom: 20px !important; }
+  .hints { display: none !important; }
+  .correct-answer-display { display: none !important; }
 
-  .hints {
-    display: none !important;
+  .fill-blank-wrapper {
+    border-bottom: 1px solid #333 !important;
+    background: transparent !important;
   }
-
-  .correct-answer-display {
-    display: none !important;
+  .fill-blank-wrapper.fill-blank-correct,
+  .fill-blank-wrapper.fill-blank-incorrect {
+    background: transparent !important;
   }
 }
 
 /* Адаптивность */
 @media (max-width: 850px) {
-  .print-button {
-    display: none !important;
-  }
-  .notebook-cover {
-    padding: 10px;
-  }
+  .pdf-button { display: none !important; }
 
-  .notebook-wrapper, .header {
-    width: 95%;
-  }
-
+  .notebook-cover { padding: 10px; }
+  .notebook-wrapper, .header { width: 95%; }
 
   .notebook-page {
     padding: 20px 0 20px 5px;
-
-    &::before {
-
-      left: 5px;
-    }
-  }
-  .header {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
+    &::before { left: 5px; }
   }
 
-  .header-left {
-    flex-direction: column;
-    gap: 10px;
-  }
+  .header { flex-direction: column; gap: 10px; text-align: center; }
+  .header-left { flex-direction: column; gap: 10px; }
+  .button-wrapper { flex-direction: column; align-items: center; }
+  .modal-content { max-width: 95%; padding: 20px; }
 
-  .button-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .modal-content {
-    max-width: 95%;
-    padding: 20px;
-  }
-
-
-  .doTheMagic-input {
-
-    letter-spacing: -0.5px;
-    font-size: 14px;
-
-  }
-
+  .doTheMagic-input { letter-spacing: -0.5px; font-size: 14px; }
+  .fill-blank-input { font-size: 14px; }
 }
 </style>

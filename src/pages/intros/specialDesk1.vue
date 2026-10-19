@@ -169,8 +169,8 @@ const router = useRouter();
 // ==================== ФОНОВЫЕ КАРТИНКИ ====================
 // ВАЖНО: пути через new URL(...) считаются относительно ТЕКУЩЕГО файла,
 // поэтому тут нужно два ../ (компонент лежит глубже, чем корень src)
-const desktopBgImage = new URL('../../assets/images/specialMonitorHorizontalTJPEG.jpg', import.meta.url).href;
-const mobileBgImage  = new URL('../../assets/images/specialMonitorVerticalTJPEG2.jpg',  import.meta.url).href;
+const desktopBgImage = new URL('../../assets/images/specialMonitorHorizontalTPNGAutumn.jpg', import.meta.url).href;
+const mobileBgImage  = new URL('../../assets/images/specialMonitorVerticalTPNGAutumn.jpg',  import.meta.url).href;
 
 // ==================== СОСТОЯНИЕ ====================
 const isMobile = ref(false);
@@ -409,7 +409,7 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .start-wrapper {
-    margin-top: -70px;
+    margin-top: -85px;
   }
 
   .start-btn {
