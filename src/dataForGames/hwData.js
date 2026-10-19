@@ -218,6 +218,7 @@ export const homeworkData = {
     missionName: 'Off-line',
     description: 'Interview',
     tasks: [
+
       // ===== 1. ПЕРЕВОД КАРТ (6 предложений, без подсказок) =====
       {
         type: 'text',
