@@ -38,6 +38,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/birthdayVerbs/find-pairs-easy",
+      missionVisibleName: "Birthday verbs",
+      missionDescription: "Глаголы про ДР",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
       path: "/see-all-sets-of-words/monsterManeskin/find-pairs-easy",
       missionVisibleName: "Monster Maneskin",
       missionDescription: "I wanna be your...",
