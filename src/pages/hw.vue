@@ -292,6 +292,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
 import { useSpellingCheck } from 'src/composables/specialSpellingCheck'
+import html2pdf from 'html2pdf.js'
+
+const downloadPDF = () => {
+  const element = document.querySelector('.notebook-content') // ваш блок с заданиями
+  html2pdf().from(element).save('my-homework.pdf')
+}
+
 
 const route = useRoute()
 const router = useRouter()
@@ -325,6 +332,11 @@ const doTheMagicRefs = ref({})
 const setDoTheMagicRef = (el, index, key) => {
   if (el) doTheMagicRefs.value[`${index}_${key}`] = el
 }
+
+
+
+// ==================== send as pdf ====================
+
 
 // ==================== FILL IN THE BLANKS ====================
 const getFillSegments = (task) => {
