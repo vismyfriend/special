@@ -267,7 +267,7 @@ export const homeworkData = {
           // строка 3
           a3: { text: 'do' },
           b3: { answers: ['did'] },
-          c3: { answers: ["don't"] },
+          c3: { answers: ["done"] },
           d3: { text: 'делать' },
 
           // строка 4

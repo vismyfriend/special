@@ -65,6 +65,11 @@ export function useSpellingCheck(options = {}) {
       .replace(/[\s/\\[\](){}«»""''`]+$/g, '')
       .trim()
 
+
+    // === Амперсанд = and ===
+    result = result.replace(/&/g, ' and ')
+    result = result.replace(/\s+/g, ' ').trim()
+
     // === Внутренняя шутка: Verbs = Vincent = V ===
     // Приводим к единому токену, чтобы все три режима считали их равными.
     result = result
