@@ -144,7 +144,7 @@ export const homeworkData = {
 
     ]
   },
-  'ikt1': {
+  'VVVincent': {
     missionName: 'Моя электронная тетрадь',
     description: 'My digital notebook',
     tasks: [
@@ -193,24 +193,29 @@ export const homeworkData = {
       {
         type: 'fillInTheBlank',
         title: 'fill in the blanks - заполнить пропуски',
-        text: '1) You __ good people.',
-        answers: [["are", "aren't"]]
+        text: "1) I don't like __ in the blanks (мне не нравится заполнять пропуски)",
+        answers: [["to fill", "filling"]]
       },
       {
         type: 'fillInTheBlank',
-        text: '2) I _ a good person.',
-        answers: [["am", "am not", "'m", "'m not"]]
+        text: '2) __ likes doing it! (Никому не нравится заполнять пропуски!)',
+        answers: [["nobody", "no one"]]
       },
       {
         type: 'fillInTheBlank',
-        text: '3) Vincent and I ___ friends.',
-        answers: [["are", "aren't"]]   // ✅ один пропуск — один массив
+        text: '3) Why _ Vincent create this task? (Зачем он создал это задание?)',
+        answers: [["did"]]
+      },
+      {
+        type: 'fillInTheBlank',
+        text: '4) Where _ you yesterday? (Где ты был вчера?)',
+        answers: [["were"]]
       },
       {
         type: 'doTheMagic',
-        title: 'Do the magic',
+        title: 'переведи письменно',
 
-        question: 'Винсент мой друг',
+        question: 'Это было легко!',
         labels: {
           positive: '+',
           negative: '−',
@@ -219,43 +224,39 @@ export const homeworkData = {
           answer: 'a*'
         },
         correct: {
-          positive: ["Vincent is my friend", "Vincent is my best friend",],
-          negative: ["Vincent is not my friend"],
-          question: ['is V my friend?'],
-          openQuestion: ['Who is my friend?', 'Who is Vincent?', 'Why is V my friend?'],
-          answer: ['because he is the best teacher']
+          positive: ["it was easy", "this was easy",],
+          negative: ["it was not easy", "this was not easy",],
+          question: ["was it easy?", "was this easy?",],
+          openQuestion: ['What was easy?', 'Who whom was it easy?', 'Who whom was this easy?'],
+          answer: ['because Vincent is a cool teacher']
         },
       },
       {
-        type: 'text',
-        title: 'Напишите русский перевод',
-        question: '1. - "Hi everybody"',
-        answers: ['Привет всем','привет каждому','всем привет','привет все','привет каждое тело','привет каждому телу',],
-        placeholder: 'нажмите чтобы писать...'
-      },
-      {
-        type: 'text',
-        title: 'Напишите инглиш перевод',
+        type: 'doTheMagic',
+        title: 'Do the magic',
 
-        question: '2. - "Это моя домашка"',
-        hint1: '"it" и "this" одно и тоже',
-        answers: ["It's my h/w",'It is my homework','This is my homework',],
-        placeholder: 'нажмите чтобы писать...'
-      },
-      {
-        type: 'textarea',
-        title: 'Здесь можно ошибаться!',
-        hint1: '"чтобы" по-английски - "to"',
-        hint2: '/ ай стади инглиш ту трэвэл /',
-        question: 'Напишите почему или зачем вы учите английский:',
-        placeholder: 'нажмите и пишите...'
+        question: 'Винсент и я были друзьями',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["Vincent and I were friends", "We were friends",],
+          negative: ["Vincent and I were not friends", "We were not friends",],
+          question: ["Were Vincent and I friends?", "Were we friends",],
+          openQuestion: ['Who were friends?', 'Who was my friend?'],
+          answer: ['because we are cool people']
+        },
       },
       {
         type: 'tableFill',
         title: 'Irregular verbs',
         // размеры в клетках (1 клетка = 20px)
         cols: 4,        // a, b, c, d
-        rows: 6,        // 1, 2, 3
+        rows: 8,        // 1, 2, 3
         cells: {
           // заголовки занимают 1 и 2 строки
           a1: { text: 'past', rowspan: 2 },
@@ -279,13 +280,32 @@ export const homeworkData = {
           b5: { text: '/ уэнт / ' },
           c5: { text: '/ ган / '  },
 
+
           // строка 5
           a6: { answers: ['go', 'go, went, gone'] },
           b6: { answers: ['went'] },
-          c6: { answers: ['gone'] },
-          d6: { answers: ['идти', 'ехать','направляться','ходить','иди','иду'] }
+          c6: { text: 'gone' },
+          d6: { answers: ['идти', 'ехать','направляться','ходить','иди','иду'] },
+
+          // строка 6
+          a7: { answers: ['go', 'go, went, gone'] },
+          b7: { answers: ['went'] },
+          c7: { answers: ['gone'] },
+          d7: { text: 'ловить'  },
+          // строка 4
+          a8: { text: '/ кэтч / ' },
+          b8: { answers: ['кот'] },
+          c8: { answers: ['/кот/'] },
         }
-      }
+      },
+      {
+        type: 'textarea',
+        title: 'Финалочка! Almost finish',
+        hint1: '"чтобы" по-английски - "to"',
+        hint2: '/ ай стади инглиш ту трэвэл /',
+        question: 'Напишите на английском фидбэк ( отзыв) любые два-три предложения про эту электронную тетрадь. Например - Почему вам понравилось или почему не понравилось? Было ли это полезно? Твоя обратная связь is very important for Vincent)',
+        placeholder: 'нажмите и пишите...'
+      },
 
     ]
   },
