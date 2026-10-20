@@ -2,6 +2,56 @@
 <template>
   <div class="relative">
     <div id="phoneFrame">
+      <!-- Модалка способов посмотреть/послушать -->
+      <div v-if="showLookupModal" class="lookup-modal-overlay" @click.self="closeLookupModal">
+        <div class="lookup-modal">
+          <div class="lookup-modal-header">
+            <div class="lookup-icon">🔍</div>
+            <h3>«{{ searchQuery }}»?</h3>
+          </div>
+
+          <div class="lookup-modal-body">
+            <p class="lookup-subtitle">Выбери способ:</p>
+
+            <div class="lookup-list">
+              <button class="lookup-item youglish" @click="handleYouglishSearch(); closeLookupModal()">
+                <span class="lookup-item-icon">🍿</span>
+                <span class="lookup-item-text">
+            <span class="lookup-item-title">Видео-примеры</span>
+            <span class="lookup-item-desc">Youglish — как слово звучит в реальных видео</span>
+          </span>
+              </button>
+
+              <button class="lookup-item google" @click="handlePronunciationSearch(); closeLookupModal()">
+                <span class="lookup-item-icon">🎧</span>
+                <span class="lookup-item-text">
+            <span class="lookup-item-title">Произношение</span>
+            <span class="lookup-item-desc">Google — как слово произносится</span>
+          </span>
+              </button>
+
+              <button class="lookup-item oxford" @click="handleOxfordSearch(); closeLookupModal()">
+                <span class="lookup-item-icon">📚</span>
+                <span class="lookup-item-text">
+            <span class="lookup-item-title">Oxford Dictionary</span>
+            <span class="lookup-item-desc">Определение, транскрипция, примеры</span>
+          </span>
+              </button>
+
+              <button class="lookup-item reverso" @click="handleReversoSearch(); closeLookupModal()">
+                <span class="lookup-item-icon">🔄</span>
+                <span class="lookup-item-text">
+            <span class="lookup-item-title">Reverso Context</span>
+            <span class="lookup-item-desc">Перевод в контексте, примеры из жизни</span>
+          </span>
+              </button>
+            </div>
+          </div>
+
+          <button class="close-modal" @click="closeLookupModal">✕</button>
+        </div>
+      </div>
+
       <p class="bubble left" id="intro-message">vismyfriend<br> and <br> vismyteacher</p>
 
       <div class="q-pa-15 ">
@@ -15,7 +65,8 @@
               placeholder="🔎 введи что хочешь изучить"
               class="search-input"
               @focus="focusSearch"
-              @keyup.enter="handleReversoSearch"
+              @keydown.enter.prevent="blurSearchInput"
+
 
             />
             <button
@@ -37,8 +88,8 @@
             <button
               v-if="showPronunciationButton"
               class="pronunciation-btn oxford-btn"
-              @click="handleOxfordSearch"
-              title="Открыть в Oxford Learner's Dictionaries"
+              @click="openLookupModal"
+              title="посмотреть примеры"
             >
               📚
             </button>
@@ -714,6 +765,18 @@ const savedScrollPosition = ref(0);          // Сохраненная пози�
 
 
 // ==================== СОСТОЯНИЯ РАСКРЫТИЙ ====================
+
+const showLookupModal = ref(false)
+
+const openLookupModal = () => {
+  if (!searchQuery.value.trim()) return
+  showLookupModal.value = true
+}
+
+const closeLookupModal = () => {
+  showLookupModal.value = false
+}
+
 // 👤 ПОЛЬЗОВАТЕЛЬСКИЕ - сохраняются в localStorage
 const userExpandedSubTasks = ref(new Set());
 const userExpandedUnderSubTasks = ref(new Set());
@@ -752,6 +815,10 @@ const expandedUnderSubTasks = computed({
 
 // ==================== Нажатие на поиск - СКРОЛЛ К ВЕРХУ ====================
 const SCROLL_OFFSET_ON_FOCUS = 200; // ← сколько пикселей от верха оставляем
+
+const blurSearchInput = (e) => {
+  e.target.blur()  // явно снимаем фокус → клавиатура закрывается
+}
 
 const focusSearch = () => {
   // Для iOS нужно больше времени из-за анимации клавиатуры
@@ -3579,6 +3646,137 @@ onBeforeRouteLeave((to, from, next) => {
 
 /* Для отличного опыта на мобильных - увеличиваем зону касания */
 
+
+/* ==================== МОДАЛКА LOOKUP ==================== */
+.lookup-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.lookup-modal {
+  position: relative;
+  background: linear-gradient(145deg, #2c3e50, #1a1a2e);
+  border-radius: 15px;
+  padding: 25px 20px 20px;
+  width: 340px;
+  max-width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 2px solid #6a6a6a;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  animation: lookupSlideIn 0.25s ease;
+}
+
+@keyframes lookupSlideIn {
+  from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lookup-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #444;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #3498db;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+}
+
+.lookup-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.lookup-modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 2px;
+  }
+}
+
+.lookup-subtitle {
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: #95a5a6;
+  text-align: center;
+}
+
+.lookup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lookup-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #34495e;
+  border: 1px solid #4a6178;
+  border-radius: 10px;
+  color: #fff;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #3d566e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.youglish { border-left: 4px solid #ff6b6b; }
+  &.google   { border-left: 4px solid #667eea; }
+  &.oxford   { border-left: 4px solid #00539b; }
+  &.reverso  { border-left: 4px solid #e67e22; }
+}
+
+.lookup-item-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.lookup-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lookup-item-title {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #ecf0f1;
+}
+
+.lookup-item-desc {
+  font-size: 0.75rem;
+  color: #95a5a6;
+  line-height: 1.2;
+}
 </style>
 
 

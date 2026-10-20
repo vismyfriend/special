@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <!-- Заголовок с именем агента -->
     <div class="header">
       <div class="header-left">
         <h1 class="agent-name" @click="openNameModal">
-          {{ displayUserName }}
+          my name is {{ displayUserName }}
         </h1>
       </div>
       <div class="header-right">
         <button class="print-button"
                 @click="checkAnswers"
+                :disabled="isChecking || !isAnyAnswerFilled"
                 title="Проверить">
           ✅
         </button>
@@ -21,8 +21,6 @@
                 title="Очистить">
           🧹
         </button>
-
-
         <button class="print-button" @click="openMissionsList" title="Список заданий">
           📚
         </button>
@@ -35,7 +33,6 @@
           <div class="notebook-grid"></div>
 
           <div class="notebook-content" ref="contentRef">
-            <!-- ЕСЛИ МИССИЯ НАЙДЕНА -->
             <div v-if="currentMission" class="content-inner">
               <p class="gray-font">
                 {{ currentMission.description }}
@@ -51,7 +48,6 @@
                 <div class="question-text">
                   {{ task.question }}
 
-                  <!-- Подсказки в виде лампочек -->
                   <span
                     v-for="hint in getAvailableHints(task, index)"
                     :key="hint.index"
@@ -61,9 +57,15 @@
                     💡
                   </span>
 
-                  <!-- Флажок для показа правильного ответа (кроме fillInTheBlank) -->
                   <span
-                    v-if="task.type !== 'fillInTheBlank' && task.answers && task.answers.length > 0 && !showAnswerFlag[index]"
+                    v-if="
+                      task.type !== 'fillInTheBlank' &&
+                      task.answers && task.answers.length > 0 &&
+                      !showAnswerFlag[index] &&
+                      showResults &&
+                      taskResults[index] &&
+                      taskResults[index].isCorrect !== true
+                    "
                     class="answer-flag"
                     @click="showCorrectAnswer(index)"
                   >
@@ -71,7 +73,6 @@
                   </span>
                 </div>
 
-                <!-- Подсказки -->
                 <div v-if="showHint[index] && showHint[index].size > 0" class="hints">
                   <div
                     v-for="(hintText, hintIndex) in getShownHints(currentMission.tasks[index], index)"
@@ -82,7 +83,6 @@
                   </div>
                 </div>
 
-                <!-- Показ правильного ответа (кроме fillInTheBlank) -->
                 <div
                   v-if="task.type !== 'fillInTheBlank' && showAnswerFlag[index] && task.answers"
                   class="correct-answer-display"
@@ -91,7 +91,7 @@
                   <span class="answer-text">{{ task.answers.join(' или ') }}</span>
                 </div>
 
-                <!-- === ТИП DO THE MAGIC (+ − ? o? a*) === -->
+                <!-- === DO THE MAGIC === -->
                 <div v-if="task.type === 'doTheMagic'" class="doTheMagic-block">
                   <div class="doTheMagic-grid">
                     <div
@@ -122,7 +122,7 @@
                   </div>
                 </div>
 
-                <!-- === ТИП FILL IN THE BLANKS === -->
+                <!-- === FILL IN THE BLANKS === -->
                 <div v-else-if="task.type === 'fillInTheBlank'" class="fill-blank-block">
                   <div class="fill-blank-text">
                     <template v-for="(segment, segIndex) in getFillSegments(task)" :key="segIndex">
@@ -143,7 +143,46 @@
                   </div>
                 </div>
 
-                <!-- === ОБЫЧНЫЙ TEXTAREA === -->
+                <!-- === TABLE FILL === -->
+                <div v-else-if="task.type === 'tableFill'" class="table-fill-block">
+                  <div
+                    class="table-fill"
+                    :style="{
+                      '--cols': task.cols || 4,
+                      '--rows': task.rows || 3
+                    }"
+                  >
+                    <!-- Слой линий сетки -->
+                    <div
+                      v-for="line in getTableGridLines(task)"
+                      :key="line.key"
+                      class="table-grid-line"
+                      :class="`table-grid-line--${line.orientation}`"
+                      :style="line.style"
+                    ></div>
+
+                    <!-- Ячейки -->
+                    <div
+                      v-for="cell in getTableCells(task)"
+                      :key="cell.key"
+                      class="table-cell"
+                      :style="getTableCellStyle(cell)"
+                    >
+                      <span v-if="cell.data.text" class="table-cell-text">{{ cell.data.text }}</span>
+                      <input
+                        v-else
+                        type="text"
+                        class="table-cell-input"
+                        :class="getTableCellClass(index, cell.key)"
+                        v-model="answers[index][cell.key]"
+                        placeholder="?"
+
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- === TEXTAREA === -->
                 <div v-else-if="task.type === 'textarea'" class="input-wrapper">
                   <textarea
                     class="message-input"
@@ -156,7 +195,7 @@
                   ></textarea>
                 </div>
 
-                <!-- === ОБЫЧНЫЙ INPUT (TEXT) === -->
+                <!-- === TEXT === -->
                 <div v-else class="input-wrapper">
                   <input
                     class="message-input-text"
@@ -168,7 +207,6 @@
                 </div>
               </div>
 
-              <!-- Кнопки -->
               <div class="button-wrapper">
                 <button
                   class="check-button"
@@ -180,7 +218,6 @@
               </div>
             </div>
 
-            <!-- ЕСЛИ МИССИЯ НЕ НАЙДЕНА -->
             <div v-else class="error-message">
               <span>📚</span>
               <p>Задание не найдено</p>
@@ -224,11 +261,13 @@
     </div>
   </div>
 
-
   <!-- Модалка со списком миссий -->
   <div v-if="showMissionsModal" class="modal-overlay" @click.self="closeMissionsModal">
     <div class="modal-content missions-modal">
-      <h2>📚 Список домашних заданий</h2>
+      <div class="missions-header">
+        <h2>📚 Список домашних:</h2>
+        <span class="missions-count">{{ missionsList.length }}</span>
+      </div>
       <div class="missions-list">
         <div
           v-for="mission in missionsList"
@@ -236,14 +275,15 @@
           class="mission-item"
           @click="goToMission(mission.id)"
         >
-          <span class="mission-item-name">{{ mission.missionName }}</span>
+        <span class="mission-item-name" :title="mission.missionName">
+          {{ mission.missionName || mission.id }}
+        </span>
           <span class="mission-item-badge">→</span>
         </div>
       </div>
-      <button class="modal-btn save" @click="closeMissionsModal">Закрыть</button>
+      <button class="modal-btn save missions-close" @click="closeMissionsModal">Закрыть</button>
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -276,13 +316,11 @@ const showHint = ref([])
 const showAnswerFlag = ref([])
 const missionsList = ref([])
 
-// Модалки
 const showNameModal = ref(false)
 const tempName = ref('')
 const showMissionsModal = ref(false)
 const showClearConfirmModal = ref(false)
 
-// Refs для textarea в doTheMagic
 const doTheMagicRefs = ref({})
 const setDoTheMagicRef = (el, index, key) => {
   if (el) doTheMagicRefs.value[`${index}_${key}`] = el
@@ -305,7 +343,7 @@ const getFillWidth = (n) => {
   if (n === 3) return '120px'
   if (n === 2) return '80px'
   if (n === 1) return '40px'
-  return '42px' // fallback на всякий случай
+  return '42px'
 }
 
 const getFillClass = (taskIndex, blankIndex) => {
@@ -317,7 +355,111 @@ const getFillClass = (taskIndex, blankIndex) => {
   return val ? 'fill-blank-correct' : 'fill-blank-incorrect'
 }
 
-// Авто-высота для textarea в doTheMagic
+// ==================== TABLE FILL ====================
+const TABLE_CELL_W = 120
+const TABLE_CELL_H = 20
+
+const parseCellKey = (key) => {
+  const m = key.match(/^([a-z]+)(\d+)$/)
+  if (!m) return null
+  const colLetters = m[1]
+  const rowNumber = parseInt(m[2], 10)
+  let col = 0
+  for (let i = 0; i < colLetters.length; i++) {
+    col = col * 26 + (colLetters.charCodeAt(i) - 96)
+  }
+  return { col: col - 1, row: rowNumber - 1 }
+}
+
+const getTableCells = (task) => {
+  const result = []
+  const data = task.cells || {}
+  Object.keys(data).forEach(key => {
+    const pos = parseCellKey(key)
+    if (!pos) return
+    result.push({ key, col: pos.col, row: pos.row, data: data[key] })
+  })
+  return result
+}
+
+const findCellKeyAt = (task, col, row) => {
+  for (const [key, data] of Object.entries(task.cells || {})) {
+    const pos = parseCellKey(key)
+    if (!pos) continue
+    const cs = data.colspan || 1
+    const rs = data.rowspan || 1
+    if (col >= pos.col && col < pos.col + cs && row >= pos.row && row < pos.row + rs) {
+      return key
+    }
+  }
+  return null
+}
+
+const getTableCellStyle = (cell) => {
+  const cs = cell.data.colspan || 1
+  const rs = cell.data.rowspan || 1
+  return {
+    left: `${cell.col * TABLE_CELL_W}px`,
+    top: `${cell.row * TABLE_CELL_H}px`,
+    width: `${cs * TABLE_CELL_W}px`,
+    height: `${rs * TABLE_CELL_H}px`
+  }
+}
+
+const getTableCellClass = (taskIndex, cellKey) => {
+  if (!showResults.value) return ''
+  const res = taskResults.value[taskIndex]?.cells
+  if (!res) return ''
+  const val = res[cellKey]
+  if (val === undefined) return ''
+  return val ? 'table-cell-correct' : 'table-cell-incorrect'
+}
+
+const getTableGridLines = (task) => {
+  const cols = task.cols || 4
+  const rows = task.rows || 3
+  const lines = []
+
+  // Вертикальные
+  for (let c = 1; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+      const leftKey = findCellKeyAt(task, c - 1, r)
+      const rightKey = findCellKeyAt(task, c, r)
+      if (leftKey && rightKey && leftKey === rightKey) continue
+      lines.push({
+        key: `v-${c}-${r}`,
+        orientation: 'v',
+        style: {
+          left: `${c * TABLE_CELL_W}px`,
+          top: `${r * TABLE_CELL_H}px`,
+          height: `${TABLE_CELL_H}px`
+        }
+      })
+    }
+  }
+
+  // Горизонтальные
+  for (let r = 1; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const topKey = findCellKeyAt(task, c, r - 1)
+      const bottomKey = findCellKeyAt(task, c, r)
+      if (topKey && bottomKey && topKey === bottomKey) continue
+      lines.push({
+        key: `h-${c}-${r}`,
+        orientation: 'h',
+        style: {
+          left: `${c * TABLE_CELL_W}px`,
+          top: `${r * TABLE_CELL_H}px`,
+          width: `${TABLE_CELL_W}px`
+        }
+      })
+    }
+  }
+
+  return lines
+}
+
+// ==================== DO THE MAGIC (auto-height) ====================
 const adjustDoTheMagicHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -325,7 +467,6 @@ const adjustDoTheMagicHeight = (event) => {
   textarea.style.height = roundedHeight + 'px'
 }
 
-// Показ правильного ответа при двойном клике на метку
 const hintAnswer = ref({})
 const savedAnswers = ref({})
 const showAnswerHint = (taskIndex, key, task) => {
@@ -372,7 +513,7 @@ const showAnswerHint = (taskIndex, key, task) => {
 
 const isBackendAvailable = ref(true)
 
-// ==================== ПРОВЕРКА ЗАПОЛНЕННОСТИ ====================
+// ==================== FILLED / SAVED ====================
 const isAnyAnswerFilled = computed(() => {
   if (!answers.value || answers.value.length === 0) return false
   return answers.value.some(answer => {
@@ -426,6 +567,12 @@ const loadAnswersFromStorage = (tasks) => {
       } else if (task.type === 'fillInTheBlank') {
         if (!Array.isArray(saved) || saved.length !== (task.answers || []).length) return null
         if (!saved.every(v => typeof v === 'string')) return null
+      } else if (task.type === 'tableFill') {
+        if (typeof saved !== 'object' || saved === null) return null
+        const expectedKeys = Object.keys(task.cells || {})
+        const savedKeys = Object.keys(saved)
+        if (expectedKeys.length !== savedKeys.length) return null
+        if (!expectedKeys.every(k => savedKeys.includes(k))) return null
       } else {
         if (typeof saved !== 'string') return null
       }
@@ -456,7 +603,7 @@ const displayUserName = computed(() => {
   return name
 })
 
-// ==================== ЗАГРУЗКА МИССИИ ====================
+// ==================== LOAD MISSION ====================
 const loadMission = () => {
   isLoadingMission.value = true
   const data = getHomework(missionName.value)
@@ -471,6 +618,11 @@ const loadMission = () => {
       }
       if (task.type === 'fillInTheBlank') {
         return new Array((task.answers || []).length).fill('')
+      }
+      if (task.type === 'tableFill') {
+        const obj = {}
+        Object.keys(task.cells || {}).forEach(key => { obj[key] = '' })
+        return obj
       }
       return ''
     })
@@ -511,7 +663,7 @@ const loadMission = () => {
   nextTick(() => { isLoadingMission.value = false })
 }
 
-// ==================== АВТОСОХРАНЕНИЕ ====================
+// ==================== AUTOSAVE ====================
 let saveTimer = null
 watch(answers, () => {
   if (isLoadingMission.value) return
@@ -519,7 +671,7 @@ watch(answers, () => {
   saveTimer = setTimeout(() => saveAnswersToStorage(), 400)
 }, { deep: true })
 
-// ==================== ОЧИСТКА ====================
+// ==================== CLEAR ====================
 const clearAllAnswers = () => {
   if (!currentMission.value) return
   answers.value = currentMission.value.tasks.map(task => {
@@ -530,6 +682,11 @@ const clearAllAnswers = () => {
     }
     if (task.type === 'fillInTheBlank') {
       return new Array((task.answers || []).length).fill('')
+    }
+    if (task.type === 'tableFill') {
+      const obj = {}
+      Object.keys(task.cells || {}).forEach(k => { obj[k] = '' })
+      return obj
     }
     return ''
   })
@@ -556,7 +713,7 @@ const confirmClearAnswers = () => {
   showClearConfirmModal.value = false
 }
 
-// ==================== ПОДСКАЗКИ ====================
+// ==================== HINTS ====================
 const getAllHintsWithIndex = (task) => {
   const hints = []
   if (task.hint1) hints.push({ text: task.hint1, index: 1 })
@@ -592,7 +749,7 @@ const showCorrectAnswer = (index) => {
   }
 }
 
-// ==================== АВТО-ВЫСОТА ====================
+// ==================== AUTO-HEIGHT ====================
 const adjustTextareaHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -600,14 +757,18 @@ const adjustTextareaHeight = (event) => {
 }
 const adjustInputHeight = () => {}
 
-// ==================== СТИЛИ ДЛЯ INPUT ====================
+// ==================== INPUT CLASSES ====================
 const getInputClass = (index) => {
   if (!showResults.value) return ''
   if (!taskResults.value[index]) return ''
+  const task = currentMission.value.tasks[index]
+  // если автопроверки нет (answers не задан) — это «на проверку», красим синим
+  const isAutoCheckable = task && task.answers && task.answers.length > 0
+  if (!isAutoCheckable) return 'input-manual'
   return taskResults.value[index].isCorrect ? 'input-correct' : 'input-incorrect'
 }
 
-// ==================== DO THE MAGIC ====================
+// ==================== DO THE MAGIC CLASSES ====================
 const getDoTheMagicClass = (taskIndex, fieldKey) => {
   if (!showResults.value) return ''
   if (!taskResults.value[taskIndex]?.fields) return ''
@@ -630,7 +791,7 @@ const getDoTheMagicPlaceholder = (key, taskIndex) => {
   return placeholders[key] || ''
 }
 
-// ==================== ПРОВЕРКА ОТКРЫТОГО ВОПРОСА ====================
+// ==================== OPEN QUESTION ====================
 const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell','what the hell',
   'what', 'what time', 'how long', 'when', 'where', 'why', 'how']
 
@@ -660,8 +821,37 @@ const checkOpenQuestion = (userAnswer, task) => {
   })
 }
 
-// ==================== ПРОВЕРКА ОДНОГО ОТВЕТА ====================
+// ==================== CHECK ONE ====================
 const checkSingleAnswer = (task, answer) => {
+  // === TABLE FILL ===
+  if (task.type === 'tableFill') {
+    const cellsRes = {}
+    let allCorrect = true
+    let filled = 0
+
+    Object.keys(task.cells || {}).forEach(key => {
+      const cell = task.cells[key]
+      if (cell.text) return
+
+      const user = String(answer?.[key] ?? '').trim()
+      if (user) filled++
+
+      const variants = cell.answers || []
+      const ok = variants.length > 0 && usualCheck(user, variants)
+
+      cellsRes[key] = ok
+      if (!ok) allCorrect = false
+    })
+
+    return {
+      isCorrect: allCorrect && filled > 0,
+      message: allCorrect && filled > 0
+        ? '✅ Отлично! Все ячейки верны'
+        : '⚠️ Проверь ещё раз — не все ячейки совпали',
+      cells: cellsRes
+    }
+  }
+
   // === FILL IN THE BLANKS ===
   if (task.type === 'fillInTheBlank') {
     const res = []
@@ -739,7 +929,7 @@ const checkSingleAnswer = (task, answer) => {
     }
   }
 
-  // === ОБЫЧНЫЕ ЗАДАНИЯ ===
+  // === TEXT / TEXTAREA ===
   if (!task.answers || task.answers.length === 0) {
     return {
       isCorrect: null,
@@ -760,7 +950,7 @@ const checkSingleAnswer = (task, answer) => {
   }
 }
 
-// ==================== ПРОВЕРКА ВСЕХ ОТВЕТОВ ====================
+// ==================== CHECK ALL ====================
 const checkAnswers = () => {
   if (!currentMission.value || isChecking.value) return
   isChecking.value = true
@@ -783,7 +973,7 @@ const checkAnswers = () => {
   }, 100)
 }
 
-// ==================== ПРОЧЕЕ ====================
+// ==================== SCORE ====================
 const getProgressText = () => {
   if (!currentMission.value) return ''
   const answered = answers.value.filter(a => {
@@ -812,7 +1002,7 @@ const getScoreClass = () => {
   return 'score-bad'
 }
 
-// ==================== МОДАЛКА ИМЕНИ ====================
+// ==================== NAME MODAL ====================
 const openNameModal = () => {
   tempName.value = gameStore.agentName || localStorage.getItem('agentName') || ''
   showNameModal.value = true
@@ -831,7 +1021,7 @@ const saveName = () => {
   }
 }
 
-// ==================== МОДАЛКА МИССИЙ ====================
+// ==================== MISSIONS MODAL ====================
 const openMissionsList = () => {
   missionsList.value = getAllMissions()
   showMissionsModal.value = true
@@ -842,10 +1032,10 @@ const goToMission = (missionId) => {
   router.push(`/hw/${missionId}`)
 }
 
-// ==================== ПЕЧАТЬ ====================
+// ==================== PRINT ====================
 const printPDF = () => window.print()
 
-// ==================== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ====================
+// ==================== USER ====================
 const loadUserFromBackend = async () => {
   try {
     const token = localStorage.getItem('token')
@@ -917,12 +1107,6 @@ onMounted(async () => {
     background: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
   }
-}
-
-.progress-text {
-  color: #95a5a6;
-  font-size: 14px;
-  font-family: 'Special_f1', sans-serif;
 }
 
 .print-button {
@@ -1025,6 +1209,7 @@ onMounted(async () => {
 }
 
 .notebook-content {
+
   position: relative;
   z-index: 3;
   height: 100%;
@@ -1043,7 +1228,7 @@ onMounted(async () => {
   color: #25598e;
 }
 
-.task-block { margin-bottom: 20px; position: relative; }
+//.task-block { margin-bottom: 20px; position: relative; }
 
 .question-text {
   display: block;
@@ -1098,8 +1283,8 @@ onMounted(async () => {
   border: none;
   outline: none;
   resize: none;
-  font-family: 'Times New Roman', serif;
-  font-size: 16px;
+  font-family: 'Fira Code', serif;
+  font-size: 14px;
   line-height: 20px;
   color: #2c3e50;
   caret-color: #2c3e50;
@@ -1110,6 +1295,10 @@ onMounted(async () => {
   &:focus { background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 0 0 1px rgba(74, 144, 226, 0.3); }
   &.input-correct { background: rgba(46, 204, 113, 0.08); border-bottom: 2px solid #27ae60; }
   &.input-incorrect { background: rgba(243, 156, 18, 0.08); border-bottom: 2px solid #f39c12; }
+  &.input-manual {
+    background: rgba(52, 152, 219, 0.08);
+    border-bottom: 2px solid #3498db;
+  }
 }
 
 .message-input-text {
@@ -1130,6 +1319,10 @@ onMounted(async () => {
   &:focus { border-bottom-color: #207cca; }
   &.input-correct { border-bottom-color: #27ae60; background: rgba(26, 211, 79, 0.27); }
   &.input-incorrect { border-bottom-color: #f39c12; background: rgba(243, 156, 18, 0.15); }
+  &.input-manual {
+    border-bottom-color: #3498db;
+    background: rgba(52, 152, 219, 0.15);
+  }
 }
 
 .button-wrapper {
@@ -1175,6 +1368,7 @@ onMounted(async () => {
   font-size: 15px;
   font-family: Special_f1;
 }
+
 .task-title {
   color: #666;
   font-style: italic;
@@ -1270,23 +1464,109 @@ onMounted(async () => {
     &:hover { background: #d0d8e0; }
   }
 }
+.missions-modal {
+  max-width: 480px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
 
-.missions-modal { max-width: 600px; }
-.missions-list { max-height: 400px; overflow-y: auto; margin: 15px 0; }
+.missions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-family: 'Special_f1', sans-serif;
+    color: #2c3e50;
+    text-align: left;
+  }
+}
+
+.missions-count {
+  font-size: 12px;
+  color: #95a5a6;
+  background: #f0f3f5;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-family: 'Fira Code', monospace;
+}
+
+.missions-list {
+  flex: 1;
+  min-height: 0;          /* чтобы flex-скролл работал */
+  overflow-y: auto;
+  margin: 0 0 12px 0;
+  padding-right: 4px;     /* место под скроллбар */
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb {
+    background: #c8d0d6;
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-track { background: transparent; }
+}
 
 .mission-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  margin-bottom: 8px;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 4px;
   background: #f8f9fa;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s;
-  &:hover { background: #e8f0fe; transform: translateX(5px); }
-  .mission-item-name { font-family: 'Times New Roman', serif; font-size: 16px; color: #2c3e50; }
-  .mission-item-badge { color: #207cca; font-size: 18px; }
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: #e8f0fe;
+    border-color: #c5d9f1;
+    /* никакого transform — не дребезжит */
+  }
+
+  &:active {
+    background: #d8e6fa;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .mission-item-name {
+    flex: 1;
+    min-width: 0;                    /* чтобы ellipsis работал внутри flex */
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #2c3e50;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mission-item-badge {
+    flex-shrink: 0;
+    color: #207cca;
+    font-size: 14px;
+    opacity: 0.6;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  &:hover .mission-item-badge {
+    opacity: 1;
+  }
+}
+
+.missions-close {
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
 }
 
 /* DO THE MAGIC */
@@ -1353,15 +1633,15 @@ onMounted(async () => {
 .fill-blank-block { margin: 0; padding: 0; }
 
 .fill-blank-text {
-  font-family: 'Times New Roman', serif;
-  font-size: 16px;
+  font-family: "Fira Code";
+  letter-spacing: -0.5px;
+  font-size: 13px;
   line-height: 20px;
   color: #2c3e50;
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
-/* Обёртка пропуска — именно она держит высоту строки и рисует подчёркивание */
 .fill-blank-wrapper {
   display: inline-block;
   vertical-align: baseline;
@@ -1382,7 +1662,6 @@ onMounted(async () => {
   }
 }
 
-/* Сам input растянут на 100% обёртки и не влияет на line box */
 .fill-blank-input {
   width: 100%;
   height: 100%;
@@ -1397,8 +1676,104 @@ onMounted(async () => {
   color: #2c3e50;
   caret-color: #2c3e50;
   box-sizing: border-box;
-  text-align: center;   /* ← добавили */
+  text-align: center;
+}
 
+/* ==================== TABLE FILL ==================== */
+.table-fill-block {
+  margin: 0;
+  padding: 0;
+  margin-left: 15px;
+  /* убираем background: white отсюда */
+  position: relative;
+  z-index: 2;
+  /* блок пусть будет по ширине содержимого, а не на всю строку */
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+.table-fill {
+  position: relative;
+  width: calc(var(--cols) * 120px);
+  height: calc(var(--rows) * 20px);
+  background: white;   /* ← белый фон только под таблицей */
+  z-index: 1;          /* чтобы перекрыть клетки .notebook-grid */
+}
+
+.table-grid-line {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.08);
+  z-index: 1;
+
+  &--v {
+    width: 1px;
+  }
+  &--h {
+    height: 1px;
+  }
+}
+
+.table-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.table-cell {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  z-index: 3;
+}
+
+.table-cell-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: #2c3e50;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-cell-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'Fira Code', serif;
+  font-size: 13px;
+  line-height: 20px;
+  color: #2c3e50;
+  caret-color: #2c3e50;
+  box-sizing: border-box;
+  text-align: center;
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  &.table-cell-correct {
+    background: rgba(46, 204, 113, 0.1);
+  }
+  &.table-cell-incorrect {
+    background: rgba(243, 156, 18, 0.1);
+  }
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.25);
+    font-style: italic;
+    text-align: center;
+  }
 }
 
 /* Модалка очистки */
@@ -1416,37 +1791,96 @@ onMounted(async () => {
 
 /* Стили для печати */
 @media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  :global(html),
+  :global(body) {
+    font-size: 11px;
+  }
+
   .container {
     background: white !important;
-    padding: 20px !important;
+    padding: 0 !important;
     min-height: auto !important;
     display: block !important;
   }
 
-  .header { margin-bottom: 20px !important; }
+  .header { margin-bottom: 8px !important; }
+
+  .agent-name {
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+  .agent-name::before {
+    content: 'My name is ________';
+    font-size: 14px;
+    color: #333;
+    font-family: 'Special_f1', sans-serif;
+  }
 
   .notebook-wrapper {
     width: 100% !important;
     height: auto !important;
     perspective: none !important;
   }
-
   .notebook-cover {
     background: white !important;
     box-shadow: none !important;
     padding: 0 !important;
     &::before { display: none !important; }
   }
-
   .notebook-page {
     box-shadow: none !important;
-    padding: 20px !important;
+    padding: 0 !important;
     &::before { display: none !important; }
   }
-
   .notebook-grid { display: none !important; }
-  .notebook-content { overflow: visible !important; height: auto !important; }
+  .notebook-content {
+    overflow: visible !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
   .notebook-wrapper::after { display: none !important; }
+
+  .content-inner {
+    font-size: 11px !important;
+    line-height: 14px !important;
+    color: #000 !important;
+  }
+
+  .gray-font {
+    font-size: 10px !important;
+    line-height: 13px !important;
+    margin: 0 0 8px 0 !important;
+    color: #555 !important;
+  }
+
+  .task-title {
+    font-size: 11px !important;
+    line-height: 14px !important;
+    margin: 8px 0 4px 0 !important;
+    color: #333 !important;
+
+    .task-block:not(:first-child) & {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 16px;
+      margin-top: 30px;
+    }
+  }
+
+  .task-block {
+    page-break-inside: avoid;
+    margin-bottom: 8px !important;
+  }
+
+  .question-text {
+    font-size: 11px !important;
+    line-height: 14px !important;
+    color: #000 !important;
+  }
 
   .button-wrapper,
   .check-button,
@@ -1458,33 +1892,96 @@ onMounted(async () => {
   .pdf-button,
   .reset-button,
   .progress-text,
-  .modal-overlay {
+  .modal-overlay,
+  .hints,
+  .correct-answer-display {
     display: none !important;
   }
 
+  .message-input,
+  .message-input-text {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    min-height: 16px !important;
+    font-size: 11px !important;
+    line-height: 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid #ccc !important;
+
+  }
   .message-input::placeholder,
   .message-input-text::placeholder {
     color: transparent !important;
     opacity: 0 !important;
   }
-
-  .message-input,
-  .message-input-text {
-    border-bottom: 1px solid #ccc !important;
-    min-height: 30px !important;
+  .message-input {
+    min-height: 80px !important;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 19px,
+        rgba(0, 0, 0, 0.15) 19px,
+        rgba(0, 0, 0, 0.15) 20px
+    ) !important;
+    background-size: 100% 20px !important;
+    background-attachment: local !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .task-block { page-break-inside: avoid; margin-bottom: 20px !important; }
-  .hints { display: none !important; }
-  .correct-answer-display { display: none !important; }
+  .doTheMagic-row {
+    min-height: 14px;
+    line-height: 14px;
+  }
+  .doTheMagic-label {
+    font-size: 11px;
+    line-height: 14px;
+    min-width: 18px;
+  }
+  .doTheMagic-input {
+    height: 14px;
+    min-height: 14px;
+    font-size: 11px;
+    line-height: 14px;
+  }
 
+  .fill-blank-text {
+    font-size: 11px !important;
+    line-height: 14px !important;
+  }
   .fill-blank-wrapper {
-    border-bottom: 1px solid #333 !important;
+    height: 14px !important;
+    line-height: 14px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     background: transparent !important;
   }
   .fill-blank-wrapper.fill-blank-correct,
   .fill-blank-wrapper.fill-blank-incorrect {
     background: transparent !important;
+    border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+
+  }
+  .fill-blank-input {
+    font-size: 11px !important;
+    line-height: 14px !important;
+  }
+
+  .table-fill-block {
+    margin-left: 0 !important;
+  }
+  .table-cell-text,
+  .table-cell-input {
+    font-size: 11px;
+    line-height: 14px;
+  }
+  .table-cell-input {
+    background: transparent !important;
+  }
+  .table-cell-input.table-cell-correct,
+  .table-cell-input.table-cell-incorrect {
+    background: transparent !important;
+  }
+  .table-grid-line {
+    background: rgba(0, 0, 0, 0.2) !important;
   }
 }
 
@@ -1507,5 +2004,9 @@ onMounted(async () => {
 
   .doTheMagic-input { letter-spacing: -0.5px; font-size: 14px; }
   .fill-blank-input { font-size: 14px; }
+
+  .table-fill-block {
+    margin-left: 0;
+  }
 }
 </style>
