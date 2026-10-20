@@ -288,9 +288,9 @@ export const homeworkData = {
           d6: { answers: ['идти', 'ехать','направляться','ходить','иди','иду'] },
 
           // строка 6
-          a7: { answers: ['go', 'go, went, gone'] },
-          b7: { answers: ['went'] },
-          c7: { answers: ['gone'] },
+          a7: { answers: ['catch'] },
+          b7: { answers: ['caught'] },
+          c7: { answers: ['caught'] },
           d7: { text: 'ловить'  },
           // строка 4
           a8: { text: '/ кэтч / ' },
