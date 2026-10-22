@@ -150,10 +150,10 @@
                     {{ task.taskDescription }}
                   </p>
                   <div v-if="task.usefulWords" class="article-useful-words">
-                    <div class="useful-words-header">
-                      <span class="useful-words-icon">📝</span>
+<!--                    <div class="useful-words-header">-->
+<!--                      <span class="useful-words-icon">📝</span>-->
 <!--                      <span class="useful-words-title">Впиши эти слова в пропуски:</span>-->
-                    </div>
+<!--                    </div>-->
 
                     <!-- Если массив объектов -->
                     <div v-if="Array.isArray(task.usefulWords)" class="useful-words-grid">
@@ -1981,7 +1981,6 @@ onMounted(async () => {
   font-size: 14px;
   line-height: 20px;
   color: #2c3e50;
-  margin: 0 0 8px 0;
 }
 
 .article-useful-words {
@@ -2112,8 +2111,6 @@ onMounted(async () => {
 }
 .article-useful-words {
   font-family: 'Times New Roman', serif;
-  margin: 0 0 14px 0;
-  padding: 10px 12px;
   background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.06));
   border-left: 4px solid #3498db;
   border-radius: 8px;
