@@ -3274,7 +3274,6 @@ whatISitVideoMission: [
 
 
   clothes: [
-
       { id: 1, eng: "hat", ru: "шляпа", hint: "/ хЭт /", EnglishLevel: "A" },
       { id: 2, eng: "cap", ru: "кепка", hint: "/ кЭп /", EnglishLevel: "A" },
       { id: 3, eng: "scarf", ru: "шарф", hint: "/ скаф /", EnglishLevel: "A" },
@@ -3490,6 +3489,7 @@ whatISitVideoMission: [
     { id: 49, eng: "think, thought, thought", ru: "думать", hint: "/ синк /" },
     { id: 50, eng: "write, wrote, written", ru: "писать", hint: "/ райт /" }
   ],
+
   irregularVerbsNaughtyVerbsA0: [
     { id: 1, eng: "bite, bit, bitten", ru: "кусать" },
     { id: 2, eng: "blow, blew, blown", ru: "дуть" },

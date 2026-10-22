@@ -143,6 +143,71 @@
                   </div>
                 </div>
 
+
+                <!-- === ARTICLE WORDS INPUT === -->
+                <div v-else-if="task.type === 'articleWordsInput'" class="article-block">
+                  <p v-if="task.taskDescription" class="article-description">
+                    {{ task.taskDescription }}
+                  </p>
+                  <div v-if="task.usefulWords" class="article-useful-words">
+                    <div class="useful-words-header">
+                      <span class="useful-words-icon">📝</span>
+<!--                      <span class="useful-words-title">Впиши эти слова в пропуски:</span>-->
+                    </div>
+
+                    <!-- Если массив объектов -->
+                    <div v-if="Array.isArray(task.usefulWords)" class="useful-words-grid">
+                      <div
+                        v-for="(word, wIndex) in task.usefulWords"
+                        :key="wIndex"
+                        class="useful-word-card"
+                      >
+                        <span class="useful-word-eng">{{ word.eng }}</span>
+                        <span class="useful-word-ru">{{ word.ru }}</span>
+                      </div>
+                    </div>
+
+                    <!-- Если строка (старый формат) -->
+                    <p v-else class="useful-words-text">{{ task.usefulWords }}</p>
+                  </div>
+                  <img
+                    v-if="task.taskPicture"
+                    :src="task.taskPicture"
+                    :alt="'Image for task ' + (index + 1)"
+                    class="article-picture"
+                  >
+
+                  <div v-if="task.taskAudio" class="audio-player-sticky-container">
+                    <audio
+                      controls
+                      class="audio-player"
+                      controlsList="nodownload"
+                      oncontextmenu="return false;"
+                    >
+                      <source :src="task.taskAudio" type="audio/mp3" />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+
+                  <div class="article-text">
+                    <template v-for="(segment, segIndex) in getArticleSegments(task)" :key="segIndex">
+                      <span v-if="segment.type === 'text'">{{ segment.value }}</span>
+                      <span
+                        v-else
+                        class="article-blank-wrapper"
+                        :class="getArticleBlankClass(index, segment.blankIndex)"
+                        :style="{ width: getArticleBlankWidth(segment.answer) }"
+                      >
+        <input
+          type="text"
+          class="article-blank-input"
+          v-model="answers[index][segment.blankIndex]"
+        />
+      </span>
+                    </template>
+                  </div>
+                </div>
+
                 <!-- === TABLE FILL === -->
                 <div v-else-if="task.type === 'tableFill'" class="table-fill-block">
                   <div
@@ -337,6 +402,61 @@ const setDoTheMagicRef = (el, index, key) => {
 
 // ==================== send as pdf ====================
 
+const disableAudioDownload = () => {
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.classList.contains('audio-player')) {
+      e.preventDefault()
+      return false
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault()
+    }
+  })
+}
+
+const ARTICLE_BLANK_REGEX = /\(([^)]+)\)/g
+
+const getArticleSegments = (task) => {
+  const script = task.articleScript || ''
+  const parts = script.split(ARTICLE_BLANK_REGEX)
+  const segments = []
+  let blankIndex = 0
+  // split с capture-группой даёт массив: текст, содержимое1, текст, содержимое2, ...
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i]
+    if (i % 2 === 0) {
+      // текст
+      if (part) segments.push({ type: 'text', value: part })
+    } else {
+      // пропуск
+      segments.push({
+        type: 'blank',
+        answer: part,
+        blankIndex: blankIndex++
+      })
+    }
+  }
+  return segments
+}
+
+const UNDERSCORE_STEP = 8   // px: 4px штрих + 4px промежуток
+
+const getArticleBlankWidth = (answer) => {
+  const clean = (answer || '').split('|')[0].trim()
+  const len = Math.max(5, clean.length)   // минимум 5 штрихов
+  return `${len * UNDERSCORE_STEP + 8}px` // 8px запас по краям
+}
+
+const getArticleBlankClass = (taskIndex, blankIndex) => {
+  if (!showResults.value) return ''
+  const res = taskResults.value[taskIndex]?.results
+  if (!res) return ''
+  const val = res[blankIndex]
+  if (val === undefined) return ''
+  return val ? 'article-blank-correct' : 'article-blank-incorrect'
+}
 
 // ==================== FILL IN THE BLANKS ====================
 const getFillSegments = (task) => {
@@ -636,6 +756,12 @@ const loadMission = () => {
         Object.keys(task.cells || {}).forEach(key => { obj[key] = '' })
         return obj
       }
+      if (task.type === 'articleWordsInput') {
+        const segments = getArticleSegments(task)
+        const blankCount = segments.filter(s => s.type === 'blank').length
+        return new Array(blankCount).fill('')
+      }
+
       return ''
     })
 
@@ -659,6 +785,12 @@ const loadMission = () => {
               el.style.height = 'auto'
               el.style.height = el.scrollHeight + 'px'
             }
+          } else if (task.type === 'articleWordsInput') {
+            if (!Array.isArray(saved)) return null
+            const segments = getArticleSegments(task)
+            const expectedCount = segments.filter(s => s.type === 'blank').length
+            if (saved.length !== expectedCount) return null
+            if (!saved.every(v => typeof v === 'string')) return null
           }
         })
       })
@@ -699,6 +831,11 @@ const clearAllAnswers = () => {
       const obj = {}
       Object.keys(task.cells || {}).forEach(k => { obj[k] = '' })
       return obj
+    }
+    if (task.type === 'articleWordsInput') {
+      const segments = getArticleSegments(task)
+      const blankCount = segments.filter(s => s.type === 'blank').length
+      return new Array(blankCount).fill('')
     }
     return ''
   })
@@ -835,6 +972,36 @@ const checkOpenQuestion = (userAnswer, task) => {
 
 // ==================== CHECK ONE ====================
 const checkSingleAnswer = (task, answer) => {
+  if (task.type === 'articleWordsInput') {
+    const segments = getArticleSegments(task)
+    const res = []
+    let filled = 0
+
+    segments.filter(s => s.type === 'blank').forEach((seg, i) => {
+      const user = String(answer?.[i] ?? '').trim()
+      if (user) filled++
+
+      // варианты через |
+      const variants = seg.answer.split('|').map(v => v.trim()).filter(Boolean)
+
+      let ok
+      if (!user) {
+        ok = false
+      } else {
+        ok = usualCheck(user, variants)
+      }
+      res[i] = ok
+    })
+
+    const allOk = res.every(Boolean)
+    return {
+      isCorrect: allOk && filled > 0,
+      message: allOk && filled > 0
+        ? '✅ Отлично! Все слова верны'
+        : '⚠️ Проверь ещё раз — не все слова совпали',
+      results: res
+    }
+  }
   // === TABLE FILL ===
   if (task.type === 'tableFill') {
     const cellsRes = {}
@@ -1077,6 +1244,7 @@ onMounted(async () => {
   await loadUserFromBackend()
   loadMission()
   await adjustNotebookHeight()
+  disableAudioDownload()
 })
 </script>
 
@@ -1801,6 +1969,220 @@ onMounted(async () => {
 .clear-confirm-buttons { justify-content: center; margin-top: 24px; }
 .clear-confirm-buttons .modal-btn { min-width: 110px; }
 
+
+/* ==================== ARTICLE WORDS INPUT ==================== */
+.article-block {
+  margin: 0;
+  padding: 0;
+}
+
+.article-description {
+  font-family: 'Special_f1', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+}
+
+.article-useful-words {
+  font-family: 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 20px;
+  color: #7f8c8d;
+  margin: 0 0 12px 0;
+  padding: 6px 10px;
+  background: rgba(52, 152, 219, 0.06);
+  border-left: 3px solid #3498db;
+  border-radius: 4px;
+
+  strong {
+    color: #207cca;
+  }
+}
+
+.article-picture {
+  max-width: 200px;
+  max-height: 200px;
+  display: block;
+  margin: 0 0 12px 0;
+  border-radius: 8px;
+}
+
+.audio-player-sticky-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 10px 0;
+  margin-bottom: 15px;
+}
+
+.audio-player {
+  width: 100%;
+  max-width: 500px;
+  outline: none;
+
+  &::-webkit-media-controls-enclosure {
+    overflow: hidden;
+  }
+  &::-webkit-media-controls-panel {
+    -webkit-user-select: none;
+  }
+}
+
+.article-text {
+  font-family: "Fira Code", serif;
+  font-size: 14px;
+  line-height: 26px;
+  color: #2c3e50;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.article-blank-wrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  height: 22px;
+  line-height: 22px;
+  box-sizing: border-box;
+  margin: 0 2px;
+  transition: background 0.3s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 2px;
+    height: 1px;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.3) 0px,
+        rgba(0, 0, 0, 0.3) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+  }
+
+  &.article-blank-correct {
+    background: rgba(46, 204, 113, 0.1);
+    &::before {
+      background-image: repeating-linear-gradient(
+          to right,
+          #27ae60 0px,
+          #27ae60 4px,
+          transparent 4px,
+          transparent 8px
+      );
+    }
+  }
+  &.article-blank-incorrect {
+    background: rgba(243, 156, 18, 0.1);
+    &::before {
+      background-image: repeating-linear-gradient(
+          to right,
+          #f39c12 0px,
+          #f39c12 4px,
+          transparent 4px,
+          transparent 8px
+      );
+    }
+  }
+}
+
+.article-blank-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;                 /* убрали border-bottom */
+  background: transparent;
+  outline: none;
+  font-family: inherit;          /* ← наследуем шрифт от родителя */
+  font-size: 14px;
+  line-height: 22px;
+  color: #2c3e50;
+  caret-color: #2c3e50;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.article-useful-words {
+  font-family: 'Times New Roman', serif;
+  margin: 0 0 14px 0;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.06));
+  border-left: 4px solid #3498db;
+  border-radius: 8px;
+}
+
+.useful-words-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.useful-words-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.useful-words-title {
+  font-family: 'Special_f1', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #207cca;
+  line-height: 20px;
+}
+
+.useful-words-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 6px;
+}
+
+.useful-word-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: white;
+  border: 1px solid rgba(52, 152, 219, 0.25);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.15);
+  }
+}
+
+.useful-word-eng {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 20px;
+}
+
+.useful-word-ru {
+  font-family: 'Times New Roman', serif;
+  font-size: 13px;
+  color: #7f8c8d;
+  line-height: 18px;
+}
+
+.useful-words-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: #5a6b7b;
+}
 /* Стили для печати */
 @media print {
   @page {
@@ -1994,6 +2376,41 @@ onMounted(async () => {
   }
   .table-grid-line {
     background: rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .article-block {
+    page-break-inside: avoid;
+  }
+  .article-description,
+  .article-useful-words {
+    font-size: 11px !important;
+    line-height: 14px !important;
+  }
+  .article-text {
+    font-size: 11px !important;
+    line-height: 18px !important;
+  }
+  .article-blank-wrapper {
+    height: 16px !important;
+    line-height: 16px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
+    background: transparent !important;
+  }
+  .article-blank-wrapper.article-blank-correct,
+  .article-blank-wrapper.article-blank-incorrect {
+    background: transparent !important;
+    border-bottom-color: rgba(0, 0, 0, 0.2) !important;
+  }
+  .article-blank-input {
+    font-size: 11px !important;
+    line-height: 16px !important;
+  }
+  .audio-player-sticky-container {
+    display: none !important;
+  }
+  .article-picture {
+    max-width: 100px !important;
+    max-height: 100px !important;
   }
 }
 

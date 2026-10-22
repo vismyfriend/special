@@ -916,7 +916,7 @@ You become a genius by learning how to use all of your intelligences in the area
       }
     ]
   },
-  acceleratedLearningInAction3: {
+  acceleratedLearningInAction4: {
     mainTitleOfTheText: "Six Stages of Learning",
     author: "(это не ИИ) -> this is one of Vincent's favorite books. Часть третья.",
     // audioUrl: new URL('../assets/audio/02-YouAreAGenius.mp3', import.meta.url).href,
