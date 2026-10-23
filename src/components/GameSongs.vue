@@ -236,6 +236,7 @@ const handleWordClick = (e) => {
 .minimal-container {
   max-width: 800px;
   margin: 0 auto;
+  margin-top: 60px;
   padding: 20px;
   background: #f5f5f5;
   font-family: Arial, sans-serif;

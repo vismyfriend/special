@@ -143,19 +143,12 @@
                   </div>
                 </div>
 
-
                 <!-- === ARTICLE WORDS INPUT === -->
                 <div v-else-if="task.type === 'articleWordsInput'" class="article-block">
                   <p v-if="task.taskDescription" class="article-description">
                     {{ task.taskDescription }}
                   </p>
                   <div v-if="task.usefulWords" class="article-useful-words">
-<!--                    <div class="useful-words-header">-->
-<!--                      <span class="useful-words-icon">📝</span>-->
-<!--                      <span class="useful-words-title">Впиши эти слова в пропуски:</span>-->
-<!--                    </div>-->
-
-                    <!-- Если массив объектов -->
                     <div v-if="Array.isArray(task.usefulWords)" class="useful-words-grid">
                       <div
                         v-for="(word, wIndex) in task.usefulWords"
@@ -166,8 +159,6 @@
                         <span class="useful-word-ru">{{ word.ru }}</span>
                       </div>
                     </div>
-
-                    <!-- Если строка (старый формат) -->
                     <p v-else class="useful-words-text">{{ task.usefulWords }}</p>
                   </div>
                   <img
@@ -195,15 +186,23 @@
                       <span
                         v-else
                         class="article-blank-wrapper"
-                        :class="getArticleBlankClass(index, segment.blankIndex)"
-                        :style="{ width: getArticleBlankWidth(segment.answer) }"
+                        :class="[
+                          getArticleBlankClass(index, segment.blankIndex),
+                          { 'article-blank-wrapper--manual': segment.isManual }
+                        ]"
+                        :style="{ '--blank-min': getArticleBlankWidth(segment.answer) }"
                       >
-        <input
-          type="text"
-          class="article-blank-input"
-          v-model="answers[index][segment.blankIndex]"
-        />
-      </span>
+                        <span
+                          contenteditable="true"
+                          class="article-blank-input"
+                          :data-placeholder="segment.isManual ? '' : ''"
+                          @keydown.enter.prevent
+                          @input="onArticleInput(index, segment.blankIndex, $event)"
+                          @paste="onArticlePaste"
+                          @blur="onArticleBlur(index, segment.blankIndex, $event)"
+                          :ref="el => setArticleEditableRef(el, index, segment.blankIndex)"
+                        ></span>
+                      </span>
                     </template>
                   </div>
                 </div>
@@ -217,7 +216,6 @@
                       '--rows': task.rows || 3
                     }"
                   >
-                    <!-- Слой линий сетки -->
                     <div
                       v-for="line in getTableGridLines(task)"
                       :key="line.key"
@@ -226,7 +224,6 @@
                       :style="line.style"
                     ></div>
 
-                    <!-- Ячейки -->
                     <div
                       v-for="cell in getTableCells(task)"
                       :key="cell.key"
@@ -241,7 +238,6 @@
                         :class="getTableCellClass(index, cell.key)"
                         v-model="answers[index][cell.key]"
                         placeholder="?"
-
                       />
                     </div>
                   </div>
@@ -340,9 +336,9 @@
           class="mission-item"
           @click="goToMission(mission.id)"
         >
-        <span class="mission-item-name" :title="mission.missionName">
-          {{ mission.missionName || mission.id }}
-        </span>
+          <span class="mission-item-name" :title="mission.missionName">
+            {{ mission.missionName || mission.id }}
+          </span>
           <span class="mission-item-badge">→</span>
         </div>
       </div>
@@ -358,12 +354,6 @@ import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
 import { useSpellingCheck } from 'src/composables/specialSpellingCheck'
 import html2pdf from 'html2pdf.js'
-
-const downloadPDF = () => {
-  const element = document.querySelector('.notebook-content') // ваш блок с заданиями
-  html2pdf().from(element).save('my-homework.pdf')
-}
-
 
 const route = useRoute()
 const router = useRouter()
@@ -398,10 +388,7 @@ const setDoTheMagicRef = (el, index, key) => {
   if (el) doTheMagicRefs.value[`${index}_${key}`] = el
 }
 
-
-
-// ==================== send as pdf ====================
-
+// ==================== AUDIO ====================
 const disableAudioDownload = () => {
   document.addEventListener('contextmenu', (e) => {
     if (e.target.classList.contains('audio-player')) {
@@ -416,6 +403,7 @@ const disableAudioDownload = () => {
   })
 }
 
+// ==================== ARTICLE WORDS INPUT (contenteditable) ====================
 const ARTICLE_BLANK_REGEX = /\(([^)]+)\)/g
 
 const getArticleSegments = (task) => {
@@ -423,30 +411,29 @@ const getArticleSegments = (task) => {
   const parts = script.split(ARTICLE_BLANK_REGEX)
   const segments = []
   let blankIndex = 0
-  // split с capture-группой даёт массив: текст, содержимое1, текст, содержимое2, ...
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i]
     if (i % 2 === 0) {
-      // текст
       if (part) segments.push({ type: 'text', value: part })
     } else {
-      // пропуск
+      const isManual = part.trim().toLowerCase() === 'anyisokay'
       segments.push({
         type: 'blank',
         answer: part,
-        blankIndex: blankIndex++
+        blankIndex: blankIndex++,
+        isManual
       })
     }
   }
   return segments
 }
 
-const UNDERSCORE_STEP = 8   // px: 4px штрих + 4px промежуток
+const UNDERSCORE_STEP = 8
 
 const getArticleBlankWidth = (answer) => {
   const clean = (answer || '').split('|')[0].trim()
-  const len = Math.max(5, clean.length)   // минимум 5 штрихов
-  return `${len * UNDERSCORE_STEP + 8}px` // 8px запас по краям
+  const len = Math.max(5, clean.length)
+  return `${len * UNDERSCORE_STEP + 8}px`
 }
 
 const getArticleBlankClass = (taskIndex, blankIndex) => {
@@ -455,7 +442,49 @@ const getArticleBlankClass = (taskIndex, blankIndex) => {
   if (!res) return ''
   const val = res[blankIndex]
   if (val === undefined) return ''
+  if (val === 'manual') return 'article-blank-manual'
   return val ? 'article-blank-correct' : 'article-blank-incorrect'
+}
+
+// ref'ы на contenteditable
+const articleEditableRefs = ref({})
+
+const setArticleEditableRef = (el, taskIndex, blankIndex) => {
+  if (!el) return
+  articleEditableRefs.value[`${taskIndex}_${blankIndex}`] = el
+  const saved = answers.value[taskIndex]?.[blankIndex] || ''
+  if (el.innerText !== saved) {
+    el.innerText = saved
+  }
+}
+
+const onArticleInput = (taskIndex, blankIndex, event) => {
+  const text = (event.target.innerText || '').replace(/\u00a0/g, ' ')
+  answers.value[taskIndex][blankIndex] = text
+}
+
+const onArticlePaste = (event) => {
+  event.preventDefault()
+  const raw = (event.clipboardData || window.clipboardData).getData('text/plain')
+  if (!raw) return
+  const text = raw.replace(/\s+/g, ' ').trim()
+  const selection = window.getSelection()
+  if (!selection.rangeCount) return
+  selection.deleteFromDocument()
+  selection.getRangeAt(0).insertNode(document.createTextNode(text))
+  selection.collapseToEnd()
+}
+
+const onArticleBlur = (taskIndex, blankIndex, event) => {
+  const el = event.target
+  const clean = (el.innerText || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (el.innerText !== clean) {
+    el.innerText = clean
+  }
+  answers.value[taskIndex][blankIndex] = clean
 }
 
 // ==================== FILL IN THE BLANKS ====================
@@ -552,7 +581,6 @@ const getTableGridLines = (task) => {
   const rows = task.rows || 3
   const lines = []
 
-  // Вертикальные
   for (let c = 1; c < cols; c++) {
     for (let r = 0; r < rows; r++) {
       const leftKey = findCellKeyAt(task, c - 1, r)
@@ -570,7 +598,6 @@ const getTableGridLines = (task) => {
     }
   }
 
-  // Горизонтальные
   for (let r = 1; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const topKey = findCellKeyAt(task, c, r - 1)
@@ -591,7 +618,7 @@ const getTableGridLines = (task) => {
   return lines
 }
 
-// ==================== DO THE MAGIC (auto-height) ====================
+// ==================== DO THE MAGIC ====================
 const adjustDoTheMagicHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -705,6 +732,12 @@ const loadAnswersFromStorage = (tasks) => {
         const savedKeys = Object.keys(saved)
         if (expectedKeys.length !== savedKeys.length) return null
         if (!expectedKeys.every(k => savedKeys.includes(k))) return null
+      } else if (task.type === 'articleWordsInput') {
+        if (!Array.isArray(saved)) return null
+        const segments = getArticleSegments(task)
+        const expectedCount = segments.filter(s => s.type === 'blank').length
+        if (saved.length !== expectedCount) return null
+        if (!saved.every(v => typeof v === 'string')) return null
       } else {
         if (typeof saved !== 'string') return null
       }
@@ -761,40 +794,43 @@ const loadMission = () => {
         const blankCount = segments.filter(s => s.type === 'blank').length
         return new Array(blankCount).fill('')
       }
-
       return ''
     })
 
     const saved = loadAnswersFromStorage(data.tasks)
     if (saved) {
       answers.value = saved
-      nextTick(() => {
-        data.tasks.forEach((task, index) => {
-          if (task.type === 'doTheMagic') {
-            Object.keys(task.labels || {}).forEach(key => {
-              const el = doTheMagicRefs.value[`${index}_${key}`]
-              if (el) {
-                el.style.height = 'auto'
-                const h = Math.max(20, Math.ceil(el.scrollHeight / 20) * 20)
-                el.style.height = h + 'px'
-              }
-            })
-          } else if (task.type === 'textarea') {
-            const el = contentRef.value?.querySelector(`textarea[data-index="${index}"]`)
+    }
+
+    nextTick(() => {
+      data.tasks.forEach((task, index) => {
+        if (task.type === 'doTheMagic') {
+          Object.keys(task.labels || {}).forEach(key => {
+            const el = doTheMagicRefs.value[`${index}_${key}`]
             if (el) {
               el.style.height = 'auto'
-              el.style.height = el.scrollHeight + 'px'
+              const h = Math.max(20, Math.ceil(el.scrollHeight / 20) * 20)
+              el.style.height = h + 'px'
             }
-          } else if (task.type === 'articleWordsInput') {
-            if (!Array.isArray(saved)) return null
-            const segments = getArticleSegments(task)
-            const expectedCount = segments.filter(s => s.type === 'blank').length
-            if (saved.length !== expectedCount) return null
-            if (!saved.every(v => typeof v === 'string')) return null
+          })
+        } else if (task.type === 'textarea') {
+          const el = contentRef.value?.querySelector(`textarea[data-index="${index}"]`)
+          if (el) {
+            el.style.height = 'auto'
+            el.style.height = el.scrollHeight + 'px'
           }
-        })
+        } else if (task.type === 'articleWordsInput') {
+          const segments = getArticleSegments(task)
+          const blanks = segments.filter(s => s.type === 'blank')
+          blanks.forEach((seg, i) => {
+            const el = articleEditableRefs.value[`${index}_${i}`]
+            if (el) {
+              el.innerText = answers.value[index]?.[i] || ''
+            }
+          })
+        }
       })
-    }
+    })
 
     showHint.value = data.tasks.map(() => new Set())
     showAnswerFlag.value = new Array(data.tasks.length).fill(false)
@@ -849,6 +885,12 @@ const clearAllAnswers = () => {
         Object.keys(task.labels || {}).forEach(key => {
           const el = doTheMagicRefs.value[`${index}_${key}`]
           if (el) el.style.height = '20px'
+        })
+      } else if (task.type === 'articleWordsInput') {
+        const segments = getArticleSegments(task)
+        segments.filter(s => s.type === 'blank').forEach((seg, i) => {
+          const el = articleEditableRefs.value[`${index}_${i}`]
+          if (el) el.innerText = ''
         })
       }
     })
@@ -911,7 +953,6 @@ const getInputClass = (index) => {
   if (!showResults.value) return ''
   if (!taskResults.value[index]) return ''
   const task = currentMission.value.tasks[index]
-  // если автопроверки нет (answers не задан) — это «на проверку», красим синим
   const isAutoCheckable = task && task.answers && task.answers.length > 0
   if (!isAutoCheckable) return 'input-manual'
   return taskResults.value[index].isCorrect ? 'input-correct' : 'input-incorrect'
@@ -976,33 +1017,46 @@ const checkSingleAnswer = (task, answer) => {
     const segments = getArticleSegments(task)
     const res = []
     let filled = 0
+    let hasAutoCheckable = false
 
     segments.filter(s => s.type === 'blank').forEach((seg, i) => {
       const user = String(answer?.[i] ?? '').trim()
       if (user) filled++
 
-      // варианты через |
-      const variants = seg.answer.split('|').map(v => v.trim()).filter(Boolean)
+      if (seg.isManual) {
+        res[i] = 'manual'
+        return
+      }
 
-      let ok
-      if (!user) {
-        ok = false
-      } else {
+      hasAutoCheckable = true
+      const variants = seg.answer.split('|').map(v => v.trim()).filter(Boolean)
+      let ok = false
+      if (user) {
         ok = usualCheck(user, variants)
       }
       res[i] = ok
     })
 
-    const allOk = res.every(Boolean)
+    const autoResults = res.filter(r => r !== 'manual')
+    const allAutoOk = autoResults.every(r => r === true)
+
+    if (!hasAutoCheckable) {
+      return {
+        isCorrect: null,
+        message: '📝 Здесь всё на ручную проверку — отправь скриншот учителю',
+        results: res
+      }
+    }
+
     return {
-      isCorrect: allOk && filled > 0,
-      message: allOk && filled > 0
-        ? '✅ Отлично! Все слова верны'
+      isCorrect: allAutoOk && filled > 0,
+      message: allAutoOk && filled > 0
+        ? '✅ Отлично! Все автопроверяемые слова верны'
         : '⚠️ Проверь ещё раз — не все слова совпали',
       results: res
     }
   }
-  // === TABLE FILL ===
+
   if (task.type === 'tableFill') {
     const cellsRes = {}
     let allCorrect = true
@@ -1031,7 +1085,6 @@ const checkSingleAnswer = (task, answer) => {
     }
   }
 
-  // === FILL IN THE BLANKS ===
   if (task.type === 'fillInTheBlank') {
     const res = []
     let filled = 0
@@ -1079,7 +1132,6 @@ const checkSingleAnswer = (task, answer) => {
     }
   }
 
-  // === DO THE MAGIC ===
   if (task.type === 'doTheMagic') {
     const results = {}
     let allCorrect = true
@@ -1108,7 +1160,6 @@ const checkSingleAnswer = (task, answer) => {
     }
   }
 
-  // === TEXT / TEXTAREA ===
   if (!task.answers || task.answers.length === 0) {
     return {
       isCorrect: null,
@@ -1389,7 +1440,6 @@ onMounted(async () => {
 }
 
 .notebook-content {
-
   position: relative;
   z-index: 3;
   height: 100%;
@@ -1407,8 +1457,6 @@ onMounted(async () => {
   line-height: 20px;
   color: #25598e;
 }
-
-//.task-block { margin-bottom: 20px; position: relative; }
 
 .question-text {
   display: block;
@@ -1644,6 +1692,7 @@ onMounted(async () => {
     &:hover { background: #d0d8e0; }
   }
 }
+
 .missions-modal {
   max-width: 480px;
   padding: 20px;
@@ -1678,16 +1727,13 @@ onMounted(async () => {
 
 .missions-list {
   flex: 1;
-  min-height: 0;          /* чтобы flex-скролл работал */
+  min-height: 0;
   overflow-y: auto;
   margin: 0 0 12px 0;
-  padding-right: 4px;     /* место под скроллбар */
+  padding-right: 4px;
 
   &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-thumb {
-    background: #c8d0d6;
-    border-radius: 2px;
-  }
+  &::-webkit-scrollbar-thumb { background: #c8d0d6; border-radius: 2px; }
   &::-webkit-scrollbar-track { background: transparent; }
 }
 
@@ -1704,23 +1750,13 @@ onMounted(async () => {
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 
-  &:hover {
-    background: #e8f0fe;
-    border-color: #c5d9f1;
-    /* никакого transform — не дребезжит */
-  }
-
-  &:active {
-    background: #d8e6fa;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+  &:hover { background: #e8f0fe; border-color: #c5d9f1; }
+  &:active { background: #d8e6fa; }
+  &:last-child { margin-bottom: 0; }
 
   .mission-item-name {
     flex: 1;
-    min-width: 0;                    /* чтобы ellipsis работал внутри flex */
+    min-width: 0;
     font-family: 'Times New Roman', serif;
     font-size: 14px;
     line-height: 20px;
@@ -1735,12 +1771,10 @@ onMounted(async () => {
     color: #207cca;
     font-size: 14px;
     opacity: 0.6;
-    transition: opacity 0.15s, transform 0.15s;
+    transition: opacity 0.15s;
   }
 
-  &:hover .mission-item-badge {
-    opacity: 1;
-  }
+  &:hover .mission-item-badge { opacity: 1; }
 }
 
 .missions-close {
@@ -1804,9 +1838,6 @@ onMounted(async () => {
   &:focus { background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 -1px 0 0 #207cca; }
   &.doTheMagic-correct { background: rgba(46, 204, 113, 0.08); }
   &.doTheMagic-incorrect { background: rgba(243, 156, 18, 0.08); }
-  &.doTheMagic-blue {
-    // background: rgba(52, 152, 219, 0.12);
-  }
 }
 
 /* ==================== FILL IN THE BLANKS ==================== */
@@ -1864,21 +1895,18 @@ onMounted(async () => {
   margin: 0;
   padding: 0;
   margin-left: 15px;
-  /* убираем background: white отсюда */
   position: relative;
   z-index: 2;
-  /* блок пусть будет по ширине содержимого, а не на всю строку */
   display: inline-block;
   vertical-align: top;
 }
-
 
 .table-fill {
   position: relative;
   width: calc(var(--cols) * 120px);
   height: calc(var(--rows) * 20px);
-  background: white;   /* ← белый фон только под таблицей */
-  z-index: 1;          /* чтобы перекрыть клетки .notebook-grid */
+  background: white;
+  z-index: 1;
 }
 
 .table-grid-line {
@@ -1887,12 +1915,8 @@ onMounted(async () => {
   background: rgba(0, 0, 0, 0.08);
   z-index: 1;
 
-  &--v {
-    width: 1px;
-  }
-  &--h {
-    height: 1px;
-  }
+  &--v { width: 1px; }
+  &--h { height: 1px; }
 }
 
 .table-fill::after {
@@ -1940,15 +1964,9 @@ onMounted(async () => {
   box-sizing: border-box;
   text-align: center;
 
-  &:focus {
-    background: rgba(255, 255, 255, 0.4);
-  }
-  &.table-cell-correct {
-    background: rgba(46, 204, 113, 0.1);
-  }
-  &.table-cell-incorrect {
-    background: rgba(243, 156, 18, 0.1);
-  }
+  &:focus { background: rgba(255, 255, 255, 0.4); }
+  &.table-cell-correct { background: rgba(46, 204, 113, 0.1); }
+  &.table-cell-incorrect { background: rgba(243, 156, 18, 0.1); }
   &::placeholder {
     color: rgba(0, 0, 0, 0.25);
     font-style: italic;
@@ -1969,7 +1987,6 @@ onMounted(async () => {
 .clear-confirm-buttons { justify-content: center; margin-top: 24px; }
 .clear-confirm-buttons .modal-btn { min-width: 110px; }
 
-
 /* ==================== ARTICLE WORDS INPUT ==================== */
 .article-block {
   margin: 0;
@@ -1988,152 +2005,15 @@ onMounted(async () => {
   font-size: 13px;
   line-height: 20px;
   color: #7f8c8d;
-  margin: 0 0 12px 0;
-  padding: 6px 10px;
-  background: rgba(52, 152, 219, 0.06);
-  border-left: 3px solid #3498db;
-  border-radius: 4px;
+  margin: 0 0 20px 0;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.06));
+  border-left: 4px solid #3498db;
+  border-radius: 8px;
 
   strong {
     color: #207cca;
   }
-}
-
-.article-picture {
-  max-width: 200px;
-  max-height: 200px;
-  display: block;
-  margin: 0 0 12px 0;
-  border-radius: 8px;
-}
-
-.audio-player-sticky-container {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: 10px 0;
-  margin-bottom: 15px;
-}
-
-.audio-player {
-  width: 100%;
-  max-width: 500px;
-  outline: none;
-
-  &::-webkit-media-controls-enclosure {
-    overflow: hidden;
-  }
-  &::-webkit-media-controls-panel {
-    -webkit-user-select: none;
-  }
-}
-
-.article-text {
-  font-family: "Fira Code", serif;
-  font-size: 14px;
-  line-height: 26px;
-  color: #2c3e50;
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-.article-blank-wrapper {
-  position: relative;
-  display: inline-block;
-  vertical-align: baseline;
-  height: 22px;
-  line-height: 22px;
-  box-sizing: border-box;
-  margin: 0 2px;
-  transition: background 0.3s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 4px;
-    right: 4px;
-    bottom: 2px;
-    height: 1px;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0.3) 0px,
-        rgba(0, 0, 0, 0.3) 4px,
-        transparent 4px,
-        transparent 8px
-    );
-  }
-
-  &.article-blank-correct {
-    background: rgba(46, 204, 113, 0.1);
-    &::before {
-      background-image: repeating-linear-gradient(
-          to right,
-          #27ae60 0px,
-          #27ae60 4px,
-          transparent 4px,
-          transparent 8px
-      );
-    }
-  }
-  &.article-blank-incorrect {
-    background: rgba(243, 156, 18, 0.1);
-    &::before {
-      background-image: repeating-linear-gradient(
-          to right,
-          #f39c12 0px,
-          #f39c12 4px,
-          transparent 4px,
-          transparent 8px
-      );
-    }
-  }
-}
-
-.article-blank-input {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  border: none;                 /* убрали border-bottom */
-  background: transparent;
-  outline: none;
-  font-family: inherit;          /* ← наследуем шрифт от родителя */
-  font-size: 14px;
-  line-height: 22px;
-  color: #2c3e50;
-  caret-color: #2c3e50;
-  box-sizing: border-box;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-.article-useful-words {
-  font-family: 'Times New Roman', serif;
-  background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.06));
-  border-left: 4px solid #3498db;
-  border-radius: 8px;
-}
-
-.useful-words-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.useful-words-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.useful-words-title {
-  font-family: 'Special_f1', sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  color: #207cca;
-  line-height: 20px;
 }
 
 .useful-words-grid {
@@ -2145,13 +2025,11 @@ onMounted(async () => {
 .useful-word-card {
   display: flex;
   flex-direction: column;
-  gap: 2px;
   padding: 6px 10px;
   background: white;
   border: 1px solid rgba(52, 152, 219, 0.25);
   border-radius: 6px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: border-color 0.2s, box-shadow 0.2s;
 
   &:hover {
     border-color: #3498db;
@@ -2180,6 +2058,134 @@ onMounted(async () => {
   line-height: 20px;
   color: #5a6b7b;
 }
+
+.article-picture {
+  max-width: 200px;
+  max-height: 200px;
+  display: block;
+  margin: 0 0 12px 0;
+  border-radius: 8px;
+}
+
+.audio-player-sticky-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 10px 0;
+  margin-bottom: 15px;
+}
+
+.audio-player {
+  width: 100%;
+  max-width: 500px;
+  outline: none;
+
+  &::-webkit-media-controls-enclosure { overflow: hidden; }
+  &::-webkit-media-controls-panel { -webkit-user-select: none; }
+}
+
+.article-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2c3e50;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  word-spacing: -4px;          /* <-- вот это уменьшит ширину пробелов */
+
+}
+
+.article-blank-wrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  min-width: var(--blank-min, 40px);
+  min-height: 20px;
+  line-height: 20px;
+  box-sizing: border-box;
+  margin: 0 2px;
+}
+
+.article-blank-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.3) 0px,
+      rgba(0, 0, 0, 0.3) 4px,
+      transparent 4px,
+      transparent 8px
+  );
+  z-index: 0;
+}
+
+.article-blank-wrapper.article-blank-correct::before {
+  background-image: repeating-linear-gradient(
+      to right, #27ae60 0px, #27ae60 4px, transparent 4px, transparent 8px
+  );
+}
+.article-blank-wrapper.article-blank-incorrect::before {
+  background-image: repeating-linear-gradient(
+      to right, #f39c12 0px, #f39c12 4px, transparent 4px, transparent 8px
+  );
+}
+.article-blank-wrapper.article-blank-manual::before {
+  background-image: repeating-linear-gradient(
+      to right, #3498db 0px, #3498db 4px, transparent 4px, transparent 8px
+  );
+}
+
+.article-blank-wrapper--manual {
+  height: auto;
+  min-height: 20px;
+}
+
+.article-blank-input {
+  display: inline-block;
+  vertical-align: baseline;
+  min-width: inherit;
+  min-height: 20px;
+  padding: 0 3px;
+  margin: 0;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2c3e50;
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  caret-color: #207cca;
+  position: relative;
+  z-index: 1;
+  cursor: text;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.article-blank-input:empty::before {
+  content: attr(data-placeholder);
+  color: #95a5a6;
+  font-style: italic;
+}
+
+.article-blank-wrapper.article-blank-correct .article-blank-input {
+  background: rgba(46, 204, 113, 0.18);
+}
+.article-blank-wrapper.article-blank-incorrect .article-blank-input {
+  background: rgba(243, 156, 18, 0.18);
+}
+.article-blank-wrapper.article-blank-manual .article-blank-input {
+  background: rgba(52, 152, 219, 0.15);
+}
+
 /* Стили для печати */
 @media print {
   @page {
@@ -2297,7 +2303,6 @@ onMounted(async () => {
     line-height: 14px !important;
     background: transparent !important;
     border-bottom: 1px solid #ccc !important;
-
   }
   .message-input::placeholder,
   .message-input-text::placeholder {
@@ -2349,24 +2354,19 @@ onMounted(async () => {
   .fill-blank-wrapper.fill-blank-incorrect {
     background: transparent !important;
     border-bottom-color: rgba(0, 0, 0, 0.08) !important;
-
   }
   .fill-blank-input {
     font-size: 11px !important;
     line-height: 14px !important;
   }
 
-  .table-fill-block {
-    margin-left: 0 !important;
-  }
+  .table-fill-block { margin-left: 0 !important; }
   .table-cell-text,
   .table-cell-input {
     font-size: 11px;
     line-height: 14px;
   }
-  .table-cell-input {
-    background: transparent !important;
-  }
+  .table-cell-input { background: transparent !important; }
   .table-cell-input.table-cell-correct,
   .table-cell-input.table-cell-incorrect {
     background: transparent !important;
@@ -2388,19 +2388,29 @@ onMounted(async () => {
     line-height: 18px !important;
   }
   .article-blank-wrapper {
-    height: 16px !important;
-    line-height: 16px !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
+    min-height: 16px !important;
+    line-height: 18px !important;
     background: transparent !important;
+    &::before {
+      bottom: 2px;
+      background-image: repeating-linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.5) 0px,
+          rgba(0, 0, 0, 0.5) 3px,
+          transparent 3px,
+          transparent 6px
+      ) !important;
+    }
   }
   .article-blank-wrapper.article-blank-correct,
-  .article-blank-wrapper.article-blank-incorrect {
+  .article-blank-wrapper.article-blank-incorrect,
+  .article-blank-wrapper.article-blank-manual {
     background: transparent !important;
-    border-bottom-color: rgba(0, 0, 0, 0.2) !important;
   }
   .article-blank-input {
     font-size: 11px !important;
-    line-height: 16px !important;
+    line-height: 18px !important;
+    background: transparent !important;
   }
   .audio-player-sticky-container {
     display: none !important;
@@ -2431,8 +2441,6 @@ onMounted(async () => {
   .doTheMagic-input { letter-spacing: -0.5px; font-size: 14px; }
   .fill-blank-input { font-size: 14px; }
 
-  .table-fill-block {
-    margin-left: 0;
-  }
+  .table-fill-block { margin-left: 0; }
 }
 </style>

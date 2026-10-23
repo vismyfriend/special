@@ -324,6 +324,10 @@ const routes = [
         component: () => import('src/composables/specialSpellingCheckTest.vue')
       },
       {
+        path: '/specialInputs',
+        component: () => import('src/composables/specialInputs.vue')
+      },
+      {
         path: '/hw/:missionName?',
         name: 'Homework',
         component: () => import('src/pages/hw.vue')

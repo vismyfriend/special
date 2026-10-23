@@ -575,7 +575,136 @@ const songsData = {
       },
     ],
   },
-
+  honestHarry: {
+    mainDescription: "",
+    tasks: [
+      {
+        taskDescription: 'in a Shoe Shop — Шу шоп',
+        taskID: "taskDialogs",
+        usefulWords: 'to make a complaint - подать жалобу, a pair - пара, a pear - груша, satisfied - довольный, annoyed - раздражённый, angry - злой, furious - в ярости, stupid - глупый, to owe - быть должным, to change - обменять, a stall - прилавок, on holiday - в отпуске',
+        taskPicture: null,
+        audio: null,
+        extraInfo: null,
+        script: [
+          {
+            singer: "1 and 2",
+            audioName: null,
+            text:
+              "Harry: \"Good morning, madam. Can I help you?\"\n" +
+              "Customer: \"Are you Honest Harry?\"\n" +
+              "Harry: \"Er... maybe. Why?\"\n" +
+              "Customer: \"I want to make a complaint to Honest Harry.\"\n" +
+              "Harry: \"A complaint?\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"In that case, I'm not Honest Harry.\"\n" +
+              "Customer: \"What?\"\n" +
+              "Harry: \"Honest Harry's on holiday.\"\n" +
+              "Customer: \"Oh. Wait a minute - your hat says 'Honest Harry'.\"\n" +
+              "Harry: \"Oh, yes - this is Honest Harry's hat. I'm wearing it while he's on holiday.\"\n" +
+              "Customer: \"What?!\"\n" +
+              "Harry: \"I'll tell you what I'll do. I'll give you Harry's telephone number... in Argentina.\"\n" +
+              "Customer: \"Now listen to me -\"\n" +
+              "Harry: \"All right, all right, all right. I am Honest Harry. What's the problem?\"\n" +
+              "(The customer puts the shoe box on the stall.)\n" +
+              "Customer: \"Well, my husband came here yesterday.\"\n" +
+              "Harry: \"Oh, really?\"\n" +
+              "Customer: \"Yes. And he bought these shoes.\"\n" +
+              "Harry: \"Yes?\"\n" +
+              "Customer: \"Well, my husband can't wear these.\"\n" +
+              "Harry: \"Why not? Are they too big?\"\n" +
+              "Customer: \"No.\"\n" +
+              "Harry: \"Too small?\"\n" +
+              "Customer: \"No!\"\n" +
+              "Harry: \"So what's the problem?\"\n" +
+              "Customer: \"They're not the same color.\"\n" +
+              "Harry: \"Not the same color?\"\n" +
+              "Customer: \"That's right.\"\n" +
+              "Harry: \"Not the same color as what?\"\n" +
+              "Customer: \"They're not the same color as each other! One of them's red and the other one's green.\"\n" +
+              "Harry: \"Oh, yes! One of them's red and the other one's green.\"\n" +
+              "Customer: \"Yes!\"\n" +
+              "Harry: \"I see! So which one are you complaining about?\"\n" +
+              "Customer: \"Pardon?\"\n" +
+              "Harry: \"Which one don't you like?\"\n" +
+              "Customer: \"Look, there's nothing wrong with the shoes -\"\n" +
+              "Harry: \"Good.\"\n" +
+              "Customer: \"but they're not a pair.\"\n" +
+              "Harry: \"No, you're right, madam. They're not a pair. This is a pear.\"\n" +
+              "(Harry shows a pear and bites it.)\n" +
+              "Harry: \"Mmm, delicious!\"\n" +
+              "Customer: \"I don't think you're taking this very seriously.\"\n" +
+              "Harry: \"Sorry, madam. Let's start at the beginning. Your husband bought these shoes.\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"From me.\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"And you're not satisfied with them.\"\n" +
+              "Customer: \"That's right. I'm not satisfied at all.\"\n" +
+              "Harry: \"What do you mean, exactly?\"\n" +
+              "Customer: \"What do you mean: 'What do I mean'?\"\n" +
+              "Harry: \"What do I mean what do you mean?\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"What I mean is this: Are you: (A) 'unhappy', (B) 'annoyed', (C) 'angry' or (D) 'suicidal'?\"\n" +
+              "Harry: \"You're unhappy.\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"You're not annoyed.\"\n" +
+              "Customer: \"No - well, yes, I am.\"\n" +
+              "Harry: \"So, you're annoyed.\"\n" +
+              "Customer: \"Yes.\"\n" +
+              "Harry: \"You're not just unhappy - you're annoyed!\"\n" +
+              "Customer: \"Yes!\"\n" +
+              "Harry: \"But you're not angry!\"\n" +
+              "Customer: \"No!\"\n" +
+              "Harry: \"You're sure?\"\n" +
+              "Customer: \"Yes!\"\n" +
+              "Harry: \"Oh, you are angry!\"\n" +
+              "Customer: \"No! I'm sure I'm not angry!\"\n" +
+              "Harry: \"You're not angry.\"\n" +
+              "Customer: \"I'm not angry!\"\n" +
+              "Harry: \"Well, you look angry to me.\"\n" +
+              "Customer: \"All right, I'm angry!\"\n" +
+              "Harry: \"You're angry! Right. But not suicidal.\"\n" +
+              "Customer: \"That's right!\"\n" +
+              "Harry: \"Good. You're angry!\"\n" +
+              "Customer: \"Yes!!\"\n" +
+              "Harry: \"Now are you: (A) Very angry, (B) Very very angry, (C) Extremely angry, (D) Absolutely furious.\"\n" +
+              "Customer: \"Look, this is stupid!\"\n" +
+              "Harry: \"Oh, it's stupid, is it?\"\n" +
+              "Customer: \"Yes, it's stupid!\"\n" +
+              "Harry: \"I see. Would you say it's: (A) Very stupid, (B) Very very stupid, (C) Completely stupid, or (D) Absolutely idiotic?\"\n" +
+              "Customer: \"Look, all I want to do is change these shoes!\"\n" +
+              "Harry: \"Change the shoes? Well, why didn't you say so? You're very lucky, madam, because I have here another pair of shoes that are very similar.\"\n" +
+              "Customer: \"Now, wait a minute, that's a red one and a green one as well.\"\n" +
+              "Harry: \"You're quite right. OK, let me change this red one for this green one.\"\n" +
+              "Customer: \"Thank you.\"\n" +
+              "Harry: \"And this green one for this red one.\"\n" +
+              "Harry: \"Satisfied?\"\n" +
+              "Customer: \"No.\"\n" +
+              "Harry: \"All right, then. I'll change this green one for this red one...\"\n" +
+              "Harry: \"...and this red one for this green one.\"\n" +
+              "Customer: \"Look -\"\n" +
+              "Harry: \"Just a minute. I've got a better idea. Your husband bought this pair of shoes...\"\n" +
+              "Harry: \"...so if you buy this pair as well...\"\n" +
+              "Customer: \"Yes?\"\n" +
+              "Harry: \"...you can have one pair, and your husband can have the other!\"\n" +
+              "Customer: \"All right. One pair, two pairs. How much is that?\"\n" +
+              "Harry: \"Twenty pounds.\"\n" +
+              "Customer: \"20 pounds. Here you are.\"\n" +
+              "Harry: \"No, it's 20 pounds a pair. That's 40 pounds.\"\n" +
+              "Customer: \"40 pounds?\"\n" +
+              "Harry: \"Yes.\"\n" +
+              "Customer: \"But my husband paid you 20 pounds yesterday!\"\n" +
+              "Harry: \"Did he?\"\n" +
+              "Customer: \"Yes. So, you owe me 20 pounds.\"\n" +
+              "Harry: \"Do I?\"\n" +
+              "Customer: \"Yes!\"\n" +
+              "Harry: \"Oh, here you are, then.\"\n" +
+              "Customer: \"Thank you. Goodbye!\"\n" +
+              "Harry: \"Goodbye! er....no...just a minute. Come back!!!!\""
+          },
+        ]
+      },
+    ],
+  },
   testQuicklyData: {
     mainDescription: "How much is too much?",
     tasks: [
