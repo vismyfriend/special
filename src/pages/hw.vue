@@ -7,6 +7,9 @@
         </h1>
       </div>
       <div class="header-right">
+        <button class="print-button" @click="showDevTools = !showDevTools" title="DevTools">
+          ⚙️
+        </button>
         <button class="print-button"
                 @click="checkAnswers"
                 :disabled="isChecking || !isAnyAnswerFilled"
@@ -25,6 +28,11 @@
           📚
         </button>
       </div>
+      <div v-if="showDevTools" class="devtools-panel">
+        <button @click="devFillCorrect">Заполнить текущее правильно</button>
+        <button @click="devShowAll">Показать все задания</button>
+        <button @click="devResetResults">Сбросить результаты проверки</button>
+      </div>
     </div>
 
     <div class="notebook-wrapper" :style="{ height: notebookHeight + 'px' }">
@@ -42,6 +50,7 @@
                 v-for="(task, index) in currentMission.tasks"
                 :key="index"
                 class="task-block"
+                :class="{ 'task-block--locked': isTaskLocked(index) }"
               >
                 <h3 v-if="task.title" class="task-title">{{ task.title }}</h3>
 
@@ -266,6 +275,8 @@
                     @input="adjustInputHeight"
                   />
                 </div>
+
+
               </div>
 
               <div class="button-wrapper">
@@ -365,6 +376,45 @@ const firstDoTheMagicIndex = computed(() => {
   if (!currentMission.value) return -1
   return currentMission.value.tasks.findIndex(t => t.type === 'doTheMagic')
 })
+const VISIBLE_IN_RUN = 3
+
+const chainEnabled = computed(() =>
+  !!currentMission.value?.chainOfTasks && !devChainOverride.value
+)
+
+const firstIncompleteIndex = computed(() => {
+  if (!currentMission.value) return 0
+  const tasks = currentMission.value.tasks
+  for (let i = 0; i < tasks.length; i++) {
+    const r = taskResults.value[i]
+    if (!r || r.isCorrect !== true) return i
+  }
+  return tasks.length
+})
+
+const isTaskLocked = (index) => {
+  if (!chainEnabled.value) return false
+  if (!currentMission.value) return false
+
+  const tasks = currentMission.value.tasks
+  const first = firstIncompleteIndex.value
+
+  if (first >= tasks.length) return false
+  if (index < first) return false
+  if (index === first) return false
+
+  const firstType = tasks[first].type
+  let runEnd = first + 1
+  while (runEnd < tasks.length && tasks[runEnd].type === firstType) runEnd++
+
+  if (index >= runEnd) return true
+  if (index - first >= VISIBLE_IN_RUN) return true
+  return false
+}
+
+const isTaskUnlocked = (index) => !isTaskLocked(index)
+
+
 const currentMission = ref(null)
 const answers = ref([])
 const contentRef = ref(null)
@@ -382,6 +432,25 @@ const showNameModal = ref(false)
 const tempName = ref('')
 const showMissionsModal = ref(false)
 const showClearConfirmModal = ref(false)
+
+
+const showDevTools = ref(false)
+const devChainOverride = ref(false)
+const devFillCorrect = () => {
+  // заполнить answers правильными ответами для текущего задания
+  // и сразу checkAnswers()
+}
+
+const devShowAll = () => {
+  // временно отключить chain (флаг)
+  devChainOverride.value = true
+}
+
+const devResetResults = () => {
+  taskResults.value = []
+  showResults.value = false
+}
+
 
 const doTheMagicRefs = ref({})
 const setDoTheMagicRef = (el, index, key) => {
@@ -839,6 +908,7 @@ const loadMission = () => {
 
   showResults.value = false
   taskResults.value = []
+  devChainOverride.value = false
   missionsList.value = getAllMissions()
   nextTick(() => { isLoadingMission.value = false })
 }
@@ -2185,7 +2255,28 @@ onMounted(async () => {
 .article-blank-wrapper.article-blank-manual .article-blank-input {
   background: rgba(52, 152, 219, 0.15);
 }
-
+.task-block--locked {
+  position: relative;
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+}
+.task-block--locked .task-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: 'Special_f1', sans-serif;
+  color: #5a6b7b;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 1;
+  font-size: 13px;
+  text-align: center;
+  padding: 8px;
+}
 /* Стили для печати */
 @media print {
   @page {

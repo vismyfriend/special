@@ -581,7 +581,7 @@ const songsData = {
       {
         taskDescription: 'in a Shoe Shop — Шу шоп',
         taskID: "taskDialogs",
-        usefulWords: 'to make a complaint - подать жалобу, a pair - пара, a pear - груша, satisfied - довольный, annoyed - раздражённый, angry - злой, furious - в ярости, stupid - глупый, to owe - быть должным, to change - обменять, a stall - прилавок, on holiday - в отпуске',
+        usefulWords: 'to make a complaint - подать жалобу, in that case - в таком случае, a pair - пара, a pear - груша, satisfied - довольный, annoyed - раздражённый, angry - злой, furious - в ярости, stupid - глупый, to owe - быть должным, to change - обменять, a stall - прилавок, on holiday - в отпуске',
         taskPicture: null,
         audio: null,
         extraInfo: null,
@@ -593,7 +593,7 @@ const songsData = {
               "Harry: \"Good morning, madam. Can I help you?\"\n" +
               "Customer: \"Are you Honest Harry?\"\n" +
               "Harry: \"Er... maybe. Why?\"\n" +
-              "Customer: \"I want to make a complaint to Honest Harry.\"\n" +
+              "Customer: \"I want to (make a complaint) about Honest Harry.\"\n" +
               "Harry: \"A complaint?\"\n" +
               "Customer: \"Yes.\"\n" +
               "Harry: \"In that case, I'm not Honest Harry.\"\n" +
@@ -605,7 +605,7 @@ const songsData = {
               "Harry: \"I'll tell you what I'll do. I'll give you Harry's telephone number... in Argentina.\"\n" +
               "Customer: \"Now listen to me -\"\n" +
               "Harry: \"All right, all right, all right. I am Honest Harry. What's the problem?\"\n" +
-              "(The customer puts the shoe box on the stall.)\n" +
+              "Situation: The customer puts the shoe box on the stall.\n" +
               "Customer: \"Well, my husband came here yesterday.\"\n" +
               "Harry: \"Oh, really?\"\n" +
               "Customer: \"Yes. And he bought these shoes.\"\n" +
@@ -630,7 +630,7 @@ const songsData = {
               "Harry: \"Good.\"\n" +
               "Customer: \"but they're not a pair.\"\n" +
               "Harry: \"No, you're right, madam. They're not a pair. This is a pear.\"\n" +
-              "(Harry shows a pear and bites it.)\n" +
+              "Situation: Harry shows a pear and bites it.\n" +
               "Harry: \"Mmm, delicious!\"\n" +
               "Customer: \"I don't think you're taking this very seriously.\"\n" +
               "Harry: \"Sorry, madam. Let's start at the beginning. Your husband bought these shoes.\"\n" +

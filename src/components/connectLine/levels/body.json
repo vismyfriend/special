@@ -1,0 +1,11 @@
+{
+  "title": "Body — connect the parts",
+  "instructions": "Протяни линию от названия части тела к нужному месту на картинке",
+  "imageWidth": 800,
+  "imageHeight": 520,
+  "words": [
+    { "id": "head", "text": "Head", "x": 0.50, "y": 0.12, "r": 0.07 },
+    { "id": "arm",  "text": "Arm",  "x": 0.25, "y": 0.45, "r": 0.07 },
+    { "id": "leg",  "text": "Leg",  "x": 0.45, "y": 0.85, "r": 0.07 }
+  ]
+}

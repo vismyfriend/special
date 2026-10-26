@@ -328,6 +328,18 @@ const routes = [
         component: () => import('src/composables/specialInputs.vue')
       },
       {
+        path: '/connectLine',
+        component: () => import('src/components/connectLine/ConnectLineGame.vue')
+      },
+      {
+        path: '/connectLine-hardcore',
+        component: () => import('src/components/connectLine/ConnectLineHardcore.vue')
+      },
+      {
+        path: '/connectLine-editor',
+        component: () => import('src/components/connectLine/ConnectLineEditor.vue')
+      },
+      {
         path: '/hw/:missionName?',
         name: 'Homework',
         component: () => import('src/pages/hw.vue')
