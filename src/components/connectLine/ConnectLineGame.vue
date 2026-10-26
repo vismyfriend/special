@@ -6,6 +6,13 @@
 
     <div class="controls">
 <!--      <button @click="restart">Начать заново</button>-->
+      <button
+        v-if="difficulty === 'medium' || difficulty === 'hard'"
+        @click="handleCheckAll"
+        class="check-btn"
+      >
+        ✅ Проверить
+      </button>
       <button class="editor-btn" @click="openEditor">✏️ Редактор</button>
     </div>
 
@@ -58,6 +65,14 @@ let logic = null
 
 const difficulty = ref('easy')
 
+const lastResult = ref(null)
+
+function handleCheckAll() {
+  if (!logic?.checkAll) return
+  lastResult.value = logic.checkAll()
+}
+
+
 async function restart() {
   if (!engine) return
   if (logic) {
@@ -67,12 +82,14 @@ async function restart() {
   engine.clear()
   if (!gameData.value) return
 
-  logic = useConnectLine(engine, gameData.value, difficulty)
+  logic = useConnectLine(engine, gameData.value, difficulty, difficulty.value === 'easy')
   await logic.setup()
   engine.onPointerDown = logic.onPointerDown
   engine.onPointerMove = logic.onPointerMove
   engine.onPointerUp = logic.onPointerUp
   engine.start()
+  lastResult.value = null
+
 }
 
 function setDifficulty(level) {

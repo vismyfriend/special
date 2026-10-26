@@ -110,19 +110,18 @@ export class CanvasEngine {
 
   render() {
     const { ctx, width, height } = this
-
-    // страховка: если pointer не нажат, а временная линия осталась — удаляем
     if (!this.pointer.down) {
       for (let i = this.objects.length - 1; i >= 0; i--) {
         if (this.objects[i].isTemporary) {
-          console.log('[engine] remove stray temporary line')
           this.objects.splice(i, 1)
         }
       }
     }
-
     ctx.clearRect(0, 0, width, height)
-    for (const obj of this.objects) {
+
+    // сортировка по zIndex
+    const sorted = [...this.objects].sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0))
+    for (const obj of sorted) {
       if (obj.visible === false) continue
       obj.draw(ctx)
     }

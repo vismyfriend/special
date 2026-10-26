@@ -122,14 +122,14 @@ export function useConnectLineHardcore(engine, gameData) {
 
     let line = cardLines.get(cardId)
     if (line) {
-      line.x1 = card.x + card.w
+      line.x1 = card.x + card.w / 2
       line.y1 = card.y + card.h / 2
       line.x2 = matchedZone.x
       line.y2 = matchedZone.y
       line.color = '#22c55e'
     } else {
       line = new Line({
-        x1: card.x + card.w,
+        x1: card.x + card.w / 2,        // ← было card.x + card.w
         y1: card.y + card.h / 2,
         x2: matchedZone.x,
         y2: matchedZone.y,

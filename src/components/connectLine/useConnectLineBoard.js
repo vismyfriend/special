@@ -68,8 +68,8 @@ export async function setupBoard(engine, gameData, options = {}) {
       zone.id = word.id
       zone.text = word.text
       zone.showRadius = false
-      zone.showAnchor = difficulty.value === 'easy' || difficulty.value === 'medium'
-      zone.anchorAlpha = difficulty.value === 'medium' ? 0.4 : 1
+      zone.showAnchor = difficulty.value === 'easy' || difficulty.value === 'medium' || difficulty.value === 'hardcore'
+      zone.anchorAlpha = (difficulty.value === 'medium' || difficulty.value === 'hardcore') ? 0.6 : 1
       zones.push(zone)
       engine.add(zone)
     })
@@ -167,8 +167,8 @@ export async function setupBoard(engine, gameData, options = {}) {
       zone.id = word.id
       zone.text = word.text
       zone.showRadius = false
-      zone.showAnchor = difficulty.value === 'easy' || difficulty.value === 'medium'
-      zone.anchorAlpha = difficulty.value === 'medium' ? 0.4 : 1
+      zone.showAnchor = difficulty.value === 'easy' || difficulty.value === 'medium' || difficulty.value === 'hardcore'
+      zone.anchorAlpha = (difficulty.value === 'medium' || difficulty.value === 'hardcore') ? 0.6 : 1
       zones.push(zone)
       engine.add(zone)
     })

@@ -18,7 +18,7 @@ export function createRelocate({ cards, sideLists, layoutSide, estimateX, estima
         card.x = startX + (endX - startX) * e
         card.y = startY + (endY - startY) * e
         if (line) {
-          line.x1 = card.x + card.w
+          line.x1 = card.x + card.w / 2
           line.y1 = card.y + card.h / 2
         }
         if (t < 1) requestAnimationFrame(frame)

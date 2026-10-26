@@ -3,6 +3,8 @@ export class ImageObject {
     this.x = x; this.y = y; this.w = w; this.h = h
     this.img = img
     this.visible = true
+    this.zIndex = 0     // ← добавить
+
   }
   draw(ctx) {
     if (!this.img) {
@@ -30,6 +32,8 @@ export class Card {
     this.border = border
     this.visible = true
     this.highlight = false
+    this.zIndex = 4     // ← добавить
+
   }
   hitTest(px, py) {
     return px >= this.x && px <= this.x + this.w &&
@@ -59,15 +63,44 @@ export class Line {
     this.width = width
     this.visible = true
     this.isTemporary = false
+    this.zIndex = 3     // ← добавить
+
   }
   draw(ctx) {
+    const dx = this.x2 - this.x1
+    const dy = this.y2 - this.y1
+    const len = Math.hypot(dx, dy)
+    if (len < 1) return
+
+    const angle = Math.atan2(dy, dx)
+    const arrowSize = Math.max(8, this.width * 2.2)
+
+    // конец линии — на arrowSize * 0.8 до x2, y2
+    const lineEndX = this.x2 - Math.cos(angle) * arrowSize * 0.8
+    const lineEndY = this.y2 - Math.sin(angle) * arrowSize * 0.8
+
     ctx.strokeStyle = this.color
     ctx.lineWidth = this.width
     ctx.lineCap = 'round'
     ctx.beginPath()
     ctx.moveTo(this.x1, this.y1)
-    ctx.lineTo(this.x2, this.y2)
+    ctx.lineTo(lineEndX, lineEndY)
     ctx.stroke()
+
+    // === стрелка ===
+    const spread = Math.PI / 7
+    const ax1 = this.x2 - arrowSize * Math.cos(angle - spread)
+    const ay1 = this.y2 - arrowSize * Math.sin(angle - spread)
+    const ax2 = this.x2 - arrowSize * Math.cos(angle + spread)
+    const ay2 = this.y2 - arrowSize * Math.sin(angle + spread)
+
+    ctx.beginPath()
+    ctx.moveTo(this.x2, this.y2)
+    ctx.lineTo(ax1, ay1)
+    ctx.lineTo(ax2, ay2)
+    ctx.closePath()
+    ctx.fillStyle = this.color
+    ctx.fill()
   }
 }
 
@@ -82,6 +115,8 @@ export class Zone {
     this.showRadius = true
     this.showAnchor = true
     this.highlight = false
+    this.zIndex = 2     // ← добавить
+
   }
 
   hitTest(px, py) {
@@ -119,22 +154,34 @@ export class Zone {
     }
 
     if (this.showAnchor) {
-      const ar = 8
       const alpha = this.anchorAlpha ?? 1
       ctx.globalAlpha = alpha
 
-      ctx.beginPath()
-      ctx.arc(this.x, this.y, ar + 2, 0, Math.PI * 2)
-      ctx.fillStyle = 'white'
-      ctx.fill()
+      // === лупа: круг + ручка ===
+      const lensR = 6                            // радиус «стекла»
+      const handleLen = 5                        // длина ручки
+      const handleAngle = Math.PI / 4            // 45° вправо-вниз
+      const cx = this.x
+      const cy = this.y
 
+      // ручка (под углом 45°)
+      const hx = cx + Math.cos(handleAngle) * (lensR + handleLen / 2)
+      const hy = cy + Math.sin(handleAngle) * (lensR + handleLen / 2)
       ctx.beginPath()
-      ctx.arc(this.x, this.y, ar, 0, Math.PI * 2)
-      ctx.fillStyle = this.highlight ? '#22c55e' : 'rgba(187,69,234,0.62)'
-      ctx.fill()
+      ctx.moveTo(cx + Math.cos(handleAngle) * lensR, cy + Math.sin(handleAngle) * lensR)
+      ctx.lineTo(hx + Math.cos(handleAngle) * handleLen / 2, hy + Math.sin(handleAngle) * handleLen / 2)
+      ctx.strokeStyle = this.highlight ? '#22c55e' : '#1e3a8a'
+      ctx.lineWidth = 2.5
+      ctx.lineCap = 'round'
+      ctx.stroke()
 
-      ctx.strokeStyle = '#1e3a8a'
-      ctx.lineWidth = 1.5
+      // стекло — белая заливка + обводка
+      ctx.beginPath()
+      ctx.arc(cx, cy, lensR, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'       // полупрозрачный белый
+      ctx.fill()
+      ctx.strokeStyle = this.highlight ? '#22c55e' : 'rgba(187,69,234,0.62)'
+      ctx.lineWidth = 2
       ctx.stroke()
 
       ctx.globalAlpha = 1

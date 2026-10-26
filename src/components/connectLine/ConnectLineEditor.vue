@@ -14,9 +14,20 @@
       </label>
 
       <button @click="addZoneAtCenter">+ зона в центр</button>
-      <button @click="exportJson">⬇️ Экспорт JSON</button>
+      <button
+        @click="exportJson"
+        :disabled="hasConflicts"
+        :title="hasConflicts ? 'Убери пересечения зон' : 'Экспорт JSON'"
+        :class="{ 'btn-disabled': hasConflicts }"
+      >
+        ⬇️ Экспорт JSON
+      </button>
       <button @click="clearAll">🗑 Очистить</button>
     </div>
+
+<!--    <div v-if="hasConflicts" class="conflict-banner">-->
+<!--      ⚠️ Некоторые зоны пересекаются. Раздвинь их, чтобы экспортировать JSON.-->
+<!--    </div>-->
 
     <div class="workspace">
       <canvas
@@ -34,12 +45,16 @@
           v-for="(z, i) in zones"
           :key="z.id"
           class="zone-item"
-          :class="{ selected: z.id === selectedZoneId }"
+          :class="{
+            selected: z.id === selectedZoneId,
+            conflict: conflictingZoneIds.has(z.id)
+          }"
           @click="selectedZoneId = z.id"
         >
           <div class="zone-row">
             <span class="zone-num">{{ i + 1 }}</span>
             <input v-model="z.text" placeholder="Слово..." class="zone-input" />
+            <button @click.stop="duplicateZone(i)" class="zone-dup" title="Дублировать">⧉</button>
             <button @click.stop="removeZone(i)" class="zone-del" title="Удалить">✕</button>
           </div>
 
@@ -75,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, onMounted, nextTick, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { connectLineGames } from './ConnectLineData'
 
@@ -89,7 +104,7 @@ const selectedZoneId = ref(null)
 
 let dragging = null
 let dragOffset = { x: 0, y: 0 }
-let resizeHandle = null    // 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | null
+let resizeHandle = null
 let resizeZone = null
 let resizeStart = null
 
@@ -97,6 +112,43 @@ const W = 800
 const H = 520
 const HANDLE_SIZE = 10
 
+// ============ ПЕРЕСЕЧЕНИЯ (bounding box, AABB) ============
+function getBoundingBox(z) {
+  const minSide = Math.min(W, H)
+  const cx = z.x * W
+  const cy = z.y * H
+  if (z.shape === 'rect') {
+    const w = z.w * minSide
+    const h = z.h * minSide
+    return { left: cx - w / 2, right: cx + w / 2, top: cy - h / 2, bottom: cy + h / 2 }
+  }
+  // круг → квадрат 2r × 2r
+  const r = z.r * minSide
+  return { left: cx - r, right: cx + r, top: cy - r, bottom: cy + r }
+}
+
+function zonesOverlap(a, b) {
+  const A = getBoundingBox(a)
+  const B = getBoundingBox(b)
+  return A.left < B.right && A.right > B.left && A.top < B.bottom && A.bottom > B.top
+}
+
+const conflictingZoneIds = computed(() => {
+  const set = new Set()
+  for (let i = 0; i < zones.value.length; i++) {
+    for (let j = i + 1; j < zones.value.length; j++) {
+      if (zonesOverlap(zones.value[i], zones.value[j])) {
+        set.add(zones.value[i].id)
+        set.add(zones.value[j].id)
+      }
+    }
+  }
+  return set
+})
+
+const hasConflicts = computed(() => conflictingZoneIds.value.size > 0)
+
+// ============ РИСОВАНИЕ ============
 function getZoneRect(z) {
   const minSide = Math.min(W, H)
   if (z.shape === 'rect') {
@@ -154,7 +206,9 @@ function draw() {
     const cx = z.x * W
     const cy = z.y * H
     const isSelected = z.id === selectedZoneId.value
+    const isConflict = conflictingZoneIds.value.has(z.id)
 
+    // === ФОРМА ЗОНЫ ===
     if (z.shape === 'rect') {
       const w = z.w * minSide
       const h = z.h * minSide
@@ -162,8 +216,8 @@ function draw() {
       ctx.rect(cx - w / 2, cy - h / 2, w, h)
       ctx.fillStyle = 'rgba(59,130,246,0.25)'
       ctx.fill()
-      ctx.strokeStyle = isSelected ? '#f59e0b' : '#3b82f6'
-      ctx.lineWidth = isSelected ? 2.5 : 2
+      ctx.strokeStyle = isConflict ? '#ef4444' : (isSelected ? '#f59e0b' : '#3b82f6')
+      ctx.lineWidth = isConflict ? 3 : (isSelected ? 2.5 : 2)
       ctx.stroke()
     } else {
       const cr = z.r * minSide
@@ -171,27 +225,42 @@ function draw() {
       ctx.arc(cx, cy, cr, 0, Math.PI * 2)
       ctx.fillStyle = 'rgba(59,130,246,0.25)'
       ctx.fill()
-      ctx.strokeStyle = isSelected ? '#f59e0b' : '#3b82f6'
-      ctx.lineWidth = isSelected ? 2.5 : 2
+      ctx.strokeStyle = isConflict ? '#ef4444' : (isSelected ? '#f59e0b' : '#3b82f6')
+      ctx.lineWidth = isConflict ? 3 : (isSelected ? 2.5 : 2)
       ctx.stroke()
     }
 
-    // точка привязки
-    // точка привязки — фиксированный размер, не растёт с зоной
-    const ar = 8
-    ctx.beginPath()
-    ctx.arc(cx, cy, ar + 2, 0, Math.PI * 2)
-    ctx.fillStyle = 'white'
-    ctx.fill()
-    ctx.beginPath()
-    ctx.arc(cx, cy, ar, 0, Math.PI * 2)
-    ctx.fillStyle = '#1e3a8a'
-    ctx.fill()
-    ctx.strokeStyle = 'white'
-    ctx.lineWidth = 1.5
-    ctx.stroke()
+    // === ЯКОРЬ / ⚠️ ===
+    if (isConflict) {
+      ctx.font = 'bold 20px system-ui'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('⚠️', cx, cy)
+    } else {
+      const lensR = 6
+      const handleLen = 5
+      const handleAngle = Math.PI / 4
 
-    // подпись
+      const hx = cx + Math.cos(handleAngle) * (lensR + handleLen / 2)
+      const hy = cy + Math.sin(handleAngle) * (lensR + handleLen / 2)
+      ctx.beginPath()
+      ctx.moveTo(cx + Math.cos(handleAngle) * lensR, cy + Math.sin(handleAngle) * lensR)
+      ctx.lineTo(hx + Math.cos(handleAngle) * handleLen / 2, hy + Math.sin(handleAngle) * handleLen / 2)
+      ctx.strokeStyle = '#1e3a8a'
+      ctx.lineWidth = 2.5
+      ctx.lineCap = 'round'
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.arc(cx, cy, lensR, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
+      ctx.fill()
+      ctx.strokeStyle = 'rgba(187,69,234,0.62)'
+      ctx.lineWidth = 2
+      ctx.stroke()
+    }
+
+    // === ПОДПИСЬ ===
     ctx.fillStyle = '#1e3a8a'
     ctx.font = 'bold 14px system-ui'
     ctx.textAlign = 'center'
@@ -201,7 +270,7 @@ function draw() {
       : cy - z.r * minSide - 12
     ctx.fillText(z.text || `зона ${i + 1}`, cx, labelY)
 
-    // маркеры resize для выделенного прямоугольника
+    // === МАРКЕРЫ RESIZE ===
     if (isSelected && z.shape === 'rect') {
       getHandles(z).forEach(h => {
         ctx.beginPath()
@@ -219,6 +288,7 @@ function draw() {
 watch(zones, () => { nextTick(draw) }, { deep: true })
 watch(selectedZoneId, () => { nextTick(draw) })
 
+// ============ ЗАГРУЗКА / ЭКСПОРТ ============
 function onImageLoad(e) {
   const file = e.target.files[0]
   if (!file) return
@@ -255,6 +325,7 @@ async function onJsonLoad(e) {
   }
 }
 
+// ============ ХИТ-ТЕСТ ============
 function hitHandle(px, py) {
   const z = zones.value.find(z => z.id === selectedZoneId.value)
   if (!z || z.shape !== 'rect') return null
@@ -289,12 +360,12 @@ function hitZone(px, py) {
   return null
 }
 
+// ============ МЫШЬ ============
 function onDown(e) {
   const rect = canvasRef.value.getBoundingClientRect()
   const px = e.clientX - rect.left
   const py = e.clientY - rect.top
 
-  // 1) resize-маркер выделенной зоны
   const handle = hitHandle(px, py)
   if (handle) {
     const z = zones.value.find(z => z.id === selectedZoneId.value)
@@ -310,7 +381,6 @@ function onDown(e) {
     return
   }
 
-  // 2) клик по зоне — выделяем и тащим
   const hit = hitZone(px, py)
   if (hit) {
     selectedZoneId.value = hit.zone.id
@@ -320,12 +390,11 @@ function onDown(e) {
     return
   }
 
-  // 3) пусто — снимаем выделение и создаём новую зону
   selectedZoneId.value = null
   zones.value.push({
     id: 'w' + Date.now(),
     text: `zone ${zones.value.length + 1}`,
-    shape: 'circle',
+    shape: 'rect',
     x: px / W,
     y: py / H,
     r: 0.07,
@@ -340,7 +409,6 @@ function onMove(e) {
   const px = e.clientX - rect.left
   const py = e.clientY - rect.top
 
-  // resize
   if (resizeHandle && resizeZone) {
     const minSide = Math.min(W, H)
     const dx = px - resizeStart.px
@@ -353,7 +421,6 @@ function onMove(e) {
     if (resizeHandle.includes('n')) top = start.top + dy
     if (resizeHandle.includes('s')) bottom = start.bottom + dy
 
-    // минимальный размер
     const minPx = 12
     if (right - left < minPx) {
       if (resizeHandle.includes('w')) left = right - minPx
@@ -378,7 +445,6 @@ function onMove(e) {
     return
   }
 
-  // drag
   if (dragging) {
     dragging.x = (px - dragOffset.x) / W
     dragging.y = (py - dragOffset.y) / H
@@ -393,11 +459,12 @@ function onUp() {
   resizeStart = null
 }
 
+// ============ ДЕЙСТВИЯ ============
 function addZoneAtCenter() {
   zones.value.push({
     id: 'w' + Date.now(),
     text: `zone ${zones.value.length + 1}`,
-    shape: 'circle',
+    shape: 'rect',
     x: 0.5,
     y: 0.5,
     r: 0.07,
@@ -414,6 +481,23 @@ function removeZone(i) {
   draw()
 }
 
+function duplicateZone(i) {
+  const z = zones.value[i]
+  if (!z) return
+  const copy = {
+    id: 'w' + Date.now() + Math.random().toString(36).slice(2, 6),
+    text: z.text,
+    shape: z.shape,
+    x: 0.5,
+    y: 0.5,
+    r: z.r,
+    w: z.w,
+    h: z.h,
+  }
+  zones.value.splice(i + 1, 0, copy)
+  draw()
+}
+
 function clearAll() {
   zones.value = []
   selectedZoneId.value = null
@@ -422,6 +506,8 @@ function clearAll() {
 }
 
 function exportJson() {
+  if (hasConflicts.value) return
+
   const data = {
     title: 'My level',
     instructions: 'Протяни линию от названия к нужному месту на картинке',
@@ -448,6 +534,7 @@ function exportJson() {
   navigator.clipboard?.writeText(lastExport.value)
 }
 
+// ============ ЗАГРУЗКА УРОВНЯ ============
 onMounted(async () => {
   const level = route.query.level
   if (level && connectLineGames[level]) {
@@ -501,8 +588,25 @@ h2 { margin: 0 0 4px; }
   cursor: pointer;
   font-size: 14px;
 }
+.toolbar button:disabled {
+  cursor: not-allowed;
+}
+.btn-disabled {
+  opacity: 0.5;
+}
 .file-label { position: relative; overflow: hidden; }
 .file-label input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.conflict-banner {
+  padding: 10px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .workspace { display: flex; gap: 16px; }
 .canvas {
   border: 1px solid #cbd5e1;
@@ -534,6 +638,10 @@ h2 { margin: 0 0 4px; }
   border-color: #f59e0b;
   box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
 }
+.zone-item.conflict {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
 .zone-row {
   display: flex;
   gap: 6px;
@@ -563,6 +671,15 @@ h2 { margin: 0 0 4px; }
 .zone-range { flex: 1; }
 .zone-label { font-size: 12px; color: #64748b; width: 50px; }
 .zone-r-val { font-size: 12px; color: #64748b; width: 34px; text-align: right; }
+.zone-dup {
+  background: #bfdbfe;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.zone-dup:hover { background: #93c5fd; }
 .zone-del {
   background: #fecaca;
   border: none;
