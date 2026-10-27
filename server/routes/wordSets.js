@@ -2,17 +2,18 @@
  * ============================================================
  *  server/routes/wordSets.js
  * ------------------------------------------------------------
- *  Что это: CRUD для пользовательских наборов слов.
- *  Эндпоинты:
- *   GET    /word-sets           — все публичные + свои
- *   GET    /word-sets/:id       — один набор
- *   POST   /word-sets           — создать
- *   PUT    /word-sets/:id       — обновить (только свои, не official)
- *   DELETE /word-sets/:id       — удалить (только свои, не official)
- *   POST   /word-sets/:id/clone — клонировать (создать копию)
+ *  CRUD для пользовательских наборов слов.
  *
- *  Логика похожа на scores.js у Егорчика: authenticateToken,
- *  проверка user_id, формат ответа { message, record }.
+ *  Эндпоинты (все требуют JWT):
+ *   GET    /word-sets                 — все публичные + свои
+ *   GET    /word-sets/:missionName    — один набор по mission_name
+ *   POST   /word-sets                 — создать
+ *   PUT    /word-sets/:missionName    — обновить (только свои)
+ *   DELETE /word-sets/:missionName    — удалить (только свои)
+ *   POST   /word-sets/:missionName/clone — клонировать
+ *
+ *  ⚠️ Ищем по mission_name (а не по id), потому что в URL
+ *  мы используем именно mission_name (например, "my_animals").
  * ============================================================
  */
 
@@ -23,7 +24,7 @@ const authenticateToken = require('../middleware/authenticateToken')
 const router = express.Router()
 
 // ---------- GET /word-sets ----------
-// Возвращает: все публичные наборы + свои (включая приватные)
+// Все публичные наборы + свои (включая приватные)
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
@@ -40,11 +41,14 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 })
 
-// ---------- GET /word-sets/:id ----------
-router.get('/:id', authenticateToken, async (req, res) => {
+// ---------- GET /word-sets/:missionName ----------
+router.get('/:missionName', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params
-    const { rows } = await pool.query('SELECT * FROM word_sets WHERE id = $1', [id])
+    const { missionName } = req.params
+    const { rows } = await pool.query(
+      'SELECT * FROM word_sets WHERE mission_name = $1',
+      [missionName]
+    )
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Набор не найден' })
     }
@@ -66,7 +70,6 @@ router.post('/', authenticateToken, async (req, res) => {
     creatorUserAgent = '',
   } = req.body
 
-  // Валидация
   if (!missionName || !missionVisibleName || !Array.isArray(words)) {
     return res.status(400).json({ message: 'missionName, missionVisibleName и words обязательны' })
   }
@@ -77,13 +80,15 @@ router.post('/', authenticateToken, async (req, res) => {
     return res.status(400).json({ message: 'Максимум 100 слов в наборе' })
   }
 
-  // Проверка на дубликат (по mission_name)
-  const existing = await pool.query('SELECT id FROM word_sets WHERE mission_name = $1', [missionName])
-  if (existing.rows.length > 0) {
-    return res.status(400).json({ message: 'Набор с таким missionName уже существует' })
-  }
-
   try {
+    const existing = await pool.query(
+      'SELECT id FROM word_sets WHERE mission_name = $1',
+      [missionName]
+    )
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ message: 'Набор с таким missionName уже существует' })
+    }
+
     const userId = req.user.userId
     const username = req.user.username
 
@@ -104,14 +109,16 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 })
 
-// ---------- PUT /word-sets/:id ----------
-router.put('/:id', authenticateToken, async (req, res) => {
+// ---------- PUT /word-sets/:missionName ----------
+router.put('/:missionName', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params
+    const { missionName } = req.params
     const userId = req.user.userId
 
-    // Проверяем, что набор существует и принадлежит пользователю
-    const existing = await pool.query('SELECT * FROM word_sets WHERE id = $1', [id])
+    const existing = await pool.query(
+      'SELECT * FROM word_sets WHERE mission_name = $1',
+      [missionName]
+    )
     if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Набор не найден' })
     }
@@ -124,7 +131,6 @@ router.put('/:id', authenticateToken, async (req, res) => {
     }
 
     const { missionVisibleName, missionDescription, words, isPublic } = req.body
-
     if (!missionVisibleName || !Array.isArray(words)) {
       return res.status(400).json({ message: 'missionVisibleName и words обязательны' })
     }
@@ -136,10 +142,10 @@ router.put('/:id', authenticateToken, async (req, res) => {
       `UPDATE word_sets
        SET mission_visible_name = $1, mission_description = $2,
            words = $3, is_public = $4, updated_at = NOW()
-       WHERE id = $5
-       RETURNING *`,
+       WHERE mission_name = $5
+         RETURNING *`,
       [missionVisibleName, missionDescription || '',
-        JSON.stringify(words), isPublic ?? record.is_public, id]
+        JSON.stringify(words), isPublic ?? record.is_public, missionName]
     )
 
     res.json({ message: 'Набор обновлён', record: rows[0] })
@@ -149,13 +155,16 @@ router.put('/:id', authenticateToken, async (req, res) => {
   }
 })
 
-// ---------- DELETE /word-sets/:id ----------
-router.delete('/:id', authenticateToken, async (req, res) => {
+// ---------- DELETE /word-sets/:missionName ----------
+router.delete('/:missionName', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params
+    const { missionName } = req.params
     const userId = req.user.userId
 
-    const existing = await pool.query('SELECT * FROM word_sets WHERE id = $1', [id])
+    const existing = await pool.query(
+      'SELECT * FROM word_sets WHERE mission_name = $1',
+      [missionName]
+    )
     if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Набор не найден' })
     }
@@ -167,7 +176,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       return res.status(403).json({ message: 'Можно удалять только свои наборы' })
     }
 
-    await pool.query('DELETE FROM word_sets WHERE id = $1', [id])
+    await pool.query('DELETE FROM word_sets WHERE mission_name = $1', [missionName])
     res.json({ message: 'Набор удалён' })
   } catch (err) {
     console.error(err)
@@ -175,28 +184,31 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
 })
 
-// ---------- POST /word-sets/:id/clone ----------
-router.post('/:id/clone', authenticateToken, async (req, res) => {
+// ---------- POST /word-sets/:missionName/clone ----------
+router.post('/:missionName/clone', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params
+    const { missionName } = req.params
     const userId = req.user.userId
     const username = req.user.username
 
-    const original = await pool.query('SELECT * FROM word_sets WHERE id = $1', [id])
+    const original = await pool.query(
+      'SELECT * FROM word_sets WHERE mission_name = $1',
+      [missionName]
+    )
     if (original.rows.length === 0) {
       return res.status(404).json({ message: 'Набор не найден' })
     }
     const src = original.rows[0]
 
-    // Генерируем новый mission_name, чтобы не было дубликата
+    // Генерируем новый mission_name (чтобы не было дубликата)
     const newMissionName = `copy_${src.mission_name}_${Date.now()}`
 
     const { rows } = await pool.query(
       `INSERT INTO word_sets
-        (user_id, mission_name, mission_visible_name, mission_description,
-         set_type, words, is_public, parent_id, creator_username)
+       (user_id, mission_name, mission_visible_name, mission_description,
+        set_type, words, is_public, parent_id, creator_username)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       RETURNING *`,
+         RETURNING *`,
       [userId, newMissionName, `${src.mission_visible_name} (копия)`,
         src.mission_description, src.set_type, src.words,
         true, src.id, username]
