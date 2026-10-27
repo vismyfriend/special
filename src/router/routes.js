@@ -17,6 +17,11 @@ const routes = [
         component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
         children: [
           { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
+          // ←  редактор набора не зависит от missionName
+          {
+            path: '/create-special-set',
+            component: () => import('src/components/CreateSpecialSet.vue'),
+          },
           {
             path: '/leader-board',
             component: () => import('src/pages/LeaderBoard.vue'),
@@ -87,10 +92,6 @@ const routes = [
               {
                 path: 'pnqw',
                 component: () => import('components/GamePNQW.vue')
-              },
-              {
-                path: '/create-special-set',
-                component: () => import('src/components/CreateSpecialSet.vue'),
               },
               {
                 path: 'find-pairs-hard',

@@ -785,6 +785,8 @@ const userExpandedUnderSubTasks = ref(new Set());
 const searchExpandedSubTasks = ref(new Set());
 const searchExpandedUnderSubTasks = ref(new Set());
 
+
+
 // 🎯 ИТОГОВЫЕ COMPUTED - переключаются в зависимости от наличия поиска
 const expandedSubTasks = computed({
   get: () => searchQuery.value?.trim()
@@ -1133,7 +1135,8 @@ const isChineseExpanded = computed(() => categoryStates.value.chinese);
 
 // ==================== ДАННЫЕ ====================
 const AllSetsOfWords = ref([...allGamesAndSetsOfWordsList]);
-
+import { api } from 'src/api';
+import shortWordsData from 'src/dataForGames/short-words-data';
 // ==================== COMPUTED - ПОИСК И ФИЛЬТРАЦИЯ ====================
 const showPronunciationButton = computed(() => searchQuery.value.trim().length > 2);
 
@@ -1864,7 +1867,7 @@ watch(searchQuery, (newQuery) => {
 }, { debounce: 300 });
 
 // ==================== LIFECYCLE HOOKS ====================
-onMounted(() => {
+onMounted(async () => {
   restoreUserExpandedState();
   restoreScrollPosition();
 
@@ -1887,6 +1890,34 @@ onMounted(() => {
     };
     typeWriter();
   }
+  // 🆕 Загружаем пользовательские наборы с сервера
+  try {
+    const res = await api.wordSets.getAll();
+    const customSets = res.data || [];
+
+    customSets.forEach(set => {
+      // 1. Добавляем миссию в общий список
+      AllSetsOfWords.value.push({
+        missionName: set.mission_name,
+        missionVisibleName: set.mission_visible_name,
+        missionDescription: set.mission_description || '',
+        active: true,
+        lvl: 'lvlAll',         // показываем на всех уровнях
+        isCustom: true,         // пометка «свой набор»
+        id: set.id,
+        words: set.words,       // на всякий случай
+      });
+
+      // 2. Мутируем shortWordsData, чтобы игры нашли слова
+      shortWordsData[set.mission_name] = set.words;
+    });
+
+    console.log(`✅ Загружено ${customSets.length} пользовательских наборов`);
+  } catch (err) {
+    console.error('Ошибка загрузки пользовательских наборов:', err);
+    $q.notify({ message: 'Не удалось загрузить ваши наборы', color: 'warning' });
+  }
+
   // Центрируем активную кнопку при загрузке
   setTimeout(scrollToActiveButton, 150);
 });
