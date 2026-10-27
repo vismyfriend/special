@@ -10,20 +10,18 @@
     </p>
 
     <div class="actions">
-      <button class="btn" @click="onClone" :disabled="busy">
-        📋 Клонировать
+      <button v-if="isOwner" class="btn" @click="onEdit" :disabled="busy">
+        ✏️ Редактировать
       </button>
-      <button
-        v-if="isOwner"
-        class="btn btn--danger"
-        @click="onDelete"
-        :disabled="busy"
-      >
+      <button class="btn" @click="onClone" :disabled="busy">
+        📋 Клонировать к себе
+      </button>
+      <button v-if="isOwner" class="btn btn--danger" @click="onDelete" :disabled="busy">
         🗑️ Удалить
       </button>
     </div>
 
-    <p v-if="!isOwner" class="hint">
+    <p v-if="!isOwner && isFromDb" class="hint">
       Это чужой набор — можно только клонировать к себе.
     </p>
   </div>
@@ -41,14 +39,16 @@ const $q = useQuasar();
 
 const set = ref({});
 const busy = ref(false);
+const isFromDb = ref(false);
 
 // Проверка: принадлежит ли набор текущему пользователю
 const isOwner = computed(() => {
+  if (!isFromDb.value) return false;
   const token = localStorage.getItem('token');
   if (!token) return false;
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.userId === set.value.user_id;
+    return Number(payload.userId) === Number(set.value.user_id);
   } catch {
     return false;
   }
@@ -58,6 +58,7 @@ onMounted(async () => {
   try {
     const { data } = await WordSetsApi.getOne(route.params.missionName);
     set.value = data;
+    isFromDb.value = true;
   } catch (e) {
     $q.notify({ message: 'Не удалось загрузить набор', color: 'negative' });
     router.push('/see-all-sets-of-words');
@@ -79,7 +80,9 @@ const onClone = async () => {
     busy.value = false;
   }
 };
-
+const onEdit = () => {
+  router.push(`/see-all-sets-of-words/${route.params.missionName}/edit`);
+};
 const onDelete = async () => {
   if (!confirm('Удалить набор безвозвратно?')) return;
   busy.value = true;

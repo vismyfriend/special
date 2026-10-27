@@ -22,6 +22,7 @@ const routes = [
             path: '/create-special-set',
             component: () => import('src/components/CreateSpecialSet.vue'),
           },
+
           {
             path: '/leader-board',
             component: () => import('src/pages/LeaderBoard.vue'),
@@ -45,6 +46,10 @@ const routes = [
               {
                 path: 'wordSetSettings',
                 component: () => import('src/components/WordSetSettings.vue'),
+              },
+              {
+                path: 'edit',
+                component: () => import('src/components/CreateSpecialSet.vue'),
               },
 
               {

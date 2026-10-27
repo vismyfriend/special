@@ -5,7 +5,7 @@
       <input
         v-model.trim="missionVisibleName"
         class="editor__title"
-        placeholder="Название набора"
+        :placeholder="isEdit ? 'Название набора' : 'Название набора'"
         maxlength="80"
       />
 
@@ -17,6 +17,7 @@
             class="editor__input"
             placeholder="my_word_set"
             maxlength="60"
+            :readonly="isEdit"
           />
         </label>
 
@@ -89,12 +90,8 @@
       <button class="btn btn--ghost add-row" @click="addRow">
         + Добавить слово
       </button>
-      <button
-        class="btn btn--primary"
-        @click="saveSet"
-        :disabled="isSaving || !isValid"
-      >
-        {{ isSaving ? 'Сохраняем…' : 'Сохранить набор' }}
+      <button class="btn btn--primary" @click="saveSet" :disabled="isSaving || !isValid">
+        {{ isSaving ? 'Сохраняем…' : (isEdit ? 'Обновить набор' : 'Сохранить набор') }}
       </button>
       <button class="btn btn--ghost" @click="fillTestData" :disabled="isSaving">
         🎲 Тестовые данные
@@ -108,8 +105,8 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, nextTick, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import WordSetsApi from '../api/wordSets';
 
@@ -122,6 +119,10 @@ const missionVisibleName = ref('');
 const missionDescription = ref('');
 const isPublic = ref(true);
 const isSaving = ref(false);
+
+
+const route = useRoute();
+const isEdit = computed(() => !!route.params.missionName);
 
 // счётчик и фабрика — ДО первого вызова makeRow()
 let uidCounter = 0;
@@ -229,7 +230,7 @@ const saveSet = async () => {
 
   isSaving.value = true;
   try {
-    await WordSetsApi.create({
+    const payload = {
       missionName: missionName.value,
       missionVisibleName: missionVisibleName.value,
       missionDescription: missionDescription.value,
@@ -240,8 +241,16 @@ const saveSet = async () => {
       })),
       isPublic: isPublic.value,
       creatorUserAgent: navigator.userAgent,
-    });
-    $q.notify({ message: 'Набор создан!', color: 'positive' });
+    };
+
+    if (isEdit.value) {
+      await WordSetsApi.update(route.params.missionName, payload);
+      $q.notify({ message: 'Набор обновлён!', color: 'positive' });
+    } else {
+      await WordSetsApi.create(payload);
+      $q.notify({ message: 'Набор создан!', color: 'positive' });
+    }
+
     router.push('/see-all-sets-of-words');
   } catch (err) {
     console.error(err);
@@ -286,6 +295,29 @@ const fillTestData = () => {
 
   $q.notify({ message: `Тестовый набор #${testCounter} заполнен`, color: 'info' });
 };
+
+onMounted(async () => {
+  if (!isEdit.value) return;
+
+  const routeMissionName = route.params.missionName;
+  try {
+    const { data } = await WordSetsApi.getOne(routeMissionName);
+    missionName.value = data.mission_name;
+    missionVisibleName.value = data.mission_visible_name;
+    missionDescription.value = data.mission_description || '';
+    isPublic.value = data.is_public;
+    rows.value = (data.words || []).map(w =>
+      makeRow(w.eng || '', w.ru || '', w.hint || '')
+    );
+    // Если слов < 5 — добавим пустые строки до 5
+    while (rows.value.length < 5) rows.value.push(makeRow());
+  } catch (e) {
+    console.error('Ошибка загрузки:', e);
+    $q.notify({ message: 'Не удалось загрузить набор', color: 'negative' });
+    router.push('/see-all-sets-of-words');
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>
