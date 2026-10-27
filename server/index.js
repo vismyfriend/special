@@ -34,7 +34,7 @@ app.use(cors({
     'https://www.vismyfriend.ru',   // твой рабочий сайт
     'https://vismyfriend.ru'        // без www (тоже полезно)
   ],
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }))
