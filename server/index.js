@@ -26,7 +26,20 @@ const scoresRouter = require('./routes/scores')
 const app = express()
 const port = process.env.PORT || 3001 // у Егорчика 3000, у нас 3001
 
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost:9000',        // для локальной разработки
+    'http://localhost:8080',        // на всякий случай (другой порт)
+    'https://www.vismyfriend.ru',   // твой рабочий сайт
+    'https://vismyfriend.ru'        // без www (тоже полезно)
+  ],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}))
+
+app.options('*', cors()) // важно для preflight
+
 app.use(express.json())
 
 // ---------- Роуты ----------
