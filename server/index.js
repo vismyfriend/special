@@ -79,7 +79,3 @@ app.get('/health', async (req, res) => {
     res.status(500).send('DB connection FAILED')
   }
 })
-
-app.listen(port, () => {
-  console.log(`Сервер запущен на порту ${port}`)
-})
