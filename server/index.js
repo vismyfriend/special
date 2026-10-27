@@ -22,6 +22,7 @@ require('dotenv').config()
 const pool = require('./db')
 const authRouter = require('./routes/auth')
 const scoresRouter = require('./routes/scores')
+const wordSetsRouter = require('./routes/wordSets')
 
 const app = express()
 const port = process.env.PORT || 3001 // у Егорчика 3000, у нас 3001
@@ -49,6 +50,7 @@ app.listen(port, () => {
 // ---------- Роуты ----------
 app.use('/auth', authRouter)
 app.use('/scores', scoresRouter)
+app.use('/word-sets', wordSetsRouter)
 
 // ---------- Служебные эндпоинты (как у Егорчика) ----------
 app.get('/test', async (req, res) => {
