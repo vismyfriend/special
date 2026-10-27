@@ -95,12 +95,11 @@ router.post('/', authenticateToken, async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO word_sets
        (user_id, mission_name, mission_visible_name, mission_description,
-        set_type, words, is_public, parent_id, creator_username)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        set_type, words, is_public, creator_username, creator_user_agent)
+       VALUES ($1, $2, $3, $4, 'words', $5, $6, $7, $8)
          RETURNING *`,
-      [userId, newMissionName, `${src.mission_visible_name} (копия)`,
-        src.mission_description, src.set_type, JSON.stringify(src.words),  // ← JSON.stringify!
-        true, src.id, username]
+      [userId, missionName, missionVisibleName, missionDescription || '',
+        JSON.stringify(words), isPublic, username, creatorUserAgent]
     )
 
     res.json({ message: 'Набор создан', record: rows[0] })
@@ -202,7 +201,9 @@ router.post('/:missionName/clone', authenticateToken, async (req, res) => {
     const src = original.rows[0]
 
     // Генерируем новый mission_name (чтобы не было дубликата)
-    const newMissionName = `copy_${src.mission_name}_${Date.now()}`
+// Убираем старые "copy_" префиксы, чтобы не копились
+    const baseName = src.mission_name.replace(/^copy_/, '');
+    const newMissionName = `copy_${baseName}_${Date.now()}`
 
     const { rows } = await pool.query(
       `INSERT INTO word_sets
@@ -210,8 +211,9 @@ router.post('/:missionName/clone', authenticateToken, async (req, res) => {
         set_type, words, is_public, parent_id, creator_username)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          RETURNING *`,
-      [userId, newMissionName, `${src.mission_visible_name} (копия)`,
-        src.mission_description, src.set_type, JSON.stringify(src.words),  // ← JSON.stringify!
+      [userId, newMissionName,
+        `${src.mission_visible_name} (копия ${newMissionName.split('_').pop()})`,
+        src.mission_description, src.set_type, JSON.stringify(src.words),
         true, src.id, username]
     )
 
