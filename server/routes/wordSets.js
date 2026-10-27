@@ -94,12 +94,13 @@ router.post('/', authenticateToken, async (req, res) => {
 
     const { rows } = await pool.query(
       `INSERT INTO word_sets
-        (user_id, mission_name, mission_visible_name, mission_description,
-         set_type, words, is_public, creator_username, creator_user_agent)
-       VALUES ($1, $2, $3, $4, 'words', $5, $6, $7, $8)
-       RETURNING *`,
-      [userId, missionName, missionVisibleName, missionDescription || '',
-        JSON.stringify(words), isPublic, username, creatorUserAgent]
+       (user_id, mission_name, mission_visible_name, mission_description,
+        set_type, words, is_public, parent_id, creator_username)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         RETURNING *`,
+      [userId, newMissionName, `${src.mission_visible_name} (копия)`,
+        src.mission_description, src.set_type, JSON.stringify(src.words),  // ← JSON.stringify!
+        true, src.id, username]
     )
 
     res.json({ message: 'Набор создан', record: rows[0] })
@@ -210,7 +211,7 @@ router.post('/:missionName/clone', authenticateToken, async (req, res) => {
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          RETURNING *`,
       [userId, newMissionName, `${src.mission_visible_name} (копия)`,
-        src.mission_description, src.set_type, src.words,
+        src.mission_description, src.set_type, JSON.stringify(src.words),  // ← JSON.stringify!
         true, src.id, username]
     )
 
