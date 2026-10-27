@@ -42,6 +42,10 @@ app.options('*', cors()) // важно для preflight
 
 app.use(express.json())
 
+app.listen(port, () => {
+  console.log(`Сервер запущен на порту ${port}`)
+})
+
 // ---------- Роуты ----------
 app.use('/auth', authRouter)
 app.use('/scores', scoresRouter)
