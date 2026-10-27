@@ -7,12 +7,20 @@
 
       <div class="inside-phone-frame">
 <!--        <q-btn push color="brown-5" @click="backToPreviousPage">📷 показать все миссии 🔎 </q-btn>-->
-
+        <div class="phone-toolbar">
+          <button
+            class="settings-btn"
+            title="Настройки набора"
+            @click="goToSettings"
+          >
+            ⚙️
+          </button>
+        </div>
         <div class="games-grid">
           <div
             class="game-card"
             v-for="currentGame in filteredGames"
-            :key="currentGame.id"
+            :key="currentGame.path"
             @click="startGame(currentGame?.path)"
             :class="{ 'locked': !currentGame.active }"
           >
@@ -32,7 +40,7 @@
 
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { allGamesAndSetsOfWordsList } from "src/dataForGames/allGamesAndSetsOfWordsList";
@@ -67,298 +75,279 @@ const introMessage = ref(null); // Добавляем ref для элемент�
 const router = useRouter()
 const route = useRoute()
 
-
+const goToSettings = () => {
+  router.push(`/see-all-sets-of-words/${route.params.missionName}/wordSetSettings`);
+};
 
 const AllGames = ref([
-
+  // ========== 100–199: СЛОВА ==========
   {
-    id: 1,
+    id: 101,
     name: "Все слова из набора",
     path: "print-all-words",
     gameData: shortWordsData,
-    cardIcon: '🖨️', // Изменено на более подходящую иконку
+    cardIcon: '🖨️',
     active: true,
   },
   {
-    id: 2,
+    id: 102,
     name: "Find pairs EASY",
     path: "find-pairs-easy",
     gameData: shortWordsData,
-    cardIcon: '✂️', // Добавлена иконка
+    cardIcon: '✂️',
     active: true,
   },
-
   {
-    id: 4,
+    id: 103,
     name: "Spell it",
     path: "spell-it",
     gameData: shortWordsData,
-    cardIcon: '🔠', // Добавлена иконка
-    active: true
+    cardIcon: '🔠',
+    active: true,
   },
   {
-    id: 5,
+    id: 104,
     name: "Find pairs HARD",
     path: "find-pairs-hard",
     gameData: shortWordsData,
-    cardIcon: '🧩', // Изменено на более подходящую иконку
+    cardIcon: '🧩',
     active: true,
   },
   {
-    id: 6,
+    id: 105,
     name: "Say it",
     path: "game-pronunciation",
     gameData: shortWordsData,
-    cardIcon: '🎤️', // Добавлена иконка
+    cardIcon: '🎤️',
     active: true,
   },
   {
-    id: 7,
+    id: 106,
     name: "Listen to it",
     path: "game-whatDoYouHear",
     gameData: shortWordsData,
-    cardIcon: '🎧', // Добавлена иконка
+    cardIcon: '🎧',
     active: true,
   },
   {
-    id: 8,
+    id: 107,
+    name: "Spell Ten",
+    path: "spell-ten",
+    gameData: shortWordsData,
+    cardIcon: '✏️',
+    active: true,
+  },
+  {
+    id: 108,
+    name: "Translate it",
+    path: "game-translate",
+    gameData: shortWordsData,
+    cardIcon: '🌐',
+    active: true,
+  },
+  {
+    id: 109,
+    name: "Spelling old game",
+    path: "spelling",
+    gameData: shortWordsData,
+    cardIcon: '🔠',
+    active: true,
+  },
+  {
+    id: 110,
+    name: "Распутай слово",
+    path: "scrambled",
+    gameData: scrambledData,
+    cardIcon: '🔀',
+    active: true,
+  },
+
+  // ========== 200–299: ПРЕДЛОЖЕНИЯ И ПОРЯДОК ==========
+  {
+    id: 201,
+    name: "Correct order",
+    path: "word-order-sortable",
+    gameData: shortSentencesWordOrderData,
+    cardIcon: '🔢',
+    active: true,
+  },
+  {
+    id: 202,
+    name: "game4Sent",
+    path: "4sentences",
+    gameData: dataGame4Sentences,
+    cardIcon: '💰',
+    active: true,
+  },
+  {
+    id: 203,
+    name: "Help Bender",
+    path: "bender",
+    gameData: helpBenderData,
+    cardIcon: '🤖',
+    active: true,
+  },
+
+  // ========== 300–399: КВИЗЫ И ВОПРОСЫ ==========
+  {
+    id: 301,
+    name: "Millionaire",
+    path: "millionaire",
+    gameData: MillionaireData,
+    cardIcon: '💰',
+    active: true,
+  },
+  {
+    id: 302,
+    name: "Brainstorm",
+    path: "brainstorm",
+    gameData: gameTestsNoSeedNoShuffleData,
+    cardIcon: '🧠',
+    active: true,
+  },
+  {
+    id: 303,
+    name: "Tests",
+    path: "tests-and-exams",
+    gameData: GameTestsSeedData,
+    cardIcon: '📝',
+    active: true,
+  },
+  {
+    id: 304,
+    name: "Tricky quiz",
+    path: "tricky-quiz",
+    gameData: trickyQuizData,
+    cardIcon: '❓',
+    active: true,
+  },
+  {
+    id: 305,
+    name: "Definitions",
+    path: "definitions-game",
+    gameData: definitionsData,
+    active: true,
+  },
+  {
+    id: 306,
+    name: "+ - ? why (PC only)",
+    path: "pnqw",
+    gameData: pnqwData,
+    cardIcon: '🃏',
+    active: true,
+  },
+  {
+    id: 307,
+    name: "Tags",
+    path: "tag-questions-game",
+    gameData: NewFuturisticStyleData,
+    cardIcon: '🏷️',
+    active: true,
+  },
+  {
+    id: 308,
     name: "A deck of cards",
     path: "deck-of-cards",
     gameData: questionsData,
-    cardIcon: '🃏', // Добавлена иконка
-    active: true
+    cardIcon: '🃏',
+    active: true,
   },
+
+  // ========== 400–499: ИСТОРИИ, ПЕСНИ, ТЕКСТЫ ==========
   {
-    id: 9,
+    id: 401,
     name: "Lyrics and Dialogs",
     path: "songs",
     gameData: songsData,
     cardIcon: '🗣️',
-    active: true
-  },
-  {
-    id: 10,
-    name: "Correct order",
-    path: "word-order-sortable",
-    gameData: shortSentencesWordOrderData,
-    cardIcon: '🔢', // Добавлена иконка
     active: true,
   },
   {
-    id: 11,
-    name: "Sort it out",
-    path: "sorting",
-    gameData: sortingWordsData,
-    active: true,
-    cardIcon: '🛒', // Добавлена иконка
-
-  },
-  {
-    id: 12,
-    name: "Millionaire",
-    path: "millionaire",
-    gameData: MillionaireData,
-    cardIcon: '💰', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 12,
-    name: "game4Sent",
-    path: "4sentences",
-    gameData: dataGame4Sentences,
-    cardIcon: '💰', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 103,
-    name: "Spell Ten",
-    path: "spell-ten",
-    gameData: shortWordsData,
-    cardIcon: '✏️', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 104,
-    name: "Translate it",
-    path: "game-translate",
-    gameData: shortWordsData, // если тут указать другую дату, то эта игра не будет отображаться в списке выбора игр
-    cardIcon: '🌐', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 180,
-    name: "Brainstorm",
-    path: "brainstorm",
-    gameData: gameTestsNoSeedNoShuffleData,
-    cardIcon: '🧠', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 1800,
+    id: 402,
     name: "Stories",
     path: "stories",
     gameData: storiesAndWordsData,
-    cardIcon: '📖', // Добавлена иконка
-    active: true,
-  },
-  {
-    id: 182,
-    name: "Tests",
-    path: "tests-and-exams",
-    gameData: GameTestsSeedData,
-    cardIcon: '📝', // Добавлена иконка
+    cardIcon: '📖',
     active: true,
   },
 
+  // ========== 500–599: ДОМАШКИ, PDF, ПЕЧАТЬ ==========
   {
-    id: 104,
-    name: "Definitions",
-    path: "definitions-game",
-    gameData: definitionsData,
-    active: true
-  },
- {
-    id: 104,
-    name: "+ - ? why (PC only)",
-    path: "pnqw",
-    gameData: pnqwData,
-    cardIcon: '🃏', // Добавлена иконка
-    active: true
- },
- {
-    id: 104,
-    name: "Tags",
-    path: "tag-questions-game",
-    gameData: NewFuturisticStyleData,
-    cardIcon: '🏷️', // Добавлена иконка
-    active: true
-  },
-
-  {
-    id: 1005,
-    name: "Новая змейка",
-    path: "gameSnakeWords",
-    gameData: shortWordsData,
-    cardIcon: '🐍', // Добавлена иконка
-    active: true
-  },
-
-  {
-    id: 102,
-    name: "Spelling old game",
-    path: "spelling",
-    gameData: shortWordsData,
-    cardIcon: '🔠', // Добавлена иконка
-    active: true,
-  },
-
-
-  // {
-  //   id: 90,
-  //   name: "эта игра скоро появится",
-  //   path: "this-game-is-coming-soon",
-  //   gameData: shortWordsData,
-  //   active: true,
-  // },
-  // {
-  //   id: 100,
-  //   name: "эта игра скоро будет",
-  //   path: "this-game-is-coming-soon-2",
-  //   gameData: shortWordsData,
-  //   active: true,
-  // },
-
-  //
-  // {
-  //   id: 201,
-  //   name: "Find pairs HARDCORE",
-  //   path: "find-pairs-hardcore",
-  //   gameData: shortWordsData,
-  //   active: true,
-  // },
-
-
-
-  {
-    id: 105,
-    name: "TNT",
-    path: "tnt",
-    gameData: tntData,
-    cardIcon: '💣', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 106,
-    name: "Tricky quiz",
-    path: "tricky-quiz",
-    gameData: trickyQuizData,
-    cardIcon: '❓', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 107,
-    name: "Help Bender",
-    path: "bender",
-    gameData: helpBenderData,
-    cardIcon: '🤖', // Добавлена иконка
-    active: true
-  },
-
-  {
-    id: 109,
-    name: "Распутай слово",
-    path: "scrambled",
-    gameData: scrambledData,
-    cardIcon: '🔀', // Добавлена иконка
-    active: true
-  },
-  {
-    id: 110,
+    id: 501,
     name: "Разные домашки",
     path: "hw-links",
     gameData: homeworkLinksData,
-    cardIcon: '📚', // Добавлена иконка
-    active: true
+    cardIcon: '📚',
+    active: true,
   },
   {
-    id: 111,
+    id: 502,
     name: "Ссылка на домаху",
     path: "hw",
     gameData: hwData,
-    cardIcon: '📎', // Добавлена иконка
-    active: true
-  },
-
-  {
-    id: 112,
-    name: "Pictures",
-    path: "gamePics",
-    gameData: shortPicturesData,
-    cardIcon: '📎', // Добавлена иконка
-    active: true
+    cardIcon: '📎',
+    active: true,
   },
   {
-    id: 113,
-    name: "Dresser",
-    path: "gameDresser",
-    gameData: dresserGameData,
-    cardIcon: '👕',
-    active: true
-  },
-
-  {
-    id: 113,
+    id: 503,
     name: "PDF",
     path: "pdfPages",
     gameData: pdfPagesData,
     cardIcon: '🎧',
-    active: true
+    active: true,
   },
 
+  // ========== 600–699: ВИЗУАЛЬНЫЕ И СПЕЦИАЛЬНЫЕ ==========
+  {
+    id: 601,
+    name: "Sort it out",
+    path: "sorting",
+    gameData: sortingWordsData,
+    cardIcon: '🛒',
+    active: true,
+  },
+  {
+    id: 602,
+    name: "Pictures",
+    path: "gamePics",
+    gameData: shortPicturesData,
+    cardIcon: '📎',
+    active: true,
+  },
+  {
+    id: 603,
+    name: "Dresser",
+    path: "gameDresser",
+    gameData: dresserGameData,
+    cardIcon: '👕',
+    active: true,
+  },
+  {
+    id: 604,
+    name: "Новая змейка",
+    path: "gameSnakeWords",
+    gameData: shortWordsData,
+    cardIcon: '🐍',
+    active: true,
+  },
+  {
+    id: 605,
+    name: "TNT",
+    path: "tnt",
+    gameData: tntData,
+    cardIcon: '💣',
+    active: true,
+  },
 
-
+  // ========== 900–999: СЛУЖЕБНОЕ ==========
+  {
+    id: 901,
+    name: "настройки",
+    path: "wordSetSettings",
+    cardIcon: '⚙️',
+    active: true,
+  },
 ])
-
 
 // const filteredGames = computed(() => {
 //   return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
@@ -388,6 +377,13 @@ const filteredGames = computed(() => {
   });
 });
 
+watch(
+  () => route.params.missionName,
+  (newName) => {
+    console.log('MISSION NAME CHANGED:', newName);
+  },
+  { immediate: true }
+);
 
 const startGame = (path) => {
   const game = AllGames.value.find(g => g.path === path);
@@ -402,6 +398,7 @@ const backToPreviousPage = () => {
 
 onMounted(() => {
   const introMessage = document.getElementById("intro-message");
+
   if (!introMessage) return;
 
   // Находим соответствующую миссию
@@ -438,7 +435,9 @@ onMounted(() => {
     console.log("missionVisibleName not found for this mission");
   }
 
-
+  console.log('MISSION NAME (mounted):', route.params.missionName);
+  console.log('FILTERED GAMES:', filteredGames.value.length);
+  console.log('ALL GAMES:', AllGames.value.length);
 });
 
 </script>
@@ -794,5 +793,27 @@ onMounted(() => {
   cursor: none;
 
 }
+.phone-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 0 0;
+}
 
+.settings-btn {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-1px) rotate(30deg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
 </style>

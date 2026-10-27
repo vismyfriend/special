@@ -43,6 +43,11 @@ const routes = [
             children: [
               { path: '', component: () => import('src/pages/ChooseGame.vue') },
               {
+                path: 'wordSetSettings',
+                component: () => import('src/components/WordSetSettings.vue'),
+              },
+
+              {
                 path: 'stories',
                 component: () => import('components/GameStoriesAndWords.vue')
               },
