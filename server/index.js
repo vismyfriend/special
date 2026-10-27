@@ -43,7 +43,7 @@ app.options('*', cors()) // важно для preflight
 
 app.use(express.json())
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Сервер запущен на порту ${port}`)
 })
 
