@@ -13,7 +13,7 @@ export const homeworkData = {
           // === Заголовки ===
           a1: { text: 'кто', colspan: 1, rowspan: 2 },
           b1: { text: 'глагол', colspan: 1, rowspan: 2 },
-          c1: { text: 'всё остальное', colspan: 1, rowspan: 2 },
+          c1: { text: 'всё остальное', format: ['spoiler', 'strikethrough', 'bold'], colspan: 1, rowspan: 2 },
 
           // === Группа I ===
           a3: { text: 'I', rowspan: 2 },
@@ -121,7 +121,7 @@ export const homeworkData = {
           // строка 3
           a3: { text: 'do' },
           b3: { answers: ['did'] },
-          c3: { answers: ["don't"] },
+          c3: { answers: ["done"] },
           d3: { text: 'делать' },
 
           // строка 4
@@ -158,15 +158,18 @@ export const homeworkData = {
     chainOfTasks: true,   // <-- задания отображаются по мере выполнения
     tasks: [
       {
-        type: 'tableFill',
+        type: 'articleWordsInput',
+        articleScript: `Hello friends! Let me (share with you) a few [words['bold']] about my day. This is a [very important['spoiler']] lesson for everyone. Please [do not forget['strikethrough']] your homework! My favorite [card game['bold','spoiler','strikethrough']] is Twenty One. You can write [anything['bold']] here — it is (anyIsOkay).`      },
+      {
         title: 'Заполни таблицу',
+        type: 'tableFill',
         cols: 3,
         rows: 13,
         cells: {
           // === Заголовки ===
           a1: { text: 'кто', colspan: 1, rowspan: 2 },
           b1: { text: 'глагол', colspan: 1, rowspan: 2 },
-          c1: { text: 'всё остальное', colspan: 1, rowspan: 2 },
+          c1: { text: 'всё остальное', format: ['spoiler', 'strikethrough', 'bold'], colspan: 1, rowspan: 2 },
 
           // === Группа I ===
           a3: { text: 'I', rowspan: 2 },
@@ -201,6 +204,18 @@ export const homeworkData = {
       {
         type: 'fillInTheBlank',
         title: 'fill in the blanks - заполнить пропуски',
+        items: [
+          { text: '1) You __ good people.',                          answers: [["are", "aren't"]] },
+          { text: '2) I _ a good person.',                            answers: [["am", "am not", "'m", "'m not"]] },
+          { text: '3) Vincent and I ___ friends.',                    answers: [["are", "aren't"]] },
+          { text: '4) Vincent ___ a funny teacher.',                  answers: [["is", "isn't"]] },
+          { text: '5) It ___ a beautiful day.',                       answers: [["is", "isn't"]] },
+          { text: '6) We ___ ready for the lesson.',                  answers: [["are", "aren't"]] }
+        ]
+      },
+      {
+        type: 'fillInTheBlank',
+        title: 'fill in the blanks - заполнить пропуски',
         text: '1) You __ good people.',
         answers: [["are", "aren't"]]
       },
@@ -214,6 +229,7 @@ export const homeworkData = {
         text: '3) Vincent and I ___ friends.',
         answers: [["are", "aren't"]]   // ✅ один пропуск — один массив
       },
+
       {
         type: 'fillInTheBlank',
         text: '4) Vincent ___ a funny teacher.',
@@ -256,6 +272,87 @@ export const homeworkData = {
         placeholder: 'нажмите чтобы писать...'
       },
       {
+        type: 'doTheMagic',
+        title: 'Do the magic',
+
+        question: 'Винсент мой друг',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["Vincent is my friend", "Vincent is my best friend",],
+          negative: ["Vincent is not my friend"],
+          question: ['is V my friend?'],
+          openQuestion: ['Who is my friend?', 'Who is Vincent?', 'Why is V my friend?'],
+          answer: ['because he is the best teacher']
+        },
+      },
+      {
+        type: 'doTheMagic',
+        title: 'Do the magic',
+
+        question: 'Винсент мой друг',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["Vincent is my friend", "Vincent is my best friend",],
+          negative: ["Vincent is not my friend"],
+          question: ['is V my friend?'],
+          openQuestion: ['Who is my friend?', 'Who is Vincent?', 'Why is V my friend?'],
+          answer: ['because he is the best teacher']
+        },
+      },
+      {
+        type: 'doTheMagic',
+        title: 'Do the magic',
+
+        question: 'Винсент мой друг',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["Vincent is my friend", "Vincent is my best friend",],
+          negative: ["Vincent is not my friend"],
+          question: ['is V my friend?'],
+          openQuestion: ['Who is my friend?', 'Who is Vincent?', 'Why is V my friend?'],
+          answer: ['because he is the best teacher']
+        },
+      },
+      {
+        type: 'doTheMagic',
+        title: 'Do the magic',
+
+        question: 'Винсент мой друг',
+        labels: {
+          positive: '+',
+          negative: '−',
+          question: '?',
+          openQuestion: 'o?',
+          answer: 'a*'
+        },
+        correct: {
+          positive: ["Vincent is my friend", "Vincent is my best friend",],
+          negative: ["Vincent is not my friend"],
+          question: ['is V my friend?'],
+          openQuestion: ['Who is my friend?', 'Who is Vincent?', 'Why is V my friend?'],
+          answer: ['because he is the best teacher']
+        },
+      },
+
+      {
         type: 'textarea',
         title: 'Здесь можно ошибаться!',
         hint1: '"чтобы" по-английски - "to"',
@@ -279,7 +376,7 @@ export const homeworkData = {
           // строка 3
           a3: { text: 'do' },
           b3: { answers: ['did'] },
-          c3: { answers: ["don't"] },
+          c3: { answers: ["done"] },
           d3: { text: 'делать' },
 
           // строка 4
@@ -306,7 +403,7 @@ export const homeworkData = {
         usefulWords: 'let me - позвольте мне, share with you - поделиться с вами',
         taskPicture: new URL("../assets/images/confusedGirl.png", import.meta.url).href,
         taskAudio: new URL('../assets/audio/songs/hello_how_are_you.mp3', import.meta.url).href,
-        articleScript: `Hello friends! Let me (share with you) a few words about my favorite card game! The first game is (anyIsOkay). But the second game (is) called 'Twenty One'.`
+        articleScript: `Hello [friends[spoiler']]! Let me (share with you) a few [words['bold']] about my [favorite card game!['spoiler','strikethrough']] The first game is (anyIsOkay). But the second game (is) called 'Twenty One'.`
       }
     ]
   },
@@ -366,7 +463,7 @@ export const homeworkData = {
           // === Заголовки ===
           a1: { text: 'кто', colspan: 1, rowspan: 2 },
           b1: { text: 'глагол', colspan: 1, rowspan: 2 },
-          c1: { text: 'всё остальное', colspan: 1, rowspan: 2 },
+          c1: { text: 'всё остальное', format: ['spoiler', 'strikethrough', 'bold'], colspan: 1, rowspan: 2 },
 
           // === Группа I ===
           a3: { text: 'I', rowspan: 2 },
@@ -553,12 +650,12 @@ export const homeworkData = {
           a1: { text: 'past', rowspan: 2 },
           b1: { text: 'present', rowspan: 2 },
           c1: { text: 'perfect', rowspan: 2 },
-          d1: { text: 'перевод', rowspan: 2 },
+          d1: { text: 'перевод', format: ['spoiler', 'strikethrough', 'bold'], rowspan: 2 },
 
           // строка 3
           a3: { text: 'do' },
           b3: { answers: ['did'] },
-          c3: { answers: ["don't"] },
+          c3: { answers: ["done"] },
           d3: { text: 'делать' },
 
           // строка 4

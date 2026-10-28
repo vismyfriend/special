@@ -313,7 +313,7 @@ onMounted(async () => {
     while (rows.value.length < 5) rows.value.push(makeRow());
   } catch (e) {
     console.error('Ошибка загрузки:', e);
-    $q.notify({ message: 'Не удалось загрузить набор', color: 'negative' });
+    $q.notify({ message: 'Обнови страницу (если зависло или не загрузился набор)', color: 'negative' });
     router.push('/see-all-sets-of-words');
   }
 });

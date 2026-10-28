@@ -1912,10 +1912,10 @@ onMounted(async () => {
       shortWordsData[set.mission_name] = set.words;
     });
 
-    console.log(`✅ Загружено ${customSets.length} пользовательских наборов`);
+    console.log(`✅ Загружено ${customSets.length} новых миссий`);
   } catch (err) {
     console.error('Ошибка загрузки пользовательских наборов:', err);
-    $q.notify({ message: 'Не удалось загрузить ваши наборы', color: 'warning' });
+    $q.notify({ message: 'Привет от Винсента', color: 'warning' });
   }
 
   // Центрируем активную кнопку при загрузке

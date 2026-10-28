@@ -60,7 +60,7 @@ onMounted(async () => {
     set.value = data;
     isFromDb.value = true;
   } catch (e) {
-    $q.notify({ message: 'Не удалось загрузить набор', color: 'negative' });
+    $q.notify({ message: 'Обнови страницу (если зависло и ли не загрузились наборы)', color: 'negative' });
     router.push('/see-all-sets-of-words');
   }
 });

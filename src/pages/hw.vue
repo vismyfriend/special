@@ -32,6 +32,21 @@
         <button @click="devFillCorrect">Заполнить текущее правильно</button>
         <button @click="devShowAll">Показать все задания</button>
         <button @click="devResetResults">Сбросить результаты проверки</button>
+        <div class="devtools-mode">
+          Режим цепочки:
+          <button
+            :class="{ active: chainDisplayMode === 'hidden' }"
+            @click="chainDisplayMode = 'hidden'"
+          >hidden</button>
+          <button
+            :class="{ active: chainDisplayMode === 'blur' }"
+            @click="chainDisplayMode = 'blur'"
+          >blur</button>
+          <button
+            :class="{ active: chainDisplayMode === 'visible' }"
+            @click="chainDisplayMode = 'visible'"
+          >visible</button>
+        </div>
       </div>
     </div>
 
@@ -46,238 +61,296 @@
                 {{ currentMission.description }}
               </p>
 
-              <div
-                v-for="(task, index) in currentMission.tasks"
-                :key="index"
-                class="task-block"
-                :class="{ 'task-block--locked': isTaskLocked(index) }"
-              >
-                <h3 v-if="task.title" class="task-title">{{ task.title }}</h3>
-
-                <div class="question-text">
-                  {{ task.question }}
-
-                  <span
-                    v-for="hint in getAvailableHints(task, index)"
-                    :key="hint.index"
-                    class="hint-icon"
-                    @click="toggleHint(index, hint.index)"
-                  >
-                    💡
-                  </span>
-
-                  <span
-                    v-if="
-                      task.type !== 'fillInTheBlank' &&
-                      task.answers && task.answers.length > 0 &&
-                      !showAnswerFlag[index] &&
-                      showResults &&
-                      taskResults[index] &&
-                      taskResults[index].isCorrect !== true
-                    "
-                    class="answer-flag"
-                    @click="showCorrectAnswer(index)"
-                  >
-                    🏁
-                  </span>
-                </div>
-
-                <div v-if="showHint[index] && showHint[index].size > 0" class="hints">
-                  <div
-                    v-for="(hintText, hintIndex) in getShownHints(currentMission.tasks[index], index)"
-                    :key="hintIndex"
-                    class="hint-text"
-                  >
-                    {{ hintText }}
-                  </div>
-                </div>
-
+              <template v-for="(task, index) in currentMission.tasks" :key="index">
                 <div
-                  v-if="task.type !== 'fillInTheBlank' && showAnswerFlag[index] && task.answers"
-                  class="correct-answer-display"
+                  v-if="isTaskRendered(index)"
+                  class="task-block"
+                  :class="{ 'task-block--locked': isTaskBlurred(index) }"
                 >
-                  <span class="answer-label">Правильный ответ:</span>
-                  <span class="answer-text">{{ task.answers.join(' или ') }}</span>
-                </div>
+                  <h3 v-if="task.title" class="task-title">{{ task.title }}</h3>
 
-                <!-- === DO THE MAGIC === -->
-                <div v-if="task.type === 'doTheMagic'" class="doTheMagic-block">
-                  <div class="doTheMagic-grid">
+                  <div class="question-text">
+                    {{ task.question }}
+
+                    <span
+                      v-for="hint in getAvailableHints(task, index)"
+                      :key="hint.index"
+                      class="hint-icon"
+                      @click="toggleHint(index, hint.index)"
+                    >
+                      💡
+                    </span>
+
+                    <span
+                      v-if="
+                        task.type !== 'fillInTheBlank' &&
+                        task.answers && task.answers.length > 0 &&
+                        !showAnswerFlag[index] &&
+                        showResults &&
+                        taskResults[index] &&
+                        taskResults[index].isCorrect !== true
+                      "
+                      class="answer-flag"
+                      @click="showCorrectAnswer(index)"
+                    >
+                      🏁
+                    </span>
+                  </div>
+
+                  <div v-if="showHint[index] && showHint[index].size > 0" class="hints">
                     <div
-                      v-for="(label, key) in task.labels"
-                      :key="key"
-                      class="doTheMagic-row"
+                      v-for="(hintText, hintIndex) in getShownHints(currentMission.tasks[index], index)"
+                      :key="hintIndex"
+                      class="hint-text"
                     >
-                      <span
-                        class="doTheMagic-label"
-                        @dblclick.prevent="showAnswerHint(index, key, task)"
-                        :title="`Двойной клик — показать правильный ответ для «${label}»`"
-                      >
-                        {{ label }}
-                      </span>
-                      <textarea
-                        class="doTheMagic-input"
-                        :class="[
-                          getDoTheMagicClass(index, key),
-                          { 'showing-hint': hintAnswer[`${index}_${key}`] }
-                        ]"
-                        :placeholder="hintAnswer[`${index}_${key}`] || getDoTheMagicPlaceholder(key, index)"
-                        v-model="answers[index][key]"
-                        @input="adjustDoTheMagicHeight($event, index, key)"
-                        rows="1"
-                        :ref="el => setDoTheMagicRef(el, index, key)"
-                      ></textarea>
+                      {{ hintText }}
                     </div>
                   </div>
-                </div>
 
-                <!-- === FILL IN THE BLANKS === -->
-                <div v-else-if="task.type === 'fillInTheBlank'" class="fill-blank-block">
-                  <div class="fill-blank-text">
-                    <template v-for="(segment, segIndex) in getFillSegments(task)" :key="segIndex">
-                      <span v-if="segment.type === 'text'">{{ segment.value }}</span>
-                      <span
-                        v-else
-                        class="fill-blank-wrapper"
-                        :class="getFillClass(index, segment.blankIndex)"
-                        :style="{ width: getFillWidth(segment.underscores) }"
-                      >
-                        <input
-                          type="text"
-                          class="fill-blank-input"
-                          v-model="answers[index][segment.blankIndex]"
-                        />
-                      </span>
-                    </template>
-                  </div>
-                </div>
-
-                <!-- === ARTICLE WORDS INPUT === -->
-                <div v-else-if="task.type === 'articleWordsInput'" class="article-block">
-                  <p v-if="task.taskDescription" class="article-description">
-                    {{ task.taskDescription }}
-                  </p>
-                  <div v-if="task.usefulWords" class="article-useful-words">
-                    <div v-if="Array.isArray(task.usefulWords)" class="useful-words-grid">
-                      <div
-                        v-for="(word, wIndex) in task.usefulWords"
-                        :key="wIndex"
-                        class="useful-word-card"
-                      >
-                        <span class="useful-word-eng">{{ word.eng }}</span>
-                        <span class="useful-word-ru">{{ word.ru }}</span>
-                      </div>
-                    </div>
-                    <p v-else class="useful-words-text">{{ task.usefulWords }}</p>
-                  </div>
-                  <img
-                    v-if="task.taskPicture"
-                    :src="task.taskPicture"
-                    :alt="'Image for task ' + (index + 1)"
-                    class="article-picture"
+                  <div
+                    v-if="task.type !== 'fillInTheBlank' && showAnswerFlag[index] && task.answers"
+                    class="correct-answer-display"
                   >
-
-                  <div v-if="task.taskAudio" class="audio-player-sticky-container">
-                    <audio
-                      controls
-                      class="audio-player"
-                      controlsList="nodownload"
-                      oncontextmenu="return false;"
-                    >
-                      <source :src="task.taskAudio" type="audio/mp3" />
-                      Your browser does not support the audio element.
-                    </audio>
+                    <span class="answer-label">Правильный ответ:</span>
+                    <span class="answer-text">{{ task.answers.join(' или ') }}</span>
                   </div>
 
-                  <div class="article-text">
-                    <template v-for="(segment, segIndex) in getArticleSegments(task)" :key="segIndex">
-                      <span v-if="segment.type === 'text'">{{ segment.value }}</span>
-                      <span
-                        v-else
-                        class="article-blank-wrapper"
-                        :class="[
-                          getArticleBlankClass(index, segment.blankIndex),
-                          { 'article-blank-wrapper--manual': segment.isManual }
-                        ]"
-                        :style="{ '--blank-min': getArticleBlankWidth(segment.answer) }"
+                  <!-- === DO THE MAGIC === -->
+                  <div v-if="task.type === 'doTheMagic'" class="doTheMagic-block">
+                    <div class="doTheMagic-grid">
+                      <div
+                        v-for="(label, key) in task.labels"
+                        :key="key"
+                        class="doTheMagic-row"
                       >
                         <span
-                          contenteditable="true"
-                          class="article-blank-input"
-                          :data-placeholder="segment.isManual ? '' : ''"
-                          @keydown.enter.prevent
-                          @input="onArticleInput(index, segment.blankIndex, $event)"
-                          @paste="onArticlePaste"
-                          @blur="onArticleBlur(index, segment.blankIndex, $event)"
-                          :ref="el => setArticleEditableRef(el, index, segment.blankIndex)"
-                        ></span>
-                      </span>
-                    </template>
-                  </div>
-                </div>
-
-                <!-- === TABLE FILL === -->
-                <div v-else-if="task.type === 'tableFill'" class="table-fill-block">
-                  <div
-                    class="table-fill"
-                    :style="{
-                      '--cols': task.cols || 4,
-                      '--rows': task.rows || 3
-                    }"
-                  >
-                    <div
-                      v-for="line in getTableGridLines(task)"
-                      :key="line.key"
-                      class="table-grid-line"
-                      :class="`table-grid-line--${line.orientation}`"
-                      :style="line.style"
-                    ></div>
-
-                    <div
-                      v-for="cell in getTableCells(task)"
-                      :key="cell.key"
-                      class="table-cell"
-                      :style="getTableCellStyle(cell)"
-                    >
-                      <span v-if="cell.data.text" class="table-cell-text">{{ cell.data.text }}</span>
-                      <input
-                        v-else
-                        type="text"
-                        class="table-cell-input"
-                        :class="getTableCellClass(index, cell.key)"
-                        v-model="answers[index][cell.key]"
-                        placeholder="?"
-                      />
+                          class="doTheMagic-label"
+                          @dblclick.prevent="showAnswerHint(index, key, task)"
+                          :title="`Двойной клик — показать правильный ответ для «${label}»`"
+                        >
+                          {{ label }}
+                        </span>
+                        <textarea
+                          class="doTheMagic-input"
+                          :class="[
+                            getDoTheMagicClass(index, key),
+                            { 'showing-hint': hintAnswer[`${index}_${key}`] }
+                          ]"
+                          :placeholder="hintAnswer[`${index}_${key}`] || getDoTheMagicPlaceholder(key, index)"
+                          v-model="answers[index][key]"
+                          @input="adjustDoTheMagicHeight($event, index, key)"
+                          rows="1"
+                          :ref="el => setDoTheMagicRef(el, index, key)"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
+
+                  <!-- === FILL IN THE BLANKS === -->
+                  <div v-else-if="task.type === 'fillInTheBlank'" class="fill-blank-block">
+                    <!-- Новый режим: массив items (несколько предложений одним заданием) -->
+                    <template v-if="task.items">
+                      <div
+                        v-for="(item, itemIndex) in task.items"
+                        :key="itemIndex"
+                        class="fill-blank-text"
+                      >
+                        <template v-for="(segment, segIndex) in getFillSegments(item)" :key="segIndex">
+                          <span v-if="segment.type === 'text'">{{ segment.value }}</span>
+                          <span
+                            v-else
+                            class="fill-blank-wrapper"
+                            :class="getFillClassMultiple(index, itemIndex, segment.blankIndex)"
+                            :style="{ width: getFillWidth(segment.underscores) }"
+                          >
+                            <input
+                              type="text"
+                              class="fill-blank-input"
+                              v-model="answers[index][itemIndex][segment.blankIndex]"
+                            />
+                          </span>
+                        </template>
+                      </div>
+                    </template>
+
+                    <!-- Старый режим: одно предложение (text + answers) -->
+                    <div v-else class="fill-blank-text">
+                      <template v-for="(segment, segIndex) in getFillSegments(task)" :key="segIndex">
+                        <span v-if="segment.type === 'text'">{{ segment.value }}</span>
+                        <span
+                          v-else
+                          class="fill-blank-wrapper"
+                          :class="getFillClass(index, segment.blankIndex)"
+                          :style="{ width: getFillWidth(segment.underscores) }"
+                        >
+                          <input
+                            type="text"
+                            class="fill-blank-input"
+                            v-model="answers[index][segment.blankIndex]"
+                          />
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- === ARTICLE WORDS INPUT === -->
+                  <div v-else-if="task.type === 'articleWordsInput'" class="article-block">
+                    <p v-if="task.taskDescription" class="article-description">
+                      {{ task.taskDescription }}
+                    </p>
+                    <div v-if="task.usefulWords" class="article-useful-words">
+                      <div v-if="Array.isArray(task.usefulWords)" class="useful-words-grid">
+                        <div
+                          v-for="(word, wIndex) in task.usefulWords"
+                          :key="wIndex"
+                          class="useful-word-card"
+                        >
+                          <span class="useful-word-eng">{{ word.eng }}</span>
+                          <span class="useful-word-ru">{{ word.ru }}</span>
+                        </div>
+                      </div>
+                      <p v-else class="useful-words-text">{{ task.usefulWords }}</p>
+                    </div>
+                    <img
+                      v-if="task.taskPicture"
+                      :src="task.taskPicture"
+                      :alt="'Image for task ' + (index + 1)"
+                      class="article-picture"
+                    >
+
+                    <div v-if="task.taskAudio" class="audio-player-sticky-container">
+                      <audio
+                        controls
+                        class="audio-player"
+                        controlsList="nodownload"
+                        oncontextmenu="return false;"
+                      >
+                        <source :src="task.taskAudio" type="audio/mp3" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+
+                    <div class="article-text">
+                      <template v-for="(segment, segIndex) in getArticleSegments(task)" :key="segIndex">
+                        <span v-if="segment.type === 'text'">{{ segment.value }}</span>
+
+                        <span
+                          v-else-if="segment.type === 'formatted'"
+                          class="article-text-formatted"
+                          :class="[
+                            getArticleFormattedClass(segment.format),
+                            {
+                              'article-text--spoiler-open':
+                                segment.format.includes('spoiler') &&
+                                isSpoilerRevealed(`a_${index}`, String(segIndex))
+                            }
+                          ]"
+                          @click="
+                            segment.format.includes('spoiler') &&
+                            revealSpoiler(`a_${index}`, String(segIndex))
+                          "
+                        >{{ segment.value }}</span>
+
+                        <span
+                          v-else
+                          class="article-blank-wrapper"
+                          :class="[
+                            getArticleBlankClass(index, segment.blankIndex),
+                            { 'article-blank-wrapper--manual': segment.isManual }
+                          ]"
+                          :style="{ '--blank-min': getArticleBlankWidth(segment.answer) }"
+                        >
+                          <span
+                            contenteditable="true"
+                            class="article-blank-input"
+                            :data-placeholder="segment.isManual ? '' : ''"
+                            @keydown.enter.prevent
+                            @input="onArticleInput(index, segment.blankIndex, $event)"
+                            @paste="onArticlePaste"
+                            @blur="onArticleBlur(index, segment.blankIndex, $event)"
+                            :ref="el => setArticleEditableRef(el, index, segment.blankIndex)"
+                          ></span>
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- === TABLE FILL === -->
+                  <div v-else-if="task.type === 'tableFill'" class="table-fill-block">
+                    <div
+                      class="table-fill"
+                      :style="{
+                        '--cols': task.cols || 4,
+                        '--rows': task.rows || 3
+                      }"
+                    >
+                      <div
+                        v-for="line in getTableGridLines(task)"
+                        :key="line.key"
+                        class="table-grid-line"
+                        :class="`table-grid-line--${line.orientation}`"
+                        :style="line.style"
+                      ></div>
+
+                      <div
+                        v-for="cell in getTableCells(task)"
+                        :key="cell.key"
+                        class="table-cell"
+                        :style="getTableCellStyle(cell)"
+                      >
+                        <span
+                          v-if="cell.data.text"
+                          class="table-cell-text"
+                          :class="[
+                            getTableCellTextClass(cell, index),
+                            {
+                              'table-cell-text--spoiler-open':
+                                cell.data.format?.includes('spoiler') &&
+                                isSpoilerRevealed(index, cell.key)
+                            }
+                          ]"
+                          @click="
+                            cell.data.format?.includes('spoiler') &&
+                            revealSpoiler(index, cell.key)
+                          "
+                        >{{ cell.data.text }}</span>
+                        <input
+                          v-else
+                          type="text"
+                          class="table-cell-input"
+                          :class="getTableCellClass(index, cell.key)"
+                          v-model="answers[index][cell.key]"
+                          placeholder="?"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- === TEXTAREA === -->
+                  <div v-else-if="task.type === 'textarea'" class="input-wrapper">
+                    <textarea
+                      class="message-input"
+                      :class="getInputClass(index)"
+                      :placeholder="task.placeholder"
+                      v-model="answers[index]"
+                      @input="adjustTextareaHeight($event, index)"
+                      :data-index="index"
+                      rows="1"
+                    ></textarea>
+                  </div>
+
+                  <!-- === TEXT === -->
+                  <div v-else class="input-wrapper">
+                    <input
+                      class="message-input-text"
+                      :class="getInputClass(index)"
+                      :placeholder="task.placeholder"
+                      v-model="answers[index]"
+                      @input="adjustInputHeight"
+                    />
+                  </div>
                 </div>
-
-                <!-- === TEXTAREA === -->
-                <div v-else-if="task.type === 'textarea'" class="input-wrapper">
-                  <textarea
-                    class="message-input"
-                    :class="getInputClass(index)"
-                    :placeholder="task.placeholder"
-                    v-model="answers[index]"
-                    @input="adjustTextareaHeight($event, index)"
-                    :data-index="index"
-                    rows="1"
-                  ></textarea>
-                </div>
-
-                <!-- === TEXT === -->
-                <div v-else class="input-wrapper">
-                  <input
-                    class="message-input-text"
-                    :class="getInputClass(index)"
-                    :placeholder="task.placeholder"
-                    v-model="answers[index]"
-                    @input="adjustInputHeight"
-                  />
-                </div>
-
-
-              </div>
+              </template>
 
               <div class="button-wrapper">
                 <button
@@ -359,28 +432,82 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getHomework, getAllMissions } from '../dataForGames/hwData'
 import { useGameStore } from 'stores/example-store'
 import { useSpellingCheck } from 'src/composables/specialSpellingCheck'
-import html2pdf from 'html2pdf.js'
 
 const route = useRoute()
 const router = useRouter()
 const gameStore = useGameStore()
 
 const { usualCheck } = useSpellingCheck()
+
+// ================================================================
+// REF'ы
+// ================================================================
+const currentMission = ref(null)
+const answers = ref([])
+const contentRef = ref(null)
+const notebookHeight = ref(600)
+const isChecking = ref(false)
+const showResults = ref(false)
+const taskResults = ref([])
+const totalTasks = ref(0)
+const showHint = ref([])
+const showAnswerFlag = ref([])
+const missionsList = ref([])
+
+const showNameModal = ref(false)
+const tempName = ref('')
+const showMissionsModal = ref(false)
+const showClearConfirmModal = ref(false)
+
+const showDevTools = ref(false)
+
+const doTheMagicRefs = ref({})
+const articleEditableRefs = ref({})
+const hintAnswer = ref({})
+const savedAnswers = ref({})
+
+const isBackendAvailable = ref(true)
+const isLoadingMission = ref(false)
+
+// режим отображения цепочки и память о просмотренных
+const chainDisplayMode = ref('hidden')   // 'hidden' | 'blur' | 'visible'
+const taskSeen = ref([])
+
+// spoiler-раскрытие: Set из ключей "taskIndex_cellKey" или "a_taskIndex_segIndex"
+const revealedSpoilers = ref(new Set())
+const spoilerTimers = new Map()
+const SPOILER_REVEAL_MS = 20000
+
+// ================================================================
+// КОНСТАНТЫ
+// ================================================================
+const VISIBLE_IN_RUN = 3
+const UNDERSCORE_STEP = 8
+const TABLE_CELL_W = 120
+const TABLE_CELL_H = 20
+// (...) — бланк, [...['fmt']] — форматированный текст
+const ARTICLE_TOKEN_REGEX = /(\(([^)]+)\))|(\[([^\]]+?)\['([^\]]*)'\]\])/g
+
+const STORAGE_PREFIX = 'hw_answers_'
+const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell', 'what the hell',
+  'what', 'what time', 'how long', 'when', 'where', 'why', 'how']
+
+// ================================================================
+// COMPUTED
+// ================================================================
 const missionName = computed(() => route.params.missionName || 'intro-1')
+
+const chainEnabled = computed(() => !!currentMission.value?.chainOfTasks)
+
 const firstDoTheMagicIndex = computed(() => {
   if (!currentMission.value) return -1
   return currentMission.value.tasks.findIndex(t => t.type === 'doTheMagic')
 })
-const VISIBLE_IN_RUN = 3
-
-const chainEnabled = computed(() =>
-  !!currentMission.value?.chainOfTasks && !devChainOverride.value
-)
 
 const firstIncompleteIndex = computed(() => {
   if (!currentMission.value) return 0
@@ -392,6 +519,53 @@ const firstIncompleteIndex = computed(() => {
   return tasks.length
 })
 
+const isAnyAnswerFilled = computed(() => {
+  if (!answers.value || answers.value.length === 0) return false
+  return answers.value.some(answer => {
+    if (typeof answer === 'string') return answer.trim().length >= 2
+    if (typeof answer === 'object' && answer !== null) {
+      return Object.values(answer).some(v => {
+        if (typeof v === 'string') return v.trim().length >= 2
+        if (Array.isArray(v)) return v.some(x => typeof x === 'string' && x.trim().length >= 2)
+        return false
+      })
+    }
+    return false
+  })
+})
+
+const isAnswerFilled = (answer, task) => {
+  if (answer === undefined || answer === null) return false
+  if (typeof answer === 'string') return answer.trim().length > 0
+  if (Array.isArray(answer)) {
+    return answer.some(v => {
+      if (typeof v === 'string') return v.trim().length > 0
+      if (Array.isArray(v)) return v.some(x => typeof x === 'string' && x.trim().length > 0)
+      return false
+    })
+  }
+  if (typeof answer === 'object') {
+    return Object.values(answer).some(v => typeof v === 'string' && v.trim().length > 0)
+  }
+  return false
+}
+
+const displayUserName = computed(() => {
+  let name = ''
+  if (gameStore.agentName) {
+    name = gameStore.agentName.split('#')[0]
+  } else {
+    name = localStorage.getItem('agentName') || 'нажми сюда'
+  }
+  if (!isBackendAvailable.value && name !== 'Agent 404') {
+    return `${name} (404)`
+  }
+  return name
+})
+
+// ================================================================
+// ЦЕПОЧКА
+// ================================================================
 const isTaskLocked = (index) => {
   if (!chainEnabled.value) return false
   if (!currentMission.value) return false
@@ -412,52 +586,178 @@ const isTaskLocked = (index) => {
   return false
 }
 
-const isTaskUnlocked = (index) => !isTaskLocked(index)
-
-
-const currentMission = ref(null)
-const answers = ref([])
-const contentRef = ref(null)
-const notebookHeight = ref(600)
-const isChecking = ref(false)
-const showResults = ref(false)
-const taskResults = ref([])
-const correctAnswers = ref(0)
-const totalTasks = ref(0)
-const showHint = ref([])
-const showAnswerFlag = ref([])
-const missionsList = ref([])
-
-const showNameModal = ref(false)
-const tempName = ref('')
-const showMissionsModal = ref(false)
-const showClearConfirmModal = ref(false)
-
-
-const showDevTools = ref(false)
-const devChainOverride = ref(false)
-const devFillCorrect = () => {
-  // заполнить answers правильными ответами для текущего задания
-  // и сразу checkAnswers()
+const isTaskRendered = (index) => {
+  if (!chainEnabled.value) return true
+  if (chainDisplayMode.value !== 'hidden') return true
+  if (!isTaskLocked(index)) return true
+  return taskSeen.value[index] === true
 }
 
-const devShowAll = () => {
-  // временно отключить chain (флаг)
-  devChainOverride.value = true
+const isTaskBlurred = (index) => {
+  if (!chainEnabled.value) return false
+  if (chainDisplayMode.value === 'visible') return false
+  if (!isTaskLocked(index)) return false
+  return true
 }
 
+const refreshTaskSeen = () => {
+  if (!currentMission.value) return
+  const len = currentMission.value.tasks.length
+  if (taskSeen.value.length !== len) {
+    taskSeen.value = new Array(len).fill(false)
+  }
+  let changed = false
+  for (let i = 0; i < len; i++) {
+    if (!isTaskLocked(i) && taskSeen.value[i] !== true) {
+      taskSeen.value[i] = true
+      changed = true
+    }
+  }
+  if (changed) taskSeen.value = [...taskSeen.value]
+}
+
+// ================================================================
+// SPOILER (общий для таблицы и статьи)
+// ================================================================
+const revealSpoiler = (taskIndex, key) => {
+  const id = `${taskIndex}_${key}`
+  if (revealedSpoilers.value.has(id)) return
+
+  const next = new Set(revealedSpoilers.value)
+  next.add(id)
+  revealedSpoilers.value = next
+
+  const timer = setTimeout(() => {
+    const cur = new Set(revealedSpoilers.value)
+    cur.delete(id)
+    revealedSpoilers.value = cur
+    spoilerTimers.delete(id)
+  }, SPOILER_REVEAL_MS)
+
+  spoilerTimers.set(id, timer)
+}
+
+const isSpoilerRevealed = (taskIndex, key) => {
+  return revealedSpoilers.value.has(`${taskIndex}_${key}`)
+}
+
+const clearSpoilers = () => {
+  for (const t of spoilerTimers.values()) clearTimeout(t)
+  spoilerTimers.clear()
+  revealedSpoilers.value = new Set()
+}
+
+// ================================================================
+// DEVTOOLS
+// ================================================================
 const devResetResults = () => {
   taskResults.value = []
   showResults.value = false
 }
 
+const devShowAll = () => {
+  chainDisplayMode.value = 'visible'
+}
 
-const doTheMagicRefs = ref({})
 const setDoTheMagicRef = (el, index, key) => {
   if (el) doTheMagicRefs.value[`${index}_${key}`] = el
 }
 
-// ==================== AUDIO ====================
+const fillTaskWithCorrect = (index) => {
+  const task = currentMission.value?.tasks[index]
+  if (!task) return
+
+  if (task.type === 'doTheMagic') {
+    const obj = {}
+    Object.keys(task.labels || {}).forEach(key => {
+      const variants = task.correct?.[key]
+      obj[key] = variants && variants.length ? variants[0] : ''
+    })
+    answers.value[index] = obj
+    return
+  }
+
+  if (task.type === 'fillInTheBlank') {
+    if (task.items) {
+      answers.value[index] = task.items.map(item =>
+        (item.answers || []).map(cfg => {
+          const arr = Array.isArray(cfg) ? cfg : [cfg]
+          return String(arr[0] ?? '')
+        })
+      )
+    } else {
+      answers.value[index] = (task.answers || []).map(item => {
+        const arr = Array.isArray(item) ? item : [item]
+        return String(arr[0] ?? '')
+      })
+    }
+    return
+  }
+
+  if (task.type === 'tableFill') {
+    const obj = {}
+    Object.keys(task.cells || {}).forEach(key => {
+      const cell = task.cells[key]
+      if (cell.text) return
+      const variants = cell.answers || []
+      obj[key] = variants.length ? variants[0] : ''
+    })
+    answers.value[index] = obj
+    return
+  }
+
+  if (task.type === 'articleWordsInput') {
+    const segments = getArticleSegments(task).filter(s => s.type === 'blank')
+    answers.value[index] = segments.map(seg => {
+      if (seg.isManual) return 'anything'
+      const variants = seg.answer.split('|').map(v => v.trim()).filter(Boolean)
+      return variants[0] || ''
+    })
+    nextTick(() => {
+      segments.forEach((_, i) => {
+        const el = articleEditableRefs.value[`${index}_${i}`]
+        if (el) el.innerText = answers.value[index][i] || ''
+      })
+    })
+    return
+  }
+
+  if (task.answers && task.answers.length) {
+    answers.value[index] = task.answers[0]
+    return
+  }
+  answers.value[index] = 'test answer'
+}
+
+const devFillCorrect = () => {
+  if (!currentMission.value) return
+  const idx = firstIncompleteIndex.value
+  if (idx >= currentMission.value.tasks.length) return
+  fillTaskWithCorrect(idx)
+  nextTick(() => {
+    const task = currentMission.value.tasks[idx]
+    if (task.type === 'doTheMagic') {
+      Object.keys(task.labels || {}).forEach(key => {
+        const el = doTheMagicRefs.value[`${idx}_${key}`]
+        if (el) {
+          el.style.height = 'auto'
+          el.style.height = Math.max(20, Math.ceil(el.scrollHeight / 20) * 20) + 'px'
+        }
+      })
+    } else if (task.type === 'textarea') {
+      const el = contentRef.value?.querySelector(`textarea[data-index="${idx}"]`)
+      if (el) {
+        el.style.height = 'auto'
+        el.style.height = el.scrollHeight + 'px'
+      }
+    }
+    checkAnswers()
+  })
+}
+
+// ================================================================
+// AUDIO
+// ================================================================
 const disableAudioDownload = () => {
   document.addEventListener('contextmenu', (e) => {
     if (e.target.classList.contains('audio-player')) {
@@ -472,19 +772,25 @@ const disableAudioDownload = () => {
   })
 }
 
-// ==================== ARTICLE WORDS INPUT (contenteditable) ====================
-const ARTICLE_BLANK_REGEX = /\(([^)]+)\)/g
-
+// ================================================================
+// ARTICLE WORDS INPUT
+// ================================================================
 const getArticleSegments = (task) => {
   const script = task.articleScript || ''
-  const parts = script.split(ARTICLE_BLANK_REGEX)
   const segments = []
   let blankIndex = 0
-  for (let i = 0; i < parts.length; i++) {
-    const part = parts[i]
-    if (i % 2 === 0) {
-      if (part) segments.push({ type: 'text', value: part })
-    } else {
+  let lastIndex = 0
+
+  ARTICLE_TOKEN_REGEX.lastIndex = 0
+  let m
+  while ((m = ARTICLE_TOKEN_REGEX.exec(script)) !== null) {
+    if (m.index > lastIndex) {
+      const txt = script.slice(lastIndex, m.index)
+      if (txt) segments.push({ type: 'text', value: txt })
+    }
+
+    if (m[1]) {
+      const part = m[2]
       const isManual = part.trim().toLowerCase() === 'anyisokay'
       segments.push({
         type: 'blank',
@@ -492,12 +798,35 @@ const getArticleSegments = (task) => {
         blankIndex: blankIndex++,
         isManual
       })
+    } else if (m[3]) {
+      const txt = m[4]
+      const fmtStr = m[5]
+      const format = fmtStr
+        .split(',')
+        .map(s => s.trim().replace(/^['"]|['"]$/g, ''))
+        .filter(Boolean)
+      segments.push({ type: 'formatted', value: txt, format })
     }
+
+    lastIndex = m.index + m[0].length
   }
+
+  if (lastIndex < script.length) {
+    const txt = script.slice(lastIndex)
+    if (txt) segments.push({ type: 'text', value: txt })
+  }
+
   return segments
 }
 
-const UNDERSCORE_STEP = 8
+const getArticleFormattedClass = (format) => {
+  if (!Array.isArray(format) || format.length === 0) return ''
+  const classes = []
+  if (format.includes('bold')) classes.push('article-text--bold')
+  if (format.includes('strikethrough')) classes.push('article-text--strikethrough')
+  if (format.includes('spoiler')) classes.push('article-text--spoiler')
+  return classes.join(' ')
+}
 
 const getArticleBlankWidth = (answer) => {
   const clean = (answer || '').split('|')[0].trim()
@@ -514,9 +843,6 @@ const getArticleBlankClass = (taskIndex, blankIndex) => {
   if (val === 'manual') return 'article-blank-manual'
   return val ? 'article-blank-correct' : 'article-blank-incorrect'
 }
-
-// ref'ы на contenteditable
-const articleEditableRefs = ref({})
 
 const setArticleEditableRef = (el, taskIndex, blankIndex) => {
   if (!el) return
@@ -556,7 +882,9 @@ const onArticleBlur = (taskIndex, blankIndex, event) => {
   answers.value[taskIndex][blankIndex] = clean
 }
 
-// ==================== FILL IN THE BLANKS ====================
+// ================================================================
+// FILL IN THE BLANKS
+// ================================================================
 const getFillSegments = (task) => {
   const parts = (task.text || '').split(/(_{1,})/g)
   let blankIndex = 0
@@ -585,10 +913,52 @@ const getFillClass = (taskIndex, blankIndex) => {
   return val ? 'fill-blank-correct' : 'fill-blank-incorrect'
 }
 
-// ==================== TABLE FILL ====================
-const TABLE_CELL_W = 120
-const TABLE_CELL_H = 20
+const getFillClassMultiple = (taskIndex, itemIndex, blankIndex) => {
+  if (!showResults.value) return ''
+  const res = taskResults.value[taskIndex]?.results
+  if (!Array.isArray(res) || !Array.isArray(res[itemIndex])) return ''
+  const val = res[itemIndex][blankIndex]
+  if (val === undefined) return ''
+  return val ? 'fill-blank-correct' : 'fill-blank-incorrect'
+}
 
+const checkBlankList = (text, answersConfig, userAnswers) => {
+  const res = []
+  let filled = 0
+
+  const correctList = (answersConfig || []).map(item => {
+    if (Array.isArray(item)) return item.map(v => String(v ?? ''))
+    return [String(item ?? '')]
+  })
+
+  correctList.forEach((variants, i) => {
+    const user = String(userAnswers?.[i] ?? '').trim()
+    if (user) filled++
+
+    const allowsEmpty = variants.some(v => {
+      const n = v.toLowerCase().trim()
+      return n === '' || n === '-'
+    })
+
+    let ok
+    if (user === '' || user === '-') {
+      ok = allowsEmpty
+    } else {
+      const nonEmpty = variants.filter(v => {
+        const n = v.toLowerCase().trim()
+        return n !== '' && n !== '-'
+      })
+      ok = nonEmpty.length > 0 && usualCheck(user, nonEmpty)
+    }
+    res[i] = ok
+  })
+
+  return { results: res, filled, allOk: res.every(Boolean) }
+}
+
+// ================================================================
+// TABLE FILL
+// ================================================================
 const parseCellKey = (key) => {
   const m = key.match(/^([a-z]+)(\d+)$/)
   if (!m) return null
@@ -634,6 +1004,16 @@ const getTableCellStyle = (cell) => {
     width: `${cs * TABLE_CELL_W}px`,
     height: `${rs * TABLE_CELL_H}px`
   }
+}
+
+const getTableCellTextClass = (cell, taskIndex) => {
+  const fmt = cell.data?.format
+  if (!Array.isArray(fmt) || fmt.length === 0) return ''
+  const classes = []
+  if (fmt.includes('spoiler')) classes.push('table-cell-text--spoiler')
+  if (fmt.includes('strikethrough')) classes.push('table-cell-text--strikethrough')
+  if (fmt.includes('bold')) classes.push('table-cell-text--bold')
+  return classes.join(' ')
 }
 
 const getTableCellClass = (taskIndex, cellKey) => {
@@ -687,7 +1067,9 @@ const getTableGridLines = (task) => {
   return lines
 }
 
-// ==================== DO THE MAGIC ====================
+// ================================================================
+// DO THE MAGIC
+// ================================================================
 const adjustDoTheMagicHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -695,8 +1077,6 @@ const adjustDoTheMagicHeight = (event) => {
   textarea.style.height = roundedHeight + 'px'
 }
 
-const hintAnswer = ref({})
-const savedAnswers = ref({})
 const showAnswerHint = (taskIndex, key, task) => {
   const hintKey = `${taskIndex}_${key}`
   if (hintAnswer.value[hintKey]) return
@@ -739,33 +1119,9 @@ const showAnswerHint = (taskIndex, key, task) => {
   }, 2000)
 }
 
-const isBackendAvailable = ref(true)
-
-// ==================== FILLED / SAVED ====================
-const isAnyAnswerFilled = computed(() => {
-  if (!answers.value || answers.value.length === 0) return false
-  return answers.value.some(answer => {
-    if (typeof answer === 'string') return answer.trim().length >= 2
-    if (typeof answer === 'object' && answer !== null) {
-      return Object.values(answer).some(v => v && v.trim().length >= 2)
-    }
-    return false
-  })
-})
-
-const hasSavedAnswers = computed(() => {
-  if (!answers.value || answers.value.length === 0) return false
-  return answers.value.some(answer => {
-    if (typeof answer === 'string') return answer.trim().length > 0
-    if (typeof answer === 'object' && answer !== null) {
-      return Object.values(answer).some(v => v && v.trim().length > 0)
-    }
-    return false
-  })
-})
-
-// ==================== LOCALSTORAGE ====================
-const STORAGE_PREFIX = 'hw_answers_'
+// ================================================================
+// LOCALSTORAGE
+// ================================================================
 const getStorageKey = () => `${STORAGE_PREFIX}${missionName.value}`
 
 const saveAnswersToStorage = () => {
@@ -793,8 +1149,17 @@ const loadAnswersFromStorage = (tasks) => {
         if (expectedKeys.length !== savedKeys.length) return null
         if (!expectedKeys.every(k => savedKeys.includes(k))) return null
       } else if (task.type === 'fillInTheBlank') {
-        if (!Array.isArray(saved) || saved.length !== (task.answers || []).length) return null
-        if (!saved.every(v => typeof v === 'string')) return null
+        if (task.items) {
+          if (!Array.isArray(saved) || saved.length !== task.items.length) return null
+          for (let j = 0; j < task.items.length; j++) {
+            if (!Array.isArray(saved[j])) return null
+            if (saved[j].length !== (task.items[j].answers || []).length) return null
+            if (!saved[j].every(v => typeof v === 'string')) return null
+          }
+        } else {
+          if (!Array.isArray(saved) || saved.length !== (task.answers || []).length) return null
+          if (!saved.every(v => typeof v === 'string')) return null
+        }
       } else if (task.type === 'tableFill') {
         if (typeof saved !== 'object' || saved === null) return null
         const expectedKeys = Object.keys(task.cells || {})
@@ -822,24 +1187,13 @@ const clearAnswersFromStorage = () => {
   localStorage.removeItem(getStorageKey())
 }
 
-const isLoadingMission = ref(false)
-
-const displayUserName = computed(() => {
-  let name = ''
-  if (gameStore.agentName) {
-    name = gameStore.agentName.split('#')[0]
-  } else {
-    name = localStorage.getItem('agentName') || 'нажми сюда'
-  }
-  if (!isBackendAvailable.value && name !== 'Agent 404') {
-    return `${name} (404)`
-  }
-  return name
-})
-
-// ==================== LOAD MISSION ====================
+// ================================================================
+// LOAD MISSION
+// ================================================================
 const loadMission = () => {
   isLoadingMission.value = true
+  clearSpoilers()
+
   const data = getHomework(missionName.value)
   currentMission.value = data
 
@@ -851,6 +1205,9 @@ const loadMission = () => {
         return obj
       }
       if (task.type === 'fillInTheBlank') {
+        if (task.items) {
+          return task.items.map(item => new Array((item.answers || []).length).fill(''))
+        }
         return new Array((task.answers || []).length).fill('')
       }
       if (task.type === 'tableFill') {
@@ -904,16 +1261,22 @@ const loadMission = () => {
     showHint.value = data.tasks.map(() => new Set())
     showAnswerFlag.value = new Array(data.tasks.length).fill(false)
     totalTasks.value = data.tasks.length
+
+    chainDisplayMode.value = 'hidden'
+    taskSeen.value = new Array(data.tasks.length).fill(false)
+
+    nextTick(() => refreshTaskSeen())
   }
 
   showResults.value = false
   taskResults.value = []
-  devChainOverride.value = false
   missionsList.value = getAllMissions()
   nextTick(() => { isLoadingMission.value = false })
 }
 
-// ==================== AUTOSAVE ====================
+// ================================================================
+// AUTOSAVE
+// ================================================================
 let saveTimer = null
 watch(answers, () => {
   if (isLoadingMission.value) return
@@ -921,9 +1284,19 @@ watch(answers, () => {
   saveTimer = setTimeout(() => saveAnswersToStorage(), 400)
 }, { deep: true })
 
-// ==================== CLEAR ====================
+// ================================================================
+// WATCH НА СМЕНУ ТЕКУЩЕГО ЗАДАНИЯ
+// ================================================================
+watch(firstIncompleteIndex, () => {
+  nextTick(() => refreshTaskSeen())
+})
+
+// ================================================================
+// CLEAR
+// ================================================================
 const clearAllAnswers = () => {
   if (!currentMission.value) return
+  clearSpoilers()
   answers.value = currentMission.value.tasks.map(task => {
     if (task.type === 'doTheMagic') {
       const obj = {}
@@ -931,6 +1304,9 @@ const clearAllAnswers = () => {
       return obj
     }
     if (task.type === 'fillInTheBlank') {
+      if (task.items) {
+        return task.items.map(item => new Array((item.answers || []).length).fill(''))
+      }
       return new Array((task.answers || []).length).fill('')
     }
     if (task.type === 'tableFill') {
@@ -948,8 +1324,10 @@ const clearAllAnswers = () => {
   showResults.value = false
   taskResults.value = []
   showAnswerFlag.value = new Array(currentMission.value.tasks.length).fill(false)
+  taskSeen.value = new Array(currentMission.value.tasks.length).fill(false)
   clearAnswersFromStorage()
   nextTick(() => {
+    refreshTaskSeen()
     currentMission.value.tasks.forEach((task, index) => {
       if (task.type === 'doTheMagic') {
         Object.keys(task.labels || {}).forEach(key => {
@@ -974,7 +1352,9 @@ const confirmClearAnswers = () => {
   showClearConfirmModal.value = false
 }
 
-// ==================== HINTS ====================
+// ================================================================
+// HINTS
+// ================================================================
 const getAllHintsWithIndex = (task) => {
   const hints = []
   if (task.hint1) hints.push({ text: task.hint1, index: 1 })
@@ -1010,7 +1390,9 @@ const showCorrectAnswer = (index) => {
   }
 }
 
-// ==================== AUTO-HEIGHT ====================
+// ================================================================
+// AUTO-HEIGHT
+// ================================================================
 const adjustTextareaHeight = (event) => {
   const textarea = event.target
   textarea.style.height = 'auto'
@@ -1018,7 +1400,9 @@ const adjustTextareaHeight = (event) => {
 }
 const adjustInputHeight = () => {}
 
-// ==================== INPUT CLASSES ====================
+// ================================================================
+// INPUT CLASSES
+// ================================================================
 const getInputClass = (index) => {
   if (!showResults.value) return ''
   if (!taskResults.value[index]) return ''
@@ -1028,7 +1412,6 @@ const getInputClass = (index) => {
   return taskResults.value[index].isCorrect ? 'input-correct' : 'input-incorrect'
 }
 
-// ==================== DO THE MAGIC CLASSES ====================
 const getDoTheMagicClass = (taskIndex, fieldKey) => {
   if (!showResults.value) return ''
   if (!taskResults.value[taskIndex]?.fields) return ''
@@ -1051,10 +1434,9 @@ const getDoTheMagicPlaceholder = (key, taskIndex) => {
   return placeholders[key] || ''
 }
 
-// ==================== OPEN QUESTION ====================
-const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell','what the hell',
-  'what', 'what time', 'how long', 'when', 'where', 'why', 'how']
-
+// ================================================================
+// OPEN QUESTION
+// ================================================================
 const checkOpenQuestion = (userAnswer, task) => {
   const userLower = (userAnswer || '').toLowerCase().trim()
 
@@ -1081,7 +1463,9 @@ const checkOpenQuestion = (userAnswer, task) => {
   })
 }
 
-// ==================== CHECK ONE ====================
+// ================================================================
+// CHECK SINGLE
+// ================================================================
 const checkSingleAnswer = (task, answer) => {
   if (task.type === 'articleWordsInput') {
     const segments = getArticleSegments(task)
@@ -1156,49 +1540,30 @@ const checkSingleAnswer = (task, answer) => {
   }
 
   if (task.type === 'fillInTheBlank') {
-    const res = []
-    let filled = 0
+    if (task.items) {
+      const itemResults = []
+      let totalFilled = 0
+      let allOk = true
 
-    const correctList = (task.answers || []).map(item => {
-      if (Array.isArray(item)) return item.map(v => String(v ?? ''))
-      return [String(item ?? '')]
-    })
-
-    correctList.forEach((variants, i) => {
-      const user = String(answer?.[i] ?? '').trim()
-      if (user) filled++
-
-      const allowsEmpty = variants.some(v => {
-        const n = v.toLowerCase().trim()
-        return n === '' || n === '-'
+      task.items.forEach((item, i) => {
+        const r = checkBlankList(item.text, item.answers, answer?.[i] || [])
+        itemResults.push(r.results)
+        totalFilled += r.filled
+        if (!r.allOk) allOk = false
       })
 
-      let ok
-      if (user === '' || user === '-') {
-        ok = allowsEmpty
-      } else {
-        const nonEmpty = variants.filter(v => {
-          const n = v.toLowerCase().trim()
-          return n !== '' && n !== '-'
-        })
-        ok = nonEmpty.length > 0 && usualCheck(user, nonEmpty)
+      return {
+        isCorrect: allOk && totalFilled > 0,
+        message: allOk && totalFilled > 0 ? '✅ Верно' : '⚠️ Проверь ещё раз',
+        results: itemResults
       }
-      res[i] = ok
-    })
+    }
 
-    const allAllowEmpty = correctList.every(v =>
-      v.some(x => {
-        const n = x.toLowerCase().trim()
-        return n === '' || n === '-'
-      })
-    )
-    const isFilled = filled > 0 || allAllowEmpty
-    const allOk = res.every(Boolean)
-
+    const r = checkBlankList(task.text, task.answers, answer)
     return {
-      isCorrect: allOk && isFilled,
-      message: allOk && isFilled ? '✅ Верно' : '⚠️ Проверь ещё раз',
-      results: res
+      isCorrect: r.allOk && r.filled > 0,
+      message: r.allOk && r.filled > 0 ? '✅ Верно' : '⚠️ Проверь ещё раз',
+      results: r.results
     }
   }
 
@@ -1218,7 +1583,13 @@ const checkSingleAnswer = (task, answer) => {
           isFieldCorrect = usualCheck(userAnswer, task.correct[key])
         }
         results[key] = isFieldCorrect
-        if (!isFieldCorrect && userAnswer.length > 0) allCorrect = false
+
+        const isOptional = key === 'answer'
+        if (isOptional) {
+          if (userAnswer.length > 0 && !isFieldCorrect) allCorrect = false
+        } else {
+          if (!isFieldCorrect) allCorrect = false
+        }
       })
     }
     return {
@@ -1250,59 +1621,52 @@ const checkSingleAnswer = (task, answer) => {
   }
 }
 
-// ==================== CHECK ALL ====================
+// ================================================================
+// CHECK ALL
+// ================================================================
 const checkAnswers = () => {
   if (!currentMission.value || isChecking.value) return
+
+  const tasks = currentMission.value.tasks
+  const len = tasks.length
+
+  let lastFilled = -1
+  for (let i = 0; i < len; i++) {
+    if (isAnswerFilled(answers.value[i], tasks[i])) lastFilled = i
+  }
+  if (lastFilled < 0) return
+
   isChecking.value = true
   setTimeout(() => {
-    const results = []
-    let correct = 0
-    currentMission.value.tasks.forEach((task, index) => {
-      const result = checkSingleAnswer(task, answers.value[index])
-      if (result.isCorrect === true) correct++
+    const newResults = [...taskResults.value]
+
+    for (let i = 0; i <= lastFilled; i++) {
+      const task = tasks[i]
+      const result = checkSingleAnswer(task, answers.value[i])
+
       if (result.isCorrect === null) {
         result.isCorrect = true
         result.message = '📝 Эта часть не может быть проверена автоматически! - Отправь скриншот учителю на проверку'
       }
-      results.push(result)
-    })
-    taskResults.value = results
-    correctAnswers.value = correct
+
+      newResults[i] = result
+    }
+
+    for (let i = lastFilled + 1; i < len; i++) {
+      delete newResults[i]
+    }
+
+    taskResults.value = newResults
+
     showResults.value = true
     isChecking.value = false
+    nextTick(() => refreshTaskSeen())
   }, 100)
 }
 
-// ==================== SCORE ====================
-const getProgressText = () => {
-  if (!currentMission.value) return ''
-  const answered = answers.value.filter(a => {
-    if (typeof a === 'string') return a && a.trim().length > 0
-    if (typeof a === 'object' && a !== null) {
-      return Object.values(a).some(v => v && v.trim().length > 0)
-    }
-    return false
-  }).length
-  return `${answered} / ${totalTasks.value}`
-}
-
-const getScoreMessage = () => {
-  const percent = Math.round((correctAnswers.value / totalTasks.value) * 100)
-  if (percent === 100) return '🎉 Отлично! Все ответы верны!'
-  if (percent >= 80) return '👍 Хорошо! Почти все правильно!'
-  if (percent >= 60) return '😊 Неплохо, но можно лучше!'
-  return '💪 Попробуй еще раз, у тебя получится!'
-}
-
-const getScoreClass = () => {
-  const percent = Math.round((correctAnswers.value / totalTasks.value) * 100)
-  if (percent === 100) return 'score-excellent'
-  if (percent >= 80) return 'score-good'
-  if (percent >= 60) return 'score-ok'
-  return 'score-bad'
-}
-
-// ==================== NAME MODAL ====================
+// ================================================================
+// NAME MODAL
+// ================================================================
 const openNameModal = () => {
   tempName.value = gameStore.agentName || localStorage.getItem('agentName') || ''
   showNameModal.value = true
@@ -1321,7 +1685,9 @@ const saveName = () => {
   }
 }
 
-// ==================== MISSIONS MODAL ====================
+// ================================================================
+// MISSIONS MODAL
+// ================================================================
 const openMissionsList = () => {
   missionsList.value = getAllMissions()
   showMissionsModal.value = true
@@ -1332,10 +1698,14 @@ const goToMission = (missionId) => {
   router.push(`/hw/${missionId}`)
 }
 
-// ==================== PRINT ====================
+// ================================================================
+// PRINT
+// ================================================================
 const printPDF = () => window.print()
 
-// ==================== USER ====================
+// ================================================================
+// USER
+// ================================================================
 const loadUserFromBackend = async () => {
   try {
     const token = localStorage.getItem('token')
@@ -1355,7 +1725,9 @@ const loadUserFromBackend = async () => {
 
 const adjustNotebookHeight = async () => { notebookHeight.value = 600 }
 
-// ==================== WATCH & MOUNT ====================
+// ================================================================
+// WATCH & MOUNT
+// ================================================================
 watch(() => route.params.missionName, () => {
   loadMission()
   nextTick(() => { notebookHeight.value = 600 })
@@ -1366,6 +1738,10 @@ onMounted(async () => {
   loadMission()
   await adjustNotebookHeight()
   disableAudioDownload()
+})
+
+onBeforeUnmount(() => {
+  clearSpoilers()
 })
 </script>
 
@@ -1389,6 +1765,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 0 10px;
+  position: relative;
 }
 
 .header-left { display: flex; align-items: center; gap: 20px; }
@@ -1427,6 +1804,67 @@ onMounted(async () => {
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
+  }
+}
+
+/* === DEVTOOLS PANEL === */
+.devtools-panel {
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  z-index: 50;
+  max-width: 720px;
+
+  > button {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    transition: background 0.2s;
+
+    &:hover { background: rgba(255, 255, 255, 0.2); }
+  }
+}
+
+.devtools-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  color: #cfd8dc;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+
+  button {
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    transition: background 0.2s;
+
+    &:hover { background: rgba(255, 255, 255, 0.2); }
+
+    &.active {
+      background: #207cca;
+      border-color: #207cca;
+    }
   }
 }
 
@@ -2016,6 +2454,29 @@ onMounted(async () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  &--bold {
+    font-weight: 700;
+  }
+
+  &--strikethrough {
+    text-decoration: line-through;
+  }
+
+  &--spoiler {
+    filter: blur(4px);
+    cursor: pointer;
+    transition: filter 0.2s;
+    user-select: none;
+
+    &:hover {
+      filter: blur(0);
+    }
+  }
+
+  &--spoiler-open {
+    filter: blur(0) !important;  // перебиваем hover
+  }
 }
 
 .table-cell-input {
@@ -2162,10 +2623,32 @@ onMounted(async () => {
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  word-spacing: -4px;          /* <-- вот это уменьшит ширину пробелов */
-
+  word-spacing: -4px;
 }
+.article-text-formatted {
+  &.article-text--bold {
+    font-weight: 700;
+  }
 
+  &.article-text--strikethrough {
+    text-decoration: line-through;
+  }
+
+  &.article-text--spoiler {
+    filter: blur(4px);
+    cursor: pointer;
+    transition: filter 0.2s;
+    user-select: none;
+
+    &:hover {
+      filter: blur(0);
+    }
+  }
+
+  &.article-text--spoiler-open {
+    filter: blur(0) !important;
+  }
+}
 .article-blank-wrapper {
   position: relative;
   display: inline-block;
@@ -2261,22 +2744,7 @@ onMounted(async () => {
   pointer-events: none;
   user-select: none;
 }
-.task-block--locked .task-lock-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.7);
-  font-family: 'Special_f1', sans-serif;
-  color: #5a6b7b;
-  border-radius: 6px;
-  pointer-events: none;
-  opacity: 1;
-  font-size: 13px;
-  text-align: center;
-  padding: 8px;
-}
+
 /* Стили для печати */
 @media print {
   @page {
@@ -2364,6 +2832,10 @@ onMounted(async () => {
     margin-bottom: 8px !important;
   }
 
+  .table-cell-text--spoiler {
+    filter: none !important;
+  }
+
   .question-text {
     font-size: 11px !important;
     line-height: 14px !important;
@@ -2382,7 +2854,9 @@ onMounted(async () => {
   .progress-text,
   .modal-overlay,
   .hints,
-  .correct-answer-display {
+  .correct-answer-display,
+  .devtools-panel,
+  .devtools-mode {
     display: none !important;
   }
 
