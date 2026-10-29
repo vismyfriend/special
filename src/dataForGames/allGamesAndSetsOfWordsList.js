@@ -229,6 +229,22 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlace2/print-all-words2",
+      missionVisibleName: 'Предлоги местоположения',
+      missionDescription: '/ пре по зи шнз ов плэйс /',
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/prepositionsOfPlaceExamples/print-all-words",
+      missionVisibleName: 'Предлоги места примеры',
+      missionDescription: '/ пре по зи шнз ов плэйс /',
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/adjectives0/print-all-words2",
       missionVisibleName: 'Прилагательные <b>( КАКИЕ? )</b>',
       missionDescription: '/ Э ДЖЭК ТИВЗ / adjectives',
