@@ -7,7 +7,12 @@
         </h1>
       </div>
       <div class="header-right">
-        <button class="print-button" @click="showDevTools = !showDevTools" title="DevTools">
+        <button
+          v-if="isDevUser"
+          class="print-button"
+          @click="showDevTools = !showDevTools"
+          title="DevTools"
+        >
           ⚙️
         </button>
         <button class="print-button"
@@ -28,7 +33,7 @@
           📚
         </button>
       </div>
-      <div v-if="showDevTools" class="devtools-panel">
+      <div v-if="isDevUser && showDevTools" class="devtools-panel">
         <button @click="devFillCorrect">Заполнить текущее правильно</button>
         <button @click="devShowAll">Показать все задания</button>
         <button @click="devResetResults">Сбросить результаты проверки</button>
@@ -279,18 +284,21 @@
                   <div v-else-if="task.type === 'tableFill'" class="table-fill-block">
                     <div
                       class="table-fill"
+                      :class="{ 'table-fill--no-grid': task.showGrid === false }"
                       :style="{
-                        '--cols': task.cols || 4,
-                        '--rows': task.rows || 3
-                      }"
+    '--cols': task.cols || 4,
+    '--rows': task.rows || 3
+  }"
                     >
-                      <div
-                        v-for="line in getTableGridLines(task)"
-                        :key="line.key"
-                        class="table-grid-line"
-                        :class="`table-grid-line--${line.orientation}`"
-                        :style="line.style"
-                      ></div>
+                      <template v-if="task.showGrid !== false">
+                        <div
+                          v-for="line in getTableGridLines(task)"
+                          :key="line.key"
+                          class="table-grid-line"
+                          :class="`table-grid-line--${line.orientation}`"
+                          :style="line.style"
+                        ></div>
+                      </template>
 
                       <div
                         v-for="cell in getTableCells(task)"
@@ -338,7 +346,31 @@
                       rows="1"
                     ></textarea>
                   </div>
+                  <!-- === HARDCODED LINK === -->
+                  <div v-else-if="task.type === 'hardcodedLink'" class="hardcoded-link-block">
+                    <p v-if="task.text" class="hardcoded-link-text">{{ task.text }}</p>
 
+                    <router-link
+                      v-if="task.path"
+                      :to="task.path"
+                      class="hardcoded-link-anchor"
+                    >
+                      <span v-if="task.icon" class="hardcoded-link-icon">{{ task.icon }}</span>
+                      <span class="hardcoded-link-label">Открыть задание</span>
+                    </router-link>
+
+                    <div class="input-wrapper">
+                      <p class="message-input-text"> my result is:</p>
+                      <input
+                        class="message-input-text"
+                        :class="getInputClass(index)"
+                        :placeholder="task.placeholder || 'Ввести свой результат здесь...'"
+                        v-model="answers[index]"
+                        @input="adjustInputHeight"
+                      />
+
+                    </div>
+                  </div>
                   <!-- === TEXT === -->
                   <div v-else class="input-wrapper">
                     <input
@@ -358,7 +390,7 @@
                   @click="checkAnswers"
                   :disabled="isChecking || !isAnyAnswerFilled"
                 >
-                  {{ isChecking ? 'Проверяем...' : showResults ? 'Я исправил, перепроверить' : 'Проверить' }}
+                  {{ isChecking ? 'Проверяем...' : showResults ? 'перепроверить' : 'Проверить' }}
                 </button>
               </div>
             </div>
@@ -464,7 +496,7 @@ const tempName = ref('')
 const showMissionsModal = ref(false)
 const showClearConfirmModal = ref(false)
 
-const showDevTools = ref(false)
+const showDevTools = ref(true)
 
 const doTheMagicRefs = ref({})
 const articleEditableRefs = ref({})
@@ -500,6 +532,11 @@ const WH_WORDS = ['how often', 'why the hell', 'where the hell', 'when the hell'
 // ================================================================
 // COMPUTED
 // ================================================================
+
+const isDevUser = computed(() => {
+  return displayUserName.value === 'vismyfriend'
+})
+
 const missionName = computed(() => route.params.missionName || 'intro-1')
 
 const chainEnabled = computed(() => !!currentMission.value?.chainOfTasks)
@@ -726,7 +763,7 @@ const fillTaskWithCorrect = (index) => {
     answers.value[index] = task.answers[0]
     return
   }
-  answers.value[index] = 'test answer'
+  answers.value[index] = '666 seconds'
 }
 
 const devFillCorrect = () => {
@@ -1144,34 +1181,42 @@ const loadAnswersFromStorage = (tasks) => {
       const saved = parsed[i]
       if (task.type === 'doTheMagic') {
         if (typeof saved !== 'object' || saved === null) return null
-        const expectedKeys = Object.keys(task.labels || {})
-        const savedKeys = Object.keys(saved)
-        if (expectedKeys.length !== savedKeys.length) return null
-        if (!expectedKeys.every(k => savedKeys.includes(k))) return null
+        const merged = {}
+        Object.keys(task.labels || {}).forEach(k => {
+          merged[k] = typeof saved[k] === 'string' ? saved[k] : ''
+        })
+        parsed[i] = merged
       } else if (task.type === 'fillInTheBlank') {
         if (task.items) {
-          if (!Array.isArray(saved) || saved.length !== task.items.length) return null
-          for (let j = 0; j < task.items.length; j++) {
-            if (!Array.isArray(saved[j])) return null
-            if (saved[j].length !== (task.items[j].answers || []).length) return null
-            if (!saved[j].every(v => typeof v === 'string')) return null
-          }
+          if (!Array.isArray(saved)) return null
+          parsed[i] = task.items.map((item, j) => {
+            const len = (item.answers || []).length
+            const row = Array.isArray(saved[j]) ? saved[j] : []
+            return new Array(len).fill('').map((_, k) =>
+              typeof row[k] === 'string' ? row[k] : ''
+            )
+          })
         } else {
-          if (!Array.isArray(saved) || saved.length !== (task.answers || []).length) return null
-          if (!saved.every(v => typeof v === 'string')) return null
+          if (!Array.isArray(saved)) return null
+          const len = (task.answers || []).length
+          parsed[i] = new Array(len).fill('').map((_, k) =>
+            typeof saved[k] === 'string' ? saved[k] : ''
+          )
         }
       } else if (task.type === 'tableFill') {
         if (typeof saved !== 'object' || saved === null) return null
-        const expectedKeys = Object.keys(task.cells || {})
-        const savedKeys = Object.keys(saved)
-        if (expectedKeys.length !== savedKeys.length) return null
-        if (!expectedKeys.every(k => savedKeys.includes(k))) return null
+        const merged = {}
+        Object.keys(task.cells || {}).forEach(k => {
+          merged[k] = typeof saved[k] === 'string' ? saved[k] : ''
+        })
+        parsed[i] = merged
       } else if (task.type === 'articleWordsInput') {
         if (!Array.isArray(saved)) return null
         const segments = getArticleSegments(task)
-        const expectedCount = segments.filter(s => s.type === 'blank').length
-        if (saved.length !== expectedCount) return null
-        if (!saved.every(v => typeof v === 'string')) return null
+        const len = segments.filter(s => s.type === 'blank').length
+        parsed[i] = new Array(len).fill('').map((_, k) =>
+          typeof saved[k] === 'string' ? saved[k] : ''
+        )
       } else {
         if (typeof saved !== 'string') return null
       }
@@ -1224,6 +1269,11 @@ const loadMission = () => {
     })
 
     const saved = loadAnswersFromStorage(data.tasks)
+
+    console.log('[HW] storage key:', getStorageKey())
+    console.log('[HW] raw:', localStorage.getItem(getStorageKey()))
+    console.log('[HW] saved:', saved)
+
     if (saved) {
       answers.value = saved
     }
@@ -2290,6 +2340,48 @@ onBeforeUnmount(() => {
   padding: 8px 16px;
   font-size: 14px;
 }
+/* === HARDCODED LINK === */
+.hardcoded-link-block {
+  margin: 0;
+  padding: 0;
+}
+
+
+.hardcoded-link-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 12px 0;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(32, 124, 202, 0.1), rgba(30, 87, 153, 0.08));
+  border: 1px solid rgba(32, 124, 202, 0.35);
+  border-radius: 8px;
+  font-family: 'Special_f1', sans-serif;
+  font-size: 14px;
+  color: #207cca;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(32, 124, 202, 0.2), rgba(30, 87, 153, 0.15));
+    border-color: #207cca;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.hardcoded-link-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.hardcoded-link-label {
+  font-weight: 500;
+}
+
 
 /* DO THE MAGIC */
 .doTheMagic-block { margin: 0; padding: 0; }
@@ -2351,7 +2443,7 @@ onBeforeUnmount(() => {
 /* ==================== FILL IN THE BLANKS ==================== */
 .fill-blank-block { margin: 0; padding: 0; }
 
-.fill-blank-text {
+.fill-blank-text, .hardcoded-link-text {
   font-family: "Fira Code";
   letter-spacing: -0.5px;
   font-size: 13px;
@@ -2478,7 +2570,21 @@ onBeforeUnmount(() => {
     filter: blur(0) !important;  // перебиваем hover
   }
 }
+.table-fill--no-grid {
+  background: transparent;  // ← заливка
 
+  &::after {
+    display: none;  // убираем внешнюю рамку
+  }
+
+  .table-grid-line {
+    display: none;  // на всякий случай, если попадут в DOM
+  }
+
+  .table-cell-input:focus {
+    background: transparent;
+  }
+}
 .table-cell-input {
   width: 100%;
   height: 100%;
@@ -2858,6 +2964,17 @@ onBeforeUnmount(() => {
   .devtools-panel,
   .devtools-mode {
     display: none !important;
+  }
+
+  .hardcoded-link-anchor {
+    border: 1px solid #666;
+    background: transparent;
+    color: #000;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  .hardcoded-link-icon {
+    font-size: 12px;
   }
 
   .message-input,

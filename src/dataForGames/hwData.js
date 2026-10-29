@@ -152,6 +152,139 @@ export const homeworkData = {
       }
     ]
   },
+  'chain1': {
+    missionName: 'Просто начни с начала',
+    description: 'мои записи - my notes',
+    chainOfTasks: true,   // <-- задания отображаются по мере выполнения
+    tasks: [
+      {
+        title: 'Прочитай вслух :',
+        type: 'articleWordsInput',
+        articleScript: `
+        [май нОУтс['bold']] - так правильно произносить и переводить [мои записи['bold']]
+
+        [май нОУтс, май нОУтс, май нОУтс['spoiler']]
+
+
+        А как это пишется английскими буквами? Напиши здесь -> (my notes) <- если не знаешь как, то подсказка в самой первой строчке этой электронной тетради, перепиши от туда) `
+
+      },
+      {
+        title: 'верно! вы супер! you are super',
+        type: 'tableFill',
+        cols: 3,
+        rows: 15,
+        cells: {
+          // === Заголовки ===
+          a1: { text: 'кто ?', colspan: 1, rowspan: 2 },
+          b1: { text: 'произношение', colspan: 1, rowspan: 2 },
+          c1: { text: 'как пишется?', colspan: 1, rowspan: 2 },
+
+          a3: { text: 'вы'},
+          b3: { text: 'ю', format: ['bold'] },
+          c3: { text: 'you'},
+
+          a4: { text: 'они'},
+          b4: { text: 'дэй', format: ['bold'] },
+          c4: { text: 'they'},
+
+          a5: { text: 'мы'},
+          b5: { text: 'уи', format: ['bold'] },
+          c5: { text: 'we'},
+
+          a7: { text: 'я' },
+          b7: { answers: ['ай'] },
+          c7: { text: 'i' },
+
+          a9: { text: 'это' },
+          b9: { text: 'ит', format: ['bold']  },
+          c9: { answers: ['it', 'this'] },
+
+          a10: { answers: ['он'] },
+          b10: { text: 'хи', format: ['bold']  },
+          c10: { text: 'he' },
+
+          a11: { answers: ['она'] },
+          b11: { text: 'щи', format: ['bold'] },
+          c11: { text: 'she' },
+
+          a13: { text: 'пробуй заполнить пропуски в таблице', colspan: 3 },
+          // a13: { text: 'посмотреть ответы :сдаюсь, не знаю, показать ответы ', colspan: 3 },
+          a14: { text: 'или сдавайся и смотри ответы', colspan: 3 },
+          a15: { text: 'снизу вверх (она, он, it, ай) ',format: ['spoiler'], colspan: 3 },
+
+        }
+      },
+      {
+        type: 'fillInTheBlank',
+        title: 'Запиши к себе в тетрадь:',
+        text: 'I, you, we, they, he, she, it - это все местоимения (в английском языке их всего _ (напиши цифру от 1 до 10))',
+        answers: [["7", "семь","seven"]]
+      },
+      {
+        type: 'text',
+        title: 'нужно запомнить:',
+        question: '" Ты " и " Вы " в английском языке одно и тоже слово "YOU". На английском невозможно обращаться к человеку неуважительно на ТЫ или уважтельно на ВЫ. это особенность русского языка, в английском такого нет, поэтому ты и вы одно слово и произносится коротко / Ю /. Напишите это местоимение еще раз чтобы потренироваться :',
+        answers: ['you'],
+        placeholder: 'нажмите здесь и напишите you'
+      },
+      {
+        type: 'fillInTheBlank',
+        title: 'заполнить пропуски',
+        items: [
+          { text: '1) I love __ - я люблю тебя.', answers: [["you", "u"]] },
+          { text: '2) I love __ - я люблю вас.', answers: [["you", "u"]] },
+          { text: '3) You __ English - ты любишь английский.', answers: [["love", "like"]] },
+          { text: '4) You __ English - вы любите английский.', answers: [["love", "like"]] },
+          { text: '5) Who are __ - ТЫ кто?', answers: [["you", "u"]] },
+          { text: '6) Who are __ - кто вы?', answers: [["you", "u"]] },
+          { text: '7) Who are __ - вы кто?', answers: [["you", "u"]] },
+          { text: '8) /ху а ю/ так английском произносится вопрос who are you? напишите как переводится этот вопрос на русский ____', answers: [["кто ты", "кто вы", "вы кто", "ты кто", "кто вы такой", "кто вы такие"]] },
+
+        ]
+      },
+      {
+        type: 'tableFill',
+        cols: 2,
+        rows: 13,
+        showGrid: false,
+        cells: {
+          // === Заголовки ===
+          a2: { text: 'местоимения', rowspan: 1 },
+          b2: { text: 'на инглише', rowspan: 1 },
+
+          a4: { text: 'ты = вы'},
+          b4: { text: 'you', format: ['bold'] },
+
+          a5: { text: 'мы'},
+          b5: { text: 'we', format: ['bold'] },
+
+          a6: { text: 'они'},
+          b6: { answers: ['they'] },
+
+          a8: { text: 'я' },
+          b8: { text: 'i', format: ['bold'] },
+
+          a10: { text: 'он' },
+          b10: { text: 'he', format: ['bold'] },
+
+          a11: { text: 'она' },
+          b11: { text: 'she', format: ['bold'] },
+
+          a12: { text: 'оно = это'},
+          b12: { answers: ['it', 'this'] },
+        }
+      },
+      {
+        type: 'hardcodedLink',
+        path: '/see-all-sets-of-words/pronouns0/millionaire',
+        title: 'Хватит писать, пора отдохнуть!',
+        text: 'Отдохнуть можно кликнув вот по этой ссылке:',
+        icon: '🍿',
+        placeholder: 'Введи свой результат...'
+      },
+    ]
+  },
   'chain': {
     missionName: 'A new task will appear after you do this task :',
     description: 'новое задание появится после выполнения прошлого задания :',
