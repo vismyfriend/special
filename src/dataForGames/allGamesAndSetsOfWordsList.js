@@ -40,6 +40,14 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/catAndAndDogCharacters/wordCloud2",
+      missionVisibleName: "Черты характера Cat/Dog",
+      missionDescription: "Charatcer Traits",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
       path: "/see-all-sets-of-words/SevenDaysAWeek/find-pairs-easy",
       missionVisibleName: "Seven days a week",
       missionDescription: "7 days a week",

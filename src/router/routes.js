@@ -6,6 +6,7 @@ const routes = [
       // { path: '',
       //   component: () => import('pages/rooms/room.vue')
       // },
+
       { path: '',
         component: () => import('src/pages/intros/specialDesk1.vue')
       },
@@ -37,6 +38,7 @@ const routes = [
             path: '/cards52',
             component: () => import('src/components/Game52Cards.vue')
           },
+
 
           {
             path: ':missionName',
@@ -138,6 +140,7 @@ const routes = [
                 path: 'slotMachine',
                 component: () => import('src/components/GameSlotMachine.vue')
               },
+
               {
                 path: 'sorting',
                 component: () => import('src/components/GameDragAndSorting.vue')
@@ -322,6 +325,10 @@ const routes = [
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
+      {
+        path: '/tablet',
+        component: () => import('src/layouts/TabletLayout.vue')
+      },
       {
         path: '/desk1',
         component: () => import('src/pages/intros/specialDesk1.vue')

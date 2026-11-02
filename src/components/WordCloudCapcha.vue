@@ -145,8 +145,9 @@ const cloudWrapper = ref(null);
 
 // ============ ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ ============
 const shapes = [
-  { value: 'random', label: 'Random', icon: '🌀' },
   { value: 'grid', label: 'Grid', icon: '🔲' },
+
+  { value: 'random', label: 'Random', icon: '🌀' },
   { value: 'circle', label: 'Circle', icon: '⭕' },
 ];
 

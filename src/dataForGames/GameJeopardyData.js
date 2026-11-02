@@ -431,6 +431,321 @@ const gameJeopardyData = {
     ]
   },
 
+
+  HalloweenJeopardy: {
+    mainDescription: "Halloween Jeopardy! 🎃",
+    extraDescription: "Выбирай категорию и сложность вопроса",
+    level: "",
+    categories: [
+      {
+        name: "Spooky Vocabulary 👻",
+        questions: [
+          {
+            value: 100,
+            question: 'What do you call the carved pumpkin with a face that people put outside their houses on Halloween?',
+            answer: "a jack-o'-lantern",
+          },
+          {
+            value: 200,
+            question: "Name at least 6 Halloween costumes you can see on October 31st. (no time limit, you can use a dictionary)",
+            answer: "a witch, a ghost, a vampire, a zombie, a skeleton, a werewolf, a mummy, a pirate, a black cat, a superhero, Frankenstein's monster",
+          },
+          {
+            value: 300,
+            question: "Explain the difference between 'trick or treat', 'a haunted house' and 'a costume party'. Use each phrase in your own sentence.",
+            answer: "'Trick or treat' is what children say when they go door to door asking for sweets. 'A haunted house' is an attraction (or a real house) where ghosts are said to live. 'A costume party' is a party where everyone wears a costume.",
+          },
+          {
+            value: 400,
+            question: "Describe your perfect Halloween costume. What would you wear, what would you be, and why? Use at least 5 adjectives.",
+            answer: "any personal answer with 5+ adjectives (e.g. a creepy, shiny, old-fashioned, elegant, terrifying vampire costume)",
+          },
+          {
+            value: 500,
+            question: "Tell a short scary (or funny) Halloween story in 1 minute. Use at least 4 of these words: ghost, candle, dark, scream, pumpkin, shadow, door, midnight. After your story the other players ask you 1 question about it.",
+            answer: "any coherent story using 4+ of the given words",
+          },
+        ],
+      },
+      {
+        name: "Halloween Around the World 🌍",
+        questions: [
+          {
+            value: 100,
+            question: "On which date is Halloween celebrated?",
+            answer: "on the 31st of October",
+          },
+          {
+            value: 200,
+            question: "Halloween comes from an ancient Celtic festival. What is it called?",
+            answer: "Samhain",
+          },
+          {
+            value: 300,
+            question: "How is Halloween (or a similar holiday) celebrated in your country? Is it popular? Explain.",
+            answer: "any personal answer (in Russia it's mostly parties and decorations, not door-to-door trick-or-treating)",
+          },
+          {
+            value: 400,
+            question: "Name 3 countries where Halloween is widely celebrated and say one tradition from each.",
+            answer: "the USA (trick-or-treating), Ireland (barmbrack cake with hidden objects), Mexico (Día de los Muertos, sugar skulls), Canada, the UK",
+          },
+          {
+            value: 500,
+            question: "Compare Halloween with another holiday from your culture (e.g. Ivan Kupala, Maslenitsa, Día de los Muertos). What do they have in common and how are they different?",
+            answer: "any reasonable comparison — e.g. both involve costumes/fire/spirits, but one is about scaring away evil and the other about celebrating the dead or the seasons",
+          },
+        ],
+      },
+      {
+        name: "Spooky Grammar & Words 📝",
+        questions: [
+          {
+            value: 100,
+            question: "Put the words in the correct order: 'a / wearing / she / is / witch / hat / black'.",
+            answer: "She is wearing a black witch hat.",
+          },
+          {
+            value: 200,
+            question: "Choose the correct form: 'Last Halloween I (see / saw / seen) a real bat in the park.'",
+            answer: "saw",
+          },
+          {
+            value: 300,
+            question: "Find and correct 3 mistakes: 'Yesterday my friends and me goed to a haunted house. It was very scaryer than I thinked.'",
+            answer: "Yesterday my friends and I went to a haunted house. It was much scarier than I thought.",
+          },
+          {
+            value: 400,
+            question: "Make 3 sentences about Halloween using: Present Simple, Present Continuous and Past Simple.",
+            answer: "e.g. People celebrate Halloween on October 31st. / Children are wearing costumes right now. / Last year I watched a horror film.",
+          },
+          {
+            value: 500,
+            question: "Rewrite this sentence in 3 different tenses (past, present perfect, future): 'I carve a pumpkin.'",
+            answer: "I carved a pumpkin. / I have carved a pumpkin. / I will carve a pumpkin.",
+          },
+        ],
+      },
+      {
+        name: "Movies & Monsters 🧟",
+        questions: [
+          {
+            value: 100,
+            question: "Name 3 classic Halloween monsters in English.",
+            answer: "a vampire, a werewolf, a zombie, a ghost, a witch, a mummy, Frankenstein's monster",
+          },
+          {
+            value: 200,
+            question: "What do you call a film that is designed to make you scared? Give one example in English.",
+            answer: "a horror film (e.g. 'Halloween', 'The Conjuring', 'IT', 'A Nightmare on Elm Street')",
+          },
+          {
+            value: 300,
+            question: "Describe a scary film you have seen: what was it about, and why was it scary?",
+            answer: "any personal answer with a short plot description",
+          },
+          {
+            value: 400,
+            question: "There is a famous horror film and its main villain is named after this holiday. What is the film and who is the villain?",
+            answer: "the film is 'Halloween' (1978) and the villain is Michael Myers",
+          },
+          {
+            value: 500,
+            question: "Are horror films good for people or bad? Give at least 2 arguments for and 2 against.",
+            answer: "for: harmless adrenaline, a way to face fears; against: nightmares, too much violence, not for children",
+          },
+        ],
+      },
+      {
+        name: "Halloween Fun & Facts 🎃",
+        questions: [
+          {
+            value: 100,
+            question: "What is the traditional Halloween colour combination?",
+            answer: "orange and black",
+          },
+          {
+            value: 200,
+            question: "Name 4 Halloween symbols in English.",
+            answer: "a pumpkin, a bat, a spider web, a ghost, a skeleton, a black cat, a witch's hat, a candle",
+          },
+          {
+            value: 300,
+            question: "What do children say when they knock on a door on Halloween? And what do they get?",
+            answer: "they say 'Trick or treat!' and they get sweets (candy, chocolate, lollipops)",
+          },
+          {
+            value: 400,
+            question: "Guess the number: how many pounds of pumpkins are grown in the USA every year — 1 million, 100 million, or 1.5 billion?",
+            answer: "about 1.5 billion pounds",
+          },
+          {
+            value: 500,
+            question: "You are organising a Halloween party for your class. Tell us your plan: the decorations, the food, the music and 2 games. Use at least 6 Halloween words.",
+            answer: "any detailed plan with 6+ Halloween words (e.g. pumpkins, candles, spider webs, a haunted maze, 'apple bobbing', a costume contest)",
+          },
+        ],
+      },
+    ],
+  },
+  HalloweenKidsJeopardy: {
+    mainDescription: "Halloween for Kids! 🎃",
+    extraDescription: "Выбирай категорию и отвечай на вопросы",
+    level: "",
+    categories: [
+      {
+        name: "Halloween Words 👻",
+        questions: [
+          {
+            value: 100,
+            question: "What is this? It is big, round and orange. People carve a face on it.",
+            answer: "a pumpkin",
+          },
+          {
+            value: 200,
+            question: "Name 3 things you can see on Halloween. (Например: a ghost, ...)",
+            answer: "a ghost, a witch, a bat, a pumpkin, a skeleton, a spider, a black cat, a vampire",
+          },
+          {
+            value: 300,
+            question: "What animal flies at night and lives in a cave? It is black and has wings. 🦇",
+            answer: "a bat",
+          },
+          {
+            value: 400,
+            question: "What is this? It is white, it says 'boo!' and it is very scary. 👻",
+            answer: "a ghost",
+          },
+          {
+            value: 500,
+            question: "Name 5 Halloween costumes. (What can children wear on Halloween?)",
+            answer: "a witch, a ghost, a vampire, a skeleton, a black cat, a superhero, a pumpkin, a pirate",
+          },
+        ],
+      },
+      {
+        name: "Colors & Numbers 🎨",
+        questions: [
+          {
+            value: 100,
+            question: "What two colors are Halloween colors? 🟠⚫",
+            answer: "orange and black",
+          },
+          {
+            value: 200,
+            question: "Count the pumpkins: 🎃🎃🎃🎃🎃. How many?",
+            answer: "five (5)",
+          },
+          {
+            value: 300,
+            question: "What color is a ghost? 👻 And what color is a bat? 🦇",
+            answer: "a ghost is white, a bat is black",
+          },
+          {
+            value: 400,
+            question: "How many legs does a spider have? 🕷️",
+            answer: "eight (8)",
+          },
+          {
+            value: 500,
+            question: "Look and say: 🎃🦇👻🕷️🧙 — name all 5 things in English.",
+            answer: "a pumpkin, a bat, a ghost, a spider, a witch",
+          },
+        ],
+      },
+      {
+        name: "Trick or Treat 🍬",
+        questions: [
+          {
+            value: 100,
+            question: "What do children say when they knock on the door on Halloween?",
+            answer: "Trick or treat!",
+          },
+          {
+            value: 200,
+            question: "What do children get on Halloween? 🍬🍫",
+            answer: "sweets / candy / chocolate",
+          },
+          {
+            value: 300,
+            question: "What do children carry to put sweets in? (It is usually orange or black.)",
+            answer: "a bag / a basket / a bucket",
+          },
+          {
+            value: 400,
+            question: "What do children wear on Halloween? (Not clothes — something fun!)",
+            answer: "costumes",
+          },
+          {
+            value: 500,
+            question: "Act it out! Show us: knock on the door, say 'Trick or treat!', and say 'Thank you!' 🚪🍬",
+            answer: "child acts it out — any correct English is fine",
+          },
+        ],
+      },
+      {
+        name: "Halloween Animals 🐈",
+        questions: [
+          {
+            value: 100,
+            question: "What animal says 'meow' and is often black on Halloween? 🐈‍⬛",
+            answer: "a black cat",
+          },
+          {
+            value: 200,
+            question: "What animal has 8 legs and makes a web? 🕷️",
+            answer: "a spider",
+          },
+          {
+            value: 300,
+            question: "What animal flies at night and says 'hoot'? 🦉",
+            answer: "an owl",
+          },
+          {
+            value: 400,
+            question: "Name 3 Halloween animals in English.",
+            answer: "a bat, a black cat, a spider, an owl, a frog, a rat, a wolf",
+          },
+          {
+            value: 500,
+            question: "Make a sentence: 'I see a ______ .' Choose a Halloween animal. 🦇🐈‍⬛🕷️",
+            answer: "e.g. 'I see a bat.' / 'I see a black cat.'",
+          },
+        ],
+      },
+      {
+        name: "Fun & Games 🎉",
+        questions: [
+          {
+            value: 100,
+            question: "Is Halloween happy or sad? 😊",
+            answer: "happy (it's a fun holiday!)",
+          },
+          {
+            value: 200,
+            question: "Say 'boo!' like a ghost. 👻",
+            answer: "Boo!",
+          },
+          {
+            value: 300,
+            question: "What do we carve on a pumpkin? (a face? a car? a house?)",
+            answer: "a face",
+          },
+          {
+            value: 400,
+            question: "What is your favourite Halloween costume? Say: 'My favourite costume is ______ .'",
+            answer: "any personal answer, e.g. 'My favourite costume is a witch.'",
+          },
+          {
+            value: 500,
+            question: "Sing or say a short Halloween song or rhyme in English! 🎵 (For example: 'Five little pumpkins sitting on a gate...')",
+            answer: "any short rhyme or song — e.g. 'Five little pumpkins sitting on a gate. The first one said: Oh my, it's getting late!'",
+          },
+        ],
+      },
+    ],
+  },
   A2Jeopardy: {
     mainDescription: "Intermediate English Jeopardy",
     level: "A2",
