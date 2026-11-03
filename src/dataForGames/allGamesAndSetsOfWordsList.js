@@ -19,6 +19,7 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       lvl: "lvl0",
 
+
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -1602,6 +1603,16 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/relativesWordOrder00/word-order-sortable",
       missionVisibleName: "УОТ what ? ВОТ ? Что бл%н ? ",
       missionDescription: "what is it?",
+      id: 1001,
+      active: true,
+      gameIcon: '🐶',
+
+    },
+  {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/osascomp_hard/word-order-sortable",
+      missionVisibleName: "Osascomp 1",
+      missionDescription: "порядок прилагательных",
       id: 1001,
       active: true,
       gameIcon: '🐶',

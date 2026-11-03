@@ -590,7 +590,7 @@ const gameJeopardyData = {
     ],
   },
   HalloweenKidsJeopardy: {
-    mainDescription: "Halloween for Kids! 🎃",
+    mainDescription: "! HaLLOWeeN !",
     extraDescription: "Выбирай категорию и отвечай на вопросы",
     level: "",
     categories: [
@@ -599,13 +599,13 @@ const gameJeopardyData = {
         questions: [
           {
             value: 100,
-            question: "What is this? It is big, round and orange. People carve a face on it.",
+            question: "What is this? It is big, round and orange.",
             answer: "a pumpkin",
           },
           {
             value: 200,
-            question: "Name 3 things you can see on Halloween. (Например: a ghost, ...)",
-            answer: "a ghost, a witch, a bat, a pumpkin, a skeleton, a spider, a black cat, a vampire",
+            question: "Отгадайте перевод слова / КАРВ / прочитав предложение с ним: When you carve a pumpkin, you carve a face. Carving is a tradition for halloween.",
+            answer: "to carve - вырезать красивую форму - карвинг - carving - хобби",
           },
           {
             value: 300,
@@ -615,12 +615,12 @@ const gameJeopardyData = {
           {
             value: 400,
             question: "What is this? It is white, it says 'boo!' and it is very scary. 👻",
-            answer: "a ghost",
+            answer: "э гОУст - a ghost - призрак, привидение",
           },
           {
             value: 500,
-            question: "Name 5 Halloween costumes. (What can children wear on Halloween?)",
-            answer: "a witch, a ghost, a vampire, a skeleton, a black cat, a superhero, a pumpkin, a pirate",
+            question: "Name 5 popular Halloween costumes ( + extra $100 if you name 2 not usual costumes)",
+            answer: "a witch, a ghost, a vampire, a skeleton, a black cat, a superhero, a pumpkin, a pirate, Indiana Jones, Breaking Bad Walter White",
           },
         ],
       },
@@ -629,23 +629,24 @@ const gameJeopardyData = {
         questions: [
           {
             value: 100,
-            question: "What two colors are Halloween colors? 🟠⚫",
-            answer: "orange and black",
+            question: "What two colors are Halloween colors?",
+            answer: "orange and black  🟠⚫",
           },
           {
             value: 200,
-            question: "Count the pumpkins: 🎃🎃🎃🎃🎃. How many?",
-            answer: "five (5)",
+            question: "Count the pumpkins: 🎃🎃🎃🎃🎃🎃🎃🎃. How many? (+$100 если напишите на листочке ручкой без ошибок)",
+            answer: "eight (8)",
           },
           {
             value: 300,
-            question: "What color is a ghost? 👻 And what color is a bat? 🦇",
+            question: "What color is a ghost? 👻 And what color is a bat? 🦇 " +
+              "(What color is Vincent's underwear today? +$100)",
             answer: "a ghost is white, a bat is black",
           },
           {
             value: 400,
-            question: "How many legs does a spider have? 🕷️",
-            answer: "eight (8)",
+            question: "How many legs does a spider have?️",
+            answer: "eight (8)  🕷",
           },
           {
             value: 500,
@@ -660,7 +661,7 @@ const gameJeopardyData = {
           {
             value: 100,
             question: "What do children say when they knock on the door on Halloween?",
-            answer: "Trick or treat!",
+            answer: "Trick or treat! - пакость или сладость",
           },
           {
             value: 200,
@@ -669,18 +670,18 @@ const gameJeopardyData = {
           },
           {
             value: 300,
-            question: "What do children carry to put sweets in? (It is usually orange or black.)",
+            question: "Where do children keep sweets? (in what object?)",
             answer: "a bag / a basket / a bucket",
           },
           {
             value: 400,
-            question: "What do children wear on Halloween? (Not clothes — something fun!)",
-            answer: "costumes",
+            question: "What is the English for Надевать / Одевать?",
+            answer: "put on / dress",
           },
           {
             value: 500,
-            question: "Act it out! Show us: knock on the door, say 'Trick or treat!', and say 'Thank you!' 🚪🍬",
-            answer: "child acts it out — any correct English is fine",
+            question: "Make a scary Halloween voice and say : 'Surprise! Trick or treat! Here comes Johny' 🚪🍬",
+            answer: "Other players decide if you deserve $ and sweets =)",
           },
         ],
       },
@@ -689,28 +690,30 @@ const gameJeopardyData = {
         questions: [
           {
             value: 100,
-            question: "What animal says 'meow' and is often black on Halloween? 🐈‍⬛",
+            question: "What animal says 'meow' and what color is it on Halloween? 🐈‍⬛",
             answer: "a black cat",
           },
           {
             value: 200,
-            question: "What animal has 8 legs and makes a web? 🕷️",
-            answer: "a spider",
+            question: "If spiderman is человек паук... Who is Batman? 🕷️",
+            answer: "человек летучая мышь",
           },
           {
             value: 300,
-            question: "What animal flies at night and says 'hoot'? 🦉",
-            answer: "an owl",
+            question: "What animal flies at night and says 'Hoot'? 🦉",
+            answer: "эн аул - произносится через А пишется через о - an owl - аул",
           },
           {
             value: 400,
-            question: "Name 3 Halloween animals in English.",
+            question: "Name 5 Halloween animals in English.",
             answer: "a bat, a black cat, a spider, an owl, a frog, a rat, a wolf",
           },
           {
             value: 500,
-            question: "Make a sentence: 'I see a ______ .' Choose a Halloween animal. 🦇🐈‍⬛🕷️",
-            answer: "e.g. 'I see a bat.' / 'I see a black cat.'",
+            question: "Make + - ? sentences: 'My teacher loves vampires.'🦇",
+            answer: "+ he loves vampires " +
+              "- he doesn't love vampires" +
+              "does he love vampires?",
           },
         ],
       },
@@ -719,7 +722,7 @@ const gameJeopardyData = {
         questions: [
           {
             value: 100,
-            question: "Is Halloween happy or sad? 😊",
+            question: "Is Halloween happy or sad?",
             answer: "happy (it's a fun holiday!)",
           },
           {
@@ -729,18 +732,18 @@ const gameJeopardyData = {
           },
           {
             value: 300,
-            question: "What do we carve on a pumpkin? (a face? a car? a house?)",
-            answer: "a face",
+            question: "When is the official date of Halloween?",
+            answer: "on the 31st of October",
           },
           {
             value: 400,
-            question: "What is your favourite Halloween costume? Say: 'My favourite costume is ______ .'",
-            answer: "any personal answer, e.g. 'My favourite costume is a witch.'",
+            question: "What was your last Halloween costume? (даже если 100 лет назад это было вспоминай)",
+            answer: "any personal answer, e.g. 'My favourite costume is a witch.' Or I never had a costume",
           },
           {
             value: 500,
             question: "Sing or say a short Halloween song or rhyme in English! 🎵 (For example: 'Five little pumpkins sitting on a gate...')",
-            answer: "any short rhyme or song — e.g. 'Five little pumpkins sitting on a gate. The first one said: Oh my, it's getting late!'",
+            answer: "any short rhyme or song — e.g. 'This is halloween this is halloween!'",
           },
         ],
       },
