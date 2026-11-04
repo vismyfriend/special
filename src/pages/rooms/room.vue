@@ -2,12 +2,17 @@
   <!-- Прелоадер - временно отключен -->
   <!-- <Preloader /> -->
 
-  <!-- Фон -->
+   Фон
   <img
     class="backgroundImg"
     src="../../assets/images/specialRoom1.jpg"
     alt="Фон спэшл 2"
   >
+<!--  <img-->
+<!--    class="backgroundImg"-->
+<!--    src="../../assets/images/special-monitor-november-v3-optimized.webp"-->
+<!--    alt="Фон спэшл 2"-->
+<!--  >-->
 
   <!-- Контент поверх фона -->
   <div class="auth-overlay">

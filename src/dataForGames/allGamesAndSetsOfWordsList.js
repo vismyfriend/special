@@ -12,6 +12,15 @@ export const allGamesAndSetsOfWordsList =
       // category: 'students', // если хочешь отдельную категорию
     },
     {
+      missionVisibleName: "Dictionary of AAA",
+      missionDescription: "Anastasia's words",
+      missionName: 'gsheet:1pmNKxPyLubo-aOtk8Bp1GseXYPZn6J8MGjsU4esfIps',
+      active: true,
+      lvl: 'lvlAll',
+      type: 'gsheet',
+      // category: 'students', // если хочешь отдельную категорию
+    },
+    {
       missionName: "dev",
       missionVisibleName: "Выбирай<strike><b> урок </b></strike>миссию ↓",
       missionDescription: "Посмотреть все шаблоны",
@@ -345,15 +354,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/cards52",
-      missionVisibleName: "Poker combinations",
-      missionDescription: "Poker Hands ♥️♣️♦️♠️",
-      id: 1001,
-      active: true,
-      gameIcon: '️🃏'
-    },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/see-all-sets-of-words/songHelloHowAreYou/songs",
@@ -495,6 +496,16 @@ export const allGamesAndSetsOfWordsList =
       active: true,
       lvl: ["lvlSpeaking","lvlDev"],
       gameIcon:'🕵️',
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/cards52",
+      missionVisibleName: "Poker combinations",
+      missionDescription: "deck of cards 52 ♥️♣️♦️♠️",
+      id: 1001,
+      active: true,
+      lvl: ["lvlSpeaking","lvlDev"],
+      gameIcon: '️🃏'
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта

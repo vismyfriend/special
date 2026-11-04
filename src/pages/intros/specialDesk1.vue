@@ -169,7 +169,8 @@ const router = useRouter();
 // ==================== ФОНОВЫЕ КАРТИНКИ ====================
 // ВАЖНО: пути через new URL(...) считаются относительно ТЕКУЩЕГО файла,
 // поэтому тут нужно два ../ (компонент лежит глубже, чем корень src)
-const desktopBgImage = new URL('../../assets/images/specialMonitorHorizontalTPNGAutumn.jpg', import.meta.url).href;
+const desktopBgImage = new URL('../../assets/images/special-monitor-november-v3-optimized.webp', import.meta.url).href;
+// const desktopBgImage = new URL('../../assets/images/specialMonitorHorizontalTPNGAutumn.jpg', import.meta.url).href;
 const mobileBgImage  = new URL('../../assets/images/specialMonitorVerticalTPNGAutumn.jpg',  import.meta.url).href;
 
 // ==================== СОСТОЯНИЕ ====================

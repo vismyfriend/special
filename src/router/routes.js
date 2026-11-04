@@ -3,13 +3,13 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
     children: [
-      // { path: '',
-      //   component: () => import('pages/rooms/room.vue')
-      // },
-
       { path: '',
-        component: () => import('src/pages/intros/specialDesk1.vue')
+        component: () => import('pages/rooms/room.vue')
       },
+
+      // { path: '',
+      //   component: () => import('src/pages/intros/specialDesk1.vue')
+      // },
       { path: '/intro',
         component: () => import('pages/IntroPage.vue')
       },
@@ -38,8 +38,6 @@ const routes = [
             path: '/cards52',
             component: () => import('src/components/Game52Cards.vue')
           },
-
-
           {
             path: ':missionName',
             component: () => import('src/layouts/GameLayout.vue'),
@@ -53,8 +51,8 @@ const routes = [
                 path: 'edit',
                 component: () => import('src/components/CreateSpecialSet.vue'),
               },
-
               {
+                // компонент с историями и вписыванием слов рабочий но пока я его нигде не использовал,
                 path: 'stories',
                 component: () => import('components/GameStoriesAndWords.vue')
               },

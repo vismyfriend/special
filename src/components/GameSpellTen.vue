@@ -1,32 +1,55 @@
 <template>
   <div class="row" v-if="currentGameData">
     <div class="col">
-      <!-- Используем v-for для перебора массива ruCards -->
       <div class="wordCard" v-for="(ruWord, index) in ruCards" :key="ruWord.id">
         <div class="word-container">
           <div class="word-column">
-            <!-- Отображаем слово на русском языке -->
-            <span>{{ ruWord.lang }}</span>
-          </div>
-          <div class="input-column">
-            <!-- Передаем текущий индекс в функцию handleEnter -->
-            <input class="userInput" type="text"
-              v-model="translations[index]"
-              @keyup.enter="handleEnter(index)"
-              :class="{ 'correct': correctAnswers[index], 'incorrect': incorrectAnswers[index] }" />
-              <!-- Это динамическое добавление классов к элементу в зависимости от значений в массиве correctAnswers и incorrectAnswers. Если перевод правильный, добавляется класс correct, если неправильный — incorrect. -->
+            <span @dblclick="revealAnswer(index)">{{ ruWord.lang }}</span>
           </div>
 
-          <!-- Add a third column if needed -->
+          <div class="input-column">
+            <div class="input-wrap">
+              <!-- Overlay: текст прозрачный, видны только фон/подчёркивание/маркеры -->
+              <div class="overlay" aria-hidden="true">
+                <span
+                  v-for="(seg, i) in highlightSegments[index]"
+                  :key="i"
+                  :class="'seg-' + seg.type"
+                >{{ seg.text }}</span>
+              </div>
+
+              <input
+                class="userInput"
+                type="text"
+                v-model="translations[index]"
+                @keyup.enter="handleEnter(index)"
+                @input="clearHighlight(index)"
+                :placeholder="getPlaceholder(index)"
+                :class="{
+                  'correct': correctAnswers[index],
+                  'incorrect': incorrectAnswers[index]
+                }"
+              />
+            </div>
+          </div>
+
           <div class="additional-column">
-            <!-- Если захочу сюда добавить картинку или текст или еще что-то, результат -->
             <p>{{ (index + 1) * 10 }}%</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <button class="check-answers-button" @click="checkAllTranslations">Проверить перевод</button>
+
+  <div class="controls">
+    <button class="check-answers-button" @click="checkAllTranslations">Проверить перевод</button>
+
+    <label class="hints-toggle">
+      <span class="toggle-label">Подсказки</span>
+      <input type="checkbox" v-model="hintsEnabled" />
+      <span class="slider"></span>
+    </label>
+  </div>
 </template>
 
 <script setup>
@@ -34,8 +57,8 @@ import { ref, onMounted } from 'vue';
 import { whatGameDataToUse } from '../composables/whatGameDataToUse';
 import shortWordsData from '../dataForGames/short-words-data';
 import { useRoute } from 'vue-router';
-const { loadWords, loading, error } = whatGameDataToUse();
 
+const { loadWords, loading, error } = whatGameDataToUse();
 
 const getWordSet = (name) => {
   if (shortWordsData[name]) return shortWordsData[name];
@@ -46,13 +69,20 @@ const getWordSet = (name) => {
   }
   return [];
 };
+
 const route = useRoute();
 
 const currentGameData = ref([]);
 const ruCards = ref([]);
-const translations = ref(Array(10).fill('')); // Массив для переводов, теперь на 10 элементов
-const correctAnswers = ref(Array(10).fill(false)); // Массив для проверки правильных ответов
-const incorrectAnswers = ref(Array(10).fill(false)); // Массив для проверки неправильных ответов
+const translations = ref(Array(10).fill(''));
+const correctAnswers = ref(Array(10).fill(false));
+const incorrectAnswers = ref(Array(10).fill(false));
+
+const hintsEnabled = ref(true);
+const revealedIndexes = ref(new Set());
+
+// Сегменты подсветки по каждому индексу
+const highlightSegments = ref(Array(10).fill(null).map(() => []));
 
 const shuffle = array => array.sort(() => Math.random() - 0.5);
 
@@ -61,49 +91,40 @@ const splitCards = (lang) => {
     id: el.id,
     lang: el[lang],
   }));
-  return shuffle(words).slice(0, 10); // Берем теперь 8 слов
-}
+  return shuffle(words).slice(0, 10);
+};
 
-// проверка каждой буквы пока не работает, слово проверяет, а каждую букву хочется подсветить неверную
-const checkTranslation = (index, wordId) => {
-  // Проверяем перевод для конкретного слова
-  const correctTranslation = currentGameData.value.find(el => el.id === wordId).eng; // Предполагается, что перевод на русский
-  correctAnswers.value[index] = translations.value[index].toLowerCase() === correctTranslation.toLowerCase();
-  incorrectAnswers.value[index] = !correctAnswers.value[index];
-}
+const getHintById = (id) => {
+  const word = currentGameData.value.find(el => el.id === id);
+  return word?.hint || '';
+};
 
-const checkAllTranslations = () => {
-  ruCards.value.forEach((ruWord, index) => {
-    const correctTranslation = currentGameData.value.find(el => el.id === ruWord.id).eng;
-    const isCorrect = isAnswerCorrect(translations.value[index], correctTranslation);
-
-    correctAnswers.value[index] = isCorrect;
-    incorrectAnswers.value[index] = !isCorrect;
-  });
-}
-// чтобы нажатие enter с клавиатуры переводило на следующее слово
-const handleEnter = (index) => {
-  if (index < translations.value.length - 1) {
-    // Переход к следующему слову
-    const nextInput = document.querySelectorAll('input')[index + 1];
-    if (nextInput) {
-      nextInput.focus();
-    }
-  } else {
-    // Если это последнее слово, проверяем все переводы
-    checkAllTranslations();
+const getPlaceholder = (index) => {
+  if (revealedIndexes.value.has(index)) {
+    const word = currentGameData.value.find(el => el.id === ruCards.value[index].id);
+    return word?.eng || '';
   }
-
-  // Снимаем фокус с последнего поля ввода
-  const lastInput = document.querySelectorAll('input')[index];
-  if (lastInput) {
-    lastInput.blur(); // Снимаем фокус
+  if (hintsEnabled.value) {
+    return getHintById(ruCards.value[index].id);
   }
-}
+  return '';
+};
 
+const revealAnswer = (index) => {
+  const newSet = new Set(revealedIndexes.value);
+  newSet.add(index);
+  revealedIndexes.value = newSet;
+
+  setTimeout(() => {
+    const s = new Set(revealedIndexes.value);
+    s.delete(index);
+    revealedIndexes.value = s;
+  }, 2000);
+};
+
+// === Нормализация ===
 const normalizeAnswer = (answer) => {
   if (!answer || typeof answer !== 'string') return '';
-
   return answer
     .toLowerCase()
     .replace(/\s+/g, ' ')
@@ -129,21 +150,15 @@ const normalizeAnswer = (answer) => {
     .trim();
 };
 
+// === Проверка «верно/неверно» (как было) ===
 const isTypoCloseEnough = (userWord, correctWord) => {
-  // 1. Проверка точного совпадения (самый быстрый путь)
   if (userWord === correctWord) return true;
 
-  // 2. Строгие слова (должны совпадать точно)
   const strictWords = ['he','his','she','her','you','your','we','our','it','is','are','was','were','do','does','did','have','has','had','who','why'];
-
-  // 3. Новое правило: слова ≤3 букв проверяем строго
   const isShortWord = correctWord.length <= 3;
 
-  if (strictWords.includes(correctWord) || isShortWord) {
-    return false; // Не допускаем опечаток
-  }
+  if (strictWords.includes(correctWord) || isShortWord) return false;
 
-  // 4. Для остальных слов - проверка с допуском одной опечатки
   if (Math.abs(userWord.length - correctWord.length) > 1) return false;
 
   let errors = 0;
@@ -153,11 +168,10 @@ const isTypoCloseEnough = (userWord, correctWord) => {
     if (i >= userWord.length || j >= correctWord.length || userWord[i] !== correctWord[j]) {
       errors++;
       if (errors > 1) return false;
-      if (userWord.length > correctWord.length) j--; // Пропуск символа в correctWord
-      else if (userWord.length < correctWord.length) i--; // Пропуск символа в userWord
+      if (userWord.length > correctWord.length) j--;
+      else if (userWord.length < correctWord.length) i--;
     }
   }
-
   return true;
 };
 
@@ -173,16 +187,162 @@ const isAnswerCorrect = (userAnswer, correctAnswer) => {
   if (userWords.length !== correctWords.length) return false;
 
   for (let i = 0; i < correctWords.length; i++) {
-    if (!isTypoCloseEnough(userWords[i], correctWords[i])) {
-      return false;
+    if (!isTypoCloseEnough(userWords[i], correctWords[i])) return false;
+  }
+  return true;
+};
+
+// === Diff по символам (Levenshtein + backtracking) ===
+// Возвращает массив операций:
+// { type: 'equal', text }
+// { type: 'replace', user, correct }
+// { type: 'delete', text }  // лишний символ у пользователя
+// { type: 'insert', text }  // пропущенный символ (есть в correct)
+const diffChars = (userStr, correctStr) => {
+  const a = userStr;
+  const b = correctStr;
+  const n = a.length;
+  const m = b.length;
+
+  const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = 0; i <= n; i++) dp[i][0] = i;
+  for (let j = 0; j <= m; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(
+          dp[i - 1][j - 1], // replace
+          dp[i - 1][j],     // delete
+          dp[i][j - 1]      // insert
+        );
+      }
     }
   }
 
-  return true;
+  const ops = [];
+  let i = n, j = m;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
+      ops.push({ type: 'equal', text: a[i - 1] });
+      i--; j--;
+    } else if (i > 0 && j > 0 && dp[i][j] === dp[i - 1][j - 1] + 1) {
+      ops.push({ type: 'replace', user: a[i - 1], correct: b[j - 1] });
+      i--; j--;
+    } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
+      ops.push({ type: 'delete', text: a[i - 1] });
+      i--;
+    } else {
+      ops.push({ type: 'insert', text: b[j - 1] });
+      j--;
+    }
+  }
+  ops.reverse();
+
+  // Схлопываем подряд идущие операции одного типа
+  const merged = [];
+  for (const op of ops) {
+    const last = merged[merged.length - 1];
+    if (last && last.type === op.type) {
+      if (op.type === 'replace') {
+        last.user += op.user;
+        last.correct += op.correct;
+      } else {
+        last.text += op.text;
+      }
+    } else {
+      merged.push({ ...op });
+    }
+  }
+  return merged;
 };
+
+// === Превращаем diff в сегменты для overlay ===
+const computeHighlight = (userInput, correctAnswer) => {
+  if (!userInput || !userInput.trim()) return [];
+
+  const normalizedUser = normalizeAnswer(userInput);
+  const normalizedCorrect = normalizeAnswer(correctAnswer);
+
+  // Полное совпадение — всё зелёное
+  if (normalizedUser === normalizedCorrect) {
+    return [{ text: userInput, type: 'exact' }];
+  }
+
+  const userWords = normalizedUser.split(' ');
+  const correctWords = normalizedCorrect.split(' ');
+
+  // Если число слов не совпало — не diff-им посимвольно, подсвечиваем всё
+  if (userWords.length !== correctWords.length) {
+    return [{ text: userInput, type: 'fuzzy' }];
+  }
+
+  const segments = [];
+  for (let w = 0; w < correctWords.length; w++) {
+    const uWord = userWords[w];
+    const cWord = correctWords[w];
+
+    if (uWord === cWord) {
+      segments.push({ text: uWord, type: 'neutral' });
+    } else {
+      const ops = diffChars(uWord, cWord);
+      for (const op of ops) {
+        if (op.type === 'equal') {
+          segments.push({ text: op.text, type: 'neutral' });
+        } else if (op.type === 'replace') {
+          segments.push({ text: op.user, type: 'fuzzy' });
+        } else if (op.type === 'delete') {
+          segments.push({ text: op.text, type: 'fuzzy' });
+        } else if (op.type === 'insert') {
+          segments.push({ text: op.text, type: 'missing' });
+        }
+      }
+    }
+
+    if (w < correctWords.length - 1) {
+      segments.push({ text: ' ', type: 'neutral' });
+    }
+  }
+
+  return segments;
+};
+
+// === Очистка подсветки при новом вводе ===
+const clearHighlight = (index) => {
+  highlightSegments.value[index] = [];
+  correctAnswers.value[index] = false;
+  incorrectAnswers.value[index] = false;
+};
+
+// === Проверка всех переводов ===
+const checkAllTranslations = () => {
+  ruCards.value.forEach((ruWord, index) => {
+    const correctTranslation = currentGameData.value.find(el => el.id === ruWord.id).eng;
+    const isCorrect = isAnswerCorrect(translations.value[index], correctTranslation);
+
+    correctAnswers.value[index] = isCorrect;
+    incorrectAnswers.value[index] = !isCorrect;
+
+    highlightSegments.value[index] = computeHighlight(translations.value[index], correctTranslation);
+  });
+};
+
+const handleEnter = (index) => {
+  if (index < translations.value.length - 1) {
+    const nextInput = document.querySelectorAll('input')[index + 1];
+    if (nextInput) nextInput.focus();
+  } else {
+    checkAllTranslations();
+  }
+
+  const lastInput = document.querySelectorAll('input')[index];
+  if (lastInput) lastInput.blur();
+};
+
 onMounted(async () => {
   const missionName = route.params.missionName;
-  // currentGameData.value = getWordSet(missionName);
   currentGameData.value = await loadWords(missionName);
   console.log('Загружено слов:', currentGameData.value.length);
   ruCards.value = splitCards("ru");
@@ -191,85 +351,173 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 
-
-.row {
-  margin-top: 75px;
-}
-
-.col {
-  color: wheat;
-}
+.row { margin-top: 75px; }
+.col { color: wheat; }
 
 .check-answers-button {
   border-radius: 50px;
   background-color: aqua;
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* Toggle подсказок */
+.hints-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  color: wheat;
+  position: relative;
+}
+.hints-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-label { font-size: 16px; }
+.slider {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background-color: #ccc;
+  border-radius: 26px;
+  transition: background-color 0.3s;
+}
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px; height: 20px;
+  left: 3px; top: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+.hints-toggle input:checked + .slider { background-color: #4caf50; }
+.hints-toggle input:checked + .slider::before { transform: translateX(22px); }
+
 .wordCard {
   background-color: #f9f9f9;
   border-radius: 20px;
   padding: 5px 20px;
-  height: auto;
-  text-align: center;
-  justify-content: center;
   margin: 1.5px;
   user-select: none;
   color: black;
   display: flex;
   flex-direction: column;
-  /* Keep the word card layout as a column */
 }
 
 .word-container {
   display: flex;
-  /* Use Flexbox to create a row layout */
   justify-content: space-between;
-  /* Distribute the columns evenly */
   align-items: center;
-  /* Vertically center the content */
 }
 
 .word-column {
   flex-basis: 30%;
-  /* Set the width of the word column */
   text-align: right;
-  /* Right-align the word text */
   padding-right: 10px;
-  /* Add some space between the word and input field */
+  cursor: pointer;
 }
 
-.input-column {
-  flex-basis: 60%;
-  /* Set the width of the input field column */
+.input-column { flex-basis: 60%; }
+.additional-column { flex-basis: 10%; }
+
+/* === Обёртка input + overlay === */
+.input-wrap {
+  position: relative;
+  width: 100%;
+  height: 38px;
 }
 
-.additional-column {
-  flex-basis: 10%;
-  /* Set the width of the additional column (if needed) */
+/* Overlay: текст прозрачный, видны только фон/подчёркивание/маркеры */
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  font-size: 16px;
+  font-family: inherit;
+  white-space: pre;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 0;
+  color: transparent; /* ключевое: текст невидим, двоения нет */
+}
+
+/* Совпавшие символы — без фона */
+.seg-neutral {
+  background: transparent;
+  border-bottom: none;
+}
+
+/* Ошибка: неверный или лишний символ */
+.seg-fuzzy {
+  background: rgba(255, 165, 0, 0.35);
+  border-bottom: 2px solid #ff9800;
+  border-radius: 3px;
+}
+
+/* Пропущенный символ: тонкий маркер на месте вставки */
+.seg-missing {
+  background: rgba(255, 165, 0, 0.25);
+  border-left: 2px dashed #ff9800;
+  border-right: 2px dashed #ff9800;
+}
+
+/* Полное совпадение */
+.seg-exact {
+  background: rgba(76, 175, 80, 0.30);
+  border-bottom: 2px solid #4caf50;
+  border-radius: 3px;
+}
+
+/* Совсем неверно (если число слов не совпало) */
+.seg-wrong {
+  background: rgba(244, 67, 54, 0.25);
+  border-bottom: 2px solid #f44336;
+  border-radius: 3px;
+}
+
+/* Input: прозрачный фон, текст виден только здесь */
+.userInput {
+  position: relative;
+  z-index: 1;
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px solid gray;
+  transition: all 0.3s ease;
+  background: transparent;
+  font-size: 16px;
+  font-family: inherit;
+  padding: 0 12px;
+  color: #000;
+}
+
+.userInput:focus {
+  border: 2px solid blue;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.5);
+  background: rgba(173, 216, 230, 0.3);
 }
 
 .correct {
-  border: 2px solid green; /* Цвет рамки */
-  box-shadow: 0 0 10px 5px rgba(0, 255, 0, 0.5); /* Зеленое свечение */
-  background: rgba(144, 238, 144, 0.3); /* Полупрозрачный зеленый фон */}
+  border: 2px solid green;
+  box-shadow: 0 0 10px 5px rgba(0, 255, 0, 0.5);
+}
 
 .incorrect {
-  border: 2px solid red; /* Цвет рамки */
+  border: 2px solid red;
   font-weight: bold;
-  box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5); /* Красное свечение */
-  background: rgba(255, 182, 193, 0.3); /* Полупрозрачный розовый фон */
+  box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
 }
-.userInput {
-  border-radius: 50px;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-  border: 2px solid gray; /* Начальный цвет рамки */
-  transition: all 0.3s ease; /* Плавный переход для эффектов */
-}
-.userInput:focus {
-  border: 2px solid blue; /* Цвет рамки по умолчанию */
-  box-shadow: 0 0 10px 5px rgba(0, 0, 255, 0.5); /* Синее свечение */
-  background: rgba(173, 216, 230, 0.3); /* Полупрозрачный голубой фон */
-}
+
 </style>

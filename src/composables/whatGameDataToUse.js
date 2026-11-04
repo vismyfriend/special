@@ -83,7 +83,11 @@ const loadFromGSheet = async (sheetId, studentFilter) => {
     id: index + 1,
     ru: row.translation || row['russian word'] || row.ru || row['перевод'] || '',
     eng: row.word || row['english word'] || row.eng || row['слово'] || '',
-    transcription: row.transcription || row['транскрипция'] || '',
+    hint: row.hint ||
+      row['транскрипция'] ||
+      row.pronunciation ||
+      row['произношение'] ||
+      row.transcription || '',
   }));
 
   // Сохраняем в кеш
