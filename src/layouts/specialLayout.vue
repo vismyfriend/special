@@ -147,10 +147,14 @@
 </template>
 
 <script setup>
+
+
 import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import LegendaryMode from '../components/LegendaryMode.vue';
 import { api } from 'src/api';
+import { missionToAllSetsRoute } from 'src/composables/whatGameDataToUse';
+
 import { useGameStore } from 'stores/example-store';
 import { watch } from 'vue';
 
@@ -499,19 +503,14 @@ const changeSet = () => {
 };
 
 const otherGames = () => {
-  // 1. Проверяем query параметры (из LeaderBoard)
-  const missionFromQuery = route.query.missionName;
-
-  // 2. Проверяем params маршрута
-  const missionFromParams = route.params.missionName;
-
-  // Используем первый найденный
-  const missionName = missionFromQuery || missionFromParams;
+  // params — канонический источник (в т.ч. для gsheet:...),
+  // query — fallback (например, пришли из LeaderBoard)
+  const missionName = route.params.missionName || route.query.missionName;
 
   if (missionName) {
-    router.push(`/see-all-sets-of-words/${missionName}`);
+    router.push(missionToAllSetsRoute(missionName));
   } else {
-    router.push("/see-all-sets-of-words/");
+    router.push('/see-all-sets-of-words/');
   }
 };
 
@@ -528,12 +527,11 @@ const isInstructionsVisible = ref(false);
 
 const backToSameSet = () => {
   if (hasMissionName.value) {
-    router.push(`/see-all-sets-of-words/${route.params.missionName}`);
+    router.push(missionToAllSetsRoute(route.params.missionName));
   } else {
-    console.error("missionName is undefined");
-    router.push("/see-all-sets-of-words/");
+    router.push('/see-all-sets-of-words/');
   }
-}
+};
 
 const backToAllSets = () => {
   router.push("/see-all-sets-of-words/");

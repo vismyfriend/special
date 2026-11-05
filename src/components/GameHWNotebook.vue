@@ -158,18 +158,22 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import shortWordsData from '../dataForGames/short-words-data';
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+const { loadWords, error } = whatGameDataToUse();
 
-// ==================== УТИЛИТЫ ====================
-const getWordSet = (name) => {
-  if (shortWordsData[name]) return shortWordsData[name];
-  for (const level in shortWordsData) {
-    if (shortWordsData[level] && shortWordsData[level][name]) {
-      return shortWordsData[level][name];
-    }
-  }
-  return [];
-};
+//
+// import shortWordsData from '../dataForGames/short-words-data';
+//
+// // ==================== УТИЛИТЫ ====================
+// const getWordSet = (name) => {
+//   if (shortWordsData[name]) return shortWordsData[name];
+//   for (const level in shortWordsData) {
+//     if (shortWordsData[level] && shortWordsData[level][name]) {
+//       return shortWordsData[level][name];
+//     }
+//   }
+//   return [];
+// };
 
 // ==================== COMPOSABLES ====================
 const route = useRoute();
@@ -196,33 +200,17 @@ const isMessageValid = computed(() => {
 });
 
 // ==================== ФУНКЦИИ ПЕРЕХОДОВ ====================
-const goToFindPairsGame = () => {
+const goToGame = (path) => {
   const missionName = route.params.missionName;
-  router.push({
-    path: `/see-all-sets-of-words/${missionName}/find-pairs-easy`
-  });
+  router.push(
+    `/see-all-sets-of-words/${encodeURIComponent(missionName)}/${path}`
+  );
 };
 
-const goToFindPairsHardGame = () => {
-  const missionName = route.params.missionName;
-  router.push({
-    path: `/see-all-sets-of-words/${missionName}/find-pairs-hard`
-  });
-};
-
-const goToSpellingGame = () => {
-  const missionName = route.params.missionName;
-  router.push({
-    path: `/see-all-sets-of-words/${missionName}/spell-it`
-  });
-};
-
-const goToPrintAllWords = () => {
-  const missionName = route.params.missionName;
-  router.push({
-    path: `/see-all-sets-of-words/${missionName}/print-all-words`
-  });
-};
+const goToFindPairsGame = () => goToGame('find-pairs-easy');
+const goToFindPairsHardGame = () => goToGame('find-pairs-hard');
+const goToSpellingGame = () => goToGame('spell-it');
+const goToPrintAllWords = () => goToGame('print-all-words');
 
 // ==================== ПЕРЕМЕШИВАНИЕ ====================
 const shuffleArray = (array) => {
@@ -323,12 +311,19 @@ const calculateContentHeight = () => {
 };
 
 // ==================== LIFECYCLE ====================
-onMounted(() => {
+onMounted(async () => {
   currentMission.value = route.params.missionName || 'Текущий урок';
-  currentGameData.value = getWordSet(currentMission.value);
 
+  // 🔥 Загружаем слова через composable (поддерживает и файлы, и gsheet)
+  const allWords = await loadWords(currentMission.value);
+
+  currentGameData.value = allWords || [];
   originalGameData.value = [...currentGameData.value];
   displayedWords.value = [...currentGameData.value];
+
+  if (!currentGameData.value.length) {
+    console.warn('Слова не загрузились:', currentMission.value, error.value);
+  }
 
   setTimeout(() => {
     notebookHeight.value = calculateContentHeight();

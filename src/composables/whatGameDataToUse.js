@@ -35,6 +35,47 @@ const parseMissionName = (missionName) => {
 };
 
 // ============================================================
+// ИСТОЧНИК МИССИИ (для роутинга)
+// ============================================================
+/**
+ * Возвращает описание источника миссии или null.
+ * - gsheet: { kind: 'gsheet', sheetId, student, canonical }
+ * - file:   { kind: 'file', name, canonical }
+ */
+export function parseMissionSource(missionName) {
+  if (!missionName) return null;
+
+  if (missionName.startsWith('gsheet:')) {
+    const rest = missionName.slice('gsheet:'.length);
+    const [sheetId, queryStr = ''] = rest.split('?');
+    const params = new URLSearchParams(queryStr);
+    return {
+      kind: 'gsheet',
+      sheetId,
+      student: params.get('student') || null,
+      canonical: missionName,
+    };
+  }
+
+  return {
+    kind: 'file',
+    name: missionName,
+    canonical: missionName,
+  };
+}
+
+/**
+ * Собирает URL к see-all-sets-of-words для данного missionName.
+ * Кодирует missionName целиком как один сегмент пути,
+ * чтобы '?' и ':' не ломали URL.
+ */
+export function missionToAllSetsRoute(missionName, basePath = '/see-all-sets-of-words') {
+  const src = parseMissionSource(missionName);
+  if (!src) return basePath;
+  return `${basePath}/${encodeURIComponent(src.canonical)}`;
+}
+
+// ============================================================
 // ЗАГРУЗКА ИЗ ФАЙЛА
 // ============================================================
 const loadFromFile = (missionName) => {
@@ -107,7 +148,7 @@ export function whatGameDataToUse() {
   /**
    * Универсальная загрузка слов.
    * @param {string} missionName — 'halloween' или 'gsheet:ID?student=Sam'
-   * @returns {Promise<Array>} — массив { id, ru, eng, transcription }
+   * @returns {Promise<Array>} — массив { id, ru, eng, hint }
    */
   const loadWords = async (missionName) => {
     loading.value = true;

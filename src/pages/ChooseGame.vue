@@ -75,8 +75,14 @@ const introMessage = ref(null); // Добавляем ref для элемент�
 const router = useRouter()
 const route = useRoute()
 
+// const goToSettings = () => {
+//   router.push(`/see-all-sets-of-words/${route.params.missionName}/wordSetSettings`);
+// };
+
 const goToSettings = () => {
-  router.push(`/see-all-sets-of-words/${route.params.missionName}/wordSetSettings`);
+  router.push(
+    `/see-all-sets-of-words/${encodeURIComponent(route.params.missionName)}/wordSetSettings`
+  );
 };
 
 const AllGames = ref([
@@ -84,7 +90,7 @@ const AllGames = ref([
   {
     id: 101,
     name: "Все слова из набора",
-    path: "print-all-words",
+    path: "print-all-words2",
     gameData: shortWordsData,
     cardIcon: '🖨️',
     active: true,
@@ -353,8 +359,32 @@ const AllGames = ref([
 //   return AllGames.value.filter(game => game.gameData?.hasOwnProperty(route.params.missionName));
 // });
 
+// 🆕 Игры, которые умеют работать с данными из Google-таблицы.
+// Остальные (предложения, квизы, истории) ждут данные из своих файлов
+// и для gsheet-наборов не подходят.
+const GSHEET_GAME_PATHS = [
+  'spell-ten',
+  'spell-it',
+  'find-pairs-easy',
+  'find-pairs-hard',
+  'game-pronunciation',
+  'game-whatDoYouHear',
+  'game-translate',
+  'print-all-words2',
+  'spelling',
+  'scrambled',
+];
+
 const filteredGames = computed(() => {
   const missionName = route.params.missionName;
+
+  // 🆕 Для gsheet-наборов показываем только «некоторые игры из списка GSHEET_GAME_PATHS»,
+  // которые умеют брать данные через loadWords.
+  if (missionName?.startsWith('gsheet:')) {
+    return AllGames.value.filter(
+      game => game.active && GSHEET_GAME_PATHS.includes(game.path)
+    );
+  }
 
   // Универсальная проверка: есть ли данные для этой миссии
   const hasData = (dataObj) => {
@@ -385,12 +415,21 @@ watch(
   { immediate: true }
 );
 
+// const startGame = (path) => {
+//   const game = AllGames.value.find(g => g.path === path);
+//   if (game && game.active) {
+//     router.push(`/see-all-sets-of-words/${route.params.missionName}/${path}`);
+//   }
+// }
+
 const startGame = (path) => {
   const game = AllGames.value.find(g => g.path === path);
   if (game && game.active) {
-    router.push(`/see-all-sets-of-words/${route.params.missionName}/${path}`);
+    router.push(
+      `/see-all-sets-of-words/${encodeURIComponent(route.params.missionName)}/${path}`
+    );
   }
-}
+};
 
 const backToPreviousPage = () => {
   router.push("/see-all-sets-of-words/")
