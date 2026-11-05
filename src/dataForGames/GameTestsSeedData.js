@@ -4444,498 +4444,418 @@ const GameTestsSeedData = {
     ]
   },
   examY4V1: {
-    mainDescription: 'Можно кликать на несколько ответов и...',
+    mainDescription: 'Советик from Vincentik: читайте ответы вслух - если звучит хорошо, то ответ верный! (но это не точно =)',
     tasks: [
       {
         taskID: "multiple_choice",
-        taskDescription: "...или можно менять свой ответ после выбора",
+        taskDescription: "Можно кликать на несколько ответов и менять свое решение",
         textScript: null,
         questions: [
           {
-            text: "Don’t worry if I …. late tonight. I’m going to the gym after work",
-            options: {
-              A: "am",
-              B: "will be",
-              C: "would be",
-              D: "was"
-            },
+            text: "Don’t worry if I ___ late tonight. I’m going to the gym after work",
+            options: { A: "am", B: "will be", C: "would be", D: "was" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Не волнуйся, если я сегодня вечером опоздаю. (после if в придаточном условии будущее не ставим — используем Present Simple: if I am late)"
           },
           {
-            text: "She …. obsessed with rock climbing at a young age.",
-            options: {
-              A: "becomes",
-              B: "became",
-              C: "has become",
-              D: "would become"
-            },
+            text: "She ___ obsessed with rock climbing at a young age.",
+            options: { A: "becomes", B: "became", C: "has become", D: "would become" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Она стала одержима скалолазанием в молодом возрасте. (at a young age — законченный период в прошлом → Past Simple: became)"
           },
           {
-            text: "I did it without spending …. money.",
-            options: {
-              A: "some",
-              B: "any"
-            },
+            text: "I did it without spending ___ money.",
+            options: { A: "some", B: "any" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Я сделал это, не потратив денег. (without — отрицательный контекст, поэтому any, а не some)"
           },
           {
-            text: "He doesn’t have …. experience.",
-            options: {
-              A: "much",
-              B: "many",
-              C: "few"
-            },
+            text: "He doesn’t have ___ experience.",
+            options: { A: "much", B: "many", C: "few" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "У него не так много опыта. (experience — неисчисляемое → much; many/few — для исчисляемых)"
           },
           {
-            text: "He made him …. do it.",
-            options: {
-              A: "to",
-              B: "-"
-            },
+            text: "He made him ___ do it.",
+            options: { A: "to", B: "-" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Он заставил его это сделать. (make + объект + глагол без to: made him do)"
           },
           {
-            text: "It …. a lot since I was here.",
-            options: {
-              A: "changed",
-              B: "has changed",
-              C: "is changing"
-            },
+            text: "It ___ a lot since I was here.",
+            options: { A: "changed", B: "has changed", C: "is changing" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Здесь многое изменилось с тех пор, как я был здесь. (since I was here — сигнал Present Perfect: has changed)"
           },
           {
-            text: "Can I make myself a cup of coffee? Of course. You …. to ask.",
-            options: {
-              A: "haven’t",
-              B: "mustn’t",
-              C: "needn’t",
-              D: "don’t have"
-            },
+            text: "Can I make myself a cup of coffee? Of course. You ___ to ask.",
+            options: { A: "haven’t", B: "mustn’t", C: "needn’t", D: "don’t have" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Можно мне сделать себе чашку кофе? Конечно. Тебе не нужно спрашивать. (don’t have to ask — нет необходимости спрашивать)"
           },
           {
-            text: "I …. smoking.",
-            options: {
-              A: "used to",
-              B: "am used to"
-            },
+            text: "I ___ smoking.",
+            options: { A: "used to", B: "am used to" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Я привык курить. (be used to + -ing = привык к чему-то: am used to smoking; used to smoking означало бы «раньше курил», но тогда нужна форма used to smoke)"
           },
           {
-            text: "We …. tomorrow, I think.",
-            options: {
-              A: "will drop in",
-              B: "drop in",
-              C: "dropping in"
-            },
+            text: "We ___ tomorrow, I think.",
+            options: { A: "will drop in", B: "drop in", C: "dropping in" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Думаю, мы завтра заглянем. (I think + предположение о будущем → will drop in)"
           },
           {
-            text: "I knew they …. come.",
-            options: {
-              A: "will",
-              B: "-",
-              C: "would"
-            },
+            text: "I knew they ___ come.",
+            options: { A: "will", B: "-", C: "would" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Я знал, что они придут. (согласование времён: knew в прошлом → would come)"
           },
           {
-            text: "…. her last week?",
-            options: {
-              A: "have you seen",
-              B: "did you see",
-              C: "were you seen"
-            },
+            text: "___ her last week?",
+            options: { A: "have you seen", B: "did you see", C: "were you seen" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Ты видел её на прошлой неделе? (last week — законченное время в прошлом → Past Simple: did you see)"
           },
           {
-            text: "She’s my old friend – I …. her for ages.",
-            options: {
-              A: "’ve known",
-              B: "knew",
-              C: "’ve been knowing"
-            },
+            text: "She’s my old friend – I ___ her for ages.",
+            options: { A: "’ve known", B: "knew", C: "’ve been knowing" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Она моя старая подруга — я знаю её целую вечность. (for ages — сигнал Present Perfect; know не употребляется в Continuous, поэтому ’ve known)"
           },
           {
-            text: "When she came in I knew I …. her before.",
-            options: {
-              A: "have seen",
-              B: "saw",
-              C: "had seen"
-            },
+            text: "When she came in I knew I ___ her before.",
+            options: { A: "have seen", B: "saw", C: "had seen" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Когда она вошла, я понял, что видел её раньше. (действие до другого действия в прошлом → Past Perfect: had seen)"
           },
           {
-            text: "His father …. at the railway station.",
-            options: {
-              A: "drop him off",
-              B: "saw him off",
-              C: "take him off"
-            },
+            text: "His father ___ at the railway station.",
+            options: { A: "drop him off", B: "saw him off", C: "take him off" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Его отец проводил его на вокзале. (see somebody off = проводить кого-то; drop off — высадить, take off — взлететь/снять)"
           },
           {
-            text: "Jon …. working on this project for a couple of months so he hasn’t made much progress yet.",
-            options: {
-              A: "is only",
-              B: "has only been",
-              C: "was only",
-              D: "had only been"
-            },
+            text: "Jon ___ working on this project for a couple of months so he hasn’t made much progress yet.",
+            options: { A: "is only", B: "has only been", C: "was only", D: "had only been" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Джон работает над этим проектом всего пару месяцев, поэтому ещё не добился больших успехов. (for a couple of months + hasn’t made yet → Present Perfect Continuous: has only been working)"
           },
           {
-            text: "She …. much better since she left the hospital last week.",
-            options: {
-              A: "is feeling",
-              B: "feels",
-              C: "felt",
-              D: "has been feeling"
-            },
+            text: "She ___ much better since she left the hospital last week.",
+            options: { A: "is feeling", B: "feels", C: "felt", D: "has been feeling" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Она чувствует себя намного лучше с тех пор, как вышла из больницы на прошлой неделе. (since she left — сигнал Perfect; подчёркиваем длительность состояния до настоящего → has been feeling)"
           },
           {
-            text: "London is on ...... River Thames",
-            options: {
-              A: "----",
-              B: "a",
-              C: "the"
-            },
+            text: "London is on ___ River Thames",
+            options: { A: "----", B: "a", C: "the" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Лондон стоит на реке Темзе. (с названиями рек употребляется определённый артикль: the River Thames)"
           },
           {
-            text: "The party was so boring I wish I …. there at all.",
-            options: {
-              A: "hadn't gone",
-              B: "wouldn't go",
-              C: "haven't gone",
-              D: "didn't go"
-            },
+            text: "The party was so boring I wish I ___ there at all.",
+            options: { A: "hadn't gone", B: "wouldn't go", C: "haven't gone", D: "didn't go" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Вечеринка была такой скучной, что я жалею, что вообще туда пошёл. (wish + Past Perfect — сожаление о прошлом: I wish I hadn’t gone)"
           },
           {
-            text: "I want to know ….",
-            options: {
-              A: "where are they",
-              B: "where they are"
-            },
+            text: "I want to know ___.",
+            options: { A: "where are they", B: "where they are" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Я хочу знать, где они. (в косвенном вопросе прямой порядок слов: where they are)"
           },
           {
-            text: "Nobody called, …",
-            options: {
-              A: "didn’t they?",
-              B: "did they?",
-              C: "do they?"
-            },
+            text: "Nobody called, ___",
+            options: { A: "didn’t they?", B: "did they?", C: "do they?" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Никто не звонил, правда? (nobody — отрицательное подлежащее, поэтому хвостик утвердительный: did they?)"
           },
           {
-            text: "Everybody … hungry, as nobody ... eaten.",
-            options: {
-              A: "are/ have",
-              B: "is / are",
-              C: "is/ have",
-              D: "is/has"
-            },
+            text: "Everybody ___ hungry, as nobody ___ eaten.",
+            options: { A: "are/ have", B: "is / are", C: "is/ have", D: "is/has" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Все голодны, так как никто не ел. (everybody и nobody — единственное число: everybody is, nobody has eaten)"
           },
           {
-            text: "He …. a therapist for several years so far.",
-            options: {
-              A: "has seen",
-              B: "has been seeing",
-              C: "saw",
-              D: "used to seeing"
-            },
+            text: "He ___ a therapist for several years so far.",
+            options: { A: "has seen", B: "has been seeing", C: "saw", D: "used to seeing" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Он ходит к терапевту уже несколько лет. (so far + for several years + длительное/повторяющееся действие → Present Perfect Continuous: has been seeing)"
           },
           {
-            text: "How long …. you had this car?",
-            options: {
-              A: "did",
-              B: "do",
-              C: "have",
-              D: "were"
-            },
+            text: "How long ___ you had this car?",
+            options: { A: "did", B: "do", C: "have", D: "were" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Как долго у тебя эта машина? (How long + have you had — Present Perfect для действия, которое длится до сих пор)"
           },
           {
-            text: "We've had to … our wedding until May.",
-            options: {
-              A: "take aback",
-              B: "put off",
-              C: "be over"
-            },
+            text: "We've had to ___ our wedding until May.",
+            options: { A: "take aback", B: "put off", C: "wrap up" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Нам пришлось отложить свадьбу до мая. (put off = отложить на более поздний срок; take aback — озадачить, wrap up — завершить)"
           },
           {
             text: "He's having a huge house",
-            options: {
-              A: "correct",
-              B: "incorrect"
-            },
+            options: { A: "correct", B: "incorrect" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "У него огромный дом. (have в значении «владеть» не употребляется в Continuous: He has a huge house)"
           },
           {
-            text: "We can't use the room now, because it....",
-            options: {
-              A: "is repairing",
-              B: "is repaired",
-              C: "is being repaired"
-            },
+            text: "We can't use the room now, because it ___",
+            options: { A: "is repairing", B: "is repaired", C: "is being repaired" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Мы не можем сейчас пользоваться комнатой, потому что её ремонтируют. (комнату ремонтируют прямо сейчас → Present Continuous Passive: is being repaired)"
           },
           {
-            text: "Lena used to find work boring …. she became a nurse.",
-            options: {
-              A: "unless",
-              B: "until",
-              C: "if",
-              D: "since"
-            },
+            text: "Lena used to find work boring ___ she became a nurse.",
+            options: { A: "unless", B: "until", C: "if", D: "since" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Лена считала работу скучной, пока не стала медсестрой. (until = до тех пор, пока не)"
           },
           {
             text: "Are they having a good time?",
-            options: {
-              A: "correct",
-              B: "incorrect"
-            },
+            options: { A: "correct", B: "incorrect" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Они хорошо проводят время? (have a good time — устойчивое выражение, здесь Continuous уместен: are they having a good time?)"
           },
           {
-            text: "The homework will …. by Tuesday.",
-            options: {
-              A: "have been done",
-              B: "be done",
-              C: "do",
-              D: "done"
-            },
-            correctAnswer: "A",
-            explanation: ""
+            text: "The homework will ___ by Tuesday.",
+            options: { A: "have been done", B: "be done", C: "do", D: "done" },
+            correctAnswer: "B",
+            explanation: "Домашняя работа будет сделана к вторнику. (will be done — Future Simple Passive)"
           },
           {
-            text: "If I ... closer to my office, I could walk to work.",
-            options: {
-              A: "lived",
-              B: "would live",
-              C: "had lived",
-              D: "live"
-            },
+            text: "If I ___ closer to my office, I could walk to work.",
+            options: { A: "lived", B: "would live", C: "had lived", D: "live" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Если бы я жил ближе к офису, я мог бы ходить на работу пешком. (второй тип условных: if + Past Simple (lived), could + глагол)"
           },
           {
             text: "I am thinking you are a nice person.",
-            options: {
-              A: "correct",
-              B: "incorrect"
-            },
+            options: { A: "correct", B: "incorrect" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Я считаю, что ты хороший человек. (think в значении «считать» не употребляется в Continuous: I think you are a nice person)"
           },
           {
-            text: "Maya …. her hand.",
-            options: {
-              A: "risen",
-              B: "rose",
-              C: "rise",
-              D: "raised"
-            },
+            text: "Maya ___ her hand.",
+            options: { A: "risen", B: "rose", C: "rise", D: "raised" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Майя подняла руку. (raise — переходный глагол, поднять что-то: raised her hand; rise — непереходный, подниматься самому)"
           },
           {
-            text: "She …. always …. keys!!!",
-            options: {
-              A: "is losing",
-              B: "has been losing",
-              C: "lose",
-              D: "is loosing"
-            },
-            correctAnswer: "A",
-            explanation: ""
-          },
-          {
-            text: "Who are …. women?",
-            options: {
-              A: "this",
-              B: "those",
-              C: "that"
-            },
+            text: "She ___ always ___ keys!!!",
+            options: { A: "is losing", B: "has been losing", C: "lose", D: "is loosing" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Она вечно теряет ключи!!! (always + раздражение и повторяемость до настоящего → has been losing; вариант is loosing — опечатка)"
           },
           {
-            text: "I’ve got to be at work in five minutes. Don’t worry, I …. you a lift if you want.",
-            options: {
-              A: "give",
-              B: "am giving",
-              C: "’ll give",
-              D: "’m going to give"
-            },
+            text: "Who are ___ women?",
+            options: { A: "this", B: "those", C: "that" },
+            correctAnswer: "B",
+            explanation: "Кто эти женщины? (women — множественное число, are → those women)"
+          },
+          {
+            text: "I’ve got to be at work in five minutes. Don’t worry, I ___ you a lift if you want.",
+            options: { A: "give", B: "am giving", C: "’ll give", D: "’m going to give" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Мне нужно быть на работе через пять минут. Не волнуйся, я тебя подвезу, если хочешь. (спонтанное решение в момент речи → will give / ’ll give)"
           },
           {
-            text: "…. anywhere interesting recently?",
-            options: {
-              A: "Do you go",
-              B: "Have you been",
-              C: "Are you going",
-              D: "Will you go"
-            },
+            text: "___ anywhere interesting recently?",
+            options: { A: "Do you go", B: "Have you been", C: "Are you going", D: "Will you go" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Ты был где-нибудь интересном в последнее время? (recently — сигнал Present Perfect: Have you been)"
           },
           {
-            text: "He is …. clever man!",
-            options: {
-              A: "so",
-              B: "so a",
-              C: "such",
-              D: "such a"
-            },
+            text: "He is ___ clever man!",
+            options: { A: "so", B: "so a", C: "such", D: "such a" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Он такой умный человек! (such a + прилагательное + существительное: such a clever man; so + прилагательное без существительного)"
           },
           {
-            text: "Why not …. give him a chance?",
-            options: {
-              A: "to",
-              B: "us",
-              C: "-"
-            },
+            text: "Why not ___ give him a chance?",
+            options: { A: "to", B: "us", C: "-" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Почему бы не дать ему шанс? (why not + глагол без to: Why not give him a chance?)"
           },
           {
-            text: "The lesson …. at 5.",
-            options: {
-              A: "will starts",
-              B: "start",
-              C: "starts"
-            },
+            text: "The lesson ___ at 5.",
+            options: { A: "will starts", B: "start", C: "starts" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Урок начинается в 5. (расписание → Present Simple: the lesson starts at 5)"
           },
           {
-            text: "I …. for 2 hours and she’s not here yet.",
-            options: {
-              A: "have waited",
-              B: "have been waiting"
-            },
+            text: "I ___ for 2 hours and she’s not here yet.",
+            options: { A: "have waited", B: "have been waiting" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Я жду уже два часа, а её всё ещё нет. (действие длится два часа и всё ещё продолжается → Present Perfect Continuous: have been waiting)"
           },
           {
             text: "It is tasting good",
-            options: {
-              A: "correct",
-              B: "incorrect"
-            },
+            options: { A: "correct", B: "incorrect" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Это вкусно. (taste в значении «быть на вкус» — глагол состояния, не употребляется в Continuous: It tastes good)"
           },
           {
-            text: "Who … food in your family when your Mom is away?",
-            options: {
-              A: "cooks",
-              B: "is cook",
-              C: "does cook",
-              D: "cooked"
-            },
+            text: "Who ___ food in your family when your Mom is away?",
+            options: { A: "cooks", B: "is cook", C: "does cook", D: "cooked" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Кто готовит еду в твоей семье, когда мамы нет? (вопрос к подлежащему: who cooks, без does; Present Simple для регулярного действия)"
           },
           {
-            text: "He realized that he …. his car keys in the office.",
-            options: {
-              A: "left",
-              B: "has left",
-              C: "had left",
-              D: "was leaving"
-            },
+            text: "He realized that he ___ his car keys in the office.",
+            options: { A: "left", B: "has left", C: "had left", D: "was leaving" },
             correctAnswer: "C",
-            explanation: ""
+            explanation: "Он понял, что оставил ключи от машины в офисе. (действие до другого действия в прошлом → Past Perfect: had left)"
           },
           {
-            text: "We couldn't fall asleep because our neighbours …. a lot of noise.",
-            options: {
-              A: "made",
-              B: "had made",
-              C: "have made",
-              D: "were making"
-            },
+            text: "We couldn't fall asleep because our neighbours ___ a lot of noise.",
+            options: { A: "made", B: "had made", C: "have made", D: "were making" },
             correctAnswer: "D",
-            explanation: ""
+            explanation: "Мы не могли уснуть, потому что соседи сильно шумели. (длительное действие в прошлом, на фоне которого не могли уснуть → Past Continuous: were making)"
           },
           {
-            text: "We wouldn't have missed the bus if you …. to chat with Mary!",
-            options: {
-              A: "didn't stop",
-              B: "hadn't stopped",
-              C: "don't stop",
-              D: "wouldn't have stopped"
-            },
+            text: "We wouldn't have missed the bus if you ___ to chat with Mary!",
+            options: { A: "didn't stop", B: "hadn't stopped", C: "don't stop", D: "wouldn't have stopped" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Мы бы не опоздали на автобус, если бы ты не остановился поболтать с Мэри! (третий тип условных: if + Past Perfect (hadn’t stopped), would have + V3)"
           },
           {
-            text: "Did you see the film on ...TV last night?",
-            options: {
-              A: "----",
-              B: "a",
-              C: "the"
-            },
+            text: "Did you see the film on ___ TV last night?",
+            options: { A: "----", B: "a", C: "the" },
             correctAnswer: "A",
-            explanation: ""
+            explanation: "Ты вчера вечером смотрел фильм по телевизору? (с TV в значении «телевидение» артикль не нужен: on TV)"
           },
           {
-            text: "A prize … to whoever solves this problem.",
-            options: {
-              A: "will be giving",
-              B: "will be given",
-              C: "will give"
-            },
+            text: "A prize ___ to whoever solves this problem.",
+            options: { A: "will be giving", B: "will be given", C: "will give" },
             correctAnswer: "B",
-            explanation: ""
+            explanation: "Приз будет вручён тому, кто решит эту задачу. (приз будет вручён → Future Simple Passive: will be given)"
+          },
+          {
+            text: "Everybody’s gone home, ___?",
+            options: { A: "haven’t they?", B: "hasn’t they?", C: "didn’t they?", D: "don’t they?" },
+            correctAnswer: "A",
+            explanation: "Все ушли домой, не так ли? (everybody — единственное число, но в tag-вопросе заменяется на they; have gone → haven’t they?)"
+          },
+          {
+            text: "Nobody here speaks French, ___?",
+            options: { A: "do they?", B: "don’t they?", C: "does he?", D: "doesn’t he?" },
+            correctAnswer: "A",
+            explanation: "Здесь никто не говорит по-французски, правда? (nobody — отрицательное слово, поэтому tag утвердительный; nobody → they, speaks → do they?)"
+          },
+          {
+            text: "He called you yesterday, ___?",
+            options: { A: "didn’t he?", B: "did he?", C: "doesn’t he?", D: "wasn’t he?" },
+            correctAnswer: "A",
+            explanation: "Он звонил тебе вчера, не так ли? (утверждение в Past Simple → отрицательный tag с did: didn’t he?)"
+          },
+          {
+            text: "We never drink coffee, ___?",
+            options: { A: "do we?", B: "don’t we?", C: "did we?", D: "are we?" },
+            correctAnswer: "A",
+            explanation: "Мы никогда не пьём кофе, правда? (never — отрицательное слово, поэтому tag утвердительный: do we?)"
+          },
+          {
+            text: "That’s no excuse, ___?",
+            options: { A: "is it?", B: "isn’t it?", C: "does it?", D: "isn’t that?" },
+            correctAnswer: "A",
+            explanation: "Это не оправдание, правда? (no — отрицательное слово, поэтому tag утвердительный; that’s → is it?)"
+          },
+          {
+            text: "Let’s go for a walk, ___?",
+            options: { A: "shall we?", B: "will we?", C: "do we?", D: "don’t we?" },
+            correctAnswer: "A",
+            explanation: "Пойдём погуляем, хорошо? (после Let’s всегда ставим shall we?)"
+          },
+          {
+            text: "Nothing ever changes, ___?",
+            options: { A: "does it?", B: "doesn’t it?", C: "has it?", D: "did it?" },
+            correctAnswer: "A",
+            explanation: "Ничего никогда не меняется, правда? (nothing — отрицательное слово, tag утвердительный; nothing → it, changes → does it?)"
+          },
+          {
+            text: "I hardly smoke anymore, ___?",
+            options: { A: "do I?", B: "don’t I?", C: "did I?", D: "am I?" },
+            correctAnswer: "A",
+            explanation: "Я почти не курю, правда? (hardly — отрицательное слово, поэтому tag утвердительный: do I?)"
+          },
+          {
+            text: "I am not stupid, ___?",
+            options: { A: "am I?", B: "aren’t I?", C: "isn’t it?", D: "do I?" },
+            correctAnswer: "A",
+            explanation: "Я не глупый, правда? (am not → утвердительный tag am I?; вариант aren’t I? используется в утвердительном предложении I am…, aren’t I?)"
+          },
+          {
+            text: "Somebody called me, ___?",
+            options: { A: "didn’t they?", B: "did they?", C: "didn’t he?", D: "doesn’t they?" },
+            correctAnswer: "A",
+            explanation: "Кто-то мне звонил, не так ли? (somebody — утвердительное подлежащее, tag отрицательный; somebody → they, called → didn’t they?)"
+          },
+          {
+            text: "We live on ___ Farmington St.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "C",
+            explanation: "Мы живём на Фармингтон-стрит. (с названиями улиц артикль не ставим: on Farmington St.)"
+          },
+          {
+            text: "Who opened ___ window?",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Кто открыл окно? (речь о конкретном окне, известном говорящим → the)"
+          },
+          {
+            text: "Your flat is beautiful! Where is ___ rest room in here?",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Твоя квартира прекрасна! Где здесь туалет? (конкретная комната в этой квартире → the)"
+          },
+          {
+            text: "He serves in ___ army.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Он служит в армии. (устойчивое выражение in the army → the)"
+          },
+          {
+            text: "Who makes ___ breakfast in your family?",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "C",
+            explanation: "Кто готовит завтрак в твоей семье? (названия приёмов пищи без артикля: make breakfast)"
+          },
+          {
+            text: "We often go to ___ theatre.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Мы часто ходим в театр. (go to the theatre — устойчивое выражение → the)"
+          },
+          {
+            text: "___ unemployed get benefits in our country.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Безработные получают пособие в нашей стране. (the + прилагательное = собирательное существительное: the unemployed — безработные)"
+          },
+          {
+            text: "Look at ___ sky.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Посмотри на небо. (небо — единственное в своём роде → the sky)"
+          },
+          {
+            text: "___ Spanish love vodka.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Испанцы любят водку. (the + национальность = нация в целом: the Spanish — испанцы)"
+          },
+          {
+            text: "He went to ___ school to meet his daughter.",
+            options: { A: "a", B: "the", C: "-" },
+            correctAnswer: "B",
+            explanation: "Он пошёл в школу, чтобы встретить дочь. (речь о школе, куда ходит и где учится дочь, а не он сам. → the; без артикля go to school означало бы «учиться в школе»)"
           }
         ]
-      },
-    ],
+      }
+    ]
   },
   test1V1: {
     mainDescription: "Let's find out the weak spots",

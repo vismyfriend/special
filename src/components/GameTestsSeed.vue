@@ -768,7 +768,7 @@ const seedInput = ref(null)
 
 
 // Добавь эти переменные после существующих
-const displayMode = ref('list') // 'list' или 'single'
+const displayMode = ref('single') // 'list' или 'single'
 const currentQuestionIndex = ref(0)
 
 // Функция для переключения режима отображения
