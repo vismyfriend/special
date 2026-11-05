@@ -857,6 +857,7 @@ const levels = [
   { id: 'lvl3', label: '3' },
   { id: 'lvl4', label: '4' },
   { id: 'lvl5', label: '5' },
+  { id: 'lvlGsheets', label: 'G' },
   { id: 'lvlSpeaking', label: '💬' },
   { id: 'lvlAll', label: 'все' },
   { id: 'lvlDev', label: '🔓' },

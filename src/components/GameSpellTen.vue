@@ -33,9 +33,9 @@
             </div>
           </div>
 
-          <div class="additional-column">
-            <p>{{ (index + 1) * 10 }}%</p>
-          </div>
+<!--          <div class="additional-column">-->
+<!--            <p>{{ (index + 1) * 10 }}%</p>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -274,6 +274,69 @@ const computeHighlight = (userInput, correctAnswer) => {
   const userWords = normalizedUser.split(' ');
   const correctWords = normalizedCorrect.split(' ');
 
+
+  // Расширяет fuzzy/missing-сегменты на 1 символ влево и вправо,
+// чтобы одиночная ошибочная буква была хорошо видна.
+// Подчёркивание при этом должно остаться только на самой ошибке,
+// поэтому маркер для подчёркивания отделяем.
+  const expandFuzzySegments = (segments) => {
+    if (!segments.length) return segments;
+
+    // Помечаем, какие сегменты "виновные" (fuzzy / missing)
+    const isFault = (seg) => seg.type === 'fuzzy' || seg.type === 'missing';
+
+    // Сначала: для каждого сегмента вычисляем, надо ли ему добавить
+    // "фоновую подсветку" слева или справа (но не менять его тип для подчёркивания)
+    const result = segments.map(seg => ({ ...seg }));
+
+    for (let i = 0; i < result.length; i++) {
+      const seg = result[i];
+      if (!isFault(seg)) continue;
+
+      // Разбиваем текст сегмента на символы, чтобы можно было точечно
+      // добавить фоновую подсветку только к первому/последнему символу
+      const chars = seg.text.split('');
+
+      // Левый сосед: если предыдущий сегмент — neutral и не пустой
+      if (i > 0 && result[i - 1].type === 'neutral') {
+        const prevChars = result[i - 1].text.split('');
+        if (prevChars.length > 0) {
+          const lastChar = prevChars.pop();
+          result[i - 1].text = prevChars.join('');
+          result[i - 1].padRight = lastChar; // запомним символ для "фонового" расширения
+        }
+      }
+
+      // Правый сосед: если следующий сегмент — neutral и не пустой
+      if (i < result.length - 1 && result[i + 1].type === 'neutral') {
+        const nextChars = result[i + 1].text.split('');
+        if (nextChars.length > 0) {
+          const firstChar = nextChars.shift();
+          result[i + 1].text = nextChars.join('');
+          result[i + 1].padLeft = firstChar; // запомним символ для "фонового" расширения
+        }
+      }
+    }
+
+    // Теперь превращаем padLeft / padRight в отдельные neutral-сегменты
+    // с дополнительным классом "pad" — чтобы они получили фон, но не подчёркивание.
+    const expanded = [];
+    for (const seg of result) {
+      if (seg.padLeft) {
+        expanded.push({ text: seg.padLeft, type: 'pad' });
+      }
+      if (seg.text) {
+        const { padLeft, padRight, ...rest } = seg;
+        expanded.push(rest);
+      }
+      if (seg.padRight) {
+        expanded.push({ text: seg.padRight, type: 'pad' });
+      }
+    }
+
+    return expanded;
+  };
+
   // Если число слов не совпало — не diff-им посимвольно, подсвечиваем всё
   if (userWords.length !== correctWords.length) {
     return [{ text: userInput, type: 'fuzzy' }];
@@ -306,7 +369,7 @@ const computeHighlight = (userInput, correctAnswer) => {
     }
   }
 
-  return segments;
+  return expandFuzzySegments(segments);
 };
 
 // === Очистка подсветки при новом вводе ===
@@ -484,7 +547,11 @@ onMounted(async () => {
   border-bottom: 2px solid #f44336;
   border-radius: 3px;
 }
-
+/* Соседний символ ошибки: только фон, без подчёркивания */
+.seg-pad {
+  background: rgba(44, 255, 0, 0.21);
+  border-radius: 3px;
+}
 /* Input: прозрачный фон, текст виден только здесь */
 .userInput {
   position: relative;

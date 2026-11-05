@@ -7,9 +7,17 @@ export const allGamesAndSetsOfWordsList =
       missionDescription: "Dev's dictionary",
       missionName: 'gsheet:1DfstM9cBffsyCKmE2RxzWRq5rENDWhRd1aWAoB5O6XA',
       active: true,
-      lvl: 'lvlAll',
+      lvl: 'lvlGsheets',
       type: 'gsheet',
-      // category: 'students', // если хочешь отдельную категорию
+    },
+    {
+      missionVisibleName: "Google Notebook",
+      missionDescription: "Гугл тетрадь",
+      missionName: 'gsheet:1w6xWZuiOXzBWO48FtnJnZkLrUX78B2xJ0aJf3-S3DDk',
+      // https://docs.google.com/spreadsheets/d/1w6xWZuiOXzBWO48FtnJnZkLrUX78B2xJ0aJf3-S3DDk/edit?usp=sharing
+      active: true,
+      lvl: 'lvlGsheets',
+      type: 'gsheet',
     },
     {
       missionVisibleName: "Dictionary of AAA",

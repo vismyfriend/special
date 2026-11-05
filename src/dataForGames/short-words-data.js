@@ -3605,7 +3605,75 @@ whatISitVideoMission: [
     { id: 16, eng: "write, wrote, written", ru: "писать" },
     { id: 17, eng: "hide, hid, hidden", ru: "прятать" },
   ],
+  irregularVerbsSpell10: [
+    { id: 1,  eng: "bite",    ru: "кусать",       hint: "байт" },
+    { id: 2,  eng: "bit",     ru: "укусил",       hint: "бит" },
+    { id: 3,  eng: "bitten",  ru: "укушенный",    hint: "битэн" },
 
+    { id: 4,  eng: "blow",    ru: "дуть",         hint: "блОУ" },
+    { id: 5,  eng: "blew",    ru: "дул",          hint: "блУ" },
+    { id: 6,  eng: "blown",   ru: "надутый",      hint: "блОУн" },
+
+    { id: 7,  eng: "break",   ru: "ломать",       hint: "брЭйк" },
+    { id: 8,  eng: "broke",   ru: "сломал",       hint: "броУк" },
+    { id: 9,  eng: "broken",  ru: "сломанный",    hint: "броУкэн" },
+
+    { id: 10, eng: "choose",  ru: "выбирать",     hint: "чУз" },
+    { id: 11, eng: "chose",   ru: "выбрал",       hint: "чоУз" },
+    { id: 12, eng: "chosen",  ru: "выбранный",    hint: "чоУзэн" },
+
+    { id: 13, eng: "do",      ru: "делать (выполнять)",       hint: "ду" },
+    { id: 14, eng: "did",     ru: "сделал (выполнил)",       hint: "дид" },
+    { id: 15, eng: "done",    ru: "сделанный (выполненно)",    hint: "дАн" },
+
+    { id: 16, eng: "drink",   ru: "пить",         hint: "дрИнк" },
+    { id: 17, eng: "drank",   ru: "пил",          hint: "дрЭнк" },
+    { id: 18, eng: "drunk",   ru: "выпитый, пьяный",      hint: "дрАнк" },
+
+    { id: 19, eng: "eat",     ru: "есть (кушать)",         hint: "ит" },
+    { id: 20, eng: "ate",     ru: "ел",           hint: "эйт" },
+    { id: 21, eng: "eaten",   ru: "съеденный",    hint: "итэн" },
+
+    { id: 22, eng: "fall",    ru: "падать",       hint: "фол" },
+    { id: 23, eng: "fell",    ru: "упал",         hint: "фЭл" },
+    { id: 24, eng: "fallen",  ru: "упавший",      hint: "фОлэн" },
+
+    { id: 25, eng: "forget",  ru: "забывать",     hint: "фогет" },
+    { id: 26, eng: "forgot",  ru: "забыл",        hint: "фогот" },
+    { id: 27, eng: "forgotten", ru: "забытый",    hint: "фоготэн" },
+
+    { id: 28, eng: "go",      ru: "идти",         hint: "гоУ" },
+    { id: 29, eng: "went",    ru: "шёл",          hint: "УЭнт" },
+    { id: 30, eng: "gone",    ru: "ушедший",      hint: "гАн" },
+
+    { id: 31, eng: "see",     ru: "видеть",       hint: "си" },
+    { id: 32, eng: "saw",     ru: "видел",        hint: "со" },
+    { id: 33, eng: "seen",    ru: "увиденный",    hint: "син" },
+
+    { id: 34, eng: "shake",   ru: "трясти",       hint: "шэйк" },
+    { id: 35, eng: "shook",   ru: "встряхнул",         hint: "шук" },
+    { id: 36, eng: "shaken",  ru: "встряхнутый",  hint: "шэйкэн" },
+
+    { id: 37, eng: "sing",    ru: "петь",         hint: "синг" },
+    { id: 38, eng: "sang",    ru: "пел",          hint: "сЭнг" },
+    { id: 39, eng: "sung",    ru: "спетый",       hint: "сАнг" },
+
+    { id: 40, eng: "steal",   ru: "красть",       hint: "стил" },
+    { id: 41, eng: "stole",   ru: "украл",         hint: "стоУл" },
+    { id: 42, eng: "stolen",  ru: "украденный",   hint: "стоУлэн" },
+
+    { id: 43, eng: "throw",   ru: "бросать",      hint: "th роу" },
+    { id: 44, eng: "threw",   ru: "бросил",       hint: "th ру" },
+    { id: 45, eng: "thrown",  ru: "брошенный",    hint: "th роун" },
+
+    { id: 46, eng: "write",   ru: "писать",       hint: "райт" },
+    { id: 47, eng: "wrote",   ru: "писал",        hint: "роУт" },
+    { id: 48, eng: "written", ru: "написанный",   hint: "рИтен" },
+
+    { id: 49, eng: "hide",    ru: "прятать",      hint: "хАЙд" },
+    { id: 50, eng: "hid",     ru: "спрятал",      hint: "хИд" },
+    { id: 51, eng: "hidden",  ru: "спрятанный",   hint: "хидэн" }
+  ],
   irregularVerbsNaughtyVerbsRu: [
     { id: 1,  eng: "bite",    ru: "байт",    hint: "кусать" },
     { id: 2,  eng: "bit",     ru: "бит",     hint: "укусил" },
