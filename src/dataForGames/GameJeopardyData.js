@@ -241,6 +241,126 @@ const gameJeopardyData = {
       }
     ]
   },
+  CatsFamily: {
+    mainDescription: "!? Чей ход  🦁  ХУЗ ТЁРН ?! ",
+    level: "S.P.E.C.I.A.L",
+    categories: [
+      {
+        name: "джоб интэвью\n job interview",
+        questions: [
+          {
+            value: 150,
+            question: "Hi, we are happy to have you at this interview!\n " +
+              "One small problem, we see your first name, but\n " +
+              "we don't see your last name. \n" +
+              "Will you spell it please letter by letter?",
+            answer: "Sure, it is not a problem for me.\n" +
+              "My last name is Y-E-P-O-P-C-K-i-N-A",
+            // image: null,
+            // audio: new URL('../assets/audio/FaithYoungSheldonS1e3.mp3', import.meta.url).href,
+          },
+          {
+            value: 222,
+            question: "What is your phone number?",
+            answer: "My phone number is a private information,\nbut I can tell it now, if you hire me: it is +91 002 100 3008",
+            // image: new URL("../assets/images/testPic1.png", import.meta.url).href
+          },
+          {
+            value: 300,
+            question: "Introduce yourself:\n" +
+              "basic info (name, age, location, hobby)",
+            answer: "Well... okay! Hello again, and \n " +
+              "let me introduce myself \nI am Alex, I am 99,\n" +
+              "I am in Hawaii now, but I was born in Australia,\n" +
+              "my hobby is going to job interviews.\n" +
+              "I don't like to work, I like interviews only!",
+          },
+          {
+            value: 412,
+            question: "What are your salary expectations ?",
+            answer: "I believe salary must reflect my effort and value I bring to the company. (Ten thousand dollars in cash and no tax)",
+          }
+        ]
+      },
+      {
+        name: "a foot is food and \n feet are not food",
+        questions: [
+          {
+            value: 100,
+            question: "what is your favorite fruit?",
+            answer: "my favorite fruit is a banana,\n but to be honest I like all fruits\nexcept mandarins, because I have an allergy to mandarins"
+          },
+          {
+            value: 101,
+            question: "What is your favorite vegetable?",
+            answer: "my favorite vegetable is a cabbage,\n but to be honest I like all vegetables\nexcept onions, because I have an allergy to onions"
+          },
+          {
+            value: 110,
+            question: "What is the most important meal during the day?",
+            answer: "Some people say that breakfast is the most important meal of the day"
+          },
+          {
+            value: 111,
+            question: "Name the food without mistakes\none mistake and you lose! 🌽🌶🥕🥒🧅🍄",
+            answer: "corn, pepper, carrot \ncucumber, onion, mushroom"
+          },
+        ]
+      },
+      {
+        name: "My lovely cats 🦁\nmy cute monsters",
+        questions: [
+          {
+            value: 105,
+            question: "How many cats do you have?\nWhat are their names?",
+            answer: "I have 5 cats, and their names are _ _ _ _ _ \nI (don't) have a cat, I have an allergy to cats"
+          },
+          {
+            value: 189,
+            question: "If a dog has a babby, the baby is called a puppy.\n If a cat has a baby, the baby is called _ ______",
+            answer: "a baby of a cat is called a kitten"
+          },
+          {
+            value: 215,
+            question: 'You have 50 seconds to \ngoogle and tell the answer! \nTime starts NOW! \nWhat is the English for как на английском\n "усы человека" и "усы кошки"',
+            answer: "a human has moustache / мАс таш /\na cat has whiskers / вис керзс/"
+          },
+          {
+            value: 350,
+            question: "What was the name of a bad lion from a cartoon The Lion King ?",
+            answer: " if you say 'SCAR' it is a correct answer,\n and if you want to know the history: \nhis real birth name was Taka. But after a fight with buffalo (in the original book The Lion King: A Tale of Two Brothers) he had a scar on his left eye, and after this situation he took his nickname. Mufasa was his brother and Simba is his nephew"
+          },
+        ]
+      },
+      {
+        name: "Инглиш грЭмма ?\n это ещё what такое?",
+        questions: [
+          {
+            value: 13,
+            question: "Сколько времен в английском? И сколько обычно используется в повседневной жизни и разговорах?",
+            answer: "12 - twelve tenses - всего, но есть еще пассивный залог так что ответ 24 тоже правильный =) \n-\n используются в основном \n Present Simple \n Present Continuous \n Past Simple \n Past Continuous \n Future Simple \n Present perfect\n"
+          },
+          {
+            value: 30,
+            question: "Как на английском проще всего сказать: \n Студенты учились, студенты учатся, студенты выучатся",
+            answer: "students studied\nstudents study\nstudents will study"
+          },
+          {
+            value: 303,
+            question: "Correct all mistakes:  \nEverything okay, I haven't problem",
+            answer: "everything is okay, I don't have a problem"
+          },
+          {
+            value: 1000,
+            question: "Когда нужны артикли A / An / The ?",
+            answer: "The - когда говорим о чем-то уникальном, \nтом самом, конкретном о чем всем известно и пофиг множественное число или нет, \n -\n" +
+              "например the internet, the great pyramids, \nthe best cat in the world\n -\n An и A только когда слово в единственном числе и можно посчитать например какая-то одна кошка \nA cute cat, a good dog, a pyramid, a computer\n -\nAn это тоже самое ноперед гласным звуком \n- \n an umbrella, an old cat, an ugly dog "
+          },
+        ]
+      },
+
+    ]
+  },
   quickJ_1: {
     mainDescription: "Цель игры: попрактиковаться and speak инглиш :",
     level: "S.P.E.C.I.A.L",

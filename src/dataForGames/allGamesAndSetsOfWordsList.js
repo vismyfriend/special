@@ -929,6 +929,15 @@ export const allGamesAndSetsOfWordsList =
         stars: 3
       },
       {
+        type: "hardcodedLink",
+        path: "/see-all-sets-of-words/canDo/deck-of-cards/",
+        missionVisibleName: "What can you do?",
+        missionDescription: "Что ты умеешь делать?",
+        id: 1001,
+        active: true,
+        stars: 3
+      },
+      {
         type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
         url: "https://vismyfriend.github.io/VueFirstStart/",
         target: '_blank', // Открывать в новой вкладке

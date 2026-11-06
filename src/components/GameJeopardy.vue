@@ -1186,6 +1186,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   word-break: break-word;
+  white-space: pre-line;
 }
 
 .question-cell {

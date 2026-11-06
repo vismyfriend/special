@@ -58,6 +58,9 @@ import shortWordsData from '../dataForGames/short-words-data';
 import { ref, onMounted, computed, watch } from 'vue';
 import {useGameStore} from "stores/example-store";
 
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+const { loadWords, error } = whatGameDataToUse();
+
 const router = useRouter();
 const route = useRoute();
 const gameStore = useGameStore()
@@ -230,21 +233,17 @@ const finishGame = () => {
   });
 };
 
-onMounted(() => {
+onMounted(async () => {
   currentMission.value = route.params.missionName;
 
-  // Функция для получения данных из любой структуры
-  const getWordSet = (name) => {
-    if (shortWordsData[name]) return shortWordsData[name];
-    for (const level in shortWordsData) {
-      if (shortWordsData[level] && shortWordsData[level][name]) {
-        return shortWordsData[level][name];
-      }
-    }
-    return [];
-  };
+  // 🔥 Загружаем слова через composable (поддерживает и файлы, и gsheet)
+  const words = await loadWords(currentMission.value);
 
-  const words = getWordSet(currentMission.value);
+  if (!words?.length) {
+    console.warn('Слова не загрузились:', currentMission.value, error.value);
+    return;
+  }
+
   console.log(`Загружено слов для "${currentMission.value}": ${words.length}`);
 
   currentGameData.value = selectRandomWords(words, 20);
@@ -253,7 +252,7 @@ onMounted(() => {
   engCards.value = splitCards("eng");
 
   // Запускаем секундомер
-  setInterval(() => {time.value+= 10}, 10)
+  setInterval(() => { time.value += 10; }, 10);
 });
 
 </script>

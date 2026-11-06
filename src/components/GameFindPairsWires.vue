@@ -78,6 +78,9 @@ import { useRouter, useRoute } from 'vue-router';
 import { useGameStore } from 'stores/example-store';
 import shortWordsData from '../dataForGames/short-words-data';
 
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+const { loadWords, error } = whatGameDataToUse();
+
 
 
 const router = useRouter();
@@ -110,8 +113,9 @@ const progressWidth = computed(() => `${progressPercentage.value}%`);
 
 const handleButtonClick = () => {
   console.log("Кнопка нажата — резать провода!");
-  // Здесь можно запускать доп. механику
-  router.push(`/see-all-sets-of-words/${currentMission.value}/find-pairs-white`);
+  router.push(
+    `/see-all-sets-of-words/${encodeURIComponent(currentMission.value)}/find-pairs-white`
+  );
 };
 // Изменяем функцию animateProgress для плавной анимации
 const animateProgress = (target) => {
@@ -390,33 +394,25 @@ const finishGame = () => {
 };
 
 let startTime = null;
-
-onMounted(() => {
+onMounted(async () => {
   currentMission.value = route.params.missionName;
-// Функция для получения данных (работает и с плоской, и с вложенной структурой)
-  const getWordSet = (name) => {
-    // Проверка в плоской структуре
-    if (shortWordsData[name]) return shortWordsData[name];
 
-    // Проверка во вложенной структуре
-    for (const level in shortWordsData) {
-      if (shortWordsData[level] && shortWordsData[level][name]) {
-        return shortWordsData[level][name];
-      }
-    }
-    return [];
-  };
+  // 🔥 Загружаем слова через composable (поддерживает и файлы, и gsheet)
+  currentGameData.value = await loadWords(currentMission.value);
 
-  currentGameData.value = getWordSet(currentMission.value);
+  if (!currentGameData.value?.length) {
+    console.warn('Слова не загрузились:', currentMission.value, error.value);
+    return;
+  }
+
   console.log(currentMission.value);
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
-  initialTotalQuestions.value = shuffledData.length; // например, 12
-  totalQuestions.value = initialTotalQuestions.value; // инициализируем totalQuestions
-  allQuestions.value = [...shuffledData]; // Инициализируем allQuestions
+  initialTotalQuestions.value = shuffledData.length;
+  totalQuestions.value = initialTotalQuestions.value;
+  allQuestions.value = [...shuffledData];
   startTime = Date.now();
   loadQuestion();
   firstTryCorrect.value = Array(allQuestions.value.length).fill(null);
-
 });
 </script>
 

@@ -94,6 +94,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useGameStore } from 'stores/example-store';
 import shortWordsData from '../dataForGames/short-words-data';
 import { useSpeech } from '../composables/useSpeech';
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+const { loadWords, error } = whatGameDataToUse();
 
 
 // Русский — рандом ТОЛЬКО среди русских голосов
@@ -423,22 +425,17 @@ const finishGame = () => {
 let startTime = null;
 
 onMounted(async () => {
-  await questionSpeech.loadVoices()
-  await answerSpeech.loadVoices()
+  await questionSpeech.loadVoices();
+  await answerSpeech.loadVoices();
   currentMission.value = route.params.missionName;
 
-  const getWordSet = (name) => {
-    if (shortWordsData[name]) return shortWordsData[name];
+  // 🔥 Загружаем слова через composable (поддерживает и файлы, и gsheet)
+  currentGameData.value = await loadWords(currentMission.value);
 
-    for (const level in shortWordsData) {
-      if (shortWordsData[level] && shortWordsData[level][name]) {
-        return shortWordsData[level][name];
-      }
-    }
-    return [];
-  };
+  if (!currentGameData.value?.length) {
+    console.warn('Слова не загрузились:', currentMission.value, error.value);
+  }
 
-  currentGameData.value = getWordSet(currentMission.value);
   console.log(currentMission.value);
   shuffledData = shuffle([...currentGameData.value]).slice(0, 12);
   initialTotalQuestions.value = shuffledData.length;
@@ -447,8 +444,8 @@ onMounted(async () => {
   startTime = Date.now();
   loadQuestion();
   firstTryCorrect.value = Array(allQuestions.value.length).fill(null);
-
 });
+
 </script>
 
 <style lang="scss" scoped>

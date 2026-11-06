@@ -259,6 +259,13 @@ const showFinalResult = ref(false);
 const animationInterval = ref(null);
 const hideWords = ref(false);
 
+// Кодирует missionName для использования в URL.
+// Для обычных имён ("SevenDaysAWeek") вернёт как есть,
+// для gsheet ("gsheet:ID") закодирует ':' → '%3A'.
+const toUrl = (missionName, suffix = '') => {
+  const base = `/see-all-sets-of-words/${encodeURIComponent(missionName)}`;
+  return suffix ? `${base}/${suffix}` : base;
+};
 
 // 🔥 Это gsheet-миссия?
 const isGSheetMission = computed(() =>
@@ -665,33 +672,30 @@ const getDisplayName = (fullName) => {
  */
 const backToSameSet = () => {
   if (missionName.value) {
-    router.push(`/see-all-sets-of-words/${missionName.value}`);
-  } else {
-    console.error("missionName is not available");
-    router.push("/see-all-sets-of-words/");
-  }
-};
-const seeAllWordsInSet = () => {
-  if (missionName.value) {
-    router.push(`/see-all-sets-of-words/${missionName.value}/print-all-words`);
+    router.push(toUrl(missionName.value));
   } else {
     console.error("missionName is not available");
     router.push("/see-all-sets-of-words/");
   }
 };
 
-// const tryAgain = () => router.go(-1);
+const seeAllWordsInSet = () => {
+  if (missionName.value) {
+    router.push(toUrl(missionName.value, 'print-all-words'));
+  } else {
+    console.error("missionName is not available");
+    router.push("/see-all-sets-of-words/");
+  }
+};
+
 const tryAgain = () => {
-  // Явно возвращаем в ту игру, из которой пришли (или в дефолтную)
-  router.push(`/see-all-sets-of-words/${missionName.value}/${previousGame.value}`);
+  router.push(toUrl(missionName.value, previousGame.value));
 };
 
 const goToNextMission = () => {
   if (nextGame.value) {
-    // Есть следующая игра в цепочке — идём туда
-    router.push(`/see-all-sets-of-words/${missionName.value}/${nextGame.value}`);
+    router.push(toUrl(missionName.value, nextGame.value));
   } else {
-    // Последняя игра в цепочке — к списку игр (твоя существующая логика)
     otherMissions();
   }
 };
