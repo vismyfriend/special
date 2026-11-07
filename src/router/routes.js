@@ -462,8 +462,6 @@ const routes = [
             path: '/direct-print/:missionName',
             component: () => import('src/components/GamePrintAllWordsNotebook.vue')
           },
-
-
           {
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
@@ -477,7 +475,11 @@ const routes = [
             component: () => import('src/components/GameFlipCards.vue'),
             props: true // Позволяет передавать cover как пропс
           },
-
+          {
+            path: '/see-all-sets-of-words/:missionName/decksManyPlayers/:style?',
+            component: () => import('src/components/GameDecksManyPlayers.vue'),
+            props: true,
+          },
           {
             path: '/see-all-sets-of-words/:missionName/jeopardy/:style?',  // :style? - необязательный параметр
             component: () => import('src/components/GameJeopardy.vue'),

@@ -10,6 +10,7 @@ export const allGamesAndSetsOfWordsList =
       lvl: 'lvlGsheets',
       type: 'gsheet',
     },
+
     {
       missionVisibleName: "Google Notebook",
       missionDescription: "Гугл тетрадь",
@@ -44,8 +45,6 @@ export const allGamesAndSetsOfWordsList =
       id: 7,
       active: true,
       lvl: "lvl0",
-
-
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
@@ -57,6 +56,21 @@ export const allGamesAndSetsOfWordsList =
       lvl: "lvl0",
       stars: '3'
     },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/developerSet/decksManyPlayers",
+      missionVisibleName: "How often do you ___ ?",
+      missionDescription: "Как часто ты ___?",
+      active: true,
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/halloween/passTheBomb",
+      missionVisibleName: "Pass the bomb",
+      missionDescription: "pass the bomb",
+      active: true,
+    },
+
     {
       type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
       path: "/see-all-sets-of-words/AgentSMN/wordCloud2",
@@ -937,6 +951,7 @@ export const allGamesAndSetsOfWordsList =
         active: true,
         stars: 3
       },
+
       {
         type: "externalLink", // захардкодена ссылка на внешний сайт - не менять  тип идентификации
         url: "https://vismyfriend.github.io/VueFirstStart/",

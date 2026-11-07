@@ -259,6 +259,7 @@ const questionsData = {
       { id: 76, eng: "Vincent", ru: "вИнсент"},
 
     ],
+  
 
   funnyCharacters: [
     { id: 1, eng: "I", ru: "Я" },
