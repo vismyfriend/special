@@ -341,10 +341,10 @@ const MillionaireData = {
     {
       text: "/ АР / произношение какой буквы?",
       options: {
-        A: "r",
+        A: "R",
         B: "p",
-        C: "n",
-        D: "h"
+        C: "A",
+        D: "y"
       },
       correctAnswer: "A",
     },
