@@ -11,6 +11,7 @@ export const allGamesAndSetsOfWordsList =
       type: 'gsheet',
     },
 
+
     {
       missionVisibleName: "Google Notebook",
       missionDescription: "Гугл тетрадь",
@@ -92,6 +93,22 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/SevenDaysAWeek/find-pairs-easy",
       missionVisibleName: "Seven days a week",
       missionDescription: "7 days a week",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/paperPlane1/print-all-words2",
+      missionVisibleName: "Paper Plane 1",
+      missionDescription: "Present Continuous",
+      id: 1001,
+      active: true,
+    },
+    {
+      type: "hardcodedLink", //  тип для идентификации - захардкодена ссылка на конкретное задание
+      path: "/see-all-sets-of-words/paperPlane2/spell-it",
+      missionVisibleName: "Paper Plane 2",
+      missionDescription: "Present Continuous 2",
       id: 1001,
       active: true,
     },
