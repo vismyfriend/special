@@ -4,7 +4,7 @@
       <header class="mission-header">
         <div class="heading-row">
           <h1>Can you pick a lock?</h1>
-          <span class="mission-badge">МИССИЯ {{ String(lockIndex + 1).padStart(2, '0') }}</span>
+          <span class="mission-badge">замОк {{ String(lockIndex + 1).padStart(2, '0') }}</span>
         </div>
         <p>Сможешь вскрыть замок?</p>
       </header>
@@ -31,7 +31,7 @@
       </div>
       <template v-else>
         <div class="instrument-topline">
-          <span><i class="status-light"></i>{{ roundComplete ? 'МЕХАНИЗМ РАЗБЛОКИРОВАН' : 'МЕХАНИЗМ ЗАБЛОКИРОВАН' }}</span>
+          <span><i class="status-light"></i>{{ roundComplete ? 'МЕХАНИЗМ РАЗБЛОКИРОВАН' : 'НАЖИМАЙ НА ПИНЫ' }}</span>
           <span>{{ lockedIndices.length }} / {{ roundWords.length }} ПИНОВ</span>
         </div>
 
@@ -127,11 +127,34 @@ import { useRoute, useRouter } from 'vue-router';
 import { useGameStore } from 'stores/example-store';
 import { whatGameDataToUse } from '../composables/whatGameDataToUse';
 
+import knockSound from '/src/assets/audio/lockPickCorrect.mp3';
+import incorrectSound from '/src/assets/audio/lockPickIncorrect.mp3';
+import successSound from '/src/assets/audio/lockPickSuccess.mp3';
+
 const props = defineProps({ demo: { type: Boolean, default: false } });
 const route = useRoute();
 const router = useRouter();
 const gameStore = useGameStore();
 const { loadWords } = whatGameDataToUse();
+
+// Звуки: создаём один раз, переиспользуем
+const sounds = {
+  correct: new Audio(knockSound),
+  incorrect: new Audio(incorrectSound),
+  success: new Audio(successSound),
+};
+sounds.correct.preload = 'auto';
+sounds.incorrect.preload = 'auto';
+sounds.success.preload = 'auto';
+
+function playSound(name) {
+  const audio = sounds[name];
+  if (!audio) return;
+  try {
+    audio.currentTime = 0;
+    audio.play().catch(() => {}); // игнорируем autoplay-блокировку
+  } catch (e) { /* noop */ }
+}
 
 const words = ref([]);
 const questions = ref([]);
@@ -324,11 +347,15 @@ function selectPin(index) {
 
   later(() => {
     if (correct) {
+      playSound('correct');   // 🆕
+
       lockedIndices.value = [...lockedIndices.value, index];
       completedCount.value++;
       feedback.value = roundComplete.value ? 'Замок открыт. Отличная работа, агент.' : 'Есть контакт. Пин зафиксирован.';
       logState('selectPin correct (after 560)');
     } else {
+      playSound('incorrect'); // 🆕
+
       mistakes.value++;
       roundMistakes.value++;
       wrongIndex.value = index;
@@ -371,6 +398,8 @@ function selectPin(index) {
 // Автоматический переход к следующему замку
 watch(roundComplete, (isComplete) => {
   if (!isComplete) return;
+  later(() => playSound('success'), 100);
+
   console.log('[auto] roundComplete → nextRound in 1200ms');
   later(() => {
     nextRound();
