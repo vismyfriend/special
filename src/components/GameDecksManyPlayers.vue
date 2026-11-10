@@ -176,7 +176,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SoundManager from './KeyboardSoundManager.vue';
 import QuickNotes from './QuickNotes.vue';
@@ -397,14 +397,67 @@ const restartGame = () => {
   startGame();
 };
 
+// ============================================================
+// LOCALSTORAGE — сохраняем только имена игроков
+// ============================================================
+const playersStorageKey = computed(() =>
+  `decksManyPlayers_players_${missionName.value || 'developerSet'}`
+);
+
+const savePlayerNames = () => {
+  try {
+    const names = players.value.map(p => p.name);
+    localStorage.setItem(playersStorageKey.value, JSON.stringify(names));
+  } catch (e) {
+    console.warn('[DECKS] savePlayers failed:', e);
+  }
+};
+
+const loadPlayerNames = () => {
+  try {
+    const raw = localStorage.getItem(playersStorageKey.value);
+    if (!raw) return null;
+    const names = JSON.parse(raw);
+    if (!Array.isArray(names)) return null;
+    // Отсеиваем невалидные
+    const clean = names
+      .filter(n => typeof n === 'string' && n.trim().length > 0)
+      .map(n => n.trim());
+    if (clean.length < MIN_PLAYERS || clean.length > MAX_PLAYERS) return null;
+    return clean;
+  } catch (e) {
+    console.warn('[DECKS] loadPlayers failed:', e);
+    return null;
+  }
+};
+
 const resetRound = () => {
-  resetPlayersCards();
-  loadDecks();
+  // 1) спрашиваем подтверждение (опционально — убери, если не нужно)
+  if (!confirm('Сбросить игру и имена игроков к стандартным?')) return;
+
+  // 2) чистим localStorage
+  try {
+    localStorage.removeItem(playersStorageKey.value);
+  } catch (e) {
+    console.warn('[DECKS] localStorage cleanup failed:', e);
+  }
+
+  // 3) возвращаем дефолтных игроков (4 штуки с рандомными аватарами)
+  players.value = [
+    makePlayer('Player 1', 0),
+    makePlayer('Player 2', 1),
+    makePlayer('Player 3', 2),
+    makePlayer('Player 4', 3),
+  ];
+  refreshAllAvatars();
+
+  // 4) сбрасываем состояние игры
   currentQuestionerIndex.value = 0;
   players.value[0].isQuestioner = true;
   gameState.value = 'idle';
-  hasStarted.value = true;              // ← добавили
-
+  hasStarted.value = false;
+  loadDecks();
+  resetPlayersCards();
 };
 
 /* ============================================================
@@ -576,25 +629,41 @@ const handleKeyDown = (e) => {
     console.log('[GameDecksManyPlayers] radius:', ringRadius.value);
   }
 };
-
 /* ============================================================
    LIFECYCLE
    ============================================================ */
 onMounted(() => {
+  // 1) восстанавливаем имена игроков, если были
+  const savedNames = loadPlayerNames();
+  if (savedNames) {
+    const newPlayers = [];
+    for (let i = 0; i < savedNames.length; i++) {
+      const p = makePlayer(savedNames[i], i);
+      p.avatar = makeAvatarUrl(randomSeed());
+      newPlayers.push(p);
+    }
+    players.value = newPlayers;
+    console.log('[DECKS] ♻️ players restored from localStorage:', savedNames);
+  }
+
   loadDecks();
   refreshAllAvatars();
   players.value[0].isQuestioner = true;
-  updateRingRadiusForScreen();                         // ← добавили
-  window.addEventListener('resize', updateRingRadiusForScreen);  // ← и на ресайз
+
+  updateRingRadiusForScreen();
+  window.addEventListener('resize', updateRingRadiusForScreen);
   window.addEventListener('keydown', handleKeyDown);
+
   console.log('🎲 GameDecksManyPlayers loaded. Mission:', missionName.value);
   console.log('💡 Use + / - to adjust player ring radius');
 });
 
+// Сохраняем имена при любом изменении массива players
+watch(players, savePlayerNames, { deep: true });
+
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
-  window.removeEventListener('resize', updateRingRadiusForScreen);   // ← добавили
-
+  window.removeEventListener('resize', updateRingRadiusForScreen);
   if (reshuffleTimer) clearTimeout(reshuffleTimer);
 });
 </script>

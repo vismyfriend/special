@@ -15,7 +15,7 @@ const routes = [
       },
       {
         path: '/see-all-sets-of-words',
-        component: () => import('src/layouts/specialLayout.vue'), // без курсора (если хочешь)
+        component: () => import('layouts/specialHeaderLayout.vue'), // без курсора (если хочешь)
         children: [
           { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
           // ←  редактор набора не зависит от missionName
@@ -237,7 +237,12 @@ const routes = [
 
 
             ]
+
           },
+          // {
+          //   path: '/see-all-sets-of-words/:missionName/lockPicking',
+          //   component: () => import('src/components/GamePickLock.vue'),
+          // }
         ]
       },
 
@@ -360,6 +365,10 @@ const routes = [
         name: 'Homework',
         component: () => import('src/pages/hw.vue')
       },
+      // {
+      //   path: '/see-all-sets-of-words/:missionName/lockPicking',
+      //   component: () => import('src/components/GamePickLock.vue'),
+      // },
       {
         path: '/myLife',
         component: () => import('src/pages/MyLifeJournal.vue')
@@ -447,12 +456,17 @@ const routes = [
       },
       {
         path: '/specialHeader',
-        component: () => import('src/layouts/specialLayout.vue'),
+        component: () => import('layouts/specialHeaderLayout.vue'),
         children: [
+          {
+            path: '/see-all-sets-of-words/:missionName/lockPicking',
+            component: () => import('src/components/GamePickLock.vue'),
+          },
           {
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
           },
+
           {
             path: '/keyboardSoundManager',
             component: () => import('src/components/KeyboardSoundManager.vue'),
