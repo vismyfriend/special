@@ -17,7 +17,7 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
   const activeLine = ref(null)
   const selectedCard = ref(null)
   const selectedZone = ref(null)
-  const dragMode = ref(null)         // 'from-card' | 'from-zone' | 'from-zone-new' | null
+  const dragMode = ref(null)
   const draggingConn = ref(null)
   const byCard = new Map()
   const byZone = new Map()
@@ -97,7 +97,6 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       const conn = byZone.get(anchorHit.id)
 
       if (conn) {
-        // 2a) зона уже соединена — отвязываем конец линии
         conn.originalZoneId = anchorHit.id
         byZone.delete(anchorHit.id)
         connections.value = [...byCard.values()]
@@ -108,7 +107,6 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
         activeLine.value.isTemporary = true
         activeLine.value.color = '#3b82f6'
       } else {
-        // 2b) зона свободна — новая линия от зоны к карточке
         selectedZone.value = anchorHit
         anchorHit.highlight = true
         dragMode.value = 'from-zone-new'
@@ -135,14 +133,12 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       activeLine.value.y2 = pt.y
     }
 
-    // подсветка зон (когда тянем от карточки)
     if (dragMode.value === 'from-card') {
       zones.forEach(z => {
         z.highlight = z.hitTest(pt.x, pt.y)
       })
     }
 
-    // подсветка карточек (когда тянем от свободной зоны)
     if (dragMode.value === 'from-zone-new') {
       cards.forEach(c => {
         c.highlight = c.hitTest(pt.x, pt.y)
@@ -228,7 +224,7 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       return
     }
 
-    // === FROM-ZONE (отвязываем конец существующей линии) ===
+    // === FROM-ZONE ===
     if (dragMode.value === 'from-zone' && activeLine.value) {
       const conn = draggingConn.value
       const tmp = activeLine.value
@@ -294,7 +290,7 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       return
     }
 
-    // === FROM-ZONE-NEW (от свободной зоны к карточке) ===
+    // === FROM-ZONE-NEW ===
     if (dragMode.value === 'from-zone-new' && activeLine.value) {
       const tmp = activeLine.value
       activeLine.value = null
@@ -307,7 +303,6 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
 
       let targetCard = cards.find(c => c.hitTest(pt.x, pt.y))
 
-      // снап к ближайшей карточке
       if (!targetCard) {
         let best = null, bestDist = Infinity
         for (const c of cards) {

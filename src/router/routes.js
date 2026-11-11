@@ -6,7 +6,10 @@ const routes = [
       { path: '',
         component: () => import('pages/rooms/room.vue')
       },
-
+      {
+        path: '/connectLine1',
+        component: () => import('src/components/connectLine/ConnectLineGame.vue'),
+      },
       // { path: '',
       //   component: () => import('src/pages/intros/specialDesk1.vue')
       // },
@@ -19,6 +22,10 @@ const routes = [
         children: [
           { path: '', component: () => import('pages/SeeAllSetsOfWords.vue') },
           // ←  редактор набора не зависит от missionName
+          {
+            path: '/test-special-header',
+            component: () => import('src/components/TestSpecialHeader.vue'),
+          },
           {
             path: '/create-special-set',
             component: () => import('src/components/CreateSpecialSet.vue'),
@@ -328,9 +335,13 @@ const routes = [
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
+      // {
+      //   path: '/tablet',
+      //   component: () => import('src/layouts/TabletLayout.vue')
+      // },
       {
-        path: '/tablet',
-        component: () => import('src/layouts/TabletLayout.vue')
+        path: '/connectLine2',
+        component: () => import('src/components/connectLine/ConnectLineGame.vue'),
       },
       {
         path: '/desk1',
@@ -348,27 +359,13 @@ const routes = [
         path: '/specialInputs',
         component: () => import('src/composables/specialInputs.vue')
       },
-      {
-        path: '/connectLine',
-        component: () => import('src/components/connectLine/ConnectLineGame.vue')
-      },
-      {
-        path: '/connectLine-hardcore',
-        component: () => import('src/components/connectLine/ConnectLineHardcore.vue')
-      },
-      {
-        path: '/connectLine-editor',
-        component: () => import('src/components/connectLine/ConnectLineEditor.vue')
-      },
+
       {
         path: '/hw/:missionName?',
         name: 'Homework',
         component: () => import('src/pages/hw.vue')
       },
-      // {
-      //   path: '/see-all-sets-of-words/:missionName/lockPicking',
-      //   component: () => import('src/components/GamePickLock.vue'),
-      // },
+
       {
         path: '/myLife',
         component: () => import('src/pages/MyLifeJournal.vue')
@@ -458,6 +455,23 @@ const routes = [
         path: '/specialHeader',
         component: () => import('layouts/specialHeaderLayout.vue'),
         children: [
+          {
+            path: '/test-special-header-2',
+            component: () => import('src/components/TestSpecialHeader.vue'),
+          },
+          // 🆕 canvas-игры под планшетом
+          {
+            path: '/connectLine',
+            component: () => import('src/components/connectLine/ConnectLineGame.vue'),
+          },
+          {
+            path: '/connectLine-hardcore',
+            component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
+          },
+          {
+            path: '/connectLine-editor',
+            component: () => import('src/components/connectLine/ConnectLineEditor.vue'),
+          },
           {
             path: '/see-all-sets-of-words/:missionName/lockPicking',
             component: () => import('src/components/GamePickLock.vue'),
@@ -653,6 +667,16 @@ const routes = [
     component: () => import('src/pages/GrammarChartView.vue') // путь к вашему view
   },
 
+
+
+  {
+    path: '/test-no-layout',
+    component: () => import('src/components/TestNoLayout.vue'),
+  },
+  {
+    path: '/test-custom-cursor',
+    component: () => import('src/components/TestCustomCursorLayout.vue'),
+  },
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')

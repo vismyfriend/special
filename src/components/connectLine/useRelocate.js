@@ -29,36 +29,48 @@ export function createRelocate({ cards, sideLists, layoutSide, estimateX, estima
 
   function relocateCard(card, zone) {
     const currentSide = card.side
-    const currentList = sideLists[currentSide]
-    const oldIndex = currentList.indexOf(card.id)
+    const currentSub = card.sub ?? 0
+    const currentBucket = sideLists[currentSide]?.[currentSub]
+    if (!currentBucket) return
+
+    const oldIndex = currentBucket.indexOf(card.id)
     if (oldIndex < 0) return
+    currentBucket.splice(oldIndex, 1)
 
-    currentList.splice(oldIndex, 1)
-
+    // Ищем лучший под-слот: side × sub × pos
     let best = null
     for (const side of ['left', 'right', 'top']) {
-      const list = sideLists[side]
-      for (let pos = 0; pos <= list.length; pos++) {
-        const cx = estimateX(side, pos, list.length + 1)
-        const cy = estimateY(side, pos, list.length + 1)
-        const d = Math.hypot(cx - zone.x, cy - zone.y)
-        if (!best || d < best.dist) {
-          best = { side, pos, dist: d }
+      const slots = sideLists[side] || []
+      for (let sub = 0; sub < slots.length; sub++) {
+        const list = slots[sub]
+        for (let pos = 0; pos <= list.length; pos++) {
+          const cx = estimateX(side, sub, pos, list.length + 1)
+          const cy = estimateY(side, sub, pos, list.length + 1)
+          const d = Math.hypot(cx - zone.x, cy - zone.y)
+          if (!best || d < best.dist) {
+            best = { side, sub, pos, dist: d }
+          }
         }
       }
     }
 
     if (!best) {
-      currentList.splice(oldIndex, 0, card.id)
+      // откат
+      currentBucket.splice(oldIndex, 0, card.id)
       return
     }
 
-    sideLists[best.side].splice(best.pos, 0, card.id)
-    const newSide = best.side
-    card.side = newSide
+    sideLists[best.side][best.sub].splice(best.pos, 0, card.id)
+    card.side = best.side
+    card.sub = best.sub
 
-    layoutSide(currentSide)
-    if (currentSide !== newSide) layoutSide(newSide)
+    // пересчёт затронутых слотов
+    layoutSide(best.side)
+    if (currentSide !== best.side) {
+      layoutSide(currentSide)
+    } else if (currentSub !== best.sub) {
+      layoutSide(currentSide)
+    }
 
     animateAllCards()
   }

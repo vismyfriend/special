@@ -514,7 +514,7 @@ h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 42px); font-weight
 .style-toggle button span { display: block; font: 9px monospace; margin-top: 5px; opacity: .65; letter-spacing: 1px; }
 .style-toggle button[aria-pressed="true"] { background: #bfab7520; color: #e3d3a8; border-color: #c4ac6b55; }
 .style-toggle button:focus-visible { outline: 2px solid var(--gold); }
-.pin-word { overflow-wrap: anywhere; padding: 2px; line-height: 1.25; }
+.pin-word { overflow-wrap: anywhere; padding: 2px; padding-top: 12px; line-height: 1.25; }
 .is-safe { --gold: #acd5e7; background: radial-gradient(ellipse at 50% 43%, #3c596855, transparent 60%), linear-gradient(110deg, #0e1821, #1d2b36 48%, #0b141b); }
 .is-safe h1 { font-family: 'Trebuchet MS', sans-serif; font-weight: 300; }
 .is-safe .pin-bank { left: 29.5%; width: 41%; top: 12%; height: 32%; }

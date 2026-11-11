@@ -1,44 +1,35 @@
 <template>
-  <div class="connect-game">
-    <h2>{{ gameData.title }}</h2>
-    <p class="instructions">{{ gameData.instructions }}</p>
-    <canvas ref="canvasRef" class="game-canvas"></canvas>
+  <TabletLayout size="pro">
+    <template #header>
+      <div class="game-header">
+        <h2>{{ gameData.title }}</h2>
+        <p class="instructions">{{ gameData.instructions }}</p>
+      </div>
+    </template>
 
-    <div class="controls">
-<!--      <button @click="restart">Начать заново</button>-->
-      <button
-        v-if="difficulty === 'medium' || difficulty === 'hard'"
-        @click="handleCheckAll"
-        class="check-btn"
-      >
-        ✅ Проверить
-      </button>
-      <button class="editor-btn" @click="openEditor">✏️ Редактор</button>
+    <!-- canvas — занимает весь контент планшета -->
+    <div class="canvas-wrap">
+      <canvas ref="canvasRef" class="game-canvas"></canvas>
     </div>
 
-    <!-- сегментированный переключатель уровня -->
-    <div class="difficulty-segments">
-      <button
-        class="seg"
-        :class="{ active: difficulty === 'easy' }"
-        @click="setDifficulty('easy')"
-      >🟢 Лёгкий</button>
-      <button
-        class="seg"
-        :class="{ active: difficulty === 'medium' }"
-        @click="setDifficulty('medium')"
-      >🟡 Средний</button>
-      <button
-        class="seg"
-        :class="{ active: difficulty === 'hard' }"
-        @click="setDifficulty('hard')"
-      >🔴 Сложный</button>
-      <button
-        class="seg seg-hardcore"
-        @click="goHardcore"
-      >⚫ Хардкор</button>
-    </div>
-  </div>
+    <template #toolbar>
+      <div class="toolbar-row">
+        <button
+          v-if="difficulty === 'medium' || difficulty === 'hard'"
+          @click="handleCheckAll"
+          class="check-btn"
+        >✅ Проверить</button>
+        <button class="editor-btn" @click="openEditor">✏️ Редактор</button>
+      </div>
+
+      <div class="difficulty-segments">
+        <button class="seg" :class="{ active: difficulty === 'easy' }" @click="setDifficulty('easy')">🟢 Лёгкий</button>
+        <button class="seg" :class="{ active: difficulty === 'medium' }" @click="setDifficulty('medium')">🟡 Средний</button>
+        <button class="seg" :class="{ active: difficulty === 'hard' }" @click="setDifficulty('hard')">🔴 Сложный</button>
+        <button class="seg seg-hardcore" @click="goHardcore">⚫ Хардкор</button>
+      </div>
+    </template>
+  </TabletLayout>
 </template>
 
 <script setup>
@@ -47,7 +38,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { CanvasEngine } from '../specialEngine/CanvasEngine'
 import { useConnectLine } from './useConnectLine'
 import { connectLineGames } from './ConnectLineData'
-
+import TabletLayout from 'src/layouts/TabletLayout.vue'
 const props = defineProps({
   missionName: { type: String, default: null },
 })
