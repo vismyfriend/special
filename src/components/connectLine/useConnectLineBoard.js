@@ -9,13 +9,11 @@ export function shuffleArray(arr) {
   return a
 }
 
-// ─── Планировщик раскладки ────────────────────────────────────────────
 export function planLayout(count) {
   if (count <= 6)  return { left: 1, right: 0, top: 0 }
   if (count <= 12) return { left: 1, right: 1, top: 0 }
-  if (count <= 16) return { left: 2, right: 2, top: 1, stagger: true }  // ← верх с 13
+  if (count <= 16) return { left: 2, right: 2, top: 1, stagger: true }
 
-  // 17+: top = ceil((count - 16) / 4), но не меньше 1
   const topRows = Math.max(1, Math.ceil((count - 16) / 4))
   return { left: 2, right: 2, top: topRows, stagger: true }
 }
@@ -44,6 +42,37 @@ function distribute(cards, plan) {
   return { slots, buckets }
 }
 
+// ─── Применение crop к картинке (offscreen canvas BASE_W×BASE_H) ───
+function applyCropToImage(img, crop, BASE_W = 800, BASE_H = 520) {
+  if (!img || !crop) return img
+  const off = document.createElement('canvas')
+  off.width = BASE_W
+  off.height = BASE_H
+  const ctx = off.getContext('2d')
+
+  const iw = img.width
+  const ih = img.height
+  const baseScale = Math.min(BASE_W / iw, BASE_H / ih)
+  const s = baseScale * crop.scale
+  const drawW = iw * s
+  const drawH = ih * s
+  const dx = (BASE_W - drawW) / 2 + crop.offsetX * BASE_W
+  const dy = (BASE_H - drawH) / 2 + crop.offsetY * BASE_H
+
+  const bx = crop.box.x
+  const by = crop.box.y
+  const bw = crop.box.w
+  const bh = crop.box.h
+
+  const sx = (bx - dx) / s
+  const sy = (by - dy) / s
+  const sw = bw / s
+  const sh = bh / s
+
+  ctx.drawImage(img, sx, sy, sw, sh, bx, by, bw, bh)
+  return off
+}
+
 export async function setupBoard(engine, gameData, options = {}) {
   const {
     difficulty = { value: 'easy' },
@@ -60,7 +89,11 @@ export async function setupBoard(engine, gameData, options = {}) {
   const columnGap = 12
   const rowGap = 10
 
-  // ─── Геометрия картинки (нужна columnX / estimateX) ───
+  // ─── БАЗОВАЯ СИСТЕМА КООРДИНАТ (зоны всегда в 800×520) ───
+  const BASE_W = 800
+  const BASE_H = 520
+
+  // ─── Геометрия картинки ───
   let imgX = 0
   let imgW = 0
   let imgH = 0
@@ -71,6 +104,25 @@ export async function setupBoard(engine, gameData, options = {}) {
   } catch (err) {
     console.warn('[connectLineBoard] image failed:', gameData.image, err)
   }
+
+  // Применяем crop из JSON → картинка становится BASE_W × BASE_H
+  if (img && gameData.crop) {
+    img = applyCropToImage(img, gameData.crop, BASE_W, BASE_H)
+  }
+
+  // Размеры картинки для fit:
+  // - после crop → BASE_W × BASE_H (совпадает с зонами)
+  // - без crop → реальные размеры картинки
+  const imgNaturalW = img?.width || gameData.imageWidth || BASE_W
+  const imgNaturalH = img?.height || gameData.imageHeight || BASE_H
+
+  console.log('[connectLineBoard] img:', {
+    naturalW: imgNaturalW,
+    naturalH: imgNaturalH,
+    crop: gameData.crop,
+    imageWidth: gameData.imageWidth,
+    imageHeight: gameData.imageHeight,
+  })
 
   const isMobile = engine.width < 600
 
@@ -93,41 +145,37 @@ export async function setupBoard(engine, gameData, options = {}) {
 
   // ==================== DESKTOP ====================
   function setupDesktop() {
-    // ─── План считаем ДО картинки ───
     const plan = planLayout(shuffledWords.length)
 
-    // ─── Базовая доля ширины под картинку ───
     const imgShare = plan.stagger ? 0.45 : 0.6
     const maxW = engine.width * imgShare
-    let scale = Math.min(maxW / gameData.imageWidth, 1)
-    let w = gameData.imageWidth * scale
-    let h = gameData.imageHeight * scale
+    const maxH = engine.height * 0.85
 
-    // ─── Высота верхних строк ───
+    // fit картинки в canvas (с сохранением пропорций)
+    let scale = Math.min(maxW / imgNaturalW, maxH / imgNaturalH, 1)
+    let w = imgNaturalW * scale
+    let h = imgNaturalH * scale
+
     const topBlockH = plan.top > 0
       ? plan.top * cardH + (plan.top - 1) * rowGap + topPadY * 2
       : 0
 
-    // ─── Вертикальное центрирование + сдвиг вниз, если верх мешает ───
     let imgY = (engine.height - h) / 2
     const minImgY = topBlockH + 12
     if (imgY < minImgY) imgY = minImgY
 
-    // ─── Если картинка вылезает за низ — уменьшаем её ───
     const bottomPad = 8
     if (imgY + h > engine.height - bottomPad) {
-      const maxH = engine.height - bottomPad - imgY
-      if (maxH > 60) {
-        const ratio = maxH / h
+      const maxH2 = engine.height - bottomPad - imgY
+      if (maxH2 > 60) {
+        const ratio = maxH2 / h
         h = h * ratio
         w = w * ratio
-        // пересчёт X (картинка по центру)
         imgX = (engine.width - w) / 2
       } else {
-        // совсем мало места — прижимаем к верху и уменьшаем по максимуму
         imgY = Math.max(topBlockH + 12, engine.height * 0.15)
-        const maxH2 = engine.height - bottomPad - imgY
-        const ratio = Math.max(0.2, maxH2 / h)
+        const maxH3 = engine.height - bottomPad - imgY
+        const ratio = Math.max(0.2, maxH3 / h)
         h = h * ratio
         w = w * ratio
         imgX = (engine.width - w) / 2
@@ -139,14 +187,26 @@ export async function setupBoard(engine, gameData, options = {}) {
     imgW = w
     imgH = h
 
-    // ─── Добавляем картинку ───
     engine.add(new ImageObject({ x: imgX, y: imgY, w, h, img }))
     const minSide = Math.min(w, h)
 
     // --- ЗОНЫ ---
+    // word.x / word.y — доли от BASE_W × BASE_H (800×520).
+    // Картинка отрисована в imgX, imgY, w, h.
+    // Если картинка = BASE (после crop) — word.x * w напрямую.
+    // Если картинка реальная (без crop) — надо масштабировать:
+    //   zx = imgX + (word.x * BASE_W / imgNaturalW) * w
+    //   zy = imgY + (word.y * BASE_H / imgNaturalH) * h
+    const zonesInBase = !!gameData.crop   // если crop есть — картинка уже в BASE
     gameData.words.forEach(word => {
-      const zx = imgX + word.x * w
-      const zy = imgY + word.y * h
+      let zx, zy
+      if (zonesInBase) {
+        zx = imgX + word.x * w
+        zy = imgY + word.y * h
+      } else {
+        zx = imgX + (word.x * BASE_W / imgNaturalW) * w
+        zy = imgY + (word.y * BASE_H / imgNaturalH) * h
+      }
       const zr = word.r * minSide
       const shape = word.shape || 'circle'
       const zone = new Zone({
@@ -179,7 +239,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     cards.push(...allCards)
     allCards.forEach(c => engine.add(c))
 
-    // ─── cardW: по реальному свободному месту слева/справа от картинки ───
     if (plan.stagger) {
       const leftSpace  = imgX - sidePadX * 2 - columnGap
       const rightSpace = (engine.width - (imgX + w)) - sidePadX * 2 - columnGap
@@ -189,7 +248,6 @@ export async function setupBoard(engine, gameData, options = {}) {
       allCards.forEach(c => { c.w = cardW })
     }
 
-    // --- РАСПРЕДЕЛЕНИЕ ---
     const shuffledCards = shuffleArray(allCards)
     const { slots, buckets } = distribute(shuffledCards, plan)
 
@@ -213,9 +271,7 @@ export async function setupBoard(engine, gameData, options = {}) {
       })
     }
 
-    // --- РАСКЛАДКА ---
     layoutAll()
-
     cards.forEach(c => { c.x = c.targetX; c.y = c.targetY })
   }
 
@@ -258,18 +314,25 @@ export async function setupBoard(engine, gameData, options = {}) {
 
     const availW = engine.width - 24
     const availH = engine.height - cardsBottom - 12
-    const scale = Math.min(availW / gameData.imageWidth, availH / gameData.imageHeight, 1)
-    const w = gameData.imageWidth * scale
-    const h = gameData.imageHeight * scale
+    const scale = Math.min(availW / imgNaturalW, availH / imgNaturalH, 1)
+    const w = imgNaturalW * scale
+    const h = imgNaturalH * scale
     const imgXm = (engine.width - w) / 2
     const imgYm = cardsBottom + (availH - h) / 2
 
     engine.add(new ImageObject({ x: imgXm, y: imgYm, w, h, img }))
     const minSide = Math.min(w, h)
 
+    const zonesInBase = !!gameData.crop
     gameData.words.forEach(word => {
-      const zx = imgXm + word.x * w
-      const zy = imgYm + word.y * h
+      let zx, zy
+      if (zonesInBase) {
+        zx = imgXm + word.x * w
+        zy = imgYm + word.y * h
+      } else {
+        zx = imgXm + (word.x * BASE_W / imgNaturalW) * w
+        zy = imgYm + (word.y * BASE_H / imgNaturalH) * h
+      }
       const zr = word.r * minSide
       const shape = word.shape || 'circle'
       const zone = new Zone({
@@ -298,7 +361,6 @@ export async function setupBoard(engine, gameData, options = {}) {
       }
       return Math.max(sidePadX, x)
     }
-    // right
     let x = engine.width - sidePadX - cardW - (1 - sub) * (cardW + columnGap)
     if (x < imgX + imgW + columnGap) {
       x = imgX + imgW + columnGap

@@ -1,4 +1,4 @@
-<!-- src/components/layout/TabletLayout.vue -->
+<!-- src/layouts/TabletLayout.vue -->
 <template>
   <div class="tablet-stage">
     <div class="tablet" :class="`tablet--${size}`">
@@ -10,7 +10,10 @@
           </header>
 
           <main class="tablet__content">
-            <slot />
+            <!-- если слот передан — рендерим слот; иначе — router-view -->
+            <slot>
+              <router-view />
+            </slot>
           </main>
 
           <footer v-if="$slots.toolbar" class="tablet__toolbar">
@@ -26,7 +29,7 @@
 defineProps({
   size: {
     type: String,
-    default: 'pro', // 'mini' | 'air' | 'pro' | 'full'
+    default: 'pro',
     validator: (v) => ['mini', 'air', 'pro', 'full'].includes(v),
   },
 })
@@ -46,13 +49,18 @@ defineProps({
 .tablet {
   width: 100%;
   max-width: 1200px;
-  height: min(85vh, 780px);        /* ← высота, а не aspect-ratio */
+  height: min(85vh, 780px);
   border-radius: 32px;
   background: linear-gradient(145deg, #1e293b, #0f172a);
   padding: 18px;
   box-shadow:
-    0 30px 60px -20px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    0 0 0 1px rgba(0, 0, 0, 0.3),              /* обводка */
+    0 4px 8px -2px rgba(0, 0, 0, 0.4),         /* близкая тень */
+    0 20px 40px -10px rgba(0, 0, 0, 0.7),      /* основная вниз */
+    0 0 40px -10px rgba(0, 0, 0, 0.3),         /* рассеянная вокруг */
+    0 0 25px 5px rgba(255, 255, 255, 0.25),    /* белое свечение */
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.3) inset;
   box-sizing: border-box;
 }
 
@@ -89,7 +97,7 @@ defineProps({
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f8fafc;
+  background: transparent;   /* было #f8fafc */
   border-radius: 20px;
   overflow: hidden;
 }
@@ -106,7 +114,7 @@ defineProps({
   flex: 1;
   min-height: 0;
   position: relative;
-  overflow: hidden;   /* ← было auto, теперь hidden */
+  overflow: auto;   /* ← было hidden, стало auto — скролл если не влезает */
 }
 
 .tablet__toolbar {
@@ -115,26 +123,44 @@ defineProps({
   border-top: 1px solid #e2e8f0;
   background: #fff;
 }
-
-/* на мобилке — планшет на весь экран */
-@media (max-width: 768px) {
+/* ─── МОБИЛКА ВЕРТИКАЛЬНО (узкий экран) ─── */
+@media (max-width: 768px) and (orientation: portrait) {
   .tablet-stage {
     padding: 0;
-    background: #f8fafc;
+    background: transparent;
+    align-items: stretch;
+    justify-content: stretch;
   }
+
   .tablet {
     max-width: 100%;
+    width: 100%;
     height: 100vh;
+    height: 100dvh;         /* динамическая высота (учёт адресной строки) */
     border-radius: 0;
     padding: 0;
-    box-shadow: none;
+    background: transparent;
+    box-shadow: none;        /* убрать тени планшета */
+    animation: none;
   }
-  .tablet__bezel,
+
+  .tablet__bezel {
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .tablet__camera {
+    display: none;           /* убрать камеру */
+  }
+
   .tablet__screen {
     border-radius: 0;
+    background: #f8fafc;
   }
-  .tablet__camera {
-    display: none;
+
+  .tablet__header,
+  .tablet__toolbar {
+    /* можно оставить как есть — они нужны для кнопок */
   }
 }
 </style>

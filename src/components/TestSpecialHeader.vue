@@ -15,7 +15,6 @@
   background: #f0fdf4;
   color: #14532d;
   font-family: system-ui, sans-serif;
-  margin: 20px;
 }
 .test-block h2 { margin: 0 0 12px; }
 </style>

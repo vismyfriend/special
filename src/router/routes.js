@@ -6,10 +6,7 @@ const routes = [
       { path: '',
         component: () => import('pages/rooms/room.vue')
       },
-      {
-        path: '/connectLine1',
-        component: () => import('src/components/connectLine/ConnectLineGame.vue'),
-      },
+
       // { path: '',
       //   component: () => import('src/pages/intros/specialDesk1.vue')
       // },
@@ -335,14 +332,11 @@ const routes = [
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),
     children: [
-      // {
-      //   path: '/tablet',
-      //   component: () => import('src/layouts/TabletLayout.vue')
-      // },
       {
-        path: '/connectLine2',
-        component: () => import('src/components/connectLine/ConnectLineGame.vue'),
+        path: 'tablet',
+        component: () => import('src/layouts/TabletLayout.vue')
       },
+
       {
         path: '/desk1',
         component: () => import('src/pages/intros/specialDesk1.vue')
@@ -455,23 +449,15 @@ const routes = [
         path: '/specialHeader',
         component: () => import('layouts/specialHeaderLayout.vue'),
         children: [
+
           {
             path: '/test-special-header-2',
             component: () => import('src/components/TestSpecialHeader.vue'),
           },
           // 🆕 canvas-игры под планшетом
-          {
-            path: '/connectLine',
-            component: () => import('src/components/connectLine/ConnectLineGame.vue'),
-          },
-          {
-            path: '/connectLine-hardcore',
-            component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
-          },
-          {
-            path: '/connectLine-editor',
-            component: () => import('src/components/connectLine/ConnectLineEditor.vue'),
-          },
+
+
+
           {
             path: '/see-all-sets-of-words/:missionName/lockPicking',
             component: () => import('src/components/GamePickLock.vue'),
@@ -673,6 +659,64 @@ const routes = [
     path: '/test-no-layout',
     component: () => import('src/components/TestNoLayout.vue'),
   },
+  {
+    path: '/specialCursor',
+    component: () => import('src/layouts/CustomCursorLayout.vue'),
+    children: [
+      {
+        path: 'v',
+        component: () => import('src/layouts/SpecialBackground.vue'),
+        meta: { showDevPanel: false },        // ← включить/выключить панель на всех компонентах
+        children: [
+          { path: '', component: () => import('src/components/TestNoLayout.vue'),
+            meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
+          },
+          { path: '1', component: () => import('src/components/TestNoLayout.vue') },
+          {
+            path: '2', component: () => import('src/components/TestNoLayout.vue'),
+            meta: { blur: false },         // ← blur выключен / нет размытия фона
+          },
+          {
+            path: 'specialHeader',
+            component: () => import('layouts/specialHeaderLayout.vue'),
+            children: [
+              // Редактор — БЕЗ планшета (на всю ширину)
+              {
+                path: 'connectLine-editor',
+                component: () => import('src/components/connectLine/ConnectLineEditor.vue'),
+              },
+              {
+                path: 'tablet',
+                component: () => import('src/layouts/TabletLayout.vue'),
+                children: [
+
+                  {
+                    path: 'connectLine',
+                    component: () => import('src/components/connectLine/ConnectLineGame.vue'),
+                  },
+                  {
+                    path: 'connectLine-hardcore',
+                    component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
+                  },
+                  {
+                    path: 'cardsTest1',
+                    component: () => import('src/components/Game52Cards.vue')
+                  },
+
+                ],
+              },
+              {
+                path: 'cardsTest2',
+                component: () => import('src/components/Game52Cards.vue')
+              },
+
+            ],
+          },
+        ]
+      },
+    ]
+  },
+
   {
     path: '/test-custom-cursor',
     component: () => import('src/components/TestCustomCursorLayout.vue'),

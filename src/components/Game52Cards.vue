@@ -937,12 +937,14 @@ initDeck()
 
 .card-deck-container {
   background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
-  border-radius: 24px;
+  border-radius: 20px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  margin: 20px auto;
-  margin-top: 60px;
-  max-width: 900px;
+  margin: 0;              /* ← было 20px auto + 60px */
+  max-width: none;        /* ← было 900px */
+  width: 100%;            /* ← растянуться по ширине */
+  height: 100%;           /* ← растянуться по высоте */
+  box-sizing: border-box;
 }
 
 .deck-header {

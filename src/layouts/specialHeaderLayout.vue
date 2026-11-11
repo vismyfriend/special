@@ -108,8 +108,9 @@
       </div>
     </div>
 
-    <router-view />
-
+    <div class="content-below-header-wrapper">
+      <router-view />
+    </div>
     <!-- Контейнер для кнопок справа -->
 <!--    <div class="right-buttons-container">-->
 <!--      <button class="infoButton" @click="showInstructions"></button>-->
@@ -585,6 +586,11 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.content-wrapper {
+  padding-top: 60px;   /* ← высота меню + отступ */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
 .star-icons {
   display: inline-flex;
   gap: 1px;

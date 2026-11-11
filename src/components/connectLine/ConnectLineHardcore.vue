@@ -1,6 +1,5 @@
 <template>
   <div class="hardcore">
-    <h2>{{ gameData.title }}</h2>
     <p class="instructions">{{ gameData.instructions }}</p>
 
     <div class="canvas-wrapper" ref="wrapperRef">
@@ -20,22 +19,25 @@
       />
     </div>
 
-    <div class="controls">
-      <button @click="handleCheckAll">✅ Проверить всё</button>
-      <button @click="restart">Начать заново</button>
-      <button class="editor-btn" @click="goBack">← Вернуться к игре</button>
+    <!-- ─── Панель управления: сложность + кнопки ─── -->
+    <div class="control-panel">
+      <!-- Сложность -->
+      <div class="difficulty-segments">
+        <button class="seg" @click="goEasy">🟢 Лёгкий</button>
+        <button class="seg" @click="goMedium">🟡 Средний</button>
+        <button class="seg" @click="goHard">🔴 Сложный</button>
+        <button class="seg seg-hardcore active" disabled>⚫ Хардкор</button>
+      </div>
+
+      <!-- Кнопки -->
+<!--      <div class="controls">-->
+<!--        <button @click="handleCheckAll" class="btn-check">✅ Проверить</button>-->
+<!--      </div>-->
     </div>
 
     <p v-if="lastResult" class="result-text">
       Правильно: {{ lastResult.correct }} / {{ lastResult.total }}
     </p>
-
-    <div class="difficulty-segments">
-      <button class="seg" @click="goEasy">🟢 Лёгкий</button>
-      <button class="seg" @click="goMedium">🟡 Средний</button>
-      <button class="seg" @click="goHard">🔴 Сложный</button>
-      <button class="seg seg-hardcore active" disabled>⚫ Хардкор</button>
-    </div>
   </div>
 </template>
 
@@ -105,16 +107,38 @@ async function restart() {
   results.value = logic.results.value
   lastResult.value = null
 
-  // после ре-рендера Vue — запустить синхронизацию
   await nextTick()
   if (rafId) cancelAnimationFrame(rafId)
   syncInputPositions()
 }
 
-function goBack()  { router.push('/connectLine') }
-function goEasy()  { router.push({ path: '/connectLine', query: { level: resolvedName.value, difficulty: 'easy' } }) }
-function goMedium(){ router.push({ path: '/connectLine', query: { level: resolvedName.value, difficulty: 'medium' } }) }
-function goHard()  { router.push({ path: '/connectLine', query: { level: resolvedName.value, difficulty: 'hard' } }) }
+function goBack() {
+  router.push({
+    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    query: { level: resolvedName.value },
+  })
+}
+
+function goEasy() {
+  router.push({
+    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    query: { level: resolvedName.value, difficulty: 'easy' },
+  })
+}
+
+function goMedium() {
+  router.push({
+    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    query: { level: resolvedName.value, difficulty: 'medium' },
+  })
+}
+
+function goHard() {
+  router.push({
+    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    query: { level: resolvedName.value, difficulty: 'hard' },
+  })
+}
 
 let lastWidth = 0
 let resizeTimer = null
@@ -141,17 +165,23 @@ onBeforeUnmount(() => {
 })
 </script>
 
-
 <style scoped>
+/* ─── КОРНЕВОЙ КОНТЕЙНЕР ─── */
 .hardcore {
   max-width: 900px;
   margin: 40px auto;
   padding: 20px;
   font-family: system-ui, sans-serif;
+  background: #ffffff;
+  border-radius: 25px;
 }
-h2 { margin: 0 0 8px; }
-.instructions { color: #555; margin: 0 0 16px; }
 
+.instructions {
+  color: #555;
+  margin: 0 0 16px;
+}
+
+/* ─── CANVAS + INPUT-Ы ─── */
 .canvas-wrapper {
   position: relative;
   width: 100%;
@@ -182,39 +212,136 @@ h2 { margin: 0 0 8px; }
   outline: none;
   transition: border-color 0.2s, background 0.2s;
 }
+
 .card-input:focus {
   border-color: #1d4ed8;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
+
 .card-input.correct {
   border-color: #22c55e;
-  background: rgba(34,197,94,0.08);
+  background: rgba(34, 197, 94, 0.08);
   color: #15803d;
 }
+
 .card-input.incorrect {
   border-color: #ef4444;
-  background: rgba(239,68,68,0.08);
+  background: rgba(239, 68, 68, 0.08);
   color: #b91c1c;
 }
 
-.controls {
-  margin-top: 16px;
-  text-align: center;
+/* ─── ПАНЕЛЬ УПРАВЛЕНИЯ ─── */
+.control-panel {
   display: flex;
-  gap: 10px;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 8px 12px;
+  background: #f1f5f9;
+  border-radius: 14px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
-button {
-  padding: 10px 24px;
+
+/* ─── СЛОЖНОСТЬ ─── */
+.difficulty-segments {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.seg {
+  padding: 8px 12px;
+  background: transparent;
+  color: #475569;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.seg:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.seg.active {
+  background: white;
+  color: #1d4ed8;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+}
+
+.seg-hardcore {
+  color: #7c3aed;
+}
+
+.seg-hardcore.active {
+  color: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.seg:disabled {
+  cursor: default;
+}
+
+.seg:disabled:hover {
+  background: white;
+}
+
+/* ─── КНОПКИ ─── */
+.controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-check,
+.btn-restart,
+.btn-back {
+  padding: 8px 14px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn-check {
   background: #3b82f6;
   color: white;
-  font-weight: 600;
-  cursor: pointer;
 }
-.editor-btn { background: #64748b; }
+.btn-check:hover {
+  background: #2563eb;
+}
+
+.btn-restart {
+  background: #64748b;
+  color: white;
+}
+.btn-restart:hover {
+  background: #475569;
+}
+
+.btn-back {
+  background: #f59e0b;
+  color: white;
+}
+.btn-back:hover {
+  background: #d97706;
+}
+
+/* ─── РЕЗУЛЬТАТ ─── */
 .result-text {
   text-align: center;
   margin-top: 12px;
@@ -222,43 +349,49 @@ button {
   color: #1e293b;
 }
 
-.difficulty-segments {
-  margin-top: 16px;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  padding: 6px;
-  background: #f1f5f9;
-  border-radius: 14px;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.seg {
-  flex: 1; min-width: 0;
-  padding: 10px 14px;
-  background: transparent; color: #475569;
-  border: 2px solid transparent; border-radius: 10px;
-  font-weight: 600; font-size: 14px; cursor: pointer;
-  transition: all 0.15s; white-space: nowrap;
-}
-.seg:hover { background: rgba(255,255,255,0.6); }
-.seg.active { background: white; color: #1d4ed8; border-color: #3b82f6; box-shadow: 0 2px 6px rgba(59,130,246,0.2); }
-.seg-hardcore { color: #7c3aed; }
-.seg-hardcore.active { color: #7c3aed; border-color: #7c3aed; }
-.seg:disabled { cursor: default; }
-.seg:disabled:hover { background: white; }
-
+/* ─── МОБИЛКА ─── */
 @media (max-width: 600px) {
-  .hardcore { margin: 16px auto; padding: 12px; }
-  h2 { font-size: 20px; }
-  .instructions { font-size: 14px; }
-  .canvas-wrapper, .game-canvas { height: 70vh; }
-  .card-input { font-size: 13px; padding: 0 6px; border-radius: 8px; border-width: 1.5px; }
-  button { padding: 8px 18px; font-size: 14px; }
-  .controls { margin-top: 12px; gap: 8px; }
-  .difficulty-segments { gap: 4px; padding: 4px; max-width: 100%; margin-top: 12px; }
-  .seg { font-size: 12px; padding: 8px 6px; }
+  .hardcore {
+    margin: 16px auto;
+    padding: 12px;
+  }
+
+  .instructions {
+    font-size: 14px;
+  }
+
+  .canvas-wrapper,
+  .game-canvas {
+    height: 70vh;
+  }
+
+  .card-input {
+    font-size: 13px;
+    padding: 0 6px;
+    border-radius: 8px;
+    border-width: 1.5px;
+  }
+
+  .control-panel {
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  .difficulty-segments {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .seg {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .btn-check,
+  .btn-restart,
+  .btn-back {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 </style>

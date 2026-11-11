@@ -1,8 +1,6 @@
 <template>
   <!-- Прелоадер - временно отключен -->
   <!-- <Preloader /> -->
-
-   Фон
   <img
     class="backgroundImg"
     src="../../assets/images/specialRoom1.jpg"

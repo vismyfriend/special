@@ -21,7 +21,6 @@ import CustomCursorLayout from 'src/layouts/CustomCursorLayout.vue'
   background: #eff6ff;
   color: #1e3a8a;
   font-family: system-ui, sans-serif;
-  margin: 20px;
 }
 .test-block h2 { margin: 0 0 12px; }
 </style>
