@@ -310,7 +310,7 @@ onBeforeUnmount(() => { version++; game.dispose(); document.removeEventListener(
 .dial-safe * { box-sizing:border-box; }
 .safe-header,.safe-footer { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
 .safe-count { font:600 10px/1.3 monospace; letter-spacing:.14em; }
-.safe-header h1 { font-size:clamp(30px,5vw,49px); margin:5px 0 1px; letter-spacing:-.04em; line-height:1; }
+.safe-header h1 { font-size:clamp(30px,5vw,49px); margin:5px 0 1px; letter-spacing:-.04em; line-height:1; font-family: Special_f1 }
 .safe-header p { color:var(--dim); margin:10px 0 0; font-size:13px; }
 .safe-button { border:1px solid #656a59; border-radius:6px; background:linear-gradient(#343d33,#212720); color:#f2e8d4; font:inherit; padding:9px 14px; cursor:pointer; }
 .safe-button:hover:not(:disabled) { border-color:var(--amber); }

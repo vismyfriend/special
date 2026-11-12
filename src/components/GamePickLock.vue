@@ -464,7 +464,7 @@ onBeforeUnmount(() => { console.log('[onBeforeUnmount]'); loadVersion++; clearTi
 .lock-layout { max-width: 1000px; margin: 0 auto; }
 .eyebrow { font: 10px/1.5 monospace; letter-spacing: 3px; color: #a6ab8b; }
 .heading-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 12px; }
-h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 42px); font-weight: 400; letter-spacing: .5px; margin: 0; }
+h1 { font-family: Special_f1, serif; font-size: clamp(28px, 4vw, 42px); font-weight: 400; letter-spacing: .5px; margin: 0; }
 .mission-header p { margin: 10px 0 26px; font-size: 13px; color: var(--muted); }
 .mission-badge { border: 1px solid #b8ab7140; padding: 8px 12px; font: 10px monospace; letter-spacing: 2px; color: #b7b496; white-space: nowrap; }
 .mission-progress { display: flex; gap: 5px; height: 3px; margin-bottom: 25px; }
