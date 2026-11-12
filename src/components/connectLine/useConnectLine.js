@@ -40,6 +40,7 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       estimateX: estimateXFn,
       estimateY: estimateYFn,
       getLine: (cardId) => byCard.get(cardId)?.line,
+      SUB_MAX: board.SUB_MAX,   // ← обязательно, иначе лимит = 10 по умолчанию
     })
     relocateCardFn = reloc.relocateCard
   }

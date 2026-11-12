@@ -10,36 +10,52 @@ export function shuffleArray(arr) {
 }
 
 export function planLayout(count) {
-  if (count <= 10) return { left: 1, right: 0, top: 0 }
-  if (count <= 20) return { left: 1, right: 1, top: 0 }
-  if (count <= 30) return { left: 2, right: 1, top: 0, stagger: true }
-  if (count <= 40) return { left: 2, right: 2, top: 0, stagger: true }
+  if (count <= 8) return { left: 1, right: 0, top: 0 }
+  if (count <= 16) return { left: 1, right: 1, top: 0 }
+  if (count <= 24) return { left: 2, right: 1, top: 0, stagger: true }
+  if (count <= 32) return { left: 2, right: 2, top: 0, stagger: true }
 
-  const topRows = Math.max(1, Math.ceil((count - 40) / 4))
+  const topRows = Math.max(1, Math.ceil((count - 32) / 4))
   return { left: 2, right: 2, top: topRows, stagger: true }
 }
 
 function distribute(cards, plan) {
   const slots = []
-  slots.push({ side: 'left',  sub: 0, max: 10 })
-  if (plan.right > 0) slots.push({ side: 'right', sub: 0, max: 10 })
+  slots.push({ side: 'left',  sub: 0, max: 8 })
+  if (plan.right > 0) slots.push({ side: 'right', sub: 0, max: 8 })
   for (let i = 0; i < plan.top; i++) {
     slots.push({ side: 'top', sub: i, max: 4 })
   }
-  if (plan.left > 1)  slots.push({ side: 'left',  sub: 1, max: 10 })
-  if (plan.right > 1) slots.push({ side: 'right', sub: 1, max: 10 })
+  if (plan.left > 1)  slots.push({ side: 'left',  sub: 1, max: 8 })
+  if (plan.right > 1) slots.push({ side: 'right', sub: 1, max: 8 })
 
   const buckets = slots.map(() => [])
-  let s = 0
+
+  // Равномерное распределение (round-robin)
   cards.forEach(card => {
-    let guard = 0
-    while (buckets[s].length >= slots[s].max && guard < slots.length) {
-      s = (s + 1) % slots.length
-      guard++
+    // 1. Находим минимальное количество карточек среди тех, где есть место
+    let minLen = Infinity
+    for (let i = 0; i < slots.length; i++) {
+      if (buckets[i].length < slots[i].max) {
+        if (buckets[i].length < minLen) {
+          minLen = buckets[i].length
+        }
+      }
     }
-    buckets[s].push(card.id)
-    s = (s + 1) % slots.length
+
+    // 2. Собираем все слоты с таким минимальным количеством
+    const candidates = []
+    for (let i = 0; i < slots.length; i++) {
+      if (buckets[i].length === minLen && buckets[i].length < slots[i].max) {
+        candidates.push(i)
+      }
+    }
+
+    // 3. Выбираем случайный (или первый) из них, чтобы не было визуального "залипания"
+    const chosenIndex = candidates[Math.floor(Math.random() * candidates.length)]
+    buckets[chosenIndex].push(card.id)
   })
+
   return { slots, buckets }
 }
 
@@ -95,7 +111,7 @@ export async function setupBoard(engine, gameData, options = {}) {
   const rowGap = 10
 
   // ─── МАКСИМУМЫ СЛОТОВ ───
-  const SUB_MAX = { left: 10, right: 10, top: 4 }
+  const SUB_MAX = { left: 8, right: 8, top: 4 }
 
   // ─── БАЗОВАЯ СИСТЕМА КООРДИНАТ ───
   const BASE_W = 800
@@ -382,7 +398,6 @@ export async function setupBoard(engine, gameData, options = {}) {
 
   // ==================== LAYOUT ====================
 
-  // Адаптивный шаг по Y — гарантирует, что N карточек влезут в engine.height
   function getStepY(N) {
     const ideal = cardH + gapY
     if (N <= 1) return ideal
@@ -392,7 +407,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     return Math.max(cardH + 4, Math.min(ideal, maxStep))
   }
 
-  // Один stepY и baseStartY на всю сторону (Вариант A)
   function getSideMetrics(side) {
     const slots = sideLists[side] || []
     const maxN = Math.max(...slots.map(l => l.length), 0)
@@ -501,7 +515,6 @@ export async function setupBoard(engine, gameData, options = {}) {
       const plan = planLayout(cards.length)
       const isStagger = plan.stagger && sub === 1
       const slots = sideLists[side] || []
-      // «что будет, если добавим в этот sub»
       const maxN = Math.max(
         ...slots.map((l, idx) => l.length + (idx === sub ? 1 : 0)),
         0,
