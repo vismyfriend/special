@@ -1,7 +1,6 @@
 <template>
   <div class="editor">
     <div class="toolbar">
-      <!-- Выбор уровня -->
       <select v-model="currentLevel" @change="onLevelChange" class="level-select">
         <option v-for="key in levelKeys" :key="key" :value="key">{{ key }}</option>
         <option value="__new__">+ Новый уровень</option>
@@ -25,18 +24,34 @@
     </div>
 
     <div class="workspace">
-      <canvas ref="canvasRef" class="canvas" @pointerdown="onDown" @pointermove="onMove"
-              @pointerup="onUp" @pointerleave="onUp"></canvas>
+      <div ref="wrapperRef" class="canvas-wrap">
+        <canvas
+          ref="canvasRef"
+          class="canvas"
+          @pointerdown="onDown"
+          @pointermove="onMove"
+          @pointerup="onUp"
+          @pointerleave="onUp"
+        ></canvas>
+      </div>
 
       <aside v-if="!cropMode" class="sidebar">
         <div class="zones-scroll">
-          <div v-for="(z, i) in zones" :key="z.id" class="zone-item"
-               :class="{ selected: z.id === selectedZoneId, conflict: conflictingZoneIds.has(z.id) }"
-               @click="selectZone(z.id)">
+          <div
+            v-for="(z, i) in zones"
+            :key="z.id"
+            class="zone-item"
+            :class="{ selected: z.id === selectedZoneId, conflict: conflictingZoneIds.has(z.id) }"
+            @click="selectZone(z.id)"
+          >
             <div class="zone-row">
               <span class="zone-num">{{ i + 1 }}</span>
-              <input v-model="z.text" placeholder="Слово..." class="zone-input"
-                     :ref="el => setZoneInputRef(el, z.id)" />
+              <input
+                v-model="z.text"
+                placeholder="Слово..."
+                class="zone-input"
+                :ref="el => setZoneInputRef(el, z.id)"
+              />
               <button @click.stop="duplicateZone(i)" class="zone-dup" title="Дублировать">⧉</button>
               <button @click.stop="removeZone(i)" class="zone-del" title="Удалить">✕</button>
             </div>
@@ -85,29 +100,43 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { connectLineGames } from './ConnectLineData'
 
 const route = useRoute()
 const router = useRouter()
 
-// ─── УРОВНИ ───
+// ─── КОНСТАНТЫ (как в setupBoard игры) ───
+const BASE_W = 800
+const BASE_H = 520
+const CARD_W = 110
+const SIDE_PAD = 10
+
 const levelKeys = computed(() => Object.keys(connectLineGames))
 const currentLevel = ref(route.query.level || levelKeys.value[0] || '')
 const newLevelName = ref('')
 
 const canvasRef = ref(null)
+const wrapperRef = ref(null)
 const zones = ref([])
 const img = ref(null)
 const lastExport = ref('')
 const selectedZoneId = ref(null)
 const zoneInputRefs = {}
 
-// Реальные размеры оригинальной картинки (для JSON)
-const originalImageSize = ref({ width: 800, height: 520 })
-// Параметры применённого crop (сохраняются в JSON)
+// ─── ДВА НАБОРА РАЗМЕРОВ ───
+// sourceImageSize  — размеры ОРИГИНАЛА (то, что грузится из URL / файла)
+// originalImageSize — размеры ТЕКУЩЕЙ картинки (после применения crop), используется для отрисовки
+const sourceImageSize = ref({ width: BASE_W, height: BASE_H })
+const originalImageSize = ref({ width: BASE_W, height: BASE_H })
+
 const appliedCrop = ref(null)
+
+// адаптивные размеры canvas в CSS-пикселях
+const canvasW = ref(BASE_W)
+const canvasH = ref(BASE_H)
+let dpr = 1
 
 let dragging = null
 let dragOffset = { x: 0, y: 0 }
@@ -115,41 +144,130 @@ let resizeHandle = null
 let resizeZone = null
 let resizeStart = null
 
-const W = 800
-const H = 520
 const HANDLE_SIZE = 10
+
+// ─── ОБЛАСТЬ КАРТИНКИ — всегда в виртуальных 800×520 ───
+let imgRect = { x: 0, y: 0, w: BASE_W, h: BASE_H, scale: 1 }
+
+function computeImageRect() {
+  const iw = img.value?.width || originalImageSize.value.width || BASE_W
+  const ih = img.value?.height || originalImageSize.value.height || BASE_H
+
+  const sidePanel = CARD_W + SIDE_PAD
+  const availW = Math.max(100, BASE_W - sidePanel * 2)
+  const availH = Math.max(100, BASE_H)
+
+  const scale = Math.min(availW / iw, availH / ih, 1)
+  const w = iw * scale
+  const h = ih * scale
+  const x = (BASE_W - w) / 2
+  const y = (BASE_H - h) / 2
+  return { x, y, w, h, scale }
+}
 
 // ─── CROP ───
 const cropMode = ref(false)
-const crop = ref({ scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: W, h: H } })
+const crop = ref({ scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: BASE_W, h: BASE_H } })
 let cropDrag = null
 let cropDragStart = null
-let croppedImage = ref(null)
+const croppedImage = ref(null)
+
+// ─── ПРИМЕНИТЬ CROP К КАРТИНКЕ (как в setupBoard игры) ───
+function applyCropToImage(sourceImg, cropData) {
+  if (!sourceImg || !cropData) return sourceImg
+  const outW = cropData.croppedWidth || BASE_W
+  const outH = cropData.croppedHeight || BASE_H
+
+  const off = document.createElement('canvas')
+  off.width = outW
+  off.height = outH
+  const ctx = off.getContext('2d')
+
+  const iw = sourceImg.width
+  const ih = sourceImg.height
+  const baseScale = Math.min(BASE_W / iw, BASE_H / ih)
+  const s = baseScale * cropData.scale
+  const drawW = iw * s
+  const drawH = ih * s
+  const dx = (BASE_W - drawW) / 2 + cropData.offsetX * BASE_W
+  const dy = (BASE_H - drawH) / 2 + cropData.offsetY * BASE_H
+
+  const bx = cropData.box.x
+  const by = cropData.box.y
+  const bw = cropData.box.w
+  const bh = cropData.box.h
+
+  const sx = (bx - dx) / s
+  const sy = (by - dy) / s
+  const sw = bw / s
+  const sh = bh / s
+
+  ctx.drawImage(sourceImg, sx, sy, sw, sh, 0, 0, outW, outH)
+
+  const result = new Image()
+  result.src = off.toDataURL('image/png')
+  return result
+}
 
 // ─── ЗАГРУЗКА УРОВНЯ ───
 async function loadLevel(key) {
   const data = connectLineGames[key]
   if (!data) return
-  try {
-    const image = new Image()
-    image.src = data.image
-    await new Promise((res, rej) => { image.onload = res; image.onerror = rej })
-    img.value = image
-    originalImageSize.value = { width: image.width, height: image.height }
-  } catch (_) {
+
+  if (data.image) {
+    try {
+      const image = new Image()
+      image.src = data.image
+      await new Promise((res, rej) => { image.onload = res; image.onerror = rej })
+
+      // это ОРИГИНАЛ
+      sourceImageSize.value = { width: image.width, height: image.height }
+
+      if (data.crop) {
+        // сразу применяем crop — как игра
+        const cropped = applyCropToImage(image, data.crop)
+        await new Promise((res, rej) => {
+          if (cropped.complete && cropped.naturalWidth > 0) return res()
+          cropped.onload = res
+          cropped.onerror = rej
+        })
+        img.value = cropped
+        originalImageSize.value = { width: cropped.width, height: cropped.height }
+      } else {
+        img.value = image
+        originalImageSize.value = { width: image.width, height: image.height }
+      }
+    } catch (_) {
+      img.value = null
+      sourceImageSize.value = { width: BASE_W, height: BASE_H }
+      originalImageSize.value = { width: BASE_W, height: BASE_H }
+    }
+  } else {
     img.value = null
-    originalImageSize.value = { width: W, height: H }
+    sourceImageSize.value = { width: BASE_W, height: BASE_H }
+    originalImageSize.value = { width: BASE_W, height: BASE_H }
   }
+
   appliedCrop.value = data.crop ? { ...data.crop, box: { ...data.crop.box } } : null
+
+  // ─── ЗОНЫ: [0..1] от картинки ───
   zones.value = (data.words || []).map(w => ({
-    id: w.id, text: w.text, shape: w.shape || 'circle',
-    x: w.x, y: w.y,
-    r: w.r ?? 0.07, w: w.w ?? 0.14, h: w.h ?? 0.14,
+    id: w.id,
+    text: w.text,
+    shape: w.shape || 'circle',
+    x: w.x,
+    y: w.y,
+    r: w.r ?? 0.07,
+    w: w.w ?? 0.14,
+    h: w.h ?? 0.14,
   }))
+
   selectedZoneId.value = null
   cropMode.value = false
   lastExport.value = ''
-  nextTick(draw)
+  await nextTick()
+  resizeCanvas()
+  draw()
 }
 
 async function onLevelChange() {
@@ -166,9 +284,10 @@ async function onLevelChange() {
     selectedZoneId.value = null
     cropMode.value = false
     appliedCrop.value = null
-    originalImageSize.value = { width: W, height: H }
+    sourceImageSize.value = { width: BASE_W, height: BASE_H }
+    originalImageSize.value = { width: BASE_W, height: BASE_H }
     router.replace({ query: { ...route.query, level: name } })
-    nextTick(draw)
+    nextTick(() => { resizeCanvas(); draw() })
     return
   }
   newLevelName.value = ''
@@ -212,7 +331,7 @@ function toggleCropMode() {
   if (!cropMode.value) {
     crop.value = appliedCrop.value
       ? { ...appliedCrop.value, box: { ...appliedCrop.value.box } }
-      : { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: W, h: H } }
+      : { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: BASE_W, h: BASE_H } }
     cropMode.value = true
     nextTick(draw)
   } else {
@@ -222,10 +341,23 @@ function toggleCropMode() {
 }
 
 function resetCrop() {
-  crop.value = { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: W, h: H } }
+  crop.value = { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: BASE_W, h: BASE_H } }
   croppedImage.value = null
   appliedCrop.value = null
-  nextTick(draw)
+
+  // вернуть ОРИГИНАЛ картинки
+  const srcUrl = connectLineGames[currentLevel.value]?.image
+  if (srcUrl) {
+    const image = new Image()
+    image.onload = () => {
+      img.value = image
+      originalImageSize.value = { width: image.width, height: image.height }
+      nextTick(() => { resizeCanvas(); draw() })
+    }
+    image.src = srcUrl
+  } else {
+    nextTick(draw)
+  }
 }
 
 function onCropScaleInput() {
@@ -235,55 +367,58 @@ function onCropScaleInput() {
 function applyCrop() {
   if (!img.value) return
 
-  // Сохраняем параметры crop ДО сброса
+  const bx = crop.value.box.x
+  const by = crop.value.box.y
+  const bw = crop.value.box.w
+  const bh = crop.value.box.h
+
   appliedCrop.value = {
     scale: crop.value.scale,
     offsetX: crop.value.offsetX,
     offsetY: crop.value.offsetY,
     box: { ...crop.value.box },
+    croppedWidth: Math.round(bw),
+    croppedHeight: Math.round(bh),
   }
 
   const off = document.createElement('canvas')
-  off.width = W
-  off.height = H
+  off.width = Math.round(bw)
+  off.height = Math.round(bh)
   const ctx = off.getContext('2d')
-  ctx.clearRect(0, 0, W, H)
 
   const iw = img.value.width
   const ih = img.value.height
-  const baseScale = Math.min(W / iw, H / ih)
+  const baseScale = Math.min(BASE_W / iw, BASE_H / ih)
   const s = baseScale * crop.value.scale
   const drawW = iw * s
   const drawH = ih * s
-  const drawX = (W - drawW) / 2 + crop.value.offsetX * W
-  const drawY = (H - drawH) / 2 + crop.value.offsetY * H
-
-  const bx = crop.value.box.x
-  const by = crop.value.box.y
-  const bw = crop.value.box.w
-  const bh = crop.value.box.h
+  const drawX = (BASE_W - drawW) / 2 + crop.value.offsetX * BASE_W
+  const drawY = (BASE_H - drawH) / 2 + crop.value.offsetY * BASE_H
 
   const sx = (bx - drawX) / s
   const sy = (by - drawY) / s
   const sw = bw / s
   const sh = bh / s
 
-  ctx.drawImage(img.value, sx, sy, sw, sh, bx, by, bw, bh)
+  ctx.drawImage(img.value, sx, sy, sw, sh, 0, 0, bw, bh)
 
   croppedImage.value = off
   const newImg = new Image()
   newImg.onload = () => {
     img.value = newImg
+    // sourceImageSize НЕ трогаем — там оригинал
+    originalImageSize.value = { width: Math.round(bw), height: Math.round(bh) }
     cropMode.value = false
-    nextTick(draw)
+    nextTick(() => { resizeCanvas(); draw() })
   }
   newImg.src = off.toDataURL('image/png')
 }
 
 // ─── ПЕРЕСЕЧЕНИЯ ───
 function getBoundingBox(z) {
-  const minSide = Math.min(W, H)
-  const cx = z.x * W, cy = z.y * H
+  const minSide = Math.min(imgRect.w, imgRect.h)
+  const cx = imgRect.x + z.x * imgRect.w
+  const cy = imgRect.y + z.y * imgRect.h
   if (z.shape === 'rect') {
     const w = z.w * minSide, h = z.h * minSide
     return { left: cx - w / 2, right: cx + w / 2, top: cy - h / 2, bottom: cy + h / 2 }
@@ -313,14 +448,14 @@ const hasConflicts = computed(() => conflictingZoneIds.value.size > 0)
 
 // ─── РИСОВАНИЕ ───
 function getZoneRect(z) {
-  const minSide = Math.min(W, H)
+  const minSide = Math.min(imgRect.w, imgRect.h)
+  const cx = imgRect.x + z.x * imgRect.w
+  const cy = imgRect.y + z.y * imgRect.h
   if (z.shape === 'rect') {
     const w = z.w * minSide, h = z.h * minSide
-    const cx = z.x * W, cy = z.y * H
     return { cx, cy, w, h, left: cx - w / 2, top: cy - h / 2, right: cx + w / 2, bottom: cy + h / 2 }
   }
   const r = z.r * minSide
-  const cx = z.x * W, cy = z.y * H
   return { cx, cy, r, left: cx - r, top: cy - r, right: cx + r, bottom: cy + r }
 }
 
@@ -344,38 +479,134 @@ function getCropHandles() {
   ]
 }
 
+// ─── ПОДСКАЗКА О ЗАРЕЗЕРВИРОВАННЫХ ЗОНАХ ───
+function drawReservedZones(ctx) {
+  const leftEdge = imgRect.x
+  const rightEdge = imgRect.x + imgRect.w
+
+  // тонированная подложка панелей
+  ctx.save()
+  ctx.fillStyle = 'rgba(148, 163, 184, 0.12)'
+  if (leftEdge > 0) {
+    ctx.fillRect(0, 0, leftEdge, BASE_H)
+  }
+  if (rightEdge < BASE_W) {
+    ctx.fillRect(rightEdge, 0, BASE_W - rightEdge, BASE_H)
+  }
+  ctx.restore()
+
+  // пунктирные границы
+  ctx.save()
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)'
+  ctx.lineWidth = 2
+  ctx.setLineDash([8, 8])
+
+  if (leftEdge > 0) {
+    ctx.beginPath()
+    ctx.moveTo(leftEdge, 0)
+    ctx.lineTo(leftEdge, BASE_H)
+    ctx.stroke()
+  }
+  if (rightEdge < BASE_W) {
+    ctx.beginPath()
+    ctx.moveTo(rightEdge, 0)
+    ctx.lineTo(rightEdge, BASE_H)
+    ctx.stroke()
+  }
+
+  // оси симметрии панелей
+  ctx.setLineDash([4, 10])
+  ctx.strokeStyle = 'rgba(9,9,9,0.18)'
+  if (leftEdge > 0) {
+    const lc = leftEdge / 2
+    ctx.beginPath(); ctx.moveTo(lc, 0); ctx.lineTo(lc, BASE_H); ctx.stroke()
+  }
+  if (rightEdge < BASE_W) {
+    const rc = (rightEdge + BASE_W) / 2
+    ctx.beginPath(); ctx.moveTo(rc, 0); ctx.lineTo(rc, BASE_H); ctx.stroke()
+  }
+  ctx.restore()
+
+  // подписи
+  ctx.save()
+  ctx.fillStyle = 'rgb(9,9,9)'
+  ctx.font = '600 13px system-ui'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+
+  if (leftEdge > 0) {
+    ctx.save()
+    ctx.translate(leftEdge / 2, BASE_H / 2)
+    ctx.rotate(-Math.PI / 2)
+    ctx.fillText('зоны для слов слева', 0, 0)
+    ctx.restore()
+  }
+  if (rightEdge < BASE_W) {
+    ctx.save()
+    ctx.translate((rightEdge + BASE_W) / 2, BASE_H / 2)
+    ctx.rotate(Math.PI / 2)
+    ctx.fillText('зоны для словсправа', 0, 0)
+    ctx.restore()
+  }
+  ctx.restore()
+}
+
+// ─── РАЗМЕР CANVAS (адаптив) ───
+function resizeCanvas() {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const wrap = wrapperRef.value
+  const availW = wrap ? wrap.getBoundingClientRect().width : BASE_W
+  const w = Math.max(320, Math.min(BASE_W, availW))
+  canvasW.value = w
+  canvasH.value = w * (BASE_H / BASE_W)
+  dpr = window.devicePixelRatio || 1
+  draw()
+}
+
 function draw() {
   const canvas = canvasRef.value
   if (!canvas) return
   const ctx = canvas.getContext('2d')
-  const dpr = window.devicePixelRatio || 1
-  canvas.width = W * dpr
-  canvas.height = H * dpr
-  canvas.style.width = W + 'px'
-  canvas.style.height = H + 'px'
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-  ctx.clearRect(0, 0, W, H)
+  canvas.width = Math.round(canvasW.value * dpr)
+  canvas.height = Math.round(canvasH.value * dpr)
+  canvas.style.width = canvasW.value + 'px'
+  canvas.style.height = canvasH.value + 'px'
+
+  // масштаб: виртуальные BASE_W×BASE_H → реальные canvasW×canvasH
+  const sx = canvasW.value / BASE_W
+  const sy = canvasH.value / BASE_H
+  ctx.setTransform(dpr * sx, 0, 0, dpr * sy, 0, 0)
+
+  ctx.clearRect(0, 0, BASE_W, BASE_H)
   ctx.fillStyle = '#f8fafc'
-  ctx.fillRect(0, 0, W, H)
+  ctx.fillRect(0, 0, BASE_W, BASE_H)
+
+  imgRect = computeImageRect()
+
+  if (!cropMode.value) {
+    drawReservedZones(ctx)
+  }
 
   if (img.value) {
     if (cropMode.value) {
       const iw = img.value.width, ih = img.value.height
-      const baseScale = Math.min(W / iw, H / ih)
+      const baseScale = Math.min(BASE_W / iw, BASE_H / ih)
       const s = baseScale * crop.value.scale
-      const drawW = iw * s, drawH = ih * s
-      const drawX = (W - drawW) / 2 + crop.value.offsetX * W
-      const drawY = (H - drawH) / 2 + crop.value.offsetY * H
+      const drawW = iw * s
+      const drawH = ih * s
+      const drawX = (BASE_W - drawW) / 2 + crop.value.offsetX * BASE_W
+      const drawY = (BASE_H - drawH) / 2 + crop.value.offsetY * BASE_H
       ctx.drawImage(img.value, drawX, drawY, drawW, drawH)
 
       const { x, y, w, h } = crop.value.box
       ctx.save()
       ctx.fillStyle = 'rgba(0,0,0,0.55)'
-      ctx.fillRect(0, 0, W, y)
-      ctx.fillRect(0, y + h, W, H - (y + h))
+      ctx.fillRect(0, 0, BASE_W, y)
+      ctx.fillRect(0, y + h, BASE_W, BASE_H - (y + h))
       ctx.fillRect(0, y, x, h)
-      ctx.fillRect(x + w, y, W - (x + w), h)
+      ctx.fillRect(x + w, y, BASE_W - (x + w), h)
       ctx.restore()
 
       ctx.strokeStyle = '#22c55e'
@@ -393,13 +624,15 @@ function draw() {
       })
       return
     } else {
-      ctx.drawImage(img.value, 0, 0, W, H)
+      ctx.drawImage(img.value, imgRect.x, imgRect.y, imgRect.w, imgRect.h)
     }
   }
 
-  const minSide = Math.min(W, H)
+  // ─── ЗОНЫ ───
+  const minSide = Math.min(imgRect.w, imgRect.h)
   zones.value.forEach((z, i) => {
-    const cx = z.x * W, cy = z.y * H
+    const cx = imgRect.x + z.x * imgRect.w
+    const cy = imgRect.y + z.y * imgRect.h
     const isSelected = z.id === selectedZoneId.value
     const isConflict = conflictingZoneIds.value.has(z.id)
 
@@ -460,11 +693,12 @@ function onImageLoad(e) {
   const image = new Image()
   image.onload = () => {
     img.value = image
+    sourceImageSize.value = { width: image.width, height: image.height }
     originalImageSize.value = { width: image.width, height: image.height }
-    crop.value = { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: W, h: H } }
+    crop.value = { scale: 1, offsetX: 0, offsetY: 0, box: { x: 0, y: 0, w: BASE_W, h: BASE_H } }
     cropMode.value = true
     appliedCrop.value = null
-    nextTick(draw)
+    nextTick(() => { resizeCanvas(); draw() })
   }
   image.src = url
 }
@@ -481,10 +715,11 @@ function hitHandle(px, py) {
 }
 
 function hitZone(px, py) {
-  const minSide = Math.min(W, H)
+  const minSide = Math.min(imgRect.w, imgRect.h)
   for (let i = zones.value.length - 1; i >= 0; i--) {
     const z = zones.value[i]
-    const cx = z.x * W, cy = z.y * H
+    const cx = imgRect.x + z.x * imgRect.w
+    const cy = imgRect.y + z.y * imgRect.h
     if (z.shape === 'rect') {
       const w = z.w * minSide, h = z.h * minSide
       if (px >= cx - w / 2 && px <= cx + w / 2 && py >= cy - h / 2 && py <= cy + h / 2) {
@@ -512,11 +747,17 @@ function inCropBox(px, py) {
   return px >= x && px <= x + w && py >= y && py <= y + h
 }
 
+// ─── КООРДИНАТЫ КУРСОРА В ВИРТУАЛЬНОЙ СИСТЕМЕ ───
+function getVirtualPointer(e) {
+  const rect = canvasRef.value.getBoundingClientRect()
+  const rx = (e.clientX - rect.left) / rect.width
+  const ry = (e.clientY - rect.top) / rect.height
+  return { px: rx * BASE_W, py: ry * BASE_H }
+}
+
 // ─── МЫШЬ ───
 function onDown(e) {
-  const rect = canvasRef.value.getBoundingClientRect()
-  const px = e.clientX - rect.left
-  const py = e.clientY - rect.top
+  const { px, py } = getVirtualPointer(e)
 
   if (cropMode.value) {
     const ch = hitCropHandle(px, py)
@@ -550,27 +791,30 @@ function onDown(e) {
   if (hit) {
     selectZone(hit.zone.id)
     dragging = hit.zone
-    dragOffset.x = px - hit.zone.x * W
-    dragOffset.y = py - hit.zone.y * H
+    dragOffset.x = px - (imgRect.x + hit.zone.x * imgRect.w)
+    dragOffset.y = py - (imgRect.y + hit.zone.y * imgRect.h)
     return
   }
 
   selectedZoneId.value = null
+
+  const nx = (px - imgRect.x) / imgRect.w
+  const ny = (py - imgRect.y) / imgRect.h
+  if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return
+
   zones.value.unshift({
     id: 'w' + Date.now(),
     text: `zone ${zones.value.length + 1}`,
     shape: 'rect',
-    x: px / W,
-    y: py / H,
+    x: nx,
+    y: ny,
     r: 0.07, w: 0.14, h: 0.14,
   })
   draw()
 }
 
 function onMove(e) {
-  const rect = canvasRef.value.getBoundingClientRect()
-  const px = e.clientX - rect.left
-  const py = e.clientY - rect.top
+  const { px, py } = getVirtualPointer(e)
 
   if (cropMode.value && cropDrag && cropDragStart) {
     const dx = px - cropDragStart.px
@@ -598,7 +842,7 @@ function onMove(e) {
   }
 
   if (resizeHandle && resizeZone) {
-    const minSide = Math.min(W, H)
+    const minSide = Math.min(imgRect.w, imgRect.h)
     const dx = px - resizeStart.px
     const dy = py - resizeStart.py
     const start = resizeStart
@@ -616,8 +860,8 @@ function onMove(e) {
     const newW = right - left, newH = bottom - top
     const newCx = (left + right) / 2, newCy = (top + bottom) / 2
 
-    resizeZone.x = newCx / W
-    resizeZone.y = newCy / H
+    resizeZone.x = (newCx - imgRect.x) / imgRect.w
+    resizeZone.y = (newCy - imgRect.y) / imgRect.h
     resizeZone.w = newW / minSide
     resizeZone.h = newH / minSide
     draw()
@@ -625,8 +869,8 @@ function onMove(e) {
   }
 
   if (dragging) {
-    dragging.x = (px - dragOffset.x) / W
-    dragging.y = (py - dragOffset.y) / H
+    dragging.x = (px - dragOffset.x - imgRect.x) / imgRect.w
+    dragging.y = (py - dragOffset.y - imgRect.y) / imgRect.h
     draw()
   }
 }
@@ -681,27 +925,29 @@ function clearAll() {
 
 // ─── ЭКСПОРТ ───
 function buildJson() {
-  const data = {
+  return {
     title: 'My level',
     instructions: 'Протяни линию от названия к нужному месту на картинке',
-    imageWidth: originalImageSize.value.width,
-    imageHeight: originalImageSize.value.height,
+    // ОРИГИНАЛ (до crop) — как в игре
+    imageWidth: sourceImageSize.value.width,
+    imageHeight: sourceImageSize.value.height,
     crop: appliedCrop.value
       ? {
         scale: appliedCrop.value.scale,
         offsetX: appliedCrop.value.offsetX,
         offsetY: appliedCrop.value.offsetY,
         box: { ...appliedCrop.value.box },
+        croppedWidth: appliedCrop.value.croppedWidth,
+        croppedHeight: appliedCrop.value.croppedHeight,
       }
       : null,
     words: zones.value.map(z => {
-      const base = { id: z.id, text: z.text, shape: z.shape, x: +z.x.toFixed(3), y: +z.y.toFixed(3) }
-      if (z.shape === 'rect') { base.w = +z.w.toFixed(3); base.h = +z.h.toFixed(3) }
-      else { base.r = +z.r.toFixed(3) }
+      const base = { id: z.id, text: z.text, shape: z.shape, x: +z.x.toFixed(4), y: +z.y.toFixed(4) }
+      if (z.shape === 'rect') { base.w = +z.w.toFixed(4); base.h = +z.h.toFixed(4) }
+      else { base.r = +z.r.toFixed(4) }
       return base
     }),
   }
-  return data
 }
 
 async function exportJson() {
@@ -741,13 +987,18 @@ function downloadJson() {
 
 // ─── ИНИЦИАЛИЗАЦИЯ ───
 onMounted(async () => {
+  window.addEventListener('resize', resizeCanvas)
   if (currentLevel.value && currentLevel.value !== '__new__') {
     await loadLevel(currentLevel.value)
   } else if (levelKeys.value.length > 0) {
     currentLevel.value = levelKeys.value[0]
     await loadLevel(currentLevel.value)
   }
-  nextTick(draw)
+  nextTick(() => { resizeCanvas(); draw() })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', resizeCanvas)
 })
 </script>
 
@@ -774,12 +1025,21 @@ h2 { margin: 0 0 4px; }
 
 .workspace { display: flex; gap: 16px; align-items: flex-start; width: 100%; }
 
+.canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 800px;
+}
+
 .canvas {
-  flex: 0 0 800px;
-  width: 800px;
-  height: 520px;
-  border: 1px solid #cbd5e1; border-radius: 8px;
-  touch-action: none; cursor: crosshair; display: block;
+  width: 100%;
+  display: block;
+  aspect-ratio: 800 / 520;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  touch-action: none;
+  cursor: crosshair;
+  background: #f8fafc;
 }
 
 .sidebar {
@@ -867,6 +1127,6 @@ h2 { margin: 0 0 4px; }
   .workspace { flex-direction: column; }
   .sidebar, .crop-sidebar { width: 100%; flex: none; height: auto; max-height: 400px; }
   .zones-scroll { max-height: 300px; }
-  .canvas { max-width: 100%; height: auto; aspect-ratio: 800 / 520; flex: none; width: 100%; }
+  .canvas-wrap { width: 100%; max-width: 100%; }
 }
 </style>

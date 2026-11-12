@@ -25,37 +25,88 @@ export class ImageObject {
 }
 
 export class Card {
-  constructor({ x, y, w, h, text, color = '#e0f2fe', border = '#3b82f6' }) {
+  constructor({ x, y, w, h, text, color = '#e0f2fe', border = '#3b82f6', side = 'left' }) {
     this.x = x; this.y = y; this.w = w; this.h = h
     this.text = text
     this.color = color
     this.border = border
+    this.side = side
     this.visible = true
     this.highlight = false
-    this.zIndex = 4     // ← добавить
-
+    this.zIndex = 4
+    this.holeColor = border // ← цвет дырочки (по умолчанию цвет обводки)
   }
+
   hitTest(px, py) {
     return px >= this.x && px <= this.x + this.w &&
       py >= this.y && py <= this.y + this.h
   }
+
+  getAnchorPoint() {
+    const cy = this.y + this.h / 2
+    const holeOffset = 10
+
+    if (this.side === 'left') {
+      return { x: this.x + this.w - holeOffset, y: cy }
+    }
+    if (this.side === 'right') {
+      return { x: this.x + holeOffset, y: cy }
+    }
+    return { x: this.x + this.w / 2, y: cy }
+  }
+
   draw(ctx) {
+    const r = 12
+    const x = this.x, y = this.y, w = this.w, h = this.h
+    const cx = x + w / 2
+    const cy = y + h / 2
+
+    // ─── Фон и обводка ───
     ctx.beginPath()
-    ctx.roundRect(this.x, this.y, this.w, this.h, 12)
+    ctx.roundRect(x, y, w, h, r)
     ctx.fillStyle = this.highlight ? '#dbeafe' : this.color
     ctx.fill()
     ctx.strokeStyle = this.highlight ? '#1d4ed8' : this.border
     ctx.lineWidth = 2
     ctx.stroke()
 
+    // ─── Текст ───
     ctx.fillStyle = '#1f2937'
     ctx.font = 'bold 16px system-ui'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillText(this.text, this.x + this.w / 2, this.y + this.h / 2)
+    const textShift = (this.side === 'left') ? -6 : (this.side === 'right') ? 6 : 0
+    ctx.fillText(this.text, cx + textShift, cy)
+
+    // ─── Дырочка (только для left/right) ───
+    if (this.side === 'left' || this.side === 'right') {
+      const holeX = (this.side === 'left') ? x + w - 10 : x + 10
+      const holeY = cy
+      const holeR = 4
+
+      // 1. Фон дырочки (белый, если не соединена, или holeColor)
+      ctx.beginPath()
+      ctx.arc(holeX, holeY, holeR, 0, Math.PI * 2)
+      ctx.fillStyle = this.isConnected ? this.holeColor : '#ffffff'
+      ctx.fill()
+
+      // 2. Обводка дырочки (всегда holeColor)
+      ctx.strokeStyle = this.holeColor
+      ctx.lineWidth = 2
+      ctx.stroke()
+
+      // 3. Если соединена, добавляем лёгкое затемнение для объёма
+      if (this.isConnected) {
+        ctx.beginPath()
+        ctx.arc(holeX, holeY, holeR, 0, Math.PI * 2)
+        ctx.globalAlpha = 0.2
+        ctx.fillStyle = '#000000'
+        ctx.fill()
+        ctx.globalAlpha = 1.0
+      }
+    }
   }
 }
-
 export class Line {
   constructor({ x1, y1, x2, y2, color = '#3b82f6', width = 4 }) {
     this.x1 = x1; this.y1 = y1; this.x2 = x2; this.y2 = y2
@@ -187,4 +238,29 @@ export class Zone {
       ctx.globalAlpha = 1
     }
   }
+}
+export class Rect {
+  constructor({ x, y, w, h, color = 'rgba(0,0,0,0.06)', borderColor = 'rgba(0,0,0,0.25)', borderWidth = 1 }) {
+    this.x = x
+    this.y = y
+    this.w = w
+    this.h = h
+    this.color = color
+    this.borderColor = borderColor
+    this.borderWidth = borderWidth
+    this.visible = true
+    this.zIndex = 1
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.w, this.h)
+    if (this.borderWidth > 0) {
+      ctx.strokeStyle = this.borderColor
+      ctx.lineWidth = this.borderWidth
+      ctx.strokeRect(this.x, this.y, this.w, this.h)
+    }
+  }
+
+  hitTest() { return false }
 }

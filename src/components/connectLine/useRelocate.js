@@ -17,10 +17,13 @@ export function createRelocate({ cards, sideLists, layoutSide, estimateX, estima
         const e = 1 - Math.pow(1 - t, 3)
         card.x = startX + (endX - startX) * e
         card.y = startY + (endY - startY) * e
+
         if (line) {
-          line.x1 = card.x + card.w / 2
-          line.y1 = card.y + card.h / 2
+          const anchor = card.getAnchorPoint ? card.getAnchorPoint() : { x: card.x + card.w / 2, y: card.y + card.h / 2 }
+          line.x1 = anchor.x
+          line.y1 = anchor.y
         }
+
         if (t < 1) requestAnimationFrame(frame)
       }
       requestAnimationFrame(frame)

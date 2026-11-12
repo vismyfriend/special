@@ -1,37 +1,38 @@
 {
-  "title": "My level",
+  "title": "body",
   "instructions": "Протяни линию от названия к нужному месту на картинке",
-  "imageWidth": 289,
-  "imageHeight": 409,
+  "imageWidth": 372,
+  "imageHeight": 520,
   "crop": {
     "scale": 1,
     "offsetX": 0,
     "offsetY": 0,
     "box": {
-      "x": 0,
+      "x": 211.99609375,
       "y": 0,
-      "w": 800,
+      "w": 372.3046875,
       "h": 520
-    }
+    },
+    "croppedWidth": 372,
+    "croppedHeight": 520
   },
   "words": [
     {
       "id": "head",
       "text": "head",
       "shape": "circle",
-      "x": 0.5,
+      "x": 0.233,
       "y": 0.15,
-      "r": 0.08
+      "r": 0.057
     },
-
     {
       "id": "body",
       "text": "body",
       "shape": "rect",
-      "x": 0.5,
+      "x": 0.233,
       "y": 0.5,
-      "w": 0.2,
-      "h": 0.3
+      "w": 0.143,
+      "h": 0.215
     }
   ]
 }

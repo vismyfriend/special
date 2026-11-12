@@ -48,6 +48,17 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
     return card.correctText === zone.text
   }
 
+  function getAnchor(card) {
+    if (!card) return { x: 0, y: 0 }
+    return card.getAnchorPoint ? card.getAnchorPoint() : { x: card.x + card.w / 2, y: card.y + card.h / 2 }
+  }
+
+  function resetHoleColor(card) {
+    if (!card) return
+    card.holeColor = card.border
+    card.isConnected = false // ★ Сбрасываем флаг
+  }
+
   function onPointerDown(pt) {
     if (returningLine) {
       engine.remove(returningLine)
@@ -74,9 +85,10 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       card.highlight = true
       dragMode.value = 'from-card'
 
+      const anchor = getAnchor(card)
       const line = new Line({
-        x1: card.x + card.w / 2,
-        y1: card.y + card.h / 2,
+        x1: anchor.x,
+        y1: anchor.y,
         x2: pt.x,
         y2: pt.y,
         color: '#3b82f6',
@@ -100,6 +112,13 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
         conn.originalZoneId = anchorHit.id
         byZone.delete(anchorHit.id)
         connections.value = [...byCard.values()]
+
+        const card = cards.find(c => c.id === conn.cardId)
+        if (card) {
+          const anchor = getAnchor(card)
+          conn.line.x1 = anchor.x
+          conn.line.y1 = anchor.y
+        }
 
         draggingConn.value = conn
         dragMode.value = 'from-zone'
@@ -173,7 +192,8 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       }
 
       if (!targetZone) {
-        animateLineTo(tmp, selectedCard.value.x + selectedCard.value.w / 2, selectedCard.value.y + selectedCard.value.h / 2, () => {
+        const anchor = getAnchor(selectedCard.value)
+        animateLineTo(tmp, anchor.x, anchor.y, () => {
           engine.remove(tmp)
           if (returningLine === tmp) returningLine = null
         })
@@ -194,15 +214,21 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       const lineColor = autoCheck
         ? (isCorrect ? '#22c55e' : '#ef4444')
         : '#3b82f6'
+
+      const anchor = getAnchor(selectedCard.value)
       const line = new Line({
-        x1: selectedCard.value.x + selectedCard.value.w / 2,
-        y1: selectedCard.value.y + selectedCard.value.h / 2,
+        x1: anchor.x,
+        y1: anchor.y,
         x2: targetZone.x,
         y2: targetZone.y,
         color: lineColor,
         width: 4,
       })
       engine.add(line)
+
+      // ★ Устанавливаем цвет дырочки и флаг соединения
+      selectedCard.value.holeColor = lineColor
+      selectedCard.value.isConnected = true
 
       const conn = {
         cardId: selectedCard.value.id,
@@ -281,6 +307,12 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
         : '#3b82f6'
       tmp.isTemporary = false
 
+      const cardToUpdate = cards.find(c => c.id === conn.cardId)
+      if (cardToUpdate) {
+        cardToUpdate.holeColor = tmp.color
+        cardToUpdate.isConnected = true // ★
+      }
+
       byZone.set(targetZone.id, conn)
       connections.value = [...byCard.values()]
 
@@ -333,15 +365,21 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       const lineColor = autoCheck
         ? (isCorrect ? '#22c55e' : '#ef4444')
         : '#3b82f6'
+
+      const anchor = getAnchor(targetCard)
       const line = new Line({
-        x1: targetCard.x + targetCard.w / 2,
-        y1: targetCard.y + targetCard.h / 2,
+        x1: anchor.x,
+        y1: anchor.y,
         x2: selectedZone.value.x,
         y2: selectedZone.value.y,
         color: lineColor,
         width: 4,
       })
       engine.add(line)
+
+      // ★ Устанавливаем цвет дырочки и флаг соединения
+      targetCard.holeColor = lineColor
+      targetCard.isConnected = true
 
       const conn = {
         cardId: targetCard.id,
@@ -391,7 +429,11 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       engine.remove(line)
       return
     }
-    animateLineTo(line, card.x + card.w / 2, card.y + card.h / 2, () => engine.remove(line))
+
+    resetHoleColor(card) // ★ сбрасываем цвет и флаг
+
+    const anchor = getAnchor(card)
+    animateLineTo(line, anchor.x, anchor.y, () => engine.remove(line))
   }
 
   function checkAll() {
@@ -403,6 +445,16 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
       const isCorrect = card.correctText === zone.text
       conn.isCorrect = isCorrect
       conn.line.color = isCorrect ? '#22c55e' : '#ef4444'
+
+      // ★ Пересчитываем начало линии
+      const anchor = getAnchor(card)
+      conn.line.x1 = anchor.x
+      conn.line.y1 = anchor.y
+
+      // ★ Обновляем цвет дырочки и флаг
+      card.holeColor = conn.line.color
+      card.isConnected = true
+
       if (isCorrect) correct++
     })
     return { correct, total: cards.length }
