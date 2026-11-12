@@ -463,6 +463,10 @@ const routes = [
             component: () => import('src/components/GamePickLock.vue'),
           },
           {
+            path: '/see-all-sets-of-words/:missionName/dialSafe',
+            component: () => import('src/components/GameDialSafe.vue'),
+          },
+          {
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
           },

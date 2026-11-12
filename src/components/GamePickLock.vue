@@ -328,6 +328,7 @@ async function loadGame() {
     if (version === loadVersion) loading.value = false;
   }
 }
+const PIN_RESET_DELAY = 700; // мс после касания — сброс пинов текущего раунда
 
 function selectPin(index) {
   console.log('[selectPin] click', { index, lockedIndices: [...lockedIndices.value], transitioning: transitioning.value, roundComplete: roundComplete.value });
@@ -347,33 +348,43 @@ function selectPin(index) {
 
   later(() => {
     if (correct) {
-      playSound('correct');   // 🆕
+      playSound('correct');
 
       lockedIndices.value = [...lockedIndices.value, index];
       completedCount.value++;
       feedback.value = roundComplete.value ? 'Замок открыт. Отличная работа, агент.' : 'Есть контакт. Пин зафиксирован.';
       logState('selectPin correct (after 560)');
     } else {
-      playSound('incorrect'); // 🆕
+      playSound('incorrect');
 
       mistakes.value++;
       roundMistakes.value++;
       wrongIndex.value = index;
 
+      // 1. запоминаем упавшее слово ДО перемешивания
+      const failedWord = currentWord.value;
+
       if (roundMistakes.value < 3) {
-        const failedWord = currentWord.value;
         if (!questions.value.slice(questionPointer.value).some(w => w.eng === failedWord.eng)) {
           questions.value.push(failedWord);
           console.log('[selectPin] failed word pushed', { eng: failedWord.eng, questionsLen: questions.value.length });
         }
-        feedback.value = `Не тот пин. Ошибок: ${roundMistakes.value} из 3. Слово вернётся в конце.`;
+        feedback.value = `Не тот пин. Ошибок: ${roundMistakes.value} из 3. Замок сначала.`;
       }
 
       if (roundMistakes.value === 3) {
         pickBroken.value = true;
         feedback.value = 'Отмычка сломалась! Игра начинается заново…';
       }
-      logState('selectPin wrong (after 560)');
+      logState('selectPin wrong (after 560)', { failedWord: failedWord.eng });
+
+      // 2. сброс пинов + новый случайный порядок — с задержкой
+      later(() => {
+        completedCount.value -= lockedIndices.value.length;
+        lockedIndices.value = [];
+        questionOrder.value = shuffle(roundWords.value.map((_, i) => i));
+        logState('selectPin pins reset (delayed)', { delay: PIN_RESET_DELAY });
+      }, PIN_RESET_DELAY);
     }
   }, 560);
 

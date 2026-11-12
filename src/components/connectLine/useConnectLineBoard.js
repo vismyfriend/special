@@ -82,24 +82,27 @@ export async function setupBoard(engine, gameData, options = {}) {
     hideCardText = false,
   } = options
 
-  // ─── ФЛАГИ ОТЛАДКИ ───
-  const SHOW_DEBUG_ZONES = false // true — показывать синие зоны и зелёный контур
+  const SHOW_DEBUG_ZONES = false
 
   // ─── КОНСТАНТЫ РАСКЛАДКИ ───
   let cardW = 110
   const cardH = 28
-  const gapY = 18
+  const gapY = 25
   const gapX_top = 10
   const sidePadX = 10
   const topPadY = 10
   const columnGap = -50
   const rowGap = 10
 
+  // ─── МАКСИМУМЫ СЛОТОВ ───
+  const SUB_MAX = { left: 10, right: 10, top: 4 }
+
   // ─── БАЗОВАЯ СИСТЕМА КООРДИНАТ ───
   const BASE_W = 800
   const BASE_H = 520
 
   let imgX = 0
+  let imgY = 0
   let imgW = 0
   let imgH = 0
 
@@ -152,7 +155,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     currentLeftGap = leftGap
     currentRightGap = rightGap
 
-    // 1. Считаем РЕАЛЬНУЮ ширину карточек
     const leftRealWidth = leftCols > 0
       ? (sidePadX + cardW + (leftCols === 2 ? columnGap + cardW : 0))
       : 0
@@ -161,45 +163,39 @@ export async function setupBoard(engine, gameData, options = {}) {
       ? (sidePadX + cardW + (rightCols === 2 ? columnGap + cardW : 0))
       : 0
 
-    // 2. Картинка занимает ВСЁ оставшееся место
     const maxW = engine.width - leftRealWidth - rightRealWidth - leftGap - rightGap
 
-    // 3. Высота верхних карточек
     const topBlockH = plan.top > 0
       ? plan.top * cardH + (plan.top - 1) * rowGap + topPadY * 2
       : 0
 
     const maxH = engine.height - topBlockH - 8
 
-    // 4. Размер картинки
     const scale = Math.min(maxW / imgNaturalW, maxH / imgNaturalH, 1)
     let w = imgNaturalW * scale
     let h = imgNaturalH * scale
 
-    // 5. ПОЗИЦИЯ КАРТИНКИ — ВСЕГДА ПО ЦЕНТРУ
     let imgXPos = (engine.width - w) / 2
-    let imgY = topBlockH + (engine.height - topBlockH - h) / 2
+    let imgYPos = topBlockH + (engine.height - topBlockH - h) / 2
 
-    // 6. Если вылезает за низ
     const bottomPad = 8
-    if (imgY + h > engine.height - bottomPad) {
-      const maxH2 = engine.height - bottomPad - imgY
+    if (imgYPos + h > engine.height - bottomPad) {
+      const maxH2 = engine.height - bottomPad - imgYPos
       if (maxH2 > 60) {
         const ratio = maxH2 / h
         h = h * ratio
         w = w * ratio
-        imgXPos = (engine.width - w) / 2 // по центру
+        imgXPos = (engine.width - w) / 2
       }
     }
 
     imgX = imgXPos
+    imgY = imgYPos
     imgW = w
     imgH = h
 
-    // 7. Рисуем картинку
     engine.add(new ImageObject({ x: imgX, y: imgY, w, h, img }))
 
-    // 8. Рисуем зоны
     const minSide = Math.min(w, h)
     gameData.words.forEach(word => {
       const zx = imgX + word.x * w
@@ -221,7 +217,6 @@ export async function setupBoard(engine, gameData, options = {}) {
       engine.add(zone)
     })
 
-    // 9. Создаём карточки
     const allCards = shuffledWords.map(word => {
       const card = new Card({
         x: 0, y: 0, w: cardW, h: cardH,
@@ -236,7 +231,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     cards.push(...allCards)
     allCards.forEach(c => engine.add(c))
 
-    // 10. Если stagger — уменьшаем карточки
     if (plan.stagger) {
       const leftSpace  = imgX - sidePadX * 2 - Math.abs(columnGap)
       const rightSpace = (engine.width - (imgX + w)) - sidePadX * 2 - Math.abs(columnGap)
@@ -246,7 +240,6 @@ export async function setupBoard(engine, gameData, options = {}) {
       allCards.forEach(c => { c.w = cardW })
     }
 
-    // 11. Распределение карточек по слотам
     const shuffledCards = shuffleArray(allCards)
     const { slots, buckets } = distribute(shuffledCards, plan)
 
@@ -270,11 +263,9 @@ export async function setupBoard(engine, gameData, options = {}) {
       })
     }
 
-    // 12. Раскладка
     layoutAll()
     cards.forEach(c => { c.x = c.targetX; c.y = c.targetY })
 
-    // 13. ОТЛАДКА (если включено — рисуем зоны и контуры)
     if (SHOW_DEBUG_ZONES) {
       if (plan.left > 0) {
         const leftCards = cards.filter(c => c.side === 'left')
@@ -369,8 +360,8 @@ export async function setupBoard(engine, gameData, options = {}) {
     const minSide = Math.min(w, h)
 
     gameData.words.forEach(word => {
-      const zx = imgXm + (word.x * BASE_W / imgNaturalW) * w
-      const zy = imgYm + (word.y * BASE_H / imgNaturalH) * h
+      const zx = imgXm + word.x * w
+      const zy = imgYm + word.y * h
       const zr = word.r * minSide
       const shape = word.shape || 'circle'
       const zone = new Zone({
@@ -391,6 +382,33 @@ export async function setupBoard(engine, gameData, options = {}) {
 
   // ==================== LAYOUT ====================
 
+  // Адаптивный шаг по Y — гарантирует, что N карточек влезут в engine.height
+  function getStepY(N) {
+    const ideal = cardH + gapY
+    if (N <= 1) return ideal
+    const padY = 8
+    const maxH = engine.height - padY * 2
+    const maxStep = (maxH - cardH) / (N - 1)
+    return Math.max(cardH + 4, Math.min(ideal, maxStep))
+  }
+
+  // Один stepY и baseStartY на всю сторону (Вариант A)
+  function getSideMetrics(side) {
+    const slots = sideLists[side] || []
+    const maxN = Math.max(...slots.map(l => l.length), 0)
+    if (maxN === 0) {
+      return { stepY: cardH + gapY, baseStartY: 0 }
+    }
+    const stepY = getStepY(maxN)
+    const totalBlockH = (maxN - 1) * stepY + cardH
+    let baseStartY = (engine.height - totalBlockH) / 2
+    if (baseStartY < 0) baseStartY = 0
+    if (baseStartY + totalBlockH > engine.height) {
+      baseStartY = Math.max(0, engine.height - totalBlockH)
+    }
+    return { stepY, baseStartY }
+  }
+
   function columnX(side, sub) {
     if (side === 'left') {
       let x = sidePadX + sub * (cardW + columnGap)
@@ -406,11 +424,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     return Math.min(engine.width - sidePadX - cardW, x)
   }
 
-  function columnStaggerOffset(sub, plan) {
-    if (!plan.stagger) return 0
-    return sub === 1 ? Math.round((cardH + gapY) / 2) : 0
-  }
-
   function layoutBucket(side, sub) {
     const bucket = sideLists[side]?.[sub]
     if (!bucket || bucket.length === 0) return
@@ -419,38 +432,32 @@ export async function setupBoard(engine, gameData, options = {}) {
 
     if (side === 'left' || side === 'right') {
       const x = columnX(side, sub)
+      const { stepY, baseStartY } = getSideMetrics(side)
       const isStagger = plan.stagger && sub === 1
-      const stepY = cardH + gapY
-
-      let startY
-      if (isStagger) {
-        const refBucket = sideLists[side]?.[0] || []
-        const refN = refBucket.length
-        const refBlockH = refN * stepY - gapY
-        const refStartY = (engine.height - refBlockH) / 2
-        startY = refStartY + stepY / 2
-      } else {
-        const totalBlockH = N * stepY - gapY
-        startY = (engine.height - totalBlockH) / 2
-      }
+      const offset = isStagger ? stepY / 2 : 0
 
       bucket.forEach((cardId, i) => {
         const card = cards.find(c => c.id === cardId)
         if (!card) return
         card.targetX = x
-        card.targetY = startY + i * stepY
+        card.targetY = baseStartY + offset + i * stepY
       })
       return
     }
 
     if (side === 'top') {
-      const totalW = N * cardW + (N - 1) * gapX_top
-      const startX = (engine.width - totalW) / 2
+      const fitW = Math.min(
+        N * cardW + (N - 1) * gapX_top,
+        engine.width - topPadY * 2,
+      )
+      const realCardW = fitW / N
+      const realGap = N > 1 ? (fitW - N * realCardW) / (N - 1) : 0
+      const startX = (engine.width - fitW) / 2
       const y = topPadY + sub * (cardH + rowGap)
       bucket.forEach((cardId, i) => {
         const card = cards.find(c => c.id === cardId)
         if (!card) return
-        card.targetX = startX + i * (cardW + gapX_top)
+        card.targetX = startX + i * (realCardW + realGap)
         card.targetY = y
       })
     }
@@ -477,9 +484,14 @@ export async function setupBoard(engine, gameData, options = {}) {
       return columnX(side, sub) + cardW / 2
     }
     if (side === 'top') {
-      const totalW = total * cardW + (total - 1) * gapX_top
-      const startX = (engine.width - totalW) / 2
-      return startX + pos * (cardW + gapX_top) + cardW / 2
+      const fitW = Math.min(
+        total * cardW + (total - 1) * gapX_top,
+        engine.width - topPadY * 2,
+      )
+      const realCardW = total > 0 ? fitW / total : cardW
+      const realGap = total > 1 ? (fitW - total * realCardW) / (total - 1) : 0
+      const startX = (engine.width - fitW) / 2
+      return startX + pos * (realCardW + realGap) + realCardW / 2
     }
     return 0
   }
@@ -487,9 +499,22 @@ export async function setupBoard(engine, gameData, options = {}) {
   function estimateY(side, sub, pos = 0, total = 1) {
     if (side === 'left' || side === 'right') {
       const plan = planLayout(cards.length)
-      const offset = columnStaggerOffset(sub, plan)
-      const startY = (engine.height - total * (cardH + gapY) + gapY) / 2 + offset
-      return startY + pos * (cardH + gapY) + cardH / 2
+      const isStagger = plan.stagger && sub === 1
+      const slots = sideLists[side] || []
+      // «что будет, если добавим в этот sub»
+      const maxN = Math.max(
+        ...slots.map((l, idx) => l.length + (idx === sub ? 1 : 0)),
+        0,
+      )
+      const stepY = getStepY(maxN)
+      const totalBlockH = (maxN - 1) * stepY + cardH
+      let baseStartY = (engine.height - totalBlockH) / 2
+      if (baseStartY < 0) baseStartY = 0
+      if (baseStartY + totalBlockH > engine.height) {
+        baseStartY = Math.max(0, engine.height - totalBlockH)
+      }
+      const offset = isStagger ? stepY / 2 : 0
+      return baseStartY + offset + pos * stepY + cardH / 2
     }
     if (side === 'top') {
       return topPadY + sub * (cardH + rowGap) + cardH / 2
@@ -506,5 +531,6 @@ export async function setupBoard(engine, gameData, options = {}) {
     layoutSide, layoutAll, layoutBucket,
     estimateX, estimateY,
     isMobile, findZoneByText,
+    SUB_MAX,
   }
 }

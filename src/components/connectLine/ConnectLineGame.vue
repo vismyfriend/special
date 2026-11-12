@@ -38,7 +38,7 @@
           @click="handleCheckAll"
           class="btn-check"
         >✅ Проверить</button>
-        <button class="btn-editor" @click="openEditor">✏️ Редактор</button>
+        <button v-if="difficulty === 'easy'" class="btn-editor" @click="openEditor">✏️ Редактор</button>
         <!-- Уровни — только на лёгком -->
         <div v-if="difficulty === 'easy'" class="levels-dropdown" ref="levelsDropdownRef">
           <button class="btn-levels" @click="levelsOpen = !levelsOpen">

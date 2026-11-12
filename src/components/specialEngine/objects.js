@@ -25,7 +25,15 @@ export class ImageObject {
 }
 
 export class Card {
-  constructor({ x, y, w, h, text, color = '#e0f2fe', border = '#3b82f6', side = 'left' }) {
+  constructor({
+                x, y, w, h, text,
+                color = '#e0f2fe',
+                border = '#3b82f6',
+                side = 'left',
+                fontSize = 13,
+                minFontSize = 10,
+                maxLines = 3,
+              }) {
     this.x = x; this.y = y; this.w = w; this.h = h
     this.text = text
     this.color = color
@@ -34,7 +42,10 @@ export class Card {
     this.visible = true
     this.highlight = false
     this.zIndex = 4
-    this.holeColor = border // ← цвет дырочки (по умолчанию цвет обводки)
+    this.holeColor = border
+    this.fontSize = fontSize
+    this.minFontSize = minFontSize
+    this.maxLines = maxLines
   }
 
   hitTest(px, py) {
@@ -45,14 +56,59 @@ export class Card {
   getAnchorPoint() {
     const cy = this.y + this.h / 2
     const holeOffset = 10
-
-    if (this.side === 'left') {
-      return { x: this.x + this.w - holeOffset, y: cy }
-    }
-    if (this.side === 'right') {
-      return { x: this.x + holeOffset, y: cy }
-    }
+    if (this.side === 'left')  return { x: this.x + this.w - holeOffset, y: cy }
+    if (this.side === 'right') return { x: this.x + holeOffset,        y: cy }
     return { x: this.x + this.w / 2, y: cy }
+  }
+
+  // ширины для текста с учётом внутренних отступов и дырочки
+  _textArea() {
+    const padX = 14
+    const holePad = (this.side === 'left' || this.side === 'right') ? 12 : 0
+    return { padX, maxTextW: this.w - padX * 2 - holePad }
+  }
+
+  // Возвращает { lines, lineH, padY, h }
+  computeHeight(ctx) {
+    const { maxTextW } = this._textArea()
+    const fs = this.fontSize
+    const lineH = Math.round(fs * 1.02)
+    const padY = 6
+    const words = String(this.text || '').split(/\s+/).filter(Boolean)
+
+    ctx.save()
+    ctx.font = `bold ${fs}px system-ui`
+
+    const lines = []
+    let line = ''
+    for (const w of words) {
+      const test = line ? line + ' ' + w : w
+      if (ctx.measureText(test).width <= maxTextW || !line) {
+        line = test
+      } else {
+        lines.push(line)
+        line = w
+      }
+    }
+    if (line) lines.push(line)
+
+    // обрезка по maxLines + «…»
+    if (lines.length > this.maxLines) {
+      lines.length = this.maxLines
+      let last = lines[this.maxLines - 1]
+      while (last.length > 1 && ctx.measureText(last + '…').width > maxTextW) {
+        last = last.slice(0, -1)
+      }
+      lines[this.maxLines - 1] = last + '…'
+    }
+
+    ctx.restore()
+
+    const h = Math.max(
+      fs + padY * 2,
+      lines.length * lineH + padY * 2,
+    )
+    return { lines, lineH, padY, h }
   }
 
   draw(ctx) {
@@ -61,7 +117,7 @@ export class Card {
     const cx = x + w / 2
     const cy = y + h / 2
 
-    // ─── Фон и обводка ───
+    // фон и обводка
     ctx.beginPath()
     ctx.roundRect(x, y, w, h, r)
     ctx.fillStyle = this.highlight ? '#dbeafe' : this.color
@@ -70,32 +126,38 @@ export class Card {
     ctx.lineWidth = 2
     ctx.stroke()
 
-    // ─── Текст ───
-    ctx.fillStyle = '#1f2937'
-    ctx.font = 'bold 16px system-ui'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    const textShift = (this.side === 'left') ? -6 : (this.side === 'right') ? 6 : 0
-    ctx.fillText(this.text, cx + textShift, cy)
+    // текст
+    if (this.text) {
+      const { lines, lineH } = this.computeHeight(ctx)
+      const textShift = (this.side === 'left') ? -6 : (this.side === 'right') ? 6 : 0
 
-    // ─── Дырочка (только для left/right) ───
+      ctx.fillStyle = '#1f2937'
+      ctx.font = `bold ${this.fontSize}px system-ui`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+
+      const blockH = lines.length * lineH
+      const startY = cy - blockH / 2 + lineH / 2
+      lines.forEach((ln, i) => {
+        ctx.fillText(ln, cx + textShift, startY + i * lineH)
+      })
+    }
+
+    // дырочка
     if (this.side === 'left' || this.side === 'right') {
       const holeX = (this.side === 'left') ? x + w - 10 : x + 10
       const holeY = cy
       const holeR = 4
 
-      // 1. Фон дырочки (белый, если не соединена, или holeColor)
       ctx.beginPath()
       ctx.arc(holeX, holeY, holeR, 0, Math.PI * 2)
       ctx.fillStyle = this.isConnected ? this.holeColor : '#ffffff'
       ctx.fill()
 
-      // 2. Обводка дырочки (всегда holeColor)
       ctx.strokeStyle = this.holeColor
       ctx.lineWidth = 2
       ctx.stroke()
 
-      // 3. Если соединена, добавляем лёгкое затемнение для объёма
       if (this.isConnected) {
         ctx.beginPath()
         ctx.arc(holeX, holeY, holeR, 0, Math.PI * 2)
@@ -107,6 +169,7 @@ export class Card {
     }
   }
 }
+
 export class Line {
   constructor({ x1, y1, x2, y2, color = '#3b82f6', width = 4 }) {
     this.x1 = x1; this.y1 = y1; this.x2 = x2; this.y2 = y2
