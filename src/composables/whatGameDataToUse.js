@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import PublicGoogleSheetsParser from 'public-google-sheets-parser';
 import shortWordsData from '../dataForGames/short-words-data';
-
+import { allGamesAndSetsOfWordsList } from '../dataForGames/allGamesAndSetsOfWordsList';
 // ============================================================
 // КЕШ (чтобы не грузить одну и ту же таблицу дважды)
 // ============================================================
@@ -81,7 +81,7 @@ export function missionToAllSetsRoute(missionName, basePath = '/see-all-sets-of-
 const loadFromFile = (missionName) => {
   if (!missionName) return [];
 
-  // Прямое совпадение
+  // Прямое совпадение по ключу в shortWordsData
   if (shortWordsData[missionName]) {
     return shortWordsData[missionName];
   }
@@ -161,7 +161,27 @@ export function whatGameDataToUse() {
         return await loadFromGSheet(parsed.sheetId, parsed.student);
       }
 
-      return loadFromFile(parsed.missionName);
+      // 1️⃣ Пробуем как обычно — файл или ключ в shortWordsData
+      const fromFile = loadFromFile(parsed.missionName);
+      if (fromFile && fromFile.length > 0) {
+        return fromFile;
+      }
+
+      // 2️⃣ Fallback: ищем в списке миссий по missionVisibleName
+      //    (это нужно, когда в URL пришло короткое имя gsheet-миссии)
+      const missionEntry = allGamesAndSetsOfWordsList.find(
+        m => m.missionVisibleName === parsed.missionName
+      );
+
+      if (missionEntry && missionEntry.missionName?.startsWith('gsheet:')) {
+        const gParsed = parseMissionName(missionEntry.missionName);
+        if (gParsed.type === 'gsheet') {
+          console.log('[whatGameDataToUse] Fallback: нашли gsheet по missionVisibleName:', missionEntry.missionName);
+          return await loadFromGSheet(gParsed.sheetId, gParsed.student);
+        }
+      }
+
+      return [];
     } catch (e) {
       console.error('[whatGameDataToUse] Ошибка загрузки:', e);
       error.value = e.message || 'Не удалось загрузить данные';

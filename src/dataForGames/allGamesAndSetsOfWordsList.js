@@ -22,6 +22,13 @@ export const allGamesAndSetsOfWordsList =
       type: 'gsheet',
     },
     {
+      missionVisibleName: "Moon and Mohinder",
+      missionDescription: "Настя и Егорчик",
+      missionName: 'gsheet:1UpSkzNc2Or07jlB0nrkcr9BpluR0vRWyaUfVCRZ3-Po',
+      active: true,
+      type: 'gsheet',
+    },
+    {
       missionVisibleName: "Dictionary of AAA",
       missionDescription: "Anastasia's words",
       missionName: 'gsheet:1pmNKxPyLubo-aOtk8Bp1GseXYPZn6J8MGjsU4esfIps',

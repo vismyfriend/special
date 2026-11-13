@@ -1631,15 +1631,21 @@ const goToChosenGame = (set) => {
   saveScrollPosition();
   saveUserExpandedState();
 
+  // 🔑 Для gsheet-миссий используем короткое имя (missionVisibleName),
+  //    чтобы URL был читаемым. Данные всё равно загрузятся:
+  //    whatGameDataToUse сам найдёт gsheet по missionVisibleName.
+  const nameForUrl = set.type === 'gsheet'
+    ? (set.missionVisibleName || set.missionName)
+    : set.missionName;
+
   if (set.type === "hardcodedLink") {
     router.push(set.path);
   } else if (set.type === "externalLink") {
     window.open(set.url, set.target || '_blank');
   } else if (set.type === "gsheet") {
-    // Сразу открываем SpellTen если это гугл таблица студента
-    router.push(`/see-all-sets-of-words/${encodeURIComponent(set.missionName)}/spell-ten`);
+    router.push(`/see-all-sets-of-words/${encodeURIComponent(nameForUrl)}/spell-ten`);
   } else {
-    router.push(`/see-all-sets-of-words/${set.missionName}`);
+    router.push(`/see-all-sets-of-words/${encodeURIComponent(nameForUrl)}`);
   }
 };
 

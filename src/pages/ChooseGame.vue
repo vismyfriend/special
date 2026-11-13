@@ -75,6 +75,21 @@ const introMessage = ref(null); // Добавляем ref для элемент�
 const router = useRouter()
 const route = useRoute()
 
+// 🆕 Проверяем, является ли текущая миссия gsheet-набором.
+// Работает и для длинного ('gsheet:ID'), и для короткого ('Nastya') имени.
+const isCurrentMissionGSheet = computed(() => {
+  const missionName = route.params.missionName;
+  if (!missionName) return false;
+
+  // случай 1: в URL пришло длинное имя (старые ссылки)
+  if (missionName.startsWith('gsheet:')) return true;
+
+  // случай 2: в URL короткое имя — ищем в списке по missionVisibleName
+  const entry = allGamesAndSetsOfWordsList.find(
+    m => m.type === 'gsheet' && m.missionVisibleName === missionName
+  );
+  return !!entry;
+});
 // const goToSettings = () => {
 //   router.push(`/see-all-sets-of-words/${route.params.missionName}/wordSetSettings`);
 // };
@@ -378,9 +393,8 @@ const GSHEET_GAME_PATHS = [
 const filteredGames = computed(() => {
   const missionName = route.params.missionName;
 
-  // 🆕 Для gsheet-наборов показываем только «некоторые игры из списка GSHEET_GAME_PATHS»,
-  // которые умеют брать данные через loadWords.
-  if (missionName?.startsWith('gsheet:')) {
+  // 🆕 Для gsheet-наборов показываем только игры из белого списка
+  if (isCurrentMissionGSheet.value) {
     return AllGames.value.filter(
       game => game.active && GSHEET_GAME_PATHS.includes(game.path)
     );
@@ -389,11 +403,7 @@ const filteredGames = computed(() => {
   // Универсальная проверка: есть ли данные для этой миссии
   const hasData = (dataObj) => {
     if (!dataObj) return false;
-
-    // Прямая проверка
     if (dataObj[missionName]) return true;
-
-    // Проверка во вложенных объектах (для уровней A0, CustomLevel и т.д.)
     for (const key in dataObj) {
       if (dataObj[key] && typeof dataObj[key] === 'object' && dataObj[key][missionName]) {
         return true;
@@ -442,8 +452,9 @@ onMounted(() => {
 
   // Находим соответствующую миссию
   const missionName = route.params.missionName;
-  const mission = allGamesAndSetsOfWordsList.find(set => set.missionName === missionName);
-
+  const mission =
+    allGamesAndSetsOfWordsList.find(set => set.missionName === missionName)      // длинное имя
+    || allGamesAndSetsOfWordsList.find(set => set.missionVisibleName === missionName); // короткое
   // Формируем текст в зависимости от того, найдена ли миссия
   if (mission) {
     dynamicText.value = `Awesome! "${mission.missionVisibleName}" let's practice:`;
