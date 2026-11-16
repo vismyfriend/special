@@ -1535,6 +1535,15 @@ export const allGamesAndSetsOfWordsList =
           active: true,
           stars: 3
         },
+        {
+          type: "hardcodedLink",
+          path: "/see-all-sets-of-words/up7/find-pairs-hard",
+          missionVisibleName: "Useful Phrases 7",
+          missionDescription: "Юсфул фрЭйzиз 7",
+          id: 1001,
+          active: true,
+          stars: 3
+        },
       ]
     },
 
