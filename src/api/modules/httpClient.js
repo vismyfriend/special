@@ -1,11 +1,16 @@
 import axios from "axios";
 
+
 // const baseURL = 'http://178.184.87.113:3000';
 // const baseURL = 'https://backend-for-english-app.onrender.com';
 // const baseURL = 'https://92.63.98.129';
-// const baseURL = 'https://api.special-agents.ru' // уточнить у Егорчика где находится прод текущий - этот бэкенд рабочий
-const baseURL = 'https://special-agents-backend.onrender.com' // тестируем новый бэкЭннд с возможностью создавать наборы - пока на рендере месяц бесплатно
-// const baseURL = 'http://localhost:3001' // для локального тестирования нового бэкенда CRUDE
+// const baseURL = 'https://api.special-agents.ru' // прод Егорчика
+// const baseURL = 'https://special-agents-backend.onrender.com' // наш тестовый на Render
+// const baseURL = 'http://localhost:3001' // для локальной разработки
+
+// Читаем адрес из .env. Если переменной нет — падаем на localhost.
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+
 const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use((config) => {

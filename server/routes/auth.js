@@ -36,8 +36,11 @@ router.post('/', async (req, res) => {
     let user = userQuery.rows[0]
 
     if (!user) {
+      // Создаем нового гостя
       const newUserQuery = await pool.query(
-        'INSERT INTO users (username) VALUES ($1) RETURNING *',
+        `INSERT INTO users (username, role, subscription_tier)
+         VALUES ($1, 'guest', 'free')
+         RETURNING *`,
         [username]
       )
       user = newUserQuery.rows[0]

@@ -20,6 +20,7 @@
 const express = require('express')
 const pool = require('../db')
 const authenticateToken = require('../middleware/authenticateToken')
+const checkSetLimit = require('../middleware/checkSetLimit')
 
 const router = express.Router()
 
@@ -60,7 +61,7 @@ router.get('/:missionName', authenticateToken, async (req, res) => {
 })
 
 // ---------- POST /word-sets ----------
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/', authenticateToken, checkSetLimit, async (req, res) => {
   const {
     missionName,
     missionVisibleName,

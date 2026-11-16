@@ -24,6 +24,10 @@ const authRouter = require('./routes/auth')
 const scoresRouter = require('./routes/scores')
 const wordSetsRouter = require('./routes/wordSets')
 
+const usersRouter = require('./routes/users')
+const paymentsRouter = require('./routes/payments')
+
+
 const path = require('path')
 const connectLineRouter = require('./routes/connectLine')
 
@@ -60,6 +64,10 @@ app.use('/connect-line', connectLineRouter)
 
 // Отдача загруженных картинок
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+app.use('/user', usersRouter)
+app.use('/payment', paymentsRouter)
+
 
 // ---------- Служебные эндпоинты (как у Егорчика) ----------
 app.get('/test', async (req, res) => {

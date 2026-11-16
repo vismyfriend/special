@@ -84,3 +84,45 @@ CREATE INDEX IF NOT EXISTS idx_connect_line_levels_user_id
   ON connect_line_levels(user_id);
 -- Миграция: добавляем crop в connect_line_levels (идемпотентно)
 ALTER TABLE connect_line_levels ADD COLUMN IF NOT EXISTS crop JSONB;
+
+
+-- ============================================================
+--  МИГРАЦИЯ: Монетизация, роли и лимиты
+-- ============================================================
+
+-- 1. Расширяем users
+ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS email VARCHAR(255) UNIQUE,
+  ADD COLUMN IF NOT EXISTS phone VARCHAR(20) UNIQUE,
+  ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'guest',
+  ADD COLUMN IF NOT EXISTS subscription_tier VARCHAR(20) DEFAULT 'free',
+  ADD COLUMN IF NOT EXISTS subscription_end_date TIMESTAMP,
+  ADD COLUMN IF NOT EXISTS avatar_url TEXT,
+  ADD COLUMN IF NOT EXISTS avatar_preset_id INTEGER;
+
+-- 2. Добавляем expires_at в наборы и уровни (для бесплатных пользователей)
+ALTER TABLE word_sets ADD COLUMN IF NOT EXISTS expires_at TIMESTAMP;
+ALTER TABLE connect_line_levels ADD COLUMN IF NOT EXISTS expires_at TIMESTAMP;
+
+-- 3. Таблица для истории платежей
+CREATE TABLE IF NOT EXISTS payments (
+                                      id SERIAL PRIMARY KEY,
+                                      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  amount NUMERIC(10,2),
+  status VARCHAR(20), -- 'pending', 'success', 'failed'
+  external_id VARCHAR(255), -- id транзакции
+  created_at TIMESTAMP DEFAULT NOW()
+  );
+
+-- 4. Таблица для наград за рекламу
+CREATE TABLE IF NOT EXISTS ad_rewards (
+                                        id SERIAL PRIMARY KEY,
+                                        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  status VARCHAR(20) DEFAULT 'pending', -- 'pending', 'completed'
+  reward_type VARCHAR(50), -- 'extra_life', 'retry'
+  created_at TIMESTAMP DEFAULT NOW()
+  );
+
+-- 5. Заполняем существующих пользователей значениями по умолчанию
+UPDATE users SET role = 'guest' WHERE role IS NULL;
+UPDATE users SET subscription_tier = 'free' WHERE subscription_tier IS NULL;
