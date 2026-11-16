@@ -1,7 +1,7 @@
 <template>
   <div class="connect-game">
 <!--    <h2>{{ gameData.title }}</h2>-->
-    <p class="instructions">{{ gameData.instructions }}</p>
+    <p class="instructions">{{ gameData?.instructions }}</p>
     <canvas ref="canvasRef" class="game-canvas"></canvas>
 
 
@@ -149,8 +149,19 @@ function openEditor() {
 // ─── УРОВНИ ───
 const levelsOpen = ref(false)
 const levelsDropdownRef = ref(null)
-const levelKeys = computed(() => Object.keys(connectLineGames))
 
+// 1. Захардкоженные уровни
+const hardcodedLevels = computed(() => Object.keys(connectLineGames))
+
+// 2. Уровни с бэкенда
+const { fetchLevels } = useConnectLineLevelsComposable()
+const backendLevels = ref([])
+const backendLevelKeys = computed(() => backendLevels.value.map(l => l.level_name))
+
+// 3. Объединяем их
+const levelKeys = computed(() => [
+  ...new Set([...hardcodedLevels.value, ...backendLevelKeys.value])
+])
 function selectLevel(key) {
   levelsOpen.value = false
   if (key === resolvedName.value) return
@@ -186,6 +197,9 @@ function onResize() {
 }
 
 onMounted(async () => {
+  // Загружаем список уровней с бэкенда
+  backendLevels.value = await fetchLevels() // ← добавь эту строку
+
   document.addEventListener('click', onClickOutside)
 
   const qd = route.query.difficulty

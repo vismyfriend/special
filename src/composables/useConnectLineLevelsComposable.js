@@ -13,7 +13,7 @@ import { ref } from 'vue'
 import { httpClient } from 'src/api/modules/httpClient'
 
 // ⚠️ Пока хардкод. Позже заменить на import.meta.env.VITE_API_URL
-const BASE_URL = 'http://localhost:3001'
+const BASE_URL = 'https://special-agents-backend.onrender.com'
 
 /**
  * Преобразует запись из БД в формат, который ждёт setupBoard:

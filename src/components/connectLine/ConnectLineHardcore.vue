@@ -1,6 +1,6 @@
 <template>
   <div class="hardcore">
-    <p class="instructions">{{ gameData.instructions }}</p>
+    <p class="instructions">{{ gameData?.instructions }}</p>
 
     <div class="canvas-wrapper" ref="wrapperRef">
       <canvas ref="canvasRef" class="game-canvas"></canvas>
