@@ -24,6 +24,9 @@ const authRouter = require('./routes/auth')
 const scoresRouter = require('./routes/scores')
 const wordSetsRouter = require('./routes/wordSets')
 
+const path = require('path')
+const connectLineRouter = require('./routes/connectLine')
+
 const app = express()
 const port = process.env.PORT || 3001 // у Егорчика 3000, у нас 3001
 
@@ -33,6 +36,8 @@ app.use(cors({
     'http://localhost:8080',        // на всякий случай (другой порт)
     'https://www.vismyfriend.ru',   // твой рабочий сайт
     'https://vismyfriend.ru'        // без www (тоже полезно)
+
+
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -51,6 +56,10 @@ app.listen(port, '0.0.0.0', () => {
 app.use('/auth', authRouter)
 app.use('/scores', scoresRouter)
 app.use('/word-sets', wordSetsRouter)
+app.use('/connect-line', connectLineRouter)
+
+// Отдача загруженных картинок
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // ---------- Служебные эндпоинты (как у Егорчика) ----------
 app.get('/test', async (req, res) => {

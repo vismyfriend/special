@@ -2,9 +2,15 @@
   <div class="editor">
     <div class="toolbar">
       <select v-model="currentLevel" @change="onLevelChange" class="level-select">
-        <option v-for="key in levelKeys" :key="key" :value="key">{{ key }}</option>
+        <option v-for="key in allLevelKeys" :key="key" :value="key">{{ key }}</option>
         <option value="__new__">+ Новый уровень</option>
       </select>
+
+      <input
+        v-model="visibleName"
+        placeholder="Отображаемое имя"
+        class="visible-name-input"
+      />
 
       <label class="file-label">
         🖼 Загрузить картинку
@@ -18,6 +24,18 @@
               :class="{ 'btn-disabled': hasConflicts }">⬇️ Экспорт JSON</button>
       <button v-if="!cropMode" @click="downloadJson" :disabled="hasConflicts"
               title="Скачать JSON-файл для levels/">💾 Скачать JSON</button>
+
+      <!-- ⬇️ НОВОЕ: сохранение на сервер -->
+      <button
+        v-if="!cropMode"
+        @click="saveToServer"
+        :disabled="isSaving || hasConflicts"
+        :class="{ 'btn-disabled': hasConflicts }"
+      >
+        {{ isSaving ? '⏳ Сохранение...' : '💾 Сохранить на сервер' }}
+      </button>
+      <span v-if="saveMessage" class="save-msg">{{ saveMessage }}</span>
+
       <button v-if="!cropMode" @click="clearAll">🗑 Очистить</button>
       <button v-if="cropMode" @click="resetCrop">↺ Сбросить</button>
       <span v-if="cropMode" class="crop-hint">Подгони картинку и нажми «✅ Применить обрезку»</span>
@@ -103,19 +121,39 @@
 import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { connectLineGames } from './ConnectLineData'
+import { useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
 
 const route = useRoute()
 const router = useRouter()
 
-// ─── КОНСТАНТЫ (как в setupBoard игры) ───
+// ─── БЭКЕНД ───
+const {
+  fetchLevels,
+  fetchLevel,
+  saveLevel,
+  uploadImage,
+  error: apiError,
+} = useConnectLineLevelsComposable()
+
+const backendLevels = ref([])
+const backendLevelKeys = computed(() => backendLevels.value.map(l => l.level_name))
+
+// ─── КОНСТАНТЫ ───
 const BASE_W = 800
 const BASE_H = 520
 const CARD_W = 110
 const SIDE_PAD = 10
 
 const levelKeys = computed(() => Object.keys(connectLineGames))
+const allLevelKeys = computed(() => [
+  ...new Set([...levelKeys.value, ...backendLevelKeys.value]),
+])
+
 const currentLevel = ref(route.query.level || levelKeys.value[0] || '')
 const newLevelName = ref('')
+const visibleName = ref('')
+const isSaving = ref(false)
+const saveMessage = ref('')
 
 const canvasRef = ref(null)
 const wrapperRef = ref(null)
@@ -125,15 +163,14 @@ const lastExport = ref('')
 const selectedZoneId = ref(null)
 const zoneInputRefs = {}
 
-// ─── ДВА НАБОРА РАЗМЕРОВ ───
-// sourceImageSize  — размеры ОРИГИНАЛА (то, что грузится из URL / файла)
-// originalImageSize — размеры ТЕКУЩЕЙ картинки (после применения crop), используется для отрисовки
+// файл, выбранный пользователем — отправим при сохранении
+let pendingImageFile = null
+
+// ─── РАЗМЕРЫ ───
 const sourceImageSize = ref({ width: BASE_W, height: BASE_H })
 const originalImageSize = ref({ width: BASE_W, height: BASE_H })
-
 const appliedCrop = ref(null)
 
-// адаптивные размеры canvas в CSS-пикселях
 const canvasW = ref(BASE_W)
 const canvasH = ref(BASE_H)
 let dpr = 1
@@ -146,7 +183,6 @@ let resizeStart = null
 
 const HANDLE_SIZE = 10
 
-// ─── ОБЛАСТЬ КАРТИНКИ — всегда в виртуальных 800×520 ───
 let imgRect = { x: 0, y: 0, w: BASE_W, h: BASE_H, scale: 1 }
 
 function computeImageRect() {
@@ -172,7 +208,6 @@ let cropDrag = null
 let cropDragStart = null
 const croppedImage = ref(null)
 
-// ─── ПРИМЕНИТЬ CROP К КАРТИНКЕ (как в setupBoard игры) ───
 function applyCropToImage(sourceImg, cropData) {
   if (!sourceImg || !cropData) return sourceImg
   const outW = cropData.croppedWidth || BASE_W
@@ -211,20 +246,26 @@ function applyCropToImage(sourceImg, cropData) {
 
 // ─── ЗАГРУЗКА УРОВНЯ ───
 async function loadLevel(key) {
-  const data = connectLineGames[key]
-  if (!data) return
+  let data = connectLineGames[key]
+
+  if (!data) {
+    const fromBackend = await fetchLevel(key)
+    if (!fromBackend) return
+    data = fromBackend
+  }
+
+  visibleName.value = data.title || key
 
   if (data.image) {
     try {
       const image = new Image()
+      image.crossOrigin = 'anonymous'
       image.src = data.image
       await new Promise((res, rej) => { image.onload = res; image.onerror = rej })
 
-      // это ОРИГИНАЛ
       sourceImageSize.value = { width: image.width, height: image.height }
 
       if (data.crop) {
-        // сразу применяем crop — как игра
         const cropped = applyCropToImage(image, data.crop)
         await new Promise((res, rej) => {
           if (cropped.complete && cropped.naturalWidth > 0) return res()
@@ -250,7 +291,6 @@ async function loadLevel(key) {
 
   appliedCrop.value = data.crop ? { ...data.crop, box: { ...data.crop.box } } : null
 
-  // ─── ЗОНЫ: [0..1] от картинки ───
   zones.value = (data.words || []).map(w => ({
     id: w.id,
     text: w.text,
@@ -265,6 +305,7 @@ async function loadLevel(key) {
   selectedZoneId.value = null
   cropMode.value = false
   lastExport.value = ''
+  pendingImageFile = null
   await nextTick()
   resizeCanvas()
   draw()
@@ -284,6 +325,8 @@ async function onLevelChange() {
     selectedZoneId.value = null
     cropMode.value = false
     appliedCrop.value = null
+    pendingImageFile = null
+    visibleName.value = ''
     sourceImageSize.value = { width: BASE_W, height: BASE_H }
     originalImageSize.value = { width: BASE_W, height: BASE_H }
     router.replace({ query: { ...route.query, level: name } })
@@ -345,10 +388,11 @@ function resetCrop() {
   croppedImage.value = null
   appliedCrop.value = null
 
-  // вернуть ОРИГИНАЛ картинки
   const srcUrl = connectLineGames[currentLevel.value]?.image
+    || (img.value && img.value.src)
   if (srcUrl) {
     const image = new Image()
+    image.crossOrigin = 'anonymous'
     image.onload = () => {
       img.value = image
       originalImageSize.value = { width: image.width, height: image.height }
@@ -406,7 +450,6 @@ function applyCrop() {
   const newImg = new Image()
   newImg.onload = () => {
     img.value = newImg
-    // sourceImageSize НЕ трогаем — там оригинал
     originalImageSize.value = { width: Math.round(bw), height: Math.round(bh) }
     cropMode.value = false
     nextTick(() => { resizeCanvas(); draw() })
@@ -479,12 +522,10 @@ function getCropHandles() {
   ]
 }
 
-// ─── ПОДСКАЗКА О ЗАРЕЗЕРВИРОВАННЫХ ЗОНАХ ───
 function drawReservedZones(ctx) {
   const leftEdge = imgRect.x
   const rightEdge = imgRect.x + imgRect.w
 
-  // тонированная подложка панелей
   ctx.save()
   ctx.fillStyle = 'rgba(148, 163, 184, 0.12)'
   if (leftEdge > 0) {
@@ -495,7 +536,6 @@ function drawReservedZones(ctx) {
   }
   ctx.restore()
 
-  // пунктирные границы
   ctx.save()
   ctx.strokeStyle = 'rgba(255,255,255,0.85)'
   ctx.lineWidth = 2
@@ -514,7 +554,6 @@ function drawReservedZones(ctx) {
     ctx.stroke()
   }
 
-  // оси симметрии панелей
   ctx.setLineDash([4, 10])
   ctx.strokeStyle = 'rgba(9,9,9,0.18)'
   if (leftEdge > 0) {
@@ -527,7 +566,6 @@ function drawReservedZones(ctx) {
   }
   ctx.restore()
 
-  // подписи
   ctx.save()
   ctx.fillStyle = 'rgb(9,9,9)'
   ctx.font = '600 13px system-ui'
@@ -545,13 +583,12 @@ function drawReservedZones(ctx) {
     ctx.save()
     ctx.translate((rightEdge + BASE_W) / 2, BASE_H / 2)
     ctx.rotate(Math.PI / 2)
-    ctx.fillText('зоны для словсправа', 0, 0)
+    ctx.fillText('зоны для слов справа', 0, 0)
     ctx.restore()
   }
   ctx.restore()
 }
 
-// ─── РАЗМЕР CANVAS (адаптив) ───
 function resizeCanvas() {
   const canvas = canvasRef.value
   if (!canvas) return
@@ -574,7 +611,6 @@ function draw() {
   canvas.style.width = canvasW.value + 'px'
   canvas.style.height = canvasH.value + 'px'
 
-  // масштаб: виртуальные BASE_W×BASE_H → реальные canvasW×canvasH
   const sx = canvasW.value / BASE_W
   const sy = canvasH.value / BASE_H
   ctx.setTransform(dpr * sx, 0, 0, dpr * sy, 0, 0)
@@ -628,7 +664,6 @@ function draw() {
     }
   }
 
-  // ─── ЗОНЫ ───
   const minSide = Math.min(imgRect.w, imgRect.h)
   zones.value.forEach((z, i) => {
     const cx = imgRect.x + z.x * imgRect.w
@@ -689,6 +724,7 @@ watch(selectedZoneId, () => { nextTick(draw) })
 function onImageLoad(e) {
   const file = e.target.files[0]
   if (!file) return
+  pendingImageFile = file
   const url = URL.createObjectURL(file)
   const image = new Image()
   image.onload = () => {
@@ -747,7 +783,6 @@ function inCropBox(px, py) {
   return px >= x && px <= x + w && py >= y && py <= y + h
 }
 
-// ─── КООРДИНАТЫ КУРСОРА В ВИРТУАЛЬНОЙ СИСТЕМЕ ───
 function getVirtualPointer(e) {
   const rect = canvasRef.value.getBoundingClientRect()
   const rx = (e.clientX - rect.left) / rect.width
@@ -926,9 +961,8 @@ function clearAll() {
 // ─── ЭКСПОРТ ───
 function buildJson() {
   return {
-    title: 'My level',
+    title: visibleName.value || 'My level',
     instructions: 'Протяни линию от названия к нужному месту на картинке',
-    // ОРИГИНАЛ (до crop) — как в игре
     imageWidth: sourceImageSize.value.width,
     imageHeight: sourceImageSize.value.height,
     crop: appliedCrop.value
@@ -985,9 +1019,86 @@ function downloadJson() {
   URL.revokeObjectURL(url)
 }
 
+// ─── СОХРАНЕНИЕ НА СЕРВЕР ───
+async function saveToServer() {
+  if (hasConflicts.value) return
+
+  const levelName = currentLevel.value === '__new__'
+    ? (newLevelName.value || '').trim()
+    : currentLevel.value
+
+  if (!levelName) {
+    saveMessage.value = 'Укажи имя уровня (латиница)'
+    return
+  }
+  if (!visibleName.value) {
+    saveMessage.value = 'Укажи отображаемое имя'
+    return
+  }
+
+  isSaving.value = true
+  saveMessage.value = ''
+
+  const payload = {
+    levelName,
+    visibleName: visibleName.value,
+    points: zones.value.map(z => {
+      const base = { id: z.id, text: z.text, shape: z.shape, x: +z.x.toFixed(4), y: +z.y.toFixed(4) }
+      if (z.shape === 'rect') { base.w = +z.w.toFixed(4); base.h = +z.h.toFixed(4) }
+      else { base.r = +z.r.toFixed(4) }
+      return base
+    }),
+    crop: appliedCrop.value
+      ? {
+        scale: appliedCrop.value.scale,
+        offsetX: appliedCrop.value.offsetX,
+        offsetY: appliedCrop.value.offsetY,
+        box: { ...appliedCrop.value.box },
+        croppedWidth: appliedCrop.value.croppedWidth,
+        croppedHeight: appliedCrop.value.croppedHeight,
+      }
+      : null,
+    imageWidth: sourceImageSize.value.width,
+    imageHeight: sourceImageSize.value.height,
+    isPublic: true,
+  }
+
+  const isNew = !backendLevelKeys.value.includes(levelName)
+    && !connectLineGames[levelName]
+
+  const saved = await saveLevel(payload, isNew)
+  if (!saved) {
+    saveMessage.value = 'Ошибка: ' + (apiError.value || 'см. консоль')
+    isSaving.value = false
+    return
+  }
+
+  if (pendingImageFile) {
+    const up = await uploadImage(levelName, pendingImageFile)
+    if (!up) {
+      saveMessage.value = 'Уровень сохранён, но картинка не загрузилась'
+      isSaving.value = false
+      return
+    }
+    pendingImageFile = null
+  }
+
+  saveMessage.value = '✅ Сохранено'
+  backendLevels.value = await fetchLevels()
+  isSaving.value = false
+
+  if (currentLevel.value === '__new__') {
+    currentLevel.value = levelName
+    router.replace({ query: { ...route.query, level: levelName } })
+  }
+}
+
 // ─── ИНИЦИАЛИЗАЦИЯ ───
 onMounted(async () => {
   window.addEventListener('resize', resizeCanvas)
+
+  backendLevels.value = await fetchLevels()
+
   if (currentLevel.value && currentLevel.value !== '__new__') {
     await loadLevel(currentLevel.value)
   } else if (levelKeys.value.length > 0) {
@@ -1022,6 +1133,12 @@ h2 { margin: 0 0 4px; }
 .file-label { position: relative; overflow: hidden; }
 .file-label input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .crop-hint { font-size: 13px; color: #64748b; font-style: italic; }
+
+.visible-name-input {
+  padding: 8px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+  font-size: 14px; min-width: 180px;
+}
+.save-msg { font-size: 13px; color: #16a34a; font-weight: 600; }
 
 .workspace { display: flex; gap: 16px; align-items: flex-start; width: 100%; }
 

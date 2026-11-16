@@ -54,3 +54,33 @@ CREATE TABLE IF NOT EXISTS word_sets (
 CREATE INDEX IF NOT EXISTS idx_word_sets_mission_name ON word_sets(mission_name);
 -- Индекс для поиска всех наборов пользователя
 CREATE INDEX IF NOT EXISTS idx_word_sets_user_id ON word_sets(user_id);
+
+-- ============================================================
+--  connect_line_levels — уровни для игры ConnectLine (с картинками)
+-- ------------------------------------------------------------
+--  Один уровень = одна картинка + JSON с точками.
+--  Картинка хранится в server/uploads/, имя файла — в image_filename.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS connect_line_levels (
+                                                 id SERIAL PRIMARY KEY,
+                                                 user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  level_name VARCHAR(100) UNIQUE NOT NULL,
+  visible_name VARCHAR(255) NOT NULL,
+  image_filename VARCHAR(255) NOT NULL DEFAULT '',
+  image_width INTEGER DEFAULT 0,
+  image_height INTEGER DEFAULT 0,
+  points JSONB NOT NULL,
+  crop JSONB,
+  is_official BOOLEAN DEFAULT FALSE,
+  is_public BOOLEAN DEFAULT TRUE,
+  creator_username VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+  );
+
+CREATE INDEX IF NOT EXISTS idx_connect_line_levels_level_name
+  ON connect_line_levels(level_name);
+CREATE INDEX IF NOT EXISTS idx_connect_line_levels_user_id
+  ON connect_line_levels(user_id);
+-- Миграция: добавляем crop в connect_line_levels (идемпотентно)
+ALTER TABLE connect_line_levels ADD COLUMN IF NOT EXISTS crop JSONB;

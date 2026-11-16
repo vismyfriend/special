@@ -61,11 +61,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick  } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { CanvasEngine } from '../specialEngine/CanvasEngine'
 import { useConnectLine } from './useConnectLine'
 import { connectLineGames } from './ConnectLineData'
+import { useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
+
 
 const props = defineProps({
   missionName: { type: String, default: null },
@@ -76,8 +78,23 @@ const router = useRouter()
 const resolvedName = computed(
   () => props.missionName || route.query.level || route.params.missionName || 'house'
 )
-const gameData = computed(() => connectLineGames[resolvedName.value])
+const { fetchLevel } = useConnectLineLevelsComposable()
+const backendLevel = ref(null)
 
+const gameData = computed(() =>
+  connectLineGames[resolvedName.value] || backendLevel.value
+)
+
+async function loadLevelData() {
+  if (connectLineGames[resolvedName.value]) {
+    backendLevel.value = null
+    await restart()          // ← для захардкоженных уровней
+    return
+  }
+  backendLevel.value = await fetchLevel(resolvedName.value)
+  await nextTick()
+  await restart()            // ← для бэкенд-уровней
+}
 const canvasRef = ref(null)
 let engine = null
 let logic = null
@@ -151,10 +168,10 @@ function onClickOutside(e) {
 }
 
 // Перезапуск игры при смене уровня
-watch(resolvedName, (newVal, oldVal) => {
+watch(resolvedName, async (newVal, oldVal) => {
   console.log('📚 level changed:', oldVal, '→', newVal)
   levelsOpen.value = false
-  restart()
+  await loadLevelData()
 })
 
 let lastWidth = 0
@@ -178,7 +195,7 @@ onMounted(async () => {
   engine = new CanvasEngine(canvasRef.value)
   lastWidth = window.innerWidth
   window.addEventListener('resize', onResize)
-  await restart()
+  await loadLevelData()
 })
 
 onBeforeUnmount(() => {
