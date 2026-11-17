@@ -5,12 +5,12 @@ import axios from "axios";
 // const baseURL = 'https://backend-for-english-app.onrender.com';
 // const baseURL = 'https://92.63.98.129';
 // const baseURL = 'https://api.special-agents.ru' // прод Егорчика
-const baseURL = 'https://special-agents-backend.onrender.com' // наш тестовый на Render чтобы у студентов работало создание наборов
+// const baseURL = 'https://special-agents-backend.onrender.com' // наш тестовый на Render чтобы у студентов работало создание наборов
 // const baseURL = 'http://localhost:3001' // для локальной разработки
 
 // Читаем адрес из .env. Если переменной нет — падаем на localhost.
-// const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-// вот эта строка выше для работы локально ее разкомментируем
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+// вот эта строка выше для работы локально ее раскомментируем
 
 const instance = axios.create({ baseURL });
 
