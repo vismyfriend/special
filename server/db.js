@@ -22,6 +22,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   ssl: { rejectUnauthorized: false } // ← вернули как было раньше
+  // Это работает и на Render, и на Hetzner (там облачная база), но ломает локальный Postgres.
+  // Пока мы не трогаем, чтобы не сломать Render.
+
 })
 
 module.exports = pool

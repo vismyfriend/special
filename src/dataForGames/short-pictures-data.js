@@ -4,13 +4,16 @@ const shortPicturesData = {
     {
       taskPicture: new URL("../assets/images/testPic1.png", import.meta.url).href,
       eng: "horse",
-      rus: "лошадь"
+      rus: "лошадь",
+      hint: "хорс"
     },
     // Эмодзи
     {
       taskPicture: "🐱",
       eng: "cat",
-      rus: "кот"
+      rus: "кот",
+      hint: "/кэт/",
+
     },
     // Текст
     {

@@ -467,6 +467,10 @@ const routes = [
             component: () => import('src/components/GameDialSafe.vue'),
           },
           {
+            path: '/see-all-sets-of-words/:missionName/wordSearch',
+            component: () => import('src/components/GameWordSearch.vue'),
+          },
+          {
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
           },

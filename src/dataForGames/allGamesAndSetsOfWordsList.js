@@ -1537,7 +1537,7 @@ export const allGamesAndSetsOfWordsList =
         },
         {
           type: "hardcodedLink",
-          path: "/see-all-sets-of-words/up7/find-pairs-hard",
+          path: "/see-all-sets-of-words/up7/lockPicking",
           missionVisibleName: "Useful Phrases 7",
           missionDescription: "Юсфул фрЭйzиз 7",
           id: 1001,
