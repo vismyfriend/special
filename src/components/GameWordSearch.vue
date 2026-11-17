@@ -2,16 +2,16 @@
   <section class="word-search" aria-label="Поиск английских слов">
     <header class="search-header">
       <div><h1>файнд уордз</h1>
-<!--        <p>Найди слово по переводу. Нажимай буквы по порядку или проведи от первой до последней.</p>-->
+        <!--        <p>Найди слово по переводу. Нажимай буквы по порядку или проведи от первой до последней.</p>-->
       </div>
       <div class="search-actions">
         <div class="search-levels" role="group" aria-label="Сложность">
           <button v-for="level in LEVELS" :key="level.id" type="button" :aria-pressed="difficulty === level.id" @click="changeLevel(level.id)">{{ level.label }}</button>
         </div>
 
-<!--        <button type="button" @click="loadGame">Новое поле</button>-->
+        <!--        <button type="button" @click="loadGame">Новое поле</button>-->
         <button type="button" :disabled="!canReveal" @click="game.reveal(false)">подсказка</button>
-<!--        <button type="button" :disabled="!canReveal" @click="game.reveal(true)">Показать все ответы</button>-->
+        <!--        <button type="button" :disabled="!canReveal" @click="game.reveal(true)">Показать все ответы</button>-->
         <output v-if="state && !loading && !error" class="search-score" ref="scoreEl">
           My score <strong>{{ animatedScore + animatedPreview }}</strong>
         </output>
