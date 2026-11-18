@@ -1,0 +1,35 @@
+.sample { height: 230px; border-bottom: 1px solid #415a73; overflow: hidden; pointer-events: none; }
+.safe { display: grid; place-content: center; justify-items: center; gap: 9px; background: repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 4px),radial-gradient(ellipse,#4a5044,#1b231e); }
+.dial { position: relative; width: 167px; height: 167px; border: 8px solid #50594c; border-radius: 50%; background: radial-gradient(circle,#3f4d40 18%,#25332a 20% 63%,#151d16 65%); box-shadow: 0 0 0 1px #8a927b,0 5px 14px #0009; }
+.pin { position: absolute; left: calc(50% - 7px); top: -11px; z-index: 1; width: 14px; height: 17px; border-radius: 2px; background: linear-gradient(90deg,#8c622c,#f0d18b,#8c622c); transform: rotate(var(--turn)); transform-origin: 7px 87px; }
+.dial-word { position: absolute; padding: 2px 5px; border: 1px solid #717b63; border-radius: 4px; background: #2c392e; font-size: 10px; line-height: 1.3; }
+.north,.south { left: 50%; transform: translateX(-50%); }
+.north { top: 13px; } .south { bottom: 13px; color: #ffe0a0; border-color: #ffd172; }
+.west,.east { top: 50%; transform: translateY(-50%); }
+.west { left: 3px; } .east { right: 3px; }
+.dial-centre { position: absolute; inset: 36%; display: grid; place-items: center; border: 1px solid #858b76; border-radius: 50%; background: #546151; color: #f6d99d; font: 700 5.5px monospace; }
+.dial-needle { position: absolute; bottom: -9px; left: calc(50% - 6px); border: 6px solid transparent; border-bottom: 10px solid #ffd27a; }
+.dial-controls { display: flex; align-items: center; gap: 12px; color: #ffe0a0; font-size: 13px; }
+.dial-controls span { display: grid; place-items: center; width: 23px; height: 22px; border: 1px solid #85876b; border-radius: 4px; background: #2f3930; }
+.wires { position: relative; display: grid; place-items: center; background: radial-gradient(ellipse at 24% 86%, #67402a, transparent 60%),linear-gradient(120deg,#271a13,#160f0f); }
+.agent { position: absolute; left: -14px; bottom: -17px; width: 145px; height: 145px; object-fit: contain; }
+.wire-stage { width: min(94%, 257px); display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1.05fr); align-items: center; padding-left: 9px; position: relative; }
+.wire-prompt,.wire-answer { display: grid; place-items: center; border: 1px solid #ff6861; border-radius: 10px; background: #fff8f7; color: #2b2220; font-size: 11px; text-align: center; }
+.wire-prompt { min-height: 56px; padding: 4px; }
+.wire-lines { width: 100%; height: 175px; }
+.wire-answers { display: grid; grid-template-rows: repeat(4, 1fr); height: 175px; gap: 5px; }
+.wire-answer { padding: 4px; line-height: 1.15; }
+.wire-answer small { color: #625957; font-size: 9px; }
+.ruins { display: flex; align-items: center; justify-content: center; gap: 9px; background: radial-gradient(ellipse at 39% 50%,#425b34,#132920 75%); color: #392916; }
+.ruins-clues,.letter-grid { border: 2px solid #ba9354; border-radius: 7px; background: #f9e6b0; box-shadow: 0 4px 0 #76542f,0 8px 12px #0007; }
+.ruins-clues { display: grid; gap: 3px; padding: 5px; font-size: 10px; font-weight: 700; }
+.ruins-clues span { border-radius: 4px; padding: 3px 5px; background: #fff1c9; }
+.letter-grid { width: min(58%, 175px); display: grid; grid-template-columns: repeat(8,1fr); padding: 3px; font: 800 11px system-ui, sans-serif; }
+.letter-grid span { display: grid; place-items: center; aspect-ratio: 1; }
+.letter-grid .found { background: #b3d484; }
+@media (max-width: 420px) { .sample { height: 214px; } }
+.dial-word,.wire-prompt,.wire-answer,.ruins-clues span { overflow-wrap: anywhere; }
+.dial-word { max-width: 55px; text-align: center; }
+.dial-controls strong { max-width: 155px; overflow-wrap: anywhere; text-align: center; }
+.ruins-clues { max-width: 36%; }
+.ruins-clues img,.wire-prompt img { display: block; max-width: 42px; max-height: 25px; object-fit: contain; }

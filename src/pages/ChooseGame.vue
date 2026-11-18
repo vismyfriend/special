@@ -1,5 +1,7 @@
 <template>
   <div class="relative">
+    <PreviewMaker title="Игры по этому набору" />
+
     <div id="phoneFrame">
 <!--      <img class="backgroundImg" src="../assets/images/backgroundBlur.jpg" alt="blur">-->
       <p class="bubble left think" id="intro-message">Choose<br> a game</p>
@@ -15,6 +17,7 @@
           >
             ⚙️
           </button>
+
         </div>
         <div class="games-grid">
           <div
@@ -67,6 +70,9 @@ import songsData from "src/dataForGames/SongsData";
 import pdfPagesData from "src/dataForGames/pdfPagesData";
 import definitionsData from "src/dataForGames/definitions-data";
 import dataGame4Sentences from "src/dataForGames/game4SentencesData";
+
+
+import PreviewMaker from 'src/components/previewMaker/PreviewMaker.vue'
 
 const dynamicText = ref("");
 const speed = 150; // Скорость печати (мс)
