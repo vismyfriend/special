@@ -310,7 +310,16 @@ function bindGridDrag(grid, select) {
       suppressClick = false;
     }
   }
-  const listeners = { pointerdown: down, pointermove: move, pointerup: end, pointercancel: end, lostpointercapture: end };
+  const listeners = {
+    pointerdown: down,
+    pointermove: move,
+    pointerup: end,
+    pointercancel: end,
+    lostpointercapture: (event) => {
+      // Завершаем жест, только если захват потеряло само поле.
+      if (event.target === grid) end(event);
+    },
+  };
   for (const [name, handler] of Object.entries(listeners)) grid.addEventListener(name, handler);
   grid.addEventListener('click', click, true);
   return () => {

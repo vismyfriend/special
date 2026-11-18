@@ -1,4 +1,7 @@
 const routes = [
+  { path: '/customCursorsStudio',
+    component: () => import('layouts/cursors/CursorStudio.vue')
+  },
   {
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),

@@ -1,0 +1,537 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Мастерская курсоров</title><style>body{margin:0;padding:10px;background:#11131b}[hidden]{display:none!important}
+.cursor-studio { max-width:1100px; margin:24px auto; padding:clamp(14px,3vw,28px); background:#181b25; border:1px solid #444959; border-radius:16px; color:#f5ecd8; font:15px system-ui,sans-serif; }
+.cursor-studio header,.studio-modes { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.cursor-studio h1 { margin:0; font:700 clamp(26px,4vw,40px)/1.1 Georgia,serif; }
+.cursor-studio p { color:#b6b9c6; margin:8px 0; }
+.cursor-studio button,.cursor-studio select { font:inherit; color:inherit; background:#272b38; border:1px solid #60667b; padding:8px 12px; border-radius:7px; }
+.cursor-studio button { cursor:pointer; }
+.cursor-studio button[aria-pressed=true] { background:#e9c783; color:#282333; border-color:#ffe2a8; }
+.studio-layout { display:grid; grid-template-columns:minmax(185px,230px) minmax(0,1fr); gap:14px; margin-top:16px; }
+.studio-controls { display:grid; align-content:start; gap:12px; padding:14px; background:#202433; border-radius:10px; }
+.studio-controls label { display:block; font-size:13px; }
+.studio-controls output { float:right; color:#e9c783; }
+.studio-controls label select,.studio-controls input[type=range] { display:block; width:100%; margin:6px 0 0; }
+.studio-controls input { accent-color:#e9c783; }
+.studio-scene { isolation:isolate; position:relative; min-height:480px; overflow:hidden; border:1px solid #666253; border-radius:11px; background:radial-gradient(ellipse at 52% 40%,#6d6448,transparent 65%),repeating-linear-gradient(110deg,#9a865224 0 1px,transparent 1px 24px),#242c27; }
+.scene-flashlight,.scene-magic { touch-action:none; }
+.studio-scene::before { position:absolute; inset:9%; border:2px solid #d8bc7355; border-radius:48% 48% 12px 12px; box-shadow:0 0 0 7px #191d1a77,inset 0 0 55px #191a1090; content:''; pointer-events:none; }
+.studio-centre { position:absolute; top:43%; left:0; right:0; display:grid; gap:12px; justify-items:center; }
+.studio-centre strong { font:700 clamp(23px,4vw,42px) Georgia,serif; }
+.studio-landmark { position:absolute; padding:6px 10px; color:#efda9f; font-size:12px; }
+.studio-landmark span { color:#ffe4aa; font-size:22px; vertical-align:middle; margin-right:4px; }
+.landmark-west { bottom:15%; left:9%; }
+.landmark-east { top:14%; right:9%; }
+.scene-magic { background:radial-gradient(ellipse at 56% 55%,#312049,#131626 70%); }
+.studio-magic { z-index:1; }
+@media(max-width:650px) { .studio-layout { grid-template-columns:1fr; } .studio-scene { grid-row:1; min-height:330px; } }
+
+
+.flashlight-cursor { position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; }
+
+
+.magic-cursor {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.magic-cursor-local { position:absolute; }
+
+
+.ring-pointer-active, .ring-pointer-active * { cursor:none !important; }
+.ring-cursor { position:absolute; transform:translate(-50%,-50%); width:var(--ring-size); height:var(--ring-size); color:var(--ring-color); border:2px solid currentColor; border-radius:50%; box-shadow:0 0 18px #a8d9ff77; pointer-events:none; z-index:3; }
+.ring-cursor.over-control { background:#b7d9ff44; }
+.ring-cursor i { display:none; position:absolute; inset:38%; border-radius:50%; background:currentColor; }
+.ring-cursor.over-control i { display:block; animation:ring-wave var(--ring-pulse) ease-out infinite; }
+@keyframes ring-wave { to { transform:scale(4); opacity:0; } }
+</style><section class="cursor-studio">
+<header><div><h1>Мастерская курсоров</h1><p>Выбери эффект и проверь его на сцене.</p></div>
+<div class="studio-modes" role="group" aria-label="Эффект курсора">
+<button data-mode="flashlight">Фонарик</button><button data-mode="magic">Шлейф</button><button data-mode="ring">Кольцо</button></div></header>
+<div class="studio-layout"><aside class="studio-controls" aria-label="Настройки курсора"></aside>
+<div class="studio-scene"><div class="studio-landmark landmark-west"><span>◆</span> Западный проход</div>
+<div class="studio-landmark landmark-east"><span>✦</span> Северная башня</div>
+<div class="studio-centre"><strong></strong><button type="button" aria-pressed="false">Открыть печать</button></div></div></div></section><script>function mountFlashlight(canvas, settings) {
+  const host = canvas.parentElement;
+  const ctx = canvas.getContext('2d');
+  const memory = document.createElement('canvas');
+  const ink = memory.getContext('2d');
+  if (!ctx || !ink) return { reset() {}, refresh() {}, dispose() {} };
+
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const tones = { warm: '255,193,94', white: '229,242,255', night: '102,255,133' };
+  let width = 1, height = 1, ratio = 1, point, previous, frame = 0;
+  let lastPaint = 0, lastStamp = -Infinity, lastMode, lastEnabled;
+  const bound = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  function erase(context, x, y, radius, softness, strength = 1) {
+    const edge = context.createRadialGradient(x, y, radius * (1 - softness), x, y, radius);
+    edge.addColorStop(0, `rgba(0,0,0,${strength})`);
+    edge.addColorStop(1, 'transparent');
+    context.fillStyle = edge;
+    context.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+  }
+
+  function draw(now) {
+    frame = 0;
+    const opts = settings();
+    const seconds = bound(opts.seconds, 0.5, 30);
+    const age = now - lastStamp;
+    if (opts.memory === 'fade' && age < seconds * 1000 && lastPaint) {
+      ink.globalCompositeOperation = 'destination-out';
+      ink.fillStyle = `rgba(0,0,0,${1 - Math.exp(-6 * (now - lastPaint) / (seconds * 1000))})`;
+      ink.fillRect(0, 0, width, height);
+      ink.globalCompositeOperation = 'source-over';
+    } else if (opts.memory === 'fade' && Number.isFinite(lastStamp) && age >= seconds * 1000) {
+      ink.clearRect(0, 0, width, height);
+      lastStamp = -Infinity;
+    }
+    lastPaint = now;
+    ctx.clearRect(0, 0, width, height);
+    if (!opts.enabled) return;
+    ctx.fillStyle = `rgba(0,0,0,${bound(opts.darkness, 0, 1)})`;
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'destination-out';
+    if (opts.memory !== 'off') ctx.drawImage(memory, 0, 0, width, height);
+
+    const flicker = point && !motion.matches ? bound(opts.flicker, 0, 1) : 0;
+    if (point) {
+      const radius = bound(opts.diameter, 40, 1200) / 2;
+      const softness = bound(opts.softness, .01, 1);
+      const pulse = Math.max(0, Math.sin(now / 710 + Math.sin(now / 317))) ** 18;
+      const brightness = 1 - flicker * pulse * (.45 + .35 * Math.sin(now / 23) ** 2);
+      erase(ctx, point.x, point.y, radius, softness, brightness);
+      ctx.globalCompositeOperation = 'source-over';
+      const tint = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, radius);
+      tint.addColorStop(0, `rgba(${tones[opts.color] || tones.white},${brightness * bound(opts.glow, 0, .65)})`);
+      tint.addColorStop(1, 'transparent');
+      ctx.fillStyle = tint;
+      ctx.fillRect(point.x - radius, point.y - radius, radius * 2, radius * 2);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    if (flicker || (opts.memory === 'fade' && Number.isFinite(lastStamp))) schedule();
+  }
+
+  function schedule() {
+    if (!frame && !document.hidden) frame = requestAnimationFrame(draw);
+  }
+
+  function refresh() {
+    const opts = settings();
+    if (opts.memory !== lastMode || opts.enabled !== lastEnabled) {
+      previous = undefined;
+      lastMode = opts.memory;
+      lastEnabled = opts.enabled;
+      reset();
+    } else schedule();
+  }
+
+  function reset() {
+    lastStamp = -Infinity;
+    lastPaint = 0;
+    ink.clearRect(0, 0, width, height);
+    schedule();
+  }
+
+  function resize() {
+    const nextWidth = Math.max(host.clientWidth, 1);
+    const nextHeight = Math.max(host.clientHeight, 1);
+    const nextRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    if (nextWidth === width && nextHeight === height && ratio === nextRatio && canvas.width === Math.round(width * ratio)) return;
+    width = nextWidth;
+    height = nextHeight;
+    ratio = nextRatio;
+    canvas.width = memory.width = Math.round(width * ratio);
+    canvas.height = memory.height = Math.round(height * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ink.setTransform(ratio, 0, 0, ratio, 0, 0);
+    point = previous = undefined;
+    reset();
+  }
+
+  function move(event) {
+    const opts = settings();
+    if (!opts.enabled || (event.pointerType === 'touch' && !opts.touch)) return;
+    const rect = canvas.getBoundingClientRect();
+    point = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    if (opts.memory !== 'off') {
+      const radius = bound(opts.diameter, 40, 1200) / 2;
+      const start = previous || point;
+      const dx = point.x - start.x, dy = point.y - start.y;
+      const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / (radius * .35)));
+      for (let step = 1; step <= steps; step++) {
+        erase(ink, start.x + dx * step / steps, start.y + dy * step / steps, radius, bound(opts.softness, .01, 1), .85);
+      }
+      lastStamp = performance.now();
+      if (!lastPaint) lastPaint = lastStamp;
+    }
+    previous = point;
+    schedule();
+  }
+
+  function leave() {
+    point = previous = undefined;
+    schedule();
+  }
+  function visibility() {
+    if (document.hidden) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      point = previous = undefined;
+    } else schedule();
+  }
+
+  const observer = new ResizeObserver(resize);
+  observer.observe(host);
+  host.addEventListener('pointermove', move, { passive: true });
+  host.addEventListener('pointerdown', move, { passive: true });
+  host.addEventListener('pointerleave', leave);
+  host.addEventListener('pointercancel', leave);
+  window.addEventListener('blur', leave);
+  document.addEventListener('visibilitychange', visibility);
+  resize();
+  refresh();
+
+  return {
+    reset,
+    refresh,
+    dispose() {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      host.removeEventListener('pointermove', move);
+      host.removeEventListener('pointerdown', move);
+      host.removeEventListener('pointerleave', leave);
+      host.removeEventListener('pointercancel', leave);
+      window.removeEventListener('blur', leave);
+      document.removeEventListener('visibilitychange', visibility);
+    },
+  };
+}
+
+const PALETTES = {
+  aurora: ['#a489ff', '#5476ff', '#47eacb', '#e7a1fd'],
+  ember: ['#f44254', '#ff8350', '#ffd282', '#f94f98'],
+  forest: ['#498471', '#72d696', '#c8ed9d', '#53c4bc'],
+};
+const limit = (value, min, max) => Math.max(min, Math.min(max, value));
+
+function mountMagicCursor(canvas, options) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return () => {};
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const sprites = new Map();
+  let motes = [];
+  let lastPointer;
+  let frame = 0;
+  let previousFrame = 0;
+  let width, height;
+  let lastPalette;
+  const observer = new ResizeObserver(resize);
+
+  function clear() {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    previousFrame = 0;
+    lastPointer = undefined;
+    motes = [];
+    ctx.clearRect(0, 0, width, height);
+  }
+
+  function resize() {
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 1.25);
+    canvas.width = Math.max(1, Math.round(width * dpr));
+    canvas.height = Math.max(1, Math.round(height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    clear();
+  }
+
+  function sprite(color) {
+    if (sprites.has(color)) return sprites.get(color);
+    const tile = document.createElement('canvas');
+    tile.width = tile.height = 96;
+    const brush = tile.getContext('2d');
+    const fog = brush.createRadialGradient(48, 48, 0, 48, 48, 48);
+    brush.fillStyle = '#a489ff';
+    brush.fillStyle = color;
+    fog.addColorStop(0, brush.fillStyle);
+    fog.addColorStop(.35, brush.fillStyle);
+    fog.addColorStop(1, 'transparent');
+    brush.fillStyle = fog;
+    brush.fillRect(0, 0, 96, 96);
+    sprites.set(color, tile);
+    return tile;
+  }
+
+  function animate(now) {
+    frame = 0;
+    const settings = options();
+    if (!settings.enabled || reducedMotion.matches || document.hidden) { clear(); return; }
+    const dt = previousFrame ? Math.min((now - previousFrame) / 1000, .04) : 1 / 60;
+    previousFrame = now;
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'screen';
+    const intensity = limit(settings.intensity ?? .75, 0, 1);
+    motes = motes.filter(mote => {
+      mote.age += dt;
+      const progress = mote.age / mote.life;
+      if (progress >= 1) return false;
+
+      // A smooth flow field bends neighboring wisps in different directions.
+      const phase = now * .0014 + mote.phase;
+      const driftX = Math.sin(mote.y * .019 + phase) * 32;
+      const driftY = Math.cos(mote.x * .016 - phase) * 30;
+      mote.x += (mote.vx * (1 - progress) + driftX) * dt;
+      mote.y += (mote.vy * (1 - progress) + driftY - 12) * dt;
+
+      const scale = mote.radius * (1 + progress * .82);
+      ctx.globalAlpha = intensity * .34 * (1 - progress) ** 2;
+      ctx.save();
+      ctx.translate(mote.x, mote.y);
+      ctx.rotate(mote.angle + progress * mote.turn);
+      ctx.drawImage(mote.tile, -scale, -scale * .38, scale * 2, scale * .76);
+      ctx.restore();
+      return true;
+    });
+    ctx.globalAlpha = 1;
+    if (motes.length) frame = requestAnimationFrame(animate);
+    else previousFrame = 0;
+  }
+
+  function move(event) {
+    const settings = options();
+    if (!settings.enabled || reducedMotion.matches || document.hidden || (event.pointerType === 'touch' && !settings.touch)) return;
+    const bounds = canvas.getBoundingClientRect();
+    const point = { x: event.clientX - bounds.left, y: event.clientY - bounds.top, time: performance.now(), id: event.pointerId };
+    if (settings.local && (point.x < 0 || point.y < 0 || point.x > width || point.y > height)) {
+      lastPointer = undefined;
+      return;
+    }
+    const previous = lastPointer;
+    lastPointer = point;
+    if (!previous || point.id !== previous.id || point.time - previous.time > 100) return;
+
+    const dx = point.x - previous.x, dy = point.y - previous.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance < .5 || distance > 220) return;
+
+    const palette = settings.colors?.length ? settings.colors.slice(0, 8)
+      : PALETTES[settings.preset] || PALETTES.aurora;
+    const signature = palette.join('|');
+    if (signature !== lastPalette) { sprites.clear(); lastPalette = signature; }
+    const angle = Math.atan2(dy, dx);
+    const steps = Math.min(12, Math.ceil(distance / 8));
+    for (let i = 1; i <= steps; i++) {
+      const t = i / steps;
+      const hue = Math.floor(point.time / 155 + i / 3);
+      for (let strand = 0; strand < 3; strand++) {
+        const offset = (strand - 1) * 9;
+        motes.push({
+          x: previous.x + dx * t - Math.sin(angle) * offset,
+          y: previous.y + dy * t + Math.cos(angle) * offset,
+          vx: limit(dx * 5, -120, 120) - Math.sin(angle) * offset * 4,
+          vy: limit(dy * 5, -120, 120) + Math.cos(angle) * offset * 4,
+          angle,
+          turn: (strand - 1) * 1.9,
+          phase: strand * .85,
+          age: 0,
+          life: limit(settings.lifetime ?? 1.35, .3, 3) * (.8 + strand * .1),
+          radius: limit(settings.radius ?? 38, 10, 100) * (1.15 - strand * .16),
+          tile: sprite(palette[(hue + strand) % palette.length]),
+        });
+      }
+    }
+    if (motes.length > 240) motes.splice(0, motes.length - 240);
+    if (!frame) frame = requestAnimationFrame(animate);
+  }
+
+  function resetPointer() { lastPointer = undefined; }
+  window.addEventListener('pointermove', move, { passive: true });
+  window.addEventListener('pointercancel', resetPointer);
+  window.addEventListener('blur', clear);
+  window.addEventListener('resize', resize);
+  document.addEventListener('visibilitychange', clear);
+  reducedMotion.addEventListener('change', clear);
+  resize();
+  observer.observe(canvas);
+  return () => {
+    observer.disconnect();
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointercancel', resetPointer);
+    window.removeEventListener('blur', clear);
+    window.removeEventListener('resize', resize);
+    document.removeEventListener('visibilitychange', clear);
+    reducedMotion.removeEventListener('change', clear);
+    clear();
+  };
+}
+
+function mountRingCursor(node, settings) {
+  const host = node.parentElement;
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const hide = () => { node.hidden = true; host.classList.remove('ring-pointer-active'); };
+  const move = event => {
+    if (!settings().enabled || event.pointerType !== 'mouse') { hide(); return; }
+    const rect = host.getBoundingClientRect();
+    node.style.left = `${event.clientX - rect.left + host.scrollLeft - host.clientLeft}px`;
+    node.style.top = `${event.clientY - rect.top + host.scrollTop - host.clientTop}px`;
+    node.classList.toggle('over-control', Boolean(!motion.matches && event.target.closest?.('button,a,input,select,textarea,[role=button],.clickable')));
+    host.classList.add('ring-pointer-active');
+    node.hidden = false;
+  };
+  hide();
+  host.addEventListener('pointermove', move, { passive: true });
+  host.addEventListener('pointerleave', hide);
+  window.addEventListener('blur', hide);
+  function dispose() {
+    hide();
+    host.removeEventListener('pointermove', move);
+    host.removeEventListener('pointerleave', hide);
+    window.removeEventListener('blur', hide);
+  }
+  return { hide, dispose };
+}
+
+const sliders = {
+  flashlight: [
+    { key: 'diameter', label: 'Диаметр', min: 80, max: 700, step: 10, unit: ' px' },
+    { key: 'softness', label: 'Мягкость края', min: .05, max: 1, step: .05 },
+    { key: 'glow', label: 'Цветное свечение', min: 0, max: .65, step: .05 },
+    { key: 'darkness', label: 'Темнота', min: 0, max: 1, step: .01 },
+    { key: 'flicker', label: 'Мерцание', min: 0, max: 1, step: .05 },
+  ],
+  magic: [
+    { key: 'radius', label: 'Радиус', min: 10, max: 100, unit: ' px' },
+    { key: 'intensity', label: 'Яркость', min: 0, max: 1, step: .05 },
+    { key: 'lifetime', label: 'Затухание', min: .3, max: 3, step: .05, unit: ' с' },
+  ],
+  ring: [
+    { key: 'diameter', label: 'Диаметр', min: 18, max: 80, unit: ' px' },
+    { key: 'pulse', label: 'Пульсация', min: 300, max: 1500, step: 50, unit: ' мс' },
+  ],
+};
+
+const presets = {
+  flashlight: { diameter:300, softness:.55, glow:.22, darkness:.92, flicker:0, color:'warm', memory:'off', seconds:4, touch:true, enabled:true },
+  magic: { preset:'aurora', radius:38, intensity:.75, lifetime:1.35, local:true, touch:true, enabled:true },
+  ring: { color:'#e2efff', diameter:36, pulse:700, enabled:true },
+};
+const scene = document.querySelector('.studio-scene');
+const controls = document.querySelector('.studio-controls');
+const modes = document.querySelectorAll('[data-mode]');
+let dispose, controller, effect, active;
+const titles = { flashlight:'Зал под башней', magic:'Световая поляна', ring:'Вход в башню' };
+function optionField(title, key, items) {
+  const label = document.createElement('label');
+  label.textContent = title;
+  const select = document.createElement('select');
+  for (const [value, name] of items) select.add(new Option(name, value));
+  select.value = presets[active][key];
+  select.onchange = () => {
+    presets[active][key] = select.value;
+    controller?.refresh?.();
+    if (key === 'memory') renderControls();
+  };
+  label.append(select);
+  controls.append(label);
+}
+function renderControls() {
+  const settings = presets[active];
+  controls.replaceChildren();
+  const toggle = document.createElement('label');
+  const checked = document.createElement('input');
+  checked.type = 'checkbox';
+  checked.checked = settings.enabled;
+  checked.onchange = () => {
+    settings.enabled = checked.checked;
+    if (!settings.enabled) controller?.hide?.();
+    controller?.refresh?.();
+  };
+  toggle.append(checked, ' Включить эффект');
+  controls.append(toggle);
+  const fields = [...sliders[active]];
+  if (active === 'flashlight') {
+    optionField('Цвет луча', 'color', [['warm','Тёплый'],['white','Белый'],['night','Ночное видение']]);
+    optionField('Память света', 'memory', [['off','Только луч'],['fade','Плавное затухание'],['persist','До сброса']]);
+    if (settings.memory === 'fade') fields.push({key:'seconds',label:'Затухание',min:.5,max:15,step:.5,unit:' с'});
+    if (settings.memory !== 'off') {
+      const reset = document.createElement('button');
+      reset.textContent = 'Стереть след';
+      reset.onclick = () => controller.reset();
+      controls.append(reset);
+    }
+  } else if (active === 'magic') {
+    optionField('Палитра', 'preset', [['aurora','Сияние'],['ember','Угли'],['forest','Лес']]);
+  } else {
+    const label = document.createElement('label');
+    label.textContent = 'Цвет кольца ';
+    const color = document.createElement('input');
+    color.type = 'color';
+    color.value = settings.color;
+    color.oninput = () => { settings.color = color.value; updateRing(); };
+    label.append(color);
+    controls.append(label);
+  }
+  for (const field of fields) {
+    const label = document.createElement('label');
+    label.textContent = field.label;
+    const value = document.createElement('output');
+    const input = document.createElement('input');
+    Object.assign(input, {type:'range', min:field.min, max:field.max, step:field.step ?? 1, value:settings[field.key]});
+    value.textContent = input.value + (field.unit || '');
+    input.oninput = () => {
+      settings[field.key] = Number(input.value);
+      value.textContent = input.value + (field.unit || '');
+      if (active === 'ring') updateRing();
+      controller?.refresh?.();
+    };
+    label.append(value,input);
+    controls.append(label);
+  }
+}
+function updateRing() {
+  const ring = presets.ring;
+  effect.style.setProperty('--ring-size', ring.diameter + 'px');
+  effect.style.setProperty('--ring-color', ring.color);
+  effect.style.setProperty('--ring-pulse', ring.pulse + 'ms');
+}
+function selectMode(mode) {
+  dispose?.();
+  effect?.remove();
+  controller = null;
+  active = mode;
+  scene.className = 'studio-scene scene-' + mode;
+  scene.querySelector('strong').textContent = titles[mode];
+  modes.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === mode)));
+  const settings = presets[mode];
+  effect = document.createElement(mode === 'ring' ? 'div' : 'canvas');
+  effect.setAttribute('aria-hidden', 'true');
+  scene.append(effect);
+  if (mode === 'ring') {
+    effect.className = 'ring-cursor';
+    effect.append(document.createElement('i'));
+    updateRing();
+    controller = mountRingCursor(effect, () => settings);
+    dispose = controller.dispose;
+  } else if (mode === 'magic') {
+    effect.className = 'magic-cursor magic-cursor-local studio-magic';
+    dispose = mountMagicCursor(effect, () => settings);
+  } else {
+    effect.className = 'flashlight-cursor';
+    controller = mountFlashlight(effect, () => settings);
+    dispose = controller.dispose;
+  }
+  renderControls();
+}
+modes.forEach(button => button.onclick = () => { if (button.dataset.mode !== active) selectMode(button.dataset.mode); });
+const seal = document.querySelector('.studio-centre button');
+seal.onclick = () => {
+  const open = seal.getAttribute('aria-pressed') !== 'true';
+  seal.setAttribute('aria-pressed', String(open));
+  seal.textContent = open ? 'Печать открыта' : 'Открыть печать';
+};
+selectMode('flashlight');
+</script></html>
