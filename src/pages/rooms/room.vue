@@ -205,8 +205,8 @@ const glassTheme = 'dark';
 // 'light' — для светлых/белых фонов
 const glassThemeClass = computed(() => `glass-theme-${glassTheme}`);
 // ==================== РЕСАЙЗ / МОБИЛЬНАЯ ВЕРСИЯ ====================
-const desktopBgImage = new URL('../../assets/images/gtaHorizontal.png', import.meta.url).href;
-const mobileBgImage  = new URL('../../assets/images/gtaVertical.png',  import.meta.url).href;
+const desktopBgImage = new URL('../../assets/images/gta6horizontalNoNamesCropped.png', import.meta.url).href;
+const mobileBgImage  = new URL('../../assets/images/gta6VerticalNoNames.png',  import.meta.url).href;
 const isMobile = ref(false);
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768;
