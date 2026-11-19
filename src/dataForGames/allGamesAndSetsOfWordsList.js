@@ -65,6 +65,16 @@ export const allGamesAndSetsOfWordsList =
       stars: '3'
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/specialCursor/v/specialHeader/tablet/connectLine",
+      missionVisibleName: "Протяни линии",
+      missionDescription: "Соедини линии",
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+      stars: '3'
+    },
+    {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/developerSet/decksManyPlayers",
       missionVisibleName: "How often do you ___ ?",

@@ -1,8 +1,8 @@
 {
-  "title": "My level",
-  "instructions": "Протяни линию от названия к нужному месту на картинке",
-  "imageWidth": 1266,
-  "imageHeight": 1596,
+  "title": "Ollie",
+  "instructions": "Если справитесь, то от Ollie печеньки for everyone",
+  "imageWidth": 1920,
+  "imageHeight": 1080,
   "crop": {
     "scale": 1,
     "offsetX": 0,
@@ -18,63 +18,20 @@
   },
   "words": [
     {
-      "id": "w1795018295324",
-      "text": "эд вё тисмэнт",
-      "shape": "rect",
-      "x": 0.4319,
-      "y": 0.2863,
-      "w": 0.3447,
-      "h": 0.0695
-    },
-    {
-      "id": "w1795018156705",
-      "text": "cut КАТ cut ",
+      "id": "w1794920365374",
+      "text": "a star",
       "shape": "circle",
-      "x": 0.382,
-      "y": 0.7094,
-      "r": 0.03
+      "x": 0.3795,
+      "y": 0.6401,
+      "r": 0.035
     },
     {
-      "id": "w1795018243496qnn8",
-      "text": "micis off",
+      "id": "w1794920408301is0u",
+      "text": "wings",
       "shape": "circle",
-      "x": 0.5939,
-      "y": 0.1023,
-      "r": 0.03
-    },
-    {
-      "id": "w1795018203774jxpg",
-      "text": "pause button",
-      "shape": "circle",
-      "x": 0.493,
-      "y": 0.6651,
-      "r": 0.03
-    },
-    {
-      "id": "w1795018141941",
-      "text": "ЛАНДОСКАР",
-      "shape": "rect",
-      "x": 0.561,
-      "y": 0.3956,
-      "w": 0.14,
-      "h": 0.14
-    },
-    {
-      "id": "w1795018107964",
-      "text": "Vincent Norris",
-      "shape": "rect",
-      "x": 0.3701,
-      "y": 0.0724,
-      "w": 0.14,
-      "h": 0.14
-    },
-    {
-      "id": "w1795018094642",
-      "text": "Mirra Noris",
-      "shape": "circle",
-      "x": 0.4971,
-      "y": 0.0637,
-      "r": 0.07
+      "x": 0.6857,
+      "y": 0.5,
+      "r": 0.14
     }
   ]
 }
