@@ -1,9 +1,16 @@
 <template>
   <!-- Прелоадер - временно отключен -->
   <!-- <Preloader /> -->
+<!--  <img-->
+<!--    class="backgroundImg"-->
+<!--    src="../../assets/images/specialRoom1.jpg"-->
+<!--    alt="Фон спэшл 2"-->
+<!--  >-->
+  <div class="special-root" :class="glassThemeClass">
+
   <img
     class="backgroundImg"
-    src="../../assets/images/specialRoom1.jpg"
+    :src="isMobile ? mobileBgImage : desktopBgImage"
     alt="Фон спэшл 2"
   >
 <!--  <img-->
@@ -156,6 +163,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -166,6 +174,18 @@ import { useGameStore } from 'stores/example-store';
 import { api } from 'src/api';
 import { useQuasar } from 'quasar';
 
+import startClickSound from '/src/assets/audio/gta-san-andreas-mission-complete-sound-hq.mp3'; // ← подставьте свой файл
+
+// ==================== ЗВУК КНОПКИ СТАРТ ====================
+const startClick = new Audio(startClickSound);
+startClick.preload = 'auto';
+
+function playStartClick() {
+  try {
+    startClick.currentTime = 0;
+    startClick.play().catch(() => {}); // игнорируем autoplay-блокировку
+  } catch (e) { /* noop */ }
+}
 const router = useRouter();
 const $q = useQuasar();
 const gameStore = useGameStore();
@@ -176,6 +196,37 @@ const isRegistered = ref(false);
 const suggestedNames = ref([]);
 const isInputFocused = ref(false);
 const hasExistingAgent = ref(false);
+
+
+// ==================== ТЕМА ОКНА ПОД ФОН ====================
+
+const glassTheme = 'dark';
+// 'dark'  — для тёмных фонов (текущий стиль)
+// 'light' — для светлых/белых фонов
+const glassThemeClass = computed(() => `glass-theme-${glassTheme}`);
+// ==================== РЕСАЙЗ / МОБИЛЬНАЯ ВЕРСИЯ ====================
+const desktopBgImage = new URL('../../assets/images/gtaHorizontal.png', import.meta.url).href;
+const mobileBgImage  = new URL('../../assets/images/gtaVertical.png',  import.meta.url).href;
+const isMobile = ref(false);
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+
+
+const toggleBodyClass = () => {
+  if (isMobile.value) {
+    document.body.classList.add('mobile-view');
+    document.body.classList.remove('desktop-view');
+  } else {
+    document.body.classList.add('desktop-view');
+    document.body.classList.remove('mobile-view');
+  }
+};
+
+const updateView = () => {
+  checkMobile();
+  toggleBodyClass();
+};
 
 
 // ===== СПИСОК ДОСТУПНЫХ КАПЧ =====
@@ -357,6 +408,7 @@ const useSuggestedName = (name) => {
 
 const startGame = () => {
   console.log('🎮 Нажата кнопка Start!');
+  playStartClick(); // 🆕
 
   // Проверяем, есть ли сохраненное имя
   const savedName = getPreviousAgentName();
@@ -553,8 +605,11 @@ onUnmounted(() => {
     clearInterval(countdownTimer);
     countdownTimer = null;
   }
+  window.removeEventListener('resize', updateView);
 });
 onMounted(() => {
+  updateView();
+  window.addEventListener('resize', updateView);
   loadSuggestedNames();
 
   // Проверяем, есть ли сохраненное имя при загрузке
@@ -568,6 +623,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+// ==================== КОРЕНЬ ====================
+.special-root {
+  position: fixed;
+  inset: 0;
+}
+
 // Фон
 .backgroundImg {
   width: 100%;
@@ -595,17 +656,12 @@ onMounted(() => {
   pointer-events: none;
 }
 
-// Glass-карточка (общая)
+// ==================== GLASS-КАРТОЧКА (база без цветов) ====================
 .glass-card {
   pointer-events: auto;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(7px) saturate(130%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-radius: 48px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   animation: floatIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
   transform: translateY(20px);
@@ -683,7 +739,7 @@ onMounted(() => {
   gap: 40px;
 }
 
-// Заголовок "agent"
+// Заголовок "agent" (структура)
 .title {
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   font-weight: 300;
@@ -691,30 +747,18 @@ onMounted(() => {
   letter-spacing: 14px;
   text-transform: lowercase;
   margin: 0;
-
-  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
 }
 
-// Приветствие
+// Приветствие (структура)
 .welcome-title {
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   font-weight: 300;
   font-size: 28px;
   letter-spacing: 2px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
 
   .agent-name-display {
     font-weight: 600;
-    background: linear-gradient(135deg, #70ff6b, #28a818);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 30px rgba(238, 64, 64, 0.2);
   }
 }
 
@@ -761,52 +805,23 @@ onMounted(() => {
   }
 }
 
-
-.red {
-  background: rgba(255, 100, 100, 0.10) !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  border-color: rgba(255, 100, 100, 0.15) !important;
-
-  &:hover {
-    background: rgba(255, 100, 100, 0.25) !important;
-    box-shadow: 0 8px 32px rgba(255, 100, 100, 0.15) !important;
-    color: #ffffff !important;
-  }
-}
-
-// Кнопка "войти" — компактная версия для размещения справа
+// Кнопка "войти" (структура)
 .register-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 60px;
   padding: 14px 24px;
   cursor: none;
   outline: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   font-size: 17px;
   letter-spacing: 4px;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 0.8);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.02);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    color: #ffffff;
-  }
-
-  &:active {
-    transform: scale(0.96);
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  // Эффект замены текста
   position: relative;
   overflow: hidden;
+
+  &:hover { transform: scale(1.02); }
+  &:active { transform: scale(0.96); }
 
   .btn-text {
     display: inline-block;
@@ -829,7 +844,6 @@ onMounted(() => {
       opacity: 0;
       transform: translateY(-12px);
     }
-
     .btn-hover-text {
       opacity: 1;
       transform: translate(-50%, -50%);
@@ -837,18 +851,7 @@ onMounted(() => {
   }
 }
 
-.register-btn.secondary {
-  background: rgba(43, 181, 115, 0.15);
-  color: rgba(255, 255, 255, 0.85);
-  border-color: rgba(43, 181, 115, 0.25);
-
-  &:hover {
-    background: rgba(43, 181, 115, 0.3);
-    box-shadow: 0 8px 32px rgba(43, 181, 115, 0.15);
-    color: #ffffff;
-  }
-}
-// Кнопки приветствия
+// Кнопки приветствия (структура)
 .welcome-btn {
   border-radius: 60px;
   padding: 14px 32px;
@@ -861,13 +864,11 @@ onMounted(() => {
   font-size: 16px;
   letter-spacing: 2px;
   text-transform: lowercase;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 
-  // Эффект блика
   &::before {
     content: '';
     position: absolute;
@@ -888,60 +889,14 @@ onMounted(() => {
     pointer-events: none;
   }
 
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.96);
-  }
+  &:hover { transform: scale(1.02); }
+  &:active { transform: scale(0.96); }
 }
 
-.welcome-btn.primary {
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 0.2);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
-}
-
-
-
-.welcome-btn.secondary {
-  background: rgba(43, 181, 115, 0.15);
-  color: rgba(255, 255, 255, 0.85);
-  border-color: rgba(43, 181, 115, 0.25);
-
-  &:hover {
-    background: rgba(43, 181, 115, 0.3);
-    box-shadow: 0 8px 32px rgba(43, 181, 115, 0.15);
-    color: #ffffff;
-  }
-
-  .btn-hover-text {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-}
-
-
+// Спец-кнопки (структура; цвета — в темах)
+.red,
+.welcome-btn.secondary,
 .welcome-btn.yellow {
-  background: rgba(255, 215, 0, 0.10);
-  color: #ffffff;
-
-  border-color: rgba(255, 215, 0, 0.20);
-
-  &:hover {
-    background: rgba(255, 215, 0, 0.25);
-    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.20);
-    border-color: rgba(255, 215, 0, 0.40);
-  }
-
   .btn-hover-text {
     display: flex;
     align-items: center;
@@ -953,25 +908,23 @@ onMounted(() => {
   font-size: 18px;
 }
 
-// Кнопка Start
+// Кнопка Start (структура)
 .start-btn {
   position: relative;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 60px;
   padding: 18px 64px;
   cursor: none;
   outline: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 180px;
-
-  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+  font-family: Special_f1;
   font-weight: 400;
   font-size: 20px;
-  letter-spacing: 6px;
+  letter-spacing: 2px;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 0.8);
+
+  animation: startBreath 2.8s ease-in-out infinite;
 
   &::before {
     content: '';
@@ -993,41 +946,30 @@ onMounted(() => {
     pointer-events: none;
   }
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-  }
-
-  &:active {
-    transform: scale(0.95);
-    background: rgba(255, 255, 255, 0.2);
-  }
+  &:hover { animation-play-state: paused; transform: scale(1.05); }
+  &:active { transform: scale(0.95); }
 }
 
-// ===== КЛЮЧЕВЫЕ КАДРЫ ДЛЯ БЛИКА =====
-@keyframes glassShine {
-  0% {
-    left: -100%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  40% {
-    left: 150%;
-    opacity: 1;
+
+@keyframes startBreath {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
   50% {
-    opacity: 0;
-  }
-  100% {
-    left: 150%;
-    opacity: 0;
+    transform: scale(1.03);
+    box-shadow: 0 0 24px 2px rgba(255, 255, 255, 0.15);
   }
 }
+// ===== КЛЮЧЕВЫЕ КАДРЫ ДЛЯ БЛИКА =====
+@keyframes glassShine {
+  0%   { left: -100%; opacity: 0; }
+  10%  { opacity: 1; }
+  40%  { left: 150%; opacity: 1; }
+  50%  { opacity: 0; }
+  100% { left: 150%; opacity: 0; }
+}
+
 // ===== КОНТЕЙНЕР ДЛЯ ПОЛЯ + КНОПКИ =====
 .input-with-btn {
   display: flex;
@@ -1036,19 +978,16 @@ onMounted(() => {
   width: 100%;
 }
 
-// Поле ввода
 .input-group {
   flex: 1;
   min-width: 0;
 }
 
+// Поле ввода (структура)
 .glass-input {
   width: 100%;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  color: rgba(255, 255, 255, 0.9);
   font-family: Special_f1;
   font-size: 22px;
   font-weight: 300;
@@ -1058,31 +997,19 @@ onMounted(() => {
   text-align: center;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.75);  // ← ярче
-    font-weight: 400;                  // ← жирнее
+    font-weight: 400;
     text-align: center;
-    font-size: 18px;                   // ← чуть больше
+    font-size: 18px;
     letter-spacing: 0.5px;
-  }
-
-  &:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
   }
 }
 
 // Анимация появления карточки
 @keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  0%   { opacity: 0; transform: translateY(20px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
+
 // ===== ПРЕДЛОЖЕННЫЕ ИМЕНА =====
 .suggested-names {
   width: 100%;
@@ -1098,36 +1025,23 @@ onMounted(() => {
 }
 
 .suggested-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
   padding: 6px 16px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   white-space: nowrap;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.95);
-    background: rgba(255, 255, 255, 0.2);
-  }
+  &:hover { transform: scale(1.02); }
+  &:active { transform: scale(0.95); }
 }
+
 // ===== КНОПКА ЗАКРЫТИЯ (КРЕСТИК) =====
 .close-btn {
   position: absolute;
   top: 33px;
   right: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -1139,20 +1053,12 @@ onMounted(() => {
   padding: 0;
   z-index: 10;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.25);
-    transform: rotate(90deg);
-  }
+  &:hover { transform: rotate(90deg); }
+  &:active { transform: rotate(90deg) scale(0.9); }
 
-  &:active {
-    transform: rotate(90deg) scale(0.9);
-  }
-
-  svg {
-    display: block;
-  }
+  svg { display: block; }
 }
+
 // ==================== МОДАЛКА ZOOM ====================
 .zoom-modal-overlay {
   position: fixed;
@@ -1172,12 +1078,8 @@ onMounted(() => {
 }
 
 @keyframes overlayFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .zoom-modal {
@@ -1195,7 +1097,6 @@ onMounted(() => {
   letter-spacing: 3px;
   text-transform: lowercase;
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 .zoom-modal-hint {
@@ -1204,7 +1105,6 @@ onMounted(() => {
   font-size: 13px;
   letter-spacing: 2px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
   text-transform: lowercase;
 }
 
@@ -1225,8 +1125,8 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-
 }
+
 .ring-spinner {
   animation: spinRing 2s linear infinite;
   transform-origin: 60px 60px;
@@ -1238,13 +1138,10 @@ onMounted(() => {
   animation: none;
   opacity: 0;
 }
+
 @keyframes spinRing {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .countdown-number {
@@ -1252,80 +1149,360 @@ onMounted(() => {
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   font-weight: 200;
   font-size: 52px;
-  color: rgba(255, 255, 255, 0.95);
   letter-spacing: -2px;
   animation: numberPulse 1s ease-in-out infinite;
   z-index: 1;
-  text-shadow: 0 0 20px rgba(112, 255, 107, 0.3);
 }
 
 @keyframes numberPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(0.92);
-    opacity: 0.85;
-  }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(0.92); opacity: 0.85; }
 }
-
-
 
 // ==================== КНОПКА START ВНУТРИ КОЛЬЦА ====================
 .start-circle-btn {
   position: relative;
   z-index: 1;
-
   width: 84px;
   height: 84px;
   border-radius: 50%;
-
-  background: rgba(112, 255, 107, 0.15);
-  border: 2px solid rgba(112, 255, 107, 0.6);
-
   font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
   font-weight: 500;
   font-size: 16px;
   letter-spacing: 2px;
   text-transform: lowercase;
-  color: rgba(255, 255, 255, 0.95);
-
   cursor: pointer;
   outline: none;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  // Пульсация — пользователь понимает, что это кнопка
   animation: startPulse 1.6s ease-in-out infinite;
-
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    background: rgba(112, 255, 107, 0.3);
     transform: scale(1.06);
     animation-play-state: paused;
   }
-
-  &:active {
-    transform: scale(0.95);
-    background: rgba(112, 255, 107, 0.45);
-  }
+  &:active { transform: scale(0.95); }
 }
 
-// Пульсация кнопки start
 @keyframes startPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(112, 255, 107, 0.5);
-    transform: scale(1);
+  0%, 100% { box-shadow: 0 0 0 0 rgba(112, 255, 107, 0.5); transform: scale(1); }
+  50%      { box-shadow: 0 0 0 14px rgba(112, 255, 107, 0); transform: scale(1.05); }
+}
+
+// ==================== ТЁМНАЯ ТЕМА ====================
+.glass-theme-dark {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
-  50% {
-    box-shadow: 0 0 0 14px rgba(112, 255, 107, 0);
-    transform: scale(1.05);
+
+  .title {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+  }
+
+  .welcome-title { color: rgba(255, 255, 255, 0.85); }
+
+  .agent-name-display {
+    background: linear-gradient(135deg, #70ff6b, #28a818);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(238, 64, 64, 0.2);
+  }
+
+  .glass-input {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+
+    &::placeholder { color: rgba(255, 255, 255, 0.75); }
+
+    &:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
+    }
+  }
+
+  .register-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+    }
+    &:active { background: rgba(255, 255, 255, 0.2); }
+  }
+
+  .register-btn.secondary {
+    background: rgba(43, 181, 115, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(43, 181, 115, 0.25);
+
+    &:hover {
+      background: rgba(43, 181, 115, 0.3);
+      box-shadow: 0 8px 32px rgba(43, 181, 115, 0.15);
+      color: #ffffff;
+    }
+  }
+
+  .welcome-btn.primary {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+    }
+  }
+
+  .welcome-btn.secondary {
+    background: rgba(43, 181, 115, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(43, 181, 115, 0.25);
+
+    &:hover {
+      background: rgba(43, 181, 115, 0.3);
+      box-shadow: 0 8px 32px rgba(43, 181, 115, 0.15);
+      color: #ffffff;
+    }
+  }
+
+  .welcome-btn.yellow {
+    background: rgba(255, 215, 0, 0.10);
+    color: #ffffff;
+    border: 1px solid rgba(255, 215, 0, 0.20);
+
+    &:hover {
+      background: rgba(255, 215, 0, 0.25);
+      box-shadow: 0 8px 32px rgba(255, 215, 0, 0.20);
+      border-color: rgba(255, 215, 0, 0.40);
+    }
+  }
+
+  .start-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      color: #ffffff;
+    }
+    &:active { background: rgba(255, 255, 255, 0.2); }
+  }
+
+  .suggested-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+    &:active { background: rgba(255, 255, 255, 0.2); }
+  }
+
+  .close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    svg path { stroke: rgba(255, 255, 255, 0.6); }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  .zoom-modal-title,
+  .zoom-modal-hint { color: rgba(255, 255, 255, 0.85); }
+
+  .countdown-number {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0 20px rgba(112, 255, 107, 0.3);
+  }
+
+  .start-circle-btn {
+    background: rgba(112, 255, 107, 0.15);
+    border: 2px solid rgba(112, 255, 107, 0.6);
+    color: rgba(255, 255, 255, 0.95);
+
+    &:hover { background: rgba(112, 255, 107, 0.3); }
+    &:active { background: rgba(112, 255, 107, 0.45); }
   }
 }
+
+// ==================== СВЕТЛАЯ ТЕМА ====================
+.glass-theme-light {
+  .glass-card {
+    background: rgba(20, 20, 24, 0.55);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .title {
+    background: linear-gradient(135deg, rgba(20,20,24,0.95) 0%, rgba(20,20,24,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.3));
+  }
+
+  .welcome-title { color: rgba(20, 20, 24, 0.9); }
+
+  .agent-name-display {
+    background: linear-gradient(135deg, #1a9c3a, #0d5f22);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+  }
+
+  .glass-input {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: rgba(20, 20, 24, 0.95);
+
+    &::placeholder { color: rgba(20, 20, 24, 0.55); }
+
+    &:focus {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .register-btn {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: rgba(20, 20, 24, 0.9);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+    }
+    &:active { background: rgba(255, 255, 255, 0.95); }
+  }
+
+  .register-btn.secondary {
+    background: rgba(43, 181, 115, 0.75);
+    color: #ffffff;
+    border-color: rgba(30, 130, 80, 0.6);
+
+    &:hover {
+      background: rgba(43, 181, 115, 0.95);
+      color: #ffffff;
+    }
+  }
+
+  .welcome-btn.primary {
+    background: rgba(255, 255, 255, 0.7);
+    color: rgba(20, 20, 24, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+    }
+  }
+
+  .welcome-btn.secondary {
+    background: rgba(43, 181, 115, 0.75);
+    color: #ffffff;
+    border: 1px solid rgba(30, 130, 80, 0.6);
+
+    &:hover {
+      background: rgba(43, 181, 115, 0.95);
+      color: #ffffff;
+    }
+  }
+
+  .welcome-btn.yellow {
+    background: rgba(255, 200, 0, 0.85);
+    color: #1a1400;
+    border: 1px solid rgba(180, 140, 0, 0.7);
+
+    &:hover {
+      background: rgba(255, 215, 0, 1);
+      color: #000;
+    }
+  }
+
+  .start-btn {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: rgba(20, 20, 24, 0.9);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+    }
+    &:active { background: rgba(255, 255, 255, 0.95); }
+  }
+
+  .suggested-btn {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: rgba(20, 20, 24, 0.75);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+    }
+    &:active { background: rgba(255, 255, 255, 0.95); }
+  }
+
+  .close-btn {
+    background: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    svg path { stroke: rgba(20, 20, 24, 0.7); }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.15);
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .zoom-modal-title,
+  .zoom-modal-hint { color: rgba(20, 20, 24, 0.85); }
+
+  .countdown-number {
+    color: rgba(20, 20, 24, 0.95);
+    text-shadow: 0 0 20px rgba(40, 168, 24, 0.25);
+  }
+
+  .start-circle-btn {
+    background: rgba(43, 181, 115, 0.2);
+    border: 2px solid rgba(30, 130, 80, 0.7);
+    color: rgba(20, 20, 24, 0.95);
+
+    &:hover { background: rgba(43, 181, 115, 0.4); }
+    &:active { background: rgba(43, 181, 115, 0.55); }
+  }
+}
+
 // Адаптивность
 @media (max-width: 480px) {
   .login-screen,

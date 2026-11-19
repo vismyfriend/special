@@ -279,6 +279,10 @@ const routes = [
         path: '/registration',
         component: () => import('src/pages/Registration.vue')
       },
+      {
+        path: '/registrationOld',
+        component: () => import('src/pages/RegistrationOld.vue')
+      },
 
       {
         path: '/photos-of-agents',
