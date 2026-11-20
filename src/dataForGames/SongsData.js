@@ -575,6 +575,92 @@ const songsData = {
       },
     ],
   },
+  theTicketInspector: {
+    mainDescription: "",
+    tasks: [
+      {
+        taskDescription: 'on a train - он э трэйн - на поезде',
+        taskID: "taskDialogs",
+        usefulWords: 'a ticket inspector - контролёр билетов, a passenger - пассажир, a compartment - купе, STAFF - персонал, first - первый, expensive - дорогой, famous - знаменитый, to leave the train - покинуть поезд, it\'s in the book - это в правилах, pardon?! - простите не понял?!, seats for dinner - места для ужина',
+        taskPicture: null,
+        audio: new URL('../assets/audio/ticket inspector.mp3', import.meta.url).href,
+        extraInfo: null,
+        script: [
+          {
+            audioName: null,
+            text:
+              "Situation: A passenger is sitting in a compartment on a train. He is reading a newspaper. Somebody from the STAFF is opening the door and offering the service.\n" +
+              "STAFF: \"Coffee?\"\n" +
+              "Passenger: \"No, thanks.\"\n" +
+              "STAFF: \"Seats for dinner?\"\n" +
+              "Passenger: \"No, thanks.\"\n" +
+              "Situation: The STAFF person goes away, and a ticket inspector comes.\n" +
+              "Inspector: \"Tickets!\"\n" +
+              "Passenger: \"No, thanks.\"\n" +
+              "Inspector: \"Pardon?\"\n" +
+              "Passenger: \"I don't want a ticket, thank you.\"\n" +
+              "Inspector: \"I'm not selling tickets, sir. / сЁр /\"\n" +
+              "Passenger: \"No?\"\n" +
+              "Inspector: \"No, I want to see your ticket.\"\n" +
+              "Passenger: \"Oh, I haven't got a ticket. I don't have a ticket, sir.\"\n" +
+              "Inspector: \"You don't have a ticket?!?!?  \"\n" +
+              "Passenger: \"No. I never buy a ticket.\"\n" +
+              "Inspector: \"Why not?\"\n" +
+              "Passenger: \"Well, they are very expensive, you know.\"\n" +
+              "Inspector: \"Sir, you're traveling on a train. When people travel on a train, they always buy a ticket.\"\n" +
+              "Passenger: \"Er -\"\n" +
+              "Inspector: \"And this is a first-class compartment.\"\n" +
+              "Passenger: \"Yes, it is very nice, isn't it?\"\n" +
+              "Inspector: \"No, sir. I mean: This is a first-class compartment. When people travel in a first-class compartment, they always buy a first-class ticket.\"\n" +
+              "Passenger: \"No, they don't.\"\n" +
+              "Inspector: \"What?\"\n" +
+              "Passenger: \"A lot of people don't buy tickets. The President doesn't buy a ticket, does he? Eh? Eh?\"\n" +
+              "Inspector: \"No, sir, but he's a famous person.\"\n" +
+              "Passenger: \"And what about you? Where's yours?\"\n" +
+              "Inspector: \"Mine?\"\n" +
+              "Passenger: \"Yes, yours. Your ticket. Have you got a ticket?\"\n" +
+              "Inspector: \"Me, sir?\"\n" +
+              "Passenger: \"Yes, you.\"\n" +
+              "Inspector: \"No, I don't have a ticket.\"\n" +
+              "Passenger: \"Ooh - are you a famous person?\"\n" +
+              "Inspector: \"Famous? Well, not very - Sir, I am a ticket inspector. I inspect tickets. Are you going to show me your ticket?\"\n" +
+              "Passenger: \"No, I haven't got a ticket.\"\n" +
+              "Inspector: \"I see.\"\n" +
+              "Passenger: \"What are you going to do?\"\n" +
+              "Inspector: \"I'm going to write your name in my book.\"\n" +
+              "Passenger: \"Oh.\"\n" +
+              "Inspector: \"What is your name, sir?\"\n" +
+              "Passenger: \"Mickey Mouse.\"\n" +
+              "Inspector: \"Mickey -\"\n" +
+              "Passenger: \"- Mouse. M-O-U-S-E.\"\n" +
+              "Inspector: \"Your name, sir?\"\n" +
+              "Passenger: \"Karl Marx? William Shakespeare? Charles Dickens?\"\n" +
+              "Inspector: \"I see, sir. Well, if you're not going to tell me your name, please leave the train.\"\n" +
+              "Passenger: \"Pardon?\"\n" +
+              "Inspector: \"Leave the train.\"\n" +
+              "Passenger: \"I can't.\"\n" +
+              "Inspector: \"You can't what?\"\n" +
+              "Passenger: \"I can't leave the train.\"\n" +
+              "Inspector: \"Why not?\"\n" +
+              "Passenger: \"It's moving.\"\n" +
+              "Inspector: \"Not now, sir. At the next station.\"\n" +
+              "Passenger: \"Oh.\"\n" +
+              "Inspector: \"It's in the book, sir. When you travel by train, you buy a ticket, and if you don't buy a ticket, you -\"\n" +
+              "Passenger: \"- leave the train.\"\n" +
+              "Inspector: \"Here we are, sir. We're coming to a station. Please leave the train now.\"\n" +
+              "Passenger: \"Now?\"\n" +
+              "Inspector: \"Yes, sir. I'm sorry, but -\"\n" +
+              "Passenger: \"Oh, that's OK.\"\n" +
+              "Inspector: \"- it's in the book, and - What did you say?\"\n" +
+              "Passenger: \"I said: 'That's OK.'\"\n" +
+              "Inspector: \"OK?\"\n" +
+              "Passenger: \"Yes, this is my station. Goodbye.\"\n" +
+              "Situation: The passenger goes out of the train."
+          },
+        ]
+      },
+    ],
+  },
   honestHarry: {
     mainDescription: "",
     tasks: [

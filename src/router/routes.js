@@ -495,6 +495,8 @@ const routes = [
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
           },
+
+
           {
             path: '/see-all-sets-of-words/:missionName/darts',
             component: () => import('src/components/GameDarts.vue')

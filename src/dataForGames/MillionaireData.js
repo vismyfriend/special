@@ -34,6 +34,545 @@ const MillionaireData = {
       correctAnswer: "A",
     },
   ],
+  gtaTrivia: [
+    {
+      text: "Which company makes the Grand Theft Auto games?",
+      options: {
+        A: "Electronic Arts",
+        B: "Ubisoft",
+        C: "Activision",
+        D: "Rockstar Games",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "What does 'GTA' stand for?",
+      options: {
+        A: "Global Theft Action",
+        B: "Grand Turbo Auto",
+        C: "Grand Theft Auto",
+        D: "Great Theft Adventure",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which city in GTA V is based on Los Angeles?",
+      options: {
+        A: "Vice City",
+        B: "San Fierro",
+        C: "Liberty City",
+        D: "Los Santos",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Which real city is Liberty City based on?",
+      options: {
+        A: "Chicago",
+        B: "Boston",
+        C: "New York City",
+        D: "Philadelphia",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which real city is Vice City based on?",
+      options: {
+        A: "Las Vegas",
+        B: "Orlando",
+        C: "Houston",
+        D: "Miami",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "How many playable main characters does GTA V have?",
+      options: {
+        A: "1",
+        B: "4",
+        C: "2",
+        D: "3",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Who is the main character of GTA San Andreas?",
+      options: {
+        A: "Niko Bellic",
+        B: "Tommy Vercetti",
+        C: "Carl 'CJ' Johnson",
+        D: "Claude",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Who are the two main characters of GTA 6?",
+      options: {
+        A: "Michael and Trevor",
+        B: "Tommy and Lance",
+        C: "Jason and Lucia",
+        D: "Niko and Roman",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "In which fictional US state is GTA 6 set?",
+      options: {
+        A: "Leonida",
+        B: "North Vasyan",
+        C: "San Andreas",
+        D: "Califedornia",
+        E: "Nevadovsk",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Which GTA V character is a retired bank robber with a mansion?",
+      options: {
+        A: "Franklin Clinton",
+        B: "Lester Crest",
+        C: "Michael De Santa",
+        D: "Trevor Philips",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What is the multiplayer mode of GTA V called?",
+      options: {
+        A: "GTA Live",
+        B: "GTA World",
+        C: "GTA Arena",
+        D: "GTA Online",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Which famous GTA city returns in GTA 6?",
+      options: {
+        A: "Las Venturas",
+        B: "San Fierro",
+        C: "Liberty City",
+        D: "Vice City",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Who is the main character of GTA IV?",
+      options: {
+        A: "Luis Lopez",
+        B: "Roman Bellic",
+        C: "Niko Bellic",
+        D: "Johnny Klebitz",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which of 4 characters in GTA 5 lives in a trailer ?",
+      options: {
+        A: "Franklin Clinton",
+        B: "Lamar Davis",
+        C: "Michael De Santa",
+        D: "Trevor Philips",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Who is the main character of GTA Vice City?",
+      options: {
+        A: "Tommy Vercetti",
+        B: "Ken Rosenberg",
+        C: "Victor Vance",
+        D: "Lance Vance",
+        E: "СJ",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is the name of Franklin's dog in GTA V?",
+      options: {
+        A: "Max",
+        B: "Chop",
+        C: "Bruno",
+        D: "Rex",
+        E: "Vincent",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the highest wanted level in GTA V?",
+      options: {
+        A: "4 stars",
+        B: "7 stars",
+        C: "6 stars",
+        D: "5 stars",
+        E: "10 stars",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Who is Franklin's best friend in GTA V?",
+      options: {
+        A: "Trevor Philips",
+        B: "Jimmy De Santa",
+        C: "Lamar Davis",
+        D: "Lester Crest",
+        E: "He doesn't have friends",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "In which year was GTA 1 first released?",
+      options: {
+        A: "2000",
+        B: "1987",
+        C: "1997",
+        D: "2007",
+        E: "1945",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the name of Michael De Santa's son?",
+      options: {
+        A: "Jimmy",
+        B: "Tommy",
+        C: "Roman",
+        D: "Lamar",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Which real city is San Fierro based on?",
+      options: {
+        A: "San Francisco",
+        B: "Sacramento",
+        C: "Seattle",
+        D: "San Diego",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Which city in GTA San Andreas is based on Las Vegas?",
+      options: {
+        A: "San Fierro",
+        B: "Vice City",
+        C: "Los Santos",
+        D: "Las Venturas",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "In which year was the very first Grand Theft Auto released?",
+      options: {
+        A: "1999",
+        B: "2001",
+        C: "1997",
+        D: "1995",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "In which year is GTA Vice City set?",
+      options: {
+        A: "1992",
+        B: "1986",
+        C: "1980",
+        D: "1999",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "In which year is GTA San Andreas set?",
+      options: {
+        A: "1986",
+        B: "2000",
+        C: "1992",
+        D: "1995",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which GTA V character plans the heists?",
+      options: {
+        A: "Dave Norton",
+        B: "Ron Jakowski",
+        C: "Lamar Davis",
+        D: "Lester Crest",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "What is Trevor's company called in GTA V?",
+      options: {
+        A: "Trevor Corp",
+        B: "Philips & Sons",
+        C: "Trevor Philips Industries",
+        D: "TP Enterprises",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What is CJ's gang called in GTA San Andreas?",
+      options: {
+        A: "Varrios Los Aztecas",
+        B: "Ballas",
+        C: "Grove Street Families",
+        D: "Los Santos Vagos",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What is the nickname of CJ's older brother?",
+      options: {
+        A: "Sweet",
+        B: "Ryder",
+        C: "Big Smoke",
+        D: "OG Loc",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "Which rival gang wears purple in GTA San Andreas?",
+      options: {
+        A: "Vagos",
+        B: "Ballas",
+        C: "Aztecas",
+        D: "Grove Street Families",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Which was the first fully 3D game in the main GTA series?",
+      options: {
+        A: "GTA III",
+        B: "GTA San Andreas",
+        C: "GTA Vice City",
+        D: "GTA 2",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is GTA V's parody of Facebook called?",
+      options: {
+        A: "Lifeinvader",
+        B: "Bleeter",
+        C: "FriendNet",
+        D: "Facade",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What are the paid money cards in GTA Online called?",
+      options: {
+        A: "Gold Cards",
+        B: "Star Cards",
+        C: "Shark Cards",
+        D: "Cash Packs",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What is the highest mountain in GTA V?",
+      options: {
+        A: "Mountain Gordo",
+        B: "Mountain Elbrus",
+        C: "Mountain Chiliad",
+        D: "Mountain K2",
+        E: "Mountain Everest",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "What is the main airport in GTA V called?",
+      options: {
+        A: "Francis International",
+        B: "Escobar International",
+        C: "Vinewood Airport",
+        D: "Los Santos International",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "What was Michael De Santa's surname before he changed it?",
+      options: {
+        A: "Philips",
+        B: "Townley",
+        C: "Clinton",
+        D: "Crest",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "In which snowy state does GTA V's prologue take place?",
+      options: {
+        A: "North Yankton",
+        B: "San Andreas",
+        C: "Leonida",
+        D: "Alderney",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is the name of CJ's sister?",
+      options: {
+        A: "Denise",
+        B: "Kendl",
+        C: "Millie",
+        D: "Catalina",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the name of Tommy Vercetti's lawyer?",
+      options: {
+        A: "Ricardo Diaz",
+        B: "Lance Vance",
+        C: "Sonny Forelli",
+        D: "Ken Rosenberg",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Who says 'All we had to do was follow the damn train, CJ!'?",
+      options: {
+        A: "Cesar",
+        B: "Ryder",
+        C: "Big Smoke",
+        D: "Sweet",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which GTA game added a full first-person mode?",
+      options: {
+        A: "GTA San Andreas",
+        B: "GTA IV",
+        C: "GTA V",
+        D: "GTA Vice City",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which part of Liberty City in GTA IV is based on Manhattan?",
+      options: {
+        A: "Alderney",
+        B: "Broker",
+        C: "Dukes",
+        D: "Algonquin",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "What is the GTA IV version of New Jersey called?",
+      options: {
+        A: "Broker",
+        B: "Alderney",
+        C: "Algonquin",
+        D: "Bohan",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the name of Franklin's aunt?",
+      options: {
+        A: "Amanda",
+        B: "Denise",
+        C: "Tracey",
+        D: "Tanisha",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the name of Michael De Santa's wife?",
+      options: {
+        A: "Patricia",
+        B: "Amanda",
+        C: "Denise",
+        D: "Tracey",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "What is the name of Michael De Santa's daughter?",
+      options: {
+        A: "Tanisha",
+        B: "Amanda",
+        C: "Kendl",
+        D: "Tracey",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Which GTA IV expansion stars biker Johnny Klebitz?",
+      options: {
+        A: "The Ballad of Gay Tony",
+        B: "Chinatown Wars",
+        C: "The Lost and Damned",
+        D: "Liberty City Stories",
+      },
+      correctAnswer: "C",
+    },
+    {
+      text: "Which handheld GTA game stars Huang Lee?",
+      options: {
+        A: "GTA Advance",
+        B: "Chinatown Wars",
+        C: "Liberty City Stories",
+        D: "Vice City Stories",
+      },
+      correctAnswer: "B",
+    },
+    {
+      text: "Who is the main character of GTA Vice City Stories?",
+      options: {
+        A: "Lance Vance",
+        B: "Tommy Vercetti",
+        C: "Toni Cipriani",
+        D: "Victor Vance",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "What is the pier with the Ferris wheel in Los Santos called?",
+      options: {
+        A: "Chumash Pier",
+        B: "Vespucci Pier",
+        C: "Santa Maria Pier",
+        D: "Del Perro Pier",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Which GTA III main character never speaks?",
+      options: {
+        A: "Tommy Vercetti",
+        B: "Toni Cipriani",
+        C: "Niko Bellic",
+        D: "Claude",
+      },
+      correctAnswer: "D",
+    },
+    {
+      text: "Whose mansion does Tommy Vercetti take over in Vice City?",
+      options: {
+        A: "Ricardo Diaz",
+        B: "Umberto Robina",
+        C: "Lance Vance",
+        D: "Sonny Forelli",
+      },
+      correctAnswer: "A",
+    },
+    {
+      text: "What is GTA's parody of Twitter called?",
+      options: {
+        A: "Bleeter",
+        B: "Chirper",
+        C: "Tweeter",
+        D: "Lifeinvader",
+      },
+      correctAnswer: "A",
+    },
+  ],
   pattern: [
     {
       text: "2 + 2 x 2 = ?",

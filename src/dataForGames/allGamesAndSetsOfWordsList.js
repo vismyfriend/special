@@ -66,6 +66,16 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/see-all-sets-of-words/theTicketInspector/songs",
+      missionVisibleName: "Ticket inspector",
+      missionDescription: "Контролёр билетов",
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+      stars: '3'
+    },
+    {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       path: "/specialCursor/v/specialHeader/tablet/connectLine",
       missionVisibleName: "Протяни линии",
       missionDescription: "Соедини линии",
@@ -199,6 +209,17 @@ export const allGamesAndSetsOfWordsList =
       path: "/see-all-sets-of-words/alphabetData/millionaire",
       missionVisibleName: "Буквы",
       missionDescription: "Алфавит",
+      id: 1001,
+      active: true,
+      stars: 1,
+      gameIcon: "💰",
+      lvl: "lvl0",
+    },
+    {
+      type: "hardcodedLink",
+      path: "/see-all-sets-of-words/gtaTrivia/millionaire",
+      missionVisibleName: "GTA quiz",
+      missionDescription: "ГТА квиз",
       id: 1001,
       active: true,
       stars: 1,
