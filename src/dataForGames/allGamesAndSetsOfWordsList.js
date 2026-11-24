@@ -86,6 +86,17 @@ export const allGamesAndSetsOfWordsList =
       stars: '3'
     },
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      // path: "/specialCursor/v/specialHeader/tablet/connectLine",
+      path: "/MixOfLayouts/specialHeader/tablet/connectLine?level=katushkaPro&difficulty=hard",
+      missionVisibleName: "Протяни линии SMN",
+      missionDescription: "Соедини линии SMN",
+      id: 1001,
+      active: true,
+      lvl: "lvl0",
+      stars: '3'
+    },
+    {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/developerSet/decksManyPlayers",
       missionVisibleName: "How often do you ___ ?",
