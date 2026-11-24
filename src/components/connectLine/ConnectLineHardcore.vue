@@ -114,28 +114,29 @@ async function restart() {
 
 function goBack() {
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    // path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine',
     query: { level: resolvedName.value },
   })
 }
 
 function goEasy() {
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine',
     query: { level: resolvedName.value, difficulty: 'easy' },
   })
 }
 
 function goMedium() {
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine',
     query: { level: resolvedName.value, difficulty: 'medium' },
   })
 }
 
 function goHard() {
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine',
     query: { level: resolvedName.value, difficulty: 'hard' },
   })
 }

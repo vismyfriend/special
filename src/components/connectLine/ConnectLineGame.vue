@@ -134,14 +134,15 @@ function setDifficulty(level) {
 
 function goHardcore() {
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine-hardcore',
+    // path: '/specialCursor/v/specialHeader/tablet/connectLine-hardcore',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine-hardcore',
     query: { level: resolvedName.value },
   })
 }
 
 function openEditor() {
   router.push({
-    path: '/specialCursor/v/specialHeader/connectLine-editor',
+    path: '/MixOfLayouts/specialHeader/connectLine-editor',
     query: { level: resolvedName.value },
   })
 }
@@ -166,7 +167,7 @@ function selectLevel(key) {
   levelsOpen.value = false
   if (key === resolvedName.value) return
   router.push({
-    path: '/specialCursor/v/specialHeader/tablet/connectLine',
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine',
     query: { level: key, difficulty: difficulty.value },
   })
 }

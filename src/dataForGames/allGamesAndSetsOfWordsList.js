@@ -76,7 +76,8 @@ export const allGamesAndSetsOfWordsList =
     },
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      path: "/specialCursor/v/specialHeader/tablet/connectLine",
+      // path: "/specialCursor/v/specialHeader/tablet/connectLine",
+      path: "/MixOfLayouts/specialHeader/tablet/connectLine",
       missionVisibleName: "Протяни линии",
       missionDescription: "Соедини линии",
       id: 1001,

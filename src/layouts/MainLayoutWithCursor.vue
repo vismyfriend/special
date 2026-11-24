@@ -1,12 +1,12 @@
 <template>
   <CustomCursorLayout>
-    <MainLayout>
+    <BackgroundByDayLayout>
       <router-view />
-    </MainLayout>
+    </BackgroundByDayLayout>
   </CustomCursorLayout>
 </template>
 
 <script setup>
 import CustomCursorLayout from './CustomCursorLayout.vue';
-import MainLayout from './MainLayout.vue';
+import BackgroundByDayLayout from './BackgroundByDayLayout.vue';
 </script>

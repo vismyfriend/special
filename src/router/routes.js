@@ -1,7 +1,141 @@
 const routes = [
-  { path: '/customCursorsStudio',
-    component: () => import('layouts/cursors/CursorStudio.vue')
+  // без лэйатув вообще
+  { path: '/BackgroundByDay',
+    component: () => import('layouts/BackgroundByDayLayout.vue'),
   },
+
+  // Только со студией курсоров курсора
+  {
+    path: '/CursorStudio',
+    component: () => import('layouts/cursors/CursorStudio.vue'),
+    children: [
+      {
+        path: 'see-all-sets-of-words/:missionName/twoDecks_C',
+        component: () => import('src/components/GameTwoDecks.vue'),
+        meta: {
+          // cursor: { type: 'magic', preset: 'forest' },
+          cursor: { type: 'magic' },
+          cursorStudio: { scene: false },
+        },
+      },
+    ],
+  },
+
+
+  {
+    path: '/OnlyBackground',
+    component: () => import('src/layouts/SpecialBackground.vue'),
+    meta: { showDevPanel: false },        // ← включить/выключить панель на всех компонентах
+    children: [
+      {
+        path: 'see-all-sets-of-words/:missionName/twoDecks_BG',
+        component: () => import('src/components/GameTwoDecks.vue'),
+        props: true,
+      },
+      { path: 'test1', component: () => import('src/components/TestNoLayout.vue'),
+        meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
+      },
+      {
+        path: 'test2', component: () => import('src/components/TestNoLayout.vue'),
+        meta: { blur: false },         // ← blur выключен / нет размытия фона
+      },
+    ]
+  },
+
+  // Mix yесколько лэйаутов микс Со студией курсора и с меняющимся фоном по дню недели
+  {
+    path: '/MixOfLayouts',
+    component: () => import('src/layouts/SpecialBackground.vue'),
+    meta: { showDevPanel: false },        // ← включить/выключить панель на всех компонентах
+    children: [
+      { path: '', component: () => import('layouts/cursors/CursorStudio.vue'),
+        meta: { showDevPanel: true, blur: false },        // ← панель РАЗРАБОТЧИКА РОДИТЕЛЯ включена, размытие РОДИТЕЛЯ отключено
+        children: [
+          {
+            path: 'see-all-sets-of-words/:missionName/twoDecks_BG_C',
+            component: () => import('src/components/GameTwoDecks.vue'),
+            meta: {
+              // cursor: { type: 'magic', preset: 'forest' },
+              cursor: { type: 'magic' },
+              cursorStudio: { scene: false },
+              showDevPanel: false
+            },
+          },
+          { path: 'test1', component: () => import('src/components/TestNoLayout.vue'),
+            meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
+          },
+          {
+            path: 'test2', component: () => import('src/components/TestNoLayout.vue'),
+            meta: { blur: false },         // ← blur выключен / нет размытия фона
+          },
+
+          {
+            path: 'specialHeader',
+            component: () => import('layouts/specialHeaderLayout.vue'),
+            meta: {
+              cursor: { type: 'magic', preset: 'forest' },
+              // cursor: 'flashlight',
+              cursorStudio: { scene: false },
+              showDevPanel: false
+            },
+
+            children: [
+              // Редактор — БЕЗ планшета (на всю ширину)
+              {
+                path: 'connectLine-editor',
+                component: () => import('src/components/connectLine/ConnectLineEditor.vue'),
+              },
+              {
+                path: 'tablet',
+                component: () => import('src/layouts/TabletLayout.vue'),
+                meta: {
+                  // cursor: { type: 'magic', preset: 'forest' },
+                  cursor: 'ring',
+                },
+                children: [
+                  {
+                    path: 'connectLine',
+                    component: () => import('src/components/connectLine/ConnectLineGame.vue'),
+                  },
+                  {
+                    path: 'connectLine-hardcore',
+                    component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
+                  },
+                  {
+                    path: 'cardsTest1',
+                    component: () => import('src/components/Game52Cards.vue')
+                  },
+
+                ],
+              },
+              {
+                path: 'cardsTest2',
+                component: () => import('src/components/Game52Cards.vue')
+              },
+
+            ],
+          },
+
+        ]
+      },
+      // вот сюда тоже можно вставить компоненты это будет просто фон без курсора, но это внутри микс лэйаута
+    ]
+  },
+
+  { path: '/dc',
+    component: () => import('layouts/DayBackgroundWithSpecialCursorLayout.vue'),
+    children: [
+
+    ],
+  },
+  {
+    path: '/specialCursor',
+    component: () => import('src/layouts/CustomCursorLayout.vue'),
+    children: [
+
+    ]
+  },
+
   {
     path: '/',
     component: () => import('src/layouts/MainLayoutWithCursor.vue'),
@@ -9,6 +143,11 @@ const routes = [
       { path: '',
         component: () => import('pages/rooms/room.vue')
       },
+      // { path: 't',
+      //   component: () => import('layouts/cursors/CursorStudio.vue')
+      // },
+
+
 
       // { path: '',
       //   component: () => import('src/pages/intros/specialDesk1.vue')
@@ -174,10 +313,10 @@ const routes = [
                 path: 'deck-of-cards',
                 component: () => import('src/components/GameDeckOfCards.vue')
               },
-              {
-                path: 'twoDecks',
-                component: () => import('src/components/GameTwoDecks.vue')
-              },
+              // {
+              //   path: 'twoDecks',
+              //   component: () => import('src/components/GameTwoDecks.vue')
+              // },
               {
                 path: 'tnt',
                 component: () => import('src/components/GameTNT.vue')
@@ -333,7 +472,12 @@ const routes = [
     component: () => import('src/components/SpecialPreloader.vue')
   },
   { path: '/mainLayout',
-    component: () => import('src/layouts/MainLayout.vue')
+    component: () => import('layouts/BackgroundByDayLayout.vue')
+  },
+  {
+    path: '/see-all-sets-of-words/:missionName/twoDecks',
+    component: () => import('src/components/GameTwoDecks.vue'),
+    props: true,
   },
   {
     path: '/special',
@@ -553,7 +697,7 @@ const routes = [
   },
   {
     path: '/soundcheck',
-    component: () => import('src/layouts/MainLayout.vue')
+    component: () => import('layouts/BackgroundByDayLayout.vue')
   },
   {
     path: '/scroll-zoom-in',
@@ -675,63 +819,6 @@ const routes = [
   {
     path: '/test-no-layout',
     component: () => import('src/components/TestNoLayout.vue'),
-  },
-  {
-    path: '/specialCursor',
-    component: () => import('src/layouts/CustomCursorLayout.vue'),
-    children: [
-      {
-        path: 'v',
-        component: () => import('src/layouts/SpecialBackground.vue'),
-        meta: { showDevPanel: false },        // ← включить/выключить панель на всех компонентах
-        children: [
-          { path: '', component: () => import('src/components/TestNoLayout.vue'),
-            meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
-          },
-          { path: '1', component: () => import('src/components/TestNoLayout.vue') },
-          {
-            path: '2', component: () => import('src/components/TestNoLayout.vue'),
-            meta: { blur: false },         // ← blur выключен / нет размытия фона
-          },
-          {
-            path: 'specialHeader',
-            component: () => import('layouts/specialHeaderLayout.vue'),
-            children: [
-              // Редактор — БЕЗ планшета (на всю ширину)
-              {
-                path: 'connectLine-editor',
-                component: () => import('src/components/connectLine/ConnectLineEditor.vue'),
-              },
-              {
-                path: 'tablet',
-                component: () => import('src/layouts/TabletLayout.vue'),
-                children: [
-
-                  {
-                    path: 'connectLine',
-                    component: () => import('src/components/connectLine/ConnectLineGame.vue'),
-                  },
-                  {
-                    path: 'connectLine-hardcore',
-                    component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
-                  },
-                  {
-                    path: 'cardsTest1',
-                    component: () => import('src/components/Game52Cards.vue')
-                  },
-
-                ],
-              },
-              {
-                path: 'cardsTest2',
-                component: () => import('src/components/Game52Cards.vue')
-              },
-
-            ],
-          },
-        ]
-      },
-    ]
   },
 
   {

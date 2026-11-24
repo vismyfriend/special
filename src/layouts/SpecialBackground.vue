@@ -92,14 +92,14 @@ const isDev = import.meta.env.DEV
 
 // ─── ФОН ───
 const backgrounds = ref([
-  { day: 0, img: new URL('../assets/images/background1.jpg', import.meta.url).href },
-  { day: 1, img: new URL('../assets/images/background2.jpg', import.meta.url).href },
-  { day: 2, img: new URL('../assets/images/background8.jpg', import.meta.url).href },
-  { day: 3, img: new URL('../assets/images/SpecialRoomGreen.jpg', import.meta.url).href },
-  { day: 4, img: new URL('../assets/images/background5.jpg', import.meta.url).href },
-  { day: 5, img: new URL('../assets/images/background6.jpg', import.meta.url).href },
-  { day: 6, img: new URL('../assets/images/background7.jpg', import.meta.url).href },
-])
+  { day: 0, img: new URL("../assets/images/AVIF/background1.avif", import.meta.url).href },
+  { day: 1, img: new URL("../assets/images/AVIF/background2.avif", import.meta.url).href },
+  { day: 2, img: new URL("../assets/images/AVIF/background8.avif", import.meta.url).href },
+  { day: 3, img: new URL("../assets/images/AVIF/SpecialRoomGreen.avif", import.meta.url).href },
+  { day: 4, img: new URL("../assets/images/AVIF/background5.avif", import.meta.url).href },
+  { day: 5, img: new URL("../assets/images/AVIF/background6.avif", import.meta.url).href },
+  { day: 6, img: new URL("../assets/images/AVIF/background7.avif", import.meta.url).href },
+]);
 
 const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
