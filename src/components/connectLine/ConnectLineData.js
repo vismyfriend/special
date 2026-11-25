@@ -5,6 +5,7 @@ import square from './levels/square.json'
 import veryWide from './levels/veryWide.json'
 import vertical from './levels/vertical.json'
 import katushkaPro from './levels/katushkaPro.json'
+import findDifferenceMonsters from './levels/findDifferenceMonsters.json'
 
 export const connectLineGames = {
   house: {
@@ -34,5 +35,9 @@ export const connectLineGames = {
   square: {
     ...square,
     image: new URL('./assets/square.png', import.meta.url).href,
+  },
+  findDifferenceMonsters: {
+    ...findDifferenceMonsters,
+    image: new URL('./assets/BoboMimiZiggy.avif', import.meta.url).href,
   },
 }

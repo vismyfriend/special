@@ -1,0 +1,119 @@
+{
+  "title": "BoboMimiMonsters",
+  "instructions": "Протяни линию от названия к нужному месту на картинке",
+  "imageWidth": 986,
+  "imageHeight": 1160,
+  "crop": {
+    "scale": 1,
+    "offsetX": 0,
+    "offsetY": 0,
+    "box": {
+      "x": 140.59765625,
+      "y": 0,
+      "w": 517.17578125,
+      "h": 520
+    },
+    "croppedWidth": 517,
+    "croppedHeight": 520
+  },
+  "words": [
+    {
+      "id": "w1795620180091",
+      "text": "Picture A has the Moon",
+      "shape": "rect",
+      "x": 0.7068,
+      "y": 0.049,
+      "w": 0.0849,
+      "h": 0.0749
+    },
+    {
+      "id": "w1795620148145",
+      "text": "Ziggy is on the bed, he is sitting",
+      "shape": "rect",
+      "x": 0.6473,
+      "y": 0.1855,
+      "w": 0.1949,
+      "h": 0.1625
+    },
+    {
+      "id": "w1795620096595",
+      "text": "Ziggy is above the bed, he is jumping",
+      "shape": "rect",
+      "x": 0.6504,
+      "y": 0.6718,
+      "w": 0.1913,
+      "h": 0.1997
+    },
+    {
+      "id": "w1795620050328",
+      "text": "a ball is not under the bed",
+      "shape": "circle",
+      "x": 0.5258,
+      "y": 0.9128,
+      "r": 0.04
+    },
+    {
+      "id": "w1795620032776",
+      "text": "A ball is under the bed",
+      "shape": "rect",
+      "x": 0.592,
+      "y": 0.3649,
+      "w": 0.14,
+      "h": 0.0471
+    },
+    {
+      "id": "w1795620011953",
+      "text": "Picture A has one sock",
+      "shape": "rect",
+      "x": 0.6472,
+      "y": 0.4585,
+      "w": 0.14,
+      "h": 0.1247
+    },
+    {
+      "id": "w1795619990602",
+      "text": "Picture B has 3 socks",
+      "shape": "rect",
+      "x": 0.7257,
+      "y": 0.9387,
+      "w": 0.2696,
+      "h": 0.0926
+    },
+    {
+      "id": "w1795619978761",
+      "text": "A chair has a bear",
+      "shape": "rect",
+      "x": 0.156,
+      "y": 0.3941,
+      "w": 0.14,
+      "h": 0.14
+    },
+    {
+      "id": "w1795619945601",
+      "text": "A chair doesn't have a bear",
+      "shape": "rect",
+      "x": 0.152,
+      "y": 0.892,
+      "w": 0.14,
+      "h": 0.14
+    },
+    {
+      "id": "w1795619914718",
+      "text": "Mimi has one horn",
+      "shape": "rect",
+      "x": 0.4072,
+      "y": 0.2378,
+      "w": 0.14,
+      "h": 0.14
+    },
+    {
+      "id": "w1795619866578",
+      "text": "Bobo has the third eye!",
+      "shape": "rect",
+      "x": 0.2282,
+      "y": 0.6565,
+      "w": 0.14,
+      "h": 0.1576
+    }
+  ]
+}

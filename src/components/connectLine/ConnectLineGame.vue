@@ -225,7 +225,7 @@ onBeforeUnmount(() => {
   max-width: 900px;
   margin: 40px auto;
   padding: 20px;
-  font-family: system-ui, sans-serif;
+  font-family: Special_f1;
   background: #ffffff;
   border-radius: 25px;
 }
@@ -407,7 +407,71 @@ h2 {
   background: #d97706;
 }
 
-/* ─── МОБИЛКА ─── */
+/* ─── ПЛАНШЕТЫ (вертикальные и горизонтальные) ─── */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .connect-game {
+    margin: 12px auto;
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .instructions {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .game-canvas {
+    /* dvh учитывает адресную строку браузера на iPad/Android */
+    height: 62dvh;
+    max-height: 550px;
+  }
+
+  .control-panel {
+    gap: 10px;
+    padding: 8px 12px;
+    flex-wrap: wrap; /* если кнопок много, аккуратно перенесутся */
+    justify-content: center;
+  }
+
+  .difficulty-segments {
+    gap: 4px;
+  }
+
+  .seg {
+    padding: 8px 12px; /* чуть крупнее, чем на мобилке — удобно тыкать пальцем */
+    font-size: 13px;
+  }
+
+  .btn-check,
+  .btn-editor {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Дополнительно: если планшет повернули горизонтально (мало места по высоте) */
+@media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape) {
+  .connect-game {
+    margin: 8px auto;
+    padding: 10px 16px;
+  }
+
+  h2, .instructions {
+    display: inline-block; /* экономим место по вертикали, ставим в строку или уменьшаем отступы */
+    margin-right: 12px;
+    margin-bottom: 6px;
+  }
+
+  .game-canvas {
+    height: 58dvh;
+  }
+}
+
+/* ─── ТЕЛЕФОН  ─── */
 @media (max-width: 600px) {
   .connect-game {
     margin: 16px auto;
