@@ -85,6 +85,7 @@ export const allGamesAndSetsOfWordsList =
       lvl: "lvl0",
       stars: '3'
     },
+
     {
       type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
       // path: "/specialCursor/v/specialHeader/tablet/connectLine",
