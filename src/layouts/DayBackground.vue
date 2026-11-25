@@ -1,3 +1,17 @@
+<template>
+  <div>
+
+  </div>
+</template>
+
+<script>
+
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
 <!--можно удалить этот компонент он уже не актуален и из него все использовано в specialBackground-->
 
 <!--<template>-->
