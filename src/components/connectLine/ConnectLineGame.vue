@@ -455,6 +455,7 @@ h2 {
 
 /* Дополнительно: если планшет повернули горизонтально (мало места по высоте) */
 @media (min-width: 601px) and (max-width: 1180px) and (orientation: landscape) {
+
   .connect-game {
     margin: 8px auto;
     padding: 10px 16px;
