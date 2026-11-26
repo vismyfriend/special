@@ -37,6 +37,8 @@
       <span v-if="saveMessage" class="save-msg">{{ saveMessage }}</span>
 
       <button v-if="!cropMode" @click="clearAll">🗑 Очистить</button>
+      <button @click="playThisLevel"> Играть</button>
+
       <button v-if="cropMode" @click="resetCrop">↺ Сбросить</button>
       <span v-if="cropMode" class="crop-hint">Подгони картинку и нажми «✅ Применить обрезку»</span>
     </div>
@@ -1021,7 +1023,7 @@ function downloadJson() {
 
 // ─── СОХРАНЕНИЕ НА СЕРВЕР ───
 async function saveToServer() {
-  if (hasConflicts.value) return
+  if (hasConflicts.value) return false
 
   const levelName = currentLevel.value === '__new__'
     ? (newLevelName.value || '').trim()
@@ -1091,6 +1093,25 @@ async function saveToServer() {
     currentLevel.value = levelName
     router.replace({ query: { ...route.query, level: levelName } })
   }
+  return true // ⬅️ сообщаем, что всё сохранилось успешно
+
+}
+
+
+
+async function playThisLevel() {
+
+  // 1. Сначала сохраняем уровень, чтобы в игре открылась актуальная версия
+  // const ok = await saveToServer()
+  // if (!ok) return
+// нужно доработать чтобы сперва сохранились изменения на сервер и после этого мы переходиле к игре
+
+  const levelName = currentLevel.value
+
+  router.push({
+    path: '/MixOfLayouts/specialHeader/tablet/connectLine', // ⬅️ ЗАМЕНИТЬ На то чтобы на текущий уровень который выбран переход был
+    query: { level: levelName },
+  })
 }
 
 // ─── ИНИЦИАЛИЗАЦИЯ ───

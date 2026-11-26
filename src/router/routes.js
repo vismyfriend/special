@@ -228,6 +228,7 @@ const routes = [
     path: '/specialCursor',
     component: () => import('src/layouts/CustomCursorLayout.vue'),
   },
+  { path: '/sa', component: () => import('pages/SeeAllSetsOfWords.vue') },
 
 
   // Компоненты с лэйаутом только студии курсоров, сам лэйаут первый родитель

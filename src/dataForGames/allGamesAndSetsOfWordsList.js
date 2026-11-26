@@ -3,6 +3,15 @@
 export const allGamesAndSetsOfWordsList =
   [
     {
+      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
+      path: "/MixOfLayouts/specialHeader/tablet/connectLine?level=find_differences_7&difficulty=hard",
+      missionVisibleName: "найди отличия",
+      missionDescription: "find difference",
+      id: 1001,
+      active: true,
+      stars: '2'
+    },
+    {
       missionVisibleName: "Dictionary of Dev",
       missionDescription: "Dev's dictionary",
       missionName: 'gsheet:1DfstM9cBffsyCKmE2RxzWRq5rENDWhRd1aWAoB5O6XA',
@@ -97,17 +106,7 @@ export const allGamesAndSetsOfWordsList =
       lvl: "lvl0",
       stars: '3'
     },
-    {
-      type: "hardcodedLink", //  не менять - тип для идентификации - захардкодена ссылка вутри проекта
-      // path: "/specialCursor/v/specialHeader/tablet/connectLine",
-      path: "/MixOfLayouts/specialHeader/tablet/connectLine?level=findDifferenceMonsters&difficulty=hard",
-      missionVisibleName: "найди отличия",
-      missionDescription: "find difference",
-      id: 1001,
-      active: true,
-      lvl: "lvl0",
-      stars: '2'
-    },
+
     {
       type: "hardcodedLink",
       path: "/see-all-sets-of-words/developerSet/decksManyPlayers",
