@@ -1,0 +1,1 @@
+import{u as a,aa as o,o as t,c as _,a as r,z as s}from"./index.91aed6ee.js";import{_ as c}from"./plugin-vue_export-helper.21dcd24c.js";const u={__name:"GameLayout",setup(n){return a(),(p,m)=>{const e=o("router-view");return t(),_("div",null,[r("div",null,[s(e)])])}}};var v=c(u,[["__scopeId","data-v-0a5d44c0"]]);export{v as default};

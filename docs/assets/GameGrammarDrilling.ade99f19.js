@@ -1,0 +1,1 @@
+import{_ as r}from"./plugin-vue_export-helper.21dcd24c.js";import{o as e,c as a}from"./index.91aed6ee.js";const c={};function o(n,t){return e(),a("p",null,"\u043F\u0440\u0438\u0432\u0435\u0442")}var l=r(c,[["render",o]]);export{l as default};

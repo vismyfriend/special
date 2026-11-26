@@ -15,8 +15,11 @@ import { httpClient } from 'src/api/modules/httpClient'
 
 
 // const BASE_URL = 'https://special-agents-backend.onrender.com'
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+// const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 // вот эта для локального доступа
+
+const baseURL = 'https://api.special-agents.ru' // прод Егорчика
+
 
 /**
  * Преобразует запись из БД в формат, который ждёт setupBoard:

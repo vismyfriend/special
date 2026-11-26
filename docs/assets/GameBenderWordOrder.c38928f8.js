@@ -1,0 +1,1 @@
+import{u as r,o as a,c as o,a as t}from"./index.91aed6ee.js";const l={__name:"GameBenderWordOrder",setup(s){return r(),(n,e)=>(a(),o("div",null,e[0]||(e[0]=[t("h2",null," \u0442\u0443\u0442 \u043A\u043E\u0433\u0434\u0430-\u0442\u043E \u043F\u043E\u044F\u0432\u0438\u0442\u0441\u044F \u0438\u0433\u0440\u0430 ",-1)])))}};export{l as default};
