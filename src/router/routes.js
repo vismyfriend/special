@@ -1,14 +1,244 @@
 const routes = [
-  // без лэйатув вообще
-  { path: '/BackgroundByDay',
-    component: () => import('layouts/BackgroundByDayLayout.vue'),
+  // сперва компоненты без лэйаутов вообще
+  {
+    path: '/test',
+    component: () => import('src/components/TestPageDev.vue')
+  },
+  {
+    // это сама дэка, а чтобы ее использовать есть виджет компонент
+    path: '/SoundManagerKeyboard',
+    component: () => import('src/components/KeyboardSoundManager.vue'),
+  },
+  {
+    path: '/SoundManagerWidget',
+    component: () => import('src/components/KeyboardSoundManager/SoundManagerWidget.vue'),
+  },
+  {
+    path: '/notebook2',
+    component: () => import('src/pages/intros/notebookBlank.vue')
+  },
+  {
+    path: '/desk1',
+    component: () => import('src/pages/intros/specialDesk1.vue')
+  },
+  {
+    path: '/picResizer',
+    component: () => import('src/ComponentsIDEAS/picResizer.vue')
+  },
+  {
+    path: '/my-games',
+    component: () => import('src/pages/myGames.vue')
+  },
+  {
+    path: '/whackAnEmoji',
+    component: () => import('src/pages/whackAnEmoji.vue')
+  },
+  {
+    path: '/sound-manager',
+    component: () => import('src/components/KeyboardSoundManager/SoundManagerPage.vue'),
+  },
+  {
+    path: '/pixelArt',
+    component: () => import('pages/PixelArtEditor.vue')
+  },
+  {
+    path: '/workbench1',
+    component: () => import('src/pages/pageWorkbench1.vue')
+  },
+  {
+    path: '/workbench2',
+    component: () => import('src/pages/pageWorkbench2.vue')
+  },
+  {
+    path: '/workbench3',
+    component: () => import('src/pages/pageWorkbench3.vue')
+  },
+  {
+    path: '/workbench4',
+    component: () => import('src/pages/pageWorkbench4.vue')
+  },
+  {
+    path: '/workbench5',
+    component: () => import('src/pages/pageWorkbench5.vue')
+  },
+  {
+    path: '/workbench6',
+    component: () => import('src/pages/pageWorkbench6.vue')
+  },
+  {
+    path: '/flipBook',
+    component: () => import('src/pages/flipBook.vue')
+  },
+  {
+    path: '/game-puzzle-squares',
+    component: () => import('src/pages/gamePuzzleSquares.vue')
+  },
+  {
+    path: '/games',
+    component: () => import('pages/SeeAllGames.vue'),
+  },
+  {
+    path: '/vismycoder',
+    component: () => import('src/pages/vismycoder.vue')
+  },
+  { path: '/pre',
+    component: () => import('src/components/SpecialPreloader.vue')
+  },
+  {
+    path: '/see-all-sets-of-words/:missionName/twoDecks',
+    component: () => import('src/components/GameTwoDecks.vue'),
+    props: true,
   },
 
-  // Только со студией курсоров курсора
+  {
+    path: '/vismyfriend',
+    component: () => import('src/pages/Vismyfriend.vue')
+  },
+  {
+    path: '/soundcheck',
+    component: () => import('layouts/BackgroundByDayLayout.vue')
+  },
+  {
+    path: '/scroll-zoom-in',
+    component: () => import('src/pages/intros/scrollZoomIn.vue')
+  },
+  {
+    path: '/noLayoutPage',
+    component: () => import('src/pages/pageWithoutMainLayout.vue')
+  },
+  {
+    path: '/tablitsa',
+    component: () => import('src/pages/tablitsa.vue')
+  },
+  {
+    path: '/tablitsaRef',
+    component: () => import('src/pages/tablitsaRef.vue')
+  },
+  {
+    path: '/jokes',
+    component: () => import('src/components/BookJokes.vue')
+  },
+  {
+    path: '/yearGuesser/:id?',  // 🔥 :id? — необязательный параметр, это сылка на конкретную фотографию с которой начнется игра
+    component: () => import('src/pages/gameYearGuesser.vue')
+  },
+  {
+    path: '/describePhoto/:id?',  // 🔥 :id? — необязательный параметр, это сылка на конкретную фотографию с которой начнется игра
+    component: () => import('src/components/describePhotoDesign2.vue')
+  },
+
+  {
+    path: '/differenceSeeLook',
+    component: () => import('src/components/pageInfoWordDifference.vue')
+  },
+  {
+    path: '/gameSnakeCursor',
+    component: () => import('src/pages/GameSnakeCursor.vue')
+  },
+  {
+    path: '/gameSnakeWords',
+    component: () => import('src/pages/GameSnakeShortWords.vue')
+  },
+  {
+    path: '/gameSnakeForYandex',
+    component: () => import('src/pages/GameSnakeForYandex.vue')
+  },
+  {
+    path: '/noLayoutPage2',
+    component: () => import('src/pages/pageWithoutMainLayout2.vue')
+  },
+  {
+    path: '/v-is-my-friend',
+    component: () => import('src/pages/MyCornerOfTheInternet.vue')
+  },
+  {
+    path: '/landing',
+    component: () => import('src/pages/LandingPage/LandingPageVismyfriend.vue')
+  },
+  {
+    path: '/api2',
+    component: () => import('components/dictionaryAPI2.vue')
+  },
+  {
+    path: '/pronunciationTrainer',
+    component: () => import('components/PronunciationTrainer.vue')
+  },
+  {
+    path: '/puterTester',
+    component: () => import('components/PuterTester.vue')
+  },
+  {
+    path: '/ai1',
+    component: () => import('components/AIChat.vue')
+  },
+  {
+    path: '/ai-assistant',
+    component: () => import('src/layouts/MainLayoutWithCursor.vue'),
+    children: [
+      { path: '', component: () => import('components/AIChat.vue') },
+      { path: 'api', component: () => import('components/dictionaryAPIspecial.vue') },
+    ]
+  },
+  {
+    path: '/test-gsheet',
+    component: () => import('src/components/TestGoogleSheet.vue'),
+  },
+  {
+    path: '/sounds',
+    component: () => import('src/pages/EnglishSounds.vue')
+  },
+  {
+    path: '/NV',
+    component: () => import('src/pages/NaughtyVerbsWithAudio.vue')
+  },
+  {
+    path: '/canvas-test',
+    component: () => import('src/pages/canvasTest.vue')
+  },
+  {
+    path: '/NOcanvas-test',
+    component: () => import('pages/noCanvasTest.vue')
+  },
+  {
+    path: '/effects',
+    component: () => import('pages/PageForTestingImports.vue')
+  },
+  {
+    path: '/grammar/:tableId',
+    component: () => import('src/pages/GrammarChartView.vue') // путь к вашему view
+  },
+  {
+    path: '/test-no-layout',
+    component: () => import('src/components/TestNoLayout.vue'),
+  },
+  { path: '/mainLayout',
+    component: () => import('layouts/BackgroundByDayLayout.vue')
+  },
+  { path: '/BackgroundByDayOldComponentButWorking',
+    component: () => import('layouts/BackgroundByDayLayout.vue'),
+  },
+  { path: '/dc',
+    component: () => import('layouts/DayBackgroundWithSpecialCursorLayout.vue'),
+  },
+  {
+    path: '/test-custom-cursor',
+    component: () => import('src/components/TestCustomCursorLayout.vue'),
+  },
+  {
+    path: '/specialCursor',
+    component: () => import('src/layouts/CustomCursorLayout.vue'),
+  },
+
+
+  // Компоненты с лэйаутом только студии курсоров, сам лэйаут первый родитель
   {
     path: '/CursorStudio',
     component: () => import('layouts/cursors/CursorStudio.vue'),
     children: [
+      {
+        path: 'test',
+        component: () => import('src/components/TestPageDev.vue')
+      },
       {
         path: 'see-all-sets-of-words/:missionName/twoDecks_C',
         component: () => import('src/components/GameTwoDecks.vue'),
@@ -21,28 +251,29 @@ const routes = [
     ],
   },
 
+  // Компоненты с лэйаутом только фона разного по дням- он первый родитель
 
   {
     path: '/OnlyBackground',
     component: () => import('src/layouts/SpecialBackground.vue'),
     meta: { showDevPanel: false },        // ← включить/выключить панель на всех компонентах
     children: [
+      { path: 'test1', component: () => import('src/components/TestPageDev.vue'),
+        meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
+      },
+      {
+        path: 'test2', component: () => import('src/components/TestPageDev.vue'),
+        meta: { blur: false },         // ← blur выключен / нет размытия фона
+      },
       {
         path: 'see-all-sets-of-words/:missionName/twoDecks_BG',
         component: () => import('src/components/GameTwoDecks.vue'),
         props: true,
       },
-      { path: 'test1', component: () => import('src/components/TestNoLayout.vue'),
-        meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
-      },
-      {
-        path: 'test2', component: () => import('src/components/TestNoLayout.vue'),
-        meta: { blur: false },         // ← blur выключен / нет размытия фона
-      },
     ]
   },
 
-  // Mix yесколько лэйаутов микс Со студией курсора и с меняющимся фоном по дню недели
+  // Mix несколько лэйаутов микс со студией курсора и с меняющимся фоном по дню недели
   {
     path: '/MixOfLayouts',
     component: () => import('src/layouts/SpecialBackground.vue'),
@@ -51,6 +282,13 @@ const routes = [
       { path: '', component: () => import('layouts/cursors/CursorStudio.vue'),
         meta: { showDevPanel: true, blur: false },        // ← панель РАЗРАБОТЧИКА РОДИТЕЛЯ включена, размытие РОДИТЕЛЯ отключено
         children: [
+          { path: 'test1', component: () => import('src/components/TestPageDev.vue'),
+            meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
+          },
+          {
+            path: 'test2', component: () => import('src/components/TestPageDev.vue'),
+            meta: { blur: false },         // ← blur выключен / нет размытия фона
+          },
           {
             path: 'see-all-sets-of-words/:missionName/twoDecks_BG_C',
             component: () => import('src/components/GameTwoDecks.vue'),
@@ -61,14 +299,6 @@ const routes = [
               showDevPanel: false
             },
           },
-          { path: 'test1', component: () => import('src/components/TestNoLayout.vue'),
-            meta: { showDevPanel: true, blur: 6 },        // ← панель РАЗРАБОТЧИКА здесь включена/видна И включено размытие всей страницы
-          },
-          {
-            path: 'test2', component: () => import('src/components/TestNoLayout.vue'),
-            meta: { blur: false },         // ← blur выключен / нет размытия фона
-          },
-
           {
             path: 'specialHeader',
             component: () => import('layouts/specialHeaderLayout.vue'),
@@ -76,9 +306,9 @@ const routes = [
               cursor: { type: 'magic', preset: 'forest' },
               // cursor: 'flashlight',
               cursorStudio: { scene: false },
+              blur: true,
               showDevPanel: false
             },
-
             children: [
               // Редактор — БЕЗ планшета (на всю ширину)
               {
@@ -102,39 +332,19 @@ const routes = [
                     component: () => import('src/components/connectLine/ConnectLineHardcore.vue'),
                   },
                   {
-                    path: 'cardsTest1',
+                    path: 'cardsTest',
                     component: () => import('src/components/Game52Cards.vue')
                   },
-
                 ],
               },
-              {
-                path: 'cardsTest2',
-                component: () => import('src/components/Game52Cards.vue')
-              },
-
             ],
           },
-
         ]
       },
       // вот сюда тоже можно вставить компоненты это будет просто фон без курсора, но это внутри микс лэйаута
     ]
   },
 
-  { path: '/dc',
-    component: () => import('layouts/DayBackgroundWithSpecialCursorLayout.vue'),
-    children: [
-
-    ],
-  },
-  {
-    path: '/specialCursor',
-    component: () => import('src/layouts/CustomCursorLayout.vue'),
-    children: [
-
-    ]
-  },
 
   {
     path: '/',
@@ -143,12 +353,6 @@ const routes = [
       { path: '',
         component: () => import('pages/rooms/room.vue')
       },
-      // { path: 't',
-      //   component: () => import('layouts/cursors/CursorStudio.vue')
-      // },
-
-
-
       // { path: '',
       //   component: () => import('src/pages/intros/specialDesk1.vue')
       // },
@@ -391,28 +595,17 @@ const routes = [
           // }
         ]
       },
-
       {
-        path: '/main-page',
+        path: '/OldMainPage',
         component: () => import('src/pages/MainPage.vue')
       },
       {
-        path: '/a-new-page',
+        path: '/OldNewPageButtons',
         component: () => import('src/pages/visAnewPage.vue')
       },
-
       {
-        path: '/games',
-        component: () => import('pages/SeeAllGames.vue'),
-      },
-
-      {
-        path: '/extra-page',
+        path: '/OldExtraPage',
         component: () => import('src/pages/extraPage.vue'),
-      },
-      {
-        path: '/vismycoder',
-        component: () => import('src/pages/vismycoder.vue')
       },
       {
         path: '/registration',
@@ -422,63 +615,16 @@ const routes = [
         path: '/registrationOld',
         component: () => import('src/pages/RegistrationOld.vue')
       },
-
       {
         path: '/photos-of-agents',
         component: () => import('src/pages/PhotosOfAgents.vue')
       },
-      {
-        path: '/my-games',
-        component: () => import('src/pages/myGames.vue')
-      },
-      {
-        path: '/workbench1',
-        component: () => import('src/pages/pageWorkbench1.vue')
-      },
-      {
-        path: '/workbench2',
-        component: () => import('src/pages/pageWorkbench2.vue')
-      },
-      {
-        path: '/workbench3',
-        component: () => import('src/pages/pageWorkbench3.vue')
-      },
-      {
-        path: '/workbench4',
-        component: () => import('src/pages/pageWorkbench4.vue')
-      },
-      {
-        path: '/workbench5',
-        component: () => import('src/pages/pageWorkbench5.vue')
-      },
-      {
-        path: '/workbench6',
-        component: () => import('src/pages/pageWorkbench6.vue')
-      },
-      {
-        path: '/flipBook',
-        component: () => import('src/pages/flipBook.vue')
-      },
-      {
-        path: '/game-puzzle-squares',
-        component: () => import('src/pages/gamePuzzleSquares.vue')
-      },
-
-
     ]
   },
-    // http://192.168.0.21:9000/special/ localhost
-  { path: '/pre',
-    component: () => import('src/components/SpecialPreloader.vue')
-  },
-  { path: '/mainLayout',
-    component: () => import('layouts/BackgroundByDayLayout.vue')
-  },
-  {
-    path: '/see-all-sets-of-words/:missionName/twoDecks',
-    component: () => import('src/components/GameTwoDecks.vue'),
-    props: true,
-  },
+
+
+
+
   {
     path: '/special',
     component: () => import('src/layouts/TestingLayout.vue'),
@@ -487,13 +633,12 @@ const routes = [
         path: 'tablet',
         component: () => import('src/layouts/TabletLayout.vue')
       },
-
       {
-        path: '/desk1',
+        path: 'desk1',
         component: () => import('src/pages/intros/specialDesk1.vue')
       },
       {
-        path: '/notebook2',
+        path: 'notebook2',
         component: () => import('src/pages/intros/notebookBlank.vue')
       },
       {
@@ -504,13 +649,11 @@ const routes = [
         path: '/specialInputs',
         component: () => import('src/composables/specialInputs.vue')
       },
-
       {
         path: '/hw/:missionName?',
         name: 'Homework',
         component: () => import('src/pages/hw.vue')
       },
-
       {
         path: '/myLife',
         component: () => import('src/pages/MyLifeJournal.vue')
@@ -522,10 +665,6 @@ const routes = [
       {
         path: '/alternativeUse',
         component: () => import('src/pages/alternativeUse.vue')
-      },
-      {
-        path: '/whackAnEmoji',
-        component: () => import('src/pages/whackAnEmoji.vue')
       },
       {
         path: '/ttt',
@@ -547,12 +686,10 @@ const routes = [
         path: '/testing',
         component: () => import('src/pages/intros/testing.vue')
       },
-
       {
         path: '/weather',
         component: () => import('src/pages/intros/specialWeather.vue')
       },
-
       {
         path: '/preloader1',
         component: () => import('src/pages/intros/preloader1.vue')
@@ -570,7 +707,6 @@ const routes = [
         component: () => import('src/pages/specialKeypad.vue')
       },
       // Обычный доступ (без данных)
-
       {
         path: '/wordCloud1',
         component: () => import('src/components/WordCloudCapcha.vue')
@@ -600,18 +736,18 @@ const routes = [
         path: '/specialHeader',
         component: () => import('layouts/specialHeaderLayout.vue'),
         children: [
-
           {
             path: '/test-special-header-2',
             component: () => import('src/components/TestSpecialHeader.vue'),
           },
           // 🆕 canvas-игры под планшетом
-
-
-
           {
             path: '/see-all-sets-of-words/:missionName/lockPicking',
             component: () => import('src/components/GamePickLock.vue'),
+          },
+          {
+            path: '/see-all-sets-of-words/:missionName/whack',
+            component: () => import('src/pages/whackAnEmoji.vue')
           },
           {
             path: '/see-all-sets-of-words/:missionName/dialSafe',
@@ -625,12 +761,7 @@ const routes = [
             path: '/homework1',
             component: () => import('src/pages/CopyBook/HomeWork1.vue'),
           },
-
-          {
-            path: '/keyboardSoundManager',
-            component: () => import('src/components/KeyboardSoundManager.vue'),
-          },
-          // НОВЫЙ МАРШРУТ БЕЗ ЛЕЙАУТА
+                    // НОВЫЙ МАРШРУТ БЕЗ ЛЕЙАУТА
           {
             path: '/direct-print/:missionName',
             component: () => import('src/components/GamePrintAllWordsNotebook.vue')
@@ -639,8 +770,6 @@ const routes = [
             path: '/see-all-sets-of-words/:missionName/gameSnakeWords',
             component: () => import('src/pages/GameSnakeShortWords.vue')
           },
-
-
           {
             path: '/see-all-sets-of-words/:missionName/darts',
             component: () => import('src/components/GameDarts.vue')
@@ -677,159 +806,21 @@ const routes = [
             component: () => import('components/engBooks.vue')
           },
 
-
-          {
-            path: '/pixelArt',
-            component: () => import('pages/PixelArtEditor.vue')
-          },
-
         ]
       },
-
-    ]
-
-  },
-
-
-  {
-    path: '/vismyfriend',
-    component: () => import('src/pages/Vismyfriend.vue')
-  },
-  {
-    path: '/soundcheck',
-    component: () => import('layouts/BackgroundByDayLayout.vue')
-  },
-  {
-    path: '/scroll-zoom-in',
-    component: () => import('src/pages/intros/scrollZoomIn.vue')
-  },
-  {
-    path: '/noLayoutPage',
-    component: () => import('src/pages/pageWithoutMainLayout.vue')
-  },
-  {
-    path: '/tablitsa',
-    component: () => import('src/pages/tablitsa.vue')
-  },
-  {
-    path: '/tablitsaRef',
-    component: () => import('src/pages/tablitsaRef.vue')
-  },
-  {
-    path: '/picResizer',
-    component: () => import('src/ComponentsIDEAS/picResizer.vue')
-  },
-  {
-    path: '/jokes',
-    component: () => import('src/components/BookJokes.vue')
-  },
-  {
-    path: '/yearGuesser/:id?',  // 🔥 :id? — необязательный параметр, это сылка на конкретную фотографию с которой начнется игра
-    component: () => import('src/pages/gameYearGuesser.vue')
-  },
-  {
-    path: '/describePhoto/:id?',  // 🔥 :id? — необязательный параметр, это сылка на конкретную фотографию с которой начнется игра
-    component: () => import('src/components/describePhotoDesign2.vue')
-  },
-
-  {
-    path: '/differenceSeeLook',
-    component: () => import('src/components/pageInfoWordDifference.vue')
-  },
-  {
-    path: '/gameSnakeCursor',
-    component: () => import('src/pages/GameSnakeCursor.vue')
-  },
-  {
-    path: '/gameSnakeWords',
-    component: () => import('src/pages/GameSnakeShortWords.vue')
-  },
-  {
-    path: '/gameSnakeForYandex',
-    component: () => import('src/pages/GameSnakeForYandex.vue')
-  },
-  {
-    path: '/noLayoutPage2',
-    component: () => import('src/pages/pageWithoutMainLayout2.vue')
-  },
-  {
-    path: '/v-is-my-friend',
-    component: () => import('src/pages/MyCornerOfTheInternet.vue')
-  },
-  {
-    path: '/landing',
-    component: () => import('src/pages/LandingPage/LandingPageVismyfriend.vue')
-  },
-  {
-    path: '/api2',
-    component: () => import('components/dictionaryAPI2.vue')
-  },
-  {
-    path: '/pronunciationTrainer',
-    component: () => import('components/PronunciationTrainer.vue')
-  },
-  {
-    path: '/puterTester',
-    component: () => import('components/PuterTester.vue')
-  },
-  {
-    path: '/ai1',
-    component: () => import('components/AIChat.vue')
-  },
-  {
-    path: '/test-gsheet',
-    component: () => import('src/components/TestGoogleSheet.vue')
-  },
-  {
-    path: '/ai-assistant',
-    component: () => import('src/layouts/MainLayoutWithCursor.vue'),
-    children: [
-      { path: '', component: () => import('components/AIChat.vue') },
-      { path: '/api', component: () => import('components/dictionaryAPIspecial.vue') }
     ]
   },
-  {
-    path: '/sounds',
-    component: () => import('src/pages/EnglishSounds.vue')
-  },
-  {
-    path: '/NV',
-    component: () => import('src/pages/NaughtyVerbsWithAudio.vue')
-  },
-  {
-    path: '/canvas-test',
-    component: () => import('src/pages/canvasTest.vue')
-  },
-  {
-    path: '/NOcanvas-test',
-    component: () => import('pages/noCanvasTest.vue')
-  },
-  {
-    path: '/test',
-    component: () => import('pages/PageForTestingImports.vue')
-  },
-
-  {
-    path: '/grammar/:tableId',
-    component: () => import('src/pages/GrammarChartView.vue') // путь к вашему view
-  },
 
 
 
-  {
-    path: '/test-no-layout',
-    component: () => import('src/components/TestNoLayout.vue'),
-  },
 
-  {
-    path: '/test-custom-cursor',
-    component: () => import('src/components/TestCustomCursorLayout.vue'),
-  },
+
+
+// этот должен быть всегда вконце маршрут
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
-
 ]
 
 export default routes

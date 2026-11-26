@@ -4,8 +4,13 @@
       <div class="whack-container">
         <!-- ===== ЗАГОЛОВОК ===== -->
         <div class="header">
-          <h1 class="title">Hi, special agent</h1>
-          <h1 class="title">Click the buttons</h1>
+          <div class="header-titles">
+            <h1 class="title">Hi, special agent</h1>
+            <h1 class="title">Click the buttons</h1>
+            <div class="mode-badge" :class="mode">
+              {{ mode === 'words' ? 'WORDS MODE' : 'EMOJI MODE' }}
+            </div>
+          </div>
           <div class="stats">
             <span class="stat">
               <span class="stat-label">HITS</span>
@@ -31,14 +36,25 @@
             @click="handleClick(index)"
             :class="{ 'miss': missCell === index, 'hit': hitCell === index }"
           >
-            <!-- Эмодзи (показываем, если игра не окончена) -->
+            <!-- Контент мишени (показываем, если игра не окончена) -->
             <div
               v-if="!showGameOverGrid && activeCell === index"
               class="emoji-wrapper"
               :class="{ 'pop': activeCell === index }"
             >
-              <span class="emoji">{{ currentItem.emoji }}</span>
-              <span v-if="currentItem.label" class="emoji-label">{{ currentItem.label }}</span>
+              <!-- EMOJI MODE -->
+              <template v-if="mode === 'emoji'">
+                <span class="emoji">{{ currentItem.emoji }}</span>
+                <span v-if="currentItem.label" class="emoji-label">{{ currentItem.label }}</span>
+              </template>
+
+              <!-- WORDS MODE -->
+              <template v-else>
+                <span class="word-eng">{{ currentItem.eng }}</span>
+                <span v-if="currentItem.hint" class="word-hint">{{ currentItem.hint }}</span>
+                <span v-if="currentItem.ru" class="word-ru">{{ currentItem.ru }}</span>
+              </template>
+
               <span class="glow-ring"></span>
             </div>
 
@@ -76,10 +92,20 @@
 </template>
 
 <script>
+import { whatGameDataToUse } from '../composables/whatGameDataToUse';
+
 export default {
   name: 'NeuralTarget',
   data() {
     return {
+      // режим: 'emoji' | 'words'
+      mode: 'emoji',
+
+      // загруженные слова для режима words
+      wordsData: [],
+      gameDataLoaded: false,
+      loadError: null,
+
       activeCell: null,
       hits: 0,
       misses: 0,
@@ -228,7 +254,8 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
+    await this.initGameData();
     this.spawnEmoji();
   },
 
@@ -238,13 +265,68 @@ export default {
   },
 
   methods: {
+    // ===== ЗАГРУЗКА ДАННЫХ (composable) =====
+    async initGameData() {
+      try {
+        const route = this.$route;
+        const missionName = route?.params?.missionName;
+
+        if (!missionName) {
+          // Нет missionName в маршруте → режим эмодзи
+          this.mode = 'emoji';
+          return;
+        }
+
+        const { loadWords, error } = whatGameDataToUse();
+        const words = await loadWords(missionName);
+
+        if (words && words.length > 0) {
+          this.wordsData = words;
+          this.mode = 'words';
+          // В режиме words цель можно привязать к числу слов, но оставим 21
+          this.target = Math.min(21, Math.max(5, words.length));
+          console.log(`WhackAnEmoji: загружено слов для "${missionName}": ${words.length}`);
+        } else {
+          this.mode = 'emoji';
+          this.loadError = error?.value || 'no words';
+          console.warn('WhackAnEmoji: слова не загрузились, режим эмодзи', this.loadError);
+        }
+      } catch (e) {
+        this.mode = 'emoji';
+        this.loadError = e;
+        console.warn('WhackAnEmoji: ошибка загрузки, режим эмодзи', e);
+      } finally {
+        this.gameDataLoaded = true;
+      }
+    },
+
+    // ===== ВЫБОР СЛУЧАЙНОГО ЭЛЕМЕНТА =====
+    pickEmojiItem() {
+      return this.items[Math.floor(Math.random() * this.items.length)];
+    },
+
+    pickWordItem() {
+      if (!this.wordsData.length) return this.pickEmojiItem();
+      const w = this.wordsData[Math.floor(Math.random() * this.wordsData.length)];
+      return {
+        emoji: '', // не используется
+        eng: w.eng || '',
+        ru: w.ru || '',
+        hint: w.hint || '',
+      };
+    },
+
     spawnEmoji() {
       if (this.gameOver || this.activeCell !== null) return;
 
       const cell = Math.floor(Math.random() * 9) + 1;
       this.activeCell = cell;
 
-      this.currentItem = this.items[Math.floor(Math.random() * this.items.length)];
+      if (this.mode === 'words') {
+        this.currentItem = this.pickWordItem();
+      } else {
+        this.currentItem = this.pickEmojiItem();
+      }
 
       clearTimeout(this.timeoutId);
       this.timeoutId = setTimeout(() => {
@@ -421,13 +503,19 @@ export default {
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .title {
@@ -439,6 +527,21 @@ export default {
   font-family: 'Courier New', monospace;
   margin: 0;
   text-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+}
+
+.mode-badge {
+  align-self: flex-start;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  padding: 2px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  color: rgba(0, 255, 255, 0.5);
+}
+.mode-badge.words {
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.3);
 }
 
 .stats {
@@ -489,7 +592,6 @@ export default {
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
-  cursor: none;
   user-select: none;
   position: relative;
 }
@@ -529,7 +631,8 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
-  cursor: none;
+  padding: 4px;
+  box-sizing: border-box;
   user-select: none;
   animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -575,6 +678,41 @@ export default {
 
 .emoji-wrapper:hover .emoji-label {
   color: rgba(0, 255, 255, 0.6);
+}
+
+/* ===== СТИЛИ ДЛЯ РЕЖИМА WORDS ===== */
+.word-eng {
+  font-size: 18px;
+  font-weight: 600;
+  color: #00ffff;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  z-index: 2;
+  line-height: 1.1;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+  word-break: break-word;
+}
+
+.word-hint {
+  font-size: 9px;
+  color: rgba(0, 255, 255, 0.5);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  margin-top: 2px;
+  z-index: 2;
+  text-align: center;
+}
+
+.word-ru {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  margin-top: 2px;
+  z-index: 2;
+  text-align: center;
 }
 
 .glow-ring {
@@ -736,7 +874,6 @@ export default {
   text-transform: uppercase;
   font-family: 'Courier New', monospace;
   border-radius: 30px;
-  cursor: none;
   user-select: none;
   transition: all 0.3s ease;
 }
@@ -784,6 +921,18 @@ export default {
   .emoji-label {
     font-size: 14px;
     letter-spacing: 1px;
+  }
+
+  .word-eng {
+    font-size: 13px;
+  }
+
+  .word-hint {
+    font-size: 8px;
+  }
+
+  .word-ru {
+    font-size: 9px;
   }
 
   .gameover-letter {

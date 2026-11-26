@@ -108,6 +108,7 @@ onBeforeUnmount(() => {
   height: 100vh;
   overflow: hidden;
   cursor: none;
+  background-color: grey;
 }
 
 /* Панель управления кастомизацией */

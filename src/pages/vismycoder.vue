@@ -89,7 +89,7 @@ const handleMouseMove = (e) => {
 <style lang="scss" scoped>
 
 .mouse-container {
-
+background-color: black;
 }
 .chooser {
     display: flex;

@@ -31,8 +31,8 @@ export class Card {
                 border = '#3b82f6',
                 side = 'left',
                 fontSize = 13,
-                minFontSize = 10,
-                maxLines = 3,
+                minFontSize = 9,
+                maxLines = 5,
               }) {
     this.x = x; this.y = y; this.w = w; this.h = h
     this.text = text

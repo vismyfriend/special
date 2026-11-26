@@ -106,6 +106,8 @@
         </div>
       </div>
     </div>
+    <SoundManagerWidget ref="soundManager" />
+
   </div>
 </template>
 
@@ -113,6 +115,7 @@
 
 <script setup>
 import { ref, onMounted, watch, nextTick } from 'vue'
+import SoundManagerWidget from 'src/components/KeyboardSoundManager/SoundManagerWidget.vue';
 
 // Реактивные данные
 const width = ref(16)

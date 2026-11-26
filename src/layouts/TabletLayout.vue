@@ -155,7 +155,7 @@ defineProps({
 
   .tablet__screen {
     border-radius: 0;
-    background: #f8fafc;
+    background: transparent;
   }
 
   .tablet__header,

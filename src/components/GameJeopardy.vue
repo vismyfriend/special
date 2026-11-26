@@ -2,7 +2,8 @@
   <div class="jeopardy-fullscreen-overlay"></div>
 
   <div class="jeopardy-container" :class="theme">
-    <SoundManager />
+    <SoundManagerWidget ref="soundManager" />
+
     <QuickNotes />
     <div class="jeopardy-header">
       <div class="header-left">
@@ -332,7 +333,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import SoundManager from '../components/KeyboardSoundManager.vue';
+import SoundManagerWidget from 'src/components/KeyboardSoundManager/SoundManagerWidget.vue';
+
 import QuickNotes from '../components/QuickNotes.vue';
 
 import gameJeopardyData from '../dataForGames/GameJeopardyData';

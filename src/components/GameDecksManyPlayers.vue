@@ -1,6 +1,6 @@
 <template>
   <div class="casino-table-wrapper" :class="tableTheme">
-    <SoundManager />
+    <SoundManagerWidget ref="soundManager" />
     <QuickNotes />
 
     <!-- ===== HEADER ===== -->
@@ -181,6 +181,7 @@ import { useRoute } from 'vue-router';
 import SoundManager from './KeyboardSoundManager.vue';
 import QuickNotes from './QuickNotes.vue';
 import gameDecksManyPlayersData from '../dataForGames/gameDecksManyPlayersData';
+import SoundManagerWidget from "components/KeyboardSoundManager/SoundManagerWidget.vue";
 
 /* ============================================================
    ROUTE / DATA

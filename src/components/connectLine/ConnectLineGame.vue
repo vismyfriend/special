@@ -117,7 +117,7 @@ async function restart() {
   engine.clear()
   if (!gameData.value) return
 
-  logic = useConnectLine(engine, gameData.value, difficulty, difficulty.value === 'easy')
+  logic = useConnectLine(engine, gameData.value, difficulty, difficulty.value === 'easy' || difficulty.value === 'hard')
   await logic.setup()
   engine.onPointerDown = logic.onPointerDown
   engine.onPointerMove = logic.onPointerMove

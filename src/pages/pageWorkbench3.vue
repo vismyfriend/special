@@ -60,6 +60,7 @@ onMounted(() => {
   height: 100vh; /* Занимает всю высоту экрана */
   overflow: hidden; /* Отключаем прокрутку */
   cursor: none; /* Скрываем стандартный курсор внутри приложения */
+  background-color: mediumpurple;
 }
 
 /* Стили для кнопки закрытия */

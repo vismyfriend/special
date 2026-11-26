@@ -17,6 +17,13 @@
         <div class="format-buttons">
           <button
             class="format-btn"
+            :class="{ active: outputFormat === 'webp' }"
+            @click="outputFormat = 'webp'"
+          >
+            WebP
+          </button>
+          <button
+            class="format-btn"
             :class="{ active: outputFormat === 'jpeg' }"
             @click="outputFormat = 'jpeg'"
           >
@@ -28,6 +35,13 @@
             @click="outputFormat = 'png'"
           >
             PNG
+          </button>
+          <button
+            class="format-btn format-btn-disabled"
+            disabled
+            title="Скоро: кодирование AVIF появится позже"
+          >
+            AVIF
           </button>
         </div>
       </div>
@@ -109,6 +123,12 @@
         <span class="stats-label">💾 Экономия</span>
         <span class="stats-value">{{ totalSavings }}</span>
       </div>
+      <div class="stats-item stats-progress-item">
+        <span class="stats-label">⏳ Прогресс</span>
+        <div class="overall-progress">
+          <div class="overall-progress-fill" :style="{ width: overallProgress + '%' }"></div>
+        </div>
+      </div>
       <div class="stats-actions">
         <button class="download-all-btn" @click="downloadAll" :disabled="processedCount === 0">
           📥 Скачать всё
@@ -166,6 +186,15 @@
               ({{ file.savings }}% ⬇️)
             </span>
           </div>
+          <div v-if="file.status === 'processing'" class="file-progress">
+            <div class="file-progress-fill" :style="{ width: file.progress + '%' }"></div>
+          </div>
+          <div v-if="file.appliedSettings" class="file-settings">
+            ⚙️ {{ file.appliedSettings.format }} · {{ file.appliedSettings.quality }}% · макс. {{ file.appliedSettings.maxWidth }}px
+          </div>
+          <div v-if="file.status === 'error' && file.errorMsg" class="file-error">
+            ⚠️ {{ file.errorMsg }}
+          </div>
         </div>
 
         <!-- Кнопки действий -->
@@ -198,7 +227,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 // ==================== //
 // СОСТОЯНИЕ
@@ -212,9 +241,9 @@ const fileInput = ref(null)
 // НАСТРОЙКИ
 // ==================== //
 
-const outputFormat = ref('jpeg') // 'jpeg' | 'png'
-const quality = ref(0.75) // 0.1 - 1.0
-const maxWidth = ref(1200) // 0 = без изменения
+const outputFormat = ref('webp') // 'webp' | 'jpeg' | 'png'
+const quality = ref(0.8) // 0.1 - 1.0
+const maxWidth = ref(1600) // 0 = без изменения
 
 // ==================== //
 // ВСПОМОГАТЕЛЬНЫЕ ВЫЧИСЛЕНИЯ
@@ -238,6 +267,12 @@ const totalSavings = computed(() => {
   if (totalOriginal === 0) return '0%'
   const savings = Math.round((1 - totalCompressed / totalOriginal) * 100)
   return savings + '%'
+})
+
+const overallProgress = computed(() => {
+  if (files.value.length === 0) return 0
+  const sum = files.value.reduce((s, f) => s + (f.status === 'done' ? 100 : (f.progress || 0)), 0)
+  return Math.round(sum / files.value.length)
 })
 
 // ==================== //
@@ -268,18 +303,7 @@ const detectFormat = (fileName) => {
 }
 
 /**
- * Проверка, можно ли использовать HEIC (только Safari на Apple устройствах)
- */
-const isHeicSupported = () => {
-  const canvas = document.createElement('canvas')
-  // Проверяем поддержку HEIC через createImageBitmap
-  // В современных Safari он работает
-  return 'createImageBitmap' in window
-}
-
-/**
- * Конвертация HEIC в JPEG/PNG через Canvas
- * HEIC загружается в Safari, поэтому используем обычный Image
+ * Конвертация HEIC в JPEG через Canvas
  */
 const convertHeicToDataUrl = (file) => {
   return new Promise((resolve, reject) => {
@@ -292,7 +316,6 @@ const convertHeicToDataUrl = (file) => {
         canvas.height = img.height
         const ctx = canvas.getContext('2d')
         ctx.drawImage(img, 0, 0)
-        // Для HEIC всегда конвертируем в JPEG (как базовый формат)
         resolve(canvas.toDataURL('image/jpeg', 0.92))
       }
       img.onerror = reject
@@ -316,15 +339,7 @@ const handleDrop = (event) => {
 }
 
 const processFiles = (newFiles) => {
-  // Поддерживаемые форматы
-  const supportedTypes = [
-    'image/jpeg', 'image/png', 'image/webp',
-    'image/heic', 'image/heif'
-  ]
-
-  // Фильтруем только изображения
   const imageFiles = newFiles.filter(file => {
-    // Проверяем по MIME типу или по расширению
     const isImage = file.type.startsWith('image/')
     const ext = file.name.toLowerCase().split('.').pop()
     const isHeic = ['heic', 'heif'].includes(ext)
@@ -337,7 +352,7 @@ const processFiles = (newFiles) => {
   }
 
   imageFiles.forEach((file) => {
-    const fileData = {
+    const fileData = reactive({
       id: Date.now() + Math.random() + Math.random(),
       file: file,
       name: file.name,
@@ -347,43 +362,48 @@ const processFiles = (newFiles) => {
       previewUrl: null,
       compressedDataUrl: null,
       status: 'processing',
-      savings: null
-    }
+      progress: 0,
+      savings: null,
+      appliedSettings: null,
+      errorMsg: null
+    })
 
     files.value.push(fileData)
 
-    // Обработка HEIC
     if (fileData.format === 'heic' || fileData.format === 'heif') {
-      // Пробуем конвертировать через Canvas
+      fileData.progress = 10
       convertHeicToDataUrl(file)
         .then(dataUrl => {
           fileData.previewUrl = dataUrl
+          fileData.progress = 20
           compressImage(fileData)
         })
         .catch(() => {
-          // Если не получилось, пробуем через FileReader
           const reader = new FileReader()
           reader.onload = (e) => {
             fileData.previewUrl = e.target.result
+            fileData.progress = 20
             compressImage(fileData)
           }
           reader.onerror = () => {
             fileData.status = 'error'
-            alert('Не удалось обработать HEIC файл. Попробуйте использовать Safari.')
+            fileData.errorMsg = 'Не удалось обработать HEIC. Попробуйте Safari.'
           }
           reader.readAsDataURL(file)
         })
       return
     }
 
-    // Обычные форматы
+    fileData.progress = 10
     const reader = new FileReader()
     reader.onload = (e) => {
       fileData.previewUrl = e.target.result
+      fileData.progress = 20
       compressImage(fileData)
     }
     reader.onerror = () => {
       fileData.status = 'error'
+      fileData.errorMsg = 'Не удалось прочитать файл'
     }
     reader.readAsDataURL(file)
   })
@@ -393,7 +413,8 @@ const compressImage = (fileData) => {
   const img = new Image()
   img.onload = () => {
     try {
-      // Вычисляем новые размеры
+      fileData.progress = 30
+
       let width = img.width
       let height = img.height
 
@@ -403,44 +424,61 @@ const compressImage = (fileData) => {
         height = Math.round(height * ratio)
       }
 
-      // Создаём canvas
       const canvas = document.createElement('canvas')
       canvas.width = width
       canvas.height = height
       const ctx = canvas.getContext('2d')
 
-      // Рисуем изображение с высоким качеством
       ctx.imageSmoothingEnabled = true
       ctx.imageSmoothingQuality = 'high'
       ctx.drawImage(img, 0, 0, width, height)
 
-      // Определяем формат
-      const format = outputFormat.value === 'png' ? 'image/png' : 'image/jpeg'
-      const mimeType = format
+      fileData.progress = 60
 
-      // Создаём сжатый файл
-      const compressedDataUrl = canvas.toDataURL(mimeType, quality.value)
+      // Даём браузеру отрисовать прогресс перед тяжёлой синхронной операцией
+      setTimeout(() => {
+        try {
+          let mimeType
+          if (outputFormat.value === 'png') mimeType = 'image/png'
+          else if (outputFormat.value === 'jpeg') mimeType = 'image/jpeg'
+          else mimeType = 'image/webp'
 
-      // Вычисляем размер сжатого файла
-      const compressedData = compressedDataUrl.split(',')[1]
-      const compressedBytes = atob(compressedData).length
-      const compressedSizeKB = Math.round(compressedBytes / 1024)
+          const compressedDataUrl = canvas.toDataURL(mimeType, quality.value)
 
-      // Обновляем данные файла
-      fileData.compressedDataUrl = compressedDataUrl
-      fileData.compressedSizeKB = compressedSizeKB
-      fileData.savings = Math.round((1 - compressedSizeKB / fileData.originalSizeKB) * 100)
-      fileData.status = 'done'
+          fileData.progress = 90
+
+          const compressedData = compressedDataUrl.split(',')[1]
+          const compressedBytes = atob(compressedData).length
+          const compressedSizeKB = Math.round(compressedBytes / 1024)
+
+          fileData.compressedDataUrl = compressedDataUrl
+          fileData.compressedSizeKB = compressedSizeKB
+          fileData.savings = Math.round((1 - compressedSizeKB / fileData.originalSizeKB) * 100)
+          fileData.appliedSettings = {
+            quality: Math.round(quality.value * 100),
+            maxWidth: maxWidth.value > 0 ? maxWidth.value : 'ориг.',
+            format: `${fileData.format.toUpperCase()} → ${outputFormat.value.toUpperCase()}`
+          }
+          fileData.progress = 100
+          fileData.status = 'done'
+        } catch (error) {
+          console.error('Ошибка кодирования:', error)
+          fileData.status = 'error'
+          fileData.errorMsg = 'Ошибка кодирования'
+        }
+      }, 30)
 
     } catch (error) {
       console.error('Ошибка сжатия:', error)
       fileData.status = 'error'
+      fileData.errorMsg = 'Ошибка сжатия'
     }
   }
 
   img.onerror = () => {
     console.error('Ошибка загрузки изображения')
     fileData.status = 'error'
+    fileData.errorMsg = 'Не удалось декодировать изображение'
   }
 
   img.src = fileData.previewUrl
@@ -450,7 +488,9 @@ const downloadFile = (fileData) => {
   if (!fileData.compressedDataUrl) return
 
   const link = document.createElement('a')
-  const ext = outputFormat.value === 'png' ? 'png' : 'jpg'
+  const ext = outputFormat.value === 'png' ? 'png'
+    : outputFormat.value === 'jpeg' ? 'jpg'
+      : 'webp'
   const baseName = fileData.name.replace(/\.[^.]+$/, '')
   link.download = `${baseName}.${ext}`
   link.href = fileData.compressedDataUrl
@@ -463,13 +503,11 @@ const downloadAll = () => {
   const doneFiles = files.value.filter(f => f.status === 'done')
   if (doneFiles.length === 0) return
 
-  // Если один файл — скачиваем сразу
   if (doneFiles.length === 1) {
     downloadFile(doneFiles[0])
     return
   }
 
-  // Если несколько — скачиваем по очереди с задержкой
   doneFiles.forEach((file, index) => {
     setTimeout(() => {
       downloadFile(file)
@@ -572,8 +610,13 @@ const clearAll = () => {
   color: white;
 }
 
-.format-btn:hover:not(.active) {
+.format-btn:hover:not(.active):not(:disabled) {
   background: rgba(93, 41, 6, 0.1);
+}
+
+.format-btn-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .quality-control {
@@ -688,6 +731,27 @@ const clearAll = () => {
   color: #5D2906;
 }
 
+.stats-progress-item {
+  flex: 1 1 120px;
+  min-width: 120px;
+}
+
+.overall-progress {
+  width: 100%;
+  height: 8px;
+  background: #e8e0d8;
+  border-radius: 4px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
 .stats-actions {
   display: flex;
   gap: 8px;
@@ -758,7 +822,7 @@ const clearAll = () => {
 }
 
 .file-card.processing {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 /* ==================== */
@@ -880,6 +944,33 @@ const clearAll = () => {
   color: #27ae60;
   font-weight: bold;
   margin-left: 6px;
+}
+
+.file-progress {
+  height: 4px;
+  background: #eee;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.file-progress-fill {
+  height: 100%;
+  background: #5D2906;
+  border-radius: 2px;
+  transition: width 0.2s ease;
+}
+
+.file-settings {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.file-error {
+  font-size: 11px;
+  color: #e74c3c;
+  margin-top: 4px;
 }
 
 /* ==================== */

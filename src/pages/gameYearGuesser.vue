@@ -712,6 +712,7 @@ onBeforeUnmount(() => {
 .game-container {
   max-width: 800px;
   margin: 0 auto;
+  margin-top: 70px;
   padding: 20px;
   font-family: 'Courier New', monospace;
   background-color: #f5f5f5;
@@ -1621,6 +1622,11 @@ onBeforeUnmount(() => {
 
   .h2 {
     font-size: 20px;
+  }
+  .game-container {
+
+    margin-top: 0;
+
   }
 }
 </style>

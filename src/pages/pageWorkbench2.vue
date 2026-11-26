@@ -53,7 +53,7 @@ const backToIntroPage = () => {
   margin: 10px auto;
   border-radius: 30px;
   background-color: transparent;
-  color: white;
+  color: #f10404;
 }
 
 /* Контейнер переключателя */

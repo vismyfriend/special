@@ -36,7 +36,7 @@ export const connectLineGames = {
     ...square,
     image: new URL('./assets/square.png', import.meta.url).href,
   },
-  findDifferenceMonsters: {
+  find_differences_7: {
     ...findDifferenceMonsters,
     image: new URL('./assets/BoboMimiZiggy.avif', import.meta.url).href,
   },

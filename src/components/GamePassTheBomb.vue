@@ -1,6 +1,6 @@
 <template>
   <div class="bomb-game-container" :class="theme">
-    <SoundManager />
+    <SoundManagerWidget ref="soundManager" />
     <QuickNotes />
 
     <!-- HEADER -->
@@ -172,10 +172,10 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import SoundManager from './KeyboardSoundManager.vue';
 import QuickNotes from './QuickNotes.vue';
 import randomQuestionsData from '../dataForGames/random-questions-data';
 import { useSpeech } from '../composables/useSpeech';
+import SoundManagerWidget from "components/KeyboardSoundManager/SoundManagerWidget.vue";
 
 const route = useRoute();
 const missionName = ref(route.params.missionName);

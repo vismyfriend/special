@@ -1,5 +1,5 @@
 <template>
-  <SoundManager />
+  <SoundManagerWidget ref="soundManager" />
 
   <div class="word-cloud-container">
     <!-- Прогресс -->
@@ -78,7 +78,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import shortWordsData from '../dataForGames/short-words-data';
-import SoundManager from "components/KeyboardSoundManager.vue";
+import SoundManagerWidget from 'src/components/KeyboardSoundManager/SoundManagerWidget.vue';
 
 const route = useRoute();
 const router = useRouter();

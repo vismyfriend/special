@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-workbench1">
     <button class="goToMainPage" @click="goToMainPage">go to main page ❌</button>
 
     <!-- Бегущая строка с названием трека -->
@@ -91,6 +91,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.page-workbench1 {
+  background-color: dimgray;
+}
 .goToMainPage {
   display: block;
   margin: 10px auto;
