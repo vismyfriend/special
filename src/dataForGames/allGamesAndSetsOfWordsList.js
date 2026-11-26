@@ -106,7 +106,7 @@ export const allGamesAndSetsOfWordsList =
       id: 1001,
       active: true,
       lvl: "lvl0",
-      stars: '3'
+      stars: '2'
     },
     {
       type: "hardcodedLink",
