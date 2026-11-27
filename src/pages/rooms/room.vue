@@ -11,9 +11,12 @@
   <img
     class="backgroundImg"
     :src="isMobile ? mobileBgImage : desktopBgImage"
-    alt="Фон спэшл 2"
+    alt="Vincent"
   >
-<!--  <img-->
+    <!--  то что выше написано (Фон спэшл 2) - (поменял на Vincent ) автоматически как-то встало вместа названия сохраненной вкладки в хроме в панеле быстрого доступа! -->
+
+
+    <!--  <img-->
 <!--    class="backgroundImg"-->
 <!--    src="../../assets/images/special-monitor-november-v3-optimized.webp"-->
 <!--    alt="Фон спэшл 2"-->

@@ -1,5 +1,5 @@
 {
-  "title": "25 house objects",
+  "title": "26 house objects",
   "instructions": "Протяни линию от названия к нужному месту на картинке",
   "imageWidth": 612,
   "imageHeight": 612,
@@ -17,6 +17,15 @@
     "croppedHeight": 520
   },
   "words": [
+    {
+      "id": "w1795745989208",
+      "text": "a picture above the bed",
+      "shape": "rect",
+      "x": 0.3021,
+      "y": 0.396,
+      "w": 0.0849,
+      "h": 0.0328
+    },
     {
       "id": "w1795689792924",
       "text": "it looks like a tv",
