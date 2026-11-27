@@ -1,8 +1,16 @@
 <template>
   <div class="connect-game">
-<!--    <h2>{{ gameData.title }}</h2>-->
     <p class="instructions">{{ gameData?.instructions }}</p>
-    <canvas ref="canvasRef" class="game-canvas"></canvas>
+    <div v-if="levelLoading || levelError" class="level-status" role="status">
+      <p>{{ levelLoading ? 'Загружаем уровень…' : levelError }}</p>
+      <template v-if="levelError">
+        <button type="button" class="btn-check" @click="loadLevelData">Повторить</button>
+        <button type="button" class="btn-levels" @click="selectLevel('house')">
+          Открыть встроенный уровень
+        </button>
+      </template>
+    </div>
+    <canvas :class="{ 'canvas-loading': !levelReady }" ref="canvasRef" class="game-canvas"></canvas>
 
 
 
@@ -34,7 +42,7 @@
       <!-- Кнопки -->
       <div class="controls">
         <button
-          v-if="difficulty === 'medium' || difficulty === 'hard'"
+          v-if="levelReady && (difficulty === 'medium' || difficulty === 'hard')"
           @click="handleCheckAll"
           class="btn-check"
         >✅ Проверить</button>
@@ -61,12 +69,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick  } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { CanvasEngine } from '../specialEngine/CanvasEngine'
 import { useConnectLine } from './useConnectLine'
 import { connectLineGames } from './ConnectLineData'
-import { useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
+import { loadConnectLineImage, useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
 
 
 const props = defineProps({
@@ -78,26 +86,55 @@ const router = useRouter()
 const resolvedName = computed(
   () => props.missionName || route.query.level || route.params.missionName || 'house'
 )
-const { fetchLevel } = useConnectLineLevelsComposable()
-const backendLevel = ref(null)
-
-const gameData = computed(() =>
-  connectLineGames[resolvedName.value] || backendLevel.value
-)
-
-async function loadLevelData() {
-  if (connectLineGames[resolvedName.value]) {
-    backendLevel.value = null
-    await restart()          // ← для захардкоженных уровней
-    return
-  }
-  backendLevel.value = await fetchLevel(resolvedName.value)
-  await nextTick()
-  await restart()            // ← для бэкенд-уровней
-}
+const { fetchLevel, error: levelRequestError } = useConnectLineLevelsComposable()
+const gameData = ref(null)
+const levelLoading = ref(true)
+const levelError = ref('')
+const levelReady = ref(false)
 const canvasRef = ref(null)
 let engine = null
 let logic = null
+let levelRequest
+let levelImage = null
+
+async function loadLevelData() {
+  levelRequest?.abort()
+  const request = new AbortController()
+  levelRequest = request
+  const { signal } = request
+  const name = resolvedName.value
+
+  levelLoading.value = true
+  levelError.value = ''
+  levelReady.value = false
+  gameData.value = null
+  levelImage = null
+  logic = null
+  engine.onPointerDown = engine.onPointerMove = engine.onPointerUp = null
+  engine.clear()
+
+  try {
+    const bundledLevel = Object.prototype.hasOwnProperty.call(connectLineGames, name) ? connectLineGames[name] : null
+    const data = bundledLevel || await fetchLevel(name, { signal })
+    if (signal.aborted) return
+    if (!data) throw new Error(levelRequestError.value || 'Не удалось загрузить уровень.')
+    if (!data.image) throw new Error('Уровень пока не готов: к нему не добавлена картинка.')
+
+    const image = await loadConnectLineImage(data.image, { signal })
+    if (signal.aborted) return
+    gameData.value = data
+    levelImage = image
+    levelReady.value = true
+    await restart()
+  } catch (error) {
+    if (!signal.aborted) {
+      levelReady.value = false
+      levelError.value = error.message
+    }
+  } finally {
+    if (!signal.aborted) levelLoading.value = false
+  }
+}
 
 const difficulty = ref('easy')
 const lastResult = ref(null)
@@ -108,17 +145,19 @@ function handleCheckAll() {
 }
 
 async function restart() {
-  console.log('🔄 restart, level =', resolvedName.value, 'engine =', !!engine)
-  if (!engine) return
+  if (!engine || !levelReady.value) return
+  const signal = levelRequest.signal
   if (logic) {
     logic.activeLine.value = null
     logic.selectedCard.value = null
   }
   engine.clear()
-  if (!gameData.value) return
 
-  logic = useConnectLine(engine, gameData.value, difficulty, difficulty.value === 'easy' || difficulty.value === 'hard')
-  await logic.setup()
+  const autoCheck = difficulty.value === 'easy' || difficulty.value === 'hard'
+  const nextLogic = useConnectLine(engine, gameData.value, difficulty, autoCheck, levelImage)
+  await nextLogic.setup()
+  if (signal.aborted) return
+  logic = nextLogic
   engine.onPointerDown = logic.onPointerDown
   engine.onPointerMove = logic.onPointerMove
   engine.onPointerUp = logic.onPointerUp
@@ -180,10 +219,9 @@ function onClickOutside(e) {
 }
 
 // Перезапуск игры при смене уровня
-watch(resolvedName, async (newVal, oldVal) => {
-  console.log('📚 level changed:', oldVal, '→', newVal)
+watch(resolvedName, () => {
   levelsOpen.value = false
-  await loadLevelData()
+  if (engine) void loadLevelData()
 })
 
 let lastWidth = 0
@@ -197,10 +235,7 @@ function onResize() {
   }, 300)
 }
 
-onMounted(async () => {
-  // Загружаем список уровней с бэкенда
-  backendLevels.value = await fetchLevels() // ← добавь эту строку
-
+onMounted(() => {
   document.addEventListener('click', onClickOutside)
 
   const qd = route.query.difficulty
@@ -210,13 +245,19 @@ onMounted(async () => {
   engine = new CanvasEngine(canvasRef.value)
   lastWidth = window.innerWidth
   window.addEventListener('resize', onResize)
-  await loadLevelData()
+  void loadLevelData()
+  void fetchLevels().then((levels) => {
+    if (engine) backendLevels.value = levels
+  })
 })
 
 onBeforeUnmount(() => {
+  levelRequest?.abort()
+  clearTimeout(resizeTimer)
   document.removeEventListener('click', onClickOutside)
   window.removeEventListener('resize', onResize)
   engine?.destroy()
+  engine = null
 })
 </script>
 <style scoped>
@@ -240,6 +281,15 @@ h2 {
 }
 
 /* ─── CANVAS ─── */
+.level-status button + button {
+  margin-left: 8px;
+}
+
+.canvas-loading {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .game-canvas {
   width: 100%;
   height: 520px;

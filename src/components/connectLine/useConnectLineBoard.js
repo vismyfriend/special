@@ -125,11 +125,13 @@ export async function setupBoard(engine, gameData, options = {}) {
   let currentLeftGap = 8
   let currentRightGap = 8
 
-  let img = null
-  try {
-    img = await engine.loadImage(gameData.image)
-  } catch (err) {
-    console.warn('[connectLineBoard] image failed:', gameData.image, err)
+  let img = options.image
+  if (img === undefined) {
+    try {
+      img = await engine.loadImage(gameData.image)
+    } catch (err) {
+      console.warn('[connectLineBoard] image failed:', gameData.image, err)
+    }
   }
 
   if (img && gameData.crop) {

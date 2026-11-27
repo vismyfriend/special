@@ -31,7 +31,7 @@ onMounted(async ()=>{
   if (res.status !== 200) {
     setNotify('Ой ой, у нас ошибка бэкэндИны. Отправь скриншот советскому учителю')
   }
-  // console.log(res)
+  console.log('лог при старте сайта',res)
 })
 
 

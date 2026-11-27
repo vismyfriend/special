@@ -3,7 +3,7 @@ import { Line } from '../specialEngine/objects'
 import { setupBoard } from './useConnectLineBoard'
 import { createRelocate } from './useRelocate'
 
-export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
+export function useConnectLine(engine, gameData, difficulty, autoCheck = true, image) {
   const cards = []
   const zones = []
   let sideLists = { left: [], right: [], top: [] }
@@ -24,7 +24,7 @@ export function useConnectLine(engine, gameData, difficulty, autoCheck = true) {
   let returningLine = null
 
   async function setup() {
-    const board = await setupBoard(engine, gameData, { difficulty })
+    const board = await setupBoard(engine, gameData, { difficulty, image })
     cards.push(...board.cards)
     zones.push(...board.zones)
     sideLists = board.sideLists

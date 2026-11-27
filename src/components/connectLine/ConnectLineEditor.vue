@@ -1,49 +1,58 @@
 <template>
   <div class="editor">
     <div class="toolbar">
-      <select v-model="currentLevel" @change="onLevelChange" class="level-select">
+      <select v-model="currentLevel" @change="onLevelChange" :disabled="isSaving" class="level-select">
+        <option v-if="currentLevel && currentLevel !== '__new__' && !allLevelKeys.includes(currentLevel)"
+                :value="currentLevel">{{ currentLevel }}</option>
         <option v-for="key in allLevelKeys" :key="key" :value="key">{{ key }}</option>
         <option value="__new__">+ Новый уровень</option>
       </select>
 
-      <input
-        v-model="visibleName"
-        placeholder="Отображаемое имя"
-        class="visible-name-input"
-      />
+      <template v-if="!levelLoading && !levelError">
+        <input
+          v-model="visibleName"
+          placeholder="Отображаемое имя"
+          class="visible-name-input"
+        />
 
-      <label class="file-label">
-        🖼 Загрузить картинку
-        <input type="file" accept="image/*" @change="onImageLoad" />
-      </label>
+        <label class="file-label">
+          🖼 Загрузить картинку
+          <input type="file" accept="image/*" @change="onImageLoad" />
+        </label>
 
-      <button @click="toggleCropMode">{{ cropMode ? '✅ Готово' : '✂️ Обрезать' }}</button>
-      <button v-if="!cropMode" @click="addZoneAtCenter">+ добавить слово</button>
-      <button v-if="!cropMode" @click="exportJson" :disabled="hasConflicts"
-              :title="hasConflicts ? 'Убери пересечения зон' : 'Экспорт JSON'"
-              :class="{ 'btn-disabled': hasConflicts }">⬇️ Экспорт JSON</button>
-      <button v-if="!cropMode" @click="downloadJson" :disabled="hasConflicts"
-              title="Скачать JSON-файл для levels/">💾 Скачать JSON</button>
+        <button @click="toggleCropMode">{{ cropMode ? '✅ Готово' : '✂️ Обрезать' }}</button>
+        <button v-if="!cropMode" @click="addZoneAtCenter">+ добавить слово</button>
+        <button v-if="!cropMode" @click="exportJson" :disabled="hasConflicts"
+                :title="hasConflicts ? 'Убери пересечения зон' : 'Экспорт JSON'"
+                :class="{ 'btn-disabled': hasConflicts }">⬇️ Экспорт JSON</button>
+        <button v-if="!cropMode" @click="downloadJson" :disabled="hasConflicts"
+                title="Скачать JSON-файл для levels/">💾 Скачать JSON</button>
 
-      <!-- ⬇️ НОВОЕ: сохранение на сервер -->
-      <button
-        v-if="!cropMode"
-        @click="saveToServer"
-        :disabled="isSaving || hasConflicts"
-        :class="{ 'btn-disabled': hasConflicts }"
-      >
-        {{ isSaving ? '⏳ Сохранение...' : '💾 Сохранить на сервер' }}
-      </button>
-      <span v-if="saveMessage" class="save-msg">{{ saveMessage }}</span>
+        <!-- ⬇️ НОВОЕ: сохранение на сервер -->
+        <button
+          v-if="!cropMode"
+          @click="saveToServer"
+          :disabled="isSaving || hasConflicts"
+          :class="{ 'btn-disabled': hasConflicts }"
+        >
+          {{ isSaving ? '⏳ Сохранение...' : '💾 Сохранить на сервер' }}
+        </button>
+        <span v-if="saveMessage" class="save-msg">{{ saveMessage }}</span>
 
-      <button v-if="!cropMode" @click="clearAll">🗑 Очистить</button>
-      <button @click="playThisLevel"> Играть</button>
+        <button v-if="!cropMode" @click="clearAll">🗑 Очистить</button>
+        <button @click="playThisLevel"> Играть</button>
 
-      <button v-if="cropMode" @click="resetCrop">↺ Сбросить</button>
-      <span v-if="cropMode" class="crop-hint">Подгони картинку и нажми «✅ Применить обрезку»</span>
+        <button v-if="cropMode" @click="resetCrop">↺ Сбросить</button>
+        <span v-if="cropMode" class="crop-hint">Подгони картинку и нажми «✅ Применить обрезку»</span>
+      </template>
     </div>
 
-    <div class="workspace">
+    <div v-if="levelLoading || levelError" class="save-msg" role="status">
+      {{ levelLoading ? 'Загружаем уровень…' : levelError }}
+      <button v-if="levelError" type="button" @click="loadLevel(currentLevel)">Повторить</button>
+    </div>
+
+    <div v-show="!levelLoading && !levelError" class="workspace">
       <div ref="wrapperRef" class="canvas-wrap">
         <canvas
           ref="canvasRef"
@@ -123,19 +132,19 @@
 import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { connectLineGames } from './ConnectLineData'
-import { useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
+import { loadConnectLineImage, useConnectLineLevelsComposable } from 'src/composables/useConnectLineLevelsComposable'
 
 const route = useRoute()
 const router = useRouter()
 
 // ─── БЭКЕНД ───
 const {
-  fetchLevels,
-  fetchLevel,
   saveLevel,
   uploadImage,
   error: apiError,
 } = useConnectLineLevelsComposable()
+const { fetchLevels } = useConnectLineLevelsComposable()
+const { fetchLevel, error: levelRequestError } = useConnectLineLevelsComposable()
 
 const backendLevels = ref([])
 const backendLevelKeys = computed(() => backendLevels.value.map(l => l.level_name))
@@ -156,6 +165,9 @@ const newLevelName = ref('')
 const visibleName = ref('')
 const isSaving = ref(false)
 const saveMessage = ref('')
+const levelLoading = ref(false)
+const levelError = ref('')
+let levelRequest
 
 const canvasRef = ref(null)
 const wrapperRef = ref(null)
@@ -248,47 +260,47 @@ function applyCropToImage(sourceImg, cropData) {
 
 // ─── ЗАГРУЗКА УРОВНЯ ───
 async function loadLevel(key) {
-  let data = connectLineGames[key]
+  levelRequest?.abort()
+  const request = new AbortController()
+  levelRequest = request
+  const { signal } = request
+  levelLoading.value = true
+  levelError.value = ''
+  saveMessage.value = ''
 
+  const bundledLevel = Object.prototype.hasOwnProperty.call(connectLineGames, key) ? connectLineGames[key] : null
+  const data = bundledLevel || await fetchLevel(key, { signal })
+  if (signal.aborted) return
   if (!data) {
-    const fromBackend = await fetchLevel(key)
-    if (!fromBackend) return
-    data = fromBackend
+    levelError.value = levelRequestError.value || 'Не удалось загрузить уровень.'
+    levelLoading.value = false
+    return
   }
 
-  visibleName.value = data.title || key
-
-  if (data.image) {
-    try {
-      const image = new Image()
-      image.crossOrigin = 'anonymous'
-      image.src = data.image
-      await new Promise((res, rej) => { image.onload = res; image.onerror = rej })
-
-      sourceImageSize.value = { width: image.width, height: image.height }
-
+  let image = null
+  let renderedImage = null
+  try {
+    if (data.image) {
+      image = await loadConnectLineImage(data.image, { crossOrigin: 'anonymous', signal })
+      if (signal.aborted) return
+      renderedImage = image
       if (data.crop) {
         const cropped = applyCropToImage(image, data.crop)
-        await new Promise((res, rej) => {
-          if (cropped.complete && cropped.naturalWidth > 0) return res()
-          cropped.onload = res
-          cropped.onerror = rej
-        })
-        img.value = cropped
-        originalImageSize.value = { width: cropped.width, height: cropped.height }
-      } else {
-        img.value = image
-        originalImageSize.value = { width: image.width, height: image.height }
+        renderedImage = await loadConnectLineImage(cropped.src, { signal })
       }
-    } catch (_) {
-      img.value = null
-      sourceImageSize.value = { width: BASE_W, height: BASE_H }
-      originalImageSize.value = { width: BASE_W, height: BASE_H }
     }
-  } else {
-    img.value = null
-    sourceImageSize.value = { width: BASE_W, height: BASE_H }
-    originalImageSize.value = { width: BASE_W, height: BASE_H }
+  } catch (error) {
+    if (signal.aborted) return
+    saveMessage.value = 'Не удалось открыть картинку. Можно выбрать другую.'
+  }
+  if (signal.aborted) return
+
+  visibleName.value = data.title || key
+  img.value = renderedImage
+  sourceImageSize.value = { width: image?.width || BASE_W, height: image?.height || BASE_H }
+  originalImageSize.value = {
+    width: renderedImage?.width || BASE_W,
+    height: renderedImage?.height || BASE_H,
   }
 
   appliedCrop.value = data.crop ? { ...data.crop, box: { ...data.crop.box } } : null
@@ -308,9 +320,12 @@ async function loadLevel(key) {
   cropMode.value = false
   lastExport.value = ''
   pendingImageFile = null
+  levelLoading.value = false
   await nextTick()
-  resizeCanvas()
-  draw()
+  if (!signal.aborted) {
+    resizeCanvas()
+    draw()
+  }
 }
 
 async function onLevelChange() {
@@ -318,8 +333,13 @@ async function onLevelChange() {
     const name = prompt('Имя нового уровня (ключ в ConnectLineData, например: bodyParts):')
     if (!name || !/^[a-zA-Z0-9_-]+$/.test(name)) {
       currentLevel.value = levelKeys.value[0] || ''
+      if (currentLevel.value) await loadLevel(currentLevel.value)
       return
     }
+    levelRequest?.abort()
+    levelLoading.value = false
+    levelError.value = ''
+    saveMessage.value = ''
     newLevelName.value = name
     img.value = null
     zones.value = []
@@ -336,8 +356,9 @@ async function onLevelChange() {
     return
   }
   newLevelName.value = ''
-  await loadLevel(currentLevel.value)
-  router.replace({ query: { ...route.query, level: currentLevel.value } })
+  const level = currentLevel.value
+  router.replace({ query: { ...route.query, level } })
+  await loadLevel(level)
 }
 
 // ─── INPUT-Ы ───
@@ -1065,14 +1086,20 @@ async function saveToServer() {
     isPublic: true,
   }
 
-  const isNew = !backendLevelKeys.value.includes(levelName)
-    && !connectLineGames[levelName]
+  const isNew = currentLevel.value === '__new__'
+    && !backendLevelKeys.value.includes(levelName)
+    && !Object.prototype.hasOwnProperty.call(connectLineGames, levelName)
 
   const saved = await saveLevel(payload, isNew)
   if (!saved) {
     saveMessage.value = 'Ошибка: ' + (apiError.value || 'см. консоль')
     isSaving.value = false
     return
+  }
+
+  if (currentLevel.value === '__new__') {
+    currentLevel.value = levelName
+    router.replace({ query: { ...route.query, level: levelName } })
   }
 
   if (pendingImageFile) {
@@ -1089,10 +1116,6 @@ async function saveToServer() {
   backendLevels.value = await fetchLevels()
   isSaving.value = false
 
-  if (currentLevel.value === '__new__') {
-    currentLevel.value = levelName
-    router.replace({ query: { ...route.query, level: levelName } })
-  }
   return true // ⬅️ сообщаем, что всё сохранилось успешно
 
 }
@@ -1115,21 +1138,18 @@ async function playThisLevel() {
 }
 
 // ─── ИНИЦИАЛИЗАЦИЯ ───
-onMounted(async () => {
+onMounted(() => {
   window.addEventListener('resize', resizeCanvas)
-
-  backendLevels.value = await fetchLevels()
-
   if (currentLevel.value && currentLevel.value !== '__new__') {
-    await loadLevel(currentLevel.value)
-  } else if (levelKeys.value.length > 0) {
-    currentLevel.value = levelKeys.value[0]
-    await loadLevel(currentLevel.value)
+    void loadLevel(currentLevel.value)
   }
-  nextTick(() => { resizeCanvas(); draw() })
+  void fetchLevels().then((levels) => {
+    backendLevels.value = levels
+  })
 })
 
 onBeforeUnmount(() => {
+  levelRequest?.abort()
   window.removeEventListener('resize', resizeCanvas)
 })
 </script>

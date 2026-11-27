@@ -12,29 +12,58 @@
 import { ref } from 'vue'
 import { httpClient } from 'src/api/modules/httpClient'
 
-
+const levelTimeout = 10000
 
 // const BASE_URL = 'https://special-agents-backend.onrender.com'
 // const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 // вот эта для локального доступа
 
-const baseURL = 'https://api.special-agents.ru' // прод Егорчика
+// const baseURL = 'https://api.special-agents.ru' // прод Егорчика
 
+
+export function loadConnectLineImage(src, { crossOrigin, signal } = {}) {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(signal.reason)
+      return
+    }
+    const image = new Image()
+    const finish = (callback, result) => {
+      clearTimeout(timeout)
+      signal?.removeEventListener('abort', abort)
+      image.onload = null
+      image.onerror = null
+      callback(result)
+    }
+    const cancel = (error) => {
+      finish(reject, error)
+      image.removeAttribute('src')
+    }
+    const abort = () => cancel(signal.reason)
+    const timeout = setTimeout(() => cancel(new Error('Картинка не загрузилась вовремя.')), levelTimeout)
+    signal?.addEventListener('abort', abort, { once: true })
+
+    if (crossOrigin) image.crossOrigin = crossOrigin
+    image.onload = () => finish(resolve, image)
+    image.onerror = () => finish(reject, new Error('Не удалось загрузить картинку уровня.'))
+    image.src = src
+  })
+}
 
 /**
  * Преобразует запись из БД в формат, который ждёт setupBoard:
  * { title, instructions, imageWidth, imageHeight, crop, image, words }
  */
 function backendToGameFormat(record) {
+  const imagePath = record.image_url ||
+    (record.image_filename ? `/uploads/${encodeURIComponent(record.image_filename)}` : null)
   return {
     title: record.visible_name,
     instructions: 'Протяни линию от названия к нужному месту на картинке',
     imageWidth: record.image_width,
     imageHeight: record.image_height,
     crop: record.crop || null,
-    image: record.image_filename
-      ? `${BASE_URL}/uploads/${record.image_filename}`
-      : null,
+    image: imagePath ? new URL(imagePath, httpClient.defaults.baseURL).href : null,
     words: (record.points || []).map((p) => ({ ...p })),
   }
 }
@@ -50,8 +79,8 @@ export function useConnectLineLevelsComposable() {
     loading.value = true
     error.value = null
     try {
-      const { data } = await httpClient.get('/connect-line')
-      return data
+      const { data } = await httpClient.get('/connect-line', { timeout: levelTimeout })
+      return Array.isArray(data) ? data : []
     } catch (e) {
       console.error('[useConnectLineLevels] fetchLevels:', e)
       error.value = e.message || 'Ошибка загрузки уровней'
@@ -64,18 +93,25 @@ export function useConnectLineLevelsComposable() {
   /**
    * GET /connect-line/:levelName → один уровень в формате игры.
    */
-  async function fetchLevel(levelName) {
+  async function fetchLevel(levelName, { signal } = {}) {
     loading.value = true
     error.value = null
     try {
-      const { data } = await httpClient.get(`/connect-line/${encodeURIComponent(levelName)}`)
+      const { data } = await httpClient.get(`/connect-line/${encodeURIComponent(levelName)}`, {
+        timeout: levelTimeout,
+        signal,
+      })
+      if (!data || !Array.isArray(data.points)) throw new Error('Unexpected ConnectLine response')
       return backendToGameFormat(data)
     } catch (e) {
-      console.error('[useConnectLineLevels] fetchLevel:', e)
-      error.value = e.message || 'Ошибка загрузки уровня'
+      if (signal?.aborted) return null
+      const status = e.response?.status
+      if (status === 404) error.value = 'Уровень не найден.'
+      else if (status === 401 || status === 403) error.value = 'Для этого уровня нужен доступ. Проверь вход.'
+      else error.value = 'Не удалось загрузить уровень. Попробуй ещё раз.'
       return null
     } finally {
-      loading.value = false
+      if (!signal?.aborted) loading.value = false
     }
   }
 
