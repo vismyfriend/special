@@ -1,4 +1,8 @@
 const routes = [
+  {
+    path: '/backendDashboard',
+    component: () => import('src/pages/BackendDashboard.vue')
+  },
   // сперва компоненты без лэйаутов вообще
   {
     path: '/test',
